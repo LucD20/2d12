@@ -93,11 +93,11 @@ function actPane(r, m) {
 
 const DEF = () => [["all", "every Defense"], ["armor", "Armor (AD)"], ["ward", "Ward (WD)"], ["body", "Vs. Body"], ["mind", "Vs. Mind"], ["appeal", "Vs. Appeal"], ["instinct", "Vs. Instinct"]];
 function valuePane(r, m) {
-  const rows = [["Changes", seg("stat", r.stat, [["defense", "Defense"], ["speed", "Speed"], ["rally", "Rally Points"], ["resist", "Resist / Weak"]], "g")]];
+  const rows = [["Changes", seg("stat", r.stat, [["defense", "Defense"], ["speed", "Speed"], ["rally", "Rally Points"], ["resist", "Resistance / Weakness"]], "g")]];
   if (r.stat === "defense") rows.push(["Amount", `${amount("val", r.val, -4, 4)} ${sel("which", r.which, DEF(), "Which Defense")}`]);
   else if (r.stat === "speed") rows.push(["Amount", `${amount("val", r.val, -6, 6, "2")} ${sel("stype", r.stype, [["all", "every Speed"], ["walk", "Walk"], ["fly", "Fly (later)", true], ["climb", "Climb (later)", true], ["swim", "Swim (later)", true]], "Which Speed")}`]);
   else if (r.stat === "rally") rows.push(["Each heals", `${text("rally", r.rally, "@origin.pow + 2", "wide")} <span class="fr-m">more</span>${fhelp()}`], r.rallyRange ? ["Allies", `<span class="fr-m">and its allies within ${r.rallyRange} squares (kept from the old setting; an Aura carrying this effect is the new way)</span>`] : null);
-  else rows.push(["Has", `${seg("rw", r.rw, [["resist", "Resist"], ["weak", "Weak"], ["immune", "Immune"]])}${r.rw !== "immune" ? amount("rwVal", r.rwVal, 1, 20) : ""} ${sel("rwSub", r.rwSub, SUBS().map(([k, v]) => [k, k ? v : "Choose a type"]), "Damage type")}`]);
+  else rows.push(["Has", `${seg("rw", r.rw, [["resist", "Resistance"], ["weak", "Weakness"], ["immune", "Immunity"]])}${r.rw !== "immune" ? amount("rwVal", r.rwVal, 1, 20) : ""} ${sel("rwSub", r.rwSub, SUBS().map(([k, v]) => [k, k ? v : "Choose a type"]), "Damage type")}`]);
   if (["defense", "speed"].includes(r.stat)) {
     rows.push(["Counts as", seg("mode", r.mode, r.stat === "speed" ? [["bonus", "A bonus"], ["inc", "An increase"], ["set", "Set to"]] : [["bonus", "A bonus"], ["inc", "An increase"]], "w")]);   // a Defense has no "Set to" yet
     if (r.mode === "bonus") rows.push(["Named", seg("name", r.name, NAMES, "w")]);

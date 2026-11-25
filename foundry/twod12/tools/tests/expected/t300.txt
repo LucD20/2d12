@@ -1,5 +1,5 @@
 1. Auto-squad 4 Minions: Goblin Sneak · Squad 1(×2) + Goblin Sneak · Squad 2(×2) | rollN: 4 | rollLabel: Roll 4 · 1 player pending
-2. Mixed/over-cap squad: Mixed Squad 1 | warns: 4 in squad (book: ≤3), mixed creatures, non-Minion | leftover dissolved to solo: true
+2. Mixed/over-cap squad: Mixed Squad 1 | warns: 4 in squad (book: ≤2), mixed creatures, non-Minion | leftover dissolved to solo: true
 3. Remove Sq1 member dissolves Sq1: true
 4. Ungroup & Auto-Squad (deep-merge): 6 -> 4 | sqId cleared: true
 5. Squad HTML pieces: true

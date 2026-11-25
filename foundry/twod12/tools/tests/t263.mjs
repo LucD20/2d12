@@ -28,7 +28,10 @@ const C = await import(ROOTURL + "tools/content.mjs");
 for (const n of ["Darting Blade", "Hit and Run"]) { const d = C.docs.find(x => x.name === n); console.log(n, "| lines above the roll:", JSON.stringify(d.system.lines ?? []), "| Special at the end:", JSON.stringify(d.system.special ?? "")); }
 
 console.log("--- (4) The Bestiary");
-for (const a of C.actors) for (const x of a.items ?? []) if (["Hamstringing Axe", "Club", "Overhead Smash", "Dirty Trick"].includes(x.name) && x.type === "action") { const v = x.system.versions[0]; console.log(`${a.name}: ${x.name} | Tier 2 ${v.x2} | Tier 3 ${v.x3} | Effect "${v.effects}" | after ${v.after ?? "-"}`); }
-console.log("the book's bullets:", (book("rules-src/14-bestiary.md").match(/, and Pushed \d\./g) ?? []).length, "Pushed |", (book("rules-src/14-bestiary.md").match(/Reach \(1\)/g) ?? []).length, "Reach (1)");
+// the Bestiary's rebuild (2026-11-25): the old Goblin's and Ogre's cards left the packs (OLD_CLASS_DOCS keeps them); the old chapter's bullets are
+// in its archive, the new chapter writes the NPCs' melee Distance "Reach (X)"
+for (const a of C.actors) for (const x of a.items ?? []) if (["Hamstringing Axe"].includes(x.name) && x.type === "action") { const v = x.system.versions[0]; console.log(`${a.name}: ${x.name} | Tier 2 ${v.x2} | Tier 3 ${v.x3} | Effect "${v.effects}" | after ${v.after ?? "-"}`); }
+for (const x of C.OLD_CLASS_DOCS) if (["Club", "Overhead Smash", "Dirty Trick"].includes(x.name)) { const v = x.system.versions[0]; console.log(`(old) ${x.name} | Tier 2 ${v.x2} | Tier 3 ${v.x3} | Effect "${v.effects}" | after ${v.after ?? "-"}`); }
+console.log("the book's bullets:", (fs.readFileSync(ROOT + "../../archive/book-drafts/14-bestiary-to-2026-11-25.md", "utf8").match(/, and Pushed \d\./g) ?? []).length, "Pushed (archived) |", (book("rules-src/14-bestiary.md").match(/Reach \((1|2)\)/g) ?? []).length, "Reach (X)");
 const CF = src("module/config.mjs");
 console.log("Foundry's Distance: an NPC's melee \"Reach (X)\":", CF.includes("return npcOf && !String(r.melee).includes(\"/\") ? `Reach (${r.melee})` : sp(r.melee);") && CF.includes("return a?.type === \"npc\" && n > 0 ? `Reach (${n})` : \"Reach\";"));

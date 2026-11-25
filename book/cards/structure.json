@@ -138,6 +138,30 @@
   "after": [],
   "passive": false
  },
+ "Backhand": {
+  "name": "Backhand",
+  "escalation": null,
+  "frequency": "Turn",
+  "flavor": "You stepped inside its reach as if it weren't looking.",
+  "distance": null,
+  "area": null,
+  "target": "The triggering creature",
+  "traits": [],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Trigger",
+    "text": "An enemy enters a square adjacent to the ogre."
+   },
+   {
+    "label": "Effect",
+    "text": "It takes [V] 1 Bl and is Pushed 2, with no roll. Its movement isn't disrupted: it goes on with the movement it has left."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Barbed Javelin": {
   "name": "Barbed Javelin",
   "escalation": null,
@@ -976,6 +1000,46 @@
   "after": [],
   "passive": false
  },
+ "Crack the Ground": {
+  "name": "Crack the Ground",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "It brings the club down two-handed, and the floor gives.",
+  "distance": null,
+  "area": "Line 3",
+  "target": "All creatures in the Area",
+  "traits": [
+   "weapon",
+   "save",
+   "area"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Save",
+    "text": "Instinct"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] 5 + 2d8 Bl."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 3 + 1d8 Bl."
+   },
+   {
+    "label": "Tier 3",
+    "text": "No effect."
+   },
+   {
+    "label": "Effect",
+    "text": "The squares of the Line are Difficult Terrain for every creature (EoE)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Crawl": {
   "name": "Crawl",
   "escalation": null,
@@ -1010,6 +1074,42 @@
     ]
    }
   ],
+  "after": [],
+  "passive": false
+ },
+ "Crushing Grip": {
+  "name": "Crushing Grip",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "A hand closes round you like a door shutting.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "melee",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4! Bl."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 2 + 1d6! Bl; Grabbed."
+   },
+   {
+    "label": "Special",
+    "text": "The ogre holds one creature at a time: a new Grab lets the first go."
+   }
+  ],
+  "blocks": [],
   "after": [],
   "passive": false
  },
@@ -1483,6 +1583,70 @@
   "after": [],
   "passive": false
  },
+ "Drifting": {
+  "name": "Drifting",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Nothing in its way is quite solid to it.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "The wisp's own movement can pass through creatures' spaces (it can't end in one), and a creature's space is never Difficult Terrain for it."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Dying Flare": {
+  "name": "Dying Flare",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "It goes out the way a lamp does when it is dropped.",
+  "distance": null,
+  "area": "1 Emanation",
+  "target": "All creatures in the Area",
+  "traits": [
+   "power",
+   "save",
+   "area"
+  ],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Interrupt",
+    "text": "The wisp would go Down."
+   },
+   {
+    "label": "Save",
+    "text": "Instinct"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[R] 1d4 Co; Hindered (EoT)."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1d4 Co."
+   },
+   {
+    "label": "Tier 3",
+    "text": "No effect."
+   },
+   {
+    "label": "Special",
+    "text": "Then the wisp goes Down."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Evade": {
   "name": "Evade",
   "escalation": null,
@@ -1767,6 +1931,38 @@
   "after": [],
   "passive": false
  },
+ "Great Sweep": {
+  "name": "Great Sweep",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "The club goes round at chest height.",
+  "distance": "Reach",
+  "area": null,
+  "target": "Up to two creatures",
+  "traits": [
+   "weapon",
+   "melee",
+   "strike"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 2 + 1d6 Bl."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 4 + 1d8 Bl."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Ground Slam": {
   "name": "Ground Slam",
   "escalation": null,
@@ -1869,6 +2065,38 @@
    {
     "label": "Tier 3",
     "text": "[V] 1d6 + [Mod] Pi; Hindered (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Guttering Glance": {
+  "name": "Guttering Glance",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "The light goes out behind your eyes.",
+  "distance": "6 sq.",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "power",
+   "ranged",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Power vs. Ward Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1d4 Ps."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 1d4 Ps; Half-Blinded (EoT)."
    }
   ],
   "blocks": [],
@@ -2471,6 +2699,46 @@
   "after": [],
   "passive": false
  },
+ "Hurled Goblin": {
+  "name": "Hurled Goblin",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "The goblin has time to look surprised.",
+  "distance": "6 sq.",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "ranged",
+   "strike"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "A willing Minion ally is within the ogre's Reach."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4! Bl."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1 + 1d6! Bl."
+   },
+   {
+    "label": "Effect",
+    "text": "The Minion is Repositioned to an empty square adjacent to the target, the ogre's choice (hit or miss); it takes no damage."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Interact": {
   "name": "Interact",
   "escalation": null,
@@ -2487,6 +2755,38 @@
    {
     "label": "Effect",
     "text": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action; stowing and swapping need no free hand); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an Advance Action without ending the Advance (see [[Advance]])."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Jeer": {
+  "name": "Jeer",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "It says something about your mother, in Goblin, and somehow you understand.",
+  "distance": "6 sq.",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "power",
+   "ranged",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Power vs. Ward Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1d4 Ps."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 1d4 Ps; Taunted by the goblin (1 round)."
    }
   ],
   "blocks": [],
@@ -2637,6 +2937,42 @@
   "blocks": [],
   "after": [],
   "passive": true
+ },
+ "Knife in the Back": {
+  "name": "Knife in the Back",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You were looking at the other one.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "melee",
+   "strike"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "The goblin flanks the target."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 2 + 1d6 Pi."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 4 + 1d8 Pi."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
  },
  "Lantern of Faith": {
   "name": "Lantern of Faith",
@@ -3327,6 +3663,42 @@
    {
     "label": "Effect",
     "text": "Make a [Ranged, Projectile] Weapon Attack (1A) against the triggering creature. On a Tier 2 or 3, it is Hindered (EoT); on a Critical, it is also Pushed 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Pass Through": {
+  "name": "Pass Through",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "It drifts straight through you, and the cold stays.",
+  "distance": null,
+  "area": null,
+  "target": "Up to two enemies",
+  "traits": [
+   "power",
+   "move",
+   "strike"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Setup",
+    "text": "The wisp Advances in a straight line; the targets are enemies whose space it passed through."
+   },
+   {
+    "label": "Attack",
+    "text": "Power vs. Ward Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1d4 Co."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 1 + 1d6 Co."
    }
   ],
   "blocks": [],
@@ -4053,6 +4425,39 @@
   "after": [],
   "passive": false
  },
+ "Roar": {
+  "name": "Roar",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "It turns its whole face toward you and bellows.",
+  "distance": "6 sq.",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "power",
+   "ranged",
+   "strike",
+   "fear"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Power vs. Ward Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1d4! Ps."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 1d4! Ps; Staggered (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Rolling Shot": {
   "name": "Rolling Shot",
   "escalation": null,
@@ -4368,6 +4773,38 @@
   "after": [],
   "passive": true
  },
+ "Shiv": {
+  "name": "Shiv",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "A short, ugly blade, and it knows where the armor ends.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "melee",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 Pi."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d6 Pi."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Shove": {
   "name": "Shove",
   "escalation": null,
@@ -4438,6 +4875,30 @@
   "after": [],
   "passive": false
  },
+ "Shriek and Scatter": {
+  "name": "Shriek and Scatter",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "One of them drops, and the rest remember how much they hate you.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Trigger",
+    "text": "An ally with the Goblin Tag within 6 squares goes Down."
+   },
+   {
+    "label": "Effect",
+    "text": "The goblin can Evade 1, then uses Jeer."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Skirmish Shot": {
   "name": "Skirmish Shot",
   "escalation": null,
@@ -4493,6 +4954,42 @@
    {
     "label": "Effect",
     "text": "You Evade 1, then Advance 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Slipping Touch": {
+  "name": "Slipping Touch",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "It reaches for you and is already somewhere else.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "power",
+   "melee",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Power vs. Ward Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "The wisp can Evade 1."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1d4 Co."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 1d6 Co."
    }
   ],
   "blocks": [],

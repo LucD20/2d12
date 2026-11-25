@@ -20,7 +20,8 @@ console.log("halve your Speed last:", ch3.includes("Apply every other change fir
 console.log("Prone allows Break Free; Immobilized mid-move ends the movement:", ch8.includes("[[Crawl|Crawl]], [[Stand|Stand]] and [[Break Free]]") && ch8.includes("If you become Immobilized while you are moving, your movement ends."));
 console.log("ignoring a condition:", ch8.includes("**Ignoring a condition.** A creature that ignores a condition keeps it"));
 console.log("a Save Action switches to Nonlethal with 1 Boon on each Save:", book("rules-src/04-health.md").includes("every creature that makes its Save gains **1 Boon** on it"));
-console.log("each Elite has its own Escalation (three steps, the default ladder):", ch14.includes("**Each Elite has its own Escalation.**") && ch14.includes("**the default ladder**: Pressing, Relentless and Second Wind"));
+// the Bestiary's rebuild (2026-11-25): Elite Escalation is gone (Chapter 14 rewritten; the old text: archive/book-drafts/14-bestiary-to-2026-11-25.md)
+console.log("no NPC has Escalation (Elite Escalation gone):", ch14.includes("No NPC has Escalation.") && ch2.includes("NPCs have no Escalation.") && !ch14.includes("Elite Escalation"));
 console.log("Break Free is shown in Chapter 6:", book("rules-src/06-basic-actions.md").includes("@@CARD:Break Free@@"));
 const pal = book("cards/stage0/paladin.json");
 console.log("Courage is an Aura 3; Brace's squares are fixed; Judge's 1 AP is clear:", pal.includes("An [[Aura]] 3 around you (1 round)") && pal.includes("The squares adjacent to you now are Difficult Terrain") && pal.includes("If another creature was Judged by you, it no longer is."));

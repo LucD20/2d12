@@ -146,8 +146,11 @@ add("effects", "effect", "Find the Gap", "icons/svg/target.svg", { selfApplied: 
   settings: [{ type: "ignore", ignoreRule: "rangeBane", rangeAll: true, all: ["ranged", "strike"], any: [], none: [] }, { type: "ignore", ignoreRule: "coverLower", all: ["ranged", "strike"], any: [], none: [] }] }, "Archer");
 add("effects", "effect", "Keep Low", "icons/svg/shield.svg", { selfApplied: true, duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, against each creature you have Cover from, your Cover is one level higher, up to High (Spotter, Keep Low).</p>",
   settings: [{ type: "ignore", ignoreRule: "coverHigher", all: [], any: [], none: [] }] }, "Archer");
-add("effects", "effect", "Rally the Tribe (1 Support Boon)", "icons/svg/aura.svg", { duration: { type: "encounter", rounds: 1 }, expireOn: ["weapon"], expireAll: false, description: "<p>1 Support Boon on your next [Weapon] Action (Rally the Tribe).</p>",
-  settings: [{ type: "boonbane", boons: 1, banes: 0, bbName: "support", all: ["weapon"], any: [], none: [] }] }, "Bestiary");
+// the Bestiary's rebuild (2026-11-25): Rally the Tribe's Boon left with the old Ogre Chieftain's cards; Crack the Ground's broken floor (the Ogre
+// Chieftain's Encounter Action): the Line it leaves is Difficult Terrain for every creature, the ogre too, until the encounter ends
+add("effects", "effect", "Crack the Ground", "icons/svg/ice-aura.svg", { description: "<p>The cracked floor (Crack the Ground): Difficult Terrain for every creature until the encounter ends.</p>",
+  where: "map", zone: { src: "action", inside: { carry: { on: false }, diff: { on: true, who: "all", self: true } } }, show: true, outline: "#8a6a3a", fill: "#8a6a3a",
+  ends: { time: { on: true, mode: "encounter" } } }, "Bestiary");
 const wa = "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]";
 add("actions", "action", "Precise Aim", "icons/svg/eye.svg", {
   category: "Sharpshooter", level: 1, traits: ["focus", "self"], frequency: "round", distance: "self",
@@ -273,21 +276,26 @@ const embedded = (actorName, type, name, img, system, flags = {}) => ({ _id: idO
 const npcWeapon = (actorName, text, img) => { const w = parseWeaponText(text); if (w.problems.length) throw new Error(`${text}: ${w.problems.join("; ")}`); return embedded(actorName, "weapon", w.name, img, { ...weaponSystemData(w), wielded: true }); };
 const npcAction = (actorName, name, img, system, flags = {}) => embedded(actorName, "action", name, img, system, flags);
 // The Bestiary (v0.0.163): a role and ratings. By default its Weapon Attribute is High, the others Medium, Appeal Low (Appeal Medium when Appeal is its Weapon Attribute).
-const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLead = "weapon", ratings = {}, speed = 5, extra = [], npcRole = "", size = 3, custom = null, armorDef = null, wardDef = null }) => {
+const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLead = "weapon", ratings = {}, speed = 5, extra = [], npcRole = "", size = 3, custom = null, armorDef = null, wardDef = null, sys = {} }) => {   // the Bestiary's rebuild: sys, more typed fields (ticks, tags, Reach, Steadiness, its damage line)
   const r = { body: "medium", mind: "medium", appeal: "low", instinct: "medium", bodyHm: "medium", mindHm: "medium", ad: "medium", wd: "medium", damage: "medium", [weaponAttribute]: "high", ...ratings };
   const basics = Object.keys(BASIC_ACTIONS).filter(k => wanted({ type: "npc" }, k)).map(k => { const d = basicItemData(k); return embedded(name, "action", d.name, d.img, d.system, d.flags); });
   // v0.0.184: the Speed is a rating (3 to 7, or Custom with system.speed), as the Builder sets it
   r.speed = [3, 4, 5, 6, 7].includes(speed) ? String(speed) : "custom";
-  actors.push({ name, img, system: { level: 1, size, role, npcRole, speed, weaponAttribute, powerAttribute, modLead, ratings: r, useEscalation: role === "elite", ...(custom ? { custom } : {}), ...(armorDef != null ? { armorDef } : {}), ...(wardDef != null ? { wardDef } : {}) }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
+  actors.push({ name, img, system: { level: 1, size, role, npcRole, speed, weaponAttribute, powerAttribute, modLead, ratings: r, useEscalation: false,   /* the Bestiary's rebuild (2026-11-25): Elite Escalation is deprecated (no NPC has Escalation) */ ...(custom ? { custom } : {}), ...(armorDef != null ? { armorDef } : {}), ...(wardDef != null ? { wardDef } : {}), ...sys }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
 };
-// v0.0.333 (Lucas): the portraits (art/npcs/; the Grave Wisp has none yet).
+// v0.0.333 (Lucas): the portraits (art/npcs/; the Grave Wisp's since 2026-11-25).
 // v0.0.183 (Lucas: a complete rebuild, simple NPCs to test with): one NPC for each rank, at level 1. v0.0.407 (Stage 0 in Foundry): the Bestiary's
 // Stage 0 examples (book: Example NPCs (Stage 0); their Actions: book/cards/bestiary.json, on the turn budget, the damage written whole); the Bandit
 // Thug, a Grunt, is built the same way. The weapon in its hands is only what the attack looks like.
+// The Bestiary's rebuild (2026-11-25; book, Bestiary, The playtest creatures; book/cards/goblin-sneak-redesign.md): the Goblin Sneak, the first Minion:
+// 2 ticks (no Health), Armor Defense 13, Ward Defense 12, Weapon and Power +2 (typed), Instinct +2, Body 0, Mind 0, Appeal -1, Speed 6, Tag Goblin;
+// 3 AP and no Reaction Point (its rank). Its cards: book/cards/stage0/bestiary.json; its old cards (Rusty Knife, Dirty Trick) left Foundry.
+const TYPED = { body: "custom", mind: "custom", appeal: "custom", instinct: "custom", bodyHm: "custom", mindHm: "custom", ad: "custom", wd: "custom", wmod: "custom", pmod: "custom" };
 {
-  const n = "Goblin Sneak", knife = npcWeapon(n, "rusty knife: melee, pierce, 0/1d4/1d6", "icons/svg/dagger.svg");
-  npc({ name: n, img: "systems/twod12/art/npcs/goblin-sneak.png", role: "minion", weaponAttribute: "instinct", speed: 7, ratings: { body: "medium", mind: "medium", appeal: "low", bodyHm: "low", mindHm: "low", wd: "low" },
-    extra: [knife] });
+  const n = "Goblin Sneak", shiv = npcWeapon(n, "shiv: melee, pierce, 0/1d4/1d6", "icons/svg/dagger.svg");
+  npc({ name: n, img: "systems/twod12/art/npcs/goblin-sneak.png", role: "minion", weaponAttribute: "instinct", speed: 6, ratings: TYPED,
+    custom: { body: 0, mind: 0, appeal: -1, instinct: 2, bodyHealth: 0, mindHealth: 0, weapon: 2, power: 2 }, armorDef: 13, wardDef: 12,
+    sys: { ticks: 2, tags: ["goblin"] }, extra: [shiv] });
 }
 {
   const n = "Bandit Thug", club = npcWeapon(n, "cudgel: melee, blunt, 0/1d4/1d6", "icons/svg/hammer.svg");
@@ -303,19 +311,27 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLea
   const n = "Orc Warrior", axe = npcWeapon(n, "war axe: melee, slash, 0/1d4/1d6", "icons/svg/sword.svg"), jav = npcWeapon(n, "javelin: melee, thrown 6, pierce, 0/1d4/1d4", "icons/svg/thrust.svg");
   jav.system.wielded = false;   // on its back: the Barbed Javelin's Setup draws it
   npc({ name: n, img: "systems/twod12/art/npcs/orc-warrior.png", role: "standard", weaponAttribute: "body",
-    ratings: { body: "custom", mind: "custom", appeal: "custom", instinct: "custom", bodyHm: "custom", mindHm: "custom", ad: "custom", wd: "custom", wmod: "medium", pmod: "medium" },
-    custom: { body: 2, mind: -1, appeal: 1, instinct: 1, bodyHealth: 22, mindHealth: 14 }, armorDef: 13, wardDef: 13,
+    ratings: TYPED,   // the Bestiary's rebuild: its Modifiers typed too (+2 / +2, every rank's)
+    custom: { body: 2, mind: -1, appeal: 1, instinct: 1, bodyHealth: 22, mindHealth: 14, weapon: 2, power: 2 }, armorDef: 13, wardDef: 13,
     extra: [axe, jav] });
 }
-// v0.0.240 (pack R-bestiary): a Standard that attacks Ward Defense only (its Actions are Power Actions dealing [R]); no weapon in its hands.
+// The Bestiary's rebuild (2026-11-25; book/cards/grave-wisp-redesign.md): the Grave Wisp, the first Grunt: Health 18 (Vigor 6, Resolve 12), Armor
+// Defense 12, Ward Defense 14, Weapon and Power +2, Mind +2, Instinct +1, Appeal 0, Body -1, Speed 6, Resistance Psychic 3, Weakness Holy 3,
+// Immunity Cold; 3 AP and the Reaction Point (its rank); no weapon (its Actions are Power Actions). Its portrait: art/npcs/grave-wisp.png (Lucas).
 {
-  npc({ name: "Grave Wisp", img: "icons/svg/mystery-man.svg", role: "standard", weaponAttribute: "instinct", powerAttribute: "mind", modLead: "power",
-    ratings: { body: "low", mind: "high", appeal: "medium", instinct: "medium", bodyHm: "terrible", mindHm: "high", ad: "low", wd: "high", wmod: "medium", pmod: "medium" } });
+  npc({ name: "Grave Wisp", img: "systems/twod12/art/npcs/grave-wisp.png", role: "grunt", weaponAttribute: "instinct", powerAttribute: "mind", modLead: "power", speed: 6, ratings: TYPED,
+    custom: { body: -1, mind: 2, appeal: 0, instinct: 1, bodyHealth: 6, mindHealth: 12, weapon: 2, power: 2 }, armorDef: 12, wardDef: 14,
+    sys: { dmgMods: "Resistance Psychic 3, Weakness Holy 3, Immunity Cold" } });
 }
+// The Bestiary's rebuild (2026-11-25; book/cards/ogre-chieftain-redesign.md): the Ogre Chieftain, the first Elite: Health 72 (Vigor 44, Resolve 28),
+// Armor Defense 14, Ward Defense 12, Weapon and Power +2, Body +3, Instinct +1, Appeal +1, Mind -1, Large (4), Reach 2, Steadiness 1, Speed 5, Tag
+// Ogre; 4 AP and the Reaction Point; no Escalation (Elite Escalation is deprecated); its extra is its Encounter Action, Crack the Ground. A club in
+// one hand, the other free (Crushing Grip). Its old cards (Club, Overhead Smash, Ground Slam, Rally the Tribe) left Foundry.
 {
-  const n = "Ogre Chieftain", club = npcWeapon(n, "great club: two-handed, melee, blunt, 0/1d10/2d10", "icons/svg/hammer.svg");
-  npc({ name: n, img: "systems/twod12/art/npcs/ogre-chieftain.png", role: "elite", weaponAttribute: "body", speed: 4, size: 4, ratings: { wd: "low" },   // v0.0.435: Large (4), the Bestiary audit's question 8
-    extra: [club] });
+  const n = "Ogre Chieftain", club = npcWeapon(n, "club: melee, blunt, 0/1d4/1d6", "icons/svg/hammer.svg");
+  npc({ name: n, img: "systems/twod12/art/npcs/ogre-chieftain.png", role: "elite", weaponAttribute: "body", speed: 5, size: 4, ratings: TYPED,
+    custom: { body: 3, mind: -1, appeal: 1, instinct: 1, bodyHealth: 44, mindHealth: 28, weapon: 2, power: 2 }, armorDef: 14, wardDef: 12,
+    sys: { reachBase: 2, steadiness: 1, tags: ["ogre"] }, extra: [club] });
 }
 actors.forEach(a => { a.system.level = 1; });
 

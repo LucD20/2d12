@@ -55,4 +55,5 @@ const C = await import(ROOTURL + "module/combat.mjs");
 const cm = (name, init, disp, squad, ord) => ({ id: name, name, initiative: init, token: { disposition: disp }, flags: { twod12: { init: { squad: squad ?? "", ...(ord != null ? { sqOrder: ord } : {}) } } } });
 const t = C.zipper([cm("M1", 15, -1, "", 2), cm("M2", 15, -1, "M1", 0), cm("M3", 15, -1, "M1", 1), cm("P1", 14, 1)]);
 console.log("a squad in the GM's order:", t.map(c => c.name).join(" "), "| still to act after M2:", C.squadRun(t, 1).map(c => c.id).join(", "), "| M1 picked next:", C.squadOrderAfter(t, 1, "M1").join(", "));
-console.log("the book:", fs.readFileSync(ROOT + "../../book/rules-src/14-bestiary.md", "utf8").includes("**The recommendation:** one squad for every 2 Minions, rounded up"));
+// the Bestiary's rebuild (2026-11-25): squads of up to 2 (was the recommendation of one squad for every 2 Minions)
+console.log("the book:", fs.readFileSync(ROOT + "../../book/rules-src/14-bestiary.md", "utf8").includes("**Minions act in squads of up to 2.**"));

@@ -9,6 +9,38 @@ import { clearHalfHint } from "./halfhint.mjs";   // v0.0.261 (Covering Shot)
 const SOCKET = "system.twod12";
 
 /**
+ * The Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): the Action whose consequences are running (its card's message id), so a Collision
+ * its own Forced Movement causes removes no second tick from a Minion it already ticked. Set by the damage card while it applies a row and runs
+ * its Tier's movement (ccdamage.mjs), and by a Move chip clicked from a card (move.mjs handleMove).
+ */
+export const tickScope = { action: "" };
+/** Run fn with the tick scope set to this Action (its card's message id). */
+export async function withTickScope(action, fn) {
+  const prev = tickScope.action; tickScope.action = action || prev;
+  try { return await fn(); } finally { tickScope.action = prev; }
+}
+/**
+ * A Minion's damage as ticks (book, Bestiary, Ticks): a is what reached it (after its Resistance, reductions and Guard), changed in place into the
+ * ticks it loses (one point each in the damage record: roundrules.mjs tickBuckets); a.ticks is how many. opts.tick: { tier, save, action } (no
+ * tier: damage with no Tier). Returns the fields to write with the damage (its tickBy, and the Actions that ticked it).
+ */
+export async function minionTicksOf(actor, a, opts = {}) {
+  const R = await import("./roundrules.mjs"), s = actor.system;
+  const dealt = a.B.l + a.B.n + a.M.l + a.M.n, action = String(opts.tick?.action || tickScope.action || "");
+  const ticked = (actor.getFlag?.("twod12", "tickedBy") ?? []), done = !!action && ticked.includes(action);
+  const left = Math.max(0, Number(s.ticksLeft ?? (s.pool - s.totalDamage)) || 0);
+  const n = Math.min(left, R.ticksRemoved({ dealt, tier: opts.tick?.tier ?? 0, save: !!opts.tick?.save, ticked: done }));
+  const tb = R.tickBuckets(a, n);
+  a.B = tb.a.B; a.M = tb.a.M; a.ticks = n; a.ticksFrom = dealt;
+  const upd = {};
+  if (n > 0) {
+    upd["system.tickBy"] = left - n === 1 ? tb.by : "";
+    if (action) upd["flags.twod12.tickedBy"] = [...ticked.slice(-9), action];
+  }
+  return upd;
+}
+
+/**
  * Apply damage buckets { B: {l, n}, M: {l, n} } (lethal / nonlethal) to an actor (via the GM when needed).
  * v0.0.181: the actor's Guard takes the damage first (guard.mjs); the buckets are changed in place to what reached the Health,
  * so the callers count, log and trigger only that. Returns what the Guard took.
@@ -64,14 +96,22 @@ export async function applyToActor(actor, a, opts = {}) {
   // v0.0.261 (Lucas, Divine Intervention): a creature that would go Down: the Reactions that watch for that moment are offered first (v0.0.272:
   // the Reactions message); used, the damage stops 1 under the Health Pool. Nothing is applied until the answers come.
   let downing = false;
+  // the Bestiary's rebuild: a Minion's ticks are counted before its "would go Down" moment (its Pool is its ticks)
+  const tickUpd = actor.system?.isMinion ? await minionTicksOf(actor, a, opts).catch(e => { console.warn("twod12 | a Minion's ticks", e); return {}; }) : {};
   try {
     downing = !!M?.wouldGoDown(actor, a);
     const dm = downing ? await M.downMoment(actor, a, from) : null;
     if (dm?.id) rxIds[1] = dm.id;
     if (dm?.saved) { downing = false; const cut = M.capAtPool(actor, a); if (cut && announce !== null) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-heart", `<b>${esc(actor.name)}</b> stays up: <b>${cut}</b> damage turned away, 1 under the Health Pool.`, "fxm") }); }
   } catch (e) { console.warn("twod12 | moment", e); }
+  Object.assign(upd, tickUpd);   // the Bestiary's rebuild: a Minion's tickBy and the Actions that ticked it
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
   add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
+  // the Bestiary's rebuild (2026-11-25): the creature's state once this damage is written (a "you take damage" Reaction reads it: Blood for Blood's
+  // "while Bloodied", the blow that Bloodies it counting); a Minion's from its ticks
+  const nowOf = k => Number(upd[`system.damage.${k}`] ?? d[k]) || 0, sys0 = actor.system ?? {};
+  const stateAfter = sys0.isMinion ? null : { bloodied: sys0.bdt > 0 && nowOf("bodyLethal") + nowOf("bodyNonlethal") >= sys0.bdt, strained: sys0.mdt > 0 && nowOf("mindLethal") + nowOf("mindNonlethal") >= sys0.mdt };
+  const poolsDealt = { B: a.B.l + a.B.n, M: a.M.l + a.M.n };
   if (g.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.takenAp ? ` (${g.takenAp} from the kept AP)` : ""}${a.guardLeft ? ` (Guard ${a.guardLeft} left)` : " and ends"}.`) });
   // v0.0.411 (pack F3, Thrill of the Kill: "an enemy you have damaged goes Down"): who damaged this creature in this combat (mark.mjs reads it)
   // v0.0.426 (the audit): noted before the damage is written, so a killing blow's "goes Down" (created from the update) already sees its author
@@ -80,7 +120,7 @@ export async function applyToActor(actor, a, opts = {}) {
   // v0.0.275: the result into the Reactions message(s): the final damage, and what the Reactions' protection took off (a reduction, a Guard)
   if (rxIds.some(Boolean)) { try { const final = a.B.l + a.B.n + a.M.l + a.M.n; await M.noteLanded(rxIds[0], { final, blocked: Math.min(rxGained, (Number(a.reduced) || 0) + (Number(g.taken) || 0)) }); if (rxIds[1]) await M.noteLanded(rxIds[1], { final, cut: a.momentCut || 0 }); } catch (e) { console.warn("twod12 | moment", e); } }
   // v0.0.272: the damage landed: the Triggers of these moments are offered now (they hold nothing)
-  try { M?.landedMoment(actor, a.B.l + a.B.n + a.M.l + a.M.n, from, downing); } catch (e) { console.warn("twod12 | moment", e); }
+  try { M?.landedMoment(actor, a.B.l + a.B.n + a.M.l + a.M.n, from, downing, { pools: poolsDealt, state: stateAfter }); } catch (e) { console.warn("twod12 | moment", e); }
   // v0.0.294 (brief section 13): a held damage landed: the Reactions' cards on this creature unlock their "After the damage" step (Bulwark of Faith's Slide)
   if (rxIds[0]) { try { const { afterLanded } = await import("./noroll.mjs"); await afterLanded(actor); } catch (e) { console.warn("twod12 | After the damage", e); } }
   return g.taken;
@@ -143,12 +183,12 @@ export function registerSocket() {
     if (data?.type === "applyApGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.apGuard": Math.max(0, Number(data.value) || 0) }); return; }   // v0.0.243: a kept AP paid a Reaction
     if (data?.type !== "applyDamage") return;
     const actor = await fromUuid(data.actorUuid);
-    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.") || k === "system.guard" || k === "system.apGuard" || k === "system.reduceNext" || k === "system.reduceFrom" || k === "flags.twod12.reduceByUuid"));
+    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.") || k === "system.guard" || k === "system.apGuard" || k === "system.reduceNext" || k === "system.reduceFrom" || k === "flags.twod12.reduceByUuid" || k === "system.tickBy" || k === "flags.twod12.tickedBy"));   // the Bestiary's rebuild: a Minion's ticks
     if (actor && Object.keys(upd).length) await actor.update(upd, data.updateOpts ?? {});
   });
 }
 
-export const summaryText = a => [[a.B.l, "Vigor"], [a.B.n, "Vigor Nonlethal"], [a.M.l, "Resolve"], [a.M.n, "Resolve Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
+export const summaryText = a => (Number.isFinite(a?.ticks) ? `${a.ticks} tick${a.ticks === 1 ? "" : "s"}` : null) ?? [[a.B.l, "Vigor"], [a.B.n, "Vigor Nonlethal"], [a.M.l, "Resolve"], [a.M.n, "Resolve Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
 
 
 /**
@@ -156,7 +196,7 @@ export const summaryText = a => [[a.B.l, "Vigor"], [a.B.n, "Vigor Nonlethal"], [
  * (once per subtype, both pools together), and say whether the damage landed (v0.0.432: the riders no longer wait for it; Ch. 1 Riders).
  * Returns { text, landed, mods: ["Resist 2 Fire"] }.
  */
-export async function dealDamageEx(actor, comps) {
+export async function dealDamageEx(actor, comps, opts = {}) {   // the Bestiary's rebuild: opts.tick, the Save's Tier for a Minion
   const list = [];
   let cTot = 0;
   for (const c of comps ?? []) { if (c.pool === "C") cTot += Number(c.total) || 0; else list.push(c); }
@@ -172,7 +212,7 @@ export async function dealDamageEx(actor, comps) {
   const total = after.B + after.M, landed = total > 0;
   const tail = mods.length ? ` (${mods.join(", ")})` : "";
   if (!landed) return { text: `no damage${tail}`, landed, mods };
-  const taken = await applyToActor(actor, a, { announce: false });
+  const taken = await applyToActor(actor, a, { announce: false, ...(opts.tick ? { tick: opts.tick } : {}) });
   // plain text: the Save cards escape it
   const text = taken ? `${guardBefore(total, taken)}${summaryText(a) || "no damage"} (${a.guardLeft ? `Guard ${a.guardLeft} left` : "the Guard ends"})${tail}` : `${summaryText(a)}${tail}`;
   return { text, landed, mods };

@@ -13,7 +13,23 @@ export function actionsFor(actor, spec) {
   return actor.itemTypes.action.filter(i => grantMatches(spec, i));
 }
 
-async function chooseAction(list, spec) {
+/**
+ * The Bestiary's rebuild (2026-11-25; book, Bestiary, Basic attacks: "one that can reach the target, its choice when both can"): of a creature's
+ * Basic attacks, the ones whose Distance reaches a target this far (squares): Reach (N) within its Reach, "6" within 6 squares. Pure.
+ * list: [{ distance ("reach" | "N" | ...), ... }]; returns the ones that reach (all of them when the distance is unknown).
+ */
+export function basicReaching(list, dist, reach = 1) {
+  if (!Number.isFinite(dist)) return list;
+  return list.filter(i => { const d = String(i?.system?.distance ?? i?.distance ?? "").trim(); if (/^reach$/i.test(d) || /^weapon$/i.test(d)) return dist <= Math.max(1, Number(reach) || 1); const n = Number(d); return Number.isFinite(n) && n > 0 ? dist <= n : true; });
+}
+async function chooseAction(list, spec, actor = null) {
+  // the Bestiary's rebuild: two Basic attacks: the one that reaches the target is taken by itself; both (or neither) reach: the creature chooses
+  if (list.length > 1 && actor && list.every(i => i.system?.basicAttack)) {
+    try {
+      const self = actor.getActiveTokens?.()[0], tgt = [...(game.user?.targets ?? [])][0];
+      if (self && tgt) { const { squaresBetween } = await import("./move.mjs"); const r = basicReaching(list, squaresBetween(self, tgt), actor.system?.reach); if (r.length === 1) return r[0]; if (r.length) list = r; }
+    } catch (e) { console.warn("twod12 | which Basic attack", e); }
+  }
   if (list.length <= 1) return list[0] ?? null;
   // v0.0.415 (pack CL): the pick window (was a DialogV2)
   const id = await (await import("./pickwindow.mjs")).pickOne({ title: "Choose an Action", name: "Choose an Action", sub: spec, icon: "fa-list", text: "Which Action?", options: list.map(i => ({ k: i.id, l: i.name })) });
@@ -56,7 +72,7 @@ export async function handleUse(cfg, ctx = {}) {
     }
   }
   if (!list.length) return ui.notifications.warn(`${actor.name} has no Action called "${cfg.target}".`);
-  const item = await chooseAction(list, cfg.target);
+  const item = await chooseAction(list, cfg.target, actor);
   if (!item) return;
   const used = foundry.utils.deepClone(msg?.getFlag?.(F, "usedTargets") ?? {});
   const ok = await useAction(actor, item, {

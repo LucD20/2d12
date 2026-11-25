@@ -199,10 +199,10 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   const dm = modsOf(actor), choice = CC.choiceOf(comps, dm, guardOf(actor), factor);
   if (choice && !ask) return false;
   const choices = {};
-  for (const x of CC.dmgModsFor(comps, dm).filter(x => x.split)) choices[x.sub] = await askOwner(actor, `<b>${esc(actor.name)}</b>: Resist ${esc(CC.subName(x.sub))} reduces which part first?`, POOLS);
+  for (const x of CC.dmgModsFor(comps, dm).filter(x => x.split)) choices[x.sub] = await askOwner(actor, `<b>${esc(actor.name)}</b>: Resistance ${esc(CC.subName(x.sub))} reduces which part first?`, POOLS);
   // v0.0.320 (book, Ch. 1): Weak's extra over both pools goes where the origin chooses
   const weakTo = {}, src0 = actorOf(s.originUuid ?? "");
-  for (const sub of src0 ? CC.weakSplits(comps, dm) : []) weakTo[sub] = await askOwner(src0, `<b>${esc(src0.name)}</b>: Weak ${esc(CC.subName(sub))} on <b>${esc(actor.name)}</b>: the extra damage goes to`, [{ id: "B", label: "Vigor" }, { id: "M", label: "Resolve" }]);
+  for (const sub of src0 ? CC.weakSplits(comps, dm) : []) weakTo[sub] = await askOwner(src0, `<b>${esc(src0.name)}</b>: Weakness ${esc(CC.subName(sub))} on <b>${esc(actor.name)}</b>: the extra damage goes to`, [{ id: "B", label: "Vigor" }, { id: "M", label: "Resolve" }]);
   const a = CC.afterResist(comps, dm, { factor, choices, weakTo });
   let guardFirst = "B";
   if (guardOf(actor) > 0 && a.B > 0 && a.M > 0 && guardOf(actor) < a.B + a.M) guardFirst = await askOwner(actor, `<b>${esc(actor.name)}</b>: the Guard takes which damage first?`, POOLS);
@@ -213,10 +213,16 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   const sys = actor.system, undo = { "system.damage.bodyLethal": sys.damage.bodyLethal, "system.damage.bodyNonlethal": sys.damage.bodyNonlethal, "system.damage.mindLethal": sys.damage.mindLethal, "system.damage.mindNonlethal": sys.damage.mindNonlethal, "system.guard": sys.guard ?? 0, "system.apGuard": sys.apGuard ?? 0, "system.reduceNext": sys.reduceNext ?? 0 };
   if (r.applied?.undo) Object.assign(undo, r.applied.undo);
   const report = {};   // v0.0.463: what the reductions and the Guard took (the breakdown after Apply)
-  if (a.B + a.M > 0) await D.applyToActor(actor, buckets, { announce: false, from: { uuid: s.originUuid ?? "", strike: !!s.strike }, guardFirst, report, comps, factor, nl: !!s.nl });   // pack TALENTS-PT: the components (a split, share.mjs)
-  const took = { B: buckets.B.l + buckets.B.n, M: buckets.M.l + buckets.M.n };
+  // the Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): a Minion's ticks by this row's Tier (a Save card's: its own Save, turned over; Tier 0:
+  // damage with no Tier, a zone's, a Lingering's), once for this Action (its card: srcId)
+  const tick = { tier: Number(r.tier) || 0, save: !!s.save, action: s.srcId || "" };
+  if (a.B + a.M > 0) await D.applyToActor(actor, buckets, { announce: false, from: { uuid: s.originUuid ?? "", strike: !!s.strike }, guardFirst, report, comps, factor, nl: !!s.nl, tick });   // pack TALENTS-PT: the components (a split, share.mjs)
+  const took = { B: buckets.B.l + buckets.B.n, M: buckets.M.l + buckets.M.n, ...(Number.isFinite(buckets.ticks) ? { ticks: buckets.ticks } : {}) };
   const bd = (Number(undo["system.damage.bodyLethal"]) || 0) + (Number(undo["system.damage.bodyNonlethal"]) || 0) + took.B, md = (Number(undo["system.damage.mindLethal"]) || 0) + (Number(undo["system.damage.mindNonlethal"]) || 0) + took.M;
-  const bl = sys.bdt > 0 && bd >= sys.bdt, st = sys.mdt > 0 && md >= sys.mdt, down = sys.pool > 0 && (bd + md) >= sys.pool;
+  let bl = sys.bdt > 0 && bd >= sys.bdt, st = sys.mdt > 0 && md >= sys.mdt;
+  const down = sys.pool > 0 && (bd + md) >= sys.pool;
+  // a Minion: Bloodied or Strained at 1 tick left, by the pools of that damage (roundrules.mjs minionState)
+  if (sys.isMinion) { const R = await import("./roundrules.mjs"), ms = R.minionState({ max: sys.ticksMax ?? sys.pool, lost: bd + md, by: took.ticks ? `${a.B > 0 ? "B" : ""}${a.M > 0 ? "M" : ""}` : sys.tickBy }); bl = ms.bloodied; st = ms.strained; }
   const landed = CC.riderLands(a.B + a.M);
   const firstTime = !r.applied?.ridersDone;
   const origin = { ...(await import("./effects.mjs")).originInfo(s.originUuid), escalation: !!s.escalation, ...(Number.isFinite(s.originMod) ? { mod: s.originMod } : {}) };
@@ -228,7 +234,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
     const netTot = took.B + took.M;
     const redBy = Math.max(0, rawPre - netTot);
     const redParts = (report.mods ?? []).map(m => `${m.label} −${m.v}`);
-    if (a.B + a.M < rawPre) redParts.unshift(`Resist −${rawPre - (a.B + a.M)}`);
+    if (a.B + a.M < rawPre) redParts.unshift(`Resistance −${rawPre - (a.B + a.M)}`);
     const protMod = (report.mods ?? []).find(m => m.byUuid) ?? (report.mods ?? []).find(m => /^Judge \((.+)\)$/.test(m.label));
     let protActor = null;
     if (protMod?.byUuid) { try { const d = await fromUuid(protMod.byUuid); protActor = d?.actor ?? d ?? null; } catch (e) { protActor = null; } }
@@ -271,7 +277,8 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
         if (!pick) moveText = "";
         else if (pick === "slid") moveText = moveText.replace(new RegExp(`@Move\\[${cfg.kind}\\b`), "@Move[slid");
       }
-      if (moveText) try { await runTierMove(moveText, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: game.messages?.get?.(s.srcId) ?? null }); } catch (e) { console.warn("twod12 | a Tier's movement", e); }
+      // the Bestiary's rebuild: the movement's Collision belongs to this Action (no second tick on a Minion it already ticked)
+      if (moveText) try { await D.withTickScope(s.srcId || "", () => runTierMove(moveText, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: game.messages?.get?.(s.srcId) ?? null })); } catch (e) { console.warn("twod12 | a Tier's movement", e); }
     }
   }
   const rwi = [...CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, sub: x.sub, label: x.label, v: x.v })), ...(report.mods ?? [])];   // v0.0.484: keep sub so Resist/Weak/Immune show in the post-Apply breakdown ledger
@@ -280,6 +287,11 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
 }
 /** The "After the damage" chain, once, for the rows just applied whose damage landed (s.lines on any landed Tier, gated by stateLinesFor; s.after on Tier 2+ or Saves). */
 async function runChain(s, idx, msg = null) {   // v0.0.404: msg, the card (the chain's lines go into it)
+  // the Bestiary's rebuild (2026-11-25): the chain's Pushes are this Action's (a Minion it ticked loses no second tick to their Collision)
+  const D = await import("./damage.mjs");
+  return D.withTickScope(s.srcId || "", () => runChainIn(s, idx, msg));
+}
+async function runChainIn(s, idx, msg = null) {
   const landed = idx.map(i => s.rows[i]).filter(r => r?.applied?.landed && !r.applied.chainDone);
   const afterList = landed.filter(r => (s.save || (r.tier ?? 0) >= 2));
   if ((!s.lines || !landed.length) && (!s.after || !afterList.length)) return;

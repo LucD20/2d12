@@ -511,6 +511,15 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.412 (book, Wounding Shot): "You haven't left your square this turn": its Requirement, checked on its turn in a combat (hooks.mjs leftThisTurn)
   const H0 = await import("./hooks.mjs");
   if (H0.needsStayed(item.system?.requirements)) { const H = H0; if ((await H.leftThisTurn(actor)) === true && warnOnly(`${item.name}: ${actor.name} has left its square this turn (its Requirement).`)) return; }
+  // the Bestiary's rebuild (2026-11-25; Knife in the Back: "Requirement: the goblin flanks the target"): a setting on the Action (reqFlank), checked
+  // against the targeted creature with the flanking rules (flanking.mjs flankingFor); a Requirement only warns
+  if (item.system?.reqFlank) {
+    try {
+      const self = actor.getActiveTokens?.()[0], tgt = [...(game.user?.targets ?? [])][0];
+      const F0 = await import("./flanking.mjs");
+      if (self && tgt && !(F0.flankingFor(self, tgt).flankers ?? []).length && warnOnly(`${item.name}: ${actor.name} doesn't flank ${tgt.name} (its Requirement).`)) return;
+    } catch (e) { console.warn("twod12 | flanking requirement", e); }
+  }
   if (lock.locked && warnOnly(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`)) return;
   // v0.0.213 (Lucas): a Weapon Technique is used only with its own weapon, in hand (a Favorite or a macro can still call it).
   if (techniqueState(actor, item) === "unwielded" && refuse(`${item.name} is ${actor.items.get(item.getFlag("twod12", "weaponId"))?.name ?? "its weapon"}'s Weapon Technique: wield it first.`)) return;
@@ -1107,6 +1116,8 @@ export async function useAction(actor, item, opts = {}) {
   // the same hook data the dialog drew them from (rollinput.mjs)
   let hookMods = [];
   try { const { strikeHookChipsFor } = await import("./hooks.mjs"); hookMods = (await strikeHookChipsFor(actor, useTraits)).map((h, k) => ({ id: `syn:hook:${k}`, name: h.name, boons: h.boons, banes: 0, bb: h.field ? "field" : "" })); } catch (e) { console.warn("twod12 | hook Boons", e); }
+  // the Bestiary's rebuild (2026-11-25): the state Boons the dialog drew (hooks.mjs stateBoon: Cornered), read from the same hook data
+  try { const { stateBoonChips } = await import("./hooks.mjs"); hookMods.push(...stateBoonChips(actor, item).map((h, k) => ({ id: `syn:shook:${k}`, name: h.name, boons: h.boons, banes: 0, bb: "" }))); } catch (e) { console.warn("twod12 | state Boons", e); }
   const fxm = resolveModifiers(actor, data.fx, [...extraMods, ...hookMods]);
   const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0;
   // v0.0.292 (brief section 7): the Boons and Banes added by hand are named "Situational" on the chat card's breakdown

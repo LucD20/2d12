@@ -4,7 +4,8 @@ import { migrateSettings, migrateRules, migrateZone } from "./settingsmigrate.mj
 import { classModifiers, classTrack } from "./modifiers.mjs";
 
 import { applySpeedMods } from "./speedmods.mjs";
-import { s0Health, npcDefenseOf, rankAp, rankReactionAp, cvSteps, cvWithSteps, ROLE_PRESETS } from "./npcbudget.mjs";   // v0.0.407: the Bestiary's Stage 0 numbers
+import { s0Health, npcDefenseOf, rankAp, rankReactionAp, cvSteps, cvWithSteps, ROLE_PRESETS } from "./npcbudget.mjs";
+import { MINION_TICKS, minionState } from "./roundrules.mjs";   // the Bestiary's rebuild (2026-11-25): a Minion's ticks   // v0.0.407: the Bestiary's Stage 0 numbers
 const { SchemaField, NumberField, StringField, BooleanField, ArrayField, SetField, HTMLField, ObjectField } = foundry.data.fields;
 const int = (initial = 0, min = 0) => new NumberField({ required: true, nullable: false, integer: true, initial, min });
 const sint = (initial = 0) => new NumberField({ required: true, nullable: false, integer: true, initial });
@@ -292,12 +293,17 @@ export class NpcData extends CharacterData {
         .map(([k, d]) => [k, choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme", custom: "Custom" }, d)])
         .concat([["speed", choice({ 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", custom: "Custom" }, "5")]])
         // v0.0.307 (Lucas): the Weapon and Power Modifiers as ratings ("" = the default: npcModRatings)
-        .concat(["wmod", "pmod"].map(k => [k, choice({ "": "Default", terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "")])))),   // speed: Custom uses system.speed
-      custom: new SchemaField({ body: sint(), mind: sint(), appeal: sint(), instinct: sint(), bodyHealth: sint(10), mindHealth: sint(10) }),
+        // the Bestiary's rebuild (2026-11-25): "custom", a typed Modifier (custom.weapon / custom.power), as the new creatures' numbers are typed
+        .concat(["wmod", "pmod"].map(k => [k, choice({ "": "Default", terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme", custom: "Custom" }, "")])))),   // speed: Custom uses system.speed
+      custom: new SchemaField({ body: sint(), mind: sint(), appeal: sint(), instinct: sint(), bodyHealth: sint(10), mindHealth: sint(10), weapon: sint(2), power: sint(2) }),
+      // the Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): a Minion has ticks instead of Health (a typed number, 2 by default); its damage
+      // record holds the ticks it lost (one point each, in the pool and kind of the damage that removed it: roundrules.mjs tickBuckets); tickBy: the
+      // pools of the damage that left it at 1 tick ("B", "M", "BM"), so it counts as Bloodied or Strained
+      ticks: int(MINION_TICKS, 0), tickBy: str(""),
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "medium"),   // its Armor type (for rules and Talents that ask); medium: a typical enemy
       armorDef: sint(13), wardDef: sint(13),   // its typed Armor Defense and Ward Defense, used when that rating is Custom (any number)
       useEscalation: bool(false),   // an NPC can have Escalation too (an elite foe): off by default
-      eliteLadder: bool(true),   // v0.0.320 (pack AU part 2): with Escalation on, the Bestiary's default Elite ladder works by itself (passives.mjs); off: its entry says otherwise (its own Features)
+      eliteLadder: bool(false),   // the Bestiary's rebuild (2026-11-25): Elite Escalation is deprecated (off by default; no NPC has Escalation in the book). v0.0.320 (pack AU part 2): with Escalation on, the Bestiary's default Elite ladder works by itself (passives.mjs); off: its entry says otherwise (its own Features)
       reachBase: int(1, 1),   // the creature's Reach (most are 1; a big creature or a long-limbed one more)
       steadiness: int(0, 0)   // v0.0.169: resistance to being moved: 0 unless its description says otherwise (Builder tab: 0 to 4)
     };
@@ -314,7 +320,16 @@ export class NpcData extends CharacterData {
     this.apPerTurn = rankAp(rank); this.reactionApMax = rankReactionAp(rank);
     this.cvBase = npcCv(this.role, this.level); this.cvSteps = cvSteps(rank, this.ratings ?? {}, npcModRatings(this)); this.cv = cvWithSteps(rank, this.cvBase, this.cvSteps);
     this.npcRoleLabel = ROLE_PRESETS[this.npcRole]?.label ?? "";
+    // the Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): a Minion's ticks are its Health Pool (its damage record counts the ticks it
+    // lost); with 1 tick left it counts as Bloodied or Strained by the pools of the damage that left it there (tickBy)
+    this.isMinion = rank === "minion" && !(this.parent?.flags?.twod12?.object);   // a placed object (the Ice Pillar) keeps its Health
+    if (this.isMinion) { this.bdt = Math.max(1, Math.trunc(Number(this.ticks)) || MINION_TICKS); this.mdt = 0; }
     deriveHealth(this);
+    if (this.isMinion) {
+      const ms = minionState({ max: this.bdt, lost: this.totalDamage, by: this.tickBy });
+      this.ticksMax = ms.max; this.ticksLeft = ms.left; this.bloodied = ms.bloodied; this.strained = ms.strained;
+      this.vigorLeft = ms.left; this.resolveLeft = 0;
+    }
     this.wounds = 0;
     this.reach = Math.max(1, Number(this.reachBase) || 1);   // the stat block's Reach (edited in the sidebar)
     this.steadiness = Math.max(0, Number(this.steadiness) || 0);
@@ -330,7 +345,8 @@ export class NpcData extends CharacterData {
     const mr = npcModRatings(this);
     this.modRatings = mr;
     this.modSource = "role";
-    this.weaponAttrValue = 0; this.weaponMod = npcModValue(this.role, mr.weapon); this.powerAttrValue = 0; this.powerMod = npcModValue(this.role, mr.power);
+    const typedMod = k => Math.min(TWOD12.modCap, Math.trunc(Number(this.custom?.[k])) || 0);   // the Bestiary's rebuild: a typed Modifier
+    this.weaponAttrValue = 0; this.weaponMod = mr.weapon === "custom" ? typedMod("weapon") : npcModValue(this.role, mr.weapon); this.powerAttrValue = 0; this.powerMod = mr.power === "custom" ? typedMod("power") : npcModValue(this.role, mr.power);
     const sigP = this.powerMod > this.weaponMod;
     this.signatureAttribute = ""; this.signatureAttrValue = 0; this.signatureMod = sigP ? this.powerMod : this.weaponMod; this.signatureFrom = sigP ? "power" : "weapon";
     this.modConflict = false;
@@ -490,6 +506,10 @@ export class ActionData extends foundry.abstract.TypeDataModel {
      
       // v0.0.272 (pack RX): the Reaction's owner counts as the creature of the moment too ("you or an ally"); whom the Reaction is used on
       momentSelf: bool(), momentTarget: choice(TWOD12.momentTargets, "subject"),
+      // the Bestiary's rebuild (2026-11-25): what the moment needs: the pool that took damage (B Vigor, M Resolve), the owner's state after it
+      // (Bloodied, Strained), the subject's Tag (a word of the world's Tags: "goblin")
+      reqFlank: bool(),   // the Bestiary's rebuild: its Requirement "it flanks the target" (actions.mjs; flanking.mjs flankingFor)
+      momentPool: choice({ "": "Any", B: "Vigor", M: "Resolve" }, ""), momentState: choice({ "": "Any", bloodied: "Bloodied", strained: "Strained" }, ""), momentTag: str(),
       flavor: str(),
       area: str(),
       setup: str(),

@@ -7,7 +7,7 @@
 //   set: { who: "gm" | "wait", attr, fav, doom, boons, banes, side, last } (the GM's settings: the combatant flag twod12.init) }.
 // call: { attr } (the Attribute the GM calls: Instinct by default). ui: { closed: { side }, open: { stackKey }, moving: { id } }.
 
-import { minionGroupOf } from "./roundrules.mjs";   // v0.0.440: the Minions' squads (pure)
+import { minionGroupOf, MINION_SQUAD } from "./roundrules.mjs";   // v0.0.440: the Minions' squads (pure)
 
 export const ATTRS = ["body", "mind", "appeal", "instinct"];
 export const ATTR_NAMES = { body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct" };
@@ -145,13 +145,13 @@ export function squadGroupsForRoll(list) {
   return out;
 }
 
-/** Pure: describe a squad (title + soft book-rule warnings if >3, mixed creatures, or non-Minions). */
+/** Pure: describe a squad (title + soft book-rule warnings if more than MINION_SQUAD (2 since the Bestiary's rebuild), mixed creatures, or non-Minions). */
 export function squadMeta(ms, index) {
   const bases = [...new Set(ms.map(baseName))];
   const allMinions = ms.every(m => !!m.minion || m.role === "minion");
   const title = bases.length === 1 ? `${bases[0]} · Squad ${index}` : `Mixed Squad ${index}`;
   const warns = [];
-  if (ms.length > 3) warns.push(`${ms.length} in squad (book: ≤3)`);
+  if (ms.length > MINION_SQUAD) warns.push(`${ms.length} in squad (book: ≤${MINION_SQUAD})`);   // the Bestiary's rebuild (2026-11-25): squads of 2
   if (bases.length > 1) warns.push("mixed creatures");
   if (!allMinions) warns.push("non-Minion");
   return { title, bases, allMinions, warns };

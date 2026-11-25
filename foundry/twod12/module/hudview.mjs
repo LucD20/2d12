@@ -39,7 +39,9 @@ export function barHtml(b) {
   const fill = Math.max(0, Math.min(max, left)), nl = Math.min(max - fill, n0(b.nl));
   const pct = x => Math.round((x / max) * 1000) / 10;
   const negCls = left < 0 ? " neg" : "";
-  return `<div class="hb-bar ${esc(b.cls)}${negCls}" title="${esc(`${b.name}: ${left} of ${n0(b.max)} left${nl ? ` (${nl} Nonlethal damage)` : ""}`)}"><i style="width:${pct(fill)}%"></i>${nl ? `<u style="left:${pct(fill)}%;width:${pct(nl)}%"></u>` : ""}<span><b>${left}/${n0(b.max)}</b></span></div>`;
+  // the Bestiary's rebuild (2026-11-25): a Minion's ticks, one segment each (b.ticks), "1/2 ticks"
+  const segs = b.ticks ? `<em style="--n:${max}"></em>` : "", word = b.ticks ? ` tick${max === 1 ? "" : "s"}` : "";
+  return `<div class="hb-bar ${esc(b.cls)}${negCls}" title="${esc(`${b.name}: ${left} of ${n0(b.max)} left${nl ? ` (${nl} Nonlethal damage)` : ""}`)}"><i style="width:${pct(fill)}%"></i>${nl ? `<u style="left:${pct(fill)}%;width:${pct(nl)}%"></u>` : ""}${segs}<span><b>${left}/${n0(b.max)}${word}</b></span></div>`;
 }
 const barsHtml = bars => `<div class="hb-bars">${(bars ?? []).map(barHtml).join("")}</div>`;
 /** A state tag: Bloodied, Strained, or the Down state (one word, never only a tint). */

@@ -31,7 +31,17 @@ export const MOMENTS = {
   allyDamage: { who: "ally", damage: true },
   // pack TALENTS-PT (Bear the Blow: "An Action would damage your Bound Ally"): an Action's damage would land on the creature this one marked with
   // that kind (mark.mjs markOf: the Bound Ally), whether or not it reaches its Health
-  boundDamage: { who: "ally", damage: true, mark: "bound" }
+  boundDamage: { who: "ally", damage: true, mark: "bound" },
+  // the Bestiary's rebuild (2026-11-25; general settings, never a card's name):
+  //   selfDamage: the Reaction's owner takes damage (a Trigger); its settings momentPool ("B" Vigor / "M" Resolve: that pool must take some) and
+  //     momentState ("bloodied" / "strained": the owner must be in it once the damage is written, the blow that puts it there counting): Blood for Blood
+  selfDamage: { who: "self", damage: true },
+  //   selfDown: the owner itself would go Down (an Interrupt; the damage then lands: nothing is saved): Dying Flare
+  selfDown: { who: "self", damage: true },
+  //   allyDown: an ally goes Down (a Trigger), within momentRange, with the Tag momentTag when it names one: Shriek and Scatter
+  allyDown: { who: "ally", tag: true },
+  //   enemyEnters: an enemy entered a square adjacent to the owner (a Trigger that never moves it back: the mover goes on with what it has left): Backhand
+  enemyEnters: { who: "enemy", move: true, adjacent: true, noBack: true }
 };
 
 /* ------------------------------------------------------------------ pure pieces (tests) */
@@ -58,6 +68,7 @@ export function halveHeld(a) {
 }
 /** Pure: is the subject on the side the moment wants, seen from the Reaction's owner? (you count only with "You too") */
 export function sideOk(who, ownerDisp, subjectDisp, isSelf, self) {
+  if (who === "self") return !!isSelf;   // the Bestiary's rebuild: a moment about the owner itself
   if (isSelf) return who === "ally" && !!self;
   const o = Number(ownerDisp ?? 0), s = Number(subjectDisp ?? 0);
   return who === "ally" ? o === s : o * s < 0;
@@ -347,6 +358,11 @@ export async function collectReactions(ev) {
       if (ev.filter && !ev.filter.has(`${actor.uuid}|${item.id}`)) continue;
       if (def.closer && ev.closer && !ev.closer(tk)) continue;
       if (def.away && ev.away && !ev.away(tk)) continue;
+      // the Bestiary's rebuild (2026-11-25): the pool that took damage, the owner's state after it, the subject's Tag (settings on the Reaction)
+      const P = item.system.momentPool, S = item.system.momentState, T = String(item.system.momentTag ?? "").trim();
+      if (P && !((Number(ev.pools?.[P]) || 0) > 0)) continue;
+      if (S && !(ev.state ? ev.state[S] : actor.system?.[S])) continue;
+      if (T && def.tag) { const { hasTag } = await import("./config.mjs"); if (!(ev.subjects ?? []).some(sj => hasTag(sj?.actor, T))) continue; }
       if (def.adjacent && ev.adjacent && !ev.adjacent(tk)) continue;   // v0.0.411: entered a square adjacent to this creature   // v0.0.409: moved away from this creature
       // v0.0.339 (the review of the Mithril cards, section 2): a Reaction an effect with an Aura brings (Beacon's Step) reaches as far as that Aura
       const auraOf = (() => { const e = item.getFlag?.("twod12", "inlineOf") ? actor.effects?.get?.(item.getFlag("twod12", "inlineOf")) : null; return Number((e?.getFlag?.("twod12", "auras") ?? [])[0]?.size) || 0; })();
@@ -968,7 +984,8 @@ export async function downMoment(actor, a, from) {
   const source = await sourceOf(from), subject = party(actor);
   const plain = `<b>${nameOf(subject)}</b> would go Down`;
   const base = { kind: "down", label: from?.strike ? "Strike" : "Damage", face: faceOf(source ?? subject), target: faceOf(subject), held: bTotal(a) };
-  const res = await openMoment({ kinds: ["wouldDown"], subjects: [subject], source, only: "interrupt", hold: true, plain, lead: `${plain} (${bTotal(a)} damage)`, base });
+  // the Bestiary's rebuild: and the owner's own "would go Down" (selfDown: Dying Flare), which saves nothing
+  const res = await openMoment({ kinds: ["wouldDown", "selfDown"], subjects: [subject], source, only: "interrupt", hold: true, plain, lead: `${plain} (${bTotal(a)} damage)`, base });
   return { saved: (res.used ?? []).some(u => u.ok && u.moment === "wouldDown"), id: res.id ?? "", never: !!res.never };
 }
 /** The damage landed: the Triggers of the damage moments (they hold nothing). */
@@ -1017,14 +1034,16 @@ export function registerReprintHooks() {
   Hooks.on("updateChatMessage", msg => { try { reprintOnApplied(msg); } catch (e) { console.warn("twod12 | reprint", e); } });
   Hooks.on("combatTurnChange", () => { if (waitingReprints.length) flushReprints(); });   // the turn ended without the damage: reprinted anyway
 }
-export function landedMoment(actor, dealt, from, wentDown) {
-  const kinds = [...(dealt > 0 && from?.strike ? ["strikeDamage"] : []), ...(dealt > 0 ? ["allyDamage"] : []), ...(wentDown ? ["wouldDown"] : [])];
+export function landedMoment(actor, dealt, from, wentDown, extra = {}) {
+  // the Bestiary's rebuild (2026-11-25): "you take damage" (selfDamage, with the pools it took and the state after: extra.pools, extra.state) and
+  // "an ally goes Down" (allyDown)
+  const kinds = [...(dealt > 0 && from?.strike ? ["strikeDamage"] : []), ...(dealt > 0 ? ["allyDamage", "selfDamage"] : []), ...(wentDown ? ["wouldDown", "allyDown"] : [])];
   if (!kinds.length) return;
   (async () => {
     const source = await sourceOf(from), subject = party(actor);
     const plain = wentDown ? `<b>${nameOf(subject)}</b> goes Down` : `<b>${nameOf(subject)}</b> takes <b>${dealt}</b> damage${source ? ` from <b>${nameOf(source)}</b>` : ""}`;
     const base = { kind: "landed", label: wentDown ? "Down" : from?.strike ? "Strike" : "Damage", face: faceOf(source ?? subject), target: faceOf(subject), dealt, msgId: lastCardId(m => !!(m.getFlag?.(F, "ccDmg") || m.getFlag?.(F, "dmgCard"))) };   // v0.0.347: the damage card (reprinted after the chain)
-    await openMoment({ kinds, subjects: [subject], source, only: "trigger", plain, lead: plain, base });
+    await openMoment({ kinds, subjects: [subject], source, only: "trigger", plain, lead: plain, base, pools: extra.pools ?? null, state: extra.state ?? null });
   })().catch(e => console.warn("twod12 | Reactions", e));
 }
 /** A Strike was made (useAction, after its card): "a Strike is made against an ally". A Trigger: nothing waits. */
@@ -1124,7 +1143,7 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const sqs = movePlaces(waypoints?.length ? waypoints : [fromAt, toAt], gsz, size);
     const left = stand ? [fromAt] : (sqs.length > 1 ? sqs.slice(0, -1) : [fromAt]), entered = sqs.length > 1 ? sqs.slice(1) : [toAt];
     const ev = {
-      kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves", "enemyAway", "enemyAdjacent"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered, enemyAway: left, enemyAdjacent: entered },
+      kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves", "enemyAway", "enemyAdjacent", "enemyEnters"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered, enemyAway: left, enemyAdjacent: entered, enemyEnters: entered },
       adjacent: tk => entered.some(e => tokenDistance(e, tk) <= 1),
       closer: tk => cameCloser(sideToks(tk.document.disposition).map(s => ({ from: tokenDistance(fromAt, s), to: Math.min(...entered.map(e => tokenDistance(e, s))) }))),
       // v0.0.409 (Rebuke): a step of its path that ends farther from this creature than the square it left
@@ -1143,7 +1162,9 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const idxs = stand || sqs.length < 2 ? [] : backSquareIndices(sqs, open.map(r => { const t = r.item.system.momentThreat ? threatProfile(r.actor) : null; return { moment: r.moment, range: t ? t.max : (Number(r.item.system.momentRange) || 0), min: t ? t.min : 0, token: r.token }; }), (r, sq) => tokenDistance(r.token, sq), nearer);
     const idx = idxs[0] ?? 0;
     const at = sqs[idx] ?? fromAt, steps = Math.max(0, sqs.length - 1 - idx), total = Math.max(1, sqs.length - 1);
-    const back = !stand && origin ? { tokenUuid: doc.uuid, x: at.x, y: at.y, start: { x: fromAt.x, y: fromAt.y }, steps, total, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, movementId: before?.movementId ?? "", histLen: Number(before?.histLen) || 0, squares: idx ? steps : tokenDistance(fromAt, toAt), squaresAt: idxs.slice(0, 12).map(i => ({ idx: i, x: sqs[i].x, y: sqs[i].y })), name: cleanName(doc.name ?? actor.name), used: false } : null;
+    // the Bestiary's rebuild: a movement whose Reactions all leave the mover where it is (enemyEnters: Backhand) has no Move back
+    const noBack = open.length > 0 && open.every(r => MOMENTS[r.moment]?.noBack);
+    const back = !stand && origin && !noBack ? { tokenUuid: doc.uuid, x: at.x, y: at.y, start: { x: fromAt.x, y: fromAt.y }, steps, total, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, movementId: before?.movementId ?? "", histLen: Number(before?.histLen) || 0, squares: idx ? steps : tokenDistance(fromAt, toAt), squaresAt: idxs.slice(0, 12).map(i => ({ idx: i, x: sqs[i].x, y: sqs[i].y })), name: cleanName(doc.name ?? actor.name), used: false } : null;
     // v0.0.275: the base slab ("Moves N sq.", Move back on it) and the path for the map overlay (the squares, the ghost where it started)
     const gs = globalThis.canvas?.grid?.size ?? 100, face = faceOf({ actor, token: doc.object ?? tokenOf(actor) }) ?? {};
     const base = stand ? { kind: "stand", face } : { kind: "move", face: { ...face, uuid: doc.uuid }, squares: tokenDistance(fromAt, toAt), path: pathSquares(waypoints?.length ? waypoints : [fromAt, toAt], gs, doc.width || 1, doc.height || 1), start: { x: fromAt.x, y: fromAt.y, w: doc.width || 1, h: doc.height || 1 } };

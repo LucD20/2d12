@@ -5,9 +5,9 @@ a damaging Action doesn't tick Affect yourself: true
 class window: the Talent filter before the scroll comes back: true
 the Line's bar: the banner look, Left and Right buttons: true
 NPC's Basic attack box: true
-  Goblin Sneak: Basic attack box on Rusty Knife
-  Grave Wisp: Basic attack box on Chilling Touch
-  Ogre Chieftain: Basic attack box on Club
+  Goblin Sneak: Basic attack box on Shiv, Jeer
+  Grave Wisp: Basic attack box on Slipping Touch, Guttering Glance
+  Ogre Chieftain: Basic attack box on Crushing Grip, Roar
   Orc Warrior: Basic attack box on Hamstringing Axe, Barbed Javelin
 v0.0.217: remove a target by right-click or the x (one capturing listener on the dialog): true
 v0.0.219: the Charge picker outlines its limit: true | no chat line when it opens: true | giving up refunds the AP and the use: true | a fixed-size bar: true

@@ -17,6 +17,6 @@ Daunted banes without/with Courage: 1 / 0
 stillThreatens reach 1 at dist 1/2/down: true false false
 handsUsed with 1H sword + 1 Grabbed: 2
 --- 8. Compendium & NPC cards check
-Brace zone: map undefined enemies | Courage aura: aura 3 | Rally fx: support ["weapon"]
-playtest NPC actions: Rusty Knife:gold, Dirty Trick:gold, Hamstringing Axe:gold, Barbed Javelin:gold, War Howl:gold, Blood for Blood:silver, Chilling Touch:gold, Dread Whisper:gold, Club:gold, Overhead Smash:gold, Ground Slam:gold, Rally the Tribe:gold
+Brace zone: map undefined enemies | Courage aura: aura 3 | Crack the Ground zone: map all true encounter
+playtest NPC actions: Shiv:gold, Jeer:gold, Knife in the Back:gold, Shriek and Scatter:gold, Hamstringing Axe:gold, Barbed Javelin:gold, War Howl:gold, Blood for Blood:gold, Slipping Touch:gold, Guttering Glance:gold, Pass Through:silver, Dying Flare:gold, Crushing Grip:silver, Roar:gold, Great Sweep:gold, Hurled Goblin:silver, Crack the Ground:gold, Backhand:gold
 upgraded L1 PC cards: Darting Blade:gold, Quick Shots:gold, Footwork:gold, Spotter:gold, Hold the Line:gold, Commandment:gold, Circling Shot:gold, Seizing Cut:gold, Thwart Cut:gold

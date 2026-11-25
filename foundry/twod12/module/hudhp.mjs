@@ -22,10 +22,30 @@ export function hudHpChange(text, now = {}) {
   return { lethal, nonlethal };
 }
 
+/**
+ * The Bestiary's rebuild (2026-11-25): a Minion's one box is its ticks. Pure: the damage record for what was typed ("-1" removes a tick, "+1"
+ * restores one, "2" sets what is left), never past its ticks; removed ticks count as Vigor Lethal, restored ones come off the record Lethal first.
+ * Returns the new { bodyLethal, bodyNonlethal, mindLethal, mindNonlethal }, or null.
+ */
+export function hudTickChange(text, damage = {}, max = 2) {
+  const t = String(text ?? "").trim().replace(/\s+/g, ""), m = t.match(/^([+\-=]?)(\d+)$/);
+  if (!m) return null;
+  const d = { bodyLethal: 0, bodyNonlethal: 0, mindLethal: 0, mindNonlethal: 0 };
+  for (const k of Object.keys(d)) d[k] = Math.max(0, Number(damage?.[k]) || 0);
+  const lost = Object.values(d).reduce((a, b) => a + b, 0), left = Math.max(0, max - lost), n = Number(m[2]);
+  const want = Math.max(0, Math.min(max, m[1] === "-" ? left - n : m[1] === "+" ? left + n : n));
+  if (want === left) return null;
+  if (want < left) { d.bodyLethal += left - want; return d; }
+  let heal = want - left;
+  for (const k of ["bodyLethal", "mindLethal", "bodyNonlethal", "mindNonlethal"]) { const a = Math.min(d[k], heal); d[k] -= a; heal -= a; }
+  return d;
+}
+
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 /** Pure: the two boxes' HTML for an actor's system (its derived bdt, mdt, vigorLeft, resolveLeft). */
 export function hudHpHtml(sys = {}) {
+  if (sys.isMinion) return `<div class="twod12-hphud"><input type="text" class="twod12-hpbox v" data-twod12-pool="ticks" value="${esc(sys.ticksLeft ?? 0)}" aria-label="Ticks (${esc(sys.ticksLeft ?? 0)} of ${esc(sys.ticksMax ?? 0)}): type -1 to remove a tick, +1 to restore one, or a number to set what is left"></div>`;   // the Bestiary's rebuild: a Minion's ticks
   // v0.0.504 (Lucas on v0.0.503: "do like foundry, just two plain boxes, with the outline red and blue, with the number"): two plain inputs,
   // side by side inside Foundry's Health box (the token's width), no words; their names for screen readers only
   const box = (pool, word, cls, left, max) => `<input type="text" class="twod12-hpbox ${cls}" data-twod12-pool="${pool}" value="${esc(left)}" aria-label="${word} (${esc(left)} of ${esc(max)}): type -5 to deal 5, +5 to heal 5, or a number to set what is left">`;
@@ -59,6 +79,14 @@ export function hpHud(app, html) {
     input.addEventListener("change", async ev => {
       ev.stopPropagation();   // v0.0.503: the HUD's own form doesn't submit it
       const pool = input.dataset.twod12Pool, d = actor.system.damage ?? {};
+      if (pool === "ticks") {   // the Bestiary's rebuild: a Minion's ticks
+        const nd = hudTickChange(input.value, d, Number(actor.system.ticksMax) || 2);
+        if (!nd) { input.value = String(actor.system.ticksLeft ?? 0); return; }
+        const left = (Number(actor.system.ticksMax) || 2) - Object.values(nd).reduce((a, b) => a + b, 0);
+        try { (await import("./damage.mjs")).writeDamage(actor, { ...Object.fromEntries(Object.entries(nd).map(([k, v]) => [`system.damage.${k}`, v])), ...(left === 1 ? {} : { "system.tickBy": "" }) }, {}); }
+        catch (e) { console.warn("twod12 | the HUD's ticks box", e); }
+        return;
+      }
       const now = { left: pool === "body" ? actor.system.vigorLeft : actor.system.resolveLeft, lethal: d[`${pool}Lethal`], nonlethal: d[`${pool}Nonlethal`] };
       const next = hudHpChange(input.value, now);
       if (!next) { input.value = String(now.left ?? 0); return; }

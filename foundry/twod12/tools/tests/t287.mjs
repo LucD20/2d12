@@ -10,7 +10,8 @@ const G = await import(ROOTURL + "module/gen.mjs");
 console.log("--- the Boons as buttons");
 for (const t of ["[V] 1d4 Pi; 1 Pressure Bane on its next roll.", "Allies within 5 squares gain 1 Support Boon on their next [Weapon] Action.", "2 Field Boons on your next roll.", "a Support Boon on the roll (no number: words)"]) console.log(" ", G.convertEffects(t));
 const C = await import(ROOTURL + "tools/content.mjs");
-const act = (npc, n) => C.actors.find(a => a.name === npc).items.find(i => i.name === n).system.versions[0];
+// the Bestiary's rebuild (2026-11-25): the old Goblin Sneak's and Ogre Chieftain's cards left the packs; OLD_CLASS_DOCS keeps them for this machinery
+const act = (npc, n) => (C.actors.find(a => a.name === npc).items.find(i => i.name === n) ?? C.OLD_CLASS_DOCS.find(i => i.name === n)).system.versions[0];
 console.log("Dirty Trick, Tier 2:", act("Goblin Sneak", "Dirty Trick").x2, "| Rally the Tribe:", act("Ogre Chieftain", "Rally the Tribe").effects);
 const inl = src("module/inline.mjs"), bon = src("module/bonus.mjs"), eff = src("module/effects.mjs");
 console.log("next:roll read:", inl.includes('key === "next") cfg.next'), "| stored as __roll:", eff.includes('cfg.next === "roll" && !traits.length ? ["__roll"]'),

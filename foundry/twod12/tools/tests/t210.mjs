@@ -175,7 +175,7 @@ console.log("the path's squares:", path.length, "| left:", path.slice(0, -1).map
 const evMove = (left) => ({ kinds: ["enemyMoves"], subjects: [{ actor: walker.actor, token: walker, at: path.at(-1) }], source: null, at: { enemyMoves: left } });
 console.log("measured only where it started: offered", (await M.collectReactions(evMove({ x: 200, y: 100, width: 1, height: 1 }))).rows.length, "| on every square it left:", (await M.collectReactions(evMove(path.slice(0, -1)))).rows.map(r => `${r.actor.name}'s ${r.item.name} (${r.dist} sq)`).join(", "));
 const mm = src("module/moment.mjs");
-console.log("the movement moment uses the path:", mm.includes("at: { enemyMoves: left, enemyCloser: entered, enemyAway: left, enemyAdjacent: entered }"), "| closer on any square entered:", mm.includes("to: Math.min(...entered.map(e => tokenDistance(e, s)))"), "| a split movement keeps listening:", mm.includes("if (!movement?.pending?.waypoints?.length) moving.delete(doc.id);"));
+console.log("the movement moment uses the path:", mm.includes("at: { enemyMoves: left, enemyCloser: entered, enemyAway: left, enemyAdjacent: entered, enemyEnters: entered }")   /* the Bestiary's rebuild: enemyEnters (Backhand) */, "| closer on any square entered:", mm.includes("to: Math.min(...entered.map(e => tokenDistance(e, s)))"), "| a split movement keeps listening:", mm.includes("if (!movement?.pending?.waypoints?.length) moving.delete(doc.id);"));
 const U = await import(ROOTURL + "module/util.mjs");
 console.log("removing a key: the old syntax without Foundry:", JSON.stringify(U.unset("flags.twod12.ignoreTerrain")));
 globalThis.foundry.data = { operators: { ForcedDeletion: class FD {} } };

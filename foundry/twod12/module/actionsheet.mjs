@@ -71,12 +71,16 @@ function whenSec(m) {
     // v0.0.359 (Lucas): a number or a formula
     ["Within", `${field("@within", s.momentRangeExpr || String(s.momentRange ?? 0), "0", "amt")} <span class="fr-m">squares to the creature of the moment; a number or a formula (<code>pow+2</code>, <code>stage</code>, <code>speed/2</code>); 0: the Action's Distance${s.distance ? ` (${esc(s.distance)})` : ""}, or anywhere</span>`],
     ["Counts", tog("system.momentSelf", s.momentSelf, "You too (\"you or an ally\")")],
+    // the Bestiary's rebuild (2026-11-25): what the moment needs (a pool of the damage, your state after it, the creature's Tag)
+    ["Needs", `${sel('name="system.momentPool"', s.momentPool ?? "", [["", "Any damage"], ["B", "Vigor damage"], ["M", "Resolve damage"]], "Pool")}${sel('name="system.momentState"', s.momentState ?? "", [["", "In any state"], ["bloodied", "While you are Bloodied"], ["strained", "While you are Strained"]], "State")}${field("system.momentTag", s.momentTag ?? "", "Tag (goblin)", "amt")}`],
     // pack TALENTS-PT (Bear the Blow): used, the held damage is split with you (share.mjs)
     ["Damage", sel('name="system.momentSplit"', s.momentSplit ?? "", [["", "As it is"], ["half", "Split: half to you (rounded up; your Resistance and Immunity don't count)"]], "Damage")],
     ["Used on", seg("system.momentTarget", s.momentTarget ?? "subject", [["subject", "The creature of the moment"], ["source", "The one that caused it"]], "w")],
     ["Card line", named("system.trigger", s.trigger, "An enemy within 5 squares makes a [Strike] Action against an ally.", "wide")],
     s.momentThreat ? ["Old", tog("system.momentThreat", true, "Only a creature you threaten (turn it off: any creature within the range)")] : null
   ]) + help("When the moment comes, the Reactions message offers it (Use / Pass). An Interrupt holds the damage until answered; a Trigger is offered after. Moment None: used by hand.");
+  // the Bestiary's rebuild (2026-11-25): a Requirement as a setting ("it flanks the target": a warning when it doesn't)
+  const req = grid([["Flanking", tog("system.reqFlank", s.reqFlank, "Requirement: you flank the target (a warning when you don't)")]]);
   const where = a.withinRange ? "weapon" : Number(a.within) > 0 ? "sq" : "self";
   const ar = grid([
     ["Shape", seg("system.areaCfg.shape", a.shape ?? "emanation", [["emanation", "Emanation"], ["burst", "Burst"], ["line", "Line"]], "w")],
@@ -85,7 +89,7 @@ function whenSec(m) {
     ["Stays", tog("system.areaCfg.keep", a.keep, "It stays on the map (a Zone when its Effect is one)")]
   ]) + help("The size and the rounds are set on each Version. A Zone's Effect decides who it affects and what it does inside.");
   const sizes = [...new Set((s.versions ?? []).map(v => v.areaSize || a.size))];
-  return sec("when", "When and where", "", `<div class="fr-endlist">${part("system.reaction", s.reaction, "A Reaction", `${cap(s.reactionKind ?? "trigger")} · ${(TWOD12.moments?.[s.moment] ?? "by hand").replace(" within N", "")}`, rx)}${part("@area", areaOn, "An Area", `${sizes.join(" / ")} ${a.shape === "line" ? "Line" : cap(a.shape ?? "emanation")}${a.keep ? " · it stays" : ""}`, ar)}</div>`);
+  return sec("when", "When and where", "", `${req}<div class="fr-endlist">${part("system.reaction", s.reaction, "A Reaction", `${cap(s.reactionKind ?? "trigger")} · ${(TWOD12.moments?.[s.moment] ?? "by hand").replace(" within N", "")}`, rx)}${part("@area", areaOn, "An Area", `${sizes.join(" / ")} ${a.shape === "line" ? "Line" : cap(a.shape ?? "emanation")}${a.keep ? " · it stays" : ""}`, ar)}</div>`);
 }
 
 /* ------------------------------------------------------------------ a Version */

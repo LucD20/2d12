@@ -1,5 +1,5 @@
 {
- "_about": "The Bestiary's rebuilt creatures, written in the card Structure (book/cards/card-structure.md). The record: book/bestiary-design.md; each creature's own: book/cards/orc-warrior-redesign.md. Foundry reads these laid over ../bestiary.json (load.mjs FOUNDRY_OVERLAY): a rebuilt creature's old cards leave Foundry (they stay in ../bestiary.json as fixtures for the tests of the machinery they exercised). 'npc' names the creature the card belongs to; 'book': false, since Chapter 14 is not rewritten yet. The numbers are the Default Standard's (bestiary-design.md, decisions 12 to 15); no number assumes a class.",
+ "_about": "The Bestiary's rebuilt creatures, written in the card Structure (book/cards/card-structure.md). The record: book/bestiary-design.md; each creature's own: book/cards/orc-warrior-redesign.md, grave-wisp-redesign.md, goblin-sneak-redesign.md, ogre-chieftain-redesign.md. Foundry reads these laid over ../bestiary.json (load.mjs FOUNDRY_OVERLAY): a rebuilt creature's old cards leave Foundry (they stay in ../bestiary.json as fixtures for the tests of the machinery they exercised). 'npc' names the creature the card belongs to; 'book': false: Chapter 14 writes the four creatures as stat blocks in its prose (drawing them as book cards is a later task). The numbers are the rank defaults' (bestiary-design.md, decisions 12 to 15 and the ranks); no number assumes a class.",
  "structure": 2,
  "cards": [
   {
@@ -153,8 +153,8 @@
    ],
    "foundry": {
     "img": "icons/svg/blood.svg",
-    "automation": "silver",
-    "automationNote": "Use: the Advance (the button) and a Basic attack with 1 Bane (the button: the axe; for the javelin, use it from the sheet and add the Bane). NOT offered by itself yet: the GM uses it from the sheet when a creature within 2 squares deals Vigor damage to the Bloodied orc (the moment 'you take damage', with its pool and its state, is in foundry-backlog.md).",
+    "automation": "gold",
+    "automationNote": "offered by itself (the moment 'you take damage': Vigor damage, while Bloodied, the blow that Bloodies it counting; the triggering creature within 2 squares); Use: the Advance button, then the Basic attack with 1 Bane (the button takes the Basic attack that reaches the target; both reach: the GM picks).",
     "version": {
      "sub": [
       [
@@ -166,7 +166,11 @@
        "makes a @Use[Basic Attack|banes:1|label:Basic attack (1 Bane)] against it"
       ]
      ]
-    }
+    },
+    "moment": "selfDamage",
+    "momentPool": "B",
+    "momentState": "bloodied",
+    "momentTarget": "source"
    }
   },
   {
@@ -185,8 +189,620 @@
    ],
    "foundry": {
     "img": "icons/svg/hazard.svg",
-    "automation": "bronze",
-    "automationNote": "text: the GM adds the Boon in the roll dialog when a Bloodied orc Shoves (a Boon on a Basic Action while in a state is in foundry-backlog.md)."
+    "automation": "gold",
+    "automationNote": "the roll dialog adds the Boon to the orc's Shove while it is Bloodied (a setting on the Feature: hooks, stateBoon).",
+    "hooks": [
+     {
+      "kind": "stateBoon",
+      "basic": "shove",
+      "state": "bloodied",
+      "boons": 1
+     }
+    ]
+   }
+  },
+  {
+   "name": "Shiv",
+   "category": "Basic attack",
+   "npc": "Goblin Sneak",
+   "book": false,
+   "ruler": false,
+   "flavor": "A short, ugly blade, and it knows where the armor ends.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "traits": [
+    "weapon",
+    "melee",
+    "strike"
+   ],
+   "distance": "Reach",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1d4 Pi."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1d6 Pi."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/dagger.svg",
+    "npcWeapon": "Shiv",
+    "automation": "gold",
+    "automationNote": "a Basic attack of a Minor enemy (its dice don't explode; the Critical's 1d10!)."
+   }
+  },
+  {
+   "name": "Jeer",
+   "category": "Basic attack",
+   "npc": "Goblin Sneak",
+   "book": false,
+   "ruler": false,
+   "flavor": "It says something about your mother, in Goblin, and somehow you understand.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "traits": [
+    "power",
+    "ranged",
+    "strike"
+   ],
+   "distance": "6 sq.",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Power vs. Ward Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[R] 1d4 Ps."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[R] 1d4 Ps; Taunted by the goblin (1 round)."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sound.svg",
+    "automation": "gold",
+    "automationNote": "a Basic attack (it shares the At-will count with Shiv); Taunted by the goblin (1 round) when a Tier 3 lands (it ends when the goblin goes Down).",
+    "version": {
+     "sub": [
+      [
+       "Taunted by the goblin (1 round)",
+       "@Condition[taunted|rounds:1]{Taunted} by the goblin (1 round)"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "name": "Knife in the Back",
+   "category": "Special Action",
+   "npc": "Goblin Sneak",
+   "book": false,
+   "ruler": false,
+   "flavor": "You were looking at the other one.",
+   "frequency": "Round",
+   "cost": "2 AP",
+   "traits": [
+    "weapon",
+    "melee",
+    "strike"
+   ],
+   "distance": "Reach",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Requirement",
+     "text": "The goblin flanks the target."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 2 + 1d6 Pi."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 4 + 1d8 Pi."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/dagger.svg",
+    "npcWeapon": "Shiv",
+    "reqFlank": true,
+    "automation": "gold",
+    "automationNote": "its Requirement is checked against the target (flanking): the roll dialog warns when the goblin doesn't flank it."
+   }
+  },
+  {
+   "name": "Shriek and Scatter",
+   "category": "Reaction",
+   "npc": "Goblin Sneak",
+   "book": false,
+   "ruler": false,
+   "flavor": "One of them drops, and the rest remember how much they hate you.",
+   "frequency": "Encounter",
+   "cost": "1R",
+   "traits": [],
+   "body": [
+    {
+     "label": "Trigger",
+     "text": "An ally with the Goblin Tag within 6 squares goes Down."
+    },
+    {
+     "label": "Effect",
+     "text": "The goblin can Evade 1, then uses Jeer."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/terror.svg",
+    "moment": "allyDown",
+    "momentRange": 6,
+    "momentTag": "goblin",
+    "automation": "gold",
+    "automationNote": "offered by itself when an ally with the Goblin Tag within 6 squares goes Down (a Minion pays it with an AP it kept: it has no Reaction Point); Use: the Evade 1 button, then Jeer (the button; the GM picks its target).",
+    "version": {
+     "sub": [
+      [
+       "then uses Jeer",
+       "then uses @Use[Jeer|label:Jeer]"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "name": "Drifting",
+   "category": "Feature",
+   "npc": "Grave Wisp",
+   "book": false,
+   "ruler": false,
+   "flavor": "Nothing in its way is quite solid to it.",
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "The wisp's own movement can pass through creatures' spaces (it can't end in one), and a creature's space is never Difficult Terrain for it."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/wing.svg",
+    "hooks": [
+     {
+      "kind": "drift"
+     }
+    ],
+    "automation": "gold",
+    "automationNote": "the movement checks let the wisp's own movement through every creature's space (never ending in one) with no Difficult Terrain from creatures (a setting on the Feature: hooks, drift)."
+   }
+  },
+  {
+   "name": "Slipping Touch",
+   "category": "Basic attack",
+   "npc": "Grave Wisp",
+   "book": false,
+   "ruler": false,
+   "flavor": "It reaches for you and is already somewhere else.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "traits": [
+    "power",
+    "melee",
+    "strike"
+   ],
+   "distance": "Reach",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Power vs. Ward Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "The wisp can Evade 1."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[R] 1d4 Co."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[R] 1d6 Co."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/frost.svg",
+    "automation": "gold",
+    "automationNote": "a Basic attack of a Minor enemy; its Tier 1 is the Evade 1 button."
+   }
+  },
+  {
+   "name": "Guttering Glance",
+   "category": "Basic attack",
+   "npc": "Grave Wisp",
+   "book": false,
+   "ruler": false,
+   "flavor": "The light goes out behind your eyes.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "traits": [
+    "power",
+    "ranged",
+    "strike"
+   ],
+   "distance": "6 sq.",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Power vs. Ward Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[R] 1d4 Ps."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[R] 1d4 Ps; Half-Blinded (EoT)."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/eye.svg",
+    "automation": "gold",
+    "automationNote": "a Basic attack (it shares the At-will count with Slipping Touch); Half-Blinded (EoT) when a Tier 3 lands."
+   }
+  },
+  {
+   "name": "Pass Through",
+   "category": "Special Action",
+   "npc": "Grave Wisp",
+   "book": false,
+   "ruler": false,
+   "flavor": "It drifts straight through you, and the cold stays.",
+   "frequency": "Round",
+   "cost": "2 AP",
+   "traits": [
+    "power",
+    "move",
+    "strike"
+   ],
+   "target": "Up to two enemies",
+   "body": [
+    {
+     "label": "Setup",
+     "text": "The wisp Advances in a straight line; the targets are enemies whose space it passed through."
+    },
+    {
+     "label": "Attack",
+     "text": "Power vs. Ward Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[R] 1d4 Co."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[R] 1 + 1d6 Co."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/wing.svg",
+    "automation": "silver",
+    "setup": "The wisp @Move[advance|distance:speed]{Advances} in a straight line; the targets are enemies whose space it passed through.",
+    "automationNote": "the Setup's Advance is a button (Drifting lets it through creatures); the straight line and the targets (up to two enemies whose space it passed) are the GM's: target them before the roll."
+   }
+  },
+  {
+   "name": "Dying Flare",
+   "category": "Reaction",
+   "npc": "Grave Wisp",
+   "book": false,
+   "ruler": false,
+   "flavor": "It goes out the way a lamp does when it is dropped.",
+   "frequency": "Encounter",
+   "cost": "1R",
+   "traits": [
+    "power",
+    "save",
+    "area"
+   ],
+   "area": "1 Emanation",
+   "target": "All creatures in the Area",
+   "body": [
+    {
+     "label": "Interrupt",
+     "text": "The wisp would go Down."
+    },
+    {
+     "label": "Save",
+     "text": "Instinct"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[R] 1d4 Co; Hindered (EoT)."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[R] 1d4 Co."
+    },
+    {
+     "label": "Tier 3",
+     "text": "No effect."
+    },
+    {
+     "label": "Special",
+     "text": "Then the wisp goes Down."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/explosion.svg",
+    "moment": "selfDown",
+    "areaCfg": {
+     "targets": "all",
+     "center": false
+    },
+    "automation": "gold",
+    "automationNote": "offered by itself when the wisp would go Down (an Interrupt that saves nothing); the 1 Emanation around it, each creature's Instinct Save against its Power DC, the damage, Hindered (EoT) on a Tier 1; then the held damage lands and the wisp goes Down."
+   }
+  },
+  {
+   "name": "Crushing Grip",
+   "category": "Basic attack",
+   "npc": "Ogre Chieftain",
+   "book": false,
+   "ruler": false,
+   "flavor": "A hand closes round you like a door shutting.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "traits": [
+    "weapon",
+    "melee",
+    "strike"
+   ],
+   "distance": "Reach",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1d4! Bl."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 2 + 1d6! Bl; Grabbed."
+    },
+    {
+     "label": "Special",
+     "text": "The ogre holds one creature at a time: a new Grab lets the first go."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/hand.svg",
+    "npcWeapon": "Club",
+    "automation": "silver",
+    "automationNote": "a Basic attack (the exploding die, the Critical's 1d10!); Grabbed when a Tier 3 lands. By hand: one creature held at a time (the GM ends the first Grab when a second one lands)."
+   }
+  },
+  {
+   "name": "Roar",
+   "category": "Basic attack",
+   "npc": "Ogre Chieftain",
+   "book": false,
+   "ruler": false,
+   "flavor": "It turns its whole face toward you and bellows.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "traits": [
+    "power",
+    "ranged",
+    "strike",
+    "fear"
+   ],
+   "distance": "6 sq.",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Power vs. Ward Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[R] 1d4! Ps."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[R] 1d4! Ps; Staggered (EoT)."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sound.svg",
+    "automation": "gold",
+    "automationNote": "a Basic attack (it shares the At-will count with Crushing Grip); Staggered (EoT) when a Tier 3 lands."
+   }
+  },
+  {
+   "name": "Great Sweep",
+   "category": "Special Action",
+   "npc": "Ogre Chieftain",
+   "book": false,
+   "ruler": false,
+   "flavor": "The club goes round at chest height.",
+   "frequency": "Round",
+   "cost": "2 AP",
+   "traits": [
+    "weapon",
+    "melee",
+    "strike"
+   ],
+   "distance": "Reach",
+   "target": "Up to two creatures",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 2 + 1d6 Bl."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 4 + 1d8 Bl."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/hammer.svg",
+    "npcWeapon": "Club",
+    "automation": "gold",
+    "automationNote": "up to two targets, each its own roll and damage."
+   }
+  },
+  {
+   "name": "Hurled Goblin",
+   "category": "Special Action",
+   "npc": "Ogre Chieftain",
+   "book": false,
+   "ruler": false,
+   "flavor": "The goblin has time to look surprised.",
+   "frequency": "Round",
+   "cost": "2 AP",
+   "traits": [
+    "weapon",
+    "ranged",
+    "strike"
+   ],
+   "distance": "6 sq.",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Requirement",
+     "text": "A willing Minion ally is within the ogre's Reach."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1d4! Bl."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1 + 1d6! Bl."
+    },
+    {
+     "label": "Effect",
+     "text": "The Minion is Repositioned to an empty square adjacent to the target, the ogre's choice (hit or miss); it takes no damage."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/falling.svg",
+    "automation": "silver",
+    "automationNote": "the attack runs by itself. By hand: the Requirement (a willing Minion ally within its Reach) and the landing: the GM moves the Minion to an empty square adjacent to the target (Alt-drag)."
+   }
+  },
+  {
+   "name": "Crack the Ground",
+   "category": "Encounter Action",
+   "npc": "Ogre Chieftain",
+   "book": false,
+   "ruler": false,
+   "flavor": "It brings the club down two-handed, and the floor gives.",
+   "frequency": "Encounter",
+   "cost": "2 AP",
+   "traits": [
+    "weapon",
+    "save",
+    "area"
+   ],
+   "area": "Line 3",
+   "target": "All creatures in the Area",
+   "body": [
+    {
+     "label": "Save",
+     "text": "Instinct"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[V] 5 + 2d8 Bl."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 3 + 1d8 Bl."
+    },
+    {
+     "label": "Tier 3",
+     "text": "No effect."
+    },
+    {
+     "label": "Effect",
+     "text": "The squares of the Line are Difficult Terrain for every creature (EoE)."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/ice-aura.svg",
+    "areaCfg": {
+     "targets": "all",
+     "keep": true
+    },
+    "automation": "gold",
+    "automationNote": "the Line 3 from the ogre's space, each creature's Instinct Save against its Weapon DC and its damage; the Line stays on the map as a Zone that is Difficult Terrain for every creature, the ogre too, until the encounter ends.",
+    "version": {
+     "fx": {
+      "all": [
+       "{{fx:Crack the Ground}}"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "name": "Backhand",
+   "category": "Reaction",
+   "npc": "Ogre Chieftain",
+   "book": false,
+   "ruler": false,
+   "flavor": "You stepped inside its reach as if it weren't looking.",
+   "frequency": "Turn",
+   "cost": "1R",
+   "traits": [],
+   "target": "The triggering creature",
+   "body": [
+    {
+     "label": "Trigger",
+     "text": "An enemy enters a square adjacent to the ogre."
+    },
+    {
+     "label": "Effect",
+     "text": "It takes [V] 1 Bl and is Pushed 2, with no roll. Its movement isn't disrupted: it goes on with the movement it has left."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/hand.svg",
+    "moment": "enemyEnters",
+    "automation": "gold",
+    "automationNote": "offered by itself when an enemy enters a square adjacent to the ogre (a Trigger: the mover isn't moved back and goes on with the movement it has left); Use: the 1 Blunt damage button and the Pushed 2 button.",
+    "version": {
+     "sub": [
+      [
+       "[V] 1 Bl",
+       "@Damage[1[body,blunt]]{[V] 1 Bl}"
+      ]
+     ]
+    }
    }
   }
  ]

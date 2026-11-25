@@ -129,7 +129,7 @@ export function handMenuModel(weapons, hand, { inCombat = false, ap = 99 } = {})
 
 export async function pcModel(sheet, ctx) {
   const a = sheet.actor, s = a.system, d = s.damage ?? {}, npc = a.type === "npc";   // v0.0.291 (PACK NPC-SHEET): the NPC sheet uses this model too
-  const role = npc ? (TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : null, elite = npc && (s.role === "elite" || !!s.useEscalation);
+  const role = npc ? (TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : null, elite = npc && !!s.useEscalation;   // the Bestiary's rebuild: the Elite ladder only when the GM turns Escalation on
   const basicAtk = npc ? (a.itemTypes.action.find(i => i.system?.basicAttack) ?? null) : null;
   const combat = game.combat, cbt = combatantOf(a, combat), inCombat = !!cbt;
   const statuses = a.statuses ?? new Set(), unconscious = statuses.has("unconscious");
@@ -212,6 +212,12 @@ export async function pcModel(sheet, ctx) {
         seg: barRemainingSegments(d.mindLethal, d.mindNonlethal, s.mdt), tip: barTip("Resolve", d.mindLethal, d.mindNonlethal, s.mdt, `Strained at 0${s.exhausted ? ` (Exhausted ${s.exhausted}: −${4 * s.exhausted})` : ""}`) }
     ]
   };
+  // the Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): a Minion's one bar is its ticks (a click removes one, a right-click restores one)
+  if (s.isMinion) {
+    const lt = (d.bodyLethal ?? 0) + (d.mindLethal ?? 0), nt = (d.bodyNonlethal ?? 0) + (d.mindNonlethal ?? 0), mx = s.ticksMax ?? s.pool;
+    health.bars = [{ name: "Ticks", label: "#ef8a80", pool: "body", value: s.ticksLeft ?? 0, max: mx, neg: false, tag: tags.bloodied && tags.strained ? "BLOODIED · STRAINED" : tags.bloodied ? "BLOODIED" : tags.strained ? "STRAINED" : "", bg: "#c23b32", solid: "#c23b32", dark: "#6e261d",
+      seg: barRemainingSegments(lt, nt, mx), tip: `<b>Ticks</b> ${s.ticksLeft ?? 0} / ${mx} · a Minion (no Health): an Action removes its Tier's ticks once, damage with no Tier 1, a heal restores 1<br>Left click: −1 tick; Right click: +1 tick`, ticks: true }];
+  }
   const rally = { left: s.rallyLeft, max: s.rallyMax, heal: s.rallyHeal, pips: Array.from({ length: s.rallyMax }, (_, k) => k < s.rallyLeft) };
 
   // ---- Defenses, Attributes, Movement, Modifiers
@@ -535,7 +541,7 @@ export async function pcModel(sheet, ctx) {
     head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained, guardSym: statSym("guard"),   /* v0.0.460 (Lucas, checklist v0.0.459: "Icons should be in the PCs sheet as well") */   // v0.0.454: D3
     effects: { conditions, effects }, weapons: weaponRows, armor: armorRows, build, mastery, upkeep, down,
     // v0.0.333 (PACK RWI): the Damage block under Defenses (Immune / Resist / Weak, every source; hidden with none, but a GM sees + Add)
-    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM }), { line: true, syms: { Immune: statSym("immune"), Resist: statSym("resist"), Weak: statSym("weak") } }); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
+    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM }), { line: true, syms: { Immunity: statSym("immune"), Resistance: statSym("resist"), Weakness: statSym("weak") } }); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
     modConflict: s.modConflict ? `Both Modifiers wanted the same Attribute: the ${csys?.modPriority === "power" ? "Power" : "Weapon"} Modifier kept it.` : ""
   };
 }
@@ -696,7 +702,7 @@ export function statBlockHtml(a, sysCard) {
     return `<b>${esc(i.name)}</b> (${esc(cost)}${f ? `, ${esc(TWOD12.frequencies[f])}` : ""})${line ? `: ${esc(line)}` : ""}`;
   });
   return sysCard({ title: a.name, lead: `${esc(s.roleLabel ?? "")} \u00b7 CV ${esc(s.cv ?? "")} \u00b7 Stage ${esc(s.stage ?? 0)}`,
-    text: [`Health ${s.pool} (Vigor ${s.bdt}, Resolve ${s.mdt}) \u00b7 AD ${s.armorDC} \u00b7 WD ${s.wardDC} \u00b7 Speed ${s.moveSpeed ?? s.speed}`, ...(dl.length ? [esc(dl.map(damageLineName).join(" \u00b7 "))] : []), `Senses: ${esc(chips)}`, ...acts].join("<br>") });
+    text: [`${s.isMinion ? `${s.ticksMax} ticks` : `Health ${s.pool} (Vigor ${s.bdt}, Resolve ${s.mdt})`} \u00b7 AD ${s.armorDC} \u00b7 WD ${s.wardDC} \u00b7 Speed ${s.moveSpeed ?? s.speed}`, ...(dl.length ? [esc(dl.map(damageLineName).join(" \u00b7 "))] : []), `Senses: ${esc(chips)}`, ...acts].join("<br>") });
 }
 
 /** Pure (v0.0.455, group 3): the Build tab's Stage band: the Stage, its levels, when the next one comes, the ladder of the 15 levels in their four

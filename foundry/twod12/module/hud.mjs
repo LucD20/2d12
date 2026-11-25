@@ -95,7 +95,8 @@ async function combatOf(actor) {
 async function healthOf(actor) {
   const s = actor.system ?? {}, d = s.damage ?? {};
   const { healthTags, downState } = await import("./sheetmodel.mjs");
-  const bars = [
+  // the Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): a Minion shows its ticks (one bar), to everyone who sees its HUD
+  const bars = s.isMinion ? [{ name: "Ticks", cls: "t", max: nn(s.ticksMax), left: nn(s.ticksLeft), nl: 0, ticks: true }] : [
     { name: "Vigor", cls: "v", max: nn(s.bdt), left: nn(s.bdt) - nn(s.bodyDamage), nl: nn(d.bodyNonlethal) },
     { name: "Resolve", cls: "r", max: nn(s.mdt), left: nn(s.mdt) - nn(s.mindDamage), nl: nn(d.mindNonlethal) }
   ];
@@ -105,7 +106,7 @@ async function healthOf(actor) {
 }
 async function escOf(actor) {
   const { ESC_MAX } = await import("./escalation.mjs");
-  const s = actor.system ?? {}, has = actor.type !== "npc" || s.role === "elite" || !!s.useEscalation;
+  const s = actor.system ?? {}, has = actor.type !== "npc" || !!s.useEscalation;   // the Bestiary's rebuild (2026-11-25): no NPC has Escalation by default (Elite Escalation is deprecated)
   return has ? { n: nn(s.escalation), max: nn(ESC_MAX) } : null;
 }
 function effectPolarity(e, name) {

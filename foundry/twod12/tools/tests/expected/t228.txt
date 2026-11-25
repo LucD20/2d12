@@ -1,17 +1,17 @@
 --- every source
-Immune Psychic [Ps] from actor:Krag | Resist 3 Blunt [Bl] from item:Warded Blade over Resist 1 Blunt (Thick Skin) | Resist 3 Fire [Fi] from effect:Fire Ward (temporary, 2) over Resist 2 Fire (Dragonhide), Resist 1 Fire (Krag) | Weak 1 Cold [Co] from effect:Cursed (temporary, until removed) | Weak 5 Fire [Fi] from actor:Krag | Weak 2 Holy [Ho] from effect:Hex (temporary, eot)
+Immunity Psychic [Ps] from actor:Krag | Resistance Blunt 3 [Bl] from item:Warded Blade over Resistance Blunt 1 (Thick Skin) | Resistance Fire 3 [Fi] from effect:Fire Ward (temporary, 2) over Resistance Fire 2 (Dragonhide), Resistance Fire 1 (Krag) | Weakness Cold 1 [Co] from effect:Cursed (temporary, until removed) | Weakness Fire 5 [Fi] from actor:Krag | Weakness Holy 2 [Ho] from effect:Hex (temporary, eot)
 an unworn armor and a sheathed weapon are left out: true | Immune has no value: null | order Immune, Resist, Weak: immune, resist, weak | the codes: Ps Bl Fi Co Fi Ho
 the damage message reads the same lines: {"resist":{"Bl":3,"Fi":3},"weak":{"Co":1,"Fi":5,"Ho":2},"immune":["Ps"]}
-empty: [] | Immune and Resist of the same subtype are both kept: Immune Fire [Fi] from actor:Krag | Resist 2 Fire [Fi] from actor:Krag
-a tie keeps the lasting one: Resist 3 Fire [Fi] from actor:Krag over Resist 3 Fire (Ward)
+empty: [] | Immune and Resist of the same subtype are both kept: Immunity Fire [Fi] from actor:Krag | Resistance Fire 2 [Fi] from actor:Krag
+a tie keeps the lasting one: Resistance Fire 3 [Fi] from actor:Krag over Resistance Fire 3 (Ward)
 --- the chips and tooltips
-Psychic  ⟶  Immune Psychic, from its own line: its Psychic damage is 0.
-3 Blunt  ⟶  Resist 3 Blunt, from Warded Blade (item): each Action's Blunt damage, both pools together, is reduced by 3 once. Also: Resist 1 Blunt from Thick Skin (the highest applies).
-3 Fire · 2 rd  ⟶  Resist 3 Fire, from Fire Ward (effect) · 2 rounds left: each Action's Fire damage, both pools together, is reduced by 3 once. Also: Resist 2 Fire from Dragonhide; Resist 1 Fire from its own line (the highest applies).
-1 Cold  ⟶  Weak 1 Cold, from Cursed (effect) · until removed: each Action's Cold damage, both pools together, is increased by 1 once.
-5 Fire  ⟶  Weak 5 Fire, from its own line: each Action's Fire damage, both pools together, is increased by 5 once.
-2 Holy · EoT  ⟶  Weak 2 Holy, from Hex (effect) · until the end of the turn: each Action's Holy damage, both pools together, is increased by 2 once.
-rows: Immune: Psychic | Resist: 3 Blunt, 3 Fire · 2 rd | Weak: 1 Cold, 5 Fire, 2 Holy · EoT | dashed: 3 | no + Add for a player: true
+Psychic  ⟶  Immunity Psychic, from its own line: its Psychic damage is 0.
+Blunt 3  ⟶  Resistance Blunt 3, from Warded Blade (item): each Action's Blunt damage, both pools together, is reduced by 3 once. Also: Resistance Blunt 1 from Thick Skin (the highest applies).
+Fire 3 · 2 rd  ⟶  Resistance Fire 3, from Fire Ward (effect) · 2 rounds left: each Action's Fire damage, both pools together, is reduced by 3 once. Also: Resistance Fire 2 from Dragonhide; Resistance Fire 1 from its own line (the highest applies).
+Cold 1  ⟶  Weakness Cold 1, from Cursed (effect) · until removed: each Action's Cold damage, both pools together, is increased by 1 once.
+Fire 5  ⟶  Weakness Fire 5, from its own line: each Action's Fire damage, both pools together, is increased by 5 once.
+Holy 2 · EoT  ⟶  Weakness Holy 2, from Hex (effect) · until the end of the turn: each Action's Holy damage, both pools together, is increased by 2 once.
+rows: Immunity: Psychic | Resistance: Blunt 3, Fire 3 · 2 rd | Weakness: Cold 1, Fire 5, Holy 2 · EoT | dashed: 3 | no + Add for a player: true
 chips are buttons, named by their words (no hover, v0.0.420): true | under the Damage label: true
 no line: hidden for a player: true | v0.0.378: no + Add on the side panel, hidden for a GM too: true
-an item's Damage lines: Damage lines while worn Immune Cold Resist 2 Fire + Add
+an item's Damage lines: Damage lines while worn Immunity Cold Resistance Fire 2 + Add

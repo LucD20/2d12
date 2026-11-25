@@ -60,6 +60,18 @@ export async function strikeHookChipsFor(actor, traits) {
   if (!key) return [];   // outside its turn in a started combat (or no combat): nothing to read
   return strikeChips(moved, alt, traits, stateNow(actor.getFlag?.(F, "strikeState"), key));
 }
+/**
+ * The Bestiary's rebuild (2026-11-25; the Orc Warrior's Cornered: "While the orc is Bloodied, its Shove gains 1 Boon"): stateBoon, a Boon on one
+ * Action while the creature is in a state. Hook: { kind: "stateBoon", state: "bloodied" | "strained", boons: 1, basic: "shove" (a Basic Action's
+ * key) and / or traits: ["strike"] (every one of them) }. The roll dialog's chips and the roll read it (rollinput.mjs, actions.mjs). Pure.
+ */
+export function stateBoonChips(actor, item) {
+  const s = actor?.system ?? {}, key = item?.getFlag?.(F, "basic") ?? item?.flags?.[F]?.basic ?? "", traits = item?.system?.traits;
+  const WORD = { bloodied: "Bloodied", strained: "Strained" };
+  return activeHooks(actor, "stateBoon")
+    .filter(h => WORD[h.hook.state] && !!s[h.hook.state] && (!h.hook.basic || h.hook.basic === key) && hasTraits(traits, h.hook.traits ?? []))
+    .map(h => ({ name: h.item.name, boons: Math.max(1, Math.trunc(Number(h.hook.boons)) || 1), field: false, why: `while it is ${WORD[h.hook.state]}` }));
+}
 /** A Strike was used (actions.mjs): the turn's state goes on (not moved since, the kind of the last Strike, Blade and Bow spent if it applied). */
 export async function noteStrike(actor, traits) {
   try {

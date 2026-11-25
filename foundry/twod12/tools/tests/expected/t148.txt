@@ -22,7 +22,7 @@ elite     Stage 3: x13 6/9 | x19.25 8.5/12.5 | x25.5 10.5/15.5 | x32 12.5/19.5 |
 a Special Action (x2.2, Stage 1 Standard Medium; the book: about 13 / 24): 9 / 16.5
 old level factors gone: true
 --- CV x100, lower for an NPC of an earlier Stage than the party
-minion    its Stage 25 | one Stage below 20 | two below 15 | above the party 25
+minion    its Stage 30 | one Stage below 20 | two below 15 | above the party 30
 grunt     its Stage 50 | one Stage below 40 | two below 30 | above the party 50
 standard  its Stage 100 | one Stage below 80 | two below 65 | above the party 100
 elite     its Stage 200 | one Stage below 160 | two below 130 | above the party 200

@@ -47,7 +47,7 @@ const pcAt = (lv, mods = {}) => {
 };
 for (const lv of [1, 3, 4, 8, 12]) { const s = pcAt(lv); console.log(`level ${String(lv).padStart(2)}: BDT ${s.bdt} MDT ${s.mdt} Pool ${s.pool} | Weapon ${s.weaponMod} Power ${s.powerMod} Signature ${s.signatureMod} (${s.signatureFrom}) | Stage ${s.stage}`); }
 console.log("never above +4:", [[3, 1], [3, 5], [3, 8], [4, 8], [5, 8], [1, 8]].map(([m, l]) => `${m} at ${l} -> ${cf.stageMod(m, l)}`).join(", "));
-console.log("NPCs: no step (pack MOD: the role's values, no Stage):", src("module/data.mjs").includes("this.weaponMod = npcModValue(this.role, mr.weapon);"));
+console.log("NPCs: no step (pack MOD: the role's values, no Stage):", src("module/data.mjs").includes(": npcModValue(this.role, mr.weapon);"));   // the Bestiary's rebuild (2026-11-25): a typed ("custom") Modifier comes first
 
 console.log("--- Guard (Chapter 4: Zack has Guard 6 and takes 8 Body damage: 6 to the Guard, 2 Body)");
 const dm = (bl, bn, ml, mn) => ({ B: { l: bl, n: bn }, M: { l: ml, n: mn } });

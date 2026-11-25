@@ -90,6 +90,7 @@ export const nextBanes = uses => { const n = Math.max(0, Math.trunc(Number(uses)
 /** Book, Chapter 4: Bloodied while Vigor damage >= Vigor; Strained while Resolve damage >= Resolve. s: { bodyDamage, mindDamage, bdt, mdt }. */
 export function healthTags(s = {}) {
   const n = v => Math.max(0, Number(v) || 0);
+  if (s.isMinion) return { bloodied: !!s.bloodied, strained: !!s.strained };   // the Bestiary's rebuild: a Minion at 1 tick (roundrules.mjs minionState)
   return { bloodied: n(s.bdt) > 0 && n(s.bodyDamage) >= n(s.bdt), strained: n(s.mdt) > 0 && n(s.mindDamage) >= n(s.mdt) };
 }
 
@@ -346,14 +347,15 @@ export function diceFor(avg) {
  * chatcards.mjs parseDmgMods reads it). parsed: parseDmgMods' { resist, weak, immune }; subs: chatcards SUBS (code -> [name, ink]). */
 export function dmgModsText(parsed, subs) {
   const nm = c => subs?.[c]?.[0] ?? c;
-  return [...Object.entries(parsed?.resist ?? {}).map(([c, n]) => `Resist ${n} ${nm(c)}`), ...Object.entries(parsed?.weak ?? {}).map(([c, n]) => `Weak ${n} ${nm(c)}`),
-    ...(parsed?.immune ?? []).map(c => `Immune ${nm(c)}`)].join(", ");
+  // the Bestiary's rebuild (2026-11-25; book, Chapter 1): the word first, then the subtype and its number ("Resistance Fire 5, Weakness Holy 2, Immunity Cold")
+  return [...Object.entries(parsed?.resist ?? {}).map(([c, n]) => `Resistance ${nm(c)} ${n}`), ...Object.entries(parsed?.weak ?? {}).map(([c, n]) => `Weakness ${nm(c)} ${n}`),
+    ...(parsed?.immune ?? []).map(c => `Immunity ${nm(c)}`)].join(", ");
 }
 export function dmgModChips(parsed, subs) {
   const nm = c => subs?.[c]?.[0] ?? c;
-  return [...Object.entries(parsed?.resist ?? {}).map(([c, n]) => ({ kind: "resist", sub: c, label: `Resist ${n} ${nm(c)}` })),
-    ...Object.entries(parsed?.weak ?? {}).map(([c, n]) => ({ kind: "weak", sub: c, label: `Weak ${n} ${nm(c)}` })),
-    ...(parsed?.immune ?? []).map(c => ({ kind: "immune", sub: c, label: `Immune ${nm(c)}` }))];
+  return [...Object.entries(parsed?.resist ?? {}).map(([c, n]) => ({ kind: "resist", sub: c, label: `Resistance ${nm(c)} ${n}` })),
+    ...Object.entries(parsed?.weak ?? {}).map(([c, n]) => ({ kind: "weak", sub: c, label: `Weakness ${nm(c)} ${n}` })),
+    ...(parsed?.immune ?? []).map(c => ({ kind: "immune", sub: c, label: `Immunity ${nm(c)}` }))];
 }
 /**
  * v0.0.373 (STYLE-2, Lucas: version A of style-audit's Immune / Resist / Weak block): the Builder's three lines, each entry a chip with its
@@ -363,9 +365,9 @@ export function dmgModChips(parsed, subs) {
 export function dmgModLines(parsed, subs, look = {}) {
   const chip = (kind, c, n) => ({ kind, sub: c, name: subs?.[c]?.[0] ?? c, n: n ?? "", icon: look.icons?.[c] ?? "", style: `--sc-l:${look.inks?.[c] ?? "#5d5446"};--sc-d:${look.colors?.[c] ?? "#b3a68e"}` });
   return [
-    { kind: "immune", label: "Immune", chips: (parsed?.immune ?? []).map(c => chip("immune", c)) },
-    { kind: "resist", label: "Resist", chips: Object.entries(parsed?.resist ?? {}).map(([c, n]) => chip("resist", c, n)) },
-    { kind: "weak", label: "Weak", chips: Object.entries(parsed?.weak ?? {}).map(([c, n]) => chip("weak", c, n)) }
+    { kind: "immune", label: "Immunity", chips: (parsed?.immune ?? []).map(c => chip("immune", c)) },
+    { kind: "resist", label: "Resistance", chips: Object.entries(parsed?.resist ?? {}).map(([c, n]) => chip("resist", c, n)) },
+    { kind: "weak", label: "Weakness", chips: Object.entries(parsed?.weak ?? {}).map(([c, n]) => chip("weak", c, n)) }
   ];
 }
 /** The Builder's list of the twelve subtypes to pick from (the first one picked). */
@@ -380,7 +382,7 @@ export function dmgModsEdit(parsed, kind, sub, n = null) {
 
 /* ------------------------------------------------------------------ v0.0.333 (PACK RWI): Immune / Resist / Weak lines (book, Chapter 1) */
 export const DMG_KINDS = ["immune", "resist", "weak"];
-const KIND_WORD = { immune: "Immune", resist: "Resist", weak: "Weak" };
+const KIND_WORD = { immune: "Immunity", resist: "Resistance", weak: "Weakness" };   // the Bestiary's rebuild (2026-11-25): the book's words, the word first
 /**
  * The creature's effective Immune / Resist / Weak lines, from its sources: [{ name, type ("actor" | "item" | "talent" | "feature" | "effect"),
  * uuid, temporary, remaining (rounds, "eot" or null), lines: [{ kind, sub (a code), n }] }]. names: code -> the subtype's name (TWOD12.subtypes).
@@ -409,9 +411,9 @@ export function damageLinesFrom(sources, names) {
   return [...kept.values()].sort((a, b) => DMG_KINDS.indexOf(a.kind) - DMG_KINDS.indexOf(b.kind) || codes.indexOf(a.code) - codes.indexOf(b.code));
 }
 /** "Immune Psychic", "Resist 3 Blunt". */
-export const damageLineName = l => (l.kind === "immune" ? `Immune ${l.subtype}` : `${KIND_WORD[l.kind]} ${l.value} ${l.subtype}`);
+export const damageLineName = l => (l.kind === "immune" ? `Immunity ${l.subtype}` : `${KIND_WORD[l.kind]} ${l.subtype} ${l.value}`);
 /** The chip's text: "Psychic", "3 Blunt", "2 Fire · 3 rd" (a temporary line's time left: rounds, EoT, or nothing until removed). */
-export const damageLineChip = l => `${l.kind === "immune" ? l.subtype : `${l.value} ${l.subtype}`}${l.temporary && l.remaining ? ` · ${l.remaining === "eot" ? "EoT" : `${l.remaining} rd`}` : ""}`;
+export const damageLineChip = l => `${l.kind === "immune" ? l.subtype : `${l.subtype} ${l.value}`}${l.temporary && l.remaining ? ` · ${l.remaining === "eot" ? "EoT" : `${l.remaining} rd`}` : ""}`;
 const SRC_TYPE = { actor: "its stat block", item: "item", talent: "Talent", feature: "Feature", effect: "effect" };
 /** The tooltip: the line, its source (and time left), the rule in one sentence; and what it overrode. */
 export function damageLineTip(l) {
@@ -433,7 +435,7 @@ export function damageLinesMods(lines) {
 /** The Damage block's rows: one per kind that has a line, in the order Immune, Resist, Weak. */
 export const damageLineRows = lines => DMG_KINDS.map(k => ({ kind: k, label: KIND_WORD[k], lines: (lines ?? []).filter(l => l.kind === k) })).filter(r => r.lines.length);
 /** One Immune / Resist / Weak written as text ("Resist 3 Blunt"), and a whole line list as the stored text ("Resist 3 Blunt, Immune Psychic"), for dmgMods fields. */
-export const dmgModsFromLines = (list, names) => list.map(l => (l.kind === "immune" ? `Immune ${names[l.sub] ?? l.sub}` : `${KIND_WORD[l.kind]} ${l.n} ${names[l.sub] ?? l.sub}`)).join(", ");
+export const dmgModsFromLines = (list, names) => list.map(l => (l.kind === "immune" ? `Immunity ${names[l.sub] ?? l.sub}` : `${KIND_WORD[l.kind]} ${names[l.sub] ?? l.sub} ${l.n}`)).join(", ");
 
 /** Pure (v0.0.418, E7): the Rally Points left after a click on pip k (0-based): that pip and the ones before it; the last lit pip clicked: one fewer. */
 export const rallyAfterClick = (k, left) => (k + 1 === left ? k : k + 1);

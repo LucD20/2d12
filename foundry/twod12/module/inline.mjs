@@ -487,7 +487,7 @@ async function resolveSaveTier(actor, title, subtitle, cfg, tier, pre = null) {
   if (!parts.damage.length && !parts.texts.length && !parts.uuids.length) return;
   const { comps, rolls } = pre ?? await rollParts(parts.damage, cfg.nonlethal);
   // v0.0.320 (book, Ch. 1 Riders): after Resist and Immune, a damaging Tier's effects happen only if its damage landed
-  const dealt = comps.length ? await dealDamageEx(actor, comps) : null, summary = dealt?.text ?? "";
+  const dealt = comps.length ? await dealDamageEx(actor, comps, { tick: { tier, save: true } }) : null, summary = dealt?.text ?? "";   // the Bestiary's rebuild: a Minion's ticks by its own Save
   const names = [];
   if (parts.uuids.length && (!dealt || dealt.landed)) {
     await applyEffects(parts.uuids, [actor.uuid], originInfo(""));
@@ -1417,7 +1417,7 @@ export async function saveRoll(msg, idx) {
   const bits = [], extras = [];
   let amount = null;
   let dealt = null;   // v0.0.320: Resist / Weak / Immune; v0.0.432: the riders happen whatever damage is dealt (Ch. 1 Riders)
-  if (comps.length) { dealt = await dealDamageEx(actor, comps); bits.push(dealt.text); amount = comps.reduce((s, c) => s + c.total, 0); }
+  if (comps.length) { dealt = await dealDamageEx(actor, comps, { tick: { tier: chk.tier, save: true, action: msg?.id ?? "" } }); bits.push(dealt.text); amount = comps.reduce((s, c) => s + c.total, 0); }   // the Bestiary's rebuild: a Minion's ticks by its own Save
   bits.push(...parts.texts); extras.push(...parts.texts);
   if (parts.uuids.length) {
     await applyEffects(parts.uuids, [actor.uuid], originInfo(""));

@@ -1672,7 +1672,9 @@ export class NpcSheet extends CharacterSheet {
     const r = clampRatings({ ...(this.actor.system.ratings ?? {}) }, role, TWOD12.npcRatings);
     // v0.0.433 (the Bestiary audit; book: "An Elite has Escalation; no other NPC does"): the rank sets the switch (becoming an Elite turns it on,
     // leaving Elite turns it off; the GM can still change it on the sheet)
-    const was = this.actor.system.role, now = target.dataset.role, esc = now === "elite" ? (this.actor.system.useEscalation ? {} : { "system.useEscalation": true, "system.escalation": 1 }) : was === "elite" ? { "system.useEscalation": false } : {};
+    // the Bestiary's rebuild (2026-11-25; book: "No NPC has Escalation"): the rank no longer turns Escalation on (Elite Escalation is deprecated;
+    // the switch stays on the sheet for the GM); leaving Elite still turns it off
+    const was = this.actor.system.role, now = target.dataset.role, esc = was === "elite" && now !== "elite" ? { "system.useEscalation": false } : {};
     await this.actor.update({ "system.role": now, ...esc, ...Object.fromEntries(Object.entries(r).map(([k, v]) => [`system.ratings.${k}`, v])) });
   }
   /** v0.0.407 (the Bestiary, Roles): a role's ratings in one click (Health, Defenses, damage, the Modifiers; Speed for a Skirmisher); clicked again, no role. */

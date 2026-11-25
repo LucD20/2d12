@@ -9,7 +9,7 @@ import { dmgModsEdit, dmgModsText, damageLinesFrom, damageLineRows, damageLineCh
 
 /** The 12 subtypes, code -> name, from the config (the book's table). */
 export const subNames = () => Object.fromEntries(Object.entries(TWOD12.subtypes ?? {}).filter(([k]) => k));
-const KIND = { immune: "Immune", resist: "Resist", weak: "Weak" };
+const KIND = { immune: "Immunity", resist: "Resistance", weak: "Weakness" };   // the Bestiary's rebuild: the book's words
 
 /** Pure: the Damage block's model. lines: creatureDamageLines; gm: the user is a GM. Hidden with no line, except for a GM (an empty block with + Add). */
 export function damageBlockModel(lines, { gm = false } = {}) {
@@ -33,8 +33,8 @@ export function damageBlockHtml(m, { line = false, syms = null } = {}) {   // sy
   const rows = m.rows.map(r => `<div class="ps-dlrow"><span class="ps-dll">${r.label}</span><span class="ps-dlc">${r.chips.map(chip).join("")}</span></div>`).join("");
   const add = m.add ? `<button type="button" class="ps-dladd" data-action="dmgLineAdd">+ Add</button>` : "";
   // v0.0.441 (pack SHEETS-HUD): on the small sheets, one ruled line: "Immune — Resist [chips] Weak [chips]" and + Add at its end
-  if (line) return `<div class="ps2-l ps2-rw">${["Immune", "Resist", "Weak"].map(k => { const r = m.rows.find(x => String(x.label).replace(/<[^>]+>/g, "").trim() === k); return `<span class="ps2-rwk"><span class="k">${syms?.[k] ?? ""}${k}</span> ${r?.chips?.length ? r.chips.map(chip).join("") : '<span class="ps2-q">\u2014</span>'}</span>`; }).join("")}${add}</div>`;
-  return `<section class="ps-sec line ps-rwi"><span class="ps-k">Damage Immune/Resist/Weak</span>${rows}${add}</section>`;
+  if (line) return `<div class="ps2-l ps2-rw">${["Immunity", "Resistance", "Weakness"].map(k => { const r = m.rows.find(x => String(x.label).replace(/<[^>]+>/g, "").trim() === k); return `<span class="ps2-rwk"><span class="k">${syms?.[k] ?? ""}${k}</span> ${r?.chips?.length ? r.chips.map(chip).join("") : '<span class="ps2-q">\u2014</span>'}</span>`; }).join("")}${add}</div>`;
+  return `<section class="ps-sec line ps-rwi"><span class="ps-k">Immunity, Resistance, Weakness</span>${rows}${add}</section>`;
 }
 
 /**
@@ -51,7 +51,7 @@ export async function pickDamageLine({ name, line = null }) {
   return pickWith({
     title: line ? "Edit a damage line" : "Add a damage line",
     model: () => ({
-      name, sub: "Immune, Resist or Weak (Chapter 1)", icon: "fa-shield-halved",
+      name, sub: "Immunity, Resistance or Weakness (Chapter 1)", icon: "fa-shield-halved",
       sections: [
         { title: "Kind", rows: [{ key: "kind", label: "", opts: DMG_KINDS.map(k => ({ k, l: KIND[k], on: st.kind === k, bcls: `pw-kind ${k}` })) }] },
         { title: "Damage type", rows: [{ key: "sub", label: "", opts: subOpts.map(o => ({ ...o, on: st.sub === o.k })) }] },
@@ -86,6 +86,6 @@ export const ownLines = doc => damageLinesFrom([{ name: doc?.name ?? "", type: "
 /** Pure: the item sheet's "Damage lines" list (armor: while worn; weapon: while wielded). */
 export function itemDamageHtml(doc, { editable = true } = {}) {
   const lines = ownLines(doc), when = doc?.type === "armor" ? "while worn" : "while wielded";
-  const chips = lines.map(l => `<button type="button" class="ps-dl ${l.kind}" data-dl-edit data-kind="${l.kind}" data-sub="${esc(l.code)}" data-value="${l.value ?? ""}" aria-label="${esc(damageLineTip(l).split(": ")[0])}"${editable ? "" : " disabled"}>${esc(l.kind === "immune" ? `Immune ${l.subtype}` : `${KIND[l.kind]} ${l.value} ${l.subtype}`)}</button>`).join("");
+  const chips = lines.map(l => `<button type="button" class="ps-dl ${l.kind}" data-dl-edit data-kind="${l.kind}" data-sub="${esc(l.code)}" data-value="${l.value ?? ""}" aria-label="${esc(damageLineTip(l).split(": ")[0])}"${editable ? "" : " disabled"}>${esc(l.kind === "immune" ? `Immunity ${l.subtype}` : `${KIND[l.kind]} ${l.subtype} ${l.value}`)}</button>`).join("");
   return `<div class="it-dmg"><span class="it-dmgl">Damage lines <small>${when}</small></span><span class="ps-dlc">${chips || '<span class="ps-mut">None.</span>'}${editable ? '<button type="button" class="ps-dladd" data-dl-add>+ Add</button>' : ""}</span></div>`;
 }

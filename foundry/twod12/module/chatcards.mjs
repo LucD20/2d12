@@ -456,19 +456,25 @@ export function nonRollCardHtml(m, view = FULL_VIEW) {
 
 /* ------------------------------------------------------------------ the damage arithmetic */
 /** "Resist 5 Fire, Weak 2 Holy, Immune Holy" (names or codes; "Resist Fire 5" too) → { resist: { Fi: 5 }, weak: { Ho: 2 }, immune: ["Ho"] }. The highest of each counts. */
+// the Bestiary's rebuild (2026-11-25; book, Chapter 1, Resistance, Weakness and Immunity; decided.md section 5, item 5): the word first, then each
+// subtype with its number ("Resistance Psychic 3, Fire 5 · Weakness Holy 3 · Immunity Cold"); a subtype with no word of its own takes the last word
+// written. The old writing ("Resist 5 Fire, Weak 2 Holy, Immune Cold") is still read.
 export function parseDmgMods(text) {
   const out = { resist: {}, weak: {}, immune: [] };
   const code = w => { const s = String(w ?? "").trim().toLowerCase(); return Object.keys(SUBS).find(k => k.toLowerCase() === s || SUBS[k][0].toLowerCase() === s) ?? ""; };
-  for (const part of String(text ?? "").split(/[,;\n]+/)) {
-    const p = part.trim();
-    let m = p.match(/^(resist|weak)\s+(\d+)\s+([a-z]+)$/i) ?? p.match(/^(resist|weak)\s+([a-z]+)\s+(\d+)$/i);
-    if (m) {
-      const n = Number(/^\d+$/.test(m[2]) ? m[2] : m[3]), c = code(/^\d+$/.test(m[2]) ? m[3] : m[2]), k = m[1].toLowerCase();
-      if (c) out[k][c] = Math.max(out[k][c] ?? 0, n);
-      continue;
-    }
-    m = p.match(/^immun(?:e|ity)(?:\s+to)?\s+([a-z]+)$/i);
-    if (m && code(m[1]) && !out.immune.includes(code(m[1]))) out.immune.push(code(m[1]));
+  const KIND = w => (/^resist/i.test(w) ? "resist" : /^weak/i.test(w) ? "weak" : /^immun/i.test(w) ? "immune" : "");
+  let kind = "";
+  for (const part of String(text ?? "").split(/[,;\n\u00b7]+/)) {
+    let p = part.trim().replace(/\s+to\s+/i, " ");
+    const w = p.match(/^(resist(?:ance)?|weak(?:ness)?|immun(?:e|ity))\b\s*/i);
+    if (w) { kind = KIND(w[1]); p = p.slice(w[0].length).trim(); }
+    if (!kind || !p) continue;
+    const m = p.match(/^(\d+)\s+([a-z]+)$/i) ?? p.match(/^([a-z]+)\s+(\d+)$/i) ?? p.match(/^([a-z]+)$/i);
+    if (!m) continue;
+    const num = m.slice(1).find(x => /^\d+$/.test(x)), c = code(m.slice(1).find(x => !/^\d+$/.test(x)));
+    if (!c) continue;
+    if (kind === "immune") { if (!out.immune.includes(c)) out.immune.push(c); }
+    else if (num) out[kind][c] = Math.max(out[kind][c] ?? 0, Number(num));
   }
   return out;
 }
@@ -505,10 +511,10 @@ export function dmgModsFor(comps, mods) {
   const st = subTotals(comps), out = [];
   for (const [s, t] of Object.entries(st)) {
     if (!s || t.total <= 0) continue;
-    if (mods.immune?.includes(s)) { out.push({ v: -t.total, label: `Immune ${subName(s)}`, sub: s, kind: "immune" }); continue; }
+    if (mods.immune?.includes(s)) { out.push({ v: -t.total, label: `Immunity ${subName(s)}`, sub: s, kind: "immune" }); continue; }
     const r = Math.min(t.total, mods.resist?.[s] ?? 0), w = mods.weak?.[s] ?? 0;
-    if (r) out.push({ v: -r, label: `Resist ${subName(s)}`, sub: s, kind: "resist", split: t.B > 0 && t.M > 0 && r < t.total });
-    if (w) out.push({ v: w, label: `Weak ${subName(s)}`, sub: s, kind: "weak" });
+    if (r) out.push({ v: -r, label: `Resistance ${subName(s)}`, sub: s, kind: "resist", split: t.B > 0 && t.M > 0 && r < t.total });
+    if (w) out.push({ v: w, label: `Weakness ${subName(s)}`, sub: s, kind: "weak" });
   }
   return out;
 }
@@ -641,7 +647,7 @@ export function modBarHtml(insts) {
  * v0.0.321 (Lucas: Resist / Weak / Immune only after Apply, and not loud): compact readable post-Apply tags after "Took …".
  * mods: [{ kind: "resist" | "weak" | "immune", label, v }].
  */
-const RWI = { weak: ["fa-fire-flame-curved", "Weak"], resist: ["fa-shield-halved", "Resist"], immune: ["fa-ban", "Immune"] };
+const RWI = { weak: ["fa-fire-flame-curved", "Weakness"], resist: ["fa-shield-halved", "Resistance"], immune: ["fa-ban", "Immunity"] };   // the Bestiary's rebuild: the book's words
 export const rwIcons = (mods = []) => Object.entries(RWI).map(([k, [ic, word]]) => {
   const list = (mods ?? []).filter(x => x?.kind === k);
   if (!list.length) return "";
@@ -650,7 +656,8 @@ export const rwIcons = (mods = []) => Object.entries(RWI).map(([k, [ic, word]]) 
   const tip = list.map(x => (k === "immune" ? x.label : `${x.v > 0 ? "+" : "\u2212"}${Math.abs(Number(x.v) || 0)} ${x.label}`)).join(", ");
   return `<span class="cc-dtag ${k}" aria-label="${esc(`${word}: ${tip}`)}"><i class="fa-solid ${ic}" aria-hidden="true"></i>${esc(txt)}</span>`;
 }).join("");
-const tookTxt = t => { const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"; };
+const tookTxt = t => { if (Number.isFinite(t?.ticks)) return `Took <b>${t.ticks} tick${t.ticks === 1 ? "" : "s"}</b>`;   // the Bestiary's rebuild: a Minion's ticks
+  const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"; };
 const stateChip = s => (s === "down" || s === "both" ? '<span class="cc-state down">Down</span>' : s === "bloodied" ? '<span class="cc-state bloodied">Bloodied</span>' : s === "strained" ? '<span class="cc-state strained">Strained</span>' : "");
 /** A dice summary for a Tier's group: "3d8 Ho". */
 export const diceSummary = comps => [...new Set((comps ?? []).map(c => `${c.formula ?? ""}`.replace(/\s.*$/, "")).filter(Boolean))].join(" + ");

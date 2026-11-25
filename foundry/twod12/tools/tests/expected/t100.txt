@@ -1,9 +1,9 @@
 --- Tags
 slugs: ["undead","big-dragon",""]
 an older creature stored text: ["undead","beast","big-dragon"] | nothing: [] [] | a list: ["unholy","holy-light"]
-the starting list (nothing in the setting): Aberration, Beast, Celestial, Construct, Dragon, Elemental, Fey, Fiend, Giant, Holy, Humanoid, Ooze, Plant, Profane, Undead, Unholy
+the starting list (nothing in the setting): Aberration, Beast, Celestial, Construct, Dragon, Elemental, Fey, Fiend, Giant, Goblin, Holy, Humanoid, Ogre, Ooze, Plant, Profane, Undead, Unholy
 the world's list: {"unholy":"Unholy","holy":"Holy","big-dragon":"Big Dragon"}
-the setting is not registered: the starting list has 16 tags
+the setting is not registered: the starting list has 18 tags
 hasTag: true true false | no tags: false false | a plain list: true
 the data model: a set of tags: true | migrates text: true | conditions on an effect: true | a valued condition: true
 the NPC sheet: a multi-select of the tags: false

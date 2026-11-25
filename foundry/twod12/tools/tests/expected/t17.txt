@@ -16,7 +16,7 @@ Body 1  Body Health 3 (xnull)  Mind Health 6
 Appeal 3  Body Health 44 (hm null)  AD 17 WD 9
 --- the derived NPC
 Orc Warrior                    pool 60  AP 4  Weapon 2 (body)  Power 2 (instinct)  Signature 2 from weapon  AD 13 WD 11  Standard CV 100
-a Minion                       pool 12  AP 3  Weapon 2 (body)  Power 1 (mind)  Signature 2 from weapon  AD 12 WD 12  Minion CV 25
+a Minion                       pool 2  AP 3  Weapon 2 (body)  Power 1 (mind)  Signature 2 from weapon  AD 12 WD 12  Minion CV 30
 Elite, Power Attribute higher  pool 130  AP 4  Weapon 2 (body)  Power 3 (mind)  Signature 3 from power  AD 14 WD 14  Elite CV 200
 --- dice that come close (the Modifier taken out)
 0->[Mod]  0.4->[Mod]  1->1  2.5->1d4  3->1d4  4->1d6  5.5->1d10  7->2d6  8->2d6  10->2d8  12.5->2d12
@@ -35,7 +35,7 @@ check: Health: 60 (Body 36 + Mind 24)
 check: Down in about: 2.4 PC turns (A Stage 0 PC deals about 25.2 a turn against AD 13 and WD 11. Target for a Standard: 2 PC turns)
 check: Should deal: about 12 (a turn to an average PC: the book's target, to check its Actions against)
 check: Ratings average: Medium (No Custom numbers)
-roles: Minion CV 25, Grunt CV 50, Standard CV 100 (on), Elite CV 200 | CV: 100 | level note: ""
+roles: Minion CV 30, Grunt CV 50, Standard CV 100 (on), Elite CV 200 | CV: 100 | level note: ""
 a Minion's tab: Basic attack, Special, 1 AP, Special, 2 AP | 
 --- v0.0.164: no Custom chip; clicking the selected chip clears it (Custom), any other chip selects it
 Body chips (label -> what a click writes): Terrible->terrible, Low->low, Medium->medium, High->custom, Extreme->extreme

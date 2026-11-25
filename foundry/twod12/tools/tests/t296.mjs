@@ -79,10 +79,11 @@ delete globalThis.canvas;
 
 console.log("--- 8. Compendium & NPC cards check");
 const doc = n => CN.allDocs.find(d => d.name === n);
-const brace = doc("Brace"), courage = doc("Courage"), rallyFx = doc("Rally the Tribe (1 Support Boon)");
+// the Bestiary's rebuild (2026-11-25): Rally the Tribe's Boon left with the old Ogre Chieftain; its place: the new Ogre's Crack the Ground zone
+const brace = doc("Brace"), courage = doc("Courage"), crackFx = CN.allDocs.find(d => d.name === "Crack the Ground" && d.type === "effect");
 console.log("Brace zone:", brace?.system?.where, brace?.system?.zone?.ring, brace?.system?.zone?.inside?.diff?.who,
   "| Courage aura:", courage?.system?.settings?.[0]?.type, courage?.system?.settings?.[0]?.auraSize,
-  "| Rally fx:", rallyFx?.system?.settings?.[0]?.bbName, JSON.stringify(rallyFx?.system?.expireOn));
+  "| Crack the Ground zone:", crackFx?.system?.where, crackFx?.system?.zone?.inside?.diff?.who, crackFx?.system?.zone?.inside?.diff?.self, crackFx?.system?.ends?.time?.mode);
 const npcActs = CN.actors.filter(a => ["Goblin Sneak", "Orc Warrior", "Grave Wisp", "Ogre Chieftain"].includes(a.name))
   .flatMap(a => a.items.filter(i => i.type === "action" && !i.flags?.twod12?.basic).map(i => `${i.name}:${i.system.automation}`));
 console.log("playtest NPC actions:", npcActs.join(", "));

@@ -37,10 +37,10 @@ Aveline (Human Paladin, Smite): Judge, Smite, Sworn Blade, Drawing Light, Bindin
 Durgan (Dwarf Paladin, Lay On Hands): Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith, Kindled Wrath, Bulwark of Faith, Shared Burden, Oath of Burden, Bear the Blow, Seizing Cut | ids unique: true
 Sylwen (Elf Archer, Quick Shots): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Thrill of the Kill, Volley, Take Aim, Take Aim, Wounding Shot | ids unique: true
 Kaela (Human Archer, Strafe): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Thrill of the Kill, Hit and Run, Ricochet, Ricochet, Circling Shot | ids unique: true
-Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
-Grave Wisp (standard, speed 5): Chilling Touch atwill, Dread Whisper round
+Goblin Sneak (minion, speed 6): Shiv atwill, Jeer atwill, Knife in the Back round, Shriek and Scatter encounter reaction
+Grave Wisp (grunt, speed 6): Slipping Touch atwill, Guttering Glance atwill, Pass Through round, Dying Flare encounter reaction
 Ice Pillar (minion, speed 0): 
-Ogre Chieftain (elite, speed 4): Club atwill, Overhead Smash round, Ground Slam encounter, Rally the Tribe round
+Ogre Chieftain (elite, speed 5): Crushing Grip atwill, Roar atwill, Great Sweep round, Hurled Goblin round, Crack the Ground encounter, Backhand turn reaction
 Orc Warrior (standard, speed 5): Hamstringing Axe atwill, Barbed Javelin atwill, War Howl round, Blood for Blood round reaction
 keys unique in each pack (embedded Items too): yes
-NPC Speed as a rating: Goblin Sneak 7, Grave Wisp 5, Ice Pillar custom, Ogre Chieftain 4, Orc Warrior 5
+NPC Speed as a rating: Goblin Sneak 6, Grave Wisp 6, Ice Pillar custom, Ogre Chieftain 5, Orc Warrior 5

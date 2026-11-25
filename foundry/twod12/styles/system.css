@@ -4770,6 +4770,9 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hb-bar { position: relative; height: 12px; background: #14110e; border: 1px solid rgba(125, 104, 68, .75); }
 .twod12-hud .hb-bar i { position: absolute; left: 0; top: 0; bottom: 0; }
 .twod12-hud .hb-bar.v i { background: #c23b32; } .twod12-hud .hb-bar.r i { background: #3f73c9; }
+/* the Bestiary's rebuild (2026-11-25): a Minion's ticks, one segment each, in the Vigor red (its staying power) */
+.twod12-hud .hb-bar.t i { background: #c23b32; }
+.twod12-hud .hb-bar.t em { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 calc(100% / var(--n) - 2px), #14110e calc(100% / var(--n) - 2px) calc(100% / var(--n))); }
 .twod12-hud .hb-bar u { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(-50deg, rgba(255, 255, 255, .55) 0 3px, transparent 3px 6px); }
 .twod12-hud .hb-bar.v u { background: repeating-linear-gradient(-50deg, #e8965d 0 3px, #6e261d 3px 6px); }
 .twod12-hud .hb-bar.r u { background: repeating-linear-gradient(-50deg, #74dbe2 0 3px, #203c66 3px 6px); }

@@ -148,7 +148,8 @@ const boldHtml = s => String(s ?? "").replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
 export function areaOf(c) {
   const a = String(c.area ?? "").trim();
   if (!a) return null;
-  const m = a.match(/^(\d+(?:\s*\/\s*\d+)*)\s+(Emanation|Burst|Line)$/i);
+  // the Bestiary's rebuild (2026-11-25): the book writes a Line "Line 3" (the shape first): read as "3 Line"
+  const m = a.match(/^(\d+(?:\s*\/\s*\d+)*)\s+(Emanation|Burst|Line)$/i) ?? (() => { const l = a.match(/^(Line)\s+(\d+(?:\s*\/\s*\d+)*)$/i); return l ? [l[0], l[2], l[1]] : null; })();
   if (!m) return null;   // "Aura 2": the Distance below
   const sizes = m[1].split("/").map(x => Number(x.trim()));
   const cfg = { size: sizes[0], shape: m[2].toLowerCase(), within: 0, targets: "all", center: false, keep: false, rounds: 0 };
@@ -193,7 +194,7 @@ export function cardSystem(c, resolve = s => s) {
   // the roll, Steel Yourself's at the end); its description keeps them for the other surfaces
   else if (c.category === "Basic Action") { if (c.rules) sys.lines = [{ label: "Special", text: resolve(fxText(c.rules)) }]; if (c.notes) sys.special = resolve(fxText(c.notes)); }
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));   // v0.0.360 (the audit's D17): an Action holds rules (Mark Quarry)
-  for (const k of ["weaponUse", "weaponNeeds", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat", "momentSplit"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // pack TALENTS-PT: momentSplit (Bear the Blow); v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
+  for (const k of ["weaponUse", "weaponNeeds", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat", "momentSplit", "momentPool", "momentState", "momentTag", "reqFlank"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // the Bestiary's rebuild: momentPool, momentState, momentTag, reqFlank   // pack TALENTS-PT: momentSplit (Bear the Blow); v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }
 

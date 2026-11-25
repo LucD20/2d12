@@ -121,8 +121,10 @@ export const TWOD12 = {
     "Fey",
     "Fiend",
     "Giant",
+    "Goblin",   // the Bestiary's rebuild (2026-11-25): the Goblin Sneak's Tag (Shriek and Scatter keys on it)
     "Holy",
     "Humanoid",
+    "Ogre",   // the Bestiary's rebuild: the Ogre Chieftain's Tag
     "Ooze",
     "Plant",
     "Profane",
@@ -158,7 +160,9 @@ export const TWOD12 = {
   },
   // v0.0.261 (Lucas, Divine Intervention): the moment a Reaction watches for by itself ("would go Down": asked before the damage lands)
   // v0.0.272 (pack RX, Lucas): the first set of moments. "Within N" is measured to the creature the moment is about (the ally, the enemy who moves).
-  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves or stands up", enemyAway: "An enemy within N moves away from you", enemyAdjacent: "An enemy within N would enter a square adjacent to you", boundDamage: "An Action would damage the creature you marked (your Bound Ally) within N" },   // pack TALENTS-PT: Bear the Blow
+  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves or stands up", enemyAway: "An enemy within N moves away from you", enemyAdjacent: "An enemy within N would enter a square adjacent to you", boundDamage: "An Action would damage the creature you marked (your Bound Ally) within N",
+    // the Bestiary's rebuild (2026-11-25): four moments the playtest creatures need (moment.mjs MOMENTS)
+    selfDamage: "You take damage (of a pool, while in a state)", selfDown: "You would go Down", allyDown: "An ally within N goes Down (with a Tag)", enemyEnters: "An enemy within N enters a square adjacent to you (it isn't moved back)" },   // pack TALENTS-PT: Bear the Blow
   // v0.0.272: whom the Reaction is used on when its moment comes ("the triggering creature" of the card)
   momentTargets: { subject: "The creature of the moment (the ally, the enemy who moves)", source: "The creature that caused it (the attacker)" },
   // v0.0.264 (Lucas): a Grant's "On [a result], [what happens]": the result, and what happens (the target's next damage halved, or a line on the card)
@@ -173,7 +177,7 @@ export const TWOD12 = {
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
   // v0.0.320 (pack AU part 2; book, Chapter 1 Resist, Weak and Immune; Bestiary, Elite Escalation): the kinds of a Resist setting, and the extra uses
   //   a "More uses of a Frequency" setting gives (the Elite ladder's rungs 2 and 3; Special Actions: not the Basic Actions).
-  rwKinds: { resist: "Resist", weak: "Weak", immune: "Immune" },
+  rwKinds: { resist: "Resistance", weak: "Weakness", immune: "Immunity" },   // the Bestiary's rebuild (2026-11-25): the book's words (Chapter 1)
   // v0.0.340 (book, Rally Points: NPCs): what one Rally Point an NPC is given heals, by Stage. v0.0.407 (Stage 0 in Foundry): Stage 0 / 1 / 2 / 3;
   // Stage 0 heals 9 (the book); the later Stages keep pack R's rows until they are written.
   npcRallyHeal: [9, 9, 13, 17],
@@ -228,7 +232,8 @@ export const TWOD12 = {
   //   hm and basic: the Health Multiplier and the Basic attack averages (Tier 2 / Tier 3, [Mod] included) by Stage (1, 2, 3), one per rating
   //   (Terrible, Low, Medium, High, Extreme; a Minion has no Extreme). Exactly the book's tables: nothing is computed from them.
   npcRoles: {
-    minion: { label: "Minion", mods: [2, 1], modBy: [0, 1, 2, 3], cv: [25, 20, 15], ap: 3, attr: 0, hb: 1, defense: 12, extreme: false, deals: "5", takes: "one PC hit",
+    // the Bestiary's rebuild (2026-11-25; book, Building an encounter): a Minion is CV 30 (the earlier Stages' 20 / 15 are the old placeholders)
+    minion: { label: "Minion", mods: [2, 1], modBy: [0, 1, 2, 3], cv: [30, 20, 15], ap: 3, attr: 0, hb: 1, defense: 12, extreme: false, deals: "5", takes: "one PC hit",
       hm: [[0, 0.75, 1, 1.25], [0, 1, 1.25, 1.5], [0, 1.5, 2, 2.75]],
       basic: [[[1, 2.5], [1.5, 3.5], [2, 4], [2.5, 5]], [[1.5, 3.5], [2, 5], [3, 5.5], [3.5, 7]], [[2, 5], [3, 7], [4, 8], [5, 10]]] },
     grunt: { label: "Grunt", mods: [2, 1], modBy: [0, 1, 2, 3, 4], cv: [50, 40, 30], ap: 3, attr: 0, hb: 3, defense: 13, extreme: true, deals: "8", takes: "1 PC turn",
@@ -266,7 +271,7 @@ export const TWOD12 = {
     rating: { terrible: 0.65, low: 0.8, medium: 1, high: 1.2, extreme: 1.5 }, size: [0, 0, 0, 0.05], round: 0.1, encounter: 2, payBack: [0, 0.2, 0.25, 0.5], over: 0.15,
     riders: { forced: 2, mild: 3, moderate: 8, severe: 12, extreme: 18, step: 6 }, explode: 6, multi: 2 / 3, multiEnc: 0.5, toDamage: [0.14, 0.22], help: { boon: 3, health: 1 }, reaction: { self: 1 / 3, other: 0.25, twoR: 0 } },
   npcStage0: {
-    minion: { reactionAp: 0, squad: 3, health: [3, 5, 6, 7],
+    minion: { reactionAp: 0, squad: 2, health: [3, 5, 6, 7],   // the Bestiary's rebuild (2026-11-25): squads of 2 (roundrules.mjs MINION_SQUAD)
       basic: [["1", "2"], ["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"]],
       s1: [["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"], ["1 + 1d4", "3 + 1d4"]],
       s2: [["2", "2 + 1d4"], ["1d4", "2 + 1d6"], ["1 + 1d4", "3 + 1d6"], ["2 + 1d4", "5 + 1d6"]] },

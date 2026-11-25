@@ -4,8 +4,8 @@ adding the Basic Actions removes them: Basic Attack | creates: nothing | left ov
 a character keeps them: true | it still has Basic Attack: true
 the GM's first load updates such NPCs: true | the NPC compendium: true
 a Charge (or a grant) that uses Weapon Attack uses an NPC's Basic attack: true
-Goblin Sneak: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Rusty Knife
-Grave Wisp: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Chilling Touch
+Goblin Sneak: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Shiv, Jeer
+Grave Wisp: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Slipping Touch, Guttering Glance
 Ice Pillar: Weapon Attack false, Fists Action false, Fists weapon false, Basic attacks: 
-Ogre Chieftain: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Club
+Ogre Chieftain: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Crushing Grip, Roar
 Orc Warrior: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Hamstringing Axe, Barbed Javelin

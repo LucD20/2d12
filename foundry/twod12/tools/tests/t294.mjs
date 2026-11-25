@@ -33,7 +33,8 @@ console.log("--- the Bloodied / Strained lines (statelines.mjs stateLinesFor)");
 const L = { bloodied: "after-B", strained: "after-S", bloodiedBefore: "before-B", strainedBefore: "" };
 for (const [pre, now] of [[{}, {}], [{}, { b: true }], [{ b: true }, { b: true }], [{ s: true }, { s: true }], [{ b: true }, {}]])
   console.log(`before ${JSON.stringify(pre)} now ${JSON.stringify(now)}:`, JSON.stringify(CC.stateLinesFor(L, pre, now)));
-const smash = C.actors.find(a => a.name === "Ogre Chieftain")?.items?.find(i => i.name === "Overhead Smash");
+// the Bestiary's rebuild (2026-11-25): the old Ogre Chieftain's Overhead Smash left the packs; OLD_CLASS_DOCS keeps it (the line's machinery)
+const smash = C.actors.find(a => a.name === "Ogre Chieftain")?.items?.find(i => i.name === "Overhead Smash") ?? C.OLD_CLASS_DOCS.find(i => i.name === "Overhead Smash");
 console.log("the Ogre's Overhead Smash carries its placeholder line:", JSON.stringify(smash?.system?.stateLines ?? null));
 console.log("--- batch 1's cards: Break Free, Lean, Steel Yourself");
 console.log("Break Free:", BASIC_ACTIONS.breakFree.vs, BASIC_ACTIONS.breakFree.versions[0].orTiers, "| Lean:", BASIC_ACTIONS.leaning.name, "| Steel Yourself:", BASIC_ACTIONS.rally.versions.map(v => v.ap).join("/"));

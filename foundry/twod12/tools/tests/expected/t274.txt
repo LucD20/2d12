@@ -7,7 +7,7 @@ halve your Speed last: true
 Prone allows Break Free; Immobilized mid-move ends the movement: true
 ignoring a condition: true
 a Save Action switches to Nonlethal with 1 Boon on each Save: true
-each Elite has its own Escalation (three steps, the default ladder): true
+no NPC has Escalation (Elite Escalation gone): true
 Break Free is shown in Chapter 6: true
 Courage is an Aura 3; Brace's squares are fixed; Judge's 1 AP is clear: true
 v0.0.432: a rider happens whatever damage is dealt: true

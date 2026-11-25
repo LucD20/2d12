@@ -33,7 +33,7 @@ a rating set by the GM wins: {"weapon":"high","power":"terrible"}
 --- v0.0.307: Vs. an Attribute = 12 + the Attribute: -1 -> 10, 0 -> 11, 1 -> 12, 2 -> 13, 3 -> 14, 4 -> 15 | with a +1 bonus: 14
 Goblin Sneak: role minion, leads with weapon
 Orc Warrior: role standard, leads with weapon
-Grave Wisp: role standard, leads with power
+Grave Wisp: role grunt, leads with power
 Ogre Chieftain: role elite, leads with weapon
 --- rolls: a class value has no Attribute behind it
 [weapon, strike]: weapon +2 "Weapon Modifier" attrKey "" | sees "body" (Body Rolls): false
@@ -48,8 +48,8 @@ Body 0, Mind 2, Appeal 2: old copy weapon | already updated (no lists) weapon
 Body 1, Mind 3, Appeal 0: old copy power | already updated (no lists) power
 --- wiring: the class window's picks true | under the Attribute increases (v0.0.306) true | refresh keeps modStage2 true | the migration registered true | the Builder's Weapon Mod / Power Mod rows true | the Archer's fixed row true | 12 + Attribute in defense.mjs true | no DialogV2 in the migration true
 --- v0.0.308: the Builder tab (Lucas)
-chips: [{"kind":"resist","sub":"Fi","label":"Resist 5 Fire"},{"kind":"weak","sub":"Ho","label":"Weak 2 Holy"}]
-Resist Fire 3 replaces 5, + Weak 4 Cold, + Immunity Psychic: Resist 3 Fire, Weak 2 Holy, Weak 4 Cold, Immune Psychic
-Weak Holy and Immunity removed: Resist 3 Fire, Weak 4 Cold | read back the same: true
+chips: [{"kind":"resist","sub":"Fi","label":"Resistance Fire 5"},{"kind":"weak","sub":"Ho","label":"Weakness Holy 2"}]
+Resist Fire 3 replaces 5, + Weak 4 Cold, + Immunity Psychic: Resistance Fire 3, Weakness Holy 2, Weakness Cold 4, Immunity Psychic
+Weak Holy and Immunity removed: Resistance Fire 3, Weakness Cold 4 | read back the same: true
 dice for an average, [Mod] out: 4 with +2: 2 | 7.5 with +2: 1d10 | 13 with +3: 2d8 | 2 with +2: -
 Tags above the tables: true | the old Stat block gone: true | Frame rows: true | Resist / Weak add and remove: true | the attack cells carry dice (v0.0.309: tiles, no table): true | a long Frame label smaller: true

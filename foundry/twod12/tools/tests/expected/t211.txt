@@ -39,7 +39,7 @@ after (v0.0.431): the stamp: TIER 1 vs DC 13 | the ladder opens the roll: true |
 v0.0.294 (brief section 12): the Trigger under the Save line, above the Tier rows, then one diamond: true | Trigger: An enemy within 5 squares makes a [Strike] Action against an ally.
 --- Resist / Weak / Immunity: once per subtype per Action, across both pools; Resist capped at what that subtype dealt
 parsed: {"resist":{"Fi":5},"weak":{"Ho":2},"immune":["Co"]}
-Fire Imp: ♥ 6 Sl + 4 Fi, 🧠 10 Ho: -4 Resist Fire, +2 Weak Holy → {"B":6,"M":12}
+Fire Imp: ♥ 6 Sl + 4 Fi, 🧠 10 Ho: -4 Resistance Fire, +2 Weakness Holy → {"B":6,"M":12}
 [V] 3 Fi + [R] 5 Fi vs Resist 5 Fire: one reduction: {"B":3,"M":0} | the creature chooses Vigor first: {"B":0,"M":3} | a choice: resist
 Holy from two sources is one subtype (Weak once): {"B":0,"M":12} | Immunity Cold: {"B":0,"M":0}
 Half first, then Resist: {"B":3,"M":0}

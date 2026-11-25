@@ -5,8 +5,8 @@ a Tier 1 keeps its Frequency, its Strike counts: true
 the card's Effects and fx.all on a Tier 1: true | the chat card from Tier 1: true | the after-chain keeps its gate (Club's Push): true
 --- Minion squads
 sizes for 1 to 7: 1 | 2 | 2+1 | 2+2 | 2+2+1 | 2+2+2 | 2+2+2+1
-the GM's: all three in one: 3 | never four in one: 3+1
-three: a click moves the lone one into the first; one of the pair into a new squad: 1 2 | two can be split: 2
+the GM's: all three in one: 2+1 | never four in one: 2+2
+three: a click moves the lone one into the first; one of the pair into a new squad: 2 2 | two can be split: 2
 a click fixes the others where they stand: {"m0":3,"m1":2,"m2":1}
 --- the rewind
 an Advance bought during the drag, 2 back: {"moveLeft":3} | free squares, 2 back: {"freeMove":3} | all the way: the AP too: true

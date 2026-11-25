@@ -1,3 +1,4 @@
+import { creatureWay } from "./roundrules.mjs";   // the Bestiary's rebuild: Drifting
 import { homePos, leanOf } from "./lean.mjs";
 import { tokenDistance, lightAt, seenLight, sightSenses, regionHasPoint, verticalSquares, withHeight } from "./light.mjs";
 // Movement: AP tracking for the creature whose turn it is (v0.0.414: an Advance is one piece, combat.mjs advanceAfterAction; free movement from @Move[walk]),
@@ -543,9 +544,14 @@ const unwillingIn = (cell, doc) => { const t = creatureIn(cell, [doc.id]); retur
  * (a willing creature's) space and a Down or dead creature's are Difficult Terrain. Pure on a token: "block" or "dt".
  */
 export const downTok = t => { const a = t?.actor; return !!(a?.system?.atZero || ["dead", "dying", "shattered", "unconscious", "desperate"].some(s => a?.statuses?.has?.(s))); };
-export const wayKind = (t, doc) => (!downTok(t) && (t?.document?.disposition ?? 0) !== (doc?.disposition ?? 0) ? "block" : "dt");
-/** An enemy that blocks (unwilling and not Down) in a square, for the diagonal between two of them (book: blocked). */
-const blockerIn = (cell, doc) => { const t = unwillingIn(cell, doc); return t && !downTok(t) ? t : null; };
+/**
+ * The Bestiary's rebuild (2026-11-25; the Grave Wisp's Drifting: "its own movement can pass through creatures' spaces (it can't end in one), and a
+ * creature's space is never Difficult Terrain for it"): a Feature hook on the creature, { kind: "drift" } (a setting anyone can remove).
+ */
+export const isDrifting = actor => { try { return [...(actor?.items ?? [])].some(i => (i.system?.hooks ?? []).some(h => h?.kind === "drift")); } catch (e) { return false; } };
+export const wayKind = (t, doc) => creatureWay({ drifting: isDrifting(doc?.actor), unwilling: (t?.document?.disposition ?? 0) !== (doc?.disposition ?? 0), down: downTok(t) });
+/** An enemy that blocks (unwilling and not Down) in a square, for the diagonal between two of them (book: blocked); none for a drifting mover. */
+const blockerIn = (cell, doc) => { if (isDrifting(doc?.actor)) return null; const t = unwillingIn(cell, doc); return t && !downTok(t) ? t : null; };
 
 /** The system setting that lets the movement buttons work when there is no combat. */
 export const movesOutsideCombat = () => { try { return !!game.settings.get(F, "moveOutsideCombat"); } catch (e) { return false; } };
@@ -1456,6 +1462,13 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
 
 /** Entry point of the @Move button. */
 export async function handleMove(cfg, ctx = {}) {
+  // the Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): a Forced Movement clicked from an Action's card is that Action's: its Collision
+  // removes no second tick from a Minion the Action already ticked (damage.mjs tickScope)
+  const msgId = ctx?.message?.id ?? "";
+  if (msgId && ["pushed", "pulled", "slid", "reposition"].includes(cfg.kind)) { const D = await import("./damage.mjs"); return D.withTickScope(msgId, () => handleMoveIn(cfg, ctx)); }
+  return handleMoveIn(cfg, ctx);
+}
+async function handleMoveIn(cfg, ctx = {}) {
   if (cfg.kind === "pushed") return pushFlow(cfg, ctx);
   if (cfg.kind === "pulled") return pushFlow(cfg, ctx, "pull");
   if (cfg.kind === "slid") return pushFlow(cfg, ctx, "slid");

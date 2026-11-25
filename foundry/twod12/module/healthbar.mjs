@@ -60,8 +60,11 @@ export function planHealthBar(sys = {}, statuses = new Set(), w = 100) {
   const has = k => !!statuses?.has?.(k);
   const dead = has("dead");
   const down = !dead && (bdt + mdt > 0) && total >= pool;
-  const bloodied = !dead && bdt > 0 && vTot >= bdt;
-  const strained = !dead && mdt > 0 && rTot >= mdt;
+  // the Bestiary's rebuild (2026-11-25): a Minion's bar is its ticks (bdt is its ticks, its damage the ticks lost); at 1 tick left it counts as
+  // Bloodied or Strained (data.mjs, roundrules.mjs minionState)
+  const minion = !!sys?.isMinion;
+  const bloodied = !dead && (minion ? !!sys.bloodied : bdt > 0 && vTot >= bdt);
+  const strained = !dead && (minion ? !!sys.strained : mdt > 0 && rTot >= mdt);
 
   let downState = null;
   if (down) {
@@ -120,7 +123,8 @@ export function planHealthBar(sys = {}, statuses = new Set(), w = 100) {
     vZone, vFillW, rFillX, rFillW,
     vNlX, vNlW, rNlStart, rNlW,
     vSpillStart, vSpillW, rSpillStart, rSpillW,
-    guardW
+    guardW,
+    ticks: minion ? { max: pool, left: hpLeft } : null
   };
 }
 
@@ -247,6 +251,9 @@ function draw(token, number, bar) {
     if (p.rSpillW > 0) drawHatch(bar, p.rSpillStart, barY, p.rSpillW, h, COLORS.spillRBg, COLORS.spillRStripe, { step: 6, sw: 2.5, dir: -1, stripeAlpha: 0.68 });
   }
 
+  // the Bestiary's rebuild: a Minion's ticks, a dark divider between each
+  if (p.ticks && p.ticks.max > 1) for (let k = 1; k < p.ticks.max; k++) rect(bar, (w * k) / p.ticks.max - 1, barY, 2, h, COLORS.track, 1);
+
   // Forged Brass Pin V/R threshold divider (extends ±ext above & below main bar, clear of Guard crown)
   if (p.bdt > 0 && p.mdt > 0) {
     const pinW = Math.max(3.5, Math.min(5, w * 0.036));
@@ -291,6 +298,9 @@ function drawStateOverlay(token) {
   const p = planHealthBar(actor.system, actor.statuses, w);
 
   applyDeadFilter(token, p.dead);
+  // the Bestiary's rebuild (2026-11-25; book, Bestiary: "Minions are announced"): a Minion's ticks as pips at the top of its token, drawn on
+  // every client (the bar may be hidden from players; the overlay is not)
+  if (p.ticks && !p.dead) drawTickPips(token, w, h, p.ticks);
   if (!p.overlay) return;
 
   const box = new PIXI.Container();
@@ -349,6 +359,23 @@ function drawStateOverlay(token) {
     .filter(i => i >= 0);
   if (anchorIndices.length) token.addChildAt(box, Math.min(...anchorIndices));
   else token.addChild(box);
+}
+
+/** A Minion's ticks: one pip each, filled while it has it (the Vigor red), at the top of the token. */
+function drawTickPips(token, w, h, t) {
+  const box = new PIXI.Container();
+  box.name = "twod12-state-overlay";
+  box.eventMode = "none";
+  const g = new PIXI.Graphics(), r = Math.max(3, Math.min(8, w * 0.06)), gap = r * 0.9, n = Math.max(1, t.max);
+  const total = n * 2 * r + (n - 1) * gap, x0 = (w - total) / 2 + r, y = r + 2;
+  for (let k = 0; k < n; k++) {
+    const cx = x0 + k * (2 * r + gap);
+    circleFill(g, cx, y, r + 1.2, 0x16110c, 0.95);
+    if (k < t.left) circleFill(g, cx, y, r, COLORS.vigor, 1);
+    else circleStroke(g, cx, y, r - 0.6, 1.2, COLORS.frameNormal, 0.95);
+  }
+  box.addChild(g);
+  token.addChild(box);
 }
 
 function refreshActorTokens(actor) {

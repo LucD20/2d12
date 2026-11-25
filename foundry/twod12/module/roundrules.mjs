@@ -71,8 +71,56 @@ export const canSwapModifierOrder = stage => (Math.trunc(Number(stage)) || 0) ==
 export const ENGAGED_RANGED_DOOMED = true;
 /** A Thrown weapon thrown deals this much less damage on Tiers 2 and 3 (Ch. 15, Thrown; Lucas, 2026-11-12): each instance of its [W]. */
 export const THROWN_LESS = 1;
-/** Up to this many Minions can act in the same turn slot, one after another (the Bestiary; Lucas, 2026-11-12). */
-export const MINION_SQUAD = 3;
+/** Up to this many Minions can act in the same turn slot, one after another (the Bestiary; Lucas, 2026-11-12: 3; the Bestiary's rebuild, Lucas,
+ *  2026-11-25: "Ok, lets do Squads of 2"). */
+export const MINION_SQUAD = 2;
+
+/**
+ * Creatures in your way (Ch. 3, the core rework batch 4) and Drifting (the Bestiary's rebuild, 2026-11-25: the Grave Wisp): what another creature's
+ * space is to a mover's own movement (pure). "block": an unwilling creature that isn't Down; "dt": an ally's, or a Down creature's (Difficult
+ * Terrain); "pass": a drifting mover passes through every creature's space, never Difficult Terrain (it still can't end in one).
+ */
+export const creatureWay = ({ drifting = false, unwilling = false, down = false } = {}) => (drifting ? "pass" : !down && unwilling ? "block" : "dt");
+
+/* ---- Minion ticks (the Bestiary's rebuild, 2026-11-25; book, Bestiary, Ticks; book/cards/goblin-sneak-redesign.md) ---- */
+/** A Minion's ticks when its entry names no other number. */
+export const MINION_TICKS = 2;
+/**
+ * The ticks one damage removes from a Minion (pure). dealt: the damage that reaches it (after its Resistance, Immunity, reductions and Guard);
+ * tier: the Action's Tier against it (1 to 3; 0 or none: damage with no Tier: a Collision, a Lingering, a hazard, a zone); save: the Tier is the
+ * Minion's own Save (turned over: its Tier 1 removes 3, its Tier 3 removes 1); ticked: what dealt it (the Action) has already removed ticks from
+ * this Minion. Rules 1 to 5: a Tier removes its ticks once an Action, only if it deals damage; damage with no Tier removes 1 when what dealt it
+ * hasn't ticked the Minion; a rider with no damage removes none (dealt 0).
+ */
+export function ticksRemoved({ dealt = 0, tier = 0, save = false, ticked = false } = {}) {
+  if (!((Number(dealt) || 0) > 0) || ticked) return 0;
+  const t = Math.trunc(Number(tier)) || 0;
+  if (t >= 1 && t <= 3) return save ? 4 - t : t;
+  return 1;
+}
+/** Rule 6: a heal of any size restores 1 tick, up to its ticks. left, max: its ticks. Returns the ticks after. */
+export const ticksAfterHeal = (left, max) => Math.max(0, Math.min(Math.trunc(Number(max)) || 0, (Math.trunc(Number(left)) || 0) + 1));
+/**
+ * Rule 7 and going Down (pure): a Minion's state from its ticks. max: its ticks; lost: the ticks removed (no overflow: never more than max); by: the
+ * pools of the damage that left it at 1 tick ("B" Vigor, "M" Resolve, "BM" both). { left, down, bloodied, strained }.
+ */
+export function minionState({ max = MINION_TICKS, lost = 0, by = "" } = {}) {
+  const m = Math.max(1, Math.trunc(Number(max)) || MINION_TICKS), left = Math.max(0, m - Math.max(0, Math.trunc(Number(lost)) || 0));
+  const one = left === 1 && m > 1;
+  return { left, max: m, down: left <= 0, bloodied: one && /B/.test(String(by)), strained: one && /M/.test(String(by)) };
+}
+/**
+ * The ticks as the creature's damage record (pure): each tick removed counts as one point of the damage that removed it, in the pool that took
+ * more of it (Vigor on a tie) and as Lethal or Nonlethal by the larger share, so Chapter 4's NPCs Going Down reads the ticks as it reads damage.
+ * a: the damage that reached it { B: { l, n }, M: { l, n } }; n: the ticks removed. Returns { a: the tick buckets, by: the pools it touched }.
+ */
+export function tickBuckets(a, n) {
+  const B = (a?.B?.l ?? 0) + (a?.B?.n ?? 0), M = (a?.M?.l ?? 0) + (a?.M?.n ?? 0), p = M > B ? "M" : "B";
+  const l = (a?.[p]?.l ?? 0), nl = (a?.[p]?.n ?? 0), k = nl > l ? "n" : "l";
+  const out = { B: { l: 0, n: 0 }, M: { l: 0, n: 0 } };
+  out[p][k] = Math.max(0, Math.trunc(Number(n)) || 0);
+  return { a: out, by: `${B > 0 ? "B" : ""}${M > 0 ? "M" : ""}` };
+}
 /**
  * The Minions' squads for an Initiative roll: list [{ id, kind, group }] in order (kind: the same creature, such as its actor; "" for one that isn't a
  * Minion). Up to MINION_SQUAD Minions of the same kind share one roll: { leaderId: [memberIds] }, the leader first (it rolls; the others take its result).

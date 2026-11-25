@@ -24,6 +24,8 @@ export async function useRally(actor, n, why = "", { extra = "", source = null, 
   if (!actor.isOwner) { warn(`Only the owner of ${actor.name} can use its Rally Points.`); return false; }
   if (!npc && s.rallyLeft < n) { warn(`${actor.name} has ${s.rallyLeft} Rally Point${s.rallyLeft === 1 ? "" : "s"} left and ${n} are needed.`); return false; }
   // v0.0.186: the "Rally Points" settings of the creature and of allies within their range (Font of Mercy: Power Modifier + 2, within 5); the highest counts.
+  // the Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): a Minion's heal restores 1 tick, whatever its size (no window, no split)
+  if (s?.isMinion) { const { applyHealing, minionHealPlan } = await import("./healwin.mjs"); await applyHealing(actor, minionHealPlan(s.damage), { why: why || "Rally" }); return true; }
   const fm = await rallyBonusFor(actor);
   // v0.0.250 (Lucas, Lay On Hands): an extra heal ("1d6+pow": the card's creature's Power Modifier) is rolled now and shown in the window and the line
   let extraRoll = null, extraName = "";

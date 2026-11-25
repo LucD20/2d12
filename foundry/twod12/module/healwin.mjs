@@ -128,9 +128,18 @@ export function healLinesHtml(name, plan, parts = [], { rally = null, npc = fals
   return `<b>${esc(name)}</b> heals <b>${healed}</b>${note}${what ? `<span class="hl-l">${what}</span>` : '<span class="hl-l">no damage to remove</span>'}${sum}`;
 }
 const HEAL_ORDER = [["bodyLethal", "Vigor"], ["mindLethal", "Resolve"], ["bodyNonlethal", "Vigor Nonlethal"], ["mindNonlethal", "Resolve Nonlethal"]];
+/**
+ * The Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks, rule 6): a heal of any size restores 1 tick to a Minion: the plan that removes one
+ * point of its damage record (Lethal first, Vigor first). Pure.
+ */
+export function minionHealPlan(damage = {}) {
+  for (const k of ["bodyLethal", "mindLethal", "bodyNonlethal", "mindNonlethal"]) if ((Number(damage?.[k]) || 0) > 0) return { [k]: 1 };
+  return {};
+}
 /** Apply a plan to a creature (its owner, or the GM through the socket) and say it in the chat. Returns the amount removed. */
 export async function applyHealing(actor, plan, { lead = "", why = "" } = {}) {
   const s = actor.system, upd = {};
+  if (s?.isMinion) plan = minionHealPlan(s.damage);   // the Bestiary's rebuild: a Minion's heal is 1 tick, whatever its size
   for (const [k, v] of Object.entries(plan)) if (v) upd[`system.damage.${k}`] = Math.max(0, (s.damage[k] ?? 0) - v);
   const healed = Object.values(plan).reduce((a, b) => a + b, 0);
   if (Object.keys(upd).length) {
@@ -140,7 +149,8 @@ export async function applyHealing(actor, plan, { lead = "", why = "" } = {}) {
   const { sysLine } = await import("./sysmsg.mjs");
   // v0.0.454 (D1): the same lines as a Rally's ("Durgan heals 9", what it removed, what gave it); a lead given by the caller keeps its words
   const short = String(actor.name ?? "").replace(/\s*\(.*$/, "").trim() || actor.name;
-  const html = lead ? `${lead} <b>${healed}</b>${why ? ` <small>${esc(why)}</small>` : ""}` : `${healLinesHtml(short, plan, [])}${why ? `<span class="hl-l q">${esc(why)}</span>` : ""}`;
+  const html = s?.isMinion ? `<b>${esc(short)}</b> regains <b>${healed ? "1 tick" : "no tick"}</b> <small>(a Minion: a heal restores 1 tick)</small>${why ? `<span class="hl-l q">${esc(why)}</span>` : ""}`
+    : lead ? `${lead} <b>${healed}</b>${why ? ` <small>${esc(why)}</small>` : ""}` : `${healLinesHtml(short, plan, [])}${why ? `<span class="hl-l q">${esc(why)}</span>` : ""}`;
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-medical", html, "healmsg") });
   return healed;
 }
@@ -162,6 +172,7 @@ export async function promptHeal(actor, amount, { source = "", lead = "" } = {})
   await healHere(actor, amount, { source, lead });
 }
 export async function healHere(actor, amount, { source = "", lead = "" } = {}) {
+  if (actor.system?.isMinion) return applyHealing(actor, minionHealPlan(actor.system.damage), { why: source });   // the Bestiary's rebuild: no split to choose
   const plan = await healWindow({ name: String(actor.name ?? "").replace(/\s*\(.*$/, "").trim() || actor.name, damage: actor.system.damage, thresholds: thresholdsOf(actor), total: amount, source, rally: null });
   if (!plan) return;
   await applyHealing(actor, plan, { lead, why: source });

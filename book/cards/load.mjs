@@ -49,7 +49,8 @@ export const FOUNDRY_OVERLAY = { "gear.json": { file: "gear.json", drop: ["Skirm
   "talents.json": { file: "talents-pt.json" },   // pack TALENTS-PT (2026-11-20): the four playtest Talents (Ricochet takes the old Talent's place)
   // the Bestiary's rebuild (2026-11-25, book/bestiary-design.md): a rebuilt creature's cards (stage0/bestiary.json, each with its `npc`); its old cards
   // leave Foundry and stay in ../bestiary.json as the fixtures of the tests that exercised their machinery (content.mjs OLD_CLASS_DOCS)
-  "bestiary.json": { file: "bestiary.json", drop: ["Cleaver", "Brutal Swing", "Avenge Kin"] } };
+  // (the Goblin Sneak's, the Grave Wisp's and the Ogre Chieftain's old cards too, 2026-11-25: the Foundry pass of the four playtest creatures)
+  "bestiary.json": { file: "bestiary.json", drop: ["Cleaver", "Brutal Swing", "Avenge Kin", "Rusty Knife", "Dirty Trick", "Chilling Touch", "Dread Whisper", "Club", "Overhead Smash", "Ground Slam", "Rally the Tribe"] } };
 /** The Structure files Foundry reads in the place of the old file's cards (the whole old file leaves Foundry). */
 export const FOUNDRY_STRUCTURE = { "paladin.json": "paladin.json", "archer.json": "archer.json" };   // v0.0.411 (pack F3): the Archer too
 const costAp = cost => { const m = String(cost ?? "").match(/(\d+)/); return m ? Number(m[1]) : 0; };
