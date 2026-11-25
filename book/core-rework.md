@@ -222,6 +222,7 @@ The review's section 7 is the start (per roll, per turn, Reactions offered and u
 5. **Batch 5: Escalation (Lucas, 2026-11-25: before the Bestiary).** F1 as decided on 2026-11-22: the Passives go, Escalation unlocks Actions (levels 1, 2 and 4), the Encounter Pick merged into the ladder, dE; each class's Escalation Actions one at a time. F2 (the pace) with it.
 6. **Batch 6: the Bestiary's mechanics.** G2 (the Boss and the Elite's shape, K6), G3 (ticks, K1, K2), G4 (parity, K7), G5, G6, D8, G8, H9.
 7. **Batch 7: the Bestiary's numbers.** G9 targets with C8's pace, G11 pricing, G12 the examples (with a Grunt), against the PC side of batches 2 to 4.
+   - **Batches 6 and 7 have their own record since 2026-11-25: `book/bestiary-design.md`** (Lucas: every Chapter 14 number set aside, the rules kept; the research; the order of its decisions, which puts the measure of difficulty, the normal fight and the benchmark PC before both batches).
 8. **The Encounter Log** (I1, with section R's list), then **playtest 8**: the level 1 pregens (Stage 0) against playtest 7's line-up rebuilt plus two Grunts, measured by the new log; solo.
 9. **Later:** H3's Modes at the class passes; C7 (Wounds); the Talents' restart (T15) on the new anchor; magic's playtest kit; progression past Stage 0.
 
