@@ -223,6 +223,7 @@ The review's section 7 is the start (per roll, per turn, Reactions offered and u
 6. **Batch 6: the Bestiary's mechanics.** G2 (the Boss and the Elite's shape, K6), G3 (ticks, K1, K2), G4 (parity, K7), G5, G6, D8, G8, H9.
 7. **Batch 7: the Bestiary's numbers.** G9 targets with C8's pace, G11 pricing, G12 the examples (with a Grunt), against the PC side of batches 2 to 4.
 8. **The Encounter Log** (I1, with section R's list), then **playtest 8**: the level 1 pregens (Stage 0) against playtest 7's line-up rebuilt plus two Grunts, measured by the new log; solo.
+**Lucas, 2026-11-25 (after v0.0.510): "I dont think we should create extra levels until level 1 feels good":** batch 5's other pieces (the level 2 Escalation 3 abilities, F2's pace, Smite in dE, the Apex) wait until level 1 runs well at the table; the order goes on with batch 6.
 9. **Later:** H3's Modes at the class passes; C7 (Wounds); the Talents' restart (T15) on the new anchor; magic's playtest kit; progression past Stage 0.
 
 Each batch: one decision at a time with Lucas, then the book (rules-src first), then one Foundry version (tests, the checklist naming the PC or NPC, the gallery for card changes), the backlogs, HANDOFF.
