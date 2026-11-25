@@ -210,6 +210,7 @@ The review's section 7 is the start (per roll, per turn, Reactions offered and u
 - Bloodied and Strained: when each starts, by which damage; the lines they turned on (C1, C3, C4); a Minion's last tick counted as which (K1).
 - Reactions on Collision damage (C5); Pushed 0 against a wall (D7).
 - ~~The protection floor when it applies (C6)~~ (C6 rejected 2026-11-25): instead, **the share of each enemy's damage that reductions removed** (Judge, Shield of Faith: whether small hits vanish too often; the fix would be the Bestiary's numbers, batch 6).
+- The Bestiary (`bestiary-design.md`, decision 1, 2026-11-25): **for each fight, the damage to Health of each PC** (what Guard and reductions took kept apart), **the Rally Points spent in it, the Downs, the rounds, and the party's damage a round** (the benchmark turn of decision 4); for each enemy, **its damage to Health a turn** (decision 14's target).
 - Batch 4: **Flanking Boons gained**, by side; **moves refused by blocking**, and **Tumbles** made (and their Checks).
 
 ## P. The order of work

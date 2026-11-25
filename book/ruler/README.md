@@ -534,3 +534,7 @@ tier; the PCs' Health with the new factor. **New in spec.mjs:** an NPC with `exa
 moved by a flat amount; opt-in, so report.md and the other reports don't change). **Findings:** the real classes lose 22% a normal fight against
 today's Bestiary; the refit is Health ×1.10, damage ×1.38 for a third; an Elite is worth about 2.6 Standards (fix: today's Elite damage), a Grunt
 0.57 (fix: Health ×0.69; Lucas chose ×0.75, CV 0.51-0.53), Minions ¼; the Standard day 93% / 95% / 100% at levels 1-3 (today 82% / 71% / 94%).
+
+## The benchmark PC turn (2026-11-25)
+
+`node book/ruler/benchmark.mjs [AD] [WD]`: what each level 1 pregen's turn deals on paper against a creature with those Defenses (default 13 13), by exact dice math on the current cards; no map, no movement, not the SIM. It is decision 4 of `book/bestiary-design.md`: what a monster's Health is counted against. Re-run it (and update the record) when a level 1 class card, the Basic Attack or a designed weapon changes.
