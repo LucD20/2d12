@@ -464,7 +464,12 @@ Lucas, on the Elite's open rule (K6): "Ok, lets settle it and start." **Proposed
 
 **Open with it:** which creature the first Boss is (there was none in the old Bestiary).
 
+**The Boss is parked (Lucas, 2026-11-25): "Should we work on the boss now? I feel we need the playtest with normal enemies first."** Claude agrees: every number of the Boss is the Standard's estimates multiplied by the party's size (the benchmark turn of 17, 36 Health a PC, 6.0 damage a turn), so an error found at the table would be built into it four times over; its rule also leans on how conditions and the Rally Point's size play, which the playtest is there to show. The three ways above stay as proposed. **What playtest 8 should settle before the Boss:** the plain PC's real damage a turn; what four Standards really cost and how many Downs; whether hits of 3 or 4 vanish under Guard and reductions; whether a Rally Point stays a quarter.
+
 ### What comes next
 
-- **Lucas's choice for the Boss's rule, and the first Boss's creature.**
-- **The Foundry pass for every creature at once** (`foundry/foundry-backlog.md`), then **decision 16, to the table**, and one Foundry version.
+- **The four creatures of the playtest are designed:** the Goblin Sneak (Minion), the Grave Wisp (Grunt), the Orc Warrior (Standard, built), the Ogre Chieftain (Elite).
+- **Chapter 14's playtest text** (the book first: the frame, the four ranks' defaults, the tick rules; `rules-backlog.md`).
+- **The Foundry pass, once, for all of them** (its brief: `foundry/foundry-backlog.md`, "THE BESTIARY'S REBUILD IN FOUNDRY"), **the Encounter Log**, one Foundry version.
+- **Playtest 8** (decision 16; the fights suggested in the same brief).
+- **After it:** the retune, then the Boss, the roles as offsets, the budget's bands, the pricing.
