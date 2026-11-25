@@ -151,3 +151,24 @@ Audit of 2d12's **six current separation points** (from `book/items-economy.md` 
 - `[checked]` Jama, *BEACON Review*: https://jama.neocities.org/beacon-review/
 - `[checked]` TTRPG Games, *BEACON* overview: https://www.ttrpg-games.com/item/beacon
 - `[lead]` Community reception threads (search summaries only; Reddit blocks automated readers): `r/drawsteel`, `r/Pathfinder2e` (Exploration→Encounter pre-buffing and Ready), `r/RPGdesign`, `r/rpg`, `r/LancerRPG` (hard-split mode dissonance; D&D 4e encounter-power scrutiny).
+
+---
+
+## 2026-11-25: class features for outside a fight, and a level 1 that holds too much (for Lucas's Arts / Perks idea)
+
+**The question (Lucas):** Arts become single combat options gained at levels 1, 2 and 3, and a new class list, **Perks**, covers play outside a fight ("just like spells will have out of combat uses, classes should have them as well"). **What was read:** two searches, summaries only [lead] (D&D Beyond and EN World threads); the rest is this project's notes.
+
+### Takeaways
+1. **A class feature for outside a fight fails in two known ways** [lead]. On 5e's Natural Explorer: "the problem with this ability is that nothing happens... You typically have no encounter at all"; it "prevent[s] you from getting lost... which in execution leads you to skipping exploration entirely"; "its usefulness depends entirely on the game and DM". The fixes posters asked for: make it not "100% dependent on DM charity", or give it a use the player starts. **So: an auto-success that deletes a scene, or a dead feature in a campaign that never visits its terrain.** Its defenders: "outside of combat, he dominates with Natural Explorer" (in a game that uses it).
+2. **The fix for a crowded level 1 that posters name most is delaying choices, not removing them** [lead]: hold interesting choices back "for three or four levels", keep the first advancements "quick and streamlined"; Dungeon World's authors: "too many options leads to the dreaded analysis paralysis". **The counter:** a class whose features come one at a time with no real choice is "probably too much for some players" the other way.
+3. **Already in this project:** non-damage abilities are where characters are told apart (`ability-scope.md` 4, 4e's utility powers); class abilities trapped in combat draw the most "why can't I do this outside a fight?" scrutiny when they are physical (section 2.2 above); Draw Steel's bridge lets a combat ability be used outside a fight once per Victory (Pattern A); Lucas's three Talent traps, of which a class Perk risks **permission** (Pathfinder 2e's skill feats) and avoids **competition** if it has its own slot (`talents-design.md`).
+
+### How it applies (observations; nothing decided)
+- Perks answer this file's main worry (section 2) for martials the way magic's decisions 112 to 128 answer it for casters, and they give the classes the non-damage identity `ability-scope.md` 4 found missing.
+- A Perk has to be a verb the player starts, with a cost or a limit in the frame magic already has outside a fight (decisions 123 to 125), never "you don't get lost" or "you succeed": takeaway 1's two failures.
+- Perks and the **Skill Talent** slots (levels 1 and 3; T2: no use during an encounter) are the same kind of pick. Two out-of-combat slots at the same levels would be the bloat the Arts change is meant to remove.
+
+### Sources (2026-11-25)
+- [D&D Beyond: Natural Explorer](https://www.dndbeyond.com/forums/class-forums/ranger/139106-natural-explorer) · [Natural explorer (NE), page 8](https://www.dndbeyond.com/forums/class-forums/ranger/107051-natural-explorer-ne?page=8) · [1DnD ranger and the exploration leg](https://www.dndbeyond.com/forums/dungeons-dragons-discussion/unearthed-arcana/154248-1dnd-ranger-and-the-exploration-leg-what-happened?page=7)
+- [EN World: Is favored enemy and natural explorer really that bad?](https://www.enworld.org/goto/post?id=8245653)
+- [EN World: a post on delaying level 1 choices](https://www.enworld.org/goto/post?id=8969817) · [Dungeon World: Paths, restructuring classes and advancements](https://www.dungeon-world.com/paths-restructuring-classes-and-advancements/) · [EN World: How much upfront?](https://www.enworld.org/goto/post?id=7075102)
