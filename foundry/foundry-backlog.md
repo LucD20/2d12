@@ -11,10 +11,11 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 
 **Left, by hand (each card says so in its automationNote):**
 - [ ] **Pass Through (Silver):** the Setup's straight line isn't enforced, and its targets (up to two enemies whose space it passed) are targeted by hand before the roll. A "targets: the creatures its Setup passed" setting would make it Gold.
-- [ ] **Hurled Goblin (Silver):** its Requirement (a willing Minion ally within its Reach) isn't checked, and the landing is the GM's Alt-drag. **A rules question for Lucas:** Chapter 3 says a Reposition stays within the mover's Reach the whole way; the card Repositions the goblin to a square adjacent to a target 6 squares away (the card's own words win as written; the book doesn't say so).
+- [ ] **Hurled Goblin (Silver):** its Requirement (a willing Minion ally within its Reach) isn't checked, and the landing is the GM's Alt-drag. (Lucas, 2026-11-25: the goblin is thrown, placed next to the target; not a Reposition, so Chapter 3's Reach limit doesn't apply.)
 - [ ] **Crushing Grip (Silver):** one creature held at a time (a second Grab doesn't end the first by itself).
 - [ ] **The NPC Builder tab** still works on the old rating tables (Health, Defense, Modifier, points, the turn budget and the CV steps); it waits for the tables' rebuild (`book/bestiary-design.md`: ratings, roles and pricing are open boxes). The four creatures use typed (Custom) numbers.
 - [ ] **The gallery** (`tools/gallery/shoot.mjs`): its saved shots were already behind in this environment before this work (many unrelated differences), so it was not run with `--update`; the new NPC cards and the three Weapon Techniques fixed earlier (Circling Shot, Seizing Cut, Thwart Cut) need their shots saved on a machine whose shots are current.
+- [x] **An NPC's Rally Point** removes a quarter of its Health Pool, rounded up (Lucas, 2026-11-25; `data.mjs`, `npcRallyHeal` removed from `config.mjs`). Not written: what a Rally Point of a Minion measures for an Action that gives Guard by it (the system gives 1).
 - [x] **The Encounter Log** upgrade: already done (v0.0.488; Lucas, 2026-11-25).
 - [ ] **An NPC's Escalation:** the book no longer says NPCs have none (Lucas, 2026-11-25: "They might have"; nothing is written yet). The NPC's switch stays, off by default; the refusal's text is now "has no Escalation."
 - [ ] **Not tried in Foundry** (it can't be run here): everything above is checked by the Node tests only; Lucas's checklist is the source of truth.

@@ -99,6 +99,10 @@ Expect: The Charge stops before Durgan ("an ally's or a Down creature's space is
 Do: Make the Orc Warrior Bloodied with Sylwen's Basic Attack from 2 squares away, then hit it again with Vigor damage; then hit it with Resolve damage (Durgan's Drawing Light), and once from 4 squares away.
 Expect: The Vigor hit that Bloodies it (and the next) offers Blood for Blood (Use / Pass); Use: Advance up to 2, then the Basic attack button with 1 Bane takes the axe when Sylwen is in reach (the javelin when she isn't; both: a pick window). The Resolve hit and the hit from 4 squares offer nothing.
 
+### bst-rally · v0.0.508 · An NPC's Rally Point is a quarter of its Health
+Do: Deal 10 damage to a Grave Wisp and 20 to the Ogre Chieftain. With Durgan, use Lay On Hands on the wisp, then on the ogre.
+Expect: The wisp heals 5 (a quarter of 18, rounded up) and the ogre 18 (a quarter of 72); neither spends anything. An Orc Warrior would heal 9.
+
 ### bst-flare · v0.0.508 · Dying Flare when the Grave Wisp would go Down
 Do: Bring the Grave Wisp to 1 Health, put Aveline and an Orc Warrior next to it, and hit it with Kaela.
 Expect: Before the damage lands, the Reactions message offers Dying Flare (an Interrupt). Use: the 1 Emanation around the wisp, an Instinct Save for Aveline and the orc (DC 13; the wisp itself is not in it); a Tier 1 gives Hindered (EoT). Then the held damage lands and the wisp goes Down (nothing is saved).

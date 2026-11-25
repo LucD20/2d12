@@ -162,6 +162,14 @@
      "rev": 1
     },
     {
+     "id": "bst-rally",
+     "v": "v0.0.508",
+     "title": "An NPC's Rally Point is a quarter of its Health",
+     "do": "Deal 10 damage to a Grave Wisp and 20 to the Ogre Chieftain. With Durgan, use Lay On Hands on the wisp, then on the ogre.",
+     "expect": "The wisp heals 5 (a quarter of 18, rounded up) and the ogre 18 (a quarter of 72); neither spends anything. An Orc Warrior would heal 9.",
+     "rev": 1
+    },
+    {
      "id": "bst-flare",
      "v": "v0.0.508",
      "title": "Dying Flare when the Grave Wisp would go Down",

@@ -104,7 +104,7 @@ Nonlethal damage is removed like any other damage.
 
 Only a Rest restores Rally Points. Sleep does not. A new encounter does not.
 
-**NPCs.** NPCs have no Rally Points. When an Action lets an NPC use one (an ally's Lay On Hands on it) or measures something in its Rally Points (Guard equal to what one of their Rally Points heals), one of its Rally Points removes **9** damage at Stage 0, and it spends nothing (the later Stages' numbers come with their Bestiary tables).
+**NPCs.** NPCs have no Rally Points. When an Action lets an NPC use one (an ally's Lay On Hands on it) or measures something in its Rally Points (Guard equal to what one of their Rally Points heals), one of its Rally Points removes **⌈its Health Pool ÷ 4⌉** damage, as a PC's does, and it spends nothing. A [[Minions|Minion]] has no Health Pool: it restores 1 tick, as any heal does (see [[Ticks]]).
 
 ## Guard
 

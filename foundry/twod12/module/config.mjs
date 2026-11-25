@@ -180,7 +180,6 @@ export const TWOD12 = {
   rwKinds: { resist: "Resistance", weak: "Weakness", immune: "Immunity" },   // the Bestiary's rebuild (2026-11-25): the book's words (Chapter 1)
   // v0.0.340 (book, Rally Points: NPCs): what one Rally Point an NPC is given heals, by Stage. v0.0.407 (Stage 0 in Foundry): Stage 0 / 1 / 2 / 3;
   // Stage 0 heals 9 (the book); the later Stages keep pack R's rows until they are written.
-  npcRallyHeal: [9, 9, 13, 17],
   freqMore: { round: "its Round Special Actions can be used twice per turn-cycle", encounter: "its Encounter Special Actions can be used a second time" },
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down", damagedDown: "An enemy it has damaged goes Down" },   // v0.0.411 (Thrill of the Kill): damagedDown
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2

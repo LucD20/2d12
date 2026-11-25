@@ -480,7 +480,7 @@
    "body": [
     {
      "label": "Setup",
-     "text": "The wisp Advances up to its Speed in a straight line; the targets are enemies whose space it passed through."
+     "text": "The wisp Advances in a straight line; the targets are enemies whose space it passed through."
     },
     {
      "label": "Attack",
@@ -705,7 +705,7 @@
     },
     {
      "label": "Effect",
-     "text": "The Minion is Repositioned to an empty square adjacent to the target, the ogre's choice (hit or miss); it takes no damage."
+     "text": "The Minion is thrown: the ogre places it in an empty square adjacent to the target (hit or miss). This is not a Reposition or a Forced Movement: it triggers no Reactions, and the Minion takes no damage."
     }
    ],
    "foundry": {
