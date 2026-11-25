@@ -47,7 +47,7 @@ console.log("the book's rule:", book.includes("**A larger creature being moved i
 
 console.log("--- v0.0.504: the HUD's boxes plain (Lucas: \"just two plain boxes, with the outline red and blue, with the number\")");
 const H = await import(ROOTURL + "module/hudhp.mjs"), hh = H.hudHpHtml({ vigorLeft: 9, bdt: 14, resolveLeft: 4, mdt: 10 });
-console.log("two inputs, no words:", (hh.match(/<input /g) ?? []).length, !/Vigor<|Resolve<|\/ 14/.test(hh.replace(/aria-label="[^"]*"/g, "")), "| within the token's width:", src("styles/system.css").includes("#token-hud .twod12-hpbar1 .twod12-hphud { flex: 1 1 auto; display: flex; gap: 4px; width: 100%;"));
+console.log("two inputs, no words:", (hh.match(/<input /g) ?? []).length, !/Vigor<|Resolve<|\/ 14/.test(hh.replace(/aria-label="[^"]*"/g, "")), "| within the token's width:", src("styles/system.css").includes("#token-hud .twod12-hpbar1 .twod12-hphud { flex: 1 1 auto; display: flex; justify-content: center;"), "| small (v0.0.505):", src("styles/system.css").includes("flex: none; width: 3.4em; height: 24px;"));
 console.log("--- v0.0.504: an old numbered icon is plain in memory before the tokens draw (no Invalid Asset)");
 console.log(src("module/condnum.mjs").includes("P.prepareDerivedData = wrapped;"), src("module/condnum.mjs").includes("restoredImg({ img: e._source?.img ?? e.img })"));
 console.log("--- v0.0.504: Alt shows every visible token's conditions (condline.mjs; Lucas: \"C is good\")");

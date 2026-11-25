@@ -5745,8 +5745,9 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 /* v0.0.504 (on v0.0.503: "we need to actually click the other buttons as well ... just two plain boxes, with the outline red and blue, with the
    number"): two plain inputs that share Foundry's Health box (the token's width), nothing past it */
 #token-hud .attribute.bar1.twod12-hpbar1 { display: flex; background: none; border: none; box-shadow: none; }
-#token-hud .twod12-hpbar1 .twod12-hphud { flex: 1 1 auto; display: flex; gap: 4px; width: 100%; height: 100%; }
-#token-hud .twod12-hphud input.twod12-hpbox { flex: 1 1 0; min-width: 0; width: auto; height: 100%; min-height: 28px; padding: 0 2px; margin: 0; box-sizing: border-box; text-align: center; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; color: #f0ece4; background: rgba(0, 0, 0, 0.6); border: 2px solid var(--c); border-radius: 3px; }
+/* v0.0.505 (on v0.0.504: "Boxes are huge"): a small fixed size (they filled Foundry's Health box), centered under the token */
+#token-hud .twod12-hpbar1 .twod12-hphud { flex: 1 1 auto; display: flex; justify-content: center; align-items: center; gap: 4px; width: 100%; }
+#token-hud .twod12-hphud input.twod12-hpbox { flex: none; width: 3.4em; height: 24px; min-height: 0; padding: 0 2px; margin: 0; box-sizing: border-box; text-align: center; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; color: #f0ece4; background: rgba(0, 0, 0, 0.6); border: 2px solid var(--c); border-radius: 3px; }
 #token-hud .twod12-hphud input.twod12-hpbox.v { --c: #c23b32; } #token-hud .twod12-hphud input.twod12-hpbox.r { --c: #3f73c9; }
 /* v0.0.503 (Lucas on v0.0.502): the whole row of the status palette is the button */
 #token-hud .twod12-statuspal .twod12-sitem { cursor: pointer; }

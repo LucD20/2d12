@@ -30,7 +30,7 @@ Pushed 2, a Large origin above it: 1,-1 1,0 1,1 2,-1 2,-2 2,0 2,1 2,2
 Pulled 2 from 3 squares to its left: -1,-2 0,-1 0,-2 1,-2
 the book's rule: true
 --- v0.0.504: the HUD's boxes plain (Lucas: "just two plain boxes, with the outline red and blue, with the number")
-two inputs, no words: 2 true | within the token's width: true
+two inputs, no words: 2 true | within the token's width: true | small (v0.0.505): true
 --- v0.0.504: an old numbered icon is plain in memory before the tokens draw (no Invalid Asset)
 true true
 --- v0.0.504: Alt shows every visible token's conditions (condline.mjs; Lucas: "C is good")

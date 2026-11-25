@@ -21,14 +21,10 @@ differ):
 
 ## The HUD
 
-### hud-hp-boxes · v0.0.504 · The Token HUD's two plain boxes, Vigor (red outline) and Resolve (blue outline)
+### hud-hp-boxes · v0.0.505 · The Token HUD's two plain boxes, small: Vigor (red outline) and Resolve (blue outline)
 Do: Right-click Orc Warrior's token. In the red-outlined box type -5 and Enter; then +2; in the blue-outlined box type 3. Then click the Token HUD's other buttons (the conditions, the target, the visibility).
-Expect: Two plain boxes with only the number, side by side where Foundry's Health box was, no wider than the token: red outline for Vigor, blue for Resolve. -5 deals 5 to Vigor, +2 heals 2, a plain number sets what is left (Resolve 3). Every other button of the Token HUD can be clicked. No "Invalid Asset" error in the console on load.
-Rev: 5
-
-### alt-cond-line · v0.0.504 · Hold Alt: every visible token's conditions in a line under it
-Do: Give Orc Warrior Vulnerable 1 and Slowed 2, Goblin Sneak Prone. Hold Alt over the map; while holding it, add Daunted to Orc Warrior from its sheet or the panel beside the chat; let go of Alt.
-Expect: While Alt is held, under each visible token with conditions (under its name) a dark plate with a gold edge reads its conditions with their numbers ("Vulnerable 1 · Slowed 2"; "Prone"); a token with none shows nothing. Daunted joins the line at once. Letting go of Alt removes every plate. Nothing shows while typing in a box.
+Expect: Two small plain boxes (about Foundry's own Health box's height, a few digits wide) with only the number, side by side and centered under the token: red outline for Vigor, blue for Resolve. -5 deals 5 to Vigor, +2 heals 2, a plain number sets what is left (Resolve 3). Every other button of the Token HUD can be clicked. No "Invalid Asset" error in the console on load.
+Rev: 6
 
 ## Starting a combat
 
