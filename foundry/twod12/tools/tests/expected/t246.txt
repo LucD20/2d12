@@ -28,7 +28,7 @@ the numbers are config.mjs's: true
 sheetmodel.mjs takes payReaction from it: true
 combat.mjs takes unusedApGuard and the turn's AP from it: true
 escalation.mjs takes the start and the raise from it (v0.0.407: the 1-to-6 ladder): true
-flanking.mjs takes the count from it: true
+flanking.mjs takes the rule from it (batch 4: flankBoon, oppositeSides; the frozen SIM keeps flankBoons): true
 pure (it imports only config, calc and guard): ./config.mjs ./calc.mjs ./guard.mjs | no Foundry global: true
 the old names still work: sheetmodel.payReaction: {"fromRap":1,"fromAp":1}
 the environment imports it: core.mjs true | the engine uses it: true | the map uses it: true

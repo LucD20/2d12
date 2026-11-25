@@ -104,7 +104,7 @@ floor(speed/2): Speed 5 → 2 | 6 → 3 | 1 → 0 | 7 → 3 (capitals and spaces
 speed/2 still rounds up: Speed 5 → 3 | other functions: ceil 3 round 3 min 3 max 8 abs 4 | nested 2
 Charge's expression: 7 | the Evade button: 2
 things it must refuse: null null null null null null null
-Evade in the Basic Actions: @Move[evade|distance:1]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain. || @Move[evade|distance:floor(speed/2)]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain. | traits: self
+Evade in the Basic Actions: @Move[evade|distance:1]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost). || @Move[evade|distance:floor(speed/2)]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost). | traits: self
 
 the Prone effect: Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand. | Hindered linked: "" | settings: boonbane 1b 0n, boonbane 0b 1n
 
@@ -116,4 +116,4 @@ NEW Shoot Nari: +1 Bane, +1, Engaged off         card | chips: (none) | bane dic
    breakdown: 2d12 6 7 Boon · Bane −1 Low cover Field −1 Engaged with Ally Field −1 Situational Modifiers +2 Weapon +1 Situational 13 vs AD 11 Tier 2 Vigor 2 Pi | flags rd banes: [{"name":"Situational","n":1,"scope":"shared","bb":""}] | flat: [{"name":"Situational","v":1}]
 NEW Crawl: the dialog: true | no roll: 1 AP no roll, 2 AP no roll | card posted: true | no warning
 NEW Strike the Goblin: the Ally flanks it        card | chips: (none) | bane dice - | total 16
-   chips: syn:flanking Flanking 1 [Actor.Goblin] on | in the dialog: true | card total 
+   chips: syn:flanking Flanking [Actor.Goblin] on | in the dialog: true | card total 

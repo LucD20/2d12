@@ -1,0 +1,24 @@
+--- opposite sides (within 45° of the line through the enemy's center, the edge counts)
+from the west (0,-1), opposite squares: -1,1 0,1 1,1
+from the north-west (-1,-1): 0,1 1,0 1,1
+Range 2 from the west (0,-2) with a partner diagonal (-1,1): true | beside (-1,0): false
+a Large enemy, west of its top row and east of its bottom row: true | west and south: false
+a flat 1: {"raw":1,"boons":1} | cancelled: {"raw":1,"boons":0} | no partner: {"raw":0,"boons":0} | the frozen SIM's rule kept: {"raw":3,"boons":2}
+--- who is in your way
+an enemy: block
+an ally: dt
+a neutral: block
+a Dying enemy: dt
+an Unconscious enemy: dt
+a dead enemy: dt
+an enemy at 0: dt
+a Prone enemy: block
+refused: an enemy's space and the diagonal between two: true true
+an Evade crosses an ally (its extra cost left out): true | the range preview blocks enemies, the diagonal too: true
+Charge: an ally's space stops it, an enemy's blocks it: true true
+--- Tumble passes them
+true | @Move[advance|distance:floor(speed/2)|pass:enemies] || @Move[evade|distance:2|pass:enemies] | silver
+its rule: true
+Evade's card: true | Charge's: true
+--- the book
+true true true | no floor: true

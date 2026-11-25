@@ -48,7 +48,7 @@ console.log("the tiers table ignores Foundry's colors (v0.0.174: table.tiers, th
 const hcs = src("module/heightcover.mjs");
 console.log("the Snapshot is a picture:", hcs.includes("svgToPng(svg)") && hcs.includes('<img class="hc-snapimg"') && hcs.includes('FP.upload("data", "twod12-snapshots"'), "| with the window's colors:", hcs.includes("const SNAP_CSS"));
 const mvs = src("module/move.mjs");
-console.log("a diagonal between two creatures counts only between unwilling ones:", (mvs.match(/creatureAt: c => unwillingIn\(c, doc\) \}/g) ?? []).length === 3, "| Reposition doesn't pass between them:", !mvs.includes("throughCreatures: repo"));
+console.log("a diagonal between two creatures counts only between two unwilling ones that aren't Down (batch 4: blocked):", (mvs.match(/creatureAt: c => blockerIn\(c, doc\) \}/g) ?? []).length === 2, "| Reposition doesn't pass between them:", !mvs.includes("throughCreatures: repo"));
 // the ruler and the path: two allies at the corner are no Difficult Terrain; two enemies are
 const GS = 100, toks = [];
 globalThis.canvas = { grid: { size: GS, getOffset: ({ x, y }) => ({ i: Math.floor(y / GS), j: Math.floor(x / GS) }), getCenterPoint: ({ i, j }) => ({ x: j * GS + 50, y: i * GS + 50 }), getTopLeftPoint: ({ i, j }) => ({ x: j * GS, y: i * GS }) }, tokens: { placeables: toks }, walls: { placeables: [] }, tiles: { placeables: [] } };

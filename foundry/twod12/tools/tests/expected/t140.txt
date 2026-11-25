@@ -19,7 +19,7 @@ a Large creature: each square it occupies                {"kind":"solid","creatu
 Pushed 2 diagonally into a solid corner: moves 0, unused 2, damage {"self":4,"other":0}, corner true
 Pushed 2 diagonally between two creatures: moves 0, collision with A, damage {"self":2,"other":2}
 an ability that passes creatures (throughCreatures) goes between them: moves 2, block null
-Advance diagonally between two goblins: {"through":[],"endIn":"","extra":0,"dark":0,"solidCorner":false,"cornerDT":1} | Cut Through ignores it: 0
+Advance diagonally between two goblins: {"through":[],"allies":[],"endIn":"","extra":0,"allyExtra":0,"dark":0,"solidCorner":false,"cornerDT":0,"cornerBlock":1,"cornerBy":["Goblin B","Goblin A"]} | Cut Through ignores it: 0
 it costs 1 more square (v0.0.171: nothing added when our cost is in Foundry's ruler, which now counts it): 0 2 1
 Advance diagonally past the end of a wall: true
 the same with the setting off (Foundry refuses it itself): false | the setting: true
@@ -32,7 +32,7 @@ Charge A1 to G4 with an Orc on B1: the line uses B2: A1 B2 C2 D3 E3 F4 G4 | ties
 a drag through B1 (not legal) still takes the legal B2: A1 B2 C2
 with no Orc, a drag along row 1 is honored at every tie: A1 B1 C2 D2 E3 F3 G4
 Charge picker A1 to G4, ties left: A1 B1 C2 D2 E3 F3 G4 | ties 3 | first not legal: none
-Charge picker A1 to G4, ties right: A1 B2 C2 D3 E3 F4 G4 | ties 3 | first not legal: D3 (the straight line passes through Orc (an unwilling creature's space is Difficult Terrain))
+Charge picker A1 to G4, ties right: A1 B2 C2 D3 E3 F4 G4 | ties 3 | first not legal: D3 (the straight line passes through Orc (an unwilling creature's space blocks movement))
 Charge checks the chosen line square by square: true
 --- Haul
 Haul 1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | body/handle | vs body | distance reach | round: true
@@ -46,4 +46,4 @@ a condition with Vulnerable = half the level: true | the effect sets it: true | 
 Doomed: true Squeezing | levels 1-5: 1 1 2 2 3 | nothing: ""
 --- v0.0.171: the movement label counts a diagonal between two creatures
 installed: actions.walk.getCostFunction
-diagonal B1 -> A2 between the goblins: 2 | a diagonal away from them: 1
+diagonal B1 -> A2 between the goblins: 1 | a diagonal away from them: 1

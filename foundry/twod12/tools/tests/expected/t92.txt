@@ -1,5 +1,5 @@
 --- an ordinary Evade (the Orc is on the path)
-Evade 2 through the Orc                                    → REFUSED | Evade can't enter or pass through Difficult Terrain (Orc: an unwilling creature's space). 
+Evade 2 through the Orc                                    → REFUSED | Orc's space blocks your movement (an unwilling creature's space). Tumble to pass through, 
 Evade 2 with nobody in the way                             → allowed | Evade left 0, AP 5
 --- Cut Through's Evade (terrain: ignore)
 through the Orc                                            → allowed | Evade left 0, AP 5
@@ -9,7 +9,7 @@ dark scene, with it                                        → allowed | Evade l
 Difficult Terrain doubled by Foundry (cost 4), without it  → REFUSED | Evade can't enter or pass through Difficult Terrain. Choose another path, or use End movem
 Difficult Terrain doubled by Foundry (cost 4), with it     → allowed | Evade left 0, AP 5
 --- the ruler
-a step into the Orc's square: 2 | for Cut Through's Evade: 1
+a step into the Orc's square: 1 | for Cut Through's Evade: 1
 a step into a dark square: 2 | for Cut Through's Evade: 1
 --- the flag
 the tag: true | without: undefined | terrain:no: false | the distance still read: floor(speed/2)

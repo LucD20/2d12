@@ -25,11 +25,27 @@ differ):
 
 ## The roll dialog
 
+### flank-opposite · v0.0.506 · Flanking: a flat 1 Field Boon from opposite sides, and the cancel
+Do: Put Aveline and Durgan on opposite sides of Orc Warrior (Durgan diagonally across from Aveline counts too) and open Aveline's Basic Attack roll dialog against it. Then move Durgan beside Aveline (both on the Orc's same side) and open it again. Then put Goblin Sneak next to Aveline, Durgan back across, and open it a third time.
+Expect: First: a "Flanking" chip, 1 Field Boon (never "Flanking 2", whoever else stands around). Second: no Boon; its n/a reason says Durgan threatens the Orc "but not from its opposite side". Third: no Boon; the reason names Goblin Sneak (the Orc's side) threatening Aveline.
+
 ## Chat cards
 
 ## Conditions and their Tiers
 
 ## Movement
+
+### block-enemy · v0.0.506 · An enemy's space blocks; an ally's is Difficult Terrain; the diagonal between two enemies blocks
+Do: In combat on Sylwen's turn, drag her through Orc Warrior's square; then diagonally between Orc Warrior and Goblin Sneak placed corner to corner; then through Kaela's square (Advance), and with Evade 2 and Evade 1 through Kaela. Look at the movement range shown while dragging.
+Expect: Through the Orc: refused ("Orc Warrior's space blocks your movement ... Tumble to pass through, or go around"). The diagonal between the two enemies: refused ("You can't slip diagonally between ..."). Through Kaela: allowed, her square counts 2 on the ruler. Evade 2 through Kaela: allowed (her square costs 2); Evade 1 can't reach past her. The range area doesn't spread through enemies or between two corner-to-corner enemies.
+
+### tumble-pass · v0.0.506 · Tumble passes enemies and the diagonal between two
+Do: On Kaela's turn, use Tumble (1 AP: Advance half her Speed) and drag her through Goblin Sneak's square to the far side; use it again (2 AP: Evade 2) between Orc Warrior and Goblin Sneak corner to corner. Try to end inside the Goblin's square.
+Expect: Both movements pass (the Check is by hand: its card says so); she can't end in an enemy's square. After the Tumble, a normal Advance is blocked by the enemies again.
+
+### charge-and-down · v0.0.506 · Charge stops at allies and enemies; a Down creature is Difficult Terrain
+Do: Aim Aveline's Charge at Ogre Chieftain with Durgan on the straight line, then with Goblin Sneak on it. Then bring Goblin Sneak to 0 (Down) and drag Sylwen through its square.
+Expect: The Charge stops before Durgan ("an ally's or a Down creature's space is Difficult Terrain") and before the Goblin ("blocks movement"). The Down Goblin's square can be crossed by an Advance at double cost.
 
 ## Reactions and Judge
 

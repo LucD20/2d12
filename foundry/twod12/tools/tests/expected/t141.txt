@@ -16,7 +16,7 @@ the box: true | for Talents (v0.0.185; v0.0.374: the Class's help is the ? in th
 --- v0.0.173: fixes from Lucas's test, and his rule answers
 the tiers table ignores Foundry's colors (v0.0.174: table.tiers, the table and its cells): true
 the Snapshot is a picture: true | with the window's colors: true
-a diagonal between two creatures counts only between unwilling ones: true | Reposition doesn't pass between them: true
+a diagonal between two creatures counts only between two unwilling ones that aren't Down (batch 4: blocked): true | Reposition doesn't pass between them: true
 between two allies: 0
 between an ally and a goblin: 0
-between two goblins: 1
+between two goblins: 0

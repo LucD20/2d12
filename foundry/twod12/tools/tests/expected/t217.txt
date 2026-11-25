@@ -43,15 +43,15 @@ retarget: no Boon dice any more, a third d12 for a target that reaches 5: {"d12"
 High cover: Doomed, no Field Banes: true | several targets: true
 Low / Medium cover, Obscured, Long, the Engaged target are Field: true | range unnamed, Engaged (you) Doomed since v0.0.407: true
 Saves: Cover gives Field Boons up to 2, High cover Favored: true
-Flanking: the cancels first, then 2: true
+Flanking (batch 4): a flat 1 with a partner opposite, the cancel: true
 Prone's are Field in the compendium: true
 @Boon[-1|traits:strike|bb:pressure]: "n":-1 "bb":"pressure"
 an Effect's setting keeps its name on the creature: pressure
 --- v0.0.302 (Lucas tested v0.0.301: "Flank is not showing up at all"): why there is no Flanking, and the Show flanking overlay's model
 Paladin and an Archer around the Goblin: 0 Boons | no other creature threatens Goblin (Archer: no Melee weapon in hand (Crossbow))
 a Fighter joins: 1 Boon, from Fighter
-an Orc (the Goblin's side) threatens the Paladin: 0 | Fighter also threatens Goblin, but Orc (Goblin's side) threatens you: every Boon cancelled
-overlay: flanked Paladin by Goblin +0 (raw 0, cancelled by Fighter), Orc +0 (raw 0, cancelled by Fighter) | Goblin by Paladin +0 (raw 0, cancelled by Orc), Fighter +0 (raw 0, cancelled by Orc) | Fighter by Goblin +0 (raw 0, cancelled by Paladin), Orc +0 (raw 0, cancelled by Paladin) | Orc by Paladin +0 (raw 0, cancelled by Goblin), Fighter +0 (raw 0, cancelled by Goblin) | idle: Archer: no Melee weapon in hand (Crossbow)
+an Orc (the Goblin's side) threatens the Paladin: 0 | Fighter flanks Goblin with you, but Orc (Goblin's side) threatens you: the Boon is cancelled
+overlay: flanked Paladin by Goblin +0 (raw 0, cancelled by Fighter), Orc +0 (raw 0, cancelled by Fighter) | Goblin by Paladin +0 (raw 1, cancelled by Orc), Fighter +0 (raw 1, cancelled by Orc) | Fighter by Goblin +0 (raw 0, cancelled by Paladin), Orc +0 (raw 0, cancelled by Paladin) | Orc by Paladin +0 (raw 1, cancelled by Goblin), Fighter +0 (raw 1, cancelled by Goblin) | idle: Archer: no Melee weapon in hand (Crossbow)
 its label:  |  |  | 
 the 2d12 Tools drawer: Line of Effect, Cover height, Show flanking: true | no HUD buttons any more: true
 the sheet's rows have their color again (v0.0.298 had it in a comment): true | Use's tooltip and the open card: true | every row's Frequency line (v0.0.370; v0.0.302 only a Reaction's): true

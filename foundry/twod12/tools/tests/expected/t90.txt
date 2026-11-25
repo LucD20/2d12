@@ -17,7 +17,7 @@ Dark scene, only friends on the way (willing)                      dark 4, extra
 Dark scene, a 2x2 creature moves 3 squares                         dark 3, extra 3
 Bright scene, the same move                                        dark 0, extra 0
 --- if the light lookup fails, the enemy squares still count
-the grid fails to give a square's center: no darkness, but the enemy still counts dark 0, extra 1, through Orc
+the grid fails to give a square's center: no darkness, but the enemy still counts dark 0, extra 0, through Orc
 
 --- the cost function (the ruler)
 before: false
@@ -27,10 +27,10 @@ the other shape, (cost, from, to, distance): bright 1 | an action with no cost f
 ... in the dark: 2 | the crawl action: 2 | a base cost of 3 over a distance of 1 stays 3: 3 | distance 5, base 5: 10
 dark scene: 2 | 5-foot squares: 10 | given the document instead of the token: 2 | with Dark Sight: 1 | no creature: 1
 --- unwilling creatures (the ruler counts them too)
-a square with an enemy: 2 (as an action: 2) | with a friend (willing): 1 | a hidden token: 1 | an empty square next to it: 1
+a square with an enemy: 1 (as an action: 1) | with a friend (willing): 2 | a hidden token: 1 | an empty square next to it: 1
 an enemy in the dark: counts double, not four times: 2
-a 2x2 creature (v0.0.468: its steps read as Foundry gives them, the center until a drag's first step says): 2 (its squares are at 0,1 and 0,2: the Orc is on 0,2) | one step away from it: 1
-installing again does not wrap twice: ["actions.walk.getCostFunction","actions.fly.getCostFunction","actions.crawl.getCostFunction","TokenDocument#getMovementCostFunction"] | an enemy square still costs 2
+a 2x2 creature (v0.0.468: its steps read as Foundry gives them, the center until a drag's first step says): 1 (its squares are at 0,1 and 0,2: the Orc is on 0,2) | one step away from it: 1
+installing again does not wrap twice: ["actions.walk.getCostFunction","actions.fly.getCostFunction","actions.crawl.getCostFunction","TokenDocument#getMovementCostFunction"] | an enemy square still costs 1
 a base cost that is already double stays double: 2
 through a TokenDocument method: ["TokenDocument#getMovementCostFunction"] | a dark step costs 2
 a method that doesn't return a function is left alone: 7 [Function (anonymous)]
