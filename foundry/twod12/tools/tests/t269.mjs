@@ -9,7 +9,7 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 globalThis.game = { settings: { get: () => false }, time: { worldTime: 0 }, user: { id: "u" }, combat: null, items: [], packs: new Map(), actors: [], socket: { emit() {} } };
 globalThis.fromUuidSync = () => null;
 const C = await import(ROOTURL + "tools/content.mjs");
-const all = [...C.docs, ...C.actors.flatMap(a => a.items ?? []), ...C.pcs.flatMap(a => a.items ?? [])];
+const all = [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name)), ...C.actors.flatMap(a => a.items ?? []), ...C.pcs.flatMap(a => a.items ?? [])];
 const card = n => all.find(x => x.name === n && x.type === "action");
 const tiers = (n, k = 0) => { const v = card(n).system.versions[k]; return [1, 2, 3].map(t => (v[`t${t}`] ?? []).map(i => (i.useW ? `${i.wCount}W` : "") + (i.useD ? `${i.dCount}D` : "") + (i.dice || "") + (i.useAt ? "Mod" : "") + (i.subtype ? ` ${i.subtype}` : "")).join(" + ") || "-").join(" / "); };
 

@@ -36,7 +36,7 @@ console.log("Fists card tiers:", [1, 2, 3].map(n => PR.rawTierLine(BASIC_ACTIONS
 console.log("NPC Fists gets Weapon Modifier on T2/T3:", src("module/actions.mjs").includes('actor.type === "npc" && item.getFlag?.("twod12", "basic") !== "fists"'));
 
 console.log("--- Class basicLine hooks (Sworn Blade, Steady Draw)");
-const docOf = (type, name) => C.docs.find(d => d.type === type && d.name === name);
+const docOf = (type, name) => [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].find(d => d.type === type && d.name === name);
 const sworn = docOf("feature", "Sworn Blade"), steady = docOf("feature", "Steady Draw");
 console.log("Sworn Blade hook:", JSON.stringify(sworn?.system?.hooks), "| Steady Draw hook:", JSON.stringify(steady?.system?.hooks));
 const baItem = { name: BASIC_ACTIONS.basicWeaponAttack.name, system: { ...BASIC_ACTIONS.basicWeaponAttack, traits: new Set(BASIC_ACTIONS.basicWeaponAttack.traits) }, flags: { twod12: { basic: "basicWeaponAttack" } } };

@@ -22,9 +22,9 @@
 
 | Level | You gain | You choose |
 |---|---|---|
-| 1 | Judge, Smite, Sworn Blade, Drawing Light | a Hallmark Action, a Hallmark Reaction, an Art, an Escalation 2 ability, a Skill Talent |
-| 2 | Kindled Wrath, your Escalation hook | an Encounter Pick, an Escalation 4 ability, a Talent |
-| 3 | | a second Art, an Escalation 6 ability, a Skill Talent |
+| 1 | Judge, Smite, Sworn Blade, Drawing Light | a Hallmark Action, a Hallmark Reaction, a Skill Talent |
+| 2 | Kindled Wrath, your Escalation hook | an Encounter Pick, a Talent |
+| 3 | | a Skill Talent |
 
 Level 4 brings the Apex and the numbers of Stage 1 (see [[Stages]]); it is not written yet.
 
@@ -66,31 +66,6 @@ Every Paladin has these four. **Judge** names the foe your god's attention is on
 
 @@CARD:Rebuke@@
 
-### Level 1: Art
-
-**Choose one** (a second at level 3). *Quick build: Hold the Line.* Each time you use an Art, you choose one of its three Modes.
-
-- **Lantern of Faith:** light around you, light on a foe, or light in a foe's eyes.
-- **Hold the Line:** the ground at your feet, a swap with an ally, or an ally carried clear.
-- **Commandment:** a challenge, courage for your allies, or a foe ordered to its knees.
-
-@@CARD:Lantern of Faith@@
-
-@@CARD:Hold the Line@@
-
-@@CARD:Commandment@@
-
-### Level 1: Escalation 2 Ability
-
-**Choose one.** *Quick build: Armor of Faith.* Your Escalation rises from 1 to 6 as the fight goes on and is never spent (see [[Escalation]]); this ability works while it is at least 2.
-
-- **Armor of Faith:** each [Divine] Reaction also gives you Guard.
-- **Roving Judgment:** you can move your Judgment for free.
-
-@@CARD:Armor of Faith@@
-
-@@CARD:Roving Judgment@@
-
 ## Level 2
 
 ### Level 2: Escalation Hook
@@ -113,30 +88,6 @@ You gain Kindled Wrath: it raises your Escalation when an ally becomes Bloodied 
 
 @@CARD:Word of Radiance@@
 
-### Level 2: Escalation 4 Ability
-
-**Choose one.** *Quick build: Weight of Judgment.*
-
-- **Weight of Judgment:** the foe you Judged moves slower.
-- **Tireless Vigil:** a second Reaction Point each round, for [Divine] Reactions.
-
-@@CARD:Weight of Judgment@@
-
-@@CARD:Tireless Vigil@@
-
 ## Level 3
 
-### Level 3: Second Art
-
-Choose a second Art from the three at [[Level 1: Art]], one you don't have.
-
-### Level 3: Escalation 6 Ability
-
-**Choose one.** *Quick build: Reckoning.*
-
-- **Reckoning** (Encounter, 0 AP): you stride among your foes and throw them back, afraid.
-- **Hallowed Stance:** once on your turn, a [Divine] Action of yours lets you step first.
-
-@@CARD:Reckoning@@
-
-@@CARD:Hallowed Stance@@
+Level 3 gives a Skill Talent (see [[Talents]]); your class gives no card at this level.

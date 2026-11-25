@@ -7,7 +7,7 @@ import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(ROOTURL), src = f => fs.readFileSync(ROOT + f, "utf8");
 const C = await import(ROOTURL + "tools/content.mjs");
-const all = [...C.docs, ...C.pcs.flatMap(a => a.items ?? [])];
+const all = [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name)), ...C.pcs.flatMap(a => a.items ?? [])];
 const card = n => all.find(x => x.name === n && x.type === "action");
 const v0 = n => card(n).system.versions[0];
 console.log("Effect above the roll:", ["Rebuke", "Reckoning", "Hit and Run"].map(n => `${n} ${!!v0(n).effectFirst}`).join(", "));

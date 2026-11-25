@@ -15,5 +15,5 @@ Sylwen: systems/twod12/art/pcs/sylwen.webp | Dagger (Mastery 5: Technique open) 
 Kaela: systems/twod12/art/pcs/kaela.webp | Dagger (Mastery 5: Technique open) | Talents: Ricochet
 Kaela: systems/twod12/art/pcs/kaela.webp | Dagger (Mastery 5: Technique open) | Talents: 
 level 1 versions: Aveline (Human Paladin, Smite, level 1): ; Daily: none; Longsword | Durgan (Dwarf Paladin, Lay On Hands, level 1): ; Daily: none; Arming Sword | Sylwen (Elf Archer, Quick Shots, level 1): ; Daily: none; Dagger | Kaela (Human Archer, Strafe, level 1): ; Daily: none; Dagger
-Aveline and Durgan share: Judge, Smite, Sworn Blade, Drawing Light, Commandment
-Sylwen and Kaela share: Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Spotter, Dagger
+Aveline and Durgan share: Judge, Smite, Sworn Blade, Drawing Light
+Sylwen and Kaela share: Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Dagger

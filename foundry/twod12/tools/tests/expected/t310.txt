@@ -1,0 +1,21 @@
+--- the packs
+removed names: 23 | none left in the packs: true | all kept as deprecated: true
+the migration's list = the packs' card list: true
+--- the classes
+Paladin: no Escalation lists: true | sections: 1: Attribute increases, Features, Hallmark Action, Hallmark Reaction, Skill Talent | 2: Escalation Hook, Encounter Pick, Talent | 3: Skill Talent | 4: Stage Talent
+  no removed section id: true
+Archer: no Escalation lists: true | sections: 1: Attribute increases, Features, Hallmark Action, Hallmark Reaction, Skill Talent | 2: Escalation Hook, Encounter Pick, Talent | 3: Skill Talent | 4: Stage Talent
+  no removed section id: true
+--- the pregens (the sheets)
+Aveline (Human Paladin, Smite): level 4 | nothing removed: true | picks: 1: pal1hall,pal1react / 2: pal2enc / 3:  / 4:  | Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke, Kindled Wrath, Word of Radiance, Rime Strike, Thwart Cut
+Aveline (Human Paladin, Smite, level 1): level 1 | nothing removed: true | picks: 1: pal1hall,pal1react | Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke, Thwart Cut
+Durgan (Dwarf Paladin, Lay On Hands): level 4 | nothing removed: true | picks: 1: pal1hall,pal1react / 2: pal2enc / 3:  / 4:  | Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith, Kindled Wrath, Bulwark of Faith, Oath of Burden, Bear the Blow, Seizing Cut
+Durgan (Dwarf Paladin, Lay On Hands, level 1): level 1 | nothing removed: true | picks: 1: pal1hall,pal1react | Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith, Seizing Cut
+Sylwen (Elf Archer, Quick Shots): level 4 | nothing removed: true | picks: 1: arc1hall,arc1react / 2: arc2enc / 3:  / 4:  | Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Thrill of the Kill, Volley, Take Aim, Wounding Shot
+Sylwen (Elf Archer, Quick Shots, level 1): level 1 | nothing removed: true | picks: 1: arc1hall,arc1react | Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Wounding Shot
+Kaela (Human Archer, Strafe): level 4 | nothing removed: true | picks: 1: arc1hall,arc1react / 2: arc2enc / 3:  / 4:  | Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Thrill of the Kill, Hit and Run, Ricochet, Circling Shot
+Kaela (Human Archer, Strafe, level 1): level 1 | nothing removed: true | picks: 1: arc1hall,arc1react | Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Circling Shot
+--- the migration (pure parts)
+b5Removed: ["a","b"]
+b5Picks: {"1":{"pal1hall":["x"]},"2":{"pal2enc":["w"]}} | nothing to clear: null
+registered after the Archer's and on game.twod12: true | waits for F3: true

@@ -183,7 +183,7 @@ An Action that another Action lets you use as part of it is a **Linked Action**.
 If a Linked Action has no valid target, the rest of the Action is disrupted (that Linked Action and anything after it don't happen); what already happened stays. By default, you can't change the target of a Linked Action. For example, if a player asks to change the target from a creature to an object so they can continue the Action, the GM should probably accept it only if it makes sense, such as attacking a door on the way, and not "attacking the ground".
 
 > [!example]
-> The Archer's Opening Shot lets an ally make a Basic Attack (1A). On that ally's own turn they can still use Basic Attack as its own Action, and that first use has no At-will Bane.
+> A card lets an ally make a Basic Attack (1A) as part of it. On that ally's own turn they can still use Basic Attack as its own Action, and that first use has no At-will Bane.
 
 ### Targets of Effects
 
@@ -209,7 +209,7 @@ Some cards mark an effect for some Tiers only, with the Tiers in parentheses: "I
 
 ### Buffs
 
-A **Buff** is an effect that modifies another Action, such as One More Arrow's 1[W] more on one of your [Strike] Actions.
+A **Buff** is an effect that modifies another Action, such as the 2 Boons that Feint's Tier 2 gives your next [Strike] Action against its target.
 
 - A Buff that gives a single value ("+[R] 1d6 Co") applies on every Tier, Tier 1 included.
 - A Buff that gives a value per Tier ("+[R] 1d4/1d6/1d8 Co") applies its Tier 1 value on a Tier 1, its Tier 2 value on a Tier 2 and its Tier 3 value on a Tier 3.
@@ -237,7 +237,7 @@ For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus 
 **Equipment is not a bonus.** Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.
 
 > [!example]
-> Weight of Judgment reduces the Speed of a creature a Paladin Judged by 2. If two Paladins with it Judge the same creature, its Speed is still reduced by 2, not 4: it is the same effect.
+> Hindered halves a creature's Speed. If two Actions make the same creature Hindered, its Speed is still halved once, not twice: it is the same effect.
 
 ### Frequency
 
@@ -323,24 +323,19 @@ Each position in the turn order is an **initiative slot**. Effects end at the en
 
 ## Escalation
 
-**Escalation** is a character's adrenaline: a level from **1 to 6** that rises as a fight goes on. Each PC has their own. It is never spent: your class's Escalation abilities work while your Escalation is high enough.
+**Escalation** is a character's adrenaline: a level from **1 to 6** that rises as a fight goes on. Each PC has their own. It is never spent: the cards that need it or grow with it read it.
 
 - **Start:** you start every encounter at **Escalation 1 + your party's [[Momentum]]**.
 - **Rounds:** at the start of every round after the first, if you aren't Unconscious, your Escalation increases by 1. While Unconscious, you keep the Escalation you have.
 - **Critical:** once an encounter, when you score a [[Critical]] on one of your Actions, your Escalation increases by 1.
 - **Your class's hook:** each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally becomes Bloodied or goes Down; the Archer: an enemy you have damaged goes Down). You gain your class's hook at level 2.
 - **At most 6:** you can't have more than 6 Escalation, unless a feature says so. A Critical or a hook that happens while your Escalation is already 6 does nothing, and it isn't used up for the encounter.
-- **The end:** when the encounter ends, your Escalation goes back to 1, and the abilities that need it stop working.
+- **The end:** when the encounter ends, your Escalation goes back to 1, and the Actions that need it can't be used.
 
-Your class has two kinds of Escalation abilities (see [[Escalation Abilities]]):
-
-- **Escalation abilities**, at Escalation **2, 4 and 6**: a Passive works while your Escalation is at least its number ("while your Escalation is 4 or more"); an Action whose card says Escalation N can be used only then (Reckoning, Escalation 6). You gain them one level at a time (see [[Leveling Up]]).
-- **The Apex**: an Encounter Action whose card says **Escalation 6**. You can use it only while your Escalation is 6; it spends nothing. It comes at level 4, the first level of Stage 1.
-
-An Action with an **Escalation** line on its card needs that much Escalation, the same way.
+An Action whose card says **Escalation N** can be used only while your Escalation is at least N; it spends nothing. Your class's **Apex** is an Encounter Action that needs **Escalation 6**; it comes at level 4, the first level of Stage 1 (see [[Escalation Abilities]]). Your Escalation also feeds your cards that grow with it, such as the Paladin's Smite.
 
 > [!example]
-> Nari's party has Momentum 1, so he starts a fight at Escalation 2: his Escalation 2 Passive works from his first turn. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4, and his Escalation 4 Passive starts working. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.
+> Nari's party has Momentum 1, so he starts a fight at Escalation 2. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.
 
 NPCs have no Escalation, except Elites (see [[Elite Escalation]]).
 

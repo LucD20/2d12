@@ -5,6 +5,7 @@
   "img": "systems/twod12/art/npcs/bandit-thug.png",
   "system": {
    "level": 1,
+   "size": 3,
    "role": "grunt",
    "npcRole": "",
    "speed": 5,
@@ -96,6 +97,8 @@
          "pool": "B",
          "useW": false,
          "wCount": 1,
+         "useD": false,
+         "dCount": 1,
          "dice": "1d4+1",
          "useAt": false,
          "subtype": "Bl"
@@ -106,6 +109,8 @@
          "pool": "B",
          "useW": false,
          "wCount": 1,
+         "useD": false,
+         "dCount": 1,
          "dice": "1d6+2",
          "useAt": false,
          "subtype": "Bl"
@@ -163,6 +168,8 @@
          "pool": "B",
          "useW": false,
          "wCount": 1,
+         "useD": false,
+         "dCount": 1,
          "dice": "1d6+4",
          "useAt": false,
          "subtype": "Bl"
@@ -173,6 +180,8 @@
          "pool": "B",
          "useW": false,
          "wCount": 1,
+         "useD": false,
+         "dCount": 1,
          "dice": "1d6+8",
          "useAt": false,
          "subtype": "Bl"
@@ -232,7 +241,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "You move up to your Speed in squares, in one piece: the movement you don't use is lost (you can't move part of it, use another Action and move the rest later). Once during this Advance, at any point of the movement, you can use the Interact Action (paying its 1 AP then) and go on moving. @Move[advance|distance:speed]",
+       "effects": "You @Move[advance|distance:speed]{move up to your Speed} in squares, in one piece: the movement you don't use is lost (you can't move part of it, use another Action and move the rest later). Once during this Advance, at any point of the movement, you can use the Interact Action (paying its 1 AP then) and go on moving.",
        "fx": {
         "all": [],
         "t1": [],
@@ -282,7 +291,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "@Move[evade|distance:1]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain.",
+       "effects": "@Move[evade|distance:1]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost).",
        "fx": {
         "all": [],
         "t1": [],
@@ -299,7 +308,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "@Move[evade|distance:floor(speed/2)]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain.",
+       "effects": "@Move[evade|distance:floor(speed/2)]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost).",
        "fx": {
         "all": [],
         "t1": [],
@@ -348,8 +357,8 @@
        "t2": [],
        "t3": [],
        "x1": "Your next Reload attempt gains 2 Boons.",
-       "x2": "You Reload the weapon. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. @Reload[weapon] @Regrip[weapon|label:Regrip (1A)]",
-       "x3": "You Reload the weapon and its wielder can @Move[evade|distance:1]. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. @Reload[weapon] @Regrip[weapon|label:Regrip (1A)]",
+       "x2": "You @Reload[weapon]{Reload} the weapon. Then you can @Regrip[weapon|label:Regrip (1A)] to hold the weapon with two hands, or the ally can.",
+       "x3": "You @Reload[weapon]{Reload} the weapon and its wielder can @Move[evade|distance:1]. Then you can @Regrip[weapon|label:Regrip (1A)] to hold the weapon with two hands, or the ally can.",
        "effects": "",
        "fx": {
         "all": [],
@@ -400,7 +409,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an Advance Action without ending the Advance (see @Book[Advance]{Advance}).",
+       "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action; stowing and swapping need no free hand); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an Advance Action without ending the Advance (see @Book[Advance]{Advance}).",
        "fx": {
         "all": [],
         "t1": [],
@@ -451,7 +460,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "You move 1 square. @Move[advance|distance:1|label:Crawl 1]",
+       "effects": "You @Move[advance|distance:1|label:move 1 square].",
        "fx": {
         "all": [],
         "t1": [],
@@ -468,7 +477,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "Requirements: Your Speed is 5 or higher. You move 3 squares. @Move[advance|distance:3|label:Crawl 3]",
+       "effects": "Requirements: Your Speed is 5 or higher. You @Move[advance|distance:3|label:move 3 squares].",
        "fx": {
         "all": [],
         "t1": [],
@@ -518,7 +527,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the Handle trait: it doesn't need a free hand. @Regrip[weapon]",
+       "effects": "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. @Regrip[weapon] doesn't have the Handle trait: it doesn't need a free hand.",
        "fx": {
         "all": [],
         "t1": [],
@@ -568,7 +577,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "You drop an object in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand). @Release[weapon]",
+       "effects": "You @Release[weapon]{drop an object} in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand).",
        "fx": {
         "all": [],
         "t1": [],
@@ -655,28 +664,30 @@
      "distance": "self",
      "requirements": "You are Immobilized.",
      "traits": [
-      "move",
-      "self"
+      "body",
+      "instinct",
+      "move"
      ],
      "targets": "",
-     "vs": "",
+     "vs": "action",
      "versions": [
       {
        "ap": 1,
-       "noTiers": true,
+       "noTiers": false,
        "t1": [],
        "t2": [],
        "t3": [],
-       "x1": "",
-       "x2": "",
-       "x3": "",
-       "effects": "You are no longer Immobilized.",
+       "x1": "No effect: you stay Immobilized.",
+       "x2": "You are no longer Immobilized, and no longer Grabbed if you were.",
+       "x3": "You are no longer Immobilized, and no longer Grabbed if you were.",
+       "effects": "",
        "fx": {
         "all": [],
         "t1": [],
         "t2": [],
         "t3": []
-       }
+       },
+       "orTiers": "23"
       }
      ],
      "automation": "gold"
@@ -721,7 +732,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "Advance in a @Book[Straight Line]{straight line} toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last empty square where the line is legal. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against the target. That Weapon Attack counts toward At-will Banes. @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge] @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|atwill:yes|label:Weapon Attack (1A, 1 Boon)]",
+       "effects": "@Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge] in a @Book[Straight Line]{straight line} toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last empty square where the line is legal. At the end of your movement, make a @Use[Basic Attack|boons:1|empowered:has(Battering Charge)|atwill:yes|label:Basic Attack (1A, 1 Boon)] against the target. That Basic Attack counts toward At-will Banes.",
        "fx": {
         "all": [],
         "t1": [],
@@ -745,8 +756,8 @@
     }
    },
    {
-    "_id": "pHVKHOq15ldAn4DP",
-    "name": "Leaning",
+    "_id": "CPLDjalQ4ZbAOBND",
+    "name": "Lean",
     "type": "action",
     "img": "icons/svg/eye.svg",
     "system": {
@@ -771,7 +782,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost. Click a corner of your square on the map to choose which one you lean toward: your token peeks out a little past it (so you can see around a wall that ends there, and you are more exposed too), unless a wall is in the way. Click it again to go back to the center. @Condition[leaning|eot]",
+       "effects": "Until the end of your turn, or until you leave your square, you are @Condition[leaning|eot]{Leaning}: you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost.",
        "fx": {
         "all": [],
         "t1": [],
@@ -785,6 +796,91 @@
     "flags": {
      "twod12": {
       "basic": "leaning"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "v4ZhjOKxtUB6moni",
+    "name": "Fists",
+    "type": "action",
+    "img": "icons/svg/combat.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "When there is nothing else in your hands, there are always your hands.",
+     "frequency": "atwill",
+     "distance": "weapon",
+     "requirements": "You have a free hand.",
+     "traits": [
+      "strike",
+      "weapon"
+     ],
+     "targets": "One creature",
+     "vs": "",
+     "weaponUse": "fists",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": false,
+       "t1": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "useD": false,
+         "dCount": 1,
+         "dice": "1",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "t2": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "useD": false,
+         "dCount": 1,
+         "dice": "2",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "t3": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "useD": false,
+         "dCount": 1,
+         "dice": "1d6!",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ],
+     "automation": "gold"
+    },
+    "flags": {
+     "twod12": {
+      "basic": "fists"
      }
     },
     "effects": [],
@@ -892,12 +988,11 @@
      "flavor": "A hooked foot, a twist, and they hit the ground.",
      "frequency": "round",
      "distance": "reach",
-     "requirements": "The target's SR is at most 1 higher than yours.",
+     "requirements": "The target's Size is at most 1 larger than yours.",
      "traits": [
       "body",
       "handle",
-      "instinct",
-      "strike"
+      "instinct"
      ],
      "targets": "One creature",
      "vs": "roll",
@@ -907,29 +1002,14 @@
        "noTiers": false,
        "t1": [],
        "t2": [],
-       "t3": [],
-       "x1": "No effect.",
-       "x2": "No effect.",
-       "x3": "@Condition[prone]",
-       "effects": "",
-       "fx": {
-        "all": [],
-        "t1": [],
-        "t2": [],
-        "t3": []
-       }
-      },
-      {
-       "ap": 2,
-       "noTiers": false,
-       "t1": [],
-       "t2": [],
        "t3": [
         {
          "pool": "B",
          "useW": false,
          "wCount": 1,
-         "dice": "1d8",
+         "useD": false,
+         "dCount": 1,
+         "dice": "1d6!",
          "useAt": false,
          "subtype": "Bl"
         }
@@ -943,7 +1023,48 @@
         "t1": [],
         "t2": [],
         "t3": []
-       }
+       },
+       "critical": "[V] 1d6! Bl."
+      },
+      {
+       "ap": 2,
+       "noTiers": false,
+       "t1": [],
+       "t2": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "useD": false,
+         "dCount": 1,
+         "dice": "1d6!",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "t3": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "useD": false,
+         "dCount": 1,
+         "dice": "2d6!",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "x1": "@Condition[hindered|eot]",
+       "x2": "@Condition[prone]",
+       "x3": "@Condition[prone]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       },
+       "critical": "[V] 1d6! Bl."
       }
      ],
      "automation": "gold"
@@ -971,11 +1092,10 @@
      "flavor": "You put your weight behind it and drive them back.",
      "frequency": "round",
      "distance": "reach",
-     "requirements": "The target's SR is at most 1 higher than yours.",
+     "requirements": "The target's Size is at most 1 larger than yours.",
      "traits": [
       "body",
-      "handle",
-      "strike"
+      "handle"
      ],
      "targets": "One creature",
      "vs": "body",
@@ -987,35 +1107,19 @@
        "t2": [],
        "t3": [],
        "x1": "No effect.",
-       "x2": "@Move[pushed|distance:1]",
-       "x3": "@Move[pushed|distance:2]",
+       "x2": "@Move[pushed|distance:2]",
+       "x3": "@Move[pushed|distance:3]",
        "effects": "",
        "fx": {
         "all": [],
         "t1": [],
         "t2": [],
         "t3": []
-       }
+       },
+       "critical": "@Condition[prone]"
       },
       {
        "ap": 2,
-       "noTiers": false,
-       "t1": [],
-       "t2": [],
-       "t3": [],
-       "x1": "No effect.",
-       "x2": "@Move[pushed|distance:2]",
-       "x3": "@Move[pushed|distance:4]",
-       "effects": "",
-       "fx": {
-        "all": [],
-        "t1": [],
-        "t2": [],
-        "t3": []
-       }
-      },
-      {
-       "ap": 3,
        "noTiers": false,
        "t1": [],
        "t2": [],
@@ -1029,7 +1133,8 @@
         "t1": [],
         "t2": [],
         "t3": []
-       }
+       },
+       "critical": "@Condition[prone]"
       }
      ],
      "automation": "gold"
@@ -1059,13 +1164,11 @@
      "distance": "reach",
      "requirements": "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement.",
      "traits": [
-      "appeal",
       "body",
-      "handle",
-      "strike"
+      "handle"
      ],
      "targets": "One creature",
-     "vs": "roll",
+     "vs": "body",
      "versions": [
       {
        "ap": 1,
@@ -1160,7 +1263,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "The target makes a Save against its Lingering, with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. Tier 1: no effect. Tier 2: it takes half the Lingering at the end of this turn, then the Lingering ends. Tier 3: the Lingering ends. @ShakeOff[save]",
+       "effects": "The target makes a @ShakeOff[save]{Save} against its Lingering, with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. Tier 1: no effect. Tier 2: it takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends. Tier 3: the Lingering ends.",
        "fx": {
         "all": [],
         "t1": [],
@@ -1174,6 +1277,292 @@
     "flags": {
      "twod12": {
       "basic": "shakeOff"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "9yydvA7E6wj60cS1",
+    "name": "Aid",
+    "type": "action",
+    "img": "icons/svg/regen.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You call the opening, and a friend takes it.",
+     "frequency": "round",
+     "distance": "5",
+     "requirements": "",
+     "description": "<p>If the target is Daunted, you also make an Appeal or Instinct Check against the Action DC of the Action that Daunted it: on a Tier 2 or 3, the target is no longer Daunted.</p>",
+     "special": "If the target is @Condition[daunted]{Daunted}, you also make an Appeal or @Check[instinct] against the Action DC of the Action that Daunted it: on a Tier 2 or 3, the target is no longer Daunted.",
+     "traits": [
+      "appeal",
+      "focus",
+      "instinct"
+     ],
+     "targets": "One ally that can hear you",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "The target is @Condition[quickened|value:1|eot]{Quickened 1} on its next turn.",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ],
+     "automation": "silver"
+    },
+    "flags": {
+     "twod12": {
+      "basic": "aid"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "r7CVtuObje7Yp4zh",
+    "name": "Demoralize",
+    "type": "action",
+    "img": "icons/svg/terror.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You fix them with a look and a promise, and their guard slips.",
+     "frequency": "round",
+     "distance": "5",
+     "requirements": "",
+     "description": "<p>The target is immune to your Demoralize until the end of the encounter (EoE).</p>",
+     "special": "The target is immune to your Demoralize until the end of the encounter (EoE).",
+     "traits": [
+      "appeal"
+     ],
+     "targets": "One creature that can see or hear you",
+     "vs": "appeal",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "No effect.",
+       "x2": "@Condition[vulnerable|value:1|eot]",
+       "x3": "@Condition[vulnerable|value:1|rounds:1]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ],
+     "automation": "gold"
+    },
+    "flags": {
+     "twod12": {
+      "basic": "demoralize"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "6fMv5Q9fhz4qIhLk",
+    "name": "Feint",
+    "type": "action",
+    "img": "icons/svg/daze.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You show one blow and land another.",
+     "frequency": "round",
+     "distance": "reach",
+     "requirements": "",
+     "traits": [
+      "focus",
+      "mind"
+     ],
+     "targets": "One creature",
+     "vs": "mind",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "No effect.",
+       "x2": "You gain 2 Boons on your next [Strike] Action against the target this turn.",
+       "x3": "Your next [Strike] Action against the target this turn is Favored.",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       },
+       "critical": "The target can't use Reactions against you until the end of your turn."
+      }
+     ],
+     "automation": "gold"
+    },
+    "flags": {
+     "twod12": {
+      "basic": "feint"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "N1BEpeZOTxKCkcA2",
+    "name": "Heal",
+    "type": "action",
+    "img": "icons/svg/heal.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You press, bind and talk them back to their feet.",
+     "frequency": "atwill",
+     "distance": "reach",
+     "requirements": "",
+     "traits": [
+      "appeal",
+      "handle",
+      "mind"
+     ],
+     "targets": "One ally (a Down one too)",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 2,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "The target can use @Rally[1].",
+       "x2": "The target can use @Rally[2].",
+       "x3": "The target can use @Rally[2], and if it is Prone it can Stand.",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ],
+     "automation": "silver"
+    },
+    "flags": {
+     "twod12": {
+      "basic": "heal"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "GABYr6wvA4xZKKli",
+    "name": "Tumble",
+    "type": "action",
+    "img": "icons/svg/wingfoot.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You duck, roll and slip past them.",
+     "frequency": "atwill",
+     "distance": "self",
+     "requirements": "Your Speed is at least 4.",
+     "description": "<p>You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass. Passing diagonally between two enemies corner to corner counts as crossing one creature: the higher of their DCs, no Bane for the second.</p>",
+     "lines": [
+      {
+       "label": "Special",
+       "text": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or @Check[instinct] against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass. Passing diagonally between two enemies corner to corner counts as crossing one creature: the higher of their DCs, no Bane for the second."
+      }
+     ],
+     "traits": [
+      "appeal",
+      "instinct",
+      "move"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "@Move[advance|distance:floor(speed/2)|pass:enemies]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 2,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "@Move[evade|distance:2|pass:enemies]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ],
+     "automation": "silver"
+    },
+    "flags": {
+     "twod12": {
+      "basic": "tumble"
      }
     },
     "effects": [],
@@ -1212,8 +1601,8 @@
       },
       "t3": {
        "count": 1,
-       "die": "d4",
-       "mod": 1
+       "die": "d6",
+       "mod": 0
       }
      }
     },

@@ -44,7 +44,7 @@ console.log("a block per Version:", bs.versions.map(x => `${x.ap}: ${dmg(x.t1) |
 console.log("an Area line:", JSON.stringify(G.areaOf("2 Emanation")), JSON.stringify(G.areaOf("Line 10")), JSON.stringify(G.areaOf("Aura 2")), "| moments:", ["An ally within 5 squares would go Down.", "A Strike would damage an ally within 5 squares.", "An enemy within 10 squares moves closer to you.", "An ally takes damage."].map(G.momentOf).join(", "));
 
 console.log("--- every Action of the compendium, written as text and read back");
-const acts = C.docs.filter(d => d.type === "action"), norm = l => JSON.stringify((l ?? []).map(i => [i.pool || "B", !!i.useW, i.useW ? i.wCount || 1 : 1, i.dice || "", !!i.useAt, i.subtype || ""]));
+const acts = [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].filter(d => d.type === "action"), norm = l => JSON.stringify((l ?? []).map(i => [i.pool || "B", !!i.useW, i.useW ? i.wCount || 1 : 1, i.dice || "", !!i.useAt, i.subtype || ""]));
 let same = 0; const diff = [];
 for (const d of acts) {
   const s = d.system, card = G.parseCard(G.cardText(d.name, s)), o = G.cardSystem(card, s).system, bad = [];

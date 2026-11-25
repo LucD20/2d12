@@ -48,6 +48,8 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Thwart Cut | Silver | Pressed doesn't end when you stop threatening the target |
 
 ## The Paladin (13 Actions, 6 Features)
+> **v0.0.507 (batch 5):** the Arts (Lantern of Faith, Hold the Line, Commandment, Footwork, Trick Shots, Spotter), the Escalation Passives and Reckoning left the classes: their rows below are history (the cards are in `foundry/deprecated/`).
+
 | Card | Rating | What is by hand |
 |---|---|---|
 | Judge | Silver | the 0 AP use only at the start of an encounter or as a 0R |

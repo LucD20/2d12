@@ -1,4 +1,4 @@
-Actions: 59 | a card line missing from the roll dialog or the chat card: none | out of the card's order: none
+Actions: 52 | a card line missing from the roll dialog or the chat card: none | out of the card's order: none
 Smite's roll dialog: Smite dice true, Attack true, Tier 1 true, Special true | its chat card: Smite dice true, Special true
 Rebuke's Save card: the Trigger above the Save: true | its Effect line where the book writes it, above the Save (v0.0.429, CARD-ONE step 6): true | Rebuke Turn · 1 AP Target: One enemy Trigger: The target moves away from you. Effect: The target is hindered. Instinct S
 wired: the dialog's Versions carry the card's lines: true | the chat models: 3 | a card posted before keeps its old lines: true

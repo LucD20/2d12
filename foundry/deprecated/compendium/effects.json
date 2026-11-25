@@ -2,7 +2,7 @@
  {
   "name": "Hindered (until Move)",
   "type": "effect",
-  "img": "icons/svg/downgrade.svg",
+  "img": "systems/twod12/icons/conditions/hindered.svg",
   "folder": "Conditions",
   "system": {
    "duration": {
@@ -182,7 +182,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -244,7 +247,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -383,7 +389,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -527,7 +536,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -690,7 +702,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -755,7 +770,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -827,7 +845,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -1042,7 +1063,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -1255,7 +1279,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": true,
@@ -1395,7 +1422,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": true,
@@ -1528,7 +1558,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -1795,7 +1828,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -1972,7 +2008,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -2408,7 +2447,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -2663,7 +2705,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -2784,7 +2829,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -2982,7 +3030,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -3107,7 +3158,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -3152,6 +3206,505 @@
     }
    },
    "autoHover": "Their Rolls with Actions that are [Weapon], [Power] or [Signature]: 1 Bane. Lasts until removed."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Kindle (Bright light 3)",
+  "type": "effect",
+  "img": "icons/svg/light.svg",
+  "folder": "Paladin",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "encounter",
+    "rounds": 1
+   },
+   "description": "<p>You shed Bright light 3 (Dim light 3 more), EoE (Lantern of Faith, Kindle).</p>",
+   "settings": [
+    {
+     "type": "light",
+     "bright": 3,
+     "dim": 6,
+     "color": "#ffd27a",
+     "lightAlpha": 0.2,
+     "lightAnim": "sunburst",
+     "lightSpeed": 2,
+     "lightIntensity": 3
+    }
+   ],
+   "rules": [
+    {
+     "bright": 3,
+     "dim": 3,
+     "color": "#ffd27a",
+     "alpha": 0.2,
+     "anim": "sunburst",
+     "aspeed": 2,
+     "aint": 3,
+     "id": "m0",
+     "kind": "light",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "encounter",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Sheds Bright light in a 3 Emanation and Dim light 3 squares further. Lasts until EoE."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Reveal (Bright light 1)",
+  "type": "effect",
+  "img": "icons/svg/light.svg",
+  "folder": "Paladin",
+  "system": {
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).</p>",
+   "settings": [
+    {
+     "type": "light",
+     "bright": 1,
+     "dim": 2,
+     "color": "#ffd27a",
+     "lightAlpha": 0.2,
+     "lightAnim": "sunburst",
+     "lightSpeed": 2,
+     "lightIntensity": 3
+    }
+   ],
+   "rules": [
+    {
+     "bright": 1,
+     "dim": 1,
+     "color": "#ffd27a",
+     "alpha": 0.2,
+     "anim": "sunburst",
+     "aspeed": 2,
+     "aint": 3,
+     "id": "m0",
+     "kind": "light",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Sheds Bright light in a 1 Emanation and Dim light 1 squares further. Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Brace",
+  "type": "effect",
+  "img": "icons/svg/statue.svg",
+  "folder": "Paladin",
+  "system": {
+   "description": "<p>For 1 round, the squares in a 1 Emanation around where you stood are Difficult Terrain for enemies (Hold the Line, Brace). They stay where they are if you move.</p>",
+   "where": "map",
+   "zone": {
+    "src": "here",
+    "shape": "emanation",
+    "size": "1",
+    "inside": {
+     "carry": {
+      "on": false,
+      "who": "enemies",
+      "self": false,
+      "fx": "",
+      "fxName": ""
+     },
+     "carry2": {
+      "who": "enemies",
+      "on": false,
+      "self": false,
+      "fx": "",
+      "fxName": ""
+     },
+     "heal": {
+      "on": false,
+      "who": "allies",
+      "self": true,
+      "formula": "1d4"
+     },
+     "ht": {
+      "gives": {
+       "on": false,
+       "fx": "",
+       "fxName": ""
+      },
+      "on": false,
+      "who": "all",
+      "self": false,
+      "entering": true,
+      "turn": true,
+      "movement": false,
+      "list": [
+       {
+        "dice": "1d6",
+        "pool": "B",
+        "sub": ""
+       }
+      ]
+     },
+     "diff": {
+      "on": true,
+      "who": "enemies",
+      "self": false
+     },
+     "guard": {
+      "on": false,
+      "self": false,
+      "who": "allies",
+      "formula": "@origin.pow"
+     }
+    },
+    "show": true,
+    "outline": "#9aa3ad",
+    "fill": "#9aa3ad"
+   },
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": "1 Emanation. Its squares are Difficult Terrain for enemies. Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Courage (ignore Daunted)",
+  "type": "effect",
+  "img": "icons/svg/aura.svg",
+  "folder": "Paladin",
+  "system": {
+   "duration": {
+    "type": "",
+    "rounds": 1
+   },
+   "description": "<p>You ignore the Daunted condition while inside Courage's Aura.</p>",
+   "settings": [
+    {
+     "type": "ignore",
+     "ignoreRule": "daunted",
+     "all": [],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": true,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": true
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls: ignore the Daunted condition. Lasts until removed."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Courage",
+  "type": "effect",
+  "img": "icons/svg/aura.svg",
+  "folder": "Paladin",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>For 1 round, an Aura 3 around you: you and your allies in it ignore the Daunted condition (Commandment, Courage).</p>",
+   "settings": [
+    {
+     "type": "aura",
+     "auraSize": 3,
+     "auraWho": "allies",
+     "auraSelf": true,
+     "auraOutline": "#d4a62a",
+     "auraFill": "#d4a62a",
+     "fxUuid": "Compendium.twod12.effects.Item.E1YbNDwELYUotGuX"
+    }
+   ],
+   "rules": [
+    {
+     "size": "3",
+     "inside": {
+      "carry": {
+       "on": true,
+       "who": "allies",
+       "self": true,
+       "fx": "Compendium.twod12.effects.Item.E1YbNDwELYUotGuX",
+       "fxName": ""
+      },
+      "carry2": {
+       "who": "enemies",
+       "on": false,
+       "self": false,
+       "fx": "",
+       "fxName": ""
+      },
+      "heal": {
+       "on": false,
+       "who": "allies",
+       "self": true,
+       "formula": "1d4"
+      },
+      "ht": {
+       "gives": {
+        "on": false,
+        "fx": "",
+        "fxName": ""
+       },
+       "on": false,
+       "who": "all",
+       "self": false,
+       "entering": true,
+       "turn": true,
+       "movement": false,
+       "list": [
+        {
+         "dice": "1d6",
+         "pool": "B",
+         "sub": ""
+        }
+       ]
+      },
+      "diff": {
+       "on": false,
+       "who": "all",
+       "self": false
+      },
+      "guard": {
+       "on": false,
+       "self": false,
+       "who": "allies",
+       "formula": "@origin.pow"
+      }
+     },
+     "show": true,
+     "outline": "#d4a62a",
+     "fill": "#d4a62a",
+     "id": "m0",
+     "kind": "aura",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Aura 3: Allies inside, and this creature, gain Courage (ignore Daunted). Lasts 1 round."
   },
   "flags": {}
  },
@@ -3232,7 +3785,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -3437,7 +3993,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -3624,7 +4183,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -3863,7 +4425,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -3925,7 +4490,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -4174,7 +4742,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -4355,7 +4926,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -4482,7 +5056,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -4627,7 +5204,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,

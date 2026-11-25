@@ -1,5 +1,5 @@
-Paladin: Repertoire Bulwark of Faith, Consecrated Ground, Word of Radiance | Passives Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil, Hallowed Stance | Actives Reckoning
-Archer: Repertoire Volley, Hit and Run, Covering Fire | Passives Lean and Loose, Blade and Bow, Clear Lines, Opening Shot, One More Arrow, Fleet | Actives 
+Paladin: Repertoire Bulwark of Faith, Consecrated Ground, Word of Radiance | Passives  | Actives 
+Archer: Repertoire Volley, Hit and Run, Covering Fire | Passives  | Actives 
 the book's Talents: 15
   Challenge          ok combat 1
   Heavy Blows        ok combat 1 | Great Weapon | settings bonusdamage

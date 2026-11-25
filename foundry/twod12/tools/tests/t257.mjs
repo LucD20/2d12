@@ -9,8 +9,8 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 globalThis.Hooks = { on() {}, once() {} }; globalThis.CONFIG = { statusEffects: [] }; globalThis.Combat = class {}; globalThis.game = { settings: { get: () => true } };
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 const C = await import(ROOTURL + "tools/content.mjs");
-const doc = (n, t) => C.docs.find(d => d.name === n && (!t || d.type === t));
-const nameOf = u => C.docs.find(d => [C.uuidOf("actions", d.name), C.uuidOf("features", d.name)].includes(u))?.name ?? "?";
+const doc = (n, t) => [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].find(d => d.name === n && (!t || d.type === t));
+const nameOf = u => [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].find(d => [C.uuidOf("actions", d.name), C.uuidOf("features", d.name)].includes(u))?.name ?? "?";
 
 console.log("--- the class and the cards");
 const arc = doc("Archer", "class").system;

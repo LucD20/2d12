@@ -6,8 +6,8 @@ Basic Action cards: 24 | keys in basic-data.mjs: 24 | the same set: true
 every Basic Action card is a Basic Action: true | every card in basic-actions.json has a key: true
 the generator gives the data of the file: true
 --- the book places every card it shows
-set aside: 75 | each is a card: true | none is placed: true
-shown in the book: 38 | placed once: true | markers with no card: none | stage0 cards, each placed once: 46 true
+set aside: 93 | each is a card: true | none is placed: true
+shown in the book: 36 | placed once: true | markers with no card: none | stage0 cards, each placed once: 28 true
 cards of the files still written by hand in a chapter: none
 a card the book does not show (book: false): Rusty Knife, Dirty Trick, Cudgel, Low Blow, Cleaver, Brutal Swing, Avenge Kin, Chilling Touch, Dread Whisper, Club, Overhead Smash, Ground Slam, Rally the Tribe
 --- the compendium items are the cards (content.mjs reads book/cards)

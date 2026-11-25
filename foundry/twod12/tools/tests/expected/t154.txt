@@ -10,11 +10,11 @@ wired (v0.0.392: no prompt; the roll dialog's 'No target' DC and its Target butt
 swap shown with no ally left (the click warns): true | a creature added mid-combat is shown: true | Mastery only in combat: true
 --- cards
 Pinning Shot and Twin Shot grant the Weapon Attack: true true | Vanish for 1 round: <p>+1 Defense for 1 round (Vanish).</p>
-Aveline (Human Paladin, Smite) (level 4): Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke, Commandment, Roving Judgment, Kindled Wrath, Word of Radiance, Weight of Judgment, Lantern of Faith, Reckoning
-Aveline (Human Paladin, Smite, level 1) (level 1): Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke, Commandment, Roving Judgment
-Durgan (Dwarf Paladin, Lay On Hands) (level 4): Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Kindled Wrath, Bulwark of Faith, Tireless Vigil, Commandment, Hallowed Stance
-Durgan (Dwarf Paladin, Lay On Hands, level 1) (level 1): Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith
-Sylwen (Elf Archer, Quick Shots) (level 4): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow
-Sylwen (Elf Archer, Quick Shots, level 1) (level 1): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Spotter, Lean and Loose
-Kaela (Human Archer, Strafe) (level 4): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet
-Kaela (Human Archer, Strafe, level 1) (level 1): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Footwork, Blade and Bow
+Aveline (Human Paladin, Smite) (level 4): Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke, Kindled Wrath, Word of Radiance
+Aveline (Human Paladin, Smite, level 1) (level 1): Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke
+Durgan (Dwarf Paladin, Lay On Hands) (level 4): Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith, Kindled Wrath, Bulwark of Faith
+Durgan (Dwarf Paladin, Lay On Hands, level 1) (level 1): Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith
+Sylwen (Elf Archer, Quick Shots) (level 4): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Thrill of the Kill, Volley
+Sylwen (Elf Archer, Quick Shots, level 1) (level 1): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot
+Kaela (Human Archer, Strafe) (level 4): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Thrill of the Kill, Hit and Run
+Kaela (Human Archer, Strafe, level 1) (level 1): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away

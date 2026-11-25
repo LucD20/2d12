@@ -23,9 +23,9 @@
 
 | Level | You gain | You choose |
 |---|---|---|
-| 1 | Shifting Aim, Darting Blade, Steady Draw, Harrying Shot | a Hallmark Action, a Hallmark Reaction, an Art, an Escalation 2 ability, a Skill Talent |
-| 2 | Thrill of the Kill, your Escalation hook | an Encounter Pick, an Escalation 4 ability, a Talent |
-| 3 | | a second Art, an Escalation 6 ability, a Skill Talent |
+| 1 | Shifting Aim, Darting Blade, Steady Draw, Harrying Shot | a Hallmark Action, a Hallmark Reaction, a Skill Talent |
+| 2 | Thrill of the Kill, your Escalation hook | an Encounter Pick, a Talent |
+| 3 | | a Skill Talent |
 
 Level 4 brings the Apex and the numbers of Stage 1 (see [[Stages]]); it is not written yet.
 
@@ -69,31 +69,6 @@ Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's
 
 @@CARD:Snap Shot@@
 
-### Level 1: Art
-
-**Choose one** (a second at level 3). *Quick build: Footwork.* Each time you use an Art, you choose one of its three Modes.
-
-- **Footwork:** a long sidestep, a run through the press, or a step with your hands busy.
-- **Trick Shots:** an arrow that pins, startles or knocks a foe back.
-- **Spotter:** a foe called out to your allies, the gap in its cover, or cover kept for yourself.
-
-@@CARD:Footwork@@
-
-@@CARD:Trick Shots@@
-
-@@CARD:Spotter@@
-
-### Level 1: Escalation 2 Ability
-
-**Choose one.** *Quick build: Blade and Bow.* Your Escalation rises from 1 to 6 as the fight goes on and is never spent (see [[Escalation]]); this ability works while it is at least 2.
-
-- **Lean and Loose:** leaning out from cover ([[Lean]]) costs you nothing.
-- **Blade and Bow:** changing between the bow and the knife gives a Boon.
-
-@@CARD:Lean and Loose@@
-
-@@CARD:Blade and Bow@@
-
 ## Level 2
 
 ### Level 2: Escalation Hook
@@ -116,30 +91,6 @@ You gain Thrill of the Kill: it raises your Escalation when an enemy you have da
 
 @@CARD:Covering Fire@@
 
-### Level 2: Escalation 4 Ability
-
-**Choose one.** *Quick build: Clear Lines.*
-
-- **Clear Lines:** your allies give your targets no cover, and their fights don't hinder your shots.
-- **Opening Shot:** your best shots give an ally a free blow.
-
-@@CARD:Clear Lines@@
-
-@@CARD:Opening Shot@@
-
 ## Level 3
 
-### Level 3: Second Art
-
-Choose a second Art from the three at [[Level 1: Art]], one you don't have.
-
-### Level 3: Escalation 6 Ability
-
-**Choose one.** *Quick build: One More Arrow.*
-
-- **One More Arrow:** once on each of your turns, one more [W] on a Strike.
-- **Fleet:** your Evades are longer and cross Difficult Terrain.
-
-@@CARD:One More Arrow@@
-
-@@CARD:Fleet@@
+Level 3 gives a Skill Talent (see [[Talents]]); your class gives no card at this level.

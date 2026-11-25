@@ -18,7 +18,6 @@
 | [[Areas\|**Area**]] | Where an Action's effect goes, written on its own line (with a Distance line when the area can be placed away from you). Those Actions have the Area trait: they target everyone they affect, ignoring Senses. |
 | [[Defenses\|**Armor**]] | Armor Defense (AD) — 11 + Armor value + other items + bonuses − penalties. The Defense against Weapon Actions. |
 | [[Armor Training\|**Armor Training**]] | The heaviest armor a class can wear (it includes the lighter ones). Untrained: your Rolls are Doomed, Actions against your Armor or Ward are Favored. |
-| [[Class Actions, Picks and the Repertoire\|**Art**]] | A small class Action with three Modes; you take one at level 1 and a second at level 3. |
 | [[At-will\|**At-will**]] | A Frequency: any number of uses, 1 Bane for each use after the first in a turn (At-will [Strike] Actions share one count). |
 | [[Rolls\|**Attribute Action**]] | An Action that rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait (not a Weapon, Power or Signature roll). |
 | [[Attribute DCs\|**Attribute DC**]] | 11 + an Attribute, named by it: Body DC, Mind DC, Appeal DC, Instinct DC. What an Attribute Action rolls against, and the DC of a Save set by an Attribute. |
@@ -31,7 +30,7 @@
 | [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). No effect by itself: Actions and features use them. |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
-| [[Buffs\|**Buff**]] | An effect that modifies another Action, such as One More Arrow's 1[W] more on one of your [Strike] Actions. |
+| [[Buffs\|**Buff**]] | An effect that modifies another Action, such as the 2 Boons that Feint's Tier 2 gives your next [Strike] Action against its target. |
 | [[Areas\|**Burst**]] | An area centered on a corner, where four squares meet: a 2 Burst affects every square whose center is within 2 squares of that corner. |
 | [[Charge\|**Charge**]] | A Basic Action (2 AP, Round): Advance in a straight line at least 3 squares toward a creature, then make a Basic Attack against it. |
 | [[Checks\|**Check**]] | A roll of one Attribute Modifier against a DC (13 unless stated). |

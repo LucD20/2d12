@@ -5,17 +5,17 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 29.3 | 348 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.9 | 361 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.5 | 356 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 46.3 | 498 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 15.1 | 261 |
-| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
+| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.9 | 103 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.9 | 58 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 6.6 | 103 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.9 | 118 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 31.9 | 223 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 31.8 | 222 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
-| 12-paladin.md | Paladin | paladin |  | 5.3 | 143 |
-| 13-archer.md | Archer | archer |  | 5.8 | 146 |
+| 12-paladin.md | Paladin | paladin |  | 3.7 | 94 |
+| 13-archer.md | Archer | archer |  | 4.3 | 97 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 39.2 | 475 |
 | 15-gear.md | Gear | gear |  | 13.9 | 197 |
 
@@ -92,7 +92,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 312:   ### End of Turn
 - 318:   ### End of Encounter
 - 324: ## Escalation
-- 347:   ### Momentum
+- 342:   ### Momentum
 
 ## 03-movement.md: Chapter 3: Movement and the Environment
 
@@ -175,15 +175,15 @@ Open (to be decided) boxes: 88: "The entries of the Dying and Shattered Tables a
 - 4: ## Building a Character
 - 14: ## Classes
 - 22:   ### Class Actions, Picks and the Repertoire
-- 35:   ### Leveling Up
-- 50:   ### Talents
-- 57:   ### Swapping on a Rest
-- 65:   ### Stages
-- 82:   ### Distinct Choices
-- 86:   ### Weapon, Power and Signature Modifiers
-- 99:   ### Escalation Abilities
+- 34:   ### Leveling Up
+- 47:   ### Talents
+- 54:   ### Swapping on a Rest
+- 62:   ### Stages
+- 79:   ### Distinct Choices
+- 83:   ### Weapon, Power and Signature Modifiers
+- 96:   ### Escalation Abilities
 
-Open (to be decided) boxes: 54: "The Talents are set aside for now: none is in the book while the first"; 79: "Only Stage 0 is written so far: the classes' levels 4 and above, their"
+Open (to be decided) boxes: 51: "The Talents are set aside for now: none is in the book while the first"; 76: "Only Stage 0 is written so far: the classes' levels 4 and above, their"; 100: "No class has an Escalation ability at levels 1 to 3 now; the Escalatio"
 
 ## 06-basic-actions.md: Chapter 6: Basic Actions
 
@@ -245,7 +245,7 @@ Open (to be decided) boxes: 23: "The die grows at later Stages (with those Stage
 ## 09-glossary.md: Chapter 9: Glossary
 
 
-Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [D]; 9: [V], [R], [C]; 10: [Trait]; 11: 0 AP; 12: 0R; 13: Action DC; 14: Action Points (AP); 15: Advance; 16: Ally; 17: Apex; 18: Area; 19: Armor; 20: Armor Training; 21: Art; 22: At-will; 23: Attribute Action; 24: Attribute DC; 25: Aura; 26: Bane, Boon; 27: Basic Attack; 28: Barehanded; 29: Basic attack; 30: Blinded; 31: Bloodied, Strained; 32: Body Action, Mind Action; 33: Breather; 34: Buff; 35: Burst; 36: Charge; 37: Check; 38: Class Actions; 39: Clear; 40: Cleave; 41: Collision; 42: Combat Value (CV); 43: Corners; 44: Cover; 45: Crawl; 46: Critical; 47: Daily; 48: Dark Sight; 49: Daunted; 50: Dazed; 51: Deadly Hazard; 52: Defense; 53: Desperate; 54: Difficult Terrain; 55: Dim-light Sight; 56: Disrupted; 57: Distinct Choices; 58: Dominant Damage; 59: Doomed; 60: Doubles; 61: Down; 62: Dying; 63: Effect; 64: Elevation; 65: Elite; 66: Emanation; 67: Empowered; 68: Encounter; 69: Engaged; 70: EoE; 71: EoT; 72: Escalation; 73: Escalation hook; 74: Evade; 75: Exhausted; 76: Exploding; 77: Favored; 78: Field; 79: Firearm; 80: Fists; 81: Flanking; 82: Forced Movement; 83: Frequency; 84: Grabbed; 85: Grunt; 86: Guard; 87: Half-Blinded; 88: Hallmark Action; 89: Hallmark Reaction; 90: Hands; 91: Hazardous Terrain [HT]; 92: Heal; 93: Hearing; 94: Hidden; 95: Hindered; 96: Immobilized; 97: Immune; 98: Imperiled; 99: Initiative slot; 100: Instance of damage; 101: Interact; 102: Interrupt; 103: Leaning; 104: Left your square; 105: Lethal, Nonlethal; 106: Light; 107: Line; 108: Line of Effect; 109: Lingering; 110: Linked Action; 111: Long; 112: Magical; 113: Main hand, off hand; 114: Mastery; 115: Minion; 116: Minor enemies; 117: Mode; 118: Momentum; 119: Move; 120: Moved; 121: Moves closer; 122: Moving away; 123: Named Boons and Banes; 124: Next Action; 125: Non-threatening; 126: Obscured; 127: Origin; 128: Pick; 129: Point of Origin; 130: Power Modifier; 131: Power roll; 132: Pressed; 133: Pressure; 134: Projectile; 135: Prone; 136: Properties; 137: Pulled; 138: Pushed; 139: Quickened; 140: Rally Point; 141: Range; 142: Ranged Combat While Engaged; 143: Rank; 144: Rating; 145: Reach; 146: Reaction; 147: Reaction Point (RP); 148: Recovery; 149: Regrip; 150: Release; 151: Reload; 152: Reload Shot; 153: Repertoire; 154: Reposition; 155: Requirements; 156: Resist; 157: Resolve, Vigor; 158: Rest; 159: Rider; 160: Role; 161: Roll; 162: Round; 163: Save; 164: Save Action; 165: Sense; 166: Setup; 167: Several Targets; 168: Shake Off; 169: Shattered; 170: Sickened; 171: Signature Modifier; 172: Signature roll; 173: Size; 174: Sleep; 175: Slid; 176: Slowed; 177: Special; 178: Special Action; 179: Specific beats general; 180: Speed; 181: Split; 182: Squeezing; 183: SR; 184: Stacking; 185: Stage; 186: Stage Talent; 187: Staggered; 188: Standard; 189: Start of the encounter; 190: Steadiness; 191: Steel Yourself; 192: Strike; 193: Strung; 194: Success; 195: Support; 196: Swap squares; 197: Tag; 198: Taunted; 199: Threatens; 200: Thrown; 201: Tier; 202: Trigger; 203: Triggering creature; 204: Turn; 205: Turn; 206: Turn budget; 207: Turn-cycle; 208: Unconscious; 209: Unfailing; 210: Unsensed; 211: Version; 212: Vs.; 213: Vulnerable; 214: Ward; 215: Weak; 216: Weapon DC, Power DC; 217: Weapon Group; 218: Weapon Modifier; 219: Weapon roll; 220: Weapon Technique; 221: Willing, Unwilling; 222: Wound
+Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [D]; 9: [V], [R], [C]; 10: [Trait]; 11: 0 AP; 12: 0R; 13: Action DC; 14: Action Points (AP); 15: Advance; 16: Ally; 17: Apex; 18: Area; 19: Armor; 20: Armor Training; 21: At-will; 22: Attribute Action; 23: Attribute DC; 24: Aura; 25: Bane, Boon; 26: Basic Attack; 27: Barehanded; 28: Basic attack; 29: Blinded; 30: Bloodied, Strained; 31: Body Action, Mind Action; 32: Breather; 33: Buff; 34: Burst; 35: Charge; 36: Check; 37: Class Actions; 38: Clear; 39: Cleave; 40: Collision; 41: Combat Value (CV); 42: Corners; 43: Cover; 44: Crawl; 45: Critical; 46: Daily; 47: Dark Sight; 48: Daunted; 49: Dazed; 50: Deadly Hazard; 51: Defense; 52: Desperate; 53: Difficult Terrain; 54: Dim-light Sight; 55: Disrupted; 56: Distinct Choices; 57: Dominant Damage; 58: Doomed; 59: Doubles; 60: Down; 61: Dying; 62: Effect; 63: Elevation; 64: Elite; 65: Emanation; 66: Empowered; 67: Encounter; 68: Engaged; 69: EoE; 70: EoT; 71: Escalation; 72: Escalation hook; 73: Evade; 74: Exhausted; 75: Exploding; 76: Favored; 77: Field; 78: Firearm; 79: Fists; 80: Flanking; 81: Forced Movement; 82: Frequency; 83: Grabbed; 84: Grunt; 85: Guard; 86: Half-Blinded; 87: Hallmark Action; 88: Hallmark Reaction; 89: Hands; 90: Hazardous Terrain [HT]; 91: Heal; 92: Hearing; 93: Hidden; 94: Hindered; 95: Immobilized; 96: Immune; 97: Imperiled; 98: Initiative slot; 99: Instance of damage; 100: Interact; 101: Interrupt; 102: Leaning; 103: Left your square; 104: Lethal, Nonlethal; 105: Light; 106: Line; 107: Line of Effect; 108: Lingering; 109: Linked Action; 110: Long; 111: Magical; 112: Main hand, off hand; 113: Mastery; 114: Minion; 115: Minor enemies; 116: Mode; 117: Momentum; 118: Move; 119: Moved; 120: Moves closer; 121: Moving away; 122: Named Boons and Banes; 123: Next Action; 124: Non-threatening; 125: Obscured; 126: Origin; 127: Pick; 128: Point of Origin; 129: Power Modifier; 130: Power roll; 131: Pressed; 132: Pressure; 133: Projectile; 134: Prone; 135: Properties; 136: Pulled; 137: Pushed; 138: Quickened; 139: Rally Point; 140: Range; 141: Ranged Combat While Engaged; 142: Rank; 143: Rating; 144: Reach; 145: Reaction; 146: Reaction Point (RP); 147: Recovery; 148: Regrip; 149: Release; 150: Reload; 151: Reload Shot; 152: Repertoire; 153: Reposition; 154: Requirements; 155: Resist; 156: Resolve, Vigor; 157: Rest; 158: Rider; 159: Role; 160: Roll; 161: Round; 162: Save; 163: Save Action; 164: Sense; 165: Setup; 166: Several Targets; 167: Shake Off; 168: Shattered; 169: Sickened; 170: Signature Modifier; 171: Signature roll; 172: Size; 173: Sleep; 174: Slid; 175: Slowed; 176: Special; 177: Special Action; 178: Specific beats general; 179: Speed; 180: Split; 181: Squeezing; 182: SR; 183: Stacking; 184: Stage; 185: Stage Talent; 186: Staggered; 187: Standard; 188: Start of the encounter; 189: Steadiness; 190: Steel Yourself; 191: Strike; 192: Strung; 193: Success; 194: Support; 195: Swap squares; 196: Tag; 197: Taunted; 198: Threatens; 199: Thrown; 200: Tier; 201: Trigger; 202: Triggering creature; 203: Turn; 204: Turn; 205: Turn budget; 206: Turn-cycle; 207: Unconscious; 208: Unfailing; 209: Unsensed; 210: Version; 211: Vs.; 212: Vulnerable; 213: Ward; 214: Weak; 215: Weapon DC, Power DC; 216: Weapon Group; 217: Weapon Modifier; 218: Weapon roll; 219: Weapon Technique; 220: Willing, Unwilling; 221: Wound
 
 ## 11-species.md: Species
 
@@ -260,17 +260,12 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [D]; 9: [V], [R], [C]; 10: [
 - 33:   ### Level 1: Features
 - 47:   ### Level 1: Hallmark Action
 - 58:   ### Level 1: Hallmark Reaction
-- 69:   ### Level 1: Art
-- 83:   ### Level 1: Escalation 2 Ability
-- 94: ## Level 2
-- 96:   ### Level 2: Escalation Hook
-- 102:   ### Level 2: Encounter Pick
-- 116:   ### Level 2: Escalation 4 Ability
-- 127: ## Level 3
-- 129:   ### Level 3: Second Art
-- 133:   ### Level 3: Escalation 6 Ability
+- 69: ## Level 2
+- 71:   ### Level 2: Escalation Hook
+- 77:   ### Level 2: Encounter Pick
+- 91: ## Level 3
 
-Action cards: Judge (37, Paladin Feature 1, At-will); Smite (39, Paladin Feature 1, Encounter); Sworn Blade (43, Paladin Feature 1); Drawing Light (45, Paladin Feature 1, At-will); Binding Light (54, Paladin Hallmark Action 1, Round); Lay On Hands (56, Paladin Hallmark Action 1, Round); Shield of Faith (65, Paladin Hallmark Reaction 1, Turn); Rebuke (67, Paladin Hallmark Reaction 1, Turn); Lantern of Faith (77, Paladin Art 1, Round); Hold the Line (79, Paladin Art 1, Round); Commandment (81, Paladin Art 1, Round); Armor of Faith (90, Paladin Escalation Passive 1); Roving Judgment (92, Paladin Escalation Passive 1); Kindled Wrath (100, Paladin Feature 2); Bulwark of Faith (110, Paladin Encounter Action 2, Encounter); Consecrated Ground (112, Paladin Encounter Action 2, Encounter); Word of Radiance (114, Paladin Encounter Action 2, Encounter); Weight of Judgment (123, Paladin Escalation Passive 2); Tireless Vigil (125, Paladin Escalation Passive 2); Reckoning (140, Paladin Escalation Action 3, Encounter); Hallowed Stance (142, Paladin Escalation Passive 3)
+Action cards: Judge (37, Paladin Feature 1, At-will); Smite (39, Paladin Feature 1, Encounter); Sworn Blade (43, Paladin Feature 1); Drawing Light (45, Paladin Feature 1, At-will); Binding Light (54, Paladin Hallmark Action 1, Round); Lay On Hands (56, Paladin Hallmark Action 1, Round); Shield of Faith (65, Paladin Hallmark Reaction 1, Turn); Rebuke (67, Paladin Hallmark Reaction 1, Turn); Kindled Wrath (75, Paladin Feature 2); Bulwark of Faith (85, Paladin Encounter Action 2, Encounter); Consecrated Ground (87, Paladin Encounter Action 2, Encounter); Word of Radiance (89, Paladin Encounter Action 2, Encounter)
 
 Open (to be decided) boxes: 18: "Levels 1 to 3 are written. Level 4 (the Apex and the numbers of Stage "
 
@@ -281,17 +276,12 @@ Open (to be decided) boxes: 18: "Levels 1 to 3 are written. Level 4 (the Apex an
 - 34:   ### Level 1: Features
 - 50:   ### Level 1: Hallmark Action
 - 61:   ### Level 1: Hallmark Reaction
-- 72:   ### Level 1: Art
-- 86:   ### Level 1: Escalation 2 Ability
-- 97: ## Level 2
-- 99:   ### Level 2: Escalation Hook
-- 105:   ### Level 2: Encounter Pick
-- 119:   ### Level 2: Escalation 4 Ability
-- 130: ## Level 3
-- 132:   ### Level 3: Second Art
-- 136:   ### Level 3: Escalation 6 Ability
+- 72: ## Level 2
+- 74:   ### Level 2: Escalation Hook
+- 80:   ### Level 2: Encounter Pick
+- 94: ## Level 3
 
-Action cards: Shifting Aim (40, Archer Feature 1); Darting Blade (42, Archer Feature 1, Round); Steady Draw (46, Archer Feature 1); Harrying Shot (48, Archer Feature 1, At-will); Quick Shots (57, Archer Hallmark Action 1, Round); Strafe (59, Archer Hallmark Action 1, Round); Slip Away (68, Archer Hallmark Reaction 1, Turn); Snap Shot (70, Archer Hallmark Reaction 1, Turn); Footwork (80, Archer Art 1, Round); Trick Shots (82, Archer Art 1, Round); Spotter (84, Archer Art 1, Round); Lean and Loose (93, Archer Escalation Passive 1); Blade and Bow (95, Archer Escalation Passive 1); Thrill of the Kill (103, Archer Feature 2); Volley (113, Archer Encounter Action 2, Encounter); Hit and Run (115, Archer Encounter Action 2, Encounter); Covering Fire (117, Archer Encounter Action 2, Encounter); Clear Lines (126, Archer Escalation Passive 2); Opening Shot (128, Archer Escalation Passive 2); One More Arrow (143, Archer Escalation Passive 3); Fleet (145, Archer Escalation Passive 3)
+Action cards: Shifting Aim (40, Archer Feature 1); Darting Blade (42, Archer Feature 1, Round); Steady Draw (46, Archer Feature 1); Harrying Shot (48, Archer Feature 1, At-will); Quick Shots (57, Archer Hallmark Action 1, Round); Strafe (59, Archer Hallmark Action 1, Round); Slip Away (68, Archer Hallmark Reaction 1, Turn); Snap Shot (70, Archer Hallmark Reaction 1, Turn); Thrill of the Kill (78, Archer Feature 2); Volley (88, Archer Encounter Action 2, Encounter); Hit and Run (90, Archer Encounter Action 2, Encounter); Covering Fire (92, Archer Encounter Action 2, Encounter)
 
 Open (to be decided) boxes: 19: "Levels 1 to 3 are written. Level 4 (the Apex and the numbers of Stage "
 

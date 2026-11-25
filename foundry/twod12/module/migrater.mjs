@@ -317,3 +317,66 @@ export function registerMigrationWeapons() {
     await migrateWeapons();
   });
 }
+
+// v0.0.507 (the core rework, batch 5; Lucas, 2026-11-25: "Remove arts, remove escalation passives"): an existing world's characters lose the six
+// Arts, the Escalation Passives and Reckoning, once, by the GM, after the Archer's migration, with a question in the system's window (Remove / Later;
+// asked again at the next load after Later; also game.twod12.migrateB5()). The class copies are refreshed from the compendium (their levels lose
+// the Art and Escalation sections; what each copy chose is kept) and the picks of those sections are cleared. The cards' text stays in the book's
+// card files (book/cards/stage0/) for a later return.
+const DONE_B5 = "B5";
+/** The removed cards' names (a function so the test of card names in code (t164) can allow it, as it does the older migrations' lists). */
+export function b5NamesList() {
+  return ["Lantern of Faith", "Hold the Line", "Commandment", "Footwork", "Trick Shots", "Spotter",
+  "Armor of Faith", "Roving Judgment", "Weight of Judgment", "Tireless Vigil", "Reckoning", "Hallowed Stance",
+  "Lean and Loose", "Blade and Bow", "Clear Lines", "Opening Shot", "One More Arrow", "Fleet"];
+}
+export const B5_NAMES = b5NamesList();
+export const B5_SECTIONS = ["pal1art", "pal1esc2", "pal2esc4", "pal3art", "pal3esc6", "arc1art", "arc1esc2", "arc2esc4", "arc3art", "arc3esc6"];
+/** Pure: the ids of a character's items that batch 5 removed. items: [{ id, name, type }]. */
+export function b5Removed(items = []) {
+  return items.filter(i => B5_NAMES.includes(i.name) && ["action", "feature"].includes(i.type)).map(i => i.id);
+}
+/** Pure: a class copy's picks ({ level: { sectionId: [uuids] } }) without the removed sections; null when nothing changes. */
+export function b5Picks(picks = {}) {
+  let changed = false; const out = {};
+  for (const [lv, secs] of Object.entries(picks ?? {})) {
+    out[lv] = {};
+    for (const [id, v] of Object.entries(secs ?? {})) { if (B5_SECTIONS.includes(id)) changed = true; else out[lv][id] = v; }
+  }
+  return changed ? out : null;
+}
+const b5Who = () => characters().filter(a => b5Removed(a.items.map(i => ({ id: i.id, name: i.name, type: i.type }))).length
+  || a.items.some(i => i.type === "class" && b5Picks(i.getFlag?.(F, "classPicks"))));
+export async function migrateB5({ ask = true } = {}) {
+  if (!game.user.isGM) { ui.notifications.warn("Only the GM can run this migration."); return null; }
+  const who = b5Who();
+  if (!who.length) { await game.settings.set(F, "migratedB5", DONE_B5); return { characters: 0 }; }
+  if (ask) {
+    const { pickConfirm } = await import("./pickwindow.mjs");
+    const ok = await pickConfirm({ title: "Arts and Escalation", name: "No Arts, no Escalation abilities", sub: "the core rework, batch 5 (2026-11-25)", icon: "fa-scissors", confirm: "Remove",
+      text: `<b>Back up your world first</b> (Foundry: Game Worlds, Backup).<br>The Arts (Lantern of Faith, Hold the Line, Commandment, Footwork, Trick Shots, Spotter), the Escalation Passives and Reckoning leave the classes. They are deleted from these characters, and the Art and Escalation choices leave their class window:<br>${who.map(a => esc(a.name)).join(", ")}` });
+    if (!ok) return null;
+  }
+  const { refreshFromCompendium } = await import("./refresh.mjs");
+  const res = await refreshFromCompendium({ byName: true, basics: false });
+  const lines = [];
+  for (const a of who) {
+    const gone = a.items.filter(i => b5Removed([{ id: i.id, name: i.name, type: i.type }]).length).map(i => i.name);
+    const ids = b5Removed(a.items.map(i => ({ id: i.id, name: i.name, type: i.type })));
+    if (ids.length) await a.deleteEmbeddedDocuments("Item", ids);
+    for (const c of a.items.filter(i => i.type === "class")) { const p = b5Picks(c.getFlag(F, "classPicks")); if (p) { await c.unsetFlag(F, "classPicks"); await c.setFlag(F, "classPicks", p); } }
+    lines.push(`${esc(a.name)}: ${gone.length ? gone.map(esc).join(", ") : "the class window's choices"}`);
+  }
+  await game.settings.set(F, "migratedB5", DONE_B5);
+  await ChatMessage.create({ whisper: game.users.filter(u => u.isGM).map(u => u.id), content: sysCard({ title: "Arts and Escalation: removed", lead: `${lines.length} character${lines.length === 1 ? "" : "s"}`,
+    text: `${lines.join("<br>")}${res ? `<br>${res.items} item${res.items === 1 ? "" : "s"} updated from the compendium.` : ""}` }) });
+  return { characters: lines.length, refreshed: res };
+}
+export function registerMigrationB5() {
+  game.settings.register(F, "migratedB5", { scope: "world", config: false, type: String, default: "" });
+  Hooks.once("ready", async () => {
+    if (!game.user.isActiveGM || game.settings.get(F, "migratedB5") === DONE_B5) return;
+    try { if (game.settings.get(F, "migratedF3") !== DONE_F3) return; } catch (e) { return; }   // after the Archer's (a world that needs it runs that first)
+    await migrateB5();
+  });
+}

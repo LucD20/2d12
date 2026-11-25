@@ -91,3 +91,25 @@ Sting
 Lock & Loose
 Point Blank
 Thunderclap
+#
+# 2026-11-25, the core rework batch 5 (Lucas: "Lets remove the Arts, lets reduce bloat for now. I might bring them back later but not yet";
+# "Remove arts, remove escalation passives"): the six Arts, the Escalation 2, 4 and 6 Passives, and Reckoning (an Apex candidate). Foundry has them
+# in foundry/deprecated/ (tools/content.mjs REMOVED_B5).
+Lantern of Faith
+Hold the Line
+Commandment
+Footwork
+Trick Shots
+Spotter
+Armor of Faith
+Roving Judgment
+Weight of Judgment
+Tireless Vigil
+Reckoning
+Hallowed Stance
+Lean and Loose
+Blade and Bow
+Clear Lines
+Opening Shot
+One More Arrow
+Fleet
