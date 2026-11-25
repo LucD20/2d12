@@ -1,6 +1,6 @@
 # The Ogre Chieftain: the first Elite (the record)
 
-> **Status (2026-11-25): DECIDED (Lucas: "Crack the Ground is good"; the Backhand stays with no roll). The sheet near the end of this file is the creature. Design only: no card source, no Foundry (the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the earlier creatures', `orc-warrior-redesign.md`, `grave-wisp-redesign.md`, `goblin-sneak-redesign.md`.
+> **Status (2026-11-25, later): DECIDED, IN THE BOOK AND BUILT (Foundry v0.0.508).** Chapter 14 writes it as a stat block; its cards: `cards/stage0/bestiary.json` (Crushing Grip and Hurled Goblin Silver, the rest Gold). Not tested by Lucas. The sheet near the end of this file is the creature; the "Closed" section is the last word.
 
 ## Lucas's words (2026-11-25)
 

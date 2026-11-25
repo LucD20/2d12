@@ -1,6 +1,6 @@
 # The Grave Wisp: the first Grunt (the record)
 
-> **Status (2026-11-25): DECIDED (Lucas: "Wisp is good"). The sheet at the end of this file is the creature. Design only: no card source, no Foundry (the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the first creature's, `orc-warrior-redesign.md`.
+> **Status (2026-11-25, later): DECIDED, IN THE BOOK AND BUILT (Foundry v0.0.508).** Chapter 14 writes it as a stat block; its cards: `cards/stage0/bestiary.json`; its portrait: `foundry/twod12/art/npcs/grave-wisp.png`. Pass Through is Silver (its line and targets by hand), the rest Gold. Not tested by Lucas. The sheet at the end of this file is the creature.
 
 ## Lucas's words (2026-11-25)
 

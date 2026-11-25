@@ -1,11 +1,27 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.417**. Tests: `node tools/tests/run.mjs` (259 tests, see the README; the next new test is t262). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.508**. Tests: `node tools/tests/run.mjs` (309 tests, see the README; the next new test is t312). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
 
-## THE BESTIARY'S REBUILD IN FOUNDRY (2026-11-25; NO VERSION YET: Lucas: "only push it all when we have all NPCs done")
+## THE BESTIARY'S REBUILD IN FOUNDRY: BUILT IN v0.0.508 (2026-11-25, branch `claude/bestiary-monster-balance-tl4kd6`; NOT tested by Lucas; not pushed)
+
+**Done (the changelog: `docs/reference.md` v0.0.508; the tests: t311; the checklist: 14 `bst-*` tests in `to-test.md`):** Minion ticks (the seven rules in `roundrules.mjs`, the damage card's Tier and Save, the Action's scope for its own Collisions, a heal = 1 tick, Bloodied / Strained at 1 tick; pips on the token for everyone, one bar in the HUD and on the sheet, one box in the Token HUD; typed on the Builder's Frame); squads of 2; Minion CV 30; no Elite Escalation by default; typed Modifiers; Resistance / Weakness / Immunity the word first everywhere Foundry writes them (the old writing still read); the Goblin Sneak, the Grave Wisp (its new portrait) and the Ogre Chieftain built with typed numbers, their old cards out of the packs (fixtures in `OLD_CLASS_DOCS`); the general settings (moments selfDamage / selfDown / allyDown / enemyEnters with momentPool, momentState, momentTag; hooks stateBoon and drift; reqFlank; the Basic attack that reaches; "Line N" areas; the Crack the Ground Zone). Ratings: 20 Gold, 4 Silver (`automation-ratings.md`).
+
+**Left, by hand (each card says so in its automationNote):**
+- [ ] **Pass Through (Silver):** the Setup's straight line isn't enforced, and its targets (up to two enemies whose space it passed) are targeted by hand before the roll. A "targets: the creatures its Setup passed" setting would make it Gold.
+- [ ] **Hurled Goblin (Silver):** its Requirement (a willing Minion ally within its Reach) isn't checked, and the landing is the GM's Alt-drag. **A rules question for Lucas:** Chapter 3 says a Reposition stays within the mover's Reach the whole way; the card Repositions the goblin to a square adjacent to a target 6 squares away (the card's own words win as written; the book doesn't say so).
+- [ ] **Crushing Grip (Silver):** one creature held at a time (a second Grab doesn't end the first by itself).
+- [ ] **The NPC Builder tab** still works on the old rating tables (Health, Defense, Modifier, points, the turn budget and the CV steps); it waits for the tables' rebuild (`book/bestiary-design.md`: ratings, roles and pricing are open boxes). The four creatures use typed (Custom) numbers.
+- [ ] **The gallery** (`tools/gallery/shoot.mjs`): its saved shots were already behind in this environment before this work (many unrelated differences), so it was not run with `--update`; the new NPC cards and the three Weapon Techniques fixed earlier (Circling Shot, Seizing Cut, Thwart Cut) need their shots saved on a machine whose shots are current.
+- [ ] **The Encounter Log** upgrade (each fight's cost in Rally Points a PC, its Downs, each enemy's damage a turn, what class cards took): a separate pack (`core-rework.md` section R).
+- [ ] **Not tried in Foundry** (it can't be run here): everything above is checked by the Node tests only; Lucas's checklist is the source of truth.
+- [ ] The ruler and the SIM are frozen: `book/ruler/` still reads the old Chapter 14 numbers (`npcStage0` and the rating tables in `config.mjs` stay for it and for the Builder); nothing there was changed.
+
+**History: the brief this pass followed (2026-11-25):**
+
+### THE BESTIARY'S REBUILD IN FOUNDRY (2026-11-25; the pass's brief, kept as history)
 
 **Built on the branch `claude/bestiary-monster-balance-tl4kd6`, with no version bump, so nothing is released** (the release workflow only runs on `main` and `pack-*` with a new version). One Foundry version is cut when every NPC is done: then the version bump, the changelog in `docs/reference.md`, the checklist tests below in `foundry/to-test.md`, and the gallery's shots.
 

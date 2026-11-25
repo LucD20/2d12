@@ -1,6 +1,6 @@
 # The Orc Warrior: the first Default Standard (the record)
 
-> **Status (2026-11-25): BUILT in the card source and in Foundry's compendium build, on the work branch, with no Foundry version (Lucas: "only push it all when we have all NPCs done"). Not in the book: Chapter 14 is not rewritten yet. The last section is the build; the sheet before it is what was built.** Waiting for Lucas's review of the build before the next creature.
+> **Status (2026-11-25, later): IN THE BOOK AND IN FOUNDRY v0.0.508.** Chapter 14 writes it as a stat block (its cards stay `book: false`); Blood for Blood is offered by itself and Cornered adds its Boon (both Gold). Not tested by Lucas. The last section is the build; the sheet before it is what was built.
 
 ## Lucas's brief (2026-11-25)
 

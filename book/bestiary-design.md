@@ -1,6 +1,6 @@
 # The Bestiary: the design record
 
-> **Status (2026-11-25): THE REDESIGN HAS BEGUN. Decisions 1 to 4 (the frame) and 12 to 15 are taken. The benchmark is the plain PC, never a class (Lucas: "we should compare to the core"). The Default Standard: Defenses 13 / 13, Modifiers +2 / +2, Health 36, a Basic attack of nothing / 3 / 6, a 2 AP Special of nothing / 7 / 11, about 8 damage to Health a turn at the table. Next: decision 16, to the table. Nothing is in the book yet: Chapter 14 stays as placeholders until the Default Standard has been played.** This file is the Bestiary's record, the way `magic-design.md` is magic's and `talents-design.md` the Talents': his words, what stays, what the core gives a monster to be measured against, the research, the problems, the order of the decisions, then each decision as it is taken. It is batches 6 and 7 of `core-rework.md` (section P).
+> **Status (2026-11-25, later): CHAPTER 14 IS IN THE BOOK AND THE FOUR PLAYTEST CREATURES ARE BUILT.** Chapter 14 was rewritten from zero as playtest rules (`rules-src/14-bestiary.md`; the old chapter: `archive/book-drafts/14-bestiary-to-2026-11-25.md`): the measure, the bands, the normal fight, the four ranks' defaults, the tick rules, squads of 2, the sheet rules and the four creatures as stat blocks; the Boss, the roles, the ratings, the pricing and the later Stages are open boxes. Foundry v0.0.508 follows (Minion ticks, the ranks' rules, the Goblin Sneak, the Grave Wisp, the Orc Warrior and the Ogre Chieftain; `foundry/foundry-backlog.md`). Not tested by Lucas. Next: his checklist, the Encounter Log, playtest 8 (decision 16). This file is the Bestiary's record, the way `magic-design.md` is magic's and `talents-design.md` the Talents': his words, what stays, what the core gives a monster to be measured against, the research, the problems, the order of the decisions, then each decision as it is taken. It is batches 6 and 7 of `core-rework.md` (section P).
 
 ---
 
@@ -468,8 +468,8 @@ Lucas, on the Elite's open rule (K6): "Ok, lets settle it and start." **Proposed
 
 ### What comes next
 
-- **The four creatures of the playtest are designed:** the Goblin Sneak (Minion), the Grave Wisp (Grunt), the Orc Warrior (Standard, built), the Ogre Chieftain (Elite).
-- **Chapter 14's playtest text** (the book first: the frame, the four ranks' defaults, the tick rules; `rules-backlog.md`).
-- **The Foundry pass, once, for all of them** (its brief: `foundry/foundry-backlog.md`, "THE BESTIARY'S REBUILD IN FOUNDRY"), **the Encounter Log**, one Foundry version.
+- **Done (2026-11-25):** the four creatures of the playtest are designed and built (the Goblin Sneak, Minion; the Grave Wisp, Grunt; the Orc Warrior, Standard; the Ogre Chieftain, Elite); **Chapter 14's playtest text is in the book** (`rules-backlog.md`, the top entry); **the Foundry pass is done, v0.0.508** (`foundry/foundry-backlog.md`, "THE BESTIARY'S REBUILD IN FOUNDRY: BUILT IN v0.0.508"; by hand: Pass Through's line and targets, Hurled Goblin's landing, Crushing Grip's one at a time).
+- **A question from the pass, for Lucas:** Hurled Goblin Repositions the goblin to a square next to a target 6 squares away, but Chapter 3 keeps every Reposition within the mover's Reach (the card's own words win as written).
+- **Next: Lucas's checklist on v0.0.508, then the Encounter Log** (a separate pack).
 - **Playtest 8** (decision 16; the fights suggested in the same brief).
 - **After it:** the retune, then the Boss, the roles as offsets, the budget's bands, the pricing.
