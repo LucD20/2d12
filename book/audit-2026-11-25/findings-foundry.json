@@ -1,0 +1,825 @@
+[
+ {
+  "id": "F-001",
+  "group": "dropped-rule",
+  "what": "The old rank tables still set a new NPC's numbers (Health, Defenses, Modifiers by rating)",
+  "where": [
+   "foundry/twod12/module/config.mjs:244-311 (npcRoles, npcDefense, npcStage0, npcRatings)",
+   "foundry/twod12/module/data.mjs:241-279 (npcBuild, npcModRatings, npcModValue)",
+   "foundry/twod12/module/npcbudget.mjs:64-71 (s0Health, npcDefenseOf)"
+  ],
+  "evidence": "The book now gives every rank Defenses 13 / 13 and Modifiers +2 / +2 and fixed Health (Grunt 18, Standard 36, Elite 72: book/rules-src/14-bestiary.md:62-64) and says the ratings and their tables are not rebuilt (14-bestiary.md:137). Foundry still computes any NPC left at its default ratings ('medium') from the old tables: npcStage0 gives a Medium Standard Vigor 30 + Resolve 30 = 60, a Grunt 13 + 13, an Elite 65 + 65; npcDefense gives an Elite 14 and a Minion 12; npcRoles.elite.mods is [3, 2]. The four rebuilt creatures dodge this only because content.mjs types every number as Custom (scratch check of tools/content.mjs actors: every rating 'custom' except damage).",
+  "size": "About 70 lines of tables in config.mjs, about 40 in data.mjs and npcbudget.mjs; read by the SIM (book/ruler/sim/core.mjs:189-218) and by tests t107, t139, t143, t181, t213, t218, t246, t275, t318",
+  "risk": "Removing the tables without a replacement leaves a new NPC with no numbers; keeping them gives a GM-made NPC numbers the book no longer has.",
+  "options": [
+   "Replace the defaults now with the book's rank defaults (13 / 13, +2 / +2, Health 18 / 36 / 72, Minion ticks) and keep the rating tables only for the frozen SIM",
+   "Keep it until the ratings are rebuilt (bestiary-design.md)",
+   "Rebuild it on the new rules (a pack of its own)"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-002",
+  "group": "dropped-rule",
+  "what": "The NPC Builder tab: rating ladders, role presets, the points engine, the turn budget and the CV steps",
+  "where": [
+   "foundry/twod12/templates/actor-sheet-pc.hbs:286-353 (the Builder tab)",
+   "foundry/twod12/module/pcsheet.mjs:602-689 (npcBuilderModel)",
+   "foundry/twod12/module/npcbudget.mjs:1-125 (PRICES, turnBudget, pointsPerAp, cvSteps, cvWithSteps, ROLE_PRESETS, npcSuggest)",
+   "foundry/twod12/module/config.mjs:266-304 (npcRangedStep, npcCvStep, npcBudget)",
+   "foundry/twod12/module/data.mjs:289-322 (role, npcRole, ratings, cvSteps)",
+   "foundry/twod12/module/item-sheet.mjs:4-7 (npcSuggest)"
+  ],
+  "evidence": "Book: 'Pricing an NPC's Actions is not rebuilt yet: the old points engine...' and 'Not rebuilt yet: the ratings (Terrible, Low, Medium, High, Extreme) and their tables, the roles' (14-bestiary.md:137 and the open box at line 190 listed in rules-src/INDEX.md:322); grep 'turn budget', 'CV step', 'Striker' in book/rules-src finds nothing. The tab still offers the five-step ladders, the presets (ROLE_PRESETS), points per AP, 'N a turn' and CV moved by steps, and data.mjs:321 adds cvSteps to every NPC's CV. foundry-backlog.md (Bestiary section) already lists the tab as waiting for the tables' rebuild.",
+  "size": "About 330 lines of code and template plus the .nb / .nbld CSS; npcbudget.mjs is also imported by book/ruler/sim/budget.mjs:8 and book/cards/builder-data.mjs; tests t17, t107, t139, t141, t143, t148, t181, t213, t218, t246, t275, t318 touch it",
+  "risk": "The GM loses the only in-sheet way to set an NPC's numbers by rating until a new Builder exists; the SIM's budget code loses its import.",
+  "options": [
+   "Hide the tab and stop adding cvSteps to the CV, keep the code until the Bestiary's ratings are rebuilt",
+   "Keep it as it is until the ratings and pricing are rebuilt",
+   "Remove it now (the four creatures are typed by hand)",
+   "Rebuild it on the new rules (a pack of its own)"
+  ],
+  "pick": 1,
+  "confidence": "high"
+ },
+ {
+  "id": "F-003",
+  "group": "dropped-rule",
+  "what": "Elite Escalation: the Default Elite ladder (eliteLadder) and its rungs",
+  "where": [
+   "foundry/twod12/module/data.mjs:305-306 (useEscalation, eliteLadder)",
+   "foundry/twod12/module/passives.mjs:55-88 (usesEliteLadder, the ladder's settings)",
+   "foundry/twod12/module/escalation.mjs:125-129 (ELITE_RUNGS text, eliteRung)",
+   "foundry/twod12/module/sheetmodel.mjs:331-336 (ELITE_RUNGS)",
+   "foundry/twod12/module/roundrules.mjs:42-46 (ELITE_RUNGS_LADDER, eliteFirstAttackBoons, eliteRoundSpecials, eliteEncounterBack)",
+   "foundry/twod12/module/pcsheet.mjs:132,170-179,666",
+   "foundry/twod12/templates/actor-sheet-pc.hbs:294",
+   "foundry/twod12/module/actor-sheets.mjs:1087,1396,1678"
+  ],
+  "evidence": "Book: an Elite is a Standard with Health 72 and an Encounter Action of its own (14-bestiary.md:116-120); grep 'Elite Escalation' / 'ladder' in rules-src finds no Elite ladder, and Lucas's ruling (HANDOFF, 2026-11-25) is only that NPCs 'might have' Escalation, nothing written. The ladder (Pressing at 2, a second Round Special at 4, the Encounter Special back at 6) still runs from passives.mjs when a GM ticks Escalation and 'Default ladder' on the Builder tab. No compendium NPC has useEscalation on (scratch check of content.mjs actors).",
+  "size": "About 60 lines across 8 files, 1 template line; the SIM's engine also has its own eliteEsc / elitePhases (book/ruler/sim/engine.mjs:164,506); tests t213, t221, t246, t275, t281, t318",
+  "risk": "A world whose Elite has the ladder ticked loses its automated rungs; the plain Escalation switch is unaffected if kept.",
+  "options": [
+   "Remove the Default ladder (eliteLadder, the rungs and their text), keep the plain NPC Escalation switch for Lucas's 'they might have'",
+   "Keep it, off by default, until NPC Escalation is decided",
+   "Remove the NPC Escalation switch too"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-004",
+  "group": "dropped-rule",
+  "what": "The Arts: the Mode card window and the Mode path in useAction",
+  "where": [
+   "foundry/twod12/module/artcard.mjs:1-68",
+   "foundry/twod12/module/actions.mjs:554-562,1080 (the Art's Mode pick, 'Mode: ...' notice)",
+   "foundry/twod12/module/hud.mjs:534",
+   "foundry/twod12/module/actor-sheets.mjs:1410",
+   "foundry/twod12/module/actioncard.mjs:174",
+   "foundry/twod12/module/data.mjs:555 (a Version's split text read as an Art's Mode)",
+   "foundry/twod12/styles/system.css:5377-5380,5594 (.twod12-artcard)"
+  ],
+  "evidence": "Book: the Arts left the classes on 2026-11-25 (rules-src/README.md:22; Chapter 5's level table at 05-characters.md:42-45 has no Art). No live compendium Action has an Art Mode (scratch check: no Version's split is anything but weapon / power; the only split card is Rime Strike, weapon,power). The six Arts are in DEPRECATED (content.mjs:682-692). The window only opens for a card with Modes; t284 is its only test.",
+  "size": "68 lines in artcard.mjs, about 15 lines in 5 other modules, 5 CSS rules; 1 test (t284) and the deprecated Arts in tests that read deprecatedDocs",
+  "risk": "If the Arts return (their cards are kept in book/cards/stage0/), the Mode window must be rebuilt or restored from git.",
+  "options": [
+   "Remove the Art Mode path, artcard.mjs and its CSS; keep the Weapon / Power split",
+   "Keep it until Lucas decides whether Arts come back",
+   "Move artcard.mjs to foundry/deprecated/module/"
+  ],
+  "pick": 1,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-005",
+  "group": "dropped-rule",
+  "what": "Escalation Passives: the hooks written for the removed cards",
+  "where": [
+   "foundry/twod12/module/hooks.mjs:1-142 (reactionGuard, apCost, rapMore, setupAdvance, alternateBoon, moreW, evadeMore, clearLines, openingShot)",
+   "foundry/twod12/module/actions.mjs:633,785-800,971-975,1104-1105,1323,1552-1584,1867-1908",
+   "foundry/twod12/module/combat.mjs:48",
+   "foundry/twod12/module/cover.mjs:72-92",
+   "foundry/twod12/module/data.mjs:434-436 (FeatureData.hooks)"
+  ],
+  "evidence": "The v0.0.507 changelog (docs/reference.md:196) says 'the code that ran the removed Passives (hooks.mjs) stays, unused'. Scratch check of every live doc, NPC and PC item in tools/content.mjs: the only hook kinds in use are basicLine (Sworn Blade, Steady Draw), movedBoon (Shifting Aim), stateBoon (Cornered), drift (Drifting); reactionGuard, apCost, rapMore, setupAdvance, alternateBoon, clearLines, openingShot, moreW and evadeMore are only on deprecated cards (Armor of Faith, Roving Judgment, Lean and Loose, Tireless Vigil, Hallowed Stance, Blade and Bow, Clear Lines, Opening Shot, One More Arrow, Fleet).",
+  "size": "About 9 hook kinds: roughly 150 lines spread over actions.mjs, hooks.mjs, combat.mjs, cover.mjs; tests t112, t131, t151, t152, t153, t177, t310 and those reading deprecatedDocs",
+  "risk": "The cards are kept unprinted in book/cards/stage0/ for a later return; removing their hooks means rewriting them if they come back.",
+  "options": [
+   "Remove the nine hook kinds no live card uses (keep basicLine, movedBoon, stateBoon, drift)",
+   "Keep them until the Escalation abilities' redesign (05-characters.md:101) decides",
+   "Keep them as test fixtures only (already the case)"
+  ],
+  "pick": 1,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-006",
+  "group": "dropped-rule",
+  "what": "Escalation Passives: the class fields, the class editor's and item sheet's Passive lists, the passive's Escalation rung",
+  "where": [
+   "foundry/twod12/module/data.mjs:408 (escPassives, escActives)",
+   "foundry/twod12/module/classeditor.mjs:40,75",
+   "foundry/twod12/module/item-sheet.mjs:196,224,501-503",
+   "foundry/twod12/module/escblock.mjs:17-40 (isEscPassive, passiveThreshold)",
+   "foundry/twod12/module/actor-sheets.mjs:204",
+   "foundry/twod12/tools/content.mjs:639 (escalationPassive by category)"
+  ],
+  "evidence": "Book: no Escalation Passives at levels 1 to 3 (05-characters.md:101; README.md:22). Both live classes carry escPassives = [] and escActives = [] (scratch check), and no live item has escalationPassive or a minEscalation setting. The class editor still shows an 'Escalation Passives' list and the item sheet a Passives / Actives drop zone; the Escalation ladder on the sheet still sorts by passive rung.",
+  "size": "About 60 lines in 5 modules plus the escblock ladder (113 lines, which also shows the Apex: keep that part)",
+  "risk": "The Apex and future Escalation abilities may want the same fields; removing them now could need a schema migration later.",
+  "options": [
+   "Keep the fields and the ladder until the Escalation abilities are redesigned",
+   "Remove the Passive lists from the class editor and item sheet, keep the data fields",
+   "Remove fields and UI with a migration"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-007",
+  "group": "dropped-rule",
+  "what": "Mithril and Diamond automation ranks",
+  "where": [
+   "foundry/twod12/module/config.mjs:211-212 (automationRanks mithril / diamond, automationHints diamond citing with-lucas.txt)",
+   "foundry/twod12/styles/system.css:2194-2195,3538,3752-3753,3764-3766",
+   "foundry/twod12/tools/tests/t189.mjs"
+  ],
+  "evidence": "CLAUDE.md: Mithril and Diamond are retired (2026-11-17); grep 'Mithril|Diamond' in book/rules-src finds nothing. Scratch count of the live packs: 53 Gold, 14 Silver, 2 Bronze, no Mithril or Diamond. They stay as choices of the automation field on four item types (data.mjs:438,548,647,741) with 8 CSS rules (and their theme.css copies).",
+  "size": "2 config lines, 8 CSS rules (10 more generated in theme.css), 1 test",
+  "risk": "An old world's item still marked mithril / diamond would fail the field's choices unless a migration maps it.",
+  "options": [
+   "Remove both ranks and their CSS with a migration that maps them to Gold",
+   "Keep them as '(retired)' labels for old worlds"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-008",
+  "group": "dropped-rule",
+  "what": "Talents: what is live and what is set-aside machinery",
+  "where": [
+   "foundry/twod12/module/config.mjs:214-217 (talentGroups, talentsSetAside)",
+   "foundry/twod12/module/classwindow.mjs:33",
+   "foundry/twod12/module/talents.mjs",
+   "foundry/twod12/module/actor-sheets.mjs:261-268",
+   "foundry/twod12/tools/content.mjs:686-695 (DEPRECATED types: talent, except the playtest ones)"
+  ],
+  "evidence": "Book: the Talents are set aside, every slot empty (05-characters.md:52; rules-src/set-aside/16-talents.md not built). Live: the four playtest Talents (Ricochet, Take Aim, Cold Domain, Shared Burden, from book/cards/stage0/talents-pt.json) on the pregens' 'Extra' row; 18 old Talents (book/cards/talents.json) are deprecated. talentsSetAside makes the class window give no Talent slot. The Talent code is live for the playtest Talents.",
+  "size": "Talent machinery is several hundred lines and is in use; the set-aside switch is 2 lines",
+  "risk": "Removing the Talent machinery would break the four playtest Talents.",
+  "options": [
+   "Keep it all (live for the playtest Talents)",
+   "Remove only the 18 old Talents' content once the playtest Talents replace them"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-009",
+  "group": "dropped-rule",
+  "what": "Opportunity Attack (set aside): the card, the ruler's rule flag and the moment's threat option",
+  "where": [
+   "book/cards/basic-actions.json (Opportunity Attack, foundry.basic opportunityAttack)",
+   "book/cards/set-aside.txt:7",
+   "foundry/twod12/tools/gen-basic.mjs:14",
+   "foundry/twod12/module/basic.mjs:34 (removes it from creatures)",
+   "foundry/twod12/module/data.mjs:506 (momentThreat)",
+   "foundry/twod12/module/roundrules.mjs (BASIC_OPPORTUNITY_ATTACK)",
+   "book/ruler/sim/core.mjs:65",
+   "book/ruler/spec.mjs:225"
+  ],
+  "evidence": "Book: 'No creature has a Reaction by default (Opportunity Attack is set aside)' (rules-src/README.md:22); it 'comes back later as a Talent' (set-aside.txt:5-6). Foundry already dropped it as a Basic Action in v0.0.407 (gen-basic.mjs skips it; basic.mjs removes it from old creatures). What remains is the card in basic-actions.json, the momentThreat option (no live card sets it: not checked card by card, low confidence) and the ruler, which still gives every build an Opportunity Attack under RULES_R.",
+  "size": "1 card, a few lines in each of 5 files; tests t177 and tools/tests/oa-card.mjs",
+  "risk": "Removing the card loses the draft that the future Talent would start from.",
+  "options": [
+   "Keep it as it is (set aside, comes back as a Talent)",
+   "Move the card to the set-aside Talents' file"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-010",
+  "group": "dropped-rule",
+  "what": "The book itself still names Escalation Passives and Arts in three places",
+  "where": [
+   "book/rules-src/09-glossary.md:72",
+   "book/rules-src/README.md:26-27"
+  ],
+  "evidence": "The glossary's Escalation entry ends 'Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough', while Chapter 5 says no class has an Escalation ability at levels 1 to 3 (05-characters.md:101) and README.md:22 says the Passives and the Arts left on 2026-11-25. README.md:26-27 still describe class documents with 'Level 1: Art', 'Escalation 2 Ability' and a '<Class> Arts' section. Not Foundry, but the book is the source the system follows.",
+  "size": "3 lines of book text",
+  "risk": "None: text only.",
+  "options": [
+   "Fix the three lines in the book (a rules-src edit, logged in rules-backlog.md)",
+   "Keep them until the Escalation abilities' redesign"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-011",
+  "group": "two-sources",
+  "what": "The old class card files book/cards/paladin.json and archer.json beside stage0/",
+  "where": [
+   "book/cards/paladin.json (22 cards)",
+   "book/cards/archer.json (25 cards)",
+   "book/cards/load.mjs:62-63 (FOUNDRY_STRUCTURE)",
+   "foundry/twod12/tools/content.mjs:477-487 (OLD_CLASS_DOCS)",
+   "book/cards.py:4-5,27-31"
+  ],
+  "evidence": "The book draws stage0/ over the old files (cards.py load_book); Foundry reads stage0/ for both classes (FOUNDRY_STRUCTURE) and builds the old files only as OLD_CLASS_DOCS, kept out of the packs as fixtures; the ruler (book/ruler/spec.mjs, loadCards) still builds its classes and worth.json from the old cards. Readers: 23 tests import OLD_CLASS_DOCS (t131, t133, t134, t151, t157, t158, t164, t165, t167, t168, t172, t229, t230, t231, t234, t241, t263, t275, t276, t278, t287, t294, t318).",
+  "size": "2 files, 55 KB; 23 tests; the ruler's class builds",
+  "risk": "23 tests lose their fixtures and the frozen ruler loses its class cards.",
+  "options": [
+   "Keep them as test and ruler fixtures (rename or move to a fixtures folder later)",
+   "Remove them after the tests are rewritten on stage0/ cards (a pack of its own)"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-012",
+  "group": "two-sources",
+  "what": "The old Bestiary cards in book/cards/bestiary.json (FOUNDRY_OVERLAY drop) and the Bandit Thug's",
+  "where": [
+   "book/cards/bestiary.json (13 cards)",
+   "book/cards/load.mjs:55-57 (bestiary.json drop list)",
+   "foundry/twod12/tools/content.mjs:477-487"
+  ],
+  "evidence": "Eleven old cards (Cleaver, Brutal Swing, Avenge Kin, Rusty Knife, Dirty Trick, Chilling Touch, Dread Whisper, Club, Overhead Smash, Ground Slam, Rally the Tribe) are dropped from Foundry by the overlay and kept as OLD_CLASS_DOCS fixtures; the book's Chapter 14 was rewritten from zero (archive/book-drafts/14-bestiary-to-2026-11-25.md has the old one). Cudgel and Low Blow stay in CARDS but belong to the Bandit Thug, a deprecated actor (DEPRECATED.actors), so they reach only foundry/deprecated/.",
+  "size": "1 file, 11 KB, 13 cards",
+  "risk": "The tests that exercised these cards' machinery (through OLD_CLASS_DOCS) lose them.",
+  "options": [
+   "Keep as fixtures",
+   "Remove Cudgel and Low Blow with the Bandit Thug; keep the eleven as fixtures"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-013",
+  "group": "two-sources",
+  "what": "The placeholder Weapon Techniques and the set-aside Talents in book/cards/gear.json and talents.json",
+  "where": [
+   "book/cards/gear.json (12 live-file cards, all deprecated)",
+   "book/cards/talents.json (18 cards, all deprecated)",
+   "foundry/twod12/tools/content.mjs:686-695"
+  ],
+  "evidence": "Scratch check: every card of gear.json (Stick and Slip, Hooking Chop, ... Thunderclap) and of talents.json reaches only deprecatedDocs (their weapons and the Talents are in DEPRECATED); the book places none (set-aside.txt lists the Talents; CLAUDE.md: the other weapons are placeholders). Readers: the book build (cards.py and rules_tools.py check set-aside names), the Foundry build (to foundry/deprecated/ and the 15 tests reading deprecatedDocs), the ruler's catalogue (book/ruler/catalogue/talents.txt, gear-d2.txt).",
+  "size": "2 files, 24 KB, 30 cards",
+  "risk": "The deprecated dump and the tests that read deprecatedDocs lose these cards; they are the drafts a Talent pass would start from.",
+  "options": [
+   "Keep them (set aside, read by the build checks and the tests)",
+   "Move them to a set-aside cards folder that load.mjs and cards.py read only for the checks"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-014",
+  "group": "two-sources",
+  "what": "DEPRECATED in content.mjs, deprecatedDocs and the foundry/deprecated/ dump",
+  "where": [
+   "foundry/twod12/tools/content.mjs:682-718",
+   "foundry/twod12/tools/dump-deprecated.mjs",
+   "foundry/deprecated/ (compendium/, module/, styles-old-sheet.css, templates-*.hbs; 404 KB)"
+  ],
+  "evidence": "The packs build 105 live docs and 128 deprecated ones (scratch count). deprecatedDocs is read by 15 tests (t111, t112, t149, t177, t185, t189, t243, t257, t260, t269, t272, t293, t295, t297, t310); the folder is Foundry data 'ready to import' (deprecated/README.md) and is loaded by nothing.",
+  "size": "About 40 lines of content.mjs, 1 tool, 1 folder; 15 tests",
+  "risk": "The tests of the general machinery (grants, Bonus Damage, auras, light, cover) lose the only cards that exercise it.",
+  "options": [
+   "Keep it (fixtures and history)",
+   "Rewrite the 15 tests on small fixtures and drop the dump (a pack of its own)"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-015",
+  "group": "two-sources",
+  "what": "book/cards/placeholders.json is empty",
+  "where": [
+   "book/cards/placeholders.json"
+  ],
+  "evidence": "Its 'cards' array is [] (read: python json.load). It is still globbed by load.mjs loadCards and cards.py, and builder-data.mjs names it. Nothing would change if it went, except the file is the documented place for a future placeholder card.",
+  "size": "1 file, a few lines",
+  "risk": "None, except the documented home for placeholder cards (README) goes.",
+  "options": [
+   "Remove it and its README mention",
+   "Keep it as the place for future placeholder cards"
+  ],
+  "pick": 1,
+  "confidence": "high"
+ },
+ {
+  "id": "F-016",
+  "group": "two-sources",
+  "what": "book/cards/with-lucas.txt (Mithril history)",
+  "where": [
+   "book/cards/with-lucas.txt",
+   "foundry/twod12/module/config.mjs:212",
+   "foundry/twod12/tools/tests/t189.mjs"
+  ],
+  "evidence": "CLAUDE.md: 'book/cards/with-lucas.txt stays as history'. Still read by t189 and named by the Diamond hint in config.mjs, both of which serve the retired ranks (see the Mithril finding).",
+  "size": "1 file, 1 test, 1 config line",
+  "risk": "History only; t189 must change if its read goes.",
+  "options": [
+   "Keep it as history, drop the test's and config's reads with the Mithril removal",
+   "Keep everything as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-017",
+  "group": "two-sources",
+  "what": "foundry/reference.md, a copy of foundry/twod12/docs/reference.md",
+  "where": [
+   "foundry/reference.md",
+   "foundry/twod12/docs/reference.md"
+  ],
+  "evidence": "CLAUDE.md's release steps say to copy the changelog to foundry/reference.md; cmp shows the two are identical today. Two copies of one file by rule.",
+  "size": "1 file (the whole changelog)",
+  "risk": "Whoever reads foundry/reference.md loses it; nothing in code reads it (grep).",
+  "options": [
+   "Keep the copy (the documented step)",
+   "Drop the copy and the step from CLAUDE.md"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "F-018",
+  "group": "tool",
+  "what": "spec.mjs --check fails: its exact formulas predate the core rework",
+  "where": [
+   "book/ruler/spec.mjs:485-505",
+   "book/ruler/sim/core.mjs:85-91 (rollDice)",
+   "foundry/twod12/module/calc.mjs:67-71 (bbResolve) and 105-125 (tierProbs)"
+  ],
+  "evidence": "Two causes found. (1) The dice check: calc.mjs tierProbs now resolves Boons and Banes with bbResolve (core rework A3: a Favored or Doomed source counts as 5 before cancelling), while the SIM's rollDice still uses bbFive + mergeState, so '+3 vs 13, 2 Banes, doomed' adds -2 in the roll and 0 in the exact odds. (2) The Weapon Attack check: the build's 'Weapon Attack' is now the book's Basic Attack (spec.mjs:227 alias), which deals [V] 1d4! on Tier 1 and adds 1[D] on Tier 3; the check's exact formula (spec.mjs:499) still counts nothing on Tier 1 and no [D]. Archer-1 vs 13: 5.86 + 0.28 x 3.0 (1d4!) + 0.27 x 6.0 (1d10 [D]) = 8.29, the simulated number exactly. The engine is right; the check is stale (HANDOFF.md:30 says it fails 'on the Paladin's Weapon Attack').",
+  "size": "71 FAIL lines; the fix is about 5 lines in spec.mjs and core.mjs",
+  "risk": "Leaving it means --check can never print 'ok', so a real engine break would not be seen.",
+  "options": [
+   "Fix the check (bbResolve in rollDice, the Basic Attack's Tier 1 and [D] in the exact formula)",
+   "Keep it failing while the ruler is frozen",
+   "Retire --check with the ruler"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-019",
+  "group": "tool",
+  "what": "The ruler and the SIM run on the old Bestiary and pre-rework rules",
+  "where": [
+   "book/ruler/sim/core.mjs:49-72 (RULES_PRE_R, RULES_R, RULES_BOOK, eliteEsc)",
+   "book/ruler/sim/core.mjs:189-218 (npcOf, npcS0 from config.mjs npcRoles / npcStage0 / npcDefense)",
+   "book/ruler/sim/budget.mjs:8 (npcbudget.mjs)",
+   "book/ruler/sim/engine.mjs:164,506,607",
+   "book/ruler/*.md (19 reports)"
+  ],
+  "evidence": "foundry-backlog.md (Bestiary section) and HANDOFF.md:30 say the ruler and the SIM are frozen on the old Bestiary numbers. The SIM builds every NPC from npcRoles / npcStage0 (Standard Health 60 at Medium, Elite Defense 14), prices Actions with npcbudget.mjs, gives Elites the old Escalation ladder, and RULES_BOOK still includes the Opportunity Attack flags and 'the Escalation ladder is still 1 to 3' (README.md table). It is the only reader that keeps npcStage0 and npcBudget alive besides the Builder tab. Most reports (maps.md, policies.md, areas.md, rclasses.md, rbestiary.md, reactions.md, playtest-4-sim.md, report-pre-r.md) are pinned to RULES_R or earlier by the README.",
+  "size": "book/ruler: 52 entries, sim/: 29 files; about 19 report .md files",
+  "risk": "Removing the old tables from config.mjs breaks the SIM unless it is updated or keeps its own copy.",
+  "options": [
+   "Keep it frozen as history (do not remove the tables it reads)",
+   "Give the SIM its own frozen copy of the old tables so config.mjs can drop them",
+   "Rebuild it on the new rules (a pack of its own)"
+  ],
+  "pick": 1,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-020",
+  "group": "tool",
+  "what": "book/ruler/worth.json: the ruler's worth line reaches no live card",
+  "where": [
+   "book/ruler/worth.json (41 entries)",
+   "foundry/twod12/tools/cardgen.mjs:12-16,187,212",
+   "foundry/twod12/module/data.mjs:425,496,633 (worth fields)",
+   "book/ruler/rclasses.mjs (writes it)",
+   "foundry/mockups/action-sheet-build.mjs"
+  ],
+  "evidence": "cardgen.mjs sets sys.worth only for a card that is not a Structure card ('the ruler's worth is of the old card'); the redesigned classes are all Structure cards, so the scratch check finds no live pack item with a worth. The README calls worth.json 'older (pinned to RULES_R): not for new cards'.",
+  "size": "1 JSON file, about 6 lines in cardgen.mjs, 3 schema fields and their display",
+  "risk": "None for live cards; the old cards in OLD_CLASS_DOCS would lose their worth line.",
+  "options": [
+   "Remove the worth line (file read, fields, display)",
+   "Keep it until the ruler is rebuilt"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-021",
+  "group": "tool",
+  "what": "The Action Builder and the Card Workbench pages (retired)",
+  "where": [
+   "book/cards/builder/ (8 files, 432 KB)",
+   "book/cards/manual/ (5 files, 160 KB)",
+   "book/cards/builder-data.mjs",
+   "book/cards/README.md:176-196"
+  ],
+  "evidence": "CLAUDE.md: 'The Action Builder and the Card Workbench are retired'; README.md:176 'RETIRED 2026-11-14: an ancient artifact, kept, not used for design'. builder-data.mjs reads config.mjs npcBudget / npcStage0 / npcDefense and the old cards. One live reader: book/ruler/sim/pcextra.mjs:2 says 'Prices used: book/cards/manual/budget.js'.",
+  "size": "13 files plus builder-data.mjs, about 600 KB",
+  "risk": "pcextra.mjs loses its price list unless it keeps a copy; the published artifacts are not affected.",
+  "options": [
+   "Move builder/, manual/ and builder-data.mjs to archive/ (keep budget.js where pcextra.mjs reads it)",
+   "Keep them where they are",
+   "Remove them"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-022",
+  "group": "tool",
+  "what": "The card gallery's saved shots are stale",
+  "where": [
+   "foundry/gallery/shots/ (237 files, 41 MB with gallery/)",
+   "foundry/twod12/tools/gallery/shoot.mjs",
+   "foundry/gallery/.gitignore (shots/new/ ignored, 160 files there now)"
+  ],
+  "evidence": "foundry-backlog.md (Bestiary section): 'its saved shots were already behind in this environment before this work (many unrelated differences), so it was not run with --update'; the Orc Warrior pass left the new NPC cards and three Techniques' shots unsaved. CLAUDE.md makes the gallery the check of every card change. Not run in this audit.",
+  "size": "237 shots, 41 MB",
+  "risk": "Until the shots are saved again on a machine whose shots are current, the gallery cannot tell a meant change from a regression.",
+  "options": [
+   "Save the shots again (--update) after one visual review",
+   "Keep the old shots until Lucas's machine runs it"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-023",
+  "group": "tool",
+  "what": "foundry/mockups/: STYLE-1 to STYLE-3 mockups that are built and now history",
+  "where": [
+   "foundry/mockups/ (93 entries, 84 MB)",
+   "foundry/mockups/style-audit.md:125-140"
+  ],
+  "evidence": "style-audit.md 'Where the mockups stand': steps 1 to 7 'are built in v0.0.369 (STYLE-1)'; CLAUDE.md makes style-book.md (STYLE-3) the current rules and npc-hud.css / npc-hud-brief.md / style-tokens.css the settled looks. The approved-and-built step pages (style-tokens.html, action-card-dark.html, chat-cards-dark.html, chat-older-dark.html, bars-dark.html, windows-dark.html, pc-sheet-dark.html, npc-sheet-dark.html, carousel-dark.html, rest-dark.html, tools-dark.html, combat-*-dark.html, levels-dark.html) and the older prototypes (sheet-prototype, npc-sheet-prototype, npc-builder-prototype, action-sheet-A/A2/B/C, zone-prototype, effect-*-prototype) are history. The later folders (group1-4, hud3, pt6, hide-hud, hide-indicator, mapnotes; 50 MB) belong to later packs; which are built was not checked one by one.",
+  "size": "About 30 history pages plus about 50 MB of later folders",
+  "risk": "Mockup build scripts (style-build.mjs, npc-hud-build.mjs) read the system's CSS; moving their outputs breaks nothing in Foundry.",
+  "options": [
+   "Move the built step pages and old prototypes to archive/mockups/, keep style-book.md, style-audit.md, npc-hud.*, style-tokens.css in place",
+   "Keep everything in place"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-024",
+  "group": "tool",
+  "what": "Reading pages and desks under book/cards/ for finished redesigns",
+  "where": [
+   "book/cards/desk/index.html (Paladin Redesign Desk)",
+   "book/cards/archer-desk/",
+   "book/cards/bows-desk/",
+   "book/cards/swords-desk/",
+   "book/cards/look-desk/ (1.6 MB)",
+   "book/cards/structure/index.html"
+  ],
+  "evidence": "CLAUDE.md names desk/index.html as the Paladin's reading page; the Paladin, Archer, bows and swords redesigns are in the book (rules-src 12, 13, 15). These are generated pages of finished work; nothing in code reads them (grep 'archer-desk', 'bows-desk' in .mjs / .py found nothing).",
+  "size": "6 folders, about 2 MB",
+  "risk": "Lucas's published artifact links keep working; only the local copies move.",
+  "options": [
+   "Keep them (the record of each redesign)",
+   "Move them to archive/desks/"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "F-025",
+  "group": "tool",
+  "what": "Update Foundry.cmd and tools/sync-pack.ps1 (the junction fallback)",
+  "where": [
+   "Update Foundry.cmd",
+   "tools/sync-pack.ps1",
+   "tools/sync-pack-hidden.vbs",
+   "tools/register-sync-task.ps1"
+  ],
+  "evidence": "CLAUDE.md: the old way 'stays only as a fallback until Lucas confirms the manifest works'. The changelog shows Lucas testing released versions (docs/reference.md v0.0.515 to v0.0.518 reports), which suggests the manifest works, but no line saying he confirmed it was found (grep 'manifest' in HANDOFF.md, foundry-backlog.md, MASTER-PLAN.md).",
+  "size": "4 files",
+  "risk": "If the manifest fails one day there is no local fallback.",
+  "options": [
+   "Ask Lucas to confirm the manifest, then remove the four files",
+   "Keep them as the fallback"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "F-026",
+  "group": "tool",
+  "what": "book/card-source-proof/ (the CS proof of concept)",
+  "where": [
+   "book/card-source-proof/ (README.md, book_block.py, cards.json, proof.mjs)",
+   "book/card-source-proposal.md"
+  ],
+  "evidence": "The CS proposal was accepted and built (card-source-proposal.md: 'CS-1 applied', v0.0.227); the cards now live in book/cards/*.json. Only the proposal and the archived HANDOFF / MASTER-PLAN name the folder (grep).",
+  "size": "4 files",
+  "risk": "None in the build.",
+  "options": [
+   "Move it to archive/ with the proposal",
+   "Keep it"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-027",
+  "group": "dead",
+  "what": "npcBuilderContext: the old Builder model, computed on every NPC sheet render and rendered by nothing",
+  "where": [
+   "foundry/twod12/module/npcbuilder.mjs:21-112",
+   "foundry/twod12/module/actor-sheets.mjs:1598"
+  ],
+  "evidence": "NpcSheet._prepareContext sets ctx.builder = npcBuilderContext(this.actor), but the one template (templates/actor-sheet-pc.hbs, used by both sheets since v0.0.291) reads only pc.builder (pcsheet.mjs npcBuilderModel); grep finds no other 'builder.' in the templates. ratingUpdate and cvTip in the same file are live (actor-sheets.mjs:153,574,1724).",
+  "size": "About 90 lines; tests t17, t139, t141, t148 call it",
+  "risk": "Four tests must drop or move their checks.",
+  "options": [
+   "Remove npcBuilderContext and its call, keep ratingUpdate / cvTip / stageLabel",
+   "Keep it with the Builder until the ratings are rebuilt"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-028",
+  "group": "dead",
+  "what": "24 exported functions that nothing calls, not even their own file",
+  "where": [
+   "foundry/twod12/module/rxoverlay.mjs (hasOverlay, replaying)",
+   "corners.mjs (tieCount)",
+   "objects.mjs (isPlaced)",
+   "loe.mjs (loeOn)",
+   "mapmark.mjs (originRing, dashRect)",
+   "zone.mjs (zoneTurnStart)",
+   "explode.mjs (hasExplodingDie, explodedTotal)",
+   "sheetmodel.mjs (dmgModsFromLines)",
+   "chatcards.mjs (targetLineHtml, saveRanges, diceSummary)",
+   "escalation.mjs (hasMomentum)",
+   "roundrules.mjs (canRaise, canSwapModifierOrder)",
+   "fxsheet.mjs (FORMULA_HELP)",
+   "aftersteps.mjs (stageValues)",
+   "actioncard.mjs (traitLine)",
+   "noroll.mjs (grantButtonHtml)"
+  ],
+  "evidence": "A scan of every 'export function/const/class' in module/*.mjs against module/, tools/, tests, templates, book/ruler, book/cards and the mockup scripts: these names appear only on their export line. A dynamic lookup by string would escape the scan (none was seen).",
+  "size": "24 exports, likely 100 to 200 lines",
+  "risk": "None found; a call by a computed name would break.",
+  "options": [
+   "Remove them",
+   "Keep them"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-029",
+  "group": "dead",
+  "what": "44 exported pure functions used only by the tests",
+  "where": [
+   "foundry/twod12/module/genaction.mjs (notUnderstood, actionFromForm)",
+   "hudmodel.mjs (npcHudHtml, pcHudHtml, listHudHtml)",
+   "roundrules.mjs (canPayReaction, escalationRaised, withEscalationDie, ticksAfterHeal, minionSquads)",
+   "calc.mjs (perDieDelta, netStep)",
+   "and 33 more (the scan's list)"
+  ],
+  "evidence": "The same scan: these are called by a test and by no module. Some are a rule written as a pure function for the tests (roundrules.mjs is meant to be shared with the SIM); some may be what is left of a replaced path (hudmodel's *HudHtml since hudview.mjs). Not checked one by one.",
+  "size": "44 exports",
+  "risk": "Removing a rule's pure function removes its test.",
+  "options": [
+   "Keep them (pure rules under test)",
+   "Review them one by one in a pack of its own"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "F-030",
+  "group": "dead",
+  "what": "Dead entries in content.mjs: FLAVOR, AUTO and AUTO_NOTE",
+  "where": [
+   "foundry/twod12/tools/content.mjs:583-619 (FLAVOR)",
+   "foundry/twod12/tools/content.mjs:625-636 (AUTO, AUTO_NOTE)"
+  ],
+  "evidence": "Scratch check: none of the 25 names in FLAVOR (Aegis, Mercy's Reward, Precise Aim, Quick Draw, ... Divine Connection, Profane Judgment) and none of the 8 names in AUTO (Rain of Arrows, Steady Nerves, Rimebrand, Challenged, Lay On Hands (Holy Strike), Smite (Bright light 1/2), Vanish (+1 Defense), Cut Through, Harried, Class Expertise) is a live pack item; they only decorate deprecatedDocs. AUTO_NOTE is empty. The redesigned cards carry their own flavor and automation.",
+  "size": "About 50 lines",
+  "risk": "The deprecated dump loses those Flavor lines and ranks.",
+  "options": [
+   "Remove them",
+   "Keep them for the deprecated dump"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-031",
+  "group": "dead",
+  "what": "General effect settings that only deprecated cards exercise",
+  "where": [
+   "foundry/twod12/module/fxrules.mjs",
+   "foundry/twod12/module/effects.mjs",
+   "foundry/twod12/module/aura.mjs",
+   "foundry/twod12/module/grants.mjs"
+  ],
+  "evidence": "Scratch check of setting types: live content uses speed, boonbane, move, bleed, ignore, message, eschook, mastery; bonusdamage, grant, damagestep, light, note, cover, defense, aura and weaponprop appear only on deprecated cards (Rimebrand, Double Shot, Smite's light, Courage, Covering Fire...). They are the system's general rules language (the Effect editor offers them), not a dropped rule.",
+  "size": "9 setting types, a large share of the effect machinery",
+  "risk": "A GM's homemade Effect and every returning card would lose its tools.",
+  "options": [
+   "Keep them (general machinery)",
+   "Review which ones the book's rules still name (a pack of its own)"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-032",
+  "group": "dead",
+  "what": "CSS for elements no module or template writes",
+  "where": [
+   "foundry/twod12/styles/system.css:973-982 (.twod12.acard .ac-head, .ac-body, .ac-tiers)",
+   "foundry/twod12/styles/system.css:3456-3470 (.twod12.acard.d2 .ap-strip, .ap-ruler, .ap-prose)",
+   "foundry/twod12/styles/system.css:5377-5380,5594 (.twod12-artcard)"
+  ],
+  "evidence": "A raw scan found 399 of the 2,221 class names in system.css written nowhere in module/ or templates/ as literal text; many are built from template strings (auto-${rank}, at-${k}) or are Foundry's own, so the count is not the dead count. Verified by grep: ac-head, ac-body, ac-tiers, ap-strip, ap-ruler and ap-prose appear in no module, template or content tool (they look like the Action card before CARD-ONE's card model). CLAUDE.md: the CSS is version-tagged, no regrouping without a visual check.",
+  "size": "At least about 20 verified rules; up to a few hundred candidates",
+  "risk": "A class built by a computed string would lose its style; needs the visual check CLAUDE.md asks for.",
+  "options": [
+   "Remove only the verified blocks, then run the gallery",
+   "Keep all CSS until a CSS pass with a visual check"
+  ],
+  "pick": 1,
+  "confidence": "low"
+ },
+ {
+  "id": "F-033",
+  "group": "dead",
+  "what": "One-time world migrations that keep accumulating",
+  "where": [
+   "foundry/twod12/module/migrater.mjs (8 settings, migrateB5 and older)",
+   "foundry/twod12/module/settingsmigrate.mjs",
+   "foundry/twod12/module/twod12.mjs:284-301 (worldPassV351, settingsV187, rallyV176, releaseV118 and others)"
+  ],
+  "evidence": "About 15 hidden world flags each mark a migration already run once (from v0.0.118 to v0.0.507). They read and write their flag; none is dead code in a world made before them. Whether any of Lucas's worlds still needs the pre-v0.0.400 ones was not established.",
+  "size": "About 15 settings and their migration functions",
+  "risk": "An old world opened after removal would miss its upgrade.",
+  "options": [
+   "Keep them",
+   "Remove the migrations older than the last world Lucas plays (ask him)"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "F-034",
+  "group": "records",
+  "what": "Guarded files: do not move",
+  "where": [
+   "book/magic-files.sha256",
+   "book/tools/guard.sh:9-19"
+  ],
+  "evidence": "The guard lists 71 paths: book/magic-design.md, magic-rules-draft.md, magic-out-of-combat.md, decided.md, talents-design.md, roleplay-skills.md, cards/magic-*-pass.md, cards/magic-overreach-lines.md, cards/talents-*.md (batch, first-pass, playtest, second-pass), the magic and Talents research files and research/raw/ notes, and archive/old-notes/rules-backlog-magic-talents-2026-11-18-19.md. CLAUDE.md: never delete or move one.",
+  "size": "71 files",
+  "risk": "Moving one fails guard.sh check.",
+  "options": [
+   "Leave them where they are",
+   "Move one only with guard.sh rebuild and Lucas's go-ahead"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-035",
+  "group": "records",
+  "what": "Current records CLAUDE.md or HANDOFF.md points to",
+  "where": [
+   "book/rules-backlog.md",
+   "book/bestiary-design.md",
+   "book/core-rework.md",
+   "book/class-charter.md",
+   "book/items-economy.md",
+   "book/sim-brief.md",
+   "book/cards/README.md",
+   "book/cards/card-structure.md",
+   "book/cards/paladin-analyses.md",
+   "book/cards/bows-redesign.md",
+   "book/cards/swords-redesign.md",
+   "book/cards/orc-warrior-redesign.md",
+   "book/cards/goblin-sneak-redesign.md",
+   "book/cards/grave-wisp-redesign.md",
+   "book/cards/ogre-chieftain-redesign.md"
+  ],
+  "evidence": "Counted by grep of each name in CLAUDE.md, HANDOFF.md, MASTER-PLAN.md and decided.md; the four NPC redesign records are from 2026-11-25 and named by bestiary-design.md. Not judged for content.",
+  "size": "15 files",
+  "risk": "These are the working records: moving them breaks the documented reading order.",
+  "options": [
+   "Keep them in place",
+   "Add a short 'current records' list to HANDOFF.md, move nothing"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "F-036",
+  "group": "records",
+  "what": "Finished history in book/: applied packs, superseded drafts and playtest reports",
+  "where": [
+   "book/archer-a1.md",
+   "book/paladin-p1.md",
+   "book/archer-old-cards.md",
+   "book/paladin-old-cards.md",
+   "book/options-talents.md",
+   "book/bestiary-e3.md",
+   "book/bestiary-audit.md",
+   "book/book-audit.md",
+   "book/boons-banes.md",
+   "book/card-source-proposal.md",
+   "book/decisions-s1.md",
+   "book/gear-d2.md",
+   "book/line-area-prompt.md",
+   "book/modifiers-mod.md",
+   "book/progression-lv.md",
+   "book/rework-r.md",
+   "book/weapon-trees.md",
+   "book/weapons-flat.md",
+   "book/playtest-2.md to playtest-6.md and book/playtest-5/"
+  ],
+  "evidence": "Each opens with its own status: APPROVED / APPLIED / DECIDED / SUPERSEDED (e.g. weapon-trees.md: 'SUPERSEDED (2026-11-16) by the Bow remake'; line-area-prompt.md: 'APPLIED 2026-11-02 in pack L'), or is a playtest's report. None is named by CLAUDE.md or HANDOFF.md except playtest-2.md and playtest-6.md; each is cited by 3 to 15 other .md files (grep), so a move needs those links rewritten. archive/book-drafts/ already holds this kind of file.",
+  "size": "22 files and 1 folder, about 5,000 lines",
+  "risk": "Links in rules-backlog.md, foundry-backlog.md and the ruler's README to these paths break unless rewritten.",
+  "options": [
+   "Move them to archive/book-drafts/ and rewrite the links",
+   "Keep them in book/",
+   "Add a one-line 'history' banner and leave them"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-037",
+  "group": "records",
+  "what": "Finished history in book/cards/: the class redesign records and card-look",
+  "where": [
+   "book/cards/paladin-redesign.md (1,312 lines)",
+   "book/cards/archer-redesign.md (1,117 lines)",
+   "book/cards/card-look.md",
+   "book/cards/basic-actions-redesign.md",
+   "book/cards/basic-attacks-redesign.md",
+   "book/cards/set-aside.txt (current: read by the build)"
+  ],
+  "evidence": "The Paladin and Archer redesigns are in the book (12-paladin.md, 13-archer.md) and their cards in stage0/; CLAUDE.md points to paladin-analyses.md and the class charter, not to the redesign files themselves (grep: 0 pointers). The class charter's rule 'a record and a reading page a class' makes them the class's record, so 'history' is a judgment. set-aside.txt is current (rules_tools.py:175-185 checks it).",
+  "size": "5 files, about 2,800 lines",
+  "risk": "The record of why each class card is the way it is would be one step further away.",
+  "options": [
+   "Keep them in place (each class's record)",
+   "Move them to archive/ once Lucas closes the classes"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "F-038",
+  "group": "records",
+  "what": "Future proposals with nothing decided",
+  "where": [
+   "book/base-building.md",
+   "book/expedition-loop.md"
+  ],
+  "evidence": "Both say 'nothing decided, nothing in rules-src' in their first line; they are not history but parked ideas (expedition-loop.md is cited by 19 files).",
+  "size": "2 files",
+  "risk": "None.",
+  "options": [
+   "Keep them in book/",
+   "Move them to a book/ideas/ folder"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "F-039",
+  "group": "records",
+  "what": "CLAUDE.md's counts and notes that drifted",
+  "where": [
+   "CLAUDE.md:9 ('292 tests')",
+   "CLAUDE.md:17 ('292 tests, all must pass')",
+   "foundry/twod12/module/actor-sheets.mjs:111 (comment: 'the NPC sheet keeps actor-sheet.hbs')"
+  ],
+  "evidence": "node tools/tests/run.mjs reports 316 tests (foundry-backlog.md says 316, next t319). The actor-sheets.mjs comment names templates/actor-sheet.hbs, which was retired to foundry/deprecated/ in v0.0.415 (t148's header).",
+  "size": "3 lines",
+  "risk": "None.",
+  "options": [
+   "Fix the counts and the comment",
+   "Leave them"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ }
+]
