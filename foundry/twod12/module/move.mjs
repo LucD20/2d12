@@ -2326,6 +2326,7 @@ export function openChargePicker(c, token) {
   if (!doc || !ch || !canvas?.ready) return false;
   if (chargePick) chargePick.close(false);
   const gfx = new PIXI.Graphics();
+  gfx.eventMode = "none";   // v0.0.518 (Lucas on v0.0.516: the GM couldn't select a creature the Charge can reach): the gold fill over its squares caught the click
   MK.addOnTop(gfx);
   // v0.0.516 (Lucas on v0.0.515: "targeting is the only thing that causes the charge to target, and click is now free to work normally"): the
   // tokens stay clickable (selecting as usual); the Charge's enemy is the creature you target (T, or Foundry's targeting), or one picked in the bar

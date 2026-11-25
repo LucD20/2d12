@@ -21,24 +21,20 @@ differ):
 
 ## Hiding
 
-### hide-by-hand · v0.0.517 · The HUD's Hiding entry: switch, remove, add
-Do: Make Kaela Unsensed to Goblin Sneak and Hidden to Orc Warrior with Hide, select her and open the HUD's Situational tab. Click the Orc's "Hidden"; click the Goblin's ✕. Target Goblin Archer (or the Goblin again) and click Add's "Hidden"; then target two creatures and Add "Unsensed". Next turn, without hiding from anyone, select Kaela.
-Expect: A "Hiding" entry (from Hide · 2) lists the Goblin (Unsensed) and the Orc (Hidden), each with a mark, its name, the state as a button and a ✕. Clicking "Hidden" switches the Orc to Unsensed; ✕ removes the Goblin; Add sets the targeted creatures ("Add against 2 creatures" for two); each change posts a short chat line ending "(set by hand)", and the Hide lines on the map follow. The entry never pulses. When she hides from no one and didn't use Hide or Sneak this turn, there is no entry.
+### hide-owner-only · v0.0.518 · The Hide lines: only the GM and the hider's player
+Do: Make Kaela hide from Goblin Sneak. Select or hover her as the GM, as Kaela's player, and as another player (Sylwen's).
+Expect: The GM and Kaela's player see the lines and plates; Sylwen's player sees none.
 
-### hide-lines-only · v0.0.516 · Hide: no marks on the token, the lines on select or hover
-Do: Make Kaela Unsensed to Goblin Sneak and Hidden to Orc Warrior with Hide. Look at her token with nothing selected, then select her.
-Expect: No small rings or discs on her token. Selected (or hovered): the dotted and dashed lines with their plates, gone after 5 seconds.
-
-### pointout-pick · v0.0.516 · Point Out's Tier 2: pick the ally on the map
-Do: With Kaela hiding from Goblin Sneak, and two of Goblin Sneak's allies within 10 squares (or, from the PCs' side: Sylwen Points Out a hiding Goblin with Aveline and Durgan near her), get a Tier 2 on Point Out. Read the card's Tier 3 line too.
-Expect: The pick bar asks which ally, and the allies' tokens blink on the map: clicking one picks it. The Tier 3 line reads as a whole sentence (every ally within 10 squares perceives the target 1 step better), as do Hide's and Seek's Tier 3.
+### hiding-fold · v0.0.518 · The HUD's Hiding entry folds to its title
+Do: Select Kaela while she hides from two creatures; click "Hiding" in the HUD's Situational tab; click it again. Reload, select her.
+Expect: The first click folds it to its title ("Hiding · from Hide · 2" with a chevron), the second unfolds it. After a reload it stays as you left it (for you only).
 
 ## The HUD
 
-### charge-reselect · v0.0.516 · Charge by targeting: clicks select as usual
-Do: On Durgan's turn, start a Charge. Target Orc Warrior (T, or Foundry's targeting). Then target Goblin Sneak instead. Click an empty part of the map, then click Durgan to select him again, and click another token. Click the Charge button. Another time, target the Orc before using Charge.
-Expect: Targeting a creature makes it the Charge's enemy (the line goes to it); targeting another changes it. Clicks select and deselect tokens as usual and never launch the Charge; the bar comes back into Durgan's HUD when he is selected. Only the Charge button (or Enter) charges. With the Orc already targeted, the Charge starts aimed at it.
-Rev: 3
+### charge-reselect · v0.0.518 · Charge by targeting: clicks select as usual, the Charge's candidates too
+Do: As the GM, start Orc Warrior's Charge (Durgan within its reach). Click Durgan, then click the Orc again; click an empty square; target Durgan (T) and click the Charge button.
+Expect: Clicking Durgan selects him (the gold squares under him don't stop the click), and clicking the Orc selects it again with its Charge bar back in its HUD. Targeting Durgan aims the Charge at him; only the Charge button (or Enter) charges.
+Rev: 4
 
 ## Starting a combat
 

@@ -6,3 +6,4 @@ flip: unsensed hidden
 html: the state is the button 2 | removes 2 | Add buttons 2 | aria-labels true | no tooltip true | no pulse true
 hint with no target: true
 wired: HUD model true | clicks true | chat line by hand true | Hide and Sneak mark the turn true | in Situational true
+folded: the title is a button true | aria-expanded false true | no rows true | unfolded shows them true

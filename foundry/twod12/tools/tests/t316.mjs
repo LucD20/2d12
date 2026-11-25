@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(ROOTURL), src = f => fs.readFileSync(ROOT + f, "utf8");
 globalThis.foundry ??= { utils: {} };
 const HM = await import(ROOTURL + "module/hidemark.mjs"), MK = await import(ROOTURL + "module/mapmark.mjs");
-console.log("who sees: GM", HM.hideMarksVisible(true, -1), "| a player, a PC's marks", HM.hideMarksVisible(false, 1), "| a player, an NPC's", HM.hideMarksVisible(false, -1));
+console.log("who sees (v0.0.518: the GM and the owner): GM", HM.hideMarksVisible(true, false), "| its owner", HM.hideMarksVisible(false, true), "| another player", HM.hideMarksVisible(false, false));
 console.log("seal order:", JSON.stringify(HM.sealOrder([["o", "hidden", "Orc"], ["g", "unsensed", "Goblin"], ["x", "clear", "Archer"], ["a", "hidden", "Archer"]]).map(e => e[2])));
 console.log("v0.0.516: no seals at rest:", !src("module/hidemark.mjs").includes("drawSeals") && !("hideSealLayout" in HM));
 console.log("trimmed line:", JSON.stringify(HM.trimmedLine({ x: 0, y: 0 }, { x: 100, y: 0 }, 10, 20)));

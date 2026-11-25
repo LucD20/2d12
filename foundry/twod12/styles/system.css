@@ -5768,3 +5768,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-hd .h3-hd-add .bs { display: flex; gap: 6px; margin-top: 3px; }
 .twod12-hud .h3-hd .h3-hd-add .hb-btn { display: inline-flex; align-items: center; gap: 5px; }
 .twod12-hud .h3-hd .h3-hd-hint { margin-top: 3px; color: var(--hud-mute, #b3a68e); font-size: 12px; }
+/* v0.0.518: the Hiding entry's title folds it (a plain button: the title's look, a chevron) */
+.twod12-hud .h3-hd .h3-hd-fold { display: flex; align-items: baseline; gap: 6px; width: 100%; background: none; border: 0; padding: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.twod12-hud .h3-hd .h3-hd-fold .fa-solid { margin-left: auto; font-size: 10px; color: var(--hud-mute, #b3a68e); }
+.twod12-hud .h3-hd .h3-hd-fold:focus-visible { outline: 1px solid var(--hud-line); outline-offset: 2px; }

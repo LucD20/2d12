@@ -283,6 +283,7 @@ async function barModel(actor, token = null) {
     const names = Object.fromEntries((canvas.tokens?.placeables ?? []).map(t => [t.id, t.name]));
     const hidThisTurn = !!H.turnStamp() && actor.getFlag?.(F, "hidTurn") === H.turnStamp();
     hiding = H.hidingModel(map, { names, targets: [...(game.user?.targets ?? [])].map(t => ({ id: t.id, name: t.name })), hidThisTurn, selfId: selfTok?.id ?? "" });
+    if (hiding) { let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.hideFold") ?? "[]"); } catch (e) { folded = []; } hiding.folded = folded.includes(actor.uuid); }   // v0.0.518: folded by this viewer
   } catch (e) { hiding = null; }
   try {
     const cu = cb?.c?.getFlag?.(F, "chargeUse"), cmsg = cu?.messageId ? game.messages?.get?.(cu.messageId) : null;
@@ -645,6 +646,12 @@ async function onClick(ev) {
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
   if (kind === "line" && item && !ev.target.closest(".hb-st")) { const vs0 = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions ?? [], first = vs0.find(v => !v.off) ?? vs0.find(v => !v.lock); /* v0.0.453: a spent one too (the dialog warns) */ if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
+  if (kind === "hidefold") {   // v0.0.518: the Hiding entry folded to its title (or unfolded), for this viewer only
+    let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.hideFold") ?? "[]"); } catch (e) { folded = []; }
+    folded = folded.includes(actor.uuid) ? folded.filter(u => u !== actor.uuid) : [...folded, actor.uuid];
+    try { localStorage.setItem("twod12.hideFold", JSON.stringify(folded.slice(-50))); } catch (e) { /* no storage */ }
+    return renderHud();
+  }
   if (kind === "hideflip" || kind === "hiderm" || kind === "hideadd") {   // v0.0.517: the Hiding entry's buttons
     const H = await import("./hide.mjs");
     if (kind === "hideflip") await H.setHideByHand(actor, [b.dataset.obs], H.flipState(b.dataset.state));

@@ -3,14 +3,14 @@
 //   - v0.0.516 (Lucas: "remove the little pips/circles on the token"): no seals at rest.
 //   - The hider selected or hovered: a line to each of those creatures (dotted for Unsensed, dashed for Hidden) and a plate under it with the word;
 //     the lines show for 5 seconds (mapmark.mjs trackLines), then fade.
-// Who sees it: everyone for a creature on the players' side (the whole party), the GM only for one on another side.
+// Who sees it: the GM and the creature's owner (v0.0.518; it was the whole party in v0.0.515).
 import * as MK from "./mapmark.mjs";
 const F = "twod12", LINES = "twod12-hidelines";
 const INK = 0xf0ece4;
 
 /* ------------------------------------------------------------------ pure */
-/** Who sees a creature's Hide marks: the GM always; everyone for a creature of the players' side (disposition 1). */
-export const hideMarksVisible = (isGM, disposition) => !!isGM || Number(disposition) === 1;
+/** Who sees a creature's Hide lines: the GM and its owner (v0.0.518, Lucas: "GM and player only, not whole party anymore"). */
+export const hideMarksVisible = (isGM, isOwner) => !!isGM || !!isOwner;
 /** The seals' order: Unsensed first, then Hidden, each by the observer's name. entries: [[id, state, name]]. */
 export function sealOrder(entries = []) {
   const rank = s => (s === "unsensed" ? 0 : 1);
@@ -35,7 +35,7 @@ function entriesOf(token) {
   const map = token?.actor?.getFlag?.(F, "hide") ?? {};
   return sealOrder(Object.entries(map).map(([id, s]) => [id, s, nameOf(id)]).filter(([id]) => canvas.tokens?.get?.(id)));
 }
-const canSee = token => hideMarksVisible(game.user?.isGM, token?.document?.disposition);
+const canSee = token => hideMarksVisible(game.user?.isGM, token?.isOwner ?? token?.document?.isOwner);
 
 let linesBox = null, focusId = "";
 function clearLines() { try { linesBox?.destroy({ children: true }); } catch (e) { /* gone */ } linesBox = null; }

@@ -157,7 +157,9 @@ export function hidingHtml(h) {
   const rows = h.rows.map(r => `<div class="h3-hd-r">${HIDE_MARK[r.state]}<span class="nm">${esc(r.name)}</span><button type="button" class="hb-btn q h3-hd-st" data-hud="hideflip" data-obs="${esc(r.id)}" data-state="${esc(r.state)}" aria-label="${esc(`${word(r.state)} to ${r.name}: switch to ${word(r.state === "hidden" ? "unsensed" : "hidden")}`)}">${word(r.state)}</button><button type="button" class="h3-hd-x" data-hud="hiderm" data-obs="${esc(r.id)}" aria-label="${esc(`Remove ${r.name}`)}">\u2715</button></div>`).join("");
   const add = h.add ? `<div class="h3-hd-add"><div class="t">Add against <b>${esc(h.add.label)}</b>:</div><div class="bs">${["unsensed", "hidden"].map(s => `<button type="button" class="hb-btn q" data-hud="hideadd" data-ids="${esc(h.add.ids.join(","))}" data-state="${s}">${HIDE_MARK[s]}${word(s)}</button>`).join("")}</div></div>`
     : `<div class="h3-hd-hint">${h.rows.length ? "To add a creature, target one that isn't listed." : "Not hiding from anyone. To add a creature, target it."}</div>`;
-  return `<div class="h3-si h3-hd"><div class="h"><b>Hiding</b><span class="tg">from Hide${h.rows.length ? ` \u00b7 ${h.rows.length}` : ""}</span></div>${rows}${add}</div>`;
+  // v0.0.518 (Lucas: "Allow the player to click on Hiding to condense it to just the title"): the title folds and unfolds it (per viewer)
+  const head = `<button type="button" class="h h3-hd-fold" data-hud="hidefold" aria-expanded="${h.folded ? "false" : "true"}"><b>Hiding</b><span class="tg">from Hide${h.rows.length ? ` \u00b7 ${h.rows.length}` : ""}</span><i class="fa-solid fa-chevron-${h.folded ? "right" : "down"}" aria-hidden="true"></i></button>`;
+  return `<div class="h3-si h3-hd${h.folded ? " folded" : ""}">${head}${h.folded ? "" : `${rows}${add}`}</div>`;
 }
 /**
  * D3 / D7: the right column. s = { rx, grants, cancels, prone: sitItem | null, tiles: [hand tile] | null, view }
