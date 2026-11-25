@@ -21,6 +21,10 @@ differ):
 
 ## Hiding
 
+### hide-by-hand · v0.0.517 · The HUD's Hiding entry: switch, remove, add
+Do: Make Kaela Unsensed to Goblin Sneak and Hidden to Orc Warrior with Hide, select her and open the HUD's Situational tab. Click the Orc's "Hidden"; click the Goblin's ✕. Target Goblin Archer (or the Goblin again) and click Add's "Hidden"; then target two creatures and Add "Unsensed". Next turn, without hiding from anyone, select Kaela.
+Expect: A "Hiding" entry (from Hide · 2) lists the Goblin (Unsensed) and the Orc (Hidden), each with a mark, its name, the state as a button and a ✕. Clicking "Hidden" switches the Orc to Unsensed; ✕ removes the Goblin; Add sets the targeted creatures ("Add against 2 creatures" for two); each change posts a short chat line ending "(set by hand)", and the Hide lines on the map follow. The entry never pulses. When she hides from no one and didn't use Hide or Sneak this turn, there is no entry.
+
 ### hide-lines-only · v0.0.516 · Hide: no marks on the token, the lines on select or hover
 Do: Make Kaela Unsensed to Goblin Sneak and Hidden to Orc Warrior with Hide. Look at her token with nothing selected, then select her.
 Expect: No small rings or discs on her token. Selected (or hovered): the dotted and dashed lines with their plates, gone after 5 seconds.

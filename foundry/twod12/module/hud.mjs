@@ -276,7 +276,14 @@ async function barModel(actor, token = null) {
     }
   } catch (e) { /* no loadout */ }
   // v0.0.512 (playtest 7): a Charge that reached a creature: its Basic Attack (1A) from the Charge's card, in the Situational tab
-  let chargeSit = null;
+  let chargeSit = null, hiding = null;
+  // v0.0.517 (Lucas: the Hiding entry, layout A, "default to all others"): to whom this creature hides, set or fixed by hand
+  try {
+    const H = await import("./hide.mjs"), map = actor.getFlag?.(F, "hide") ?? {}, selfTok = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
+    const names = Object.fromEntries((canvas.tokens?.placeables ?? []).map(t => [t.id, t.name]));
+    const hidThisTurn = !!H.turnStamp() && actor.getFlag?.(F, "hidTurn") === H.turnStamp();
+    hiding = H.hidingModel(map, { names, targets: [...(game.user?.targets ?? [])].map(t => ({ id: t.id, name: t.name })), hidThisTurn, selfId: selfTok?.id ?? "" });
+  } catch (e) { hiding = null; }
   try {
     const cu = cb?.c?.getFlag?.(F, "chargeUse"), cmsg = cu?.messageId ? game.messages?.get?.(cu.messageId) : null;
     // v0.0.514 (Lucas on v0.0.513: "Charge from it needs to have the blinking as well and a cancel button"): an urgent entry (it pulses, as a Reaction does)
@@ -286,7 +293,7 @@ async function barModel(actor, token = null) {
   try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }
   return {
     h3: true, basicGroups, conds,
-    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, charge: chargeSit, tiles, view: st.view },
+    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, charge: chargeSit, hiding, tiles, view: st.view },
     npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
@@ -638,6 +645,13 @@ async function onClick(ev) {
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
   if (kind === "line" && item && !ev.target.closest(".hb-st")) { const vs0 = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions ?? [], first = vs0.find(v => !v.off) ?? vs0.find(v => !v.lock); /* v0.0.453: a spent one too (the dialog warns) */ if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
+  if (kind === "hideflip" || kind === "hiderm" || kind === "hideadd") {   // v0.0.517: the Hiding entry's buttons
+    const H = await import("./hide.mjs");
+    if (kind === "hideflip") await H.setHideByHand(actor, [b.dataset.obs], H.flipState(b.dataset.state));
+    else if (kind === "hiderm") await H.setHideByHand(actor, [b.dataset.obs], "");
+    else await H.setHideByHand(actor, String(b.dataset.ids ?? "").split(",").filter(Boolean), b.dataset.state);
+    return renderHud();
+  }
   if (kind === "chargecancel") { try { const C = await import("./combat.mjs"), cb = C.combatantOf(actor); await cb?.unsetFlag?.(F, "chargeUse"); } catch (e) { /* gone */ } return renderHud(); }   // v0.0.514: the Charge's Basic Attack given up
   if (kind === "chargeuse") { const msg = game.messages.get(b.dataset.msg); if (msg) { const { chargeUseFromCard } = await import("./freeuse.mjs"); await chargeUseFromCard(actor, msg); } return renderHud(); }   // v0.0.512
   if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0, b.dataset.target || ""); }
@@ -789,7 +803,8 @@ export function registerHud() {
   for (const h of ["controlToken", "canvasReady", "updateCombat", "combatTurn", "combatRound", "deleteCombat", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect"]) Hooks.on(h, () => renderHud());
   const mine = a => a && (a.uuid === st.actorUuid || (globalThis.canvas?.tokens?.controlled ?? []).some(t => t.actor === a));
   Hooks.on("updateActor", a => { if (mine(a)) renderHud(); });
-  Hooks.on("updateCombatant", (c, ch) => { if (mine(c?.actor) && JSON.stringify(ch?.flags?.twod12 ?? {}).includes("chargeUse")) renderHud(); });   // v0.0.512: the Charge's Basic Attack waits in Situational
+  Hooks.on("updateCombatant", (c, ch) => { if (mine(c?.actor) && JSON.stringify(ch?.flags?.twod12 ?? {}).includes("chargeUse")) renderHud(); });
+  Hooks.on("targetToken", user => { if (user === game.user && st.actorUuid) renderHud(); });   // v0.0.517: the Hiding entry's Add follows your targets   // v0.0.512: the Charge's Basic Attack waits in Situational
   for (const h of ["createItem", "updateItem", "deleteItem"]) Hooks.on(h, i => { if (mine(i.parent)) renderHud(); });
   Hooks.on("renderHotbar", () => { if (root) placeHotbar(); });
   for (const h of ["collapseSidebar", "changeSidebarTab", "renderSceneControls", "renderChatLog", "renderSidebar"]) Hooks.on(h, () => { placeRoot(); fitNames(); setTimeout(() => { placeRoot(); fitNames(); }, 450); });

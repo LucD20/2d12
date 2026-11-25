@@ -1,0 +1,8 @@
+two rows, Unsensed first: ["Goblin Sneak unsensed","Orc Warrior hidden"] | no target, no Add: null
+not hiding, not this turn: nothing: null | this turn: the entry: {"rows":[],"add":null}
+Add against one: {"ids":["o"],"label":"Orc Warrior"}
+Add against all the new ones (self and listed left out): {"ids":["o","a"],"label":"2 creatures"}
+flip: unsensed hidden
+html: the state is the button 2 | removes 2 | Add buttons 2 | aria-labels true | no tooltip true | no pulse true
+hint with no target: true
+wired: HUD model true | clicks true | chat line by hand true | Hide and Sneak mark the turn true | in Situational true

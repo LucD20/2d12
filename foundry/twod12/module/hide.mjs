@@ -132,3 +132,32 @@ export function registerHide() {
   });
   Hooks.on("deleteCombat", combat => { for (const c of combat?.combatants ?? []) if (c.actor?.getFlag?.(F, "hide") && c.actor.isOwner) c.actor.unsetFlag(F, "hide").catch(() => {}); });
 }
+
+/* ------------------------------------------------------------------ v0.0.517: by hand (Lucas, 2026-11-25: the HUD's Hiding entry, the mockup
+ * foundry/mockups/hide-hud, layout A; "default to all others": shown during the turn the creature used Hide or Sneak and while it hides from someone;
+ * Add sets every targeted creature at once; a change posts a short chat line) */
+/** Pure: the HUD's Hiding entry. map: the hider's flag; names: id -> name; targets: [{ id, name }] (the hider's user's targets); hidThisTurn. null when
+ *  nothing is shown. rows: [{ id, name, state }] (Unsensed first); add: { ids, label } for the targets not listed, or null (then hint). */
+export function hidingModel(map, { names = {}, targets = [], hidThisTurn = false, selfId = "" } = {}) {
+  const rows = Object.entries(map ?? {}).filter(([, s]) => s === "hidden" || s === "unsensed").map(([id, state]) => ({ id, name: names[id] ?? "a creature", state }))
+    .sort((a, b) => (a.state === b.state ? a.name.localeCompare(b.name) : a.state === "unsensed" ? -1 : 1));
+  if (!rows.length && !hidThisTurn) return null;
+  const listed = new Set(rows.map(r => r.id)), fresh = (targets ?? []).filter(t => t.id && t.id !== selfId && !listed.has(t.id));
+  const add = fresh.length ? { ids: fresh.map(t => t.id), label: fresh.length === 1 ? fresh[0].name : `${fresh.length} creatures` } : null;
+  return { rows, add };
+}
+/** Pure: Hidden and Unsensed flip (the state button). */
+export const flipState = s => (s === "hidden" ? "unsensed" : "hidden");
+const WORDS = { hidden: "Hidden", unsensed: "Unsensed" };
+/** Set (or remove, state "") the hider's Hide state against some creatures by hand, with a chat line. */
+export async function setHideByHand(actor, ids = [], state = "") {
+  if (!actor?.isOwner || !ids.length) return;
+  const map = hideMap(actor), names = [];
+  for (const id of ids) { map[id] = state || ""; names.push(nameOfToken(id)); }
+  await setHide(actor, map);
+  const what = state ? `${WORDS[state]} to <b>${names.map(esc).join(", ")}</b>` : `no longer hiding from <b>${names.map(esc).join(", ")}</b>`;
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-user-secret", `<b>${esc(actor.name)}</b>: ${what} (set by hand).`, "fxm") });
+}
+/** The turn a creature used Hide or Sneak (the entry shows during it). */
+export const turnStamp = () => (game.combat?.started ? `${game.combat.id}:${game.combat.round}:${game.combat.turn}` : "");
+export async function markHidTurn(actor) { const s = turnStamp(); if (s && actor?.isOwner) await actor.setFlag(F, "hidTurn", s); }

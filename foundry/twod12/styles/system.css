@@ -5754,3 +5754,17 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 #token-hud .twod12-hphud input.twod12-hpbox.v { --c: #c23b32; } #token-hud .twod12-hphud input.twod12-hpbox.r { --c: #3f73c9; }
 /* v0.0.503 (Lucas on v0.0.502): the whole row of the status palette is the button */
 #token-hud .twod12-statuspal .twod12-sitem { cursor: pointer; }
+
+/* v0.0.517 (Lucas: the HUD's Hiding entry, the mockup foundry/mockups/hide-hud, layout A): one line a creature: its mark, its name, its state as the
+   button (outlined), a remove; the Add line below */
+.twod12-hud .h3-hd .h3-hd-r { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto 18px; align-items: center; gap: 6px; padding: 2px 0; border-top: 1px solid var(--hud-hair); }
+.twod12-hud .h3-hd .h3-hd-r:first-of-type { border-top: 0; }
+.twod12-hud .h3-hd .hm { width: 14px; height: 14px; color: var(--hud-ink); flex: none; }
+.twod12-hud .h3-hd .nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--hud-ink); }
+.twod12-hud .h3-hd .h3-hd-st { min-width: 74px; justify-content: center; padding: 1px 8px; }
+.twod12-hud .h3-hd .h3-hd-x { background: none; border: 0; color: var(--hud-mute, #b3a68e); cursor: pointer; padding: 0; line-height: 1; font-size: 13px; }
+.twod12-hud .h3-hd .h3-hd-x:hover, .twod12-hud .h3-hd .h3-hd-x:focus-visible { color: var(--hud-ink); }
+.twod12-hud .h3-hd .h3-hd-add { margin-top: 4px; }
+.twod12-hud .h3-hd .h3-hd-add .bs { display: flex; gap: 6px; margin-top: 3px; }
+.twod12-hud .h3-hd .h3-hd-add .hb-btn { display: inline-flex; align-items: center; gap: 5px; }
+.twod12-hud .h3-hd .h3-hd-hint { margin-top: 3px; color: var(--hud-mute, #b3a68e); font-size: 12px; }

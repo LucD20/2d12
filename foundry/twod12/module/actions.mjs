@@ -1672,6 +1672,8 @@ export async function useAction(actor, item, opts = {}) {
     const dTargets = (mres ? mres.map(r => r.uuid) : targets.map(t => t.uuid)).filter(Boolean);
     if (dTargets.length) await markDemoralized(actor, dTargets);
   }
+  // v0.0.517: Hide or Sneak used: the HUD's Hiding entry shows for the rest of this turn (to add or fix by hand)
+  if (basicKey === "hide" || basicKey === "sneak") { try { await (await import("./hide.mjs")).markHidTurn(actor); } catch (e) { /* no combat */ } }
   // v0.0.513 (the Hide package): Hide, Seek and Point Out apply their Tiers (hide.mjs)
   if (["hide", "seek", "pointOut"].includes(basicKey) && !version.noTiers) {
     try {
