@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hide Indicator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style-tokens.css">
+<style>/* style-tokens.css's colors, copied so the page also opens outside the repo */
+:root { --s-pg: #1f1c18; --s-pg-2: #28241d; --s-band: #332c22; --s-rule: #7a683f; --s-hair: #4a4132; --s-ink: #ece3cf; --s-mute: #b3a68e; --s-faint: #8a7f6b; --s-gold: #d4a548; }</style>
+<link rel="stylesheet" href="hide.css">
+</head>
+<body>
+<main>
+<h1>Hide: to whom is it Hidden or Unsensed?</h1>
+<p class="lede">A mockup, three options; nothing is built. The scene is the same in every picture: Kaela used Hide behind a wall. She is <b>Unsensed to the Goblin Sneak</b> (north of the wall), <b>Hidden to the Orc Warrior</b> (it sees her over the wall's end) and Clear to the Goblin Archer, which has her in plain sight. Sylwen is her ally. The data is the flag on Kaela: one entry for each creature Hide worked against.</p>
+
+<div class="legend">
+  <span><i data-mk="unsensed"></i><b>Unsensed</b> <em>an empty dashed ring: it can't target her</em></span>
+  <span><i data-mk="hidden"></i><b>Hidden</b> <em>a half-filled disc: its rolls against her are Doomed</em></span>
+  <span><b>Clear</b> <em>no mark</em></span>
+</div>
+<p class="sub" style="margin-top:8px">The two marks are the same in all three options, in ink, told apart by shape. Wherever there is room the word is written beside the mark.</p>
+
+<hr class="rule">
+<h2>A. Seals on the hider, lines to the observers <span class="tag">Proposed</span></h2>
+<p class="sub">A mark on the map. At rest, one small seal for each creature she is hiding from. Select or hover her, and each of those creatures is joined to her by a line and named Hidden or Unsensed.</p>
+<div class="panels">
+  <figure><figcaption><b>At rest.</b> Two seals on Kaela's left edge: she is hiding from two creatures, one of each kind.</figcaption><div class="scroll"><div class="map" data-scene="a-rest" data-label="Kaela with two small seals on her token's edge"></div></div></figure>
+  <figure><figcaption><b>Kaela selected or hovered.</b> A dotted line and "Unsensed" at the Goblin Sneak, a dashed line and "Hidden" at the Orc Warrior. Nothing at the Goblin Archer.</figcaption><div class="scroll"><div class="map" data-scene="a-on" data-label="Lines from Kaela to the two creatures she is hiding from"></div></div></figure>
+</div>
+<div class="notes">
+  <div><b class="k">Who sees it</b><span>The GM and Kaela's player. (Could be the whole party; the foes' players, if any, never.)</span></div>
+  <div><b class="k">At a glance</b><span>At rest: "she is hiding, from two". On her: who, and which of the two, without reading a list or looking for names.</span></div>
+  <div><b class="k">Trade-offs</b><span>The most to build (seals, lines and plates on the canvas, redrawn when a token moves or the flag changes). With six observers the lines fan out; they show only while she is selected or hovered, so the map stays clean. The seals sit on the left edge, since Judge's seals use the right.</span></div>
+</div>
+
+<hr class="rule">
+<h2>B. A line of text: the Alt condition line and the HUD</h2>
+<p class="sub">No new mark on the map. Hide's state is written where conditions are already written: under the token while Alt is held, and in the HUD of the selected token.</p>
+<div class="panels">
+  <figure><figcaption><b>Alt held.</b> Kaela's condition line carries Hide's entry, beside the other tokens' conditions.</figcaption><div class="scroll"><div class="map" data-scene="b-alt" data-label="Condition lines under the tokens while Alt is held"></div></div></figure>
+  <figure><figcaption><b>The HUD.</b> Kaela selected, then (the GM) the Goblin Sneak selected.</figcaption>
+    <div class="scroll"><div class="hudstack">
+      <div class="hud">
+        <div class="id"><div class="por" style="background:#3d5568">K</div><div><div class="nm">Kaela</div><div class="sb">Hiding</div></div></div>
+        <div class="grp"><div class="ln"><i data-mk="unsensed"></i>Unsensed to Goblin Sneak</div><div class="ln"><i data-mk="hidden"></i>Hidden to Orc Warrior</div></div>
+        <div class="rest">the Actions</div>
+      </div>
+      <div class="hud">
+        <div class="id"><div class="por" style="background:#4b5a26">G</div><div><div class="nm">Goblin Sneak</div><div class="sb">Grunt</div></div></div>
+        <div class="grp"><div class="ln"><i data-mk="unsensed"></i>Kaela is Unsensed to it</div></div>
+        <div class="rest">the Actions</div>
+      </div>
+    </div></div>
+  </figure>
+</div>
+<div class="notes">
+  <div><b class="k">Who sees it</b><span>The Alt line: the GM and Kaela's player (Hide's entry is left out for everyone else; the other conditions stay as today). The HUD: whoever controls the selected token.</span></div>
+  <div><b class="k">At a glance</b><span>Exact and unambiguous once read ("Hidden to Orc Warrior"), but it is reading: with two Goblin Sneaks the names don't say which one, and nothing shows until Alt or a selection.</span></div>
+  <div><b class="k">Trade-offs</b><span>The least to build: two existing surfaces, one new line each. The Alt line gets long with many observers (it wraps). The HUD is one new group on an existing bar, so it waits on the HUD's own pass.</span></div>
+</div>
+
+<hr class="rule">
+<h2>C. From the observer's side: the hider as that creature perceives it</h2>
+<p class="sub">Select a creature, and every token hiding from it is redrawn: a dashed empty outline if Unsensed, faded with a solid outline if Hidden. It answers "can this one attack her?" at the moment the GM picks its target.</p>
+<div class="panels">
+  <figure><figcaption><b>The Goblin Sneak selected.</b> Kaela is an empty outline: Unsensed, it can't target her.</figcaption><div class="scroll"><div class="map" data-scene="c-sneak" data-label="Kaela drawn as a dashed outline while the Goblin Sneak is selected"></div></div></figure>
+  <figure><figcaption><b>The Orc Warrior selected.</b> Kaela is faded: Hidden, its rolls against her are Doomed.</figcaption><div class="scroll"><div class="map" data-scene="c-orc" data-label="Kaela drawn faded while the Orc Warrior is selected"></div></div></figure>
+  <figure><figcaption><b>The Goblin Archer selected.</b> Kaela is drawn as always: Clear.</figcaption><div class="scroll"><div class="map" data-scene="c-archer" data-label="Kaela drawn normally while the Goblin Archer is selected"></div></div></figure>
+</div>
+<div class="notes">
+  <div><b class="k">Who sees it</b><span>The GM, for any creature selected. A player, for their own PC, only for tokens Foundry already shows them.</span></div>
+  <div><b class="k">At a glance</b><span>The strongest answer to the GM's question on an NPC's turn. It doesn't answer Kaela's player's question ("from whom am I hidden?") without clicking each foe, and with no token selected nothing shows that she is hiding at all.</span></div>
+  <div><b class="k">Trade-offs</b><span>It changes how a token is drawn (its alpha and outline) by selection, so it must not be mistaken for Foundry's own hidden-token fade: the plate under her says which it is. Several tokens selected: the worst for her of the selected ones, or none (to decide).</span></div>
+</div>
+
+<hr class="rule">
+<h2>Side by side</h2>
+<table>
+  <tr><th></th><th>Answers</th><th>Shows with nothing selected</th><th>Seen by</th><th>To build</th></tr>
+  <tr><td>A</td><td>From whom is she hiding, and how?</td><td>Yes (the seals)</td><td>GM, her player</td><td>Most</td></tr>
+  <tr><td>B</td><td>The same, as text</td><td>No (Alt or a selection)</td><td>GM, her player</td><td>Least</td></tr>
+  <tr><td>C</td><td>Can this creature act against her?</td><td>No</td><td>GM; a player for their PC</td><td>Middle</td></tr>
+</table>
+<div class="pick">
+  <p><b>Claude's pick: A.</b> The question was "to whom", and that is a question about places on the map: A answers it where the tokens are, for the GM and for Kaela's player alike, and it is the only one that shows she is hiding before anything is clicked. B's Alt line is a cheap companion (the exact words, for the day two Goblin Sneaks stand side by side) and could ship first. C is worth adding later for the GM's turn; alone it leaves the hider's player without an answer.</p>
+  <p class="lede">Not tried in Foundry. Open: whether the party's other players see A; what C shows with several tokens selected.</p>
+</div>
+</main>
+<script src="hide.js"></script>
+</body>
+</html>

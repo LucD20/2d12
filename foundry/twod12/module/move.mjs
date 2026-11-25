@@ -2358,7 +2358,7 @@ export function openChargePicker(c, token) {
   };
   let dockHook = null;
   try { dockHook = Hooks.on("controlToken", () => setTimeout(() => placeBar(0), 150)); } catch (e) { dockHook = null; }
-  // v0.0.461 (e, choices 3A and 4A): a Charge always picks an enemy first (the book's Charge); only the Charge button, Enter or a click on the target confirms
+  // v0.0.461 (e, choices 3A and 4A): a Charge always picks an enemy first (the book's Charge); v0.0.514: only the Charge button or Enter confirms
   const text = () => {
     if (!target) return `<b>Pick the enemy to Charge</b>, on the map or here. You run straight at it (at least ${ch.min}, up to ${ch.max} squares), then make a Basic Attack (1A).${cands.filter(x => !x.ok).length ? ` <span class="lb-tag">${cands.filter(x => !x.ok).map(x => `${esc(x.t.name)}: ${esc(x.why)}`).join(" \u00b7 ")}</span>` : ""}`;
     const r = cur?.path; if (!r) return "";
@@ -2477,10 +2477,12 @@ export function openChargePicker(c, token) {
     pos = local(ev);
     // v0.0.453 (Lucas, playtest 6): a click on another enemy makes it the target; v0.0.461 (choice 4A): a click on the target confirms; a click
     // anywhere else does nothing (it launched the Charge)
+    // v0.0.514 (Lucas on v0.0.513: "clicking on an empty space doesnt unselect the token"; "remove the behavior of double clicking the target on the
+    // map to confirm, only allow through the button"): an empty click deselects (the bar stays, and follows the next selection); a click on a creature
+    // only picks it; the Charge button (or Enter) confirms
     const other = tokenAtPoint(pos);
-    if (!other) return;
-    if (other.id !== target?.id) { if (target || cands.some(x => x.ok && x.t.id === other.id)) await setTarget(other); return; }
-    await confirm();
+    if (!other) { try { canvas.tokens?.releaseAll?.(); } catch (e) { /* nothing selected */ } return; }
+    if (other.id !== target?.id && (target || cands.some(x => x.ok && x.t.id === other.id))) await setTarget(other);
   };
   const confirm = async () => {
     if (!target || !cur) return;

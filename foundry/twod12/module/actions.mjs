@@ -694,15 +694,36 @@ export async function useAction(actor, item, opts = {}) {
     if (!outcome.count) ui.notifications.info("No creature is in the area.");
   }
   const rollsAtOthers = !isSelf || !!String(it.area ?? "").trim();
-  // v0.0.513 (the Hide package, Seek): it targets by itself the creatures Hidden or Unsensed to you from Hide within 5 (1 AP) or 10 squares (2 AP)
-  if (basicKey === "seek" && selfToken) {
-    const { seekCandidates } = await import("./hide.mjs"), sq = Number(version?.ap) >= 2 ? 10 : 5, found = seekCandidates(selfToken, sq);
-    if (!found.length) return ui.notifications.warn(`No creature is Hidden or Unsensed to ${actor.name} from Hide within ${sq} squares.`);
+  // v0.0.513 (the Hide package) / v0.0.514 (Lucas on v0.0.513: "Targeting through walls is not great, likely make it auto-target all qualifying targets";
+  // the crash: the Version isn't chosen yet here): Seek targets by itself the creatures Hidden or Unsensed to you from Hide within 5 (1 AP) or 10
+  // squares (2 AP: the HUD's Version, else a question); Hide targets by itself each creature that can't see you or against which you have High Cover
+  if ((basicKey === "seek" || basicKey === "hide") && selfToken) {
+    const H = await import("./hide.mjs");
+    let found = [];
+    if (basicKey === "seek") {
+      let ap = Number(opts.rdState?.ap) || 0;
+      if (!ap && versions.length > 1) {
+        const { pickBar } = await import("./pickbar.mjs");
+        const pick = await pickBar({ icon: "fa-eye", text: `<b>${esc(item.name)}</b>: how far?`, options: versions.map(v => ({ id: String(v.ap), label: `${v.ap} AP: ${Number(v.ap) >= 2 ? 10 : 5} squares` })), cancel: "Cancel" });
+        if (pick == null || pick === "") return;
+        ap = Number(pick);
+      }
+      ap ||= Number(versions[0]?.ap) || 1;
+      opts.rdState = { ...(opts.rdState ?? {}), ap };
+      versions = versions.filter(v => Number(v.ap) === ap);   // its range is chosen: the dialog keeps that Version
+      const sq = ap >= 2 ? 10 : 5;
+      found = H.seekCandidates(selfToken, sq);
+      if (!found.length) return ui.notifications.warn(`No creature is Hidden or Unsensed to ${actor.name} from Hide within ${sq} squares.`);
+    } else {
+      found = await H.hideCandidates(selfToken);
+      if (!found.length) return ui.notifications.warn(`${actor.name} can't Hide: every creature sees ${actor.name} without High Cover.`);
+    }
     for (const t of [...game.user.targets]) t.setTarget(false, { releaseOthers: false, groupSelection: true });
     for (const t of found) t.setTarget(true, { releaseOthers: false, groupSelection: true });
   }
-  // v0.0.513: a card whose Target line says "(no Line of Effect needed)" (Hide, Seek) reaches creatures behind Total Cover; Seek's roll ignores Senses
-  const noLoENeeded = /\(no Line of Effect needed\)/i.test(String(it.targets ?? "")), senseFree = basicKey === "seek";
+  // v0.0.513: a card whose Target line says "(no Line of Effect needed)" (Hide, Seek) reaches creatures behind Total Cover; v0.0.514 (Lucas: "Targeting
+  // through wall makes it Doomed because of LoE. Hide has to ignore it"): Hide's and Seek's rolls ignore Senses (their DC is the creature's Instinct DC)
+  const noLoENeeded = /\(no Line of Effect needed\)/i.test(String(it.targets ?? "")), senseFree = basicKey === "seek" || basicKey === "hide";
   const aimed = rollsAtOthers ? [...game.user.targets] : [];
   const targetToken = rollsAtOthers ? (aimed[0] ?? null) : selfToken;
   let dcInfo = computeDC(item, rollsAtOthers ? (targetToken?.actor ?? null) : actor, preAttr, src);

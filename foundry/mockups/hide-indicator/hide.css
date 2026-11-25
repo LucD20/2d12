@@ -1,0 +1,64 @@
+/* Hide indicator mockup (2026-11-25). The colors are style-tokens.css's (linked by the page); nothing here is loaded by the system. */
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--s-pg); color: var(--s-ink); font: 400 15px/1.5 "Source Sans 3", system-ui, sans-serif; }
+main { max-width: 1240px; margin: 0 auto; padding: 28px 24px 64px; }
+h1 { font: 600 30px/1.2 "Source Serif 4", Georgia, serif; margin: 0 0 6px; }
+h2 { font: 700 19px/1.3 "Source Sans 3", sans-serif; margin: 0; }
+p { margin: 0 0 10px; max-width: 86ch; }
+.lede { color: var(--s-mute); }
+.rule { border: 0; border-top: 1px solid var(--s-rule); margin: 30px 0 16px; }
+.tag { color: var(--s-gold); font-weight: 600; margin-left: 10px; font-size: 14px; }
+.sub { color: var(--s-mute); margin: 2px 0 14px; }
+
+/* the two marks, as a line of text */
+.legend { display: flex; flex-wrap: wrap; gap: 6px 28px; margin: 14px 0 0; padding: 10px 0; border-top: 1px solid var(--s-hair); border-bottom: 1px solid var(--s-hair); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend b { font-weight: 700; }
+.legend em { font-style: normal; color: var(--s-mute); }
+svg.mk { width: 15px; height: 15px; flex: none; vertical-align: -2px; }
+
+.panels { display: flex; flex-wrap: wrap; gap: 20px; }
+figure { margin: 0; width: 576px; max-width: 100%; }
+figcaption { margin: 0 0 6px; min-height: 42px; color: var(--s-mute); font-size: 14px; }
+figcaption b { color: var(--s-ink); font-weight: 700; }
+.scroll { overflow-x: auto; max-width: 100%; }
+.map { position: relative; width: 576px; height: 384px; background: #23201b; border: 1px solid var(--s-hair); overflow: hidden; }
+.map > svg { position: absolute; inset: 0; display: block; }
+.map text { font-family: "Source Sans 3", sans-serif; }
+
+/* a plate on the map: the Alt condition line's look (condline.mjs: a dark plate, a thin gold line, bold light text) */
+.plate { position: absolute; transform: translateX(-50%); white-space: nowrap; background: rgba(11, 11, 13, .88); border: 1.5px solid rgba(201, 162, 39, .85); border-radius: 3px; padding: 2px 7px 3px; font: 700 12.5px/1.25 "Source Sans 3", sans-serif; color: #f0ece4; display: flex; align-items: center; gap: 5px; text-align: center; }
+.plate.two { white-space: normal; width: 190px; justify-content: center; flex-wrap: wrap; gap: 0 5px; }
+.plate .w { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.plate.quiet { border-color: rgba(240, 236, 228, .35); font-weight: 600; }
+.name { position: absolute; transform: translateX(-50%); white-space: nowrap; font: 600 12.5px/1 "Source Sans 3", sans-serif; color: #f0ece4; text-shadow: 0 0 3px #000, 0 0 3px #000, 0 1px 2px #000; }
+.name.dim { opacity: .55; }
+.key { position: absolute; left: 10px; top: 9px; font: 600 12.5px/1 "Source Sans 3", sans-serif; color: var(--s-mute); background: rgba(11, 11, 13, .7); padding: 4px 7px; border-radius: 2px; }
+
+/* the HUD: the dark table look (a flat surface, a thin line) */
+.hud { display: flex; align-items: stretch; background: #17150f; border: 1px solid var(--s-hair); border-top-color: var(--s-rule); width: 576px; min-height: 60px; }
+.hud .id { display: flex; align-items: center; gap: 10px; padding: 6px 14px 6px 10px; border-right: 1px solid var(--s-hair); }
+.hud .por { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 18px; color: #f0ece4; border: 2px solid #0009; }
+.hud .nm { font-weight: 700; font-size: 15px; white-space: nowrap; }
+.hud .sb { font-size: 12.5px; color: var(--s-mute); white-space: nowrap; }
+.hud .grp { padding: 6px 14px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--s-hair); }
+.hud .grp:last-child { border-right: 0; }
+.hud .gl { font-size: 12.5px; color: var(--s-mute); }
+.hud .ln { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.hud .ln + .ln { margin-top: 1px; }
+.hud .rest { color: var(--s-faint); font-style: italic; font-size: 13.5px; align-self: center; padding: 0 14px; }
+.hudstack { display: flex; flex-direction: column; gap: 12px; }
+
+/* the notes under an option: ruled lines of text */
+.notes { margin: 14px 0 0; max-width: 1172px; }
+.notes div { padding: 6px 0; border-top: 1px solid var(--s-hair); display: grid; grid-template-columns: 150px 1fr; gap: 12px; }
+.notes div:last-child { border-bottom: 1px solid var(--s-hair); }
+.notes dt, .notes b.k { font-weight: 700; }
+.notes span { color: var(--s-ink); }
+@media (max-width: 640px) { .notes div { grid-template-columns: 1fr; gap: 0; } main { padding: 20px 14px 48px; } }
+
+table { border-collapse: collapse; margin: 6px 0 14px; width: 100%; max-width: 980px; }
+th, td { text-align: left; padding: 6px 14px 6px 0; border-bottom: 1px solid var(--s-hair); vertical-align: top; }
+th { font-weight: 700; border-bottom-color: var(--s-rule); }
+td:first-child { font-weight: 700; white-space: nowrap; }
+.pick { border-left: 2px solid var(--s-gold); padding: 2px 0 2px 14px; margin-top: 8px; }

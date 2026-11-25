@@ -190,6 +190,15 @@ export const TWOD12 = {
     { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate", "Demoralize", "Feint"] },
     { key: "utility", label: "Utility", names: ["Steel Yourself", "Heal", "Aid", "Hide", "Seek", "Point Out", "Interact", "Shake Off", "Regrip", "Release", "Lean", "Leaning"] }   // v0.0.513: the Hide package
   ],
+  // v0.0.514 (Lucas on v0.0.513: "The Basic tab on the HUD is very cluttered, lets try to make 5 columns ... aiming to keep the same amount of actions per
+  // column"): the HUD's Basic tab in five groups of five or six (the sheet keeps basicGroups); a Basic Action in none goes to the last one
+  hudBasicGroups: [
+    { key: "attack", label: "Attack", names: ["Basic Attack", "Weapon Attack", "Charge", "Fists", "Reload", "Regrip", "Release"] },
+    { key: "movement", label: "Movement", names: ["Advance", "Evade", "Tumble", "Crawl", "Stand", "Break Free"] },
+    { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate", "Demoralize", "Feint"] },
+    { key: "stealth", label: "Stealth", names: ["Hide", "Sneak", "Seek", "Point Out", "Lean", "Leaning"] },
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Heal", "Aid", "Interact", "Shake Off"] }
+  ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   // v0.0.355 (PACK ACTION-SHEET; the audit's D21, D22): the highest Escalation, read by the Action sheet's Escalation field and a rule's "Works"
   // (6 since v0.0.407, Stage 0 in Foundry: the 1-to-6 ladder). Never write a fixed 1 / 2 / 3 in an editor.

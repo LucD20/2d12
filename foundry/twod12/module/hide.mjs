@@ -72,6 +72,15 @@ export function seekCandidates(seekerTok, squares) {
   return (canvas.tokens?.placeables ?? []).filter(t => t.actor && t.id !== seekerTok?.id && hideStateOf(t.actor.getFlag?.(F, "hide"), seekerTok?.id)
     && tokenDistance(seekerTok, t) <= squares);
 }
+/** v0.0.514: Hide's targets: each creature (not the hider, not Down) that can't see the hider, or against which the hider has High Cover (no Line of Effect needed). */
+export async function hideCandidates(hiderTok) {
+  const out = [];
+  for (const t of canvas.tokens?.placeables ?? []) {
+    if (!t.actor || t.id === hiderTok?.id || t.document?.hidden || t.actor.statuses?.has?.("dead")) continue;
+    if (!(await seesBySight(t, hiderTok)) || await highCoverAgainst(t, hiderTok)) out.push(t);
+  }
+  return out;
+}
 /** Seek's and Point Out's results: each observer perceives each hider 1 step better. pairs: [{ hiderUuid, observerId }]. */
 export async function improve(pairs, why) {
   const lines = [];

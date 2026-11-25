@@ -239,7 +239,7 @@ async function barModel(actor, token = null) {
   const { TWOD12 } = await import("./config.mjs");
   const strikeOf = id => !!actor.items.get(id)?.system?.traits?.has?.("strike");
   const bLines = basic.map(l => ({ ...l, strike: strikeOf(l.id) })), placed = new Set();
-  const basicGroups = TWOD12.basicGroups.map(g => ({ label: g.label, lines: g.names.map(n => bLines.find(l => l.name === n)).filter(Boolean) })).filter(g => g.lines.length);
+  const basicGroups = (TWOD12.hudBasicGroups ?? TWOD12.basicGroups).map(g => ({ label: g.label, lines: g.names.map(n => bLines.find(l => l.name === n)).filter(Boolean) })).filter(g => g.lines.length);
   basicGroups.forEach(g => g.lines.forEach(l => placed.add(l.id)));
   const restB = bLines.filter(l => !placed.has(l.id));
   if (restB.length) (basicGroups.at(-1) ?? basicGroups[basicGroups.push({ label: "Other", lines: [] }) - 1]).lines.push(...restB);
@@ -276,15 +276,17 @@ async function barModel(actor, token = null) {
     }
   } catch (e) { /* no loadout */ }
   // v0.0.512 (playtest 7): a Charge that reached a creature: its Basic Attack (1A) from the Charge's card, in the Situational tab
+  let chargeSit = null;
   try {
     const cu = cb?.c?.getFlag?.(F, "chargeUse"), cmsg = cu?.messageId ? game.messages?.get?.(cu.messageId) : null;
-    if (cmsg) extras.push({ lead: "Charge", tag: "Strike", text: "", btns: [{ label: "Basic Attack (1A)", hud: "chargeuse", data: { msg: cmsg.id } }] });
+    // v0.0.514 (Lucas on v0.0.513: "Charge from it needs to have the blinking as well and a cancel button"): an urgent entry (it pulses, as a Reaction does)
+    if (cmsg) chargeSit = { pulse: true, lead: "Charge", tag: "Strike", text: "", btns: [{ label: "Basic Attack (1A)", hud: "chargeuse", data: { msg: cmsg.id } }, { label: "Cancel", q: true, hud: "chargecancel", data: { msg: cmsg.id } }] };
   } catch (e) { /* no Charge waiting */ }
   let tiles = null;
   try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }
   return {
     h3: true, basicGroups, conds,
-    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, tiles, view: st.view },
+    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, charge: chargeSit, tiles, view: st.view },
     npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
@@ -636,6 +638,7 @@ async function onClick(ev) {
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
   if (kind === "line" && item && !ev.target.closest(".hb-st")) { const vs0 = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions ?? [], first = vs0.find(v => !v.off) ?? vs0.find(v => !v.lock); /* v0.0.453: a spent one too (the dialog warns) */ if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
+  if (kind === "chargecancel") { try { const C = await import("./combat.mjs"), cb = C.combatantOf(actor); await cb?.unsetFlag?.(F, "chargeUse"); } catch (e) { /* gone */ } return renderHud(); }   // v0.0.514: the Charge's Basic Attack given up
   if (kind === "chargeuse") { const msg = game.messages.get(b.dataset.msg); if (msg) { const { chargeUseFromCard } = await import("./freeuse.mjs"); await chargeUseFromCard(actor, msg); } return renderHud(); }   // v0.0.512
   if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0, b.dataset.target || ""); }
   if (kind === "grantcancel") { const { cancelGrantOf } = await import("./freeuse.mjs"); return cancelGrantOf(actor, b.dataset.effect); }

@@ -560,6 +560,18 @@ async function doCheck(kind, cfg, ctx = {}) {
     }
     const pre = kind === "Save" ? await rollParts(parseParts(cfg.tiers[`t${chk.tier}`]).damage, cfg.nonlethal) : null;
     const all = combineRolls([...chk.rolls, ...(pre?.rolls ?? [])]);
+    // v0.0.514 (Lucas on v0.0.513: "Appeal check from Tumble is using old chat card"; foundry-backlog: "the inline Check chip still old"): a Check is drawn as
+    // roll.mjs rollCheck draws one, the chat card of an Action (the stamp, the ladder against its DC, the breakdown); the old block only if that fails
+    if (kind === "Check") {
+      let content = "";
+      try {
+        const CC = await import("./chatcards.mjs"), { ccRowOf } = await import("./actions.mjs");
+        const row = { ...ccRowOf({ ...chk, dcLabel: vsT ? `${TWOD12.attributes[key]} DC` : "DC" }, String(vsT?.names ?? actor?.name ?? ""), "", TWOD12.attributes[key] ?? "Modifier") };
+        content = CC.cardContent({ kind: "attack", name: `${label}${vsT ? ` vs ${vsT.names}` : ""}`, freq: "", cost: "", traitsHtml: "", flavor: "", hasDamage: false, outcomes: {}, rows: [row], locked: true })
+          .replace(/<hr class="cc-hr"><div class="cc-foot">[\s\S]*?<\/div>(?=(?:<div class="cc-des|<div class="cc-pfoot|<\/div>\s*$))/, "");
+      } catch (e) { console.warn("twod12 | the Check card", e); content = ""; }
+      if (content) { await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: all ? [all] : [], content }); continue; }
+    }
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }), rolls: all ? [all] : [],
       content: `<div class="twod12 chat action"><div class="ahead"><b>${esc(label)}</b><span>DC ${dc}</span></div>${checkHtml(`${TWOD12.attributes[key]} ${sgn(mod)}`, chk, [])}<table class="tiers">${rows.join("")}</table></div>`

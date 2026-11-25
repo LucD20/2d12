@@ -145,7 +145,7 @@ export function basicTabHtml(groups = []) {
 /** One thing waiting in the Situational section. it = { lead, tag, text (html), btns: [{ label, q (the quiet "no"), hud, data, off, why }] } */
 export function sitItemHtml(it) {
   const btn = b => `<button type="button" class="hb-btn${b.q ? " q" : ""}"${b.hud ? ` data-hud="${esc(b.hud)}"` : ""}${Object.entries(b.data ?? {}).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("")}${b.off ? ` disabled aria-label="${esc(`${b.label}: ${b.why ?? ""}`)}"` : ""}>${esc(b.label)}</button>`;
-  return `<div class="h3-si"><div class="h"><b>${esc(it.lead)}</b>${it.tag ? `<span class="tg">${esc(it.tag)}</span>` : ""}</div>${it.text ? `<div class="t">${it.text}</div>` : ""}${(it.btns ?? []).length ? `<div class="bs">${it.btns.map(btn).join("")}</div>` : ""}</div>`;
+  return `<div class="h3-si${it.pulse ? " pulse" : ""}"><div class="h"><b>${esc(it.lead)}</b>${it.tag ? `<span class="tg">${esc(it.tag)}</span>` : ""}</div>${it.text ? `<div class="t">${it.text}</div>` : ""}${(it.btns ?? []).length ? `<div class="bs">${it.btns.map(btn).join("")}</div>` : ""}</div>`;
 }
 /**
  * D3 / D7: the right column. s = { rx, grants, cancels, prone: sitItem | null, tiles: [hand tile] | null, view }
@@ -157,6 +157,7 @@ export function rightHtml(s = {}) {
   const rxs = (s.rxs ?? (s.rx ? [s.rx] : [])).filter(Boolean);
   const rxHtml = rxs.map(r => sitItemHtml({ lead: r.name, tag: "Reaction", text: esc(r.lead), btns: [{ label: `Use \u00b7 ${r.cost}`, hud: "rx", data: { msg: r.msg, row: n0(r.row), k: "rxUse" } }, { label: "Pass", q: true, hud: "rx", data: { msg: r.msg, row: n0(r.row), k: "rxPass" } }] })).join("");
   const otherRxs = (s.otherRx ?? []).filter(Boolean);
+  const chargeHtml = s.charge ? sitItemHtml(s.charge) : "";   // v0.0.514: the Charge's Basic Attack (1A), urgent (it pulses)
   const otherRxHtml = otherRxs.map(r => `<div class="h3-rxjump"><span class="rj-txt"><b>${esc(r.who)}</b> \u00b7 ${esc(r.name)} (${esc(r.cost)})</span><button type="button" class="hb-btn" data-hud="pickactor" data-actor="${esc(r.actorUuid)}">Select</button></div>`).join("");
   const avail = [];
   if ((s.grants ?? []).length) avail.push(`<div class="hb-gr"><div class="hb-grh">Granted${(s.cancels ?? []).length ? ` by ${esc(s.cancels.map(x => x.source).join(", "))}` : ""}${(s.cancels ?? []).map(x => `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}">Cancel</button>`).join("")}</div>${s.grants.map(lineHtml).join("")}</div>`);
@@ -168,7 +169,7 @@ export function rightHtml(s = {}) {
   const hands = tiles.length ? `<div class="h3-hands">${tiles.map(t => `<button type="button" class="h3-hand${t.free ? " free" : ""}${t.warn ? " warn" : ""}" data-hud="hands" data-hand="${esc(t.hand ?? "")}" aria-label="${esc(t.tip ?? t.name)}"><span>${esc(t.name)}</span><b>${esc(t.grip)}</b></button>`).join("")}</div>` : "";
   // v0.0.449 (Lucas, g2-hotbar: "Hands and macro should be in the same tab still, only the situational is new"): two panes, the Hands over the
   // macro bar ("main") and Situational; the tabs show only while something waits
-  const urgCount = rxs.length + otherRxs.length;
+  const urgCount = rxs.length + otherRxs.length + (s.charge ? 1 : 0);
   const urg = urgCount > 0, count = urgCount + avail.length;
   const has = count > 0, view = has && (s.view === "sit" || !s.view) ? "sit" : "main";
   const tab = (k, label) => `<button type="button" class="h3-rt h3-rt-${k}" role="tab" data-hud="rtab" data-rtab="${k}" aria-selected="${k === view}">${label}</button>`;
@@ -176,7 +177,7 @@ export function rightHtml(s = {}) {
   const tabs = `<div class="h3-rtabs" role="tablist">${tab("sit", sitLbl)}${tab("main", hands ? "Hands" : "Macros")}</div>`;
   // the pick bar, a Forced Movement, a Setup's movement and End movement ask in .hb-ask (pickbar.mjs, move.mjs, setup.mjs: hudAskSlot)
   const availHtml = avail.length ? `<div class="h3-sit-avail">${avail.join("")}</div>` : "";
-  return `<div class="h3-side${has ? " has-sit" : ""}${urg ? " has-urg" : ""}" data-rtab="${view}">${tabs}<div class="h3-pane h3-p-sit"><div class="h3-sit${has ? " on" : ""}${urg ? " urg" : ""}"><div class="h3-sit-urg">${rxHtml}${otherRxHtml}<div class="hb-ask"></div></div>${availHtml}</div></div>`
+  return `<div class="h3-side${has ? " has-sit" : ""}${urg ? " has-urg" : ""}" data-rtab="${view}">${tabs}<div class="h3-pane h3-p-sit"><div class="h3-sit${has ? " on" : ""}${urg ? " urg" : ""}"><div class="h3-sit-urg">${rxHtml}${chargeHtml}${otherRxHtml}<div class="hb-ask"></div></div>${availHtml}</div></div>`
     + `<div class="h3-pane h3-p-main">${hands}<div class="h3-hot"></div></div></div>`;
 }
 /** D2: the identity column. m: the bar's model (tokenBarHtml). */

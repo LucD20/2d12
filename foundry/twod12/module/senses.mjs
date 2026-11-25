@@ -45,6 +45,8 @@ export function registerSenses() {
         // v0.0.315 (Lucas): a Blinded creature still hears (the ripple stays); only its Sight is gone
         const actor = target?.document?.actor ?? target?.actor;
         if (actor?.statuses?.has?.("unsensed")) return false;   // nobody perceives it: not even by its noise
+        // v0.0.514 (Lucas on v0.0.513: "Kaela unsensed vs the goblin still allow the goblin to see the ripples"): Unsensed to this viewer from Hide
+        if (actor?.getFlag?.("twod12", "hide")?.[visionSource?.object?.document?.id ?? visionSource?.object?.id] === "unsensed") return false;
         if (actor?.statuses?.has?.("hidden")) return true;   // the GM's Hidden status
         return !!visionSource?.object && !!target && visionSource.object !== target && hears(visionSource.object, target);   // a creature in combat within range
       }

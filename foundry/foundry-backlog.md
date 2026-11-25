@@ -830,7 +830,7 @@ World Clock and the quick time bar (the date can be set since v0.0.94); Exhauste
 ## THE CORE REWORK, BATCH 1 (v0.0.477, 2026-11-21): LEFT BY HAND OR FOR LATER
 - [ ] **A reduction (Judge, Shield of Faith) used on Collision damage instead of the Action's own** (book, Chapter 4, since the core rework C5): Foundry applies Collision directly (`move.mjs pushOne`), with no moment and no reduction: by hand.
 - [ ] **Daunted / Taunted already on a creature before v0.0.477** don't carry `endsWithOrigin` (only new ones and the world's items do): they end by their duration.
-- [ ] **The Wounds roll (`rest.mjs`) and the inline Check chip (`inline.mjs`) still draw the old check block.**
+- [ ] **(v0.0.514: the inline Check chip posts the new card; left: the Wounds roll in `rest.mjs`)** **The Wounds roll (`rest.mjs`) and the inline Check chip (`inline.mjs`) still draw the old check block.**
 
 ## PLAYTEST 7 (2026-11-21, on v0.0.475): FOUND WHILE PLAYING, NOT BUILT (Lucas: "Don't add anything yet")
 - [x] **(v0.0.488: one numbering, by the turn order: `enclog.mjs unifiedCreatures`, `damagelog.mjs numberSameNames`; checked in v0.0.512)** **Two numberings of same-name creatures:** `damagelog.mjs numberSameNames` numbers them by initiative order, `enclog.mjs creatureAbbrs / fullNames` by creation order, so the damage report's "Goblin Sneak 3" is the log's GS2 (found by the core review, 2026-11-21).
