@@ -1,0 +1,47 @@
+--- the tick rules (roundrules.mjs)
+1. a Tier's ticks, once an Action: 1 2 3 | a Tier that deals no damage: 0 | the Action already ticked it (its own Collision): 0 0
+2. a Save Action, turned over: Tier 1 3 Tier 2 2 Tier 3 1 | no damage: 0
+4. damage with no Tier (a Shove's Collision, a Lingering, a zone): 1 | 5. a rider alone: 0
+6. a heal restores 1 (never past its ticks): 1 2 2
+7. 1 tick left: by Vigor {"left":1,"max":2,"down":false,"bloodied":true,"strained":false} | by both {"left":1,"max":2,"down":false,"bloodied":true,"strained":true} | full {"left":2,"max":2,"down":false,"bloodied":false,"strained":false} | no overflow, Down: {"left":0,"max":2,"down":true,"bloodied":false,"strained":false}
+the ticks in the damage record: [V] 4 + [R] 1, 2 ticks: {"a":{"B":{"l":2,"n":0},"M":{"l":0,"n":0}},"by":"BM"} | Nonlethal [R]: {"a":{"B":{"l":0,"n":0},"M":{"l":0,"n":1}},"by":"M"}
+squads of 2 | 4 Minions: [2,2] | a Minion's ticks by default: 2
+--- a Minion's damage, heal and bars
+a Tier 2 of 6 Vigor on a fresh Minion: {"B":{"l":2,"n":0},"M":{"l":0,"n":0},"ticks":2,"ticksFrom":6} {"system.tickBy":"","flags.twod12.tickedBy":["card1"]}
+then its own Push's Collision (the same Action): 0 {}
+a hazard's damage (no Tier, nothing ticked it): 1 {"system.tickBy":""}
+a Collision inside an Action's scope that ticked it: 0 | the scope is restored: {"action":""}
+the damage text: 1 tick
+a heal of any size, 1 tick: {"mindLethal":1} | nothing to heal: {}
+the HUD's ticks box: -1 {"bodyLethal":1,"bodyNonlethal":0,"mindLethal":0,"mindNonlethal":0} | +1 from 0 left {"bodyLethal":0,"bodyNonlethal":0,"mindLethal":1,"mindNonlethal":0} | =2 when full: null
+its HTML: true
+the token bar: ticks {"max":2,"left":1} | Strained by its Resolve tick: true false | the pips drawn for everyone: true
+the HUD's bar: true
+Bloodied / Strained tags read the ticks: {"bloodied":true,"strained":false}
+the data: ticks typed (2), its Pool, an object keeps its Health: true
+the damage card passes its Tier, its Save and its Action: true | a Save card's row: true | a Move chip from a card is its Action's: true
+--- the ranks
+CV: minion 30, grunt 50, standard 100, elite 200 | a Minion's Reaction Point: 0 | paid with a kept AP: true false
+no Elite Escalation by default: true true | the HUD: true
+the word first: {"resist":{"Ps":3,"Fi":5},"weak":{"Ho":3},"immune":["Co"]} | the old writing still read: {"resist":{"Fi":5},"weak":{"Ho":2},"immune":["Co"]}
+written back: Resistance Fire 5, Weakness Holy 2, Immunity Cold | labels: Resistance Weakness Immunity
+--- the general settings
+new moments: selfDamage {"who":"self","damage":true} | selfDown {"who":"self","damage":true} | allyDown {"who":"ally","tag":true} | enemyEnters {"who":"enemy","move":true,"adjacent":true,"noBack":true}
+self only: true false | an ally (not you): true false
+a Reaction's pool, state and Tag are read: true | selfDown saves nothing: true | enemyEnters has no Move back: true
+the state after the damage, for 'you take damage': true
+stateBoon: Bloodied orc's Shove [{"name":"Cornered","boons":1,"field":false,"why":"while it is Bloodied"}] | its Trip 0 | not Bloodied 0
+Drifting: pass | an enemy block | an ally dt | a Down enemy dt | read from the hook: true
+the Basic attack that reaches: adjacent Axe,Javelin | 4 squares Javelin | 9 squares 0
+the flanking Requirement (a warning): true
+a Line written the book's way: {"size":3,"shape":"line","within":0,"targets":"all","center":false,"keep":false,"rounds":0}
+--- the creatures
+Goblin Sneak: minion | ratings custom/custom | custom {"body":0,"mind":0,"appeal":-1,"instinct":2,"bodyHealth":0,"mindHealth":0,"weapon":2,"power":2} | AD 13 WD 12 | Speed 6 | ticks 2 tags ["goblin"]   | goblin-sneak.png
+    Shiv:gold, Jeer:gold, Knife in the Back:gold, Shriek and Scatter:gold(allyDown)
+Grave Wisp: grunt | ratings custom/custom | custom {"body":-1,"mind":2,"appeal":0,"instinct":1,"bodyHealth":6,"mindHealth":12,"weapon":2,"power":2} | AD 12 WD 14 | Speed 6 |   Resistance Psychic 3, Weakness Holy 3, Immunity Cold  | grave-wisp.png
+    Drifting:gold, Slipping Touch:gold, Guttering Glance:gold, Pass Through:silver, Dying Flare:gold(selfDown)
+Orc Warrior: standard | ratings custom/custom | custom {"body":2,"mind":-1,"appeal":1,"instinct":1,"bodyHealth":22,"mindHealth":14,"weapon":2,"power":2} | AD 13 WD 13 | Speed 5 |     | orc-warrior.png
+    Hamstringing Axe:gold, Barbed Javelin:gold, War Howl:gold, Blood for Blood:gold(selfDamage), Cornered:gold
+Ogre Chieftain: elite | ratings custom/custom | custom {"body":3,"mind":-1,"appeal":1,"instinct":1,"bodyHealth":44,"mindHealth":28,"weapon":2,"power":2} | AD 14 WD 12 | Speed 5 |  tags ["ogre"]  Reach 2 Steadiness 1 Size 4 | ogre-chieftain.png
+    Crushing Grip:silver, Roar:gold, Great Sweep:gold, Hurled Goblin:silver, Crack the Ground:gold, Backhand:gold(enemyEnters)
+the old cards out of the packs, kept as fixtures: true

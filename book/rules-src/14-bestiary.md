@@ -83,9 +83,9 @@ A Minion has **ticks** instead of Health: 2 by default (its entry can give it an
 4. **Damage with no Tier removes 1 tick, when it comes from something that hasn't already removed ticks from that Minion:** a [[Collision]] from an Action that dealt it no damage (a Shove), a [[Lingering]] at the end of its turn, a hazard, a zone. An Action whose Tier removed ticks removes no more through its own Forced Movement's Collision.
 5. **A rider with no damage removes none.** The rider still applies: a Minion can be Prone, Hindered or Taunted.
 6. **A heal** of any size restores 1 tick, up to its ticks.
-7. **With 1 tick left, a Minion counts as Bloodied or Strained, by the damage that left it there:** Vigor damage makes it Bloodied, Resolve damage Strained, damage to both pools both. It stops counting so when it is back at its full ticks.
+7. **With 1 tick left, a Minion counts as Bloodied or Strained, by the damage that left it there:** Vigor damage makes it Bloodied, Resolve damage Strained, damage to both pools both. It stops counting so when a heal gives it a tick back.
 
-When a Minion goes Down, it dies, or falls Unconscious if the damage that removed its last tick was Nonlethal (see [[NPCs Going Down]]).
+When a Minion goes Down, each tick it lost counts as the damage that removed it, Lethal or Nonlethal, and [[NPCs Going Down]] decides whether it dies or falls Unconscious.
 
 > [!example]
 > A goblin has 2 ticks. Drak's Basic Attack gets a Tier 1 against it and deals 2: the goblin loses 1 tick and counts as Bloodied. A second goblin is caught by a Save Action: its Save is a Tier 2, so it loses 2 ticks and goes Down. A third is Shoved into a wall: the Shove dealt it no damage, so the Collision removes 1 tick.
