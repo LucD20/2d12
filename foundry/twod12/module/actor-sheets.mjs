@@ -1615,6 +1615,7 @@ export class NpcSheet extends CharacterSheet {
     const k = target.dataset.key, v = target.dataset.v;
     if (k === "armor" && v in TWOD12.armors) return this.actor.update({ "system.armor": v });
     if (k === "reachBase" || k === "size") return this.actor.update({ [`system.${k}`]: Math.max(1, Number(v) || 1) });
+    if (k === "ticks") return this.actor.update({ "system.ticks": Math.max(1, Number(v) || 2), "system.tickBy": "" });   // the Bestiary's rebuild: a Minion's ticks (typed, 2 by default)
   }
 
   /** v0.0.308 (Lucas): Resist / Weak / Immune from the Builder's row: the damage type and the number beside the button. */

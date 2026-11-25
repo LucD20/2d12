@@ -638,7 +638,9 @@ export function npcBuilderModel(a) {
   const frame = [
     frameRow("armor", "Armor type", ARM.map(([k, a]) => [k, a.label, `${a.label} armor`]), armNow, "", TWOD12.armors[armNow]?.label ?? ""),
     frameRow("reachBase", "Reach", [1, 2, 3, 4].map(v => [v, String(v), `Reach ${v}`]), reachNow, reachNow === 1 ? "Default" : "", reachNow),
-    frameRow("size", "Size", [1, 2, 3, 4, 5, 6, 7].map(v => [v, String(v), `${SIZE_NAMES[v]} (${v})`]), sizeNow, SIZE_NAMES[sizeNow] ?? "", sizeNow)
+    frameRow("size", "Size", [1, 2, 3, 4, 5, 6, 7].map(v => [v, String(v), `${SIZE_NAMES[v]} (${v})`]), sizeNow, SIZE_NAMES[sizeNow] ?? "", sizeNow),
+    // the Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): a Minion's ticks, 2 by default (its entry can give it another number)
+    ...(s.isMinion ? [frameRow("ticks", "Ticks", [1, 2, 3, 4].map(v => [v, String(v), `${v} tick${v === 1 ? "" : "s"}`]), Number(s.ticksMax) || 2, (Number(s.ticksMax) || 2) === 2 ? "Default" : "", Number(s.ticksMax) || 2)] : [])
   ];
   // v0.0.308 (Lucas): Resist and Weak as chips; added by damage type and number
   // v0.0.373 (STYLE-2): version A, three lines of chips in their subtype's icon and color, a list of the twelve subtypes, a stepper

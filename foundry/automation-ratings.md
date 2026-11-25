@@ -120,14 +120,42 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 button on the line), Weight of Judgment (a Speed −2 effect on the Judged creature), Interact (the draw / stow / swap as its choices), Hide (waits
 for the book).
 
-## The Bestiary's rebuilt creatures (2026-11-25; no Foundry version yet: built on the work branch, released when every NPC is done)
+## The Bestiary's rebuilt creatures (v0.0.508, 2026-11-25; `book/cards/stage0/bestiary.json`; Chapter 14's stat blocks)
 
-### Orc Warrior (`book/cards/stage0/bestiary.json`; the record: `book/cards/orc-warrior-redesign.md`)
+### Goblin Sneak (Minion; the record: `book/cards/goblin-sneak-redesign.md`)
+| Card | Rating | What is by hand |
+|---|---|---|
+| Shiv | Gold | |
+| Jeer | Gold | |
+| Knife in the Back | Gold | (its Requirement, the flank, warns as every Requirement does) |
+| Shriek and Scatter | Gold | (offered by itself: the moment allyDown with the Goblin Tag; Jeer's target is the GM's pick) |
+
+### Grave Wisp (Grunt; `book/cards/grave-wisp-redesign.md`)
+| Card | Rating | What is by hand |
+|---|---|---|
+| Drifting | Gold | (the hook drift: movement through creatures, no Difficult Terrain from them) |
+| Slipping Touch | Gold | (the Tier 1's Evade 1 is a button) |
+| Guttering Glance | Gold | |
+| Pass Through | Silver | the Setup's straight line and the targets (up to two enemies whose space it passed): the GM's |
+| Dying Flare | Gold | (offered by itself: the moment selfDown) |
+
+### Orc Warrior (Standard; `book/cards/orc-warrior-redesign.md`)
 | Card | Rating | What is by hand |
 |---|---|---|
 | Hamstringing Axe | Gold | |
 | Barbed Javelin | Gold | (the Setup's draw is text: an NPC's items are flavor) |
 | War Howl | Gold | |
-| Blood for Blood | Silver | it is not offered by itself: the GM uses it from the sheet when a creature within 2 squares deals Vigor damage to the Bloodied orc. Its Basic attack button is the axe; for the javelin, use it from the sheet and add the Bane |
-| Cornered | Bronze | text: the GM adds the Boon in the roll dialog when a Bloodied orc Shoves |
+| Blood for Blood | Gold | (v0.0.508: offered by itself, the moment selfDamage with Vigor and Bloodied; its Basic attack button takes the one that reaches) |
+| Cornered | Gold | (v0.0.508: the hook stateBoon) |
 
+### Ogre Chieftain (Elite; `book/cards/ogre-chieftain-redesign.md`)
+| Card | Rating | What is by hand |
+|---|---|---|
+| Crushing Grip | Silver | one creature held at a time (a second Grab: the GM ends the first) |
+| Roar | Gold | |
+| Great Sweep | Gold | |
+| Hurled Goblin | Silver | its Requirement (a willing Minion ally within its Reach) and the landing (the GM moves the Minion to an empty square adjacent to the target) |
+| Crack the Ground | Gold | (the Line 3 and its Zone, Difficult Terrain for every creature until the encounter ends) |
+| Backhand | Gold | (offered by itself: the moment enemyEnters, no Move back; the 1 damage and the Push 2 are buttons) |
+
+**The four creatures (24 cards): 20 Gold, 4 Silver, 0 Bronze.**
