@@ -403,6 +403,28 @@ Lucas: "Wisp is good, next is the Goblin Sneak as a Minion." **The Grave Wisp is
 - **His own answer holds:** where healing is a daily budget, a point of damage is a point of the day (one eighth of a Rally Point); where healing is free between fights, only big hits register. The research says the same of attrition games.
 - **What to watch at the table:** whether hits of 3 or 4 disappear under Guard and reductions; whether Grunts and Minions feel like nothing. **Levers, smallest first:** fewer and bigger rolls on a creature (decision 15's shape); letting Minor enemies' dice explode (dropping that Chapter 14 rule); fewer fights between Rests or more Rally Points (the bands' cost, G9 and C8); doubling the PC side's grain (Health, a Rally Point's heal, Guard and reductions all twice as large, NPC damage with them), which changes no proportion and is a core change.
 
+### Lucas: a Rally Point of a third of Health? (2026-11-25; a review he asked for, NOT decided: "I will playtest as is")
+
+"What you mean by 'A PC's turn takes about half of a Standard (17 of 36), against a third in Draw Steel.'? And if we did Rally = 1/3 HP instead? I will playtest as is, but I want to see your review on this first. The dice could go up right? I feel its too flat but I will still give it a shot."
+
+**The sentence, as a table** (each side's turn as a share of the other side's Health; Draw Steel's from its level 1 numbers in `research/raw/2026-11-25-monsters-draw-steel.md`):
+
+| | 2d12 | Draw Steel |
+|---|---|---|
+| A PC's turn against the one-a-PC monster | 17 of 36: **47%** | 9.5 of 30: **32%** |
+| That monster's turn against a PC | 8 of 32: **25%** | 7 of 27: **26%** |
+
+The monsters' side is the same; the PCs' side is half again as strong here. So an NPC's dice are not small for what they do to a PC; they look small beside a PC's own damage (a landed Strike of 10, up to 19).
+
+**A Rally Point of a third** (Paladin 12 where it is 9, Archer 10 where it is 8; Draw Steel's Recovery is a third too):
+
+- **About 30% more healing a day** (the four pregens: 288 where it is 222; the day goes from 2.7 to 3.25 times the party's Health).
+- **It can be spent one way or the other, not both:** on harder hits (the bands stay 1, 1½ and 2½ Rally Points a PC, so a normal fight costs half the party's Health, where it costs three eighths), or on a longer day (the bands stay a share of Health, and a Rest holds one or two fights more).
+- **Spent on hits, the dice go up about a third, one die size:** a Standard's turn about 10 to Health at the table (the number he first took), its Basic attack about 4 / 8 where it is 3 / 6, its Special 9 / 15; a Grunt's or a Minion's Basic attack 1d6 / 1d8.
+- **What comes with it:** the in-fight buffer gets thinner (a Standard's turn is a third of a PC, so three Standards on an Archer take it Down in a round: 30 against 29); Steel Yourself and Lay On Hands heal a third at a time, so the swing up is as big as the swing down; flat protections (Judge 2, Shield of Faith 3, Guard 2 an AP) weigh less against bigger hits, which answers the worry about hits that vanish; anything measured in a Rally Point grows with it (Guard equal to a Rally Point's heal, an NPC's Rally Point of 9, the hourly healing while Unconscious).
+- **What the playtest should tell before choosing:** how often a PC goes Down at today's cost (if often, a third makes it worse; if fights feel toothless, a third is the move), and whether hits of 3 or 4 vanish under Guard and reductions.
+- **Cheaper texture, if only the look is the problem:** let Minor enemies' dice explode; fewer and bigger rolls on a creature.
+
 ### What comes next
 
 - **Lucas's word on the Goblin Sneak's sheet** (`cards/goblin-sneak-redesign.md`, the last section), then the next creature.
