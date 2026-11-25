@@ -168,3 +168,47 @@ export function addOnTop(obj, z = Z.ACTIVE) {
   host.addChild(obj);
   return obj;
 }
+
+/* ------------------------------------------------------------------ v0.0.515: lines on the map show for 5 seconds
+ * Lucas, 2026-11-25 (the Hide indicator): "After 5 seconds, it goes away, you must select or hover the token again to show it. Reducing clutter.
+ * I think this should be applied to all lines drawn". Each overlay that draws lines (Line of Effect, Flanking, Hide) hands its container here by a
+ * key; it shows for LINE_SHOW_MS after the last "show" (a token selected, hovered or targeted, or the overlay turned on), then fades out. A redraw
+ * keeps the time left, so moving tokens don't keep the lines up. */
+export const LINE_SHOW_MS = 5000;
+const lineFades = new Map();   // key -> { obj, until, t }
+let lineShowUntil = 0;
+/** Pure: is a line still shown at `now`? */
+export const lineShown = (until, now = Date.now()) => Number(until) > now;
+function lineFadeOut(o) {
+  if (!o || o.destroyed) return;
+  if (!motionOn()) { o.alpha = 0; return; }
+  const t0 = performance.now(), step = () => { if (o.destroyed) return; const k = (performance.now() - t0) / 400; o.alpha = Math.max(0, 1 - k); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function lineReveal(e) {
+  if (!e?.obj || e.obj.destroyed) return;
+  clearTimeout(e.t);
+  const left = e.until - Date.now();
+  if (!lineShown(e.until)) { e.obj.alpha = 0; return; }
+  e.obj.alpha = 1;
+  e.t = setTimeout(() => lineFadeOut(e.obj), left);
+}
+/** Show every overlay's lines again for 5 seconds (a selection, a hover, a target, an overlay turned on). */
+export function showLines() {
+  lineShowUntil = Date.now() + LINE_SHOW_MS;
+  for (const e of lineFades.values()) { e.until = lineShowUntil; lineReveal(e); }
+}
+/** An overlay drew its lines in `obj`: it shows for the time left (a new key shows for 5 seconds). */
+export function trackLines(key, obj) {
+  const e = lineFades.get(key) ?? { until: Math.max(lineShowUntil, Date.now() + LINE_SHOW_MS) };
+  e.obj = obj; lineFades.set(key, e); lineReveal(e);
+}
+/** The overlay was turned off: forget its key (the next time it is on, it shows for 5 seconds). */
+export const untrackLines = key => { const e = lineFades.get(key); if (e) clearTimeout(e.t); lineFades.delete(key); };
+let lineHooks = false;
+export function registerLineFade() {
+  if (lineHooks) return; lineHooks = true;
+  Hooks.on("controlToken", (t, on) => { if (on) showLines(); });
+  Hooks.on("hoverToken", (t, on) => { if (on) showLines(); });
+  Hooks.on("targetToken", user => { if (user === game.user) showLines(); });
+}

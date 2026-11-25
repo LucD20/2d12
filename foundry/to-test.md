@@ -21,6 +21,14 @@ differ):
 
 ## Hiding
 
+### hide-marks · v0.0.515 · The Hide marks: seals at rest, lines on select or hover for 5 seconds
+Do: Make Kaela Unsensed to Goblin Sneak and Hidden to Orc Warrior with Hide. Look at her token with nothing selected; then select her; wait; hover her. Then log in as a player (or look with a player's view) and do the same; once as the GM, make Goblin Sneak hide from Kaela and look at its token as a player.
+Expect: At rest, two small seals on Kaela's left edge: an empty dashed ring (Unsensed) and a half-filled disc (Hidden). Selected or hovered: a dotted line to the Goblin with a plate "Unsensed" under it, a dashed line to the Orc with "Hidden"; after 5 seconds they fade, and come back when she is selected or hovered again. Players see Kaela's marks; they don't see the Goblin's (only the GM does).
+
+### lines-5s · v0.0.515 · Line of Effect's and Flanking's lines fade after 5 seconds
+Do: Turn on Show Line of Effect and Show Flanking in the token controls. With Aveline selected and Orc Warrior targeted (Durgan opposite the Orc), wait 5 seconds; then hover a token, and select or target again; move a token while the lines are up.
+Expect: The lines and their plates fade out 5 seconds after the last selection, hover or target, and come back with the next one. Moving a token doesn't keep them up. Turning a toggle on shows its lines for 5 seconds.
+
 ### hide-auto · v0.0.514 · Hide targets by itself, and isn't Doomed through a wall
 Do: Put Kaela behind a wall from Goblin Sneak (it can't see her) and behind a crate from Orc Warrior (High Cover; it sees her). Target nobody and click Hide.
 Expect: It targets the Goblin and the Orc by itself (not a creature that sees her without High Cover); the roll against each is not Doomed (no Hidden or No Line of Effect penalty), only against its Instinct DC. Afterwards, with the Goblin selected (its vision), Kaela shows no sound ripple to it (Unsensed); the Orc still has its ripple or sight of her.

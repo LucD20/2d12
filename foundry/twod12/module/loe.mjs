@@ -89,13 +89,14 @@ function draw() {
     box.addChild(pl);
   }
   MK.addOnTop(box, MK.Z.LOE);
+  MK.trackLines("loe", box);   // v0.0.515: shown 5 seconds after a selection, a hover or a target (mapmark.mjs)
 }
 /** Draws again on the next frame (moving tokens refresh many times). */
 const redraw = () => { if (!state || queued) return; queued = true; requestAnimationFrame(draw); };
 
 /** The button: on or off for this token. */
 export function toggleLoE(token) {
-  if (state?.tokenId === token?.id) { state = null; clear(); redrawRangeRings(); return false; }
+  if (state?.tokenId === token?.id) { state = null; clear(); MK.untrackLines("loe"); redrawRangeRings(); return false; }
   if (!canvas?.grid?.isSquare) { ui.notifications.warn("Line of Effect is drawn on square grids only."); return false; }
   state = { tokenId: token.id };
   if (!game.user.targets.size) ui.notifications.info("Line of Effect is on: target a creature to see the lines to it. Click the button again to hide them.");
@@ -127,7 +128,7 @@ export function heightShortcut() {
 
 /** v0.0.302: the toolbar's Line of Effect toggle: the lines from your selected token (whichever it is) to your targets. */
 export function setLoEFollow(v) {
-  if (!v) { state = null; clear(); redrawRangeRings(); return false; }
+  if (!v) { state = null; clear(); MK.untrackLines("loe"); redrawRangeRings(); return false; }
   if (!canvas?.grid?.isSquare) { ui.notifications.warn("Line of Effect is drawn on square grids only."); return false; }
   state = { follow: true };
   if (!game.user.targets.size) ui.notifications.info("Line of Effect is on: select your token and target a creature to see the lines to it.");
