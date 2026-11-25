@@ -1,6 +1,6 @@
 # The Orc Warrior: the first Default Standard (the record)
 
-> **Status (2026-11-25): IDEAS SHOWN, waiting for Lucas's review. Nothing is chosen, nothing is in the book or in Foundry.** The Bestiary's record is `book/bestiary-design.md`; this file is the Orc Warrior's, the way `bows-redesign.md` is the bows'.
+> **Status (2026-11-25): LUCAS HAS CHOSEN A SET, UNDER REVIEW ("Dont build anything yet, lets review"). Nothing is in the book or in Foundry.** The Bestiary's record is `book/bestiary-design.md`; this file is the Orc Warrior's, the way `bows-redesign.md` is the bows'.
 
 ## Lucas's brief (2026-11-25)
 
@@ -109,3 +109,31 @@ It shares the At-will count with the melee one. Like any ranged Strike it is Doo
 - Paper turn: moving, Wide Sweep on one creature and a War Axe, 7.7 (12.1 when the Sweep catches two); standing, 10.5 (14.9 with two); three War Axes and a move, 8.6. So against a PC standing alone it simply strikes, and it sweeps when two stand together. Blood for Blood adds about 2 a fight.
 
 **The second set, if the orc should press harder:** Hamstringing Axe (M2), Sling (R2), Breaking Blow (S2), Dying Swing (X2), no Feature.
+
+## Lucas's choice (2026-11-25), under review
+
+"M2 + R3 + S3 but not Daunted; I feel you might be overusing Daunted, make Tier 1 = Vulnerable 1 EoT, also no flat damage only, so a 1d6!/ 1+1d4 / 0 + X1 + Give a feature to the orc that they get a boon (or 2) to Shove while bloodied. Dont build anything yet, lets review."
+
+**Rules of his from it, for every later creature:** don't lean on Daunted; **no damage line that is only a flat number** (it changes decision 15's "fixed numbers on Specials": every damage line has a die).
+
+### The sheet as chosen (Claude's writing of it; not built)
+
+**Orc Warrior.** Standard. Health 36 (Vigor 18, Resolve 18). Armor Defense 13, Ward Defense 13. Weapon +2, Power +2. Speed 5. A one-handed axe, the other hand free, javelins on its back. *Attributes: not chosen yet (Claude's proposal: a PC's total of 4: Body +2, Instinct +1, Appeal +1, Mind 0).*
+
+- **Hamstringing Axe** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *The orc cuts low, at the leg that would carry you away.* Tier 2: [V] 1d4! Sl. Tier 3: [V] 2 + 1d6! Sl; Hindered (EoT).
+- **Barbed Javelin** (Basic attack; At-will, 1 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). *The orc throws a short spear that stays in the wound.* Setup: the orc draws a javelin. Tier 2: [V] 1d4! Pi. Tier 3: [V] 1d4! Pi; Lingering 1 (Bo/In). (Rewritten for "no flat damage only": it was 2 / 2.)
+- **War Howl** (Special; Round, 2 AP; [Power, Save, Fear]; Area: 2 Emanation; all enemies in the Area; Mind Save against its Power DC, 13). *The orc throws its head back and howls, and the sound gets into your bones.* Tier 1: [R] 1d6! Ps; Vulnerable 1 (EoT). Tier 2: [R] 1 + 1d4 Ps. Tier 3: no effect.
+- **Blood for Blood** (Reaction; Encounter, 1R). *The wound only makes it angrier.* Trigger: the target's Action makes the orc Bloodied. Target: the triggering creature. Effect: the orc Advances up to 2 toward the target, then makes a Basic attack against it.
+- **Feature (name open; Claude: Cornered).** *Hurt, it stops fencing and starts throwing its weight around.* While the orc is Bloodied, its [[Shove]] gains 1 Boon.
+
+### Claude's review (2026-11-25)
+
+1. **War Howl's two Tiers are almost the same damage:** 1d6! averages 4, 1 + 1d4 averages 3.5. The gap between failing and failing badly is then Vulnerable alone. Fine if meant; a Tier 2 of 1d4 would separate them.
+2. **About 2.9 [R] a PC in the Area** (a Mind of 0 to +2 against DC 13). On one PC it is worth less than the two axes it replaces (5.4); on two it is level and adds Vulnerable; on three it is the better turn. **So the orc howls when two PCs are within 2 squares of it and strikes otherwise:** a behaviour players can learn. Paper turn with two PCs in the Area: moving, 9.0; standing, 11.9 (decision 14 wanted 9 and 12).
+3. **Vulnerable 1 (EoT) under the zipper:** it lasts to the end of that PC's turn, so it helps the howling orc's own axes that turn and any orc that acts before that PC does; if the PC's turn is next, only the howler's. The orc also has Demoralize (the same condition, one creature, 1 AP): the two don't add up (highest value only).
+4. **Four orcs can mean four Mind Saves a PC a round.** A lot of rolling when Lucas rolls for everyone; the alternative is one line ("a creature that has rolled this Save this round is not affected again").
+5. **Barbed Javelin's Lingering 1 is a sting, not a tax.** It doesn't add up from several javelins, and over a two-to-three-round fight it is about 2 damage, against 1 AP and a Save to Shake Off: most players will leave it in. (Claude called it strong when it was shown: wrong.) Lingering 2 or 1d4 would make shaking it off a real choice.
+6. **The javelin and Shove both need a free hand** (Handle): hence the one-handed axe and the Setup that draws the javelin.
+7. **The Shove Feature: 1 Boon, not 2.** His own card rule: an unnamed Boon is 1, rarely 2. Shove rolls Body, so the orc needs its Attributes. A Shove against a wall is already worth an axe (2 Collision damage a square not moved: 4 / 6 for 1 AP; the 2 AP Shove averages 6.0 with no Boon, 6.4 with one, 6.8 with two), so the Feature shows near walls and other creatures, and does nothing in the open. A visible change: a Bloodied orc starts shoving.
+8. **Two things at Bloodied** (Blood for Blood once, the Shove Boon standing). They read as one idea, the orc changes when Bloodied. With Vigor 18 that is after about two landed hits; Bloodied also takes 2 from its Speed and 1 from its Steadiness, so it is slower and easier to push while it pushes harder.
+9. **Cost:** Blood for Blood adds about 2 damage a fight for each orc, roughly a sixth on top of the normal fight's cost. Left for the table to judge.

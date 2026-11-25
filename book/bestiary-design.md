@@ -373,7 +373,7 @@ His words: "I think this is the same problem we were having, but lessened: NPCs 
 
 ### The first creature: the Orc Warrior (Lucas, 2026-11-25)
 
-"Lets do one default standard first. It will be the Orc Warrior as the Standard. dont copy anything from the old sheet. The NPC has to have: One melee basic, one ranged basic (both share at-will, like PCs), one special, one reaction. They can also have features." **A Standard's sheet, from now on: a melee Basic attack, a ranged Basic attack (one At-will count), one Special, one Reaction, Features if wanted.** Its record, with the ideas shown (three for each slot) and Claude's pick: `cards/orc-warrior-redesign.md`. Waiting for his review.
+"Lets do one default standard first. It will be the Orc Warrior as the Standard. dont copy anything from the old sheet. The NPC has to have: One melee basic, one ranged basic (both share at-will, like PCs), one special, one reaction. They can also have features." **A Standard's sheet, from now on: a melee Basic attack, a ranged Basic attack (one At-will count), one Special, one Reaction, Features if wanted.** Its record, with the ideas shown (three for each slot): `cards/orc-warrior-redesign.md`. **He chose a set the same day** (Hamstringing Axe, Barbed Javelin, War Howl with Vulnerable 1 in place of Daunted, Blood for Blood, a Boon to Shove while Bloodied), **under review, not built. Two rules of his from it:** don't lean on Daunted; no damage line that is only a flat number (so decision 15's fixed Specials are gone: every damage line has a die).
 
 ### What comes next
 
