@@ -527,7 +527,7 @@
    },
    {
     "label": "Effect",
-    "text": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes."
+    "text": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes."
    }
   ],
   "blocks": [],
@@ -1418,7 +1418,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "Evade 1: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain."
+      "text": "Evade 1: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost)."
      }
     ]
    },
@@ -1427,7 +1427,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "Evade half your Speed (rounded down): a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain."
+      "text": "Evade half your Speed (rounded down): a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost)."
      }
     ]
    }
@@ -5106,7 +5106,7 @@
    },
    {
     "label": "Special",
-    "text": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass."
+    "text": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass. Passing diagonally between two enemies corner to corner counts as crossing one creature: the higher of their DCs, no Bane for the second."
    }
   ],
   "blocks": [

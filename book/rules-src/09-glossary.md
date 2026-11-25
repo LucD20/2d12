@@ -51,7 +51,7 @@
 | [[Deadly Hazards\|**Deadly Hazard**]] | A hazard that kills Minor enemies at once and leaves anyone else Imperiled. |
 | [[Defenses\|**Defense**]] | Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + Power Modifier + Ward value + items + bonuses − penalties), or an Attribute DC (11 + the Attribute). "+1 Defense" raises all of them. |
 | [[Desperate\|**Desperate**]] | You are Down and still fighting (some Nonlethal damage, and a Nonlethal blow took you Down): Slowed 1, or your Slowed value + 1 (at most 3). |
-| [[Difficult Terrain\|**Difficult Terrain**]] | Each square counts double. |
+| [[Difficult Terrain\|**Difficult Terrain**]] | Each square counts double. An ally's space and a Down or dead creature's are Difficult Terrain; an enemy's space blocks your movement. |
 | [[Sight Senses\|**Dim-light Sight**]] | A Sight Sense: Dim light counts as Bright for you. |
 | [[Disrupting Actions\|**Disrupted**]] | A disrupted Action doesn't happen, and its AP and resources are wasted. |
 | [[Distinct Choices\|**Distinct Choices**]] | A class's Attribute increases go to different Attributes. |
@@ -71,14 +71,14 @@
 | [[End of Turn\|**EoT**]] | Until the end of the turn of the affected creature. |
 | [[Escalation\|**Escalation**]] | A PC's adrenaline, a level from 1 to 6, never spent: 1 + the party's Momentum at the start of an encounter, +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough. |
 | [[Escalation\|**Escalation hook**]] | Your class's event that, once an encounter, raises your Escalation by 1 (the Paladin: an ally becomes Bloodied or goes Down; the Archer: an enemy you damaged goes Down). |
-| [[Evade\|**Evade**]] | Movement that doesn't trigger reactions, in one piece. |
+| [[Evade\|**Evade**]] | Movement that doesn't trigger reactions, in one piece; not into Difficult Terrain, except across an ally's space. |
 | [[Exhausted\|**Exhausted**]] | A condition with a value: less Speed, Banes on all Rolls, a lower Resolve. |
 | [[Exploding Dice\|**Exploding**]] | A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die written with ! (1d6!) counts its highest face as one less; every weapon's die is one. |
 | [[Favored and Doomed Rolls\|**Favored**]] | A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical. |
 | [[Named Boons and Banes\|**Field**]] | A named Boon or Bane from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2. |
 | [[Firearm\|**Firearm**]] | A trait and a weapon property with one name: the weapon shoots with powder (a pistol, a musket), and a Firearm Action needs one. It is not Projectile. |
 | [[Fists (the weapon)\|**Fists**]] | The Barehanded weapon every creature has (Melee, Non-threatening). While you have a free hand, it counts as a weapon you wield. |
-| [[Flanking\|**Flanking**]] | Creatures that threaten the same enemy: each gets 1 Field Boon on [Melee] Actions against it for each other flanker, minus 1 for each ally of the enemy that threatens it. |
+| [[Flanking\|**Flanking**]] | Two creatures that threaten the same enemy from opposite sides of it (within 45° of the line through its center): each gets 1 Field Boon on [Melee] Actions against it, none if an ally of the enemy threatens it. |
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no Reactions from movement, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free (a Check against the Action DC of the Action that grabbed you). |

@@ -13,7 +13,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 ## Basic Actions (20)
 | Card | Rating | What is by hand |
 |---|---|---|
-| Weapon Attack | Gold | |
+| Basic Attack | Gold | (the Weapon Attack until v0.0.480) |
 | Advance | Gold | |
 | Evade | Gold | |
 | Charge | Gold | |
@@ -32,6 +32,11 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Shake Off | Silver | "within your Reach" isn't checked (v0.0.414) |
 | Shove | Gold | |
 | Haul | Gold | |
+| Aid | Silver | Quickened 1 on the target (its next turn's AP); the Check against Daunted: by hand. |
+| Demoralize | Gold |  |
+| Feint | Gold |  |
+| Heal | Silver | the Check against DC 13 and the Rally Point button on the card; standing from Prone on Tier 3 by hand. |
+| Tumble | Silver | the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the Check: by hand. |
 | Hide | Bronze | not written in the book yet (a placeholder) |
 
 ## Weapon Techniques (4)

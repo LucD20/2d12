@@ -47,7 +47,9 @@ An Action that lets you move gives a distance, written "Advance 5" or "Evade 2".
 
 **A movement you must make** ("You must Advance 2") moves you the whole distance, and each square you enter must be one you haven't entered during that movement. A card that says **freely** ("You must Advance 5 freely") lets you enter a square again. If you can't make the whole movement, the Action is disrupted (see [[Linked Actions]]).
 
-**No movement ends in another creature's square:** an Advance, an Evade, a Forced Movement or a Reposition (passing through one is covered under [[Move]] and [[Difficult Terrain]]).
+**No movement ends in another creature's square:** an Advance, an Evade, a Forced Movement or a Reposition.
+
+**Creatures in your way.** Your own movement (an Advance, an Evade, a Charge, a Crawl) **can't enter or pass through an unwilling creature's space**: an enemy holds its ground. **An ally's space** (any willing creature's) is [[Difficult Terrain]]: you can pass through it, never end in it, and it is the one Difficult Terrain an Evade can cross (at its double cost). **A Down creature** (Dying, Shattered, Unconscious or Desperate) **and a dead one** are Difficult Terrain too, whichever side they are on. Size doesn't change this. The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise (Footwork's Weave). Forced Movement and Reposition keep their own rules (see [[Collision]]).
 
 **Changes to your Speed.** Apply every other change first, then halve it: with Speed 6, Weight of Judgment's −2 and Hindered, your Speed is (6 − 2) halved = 2. Halving rounds down.
 
@@ -63,7 +65,7 @@ A Reaction that triggers on your movement can fire only once for an Advance, at 
 
 ### Evade
 
-Evade is a type of movement that doesn't trigger reactions. You can't Evade into or pass through Difficult Terrain. What an Evade costs is decided by the Action that lets you Evade, such as the [[Evade|Evade Action]]. The Evade Action doesn't have the Move trait.
+Evade is a type of movement that doesn't trigger reactions. You can't Evade into or pass through Difficult Terrain, except an ally's space, which an Evade can cross at its double cost (it can't end there). What an Evade costs is decided by the Action that lets you Evade, such as the [[Evade|Evade Action]]. The Evade Action doesn't have the Move trait.
 
 An Evade is one piece too, and nothing fits inside it: if an Action lets you Evade 3 and you Evade 1 square, the other 2 squares are lost.
 
@@ -94,7 +96,7 @@ Rules ask three different questions about movement, and the answers are not the 
 
 You can't cut solid corners when you move. Moving diagonally takes you through the corner point where four squares meet. If a wall or anything solid occupies that point, the corner is solid and you can't move diagonally past it: you must go around. A wall that ends exactly at the corner counts, and so does a pillar that stands on the corner or an object that fills a square beside your path, because each of them reaches the point. A small object in the middle of a square doesn't reach the corner, so it doesn't block the diagonal. This applies to every movement of yours (Advance, Evade, Charge) and to Forced Movement and Reposition. A creature that occupies several squares follows the rule with each square it occupies.
 
-Creatures aren't solid corners: you can move diagonally between two creatures. If both are unwilling, this is Difficult Terrain, as if you were passing through the squares of an unwilling creature; a willing creature lets you pass. If a Forced Movement would move a creature diagonally between two creatures, it doesn't pass through them: it stops in the last legal square and [[Collision]] applies as normal. A Reposition can't pass between two creatures either: it stops in the last legal square, without Collision damage.
+Creatures aren't solid corners, but **two unwilling creatures corner to corner block the diagonal between them**, as their spaces would (Tumble passes it: [[Tumble]]). Between an ally and an enemy, or between two allies, the diagonal is free: you don't enter either space. If a Forced Movement would move a creature diagonally between two creatures, it doesn't pass through them: it stops in the last legal square and [[Collision]] applies as normal. A Reposition can't pass between two creatures either: it stops in the last legal square, without Collision damage.
 
 @@DIAGRAM:corners@@
 
@@ -224,7 +226,7 @@ Some creatures are harder to move than others. Every creature has a **Steadiness
 
 ## Difficult Terrain
 
-Each square of difficult terrain counts double the squares it would normally count. The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. Passing through the squares of an unwilling creature is Difficult Terrain too.
+Each square of difficult terrain counts double the squares it would normally count. The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. An ally's space, and a Down or dead creature's, is Difficult Terrain too; an unwilling creature's space blocks your movement (see [[Movement|Creatures in your way]]).
 
 @@DIAGRAM:difficult@@
 
@@ -297,25 +299,25 @@ A creature **threatens** every enemy within the **normal range** of a Melee weap
 
 Like [[Engaged]], threatening does not depend on what you perceive, but it uses range and not adjacency: a creature with a Range 2 weapon threatens an enemy 2 squares away, which is not Engaged with it.
 
-Creatures that threaten the same enemy **flank** it. A creature that flanks an enemy gains **1 Field Boon** on its [Melee] Actions against that enemy for **each other creature** that flanks it. But each **ally of that enemy that threatens the flanker** cancels 1 of those Boons, and a creature never gains fewer than 0. Count in this order: 1 for each other flanker, minus 1 for each ally of the enemy that threatens you (never below 0); only then does the limit of 2 Field Boons apply (see [[Named Boons and Banes]]).
+Two creatures **flank** an enemy when both threaten it and they stand on **opposite sides** of it: the second is within 45° of the straight line from the first through the center of the enemy's space (measured between the centers of squares; the 45° edge counts, and any square of a larger creature's space can be used). Next to a one-square enemy, these are the three squares across from you. A creature that flanks an enemy gains **1 Field Boon** on its [Melee] Actions against that enemy; more flankers add nothing. But if an **ally of that enemy threatens the flanker**, it gains no Boon (it has to watch its own back). The Boon counts toward the limit of 2 Field Boons (see [[Named Boons and Banes]]), so it leaves room for another, such as a [[Prone]] target's.
 
-Blue tokens are allies and red-brown tokens are enemies. A badge is the Boons that creature gets on [Melee] Actions against the creature in the middle (G, John in the fifth picture) or against D in the last one.
+Blue tokens are allies and red-brown tokens are enemies. A badge is the Boon that creature gets on [Melee] Actions against the creature in the middle (G, John in the fifth picture) or against D in the last one.
 
-**Example 1: Two flankers.** Philip and John both threaten a goblin: each has 1 Boon on [Melee] Actions against it.
+**Example 1: Opposite sides.** Philip and John stand on opposite sides of a goblin and both threaten it: each has 1 Field Boon on [Melee] Actions against it.
 
-**Example 2: Three flankers.** A third ally threatens it too: 2 Field Boons each, which is the limit.
+**Example 2: The three squares across.** Philip stands diagonally across from John: still opposite, 1 Boon each. A third ally beside John threatens the goblin too, but no one stands across from it: it gains nothing.
 
-**Example 3: Four or more.** A fourth ally adds no Boon, but it still counts for cancelling: if an ally of the goblin threatens one of the flankers, that flanker keeps 2 (3 minus 1, then the limit).
+**Example 3: More flankers.** Five allies surround the goblin. Each has someone across from it: 1 Boon each, never more.
 
 @@DIAGRAM:flanking1@@
 
-**Example 4: Range 2.** Philip holds a weapon with Range 2 and stands 2 squares from the goblin. He threatens it, so he flanks with John, who is next to it: 1 Boon each.
+**Example 4: Range 2.** Philip holds a weapon with Range 2 and stands 2 squares from the goblin, across from John. He threatens it, so he flanks with John: 1 Boon each.
 
-**Example 5: Three goblins on John.** Three goblins threaten John, and Philip stands next to two of them. The goblin on the left has the other two goblins flanking with it and no ally of John's next to it: 2 Boons. The other two also have 2 goblins flanking with them, but Philip threatens each of them and cancels 1: 1 Boon each.
+**Example 5: Three goblins on John.** Goblins A and C stand across from each other and flank John. Philip threatens C, so C gains no Boon; A still has 1. Goblin B has no goblin across from it: nothing.
 
 @@DIAGRAM:flanking2@@
 
-**Example 6: Two lines of fighters.** Two lines of fighters face each other, all of them against D, the second fighter on the left. Each fighter has allies beside it that threaten the enemies in front of them, so almost every Boon is cancelled: D's neighbors cancel the Boons, and only a fighter at the very end of a line can still gain 1, against the second fighter of the other line.
+**Example 6: Two lines of fighters.** Two lines of fighters face each other, all of them against D, the second fighter on the left. No one stands on D's far side, so no one flanks it: a line holds against a line.
 
 @@DIAGRAM:flanking3@@
 

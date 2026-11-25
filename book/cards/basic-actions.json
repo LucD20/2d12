@@ -27,7 +27,7 @@
       "versions": [
         {
           "ap": 2,
-          "effects": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes.",
+          "effects": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes.",
           "foundry": {
             "sub": [
               ["Advance in a", "@Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge] in a"],
@@ -61,8 +61,8 @@
       "traits": ["self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "Evade 1: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain." },
-        { "ap": 2, "effects": "Evade half your Speed (rounded down): a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain." }
+        { "ap": 1, "effects": "Evade 1: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost)." },
+        { "ap": 2, "effects": "Evade half your Speed (rounded down): a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost)." }
       ],
       "foundry": { "basic": "safeMovement", "automation": "gold", "img": "icons/svg/shield.svg" }
     },
@@ -536,21 +536,23 @@
       ],
       "frequency": "At-will",
       "requirements": "Your Speed is at least 4.",
-      "rules": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass.",
+      "rules": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass. Passing diagonally between two enemies corner to corner counts as crossing one creature: the higher of their DCs, no Bane for the second.",
       "versions": [
         {
           "ap": 1,
-          "effects": "Advance half your Speed (rounded down)."
+          "effects": "Advance half your Speed (rounded down).",
+          "foundry": { "sub": [["@Move[advance|distance:floor(speed/2)]", "@Move[advance|distance:floor(speed/2)|pass:enemies]"]] }
         },
         {
           "ap": 2,
-          "effects": "Evade 2."
+          "effects": "Evade 2.",
+          "foundry": { "sub": [["@Move[evade|distance:2]", "@Move[evade|distance:2|pass:enemies]"]] }
         }
       ],
       "foundry": {
         "basic": "tumble",
-        "automation": "bronze",
-        "automationNote": "the movement (the Advance or the Evade); passing through enemies and the Check: by hand.",
+        "automation": "silver",
+        "automationNote": "the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the Check: by hand.",
         "img": "icons/svg/wingfoot.svg"
       }
     }

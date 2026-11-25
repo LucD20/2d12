@@ -145,7 +145,27 @@ export const npcDieExplodes = (rank, { basic = false, trait = false } = {}) => r
 export const vulnerableBoons = n => Math.max(0, Math.trunc(Number(n)) || 0);
 
 /* ---- Position (Ch. 3: Flanking, Cover; Ch. 1: Named Boons and Banes) ---- */
-/** Flanking: 1 Field Boon for each other creature that threatens the target, minus 1 for each ally of the target that threatens the attacker, then the limit of 2. { raw, boons }. */
+/** Flanking before the core rework's batch 4 (the frozen SIM still reads it): 1 Field Boon for each other creature that threatens the target, minus 1 for each ally of the target that threatens the attacker, then the limit of 2. { raw, boons }. */
+/**
+ * Flanking, the core rework batch 4 (Lucas, 2026-11-25; book, Chapter 3, D1): two creatures flank an enemy when both threaten it and they stand on
+ * opposite sides of it: the partner is within 45° (the edge counts) of the straight line from the flanker through the enemy's center, between square
+ * centers, any square of each one's space. Pure: cells are { i, j } squares.
+ */
+export function oppositeSides(aCells, bCells, tCells) {
+  const c = { y: tCells.reduce((s, q) => s + q.i, 0) / tCells.length, x: tCells.reduce((s, q) => s + q.j, 0) / tCells.length };
+  for (const a of aCells) {
+    const ux = c.x - a.j, uy = c.y - a.i, ul = Math.hypot(ux, uy);
+    if (ul < 1e-9) continue;
+    for (const b of bCells) {
+      const vx = b.j - c.x, vy = b.i - c.y, vl = Math.hypot(vx, vy);
+      if (vl < 1e-9) continue;
+      if ((ux * vx + uy * vy) / (ul * vl) >= Math.SQRT1_2 - 1e-9) return true;
+    }
+  }
+  return false;
+}
+/** Flanking (batch 4): a flat 1 Field Boon with a partner opposite, none when an ally of the enemy threatens you (the cancel). { raw, boons }. */
+export const flankBoon = (opposite, cancels) => { const raw = opposite ? 1 : 0; return { raw, boons: raw && !(Number(cancels) > 0) ? 1 : 0 }; };
 export const flankBoons = (others, cancels) => { const raw = Math.max(0, (Number(others) || 0) - (Number(cancels) || 0)); return { raw, boons: Math.min(BB_LIMIT, raw) }; };
 /**
  * Cover by its level (blocked corners: 0 none, 1 Low, 2 Medium, 3 High; 4 is no Line of Effect) on an Action against the creature behind it:

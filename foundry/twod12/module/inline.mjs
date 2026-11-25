@@ -156,6 +156,7 @@ export function parseInline(kind, inner) {
     else if (key === "label") cfg.label = val;
     else if (key === "min") cfg.min = Math.max(0, Number(val) || 0);
     else if (key === "uncapped") cfg.uncapped = /^(yes|true)$/i.test(val);   // @Move[charge|distance:speed+2|uncapped:yes]: it may go beyond your Speed (an ability says so)
+    else if (key === "pass") cfg.passEnemies = /^(enemies|yes|true)$/i.test(val);   // batch 4 (Tumble): @Move[advance|...|pass:enemies]: through enemies' spaces (never ending in one)
     else if (key === "terrain") cfg.ignoreTerrain = /^(ignore|ignores|yes|true)$/i.test(val);   // @Move[evade|distance:2|terrain:ignore]: it moves through creatures and ignores Difficult Terrain (Cut Through)
     else if (key === "upto") cfg.upto = /^(yes|true|1|y)$/i.test(val);
     else if (key === "expire") cfg.expire = val.toLowerCase();

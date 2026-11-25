@@ -46,7 +46,7 @@ What came out of playtest 7 and the core review (seven reviewers; three rounds o
 | C3 | **Strained: the creature doesn't gain its free Reaction AP** (it must keep AP for Reactions) | Decided | Rejected: a Minion or Grunt fleeing at Strained (Bloodied and Strained should be even). |
 | C4 | **Bloodied: and Strained: lines on Actions**, labeled like Attack and Special ("Bloodied: the target is Pushed 1"; "Strained: Tier 3 gains Dazed 1") | Decided | Timing (Claude's proposal): the line applies if the target is Bloodied as the Action resolves, after its own damage. A card-Structure change (CARD-ONE: `card-structure.md`, `cardmodel.mjs`, `cards.py`). |
 | C5 | **Reductions don't reduce Collision damage** (Judge, Shield of Faith: Collision is another instance) | Decided | |
-| C6 | **A protection floor** (reductions never take a hit below half: Draw Steel) | Open ("evaluate carefully") | Protecting a Dying ally must stay possible. |
+| C6 | ~~**A protection floor** (reductions never take a hit below half: Draw Steel)~~ **Rejected (Lucas, 2026-11-25: "No floor", after "this might be a bit unnecessary and kill the joy of teamwork")** | Rejected | Protecting a Dying ally must stay possible. **Why (rechecked 2026-11-25, batch 4, decision 3):** the floor gives back 1 to 3 damage a round to the enemies (Shield of Faith is a Reaction, Judge once a round) against about 40 they deal; the core review's real problem is focus fire, and Judge and Shield of Faith are its answer; zeroing a Goblin's 2.5 with your one Reaction is a poor trade by itself; small level 1 hits (1d4 / 1d6 + a little) are a Bestiary number (batch 6), not a rule; a full block is teamwork's payoff. The Encounter Log watches the share reductions remove (section R). |
 | C7 | **Down stays a setback**; the Wound table is a placeholder | Later (asked: now?) | Claude: after combat feels good (playtest 8), as Lucas first said. |
 | C8 | **Expedition pace**: the Rest is the tick; between Rests about **2 easy, 2 moderate, 1 hard fight** (4 to 6) | Decided (a rough guide) | Consistent with the review's targets: about 190% of the party's Health against 1.7 to 2× Health in Rally Points. |
 
@@ -188,7 +188,7 @@ All 32 answered (A3 and A7 with a question; Claude's replies in the chat of 2026
 - **B11 (decided):** Claude's three notes on Break Free (a Check line, Doubles free you, no Self trait).
 - **C4 (changed): where the line sits decides when it applies.** A Bloodied: / Strained: line **before the Tiers** applies only if the target is already Bloodied / Strained; a line **after the Tiers** applies if the target becomes so during this Action.
 - **C5 (corrected): a "would damage" Reaction can trigger on Collision damage.** The creature that moves the target causes the Collision, so it is that creature's damage; a Reaction that reduces damage picks one: the Action's damage or the Collision ("you deal 2 + Pushed 2 against a wall: react on the 2 or on the Pushed"; the Pushed is a gamble, the origin may not even move the target). What stays: one reduction doesn't reduce both.
-- **C6 (decided):** try the half floor in batch 4, checked against the Paladin's protection cards. **C7:** Wounds later.
+- **C6 (decided):** try the half floor in batch 4, checked against the Paladin's protection cards. **Rejected in batch 4 (2026-11-25): no floor** (the table's row). **C7:** Wounds later.
 - **D3 (decided): an ally's square is Difficult Terrain** (D&D 5e does it). The ladder: open ground; an ally's square, Difficult Terrain; an enemy's square, blocked (Tumble to pass). In batch 4 with blocking.
 - **D6 (corrected):** "on the line" needs a diagram.
 - **D7 (decided): a creature pushed into a wall it touches takes the Collision; the push still counts as leaving its square and as being moved by Forced Movement, even with 0 squares moved.**
@@ -209,7 +209,8 @@ The review's section 7 is the start (per roll, per turn, Reactions offered and u
 - Critical: the 1d10! rolled and the type chosen (A2).
 - Bloodied and Strained: when each starts, by which damage; the lines they turned on (C1, C3, C4); a Minion's last tick counted as which (K1).
 - Reactions on Collision damage (C5); Pushed 0 against a wall (D7).
-- The protection floor when it applies (C6).
+- ~~The protection floor when it applies (C6)~~ (C6 rejected 2026-11-25): instead, **the share of each enemy's damage that reductions removed** (Judge, Shield of Faith: whether small hits vanish too often; the fix would be the Bestiary's numbers, batch 6).
+- Batch 4: **Flanking Boons gained**, by side; **moves refused by blocking**, and **Tumbles** made (and their Checks).
 
 ## P. The order of work
 
@@ -217,7 +218,7 @@ The review's section 7 is the start (per roll, per turn, Reactions offered and u
 1. ~~**Batch 1: the settled fixes**~~ **BUILT 2026-11-21 (the book and Foundry v0.0.477; rules-backlog.md, the top entry).** (small, no dependencies; the Encounter Log moved to the end, P1). Book: A3, A4, A5, A6, A7 (one DC formula), D4 and D6 (with their diagrams), D5, D7, E1, E2, E4, C5, B10, B11, B12, H2. Foundry, in the same version: I2 (some blocks, warnings for the rest), I3.
 2. ~~**Batch 2: damage that matters**~~ **BUILT 2026-11-22 (the book and Foundry v0.0.479).** (the book written 2026-11-22; A2 revised: only Basic attacks get the 1d10!, Trip and Shove their own Critical rows, a Critical always optional; Strained: no Reaction Point at the start of your turn; the Reaction AP is the Reaction Point). A2 (the Critical's die), C1 + C2 (Bloodied, negative Steadiness), C3 (Strained), C4 (the labeled lines: the card Structure, then the gallery). Everything after uses these words.
 3. ~~**Batch 3: the Basic layer**~~ **BUILT 2026-11-22 (the book and Foundry v0.0.480, branch `pack-batch3-foundry`).** (the class cards may change freely: answer 3). B4 first (shared Basic Attack + each class's line and Power Basic attack: Sworn Blade, Drawing Light, Steady Draw, Harrying Shot), B1 / B2 (`[D]`), Fists Option B exploding `1d6!`, H1 (every class chooses Modifier order), B5 / B6 / B7 / B8 / B9 (Aid, Demoralize, Feint, Heal, Tumble; Trip & Shove 2 Versions no `[Strike]`; Haul no `[Strike]`), E3 (Kneel). Then H8 (re-anchor the Talents and `pc-budget.md`).
-4. **Batch 4: the front line.** D1, D2, D3 (with B8 Tumble), C6 (the protection floor).
+4. ~~**Batch 4: the front line.**~~ **BUILT 2026-11-25 (the book; Foundry v0.0.506).** D1 (flanking: a flat 1, the generous opposite, the cancel), D2 (Minions flank: nothing to change), D3 (an enemy's space blocks, an ally's and a Down creature's is Difficult Terrain, an Evade can cross an ally, the diagonal between two enemies blocks; Tumble passes them, the diagonal as one creature), C6 (rejected: no floor).
 5. **Batch 5: the Bestiary's mechanics.** G2 (the Boss and the Elite's shape, K6), G3 (ticks, K1, K2), G4 (parity, K7), G5, G6, D8, G8, H9.
 6. **Batch 6: the Bestiary's numbers.** G9 targets with C8's pace, G11 pricing, G12 the examples (with a Grunt), against the PC side of batches 2 to 4.
 7. **The Encounter Log** (I1, with section R's list), then **playtest 8**: the level 1 pregens (Stage 0) against playtest 7's line-up rebuilt plus two Grunts, measured by the new log; solo.

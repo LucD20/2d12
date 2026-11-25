@@ -71,15 +71,22 @@ class Svg:
 # ------------------------------------------------------------------ Flanking (see Flanking in the book)
 def flank_state(tokens):
     """tokens: {name: dict(cell, side, reach)}. A creature threatens the enemies within its Reach (diagonals count 1, 2, 1, 2...).
-    Boons of an attacker against a defender it threatens: 1 for each other creature that threatens the defender minus 1 for each ally of the defender that threatens the attacker (never below 0), then at most 2."""
+    The core rework batch 4 (2026-11-25): an attacker that threatens a defender flanks it when another creature that threatens it stands opposite
+    (within 45 degrees of the line from the attacker through the defender's center, the edge counting): a flat 1 Field Boon, none when an ally of the
+    defender threatens the attacker (the cancel)."""
     names = list(tokens)
     threat = {a: {b for b in names if tokens[b]['side'] != tokens[a]['side'] and dist(tokens[a]['cell'], tokens[b]['cell']) <= tokens[a].get('reach', 1)} for a in names}
+    def opposite(a, b, d):
+        (ai, aj), (bi, bj), (di, dj) = tokens[a]['cell'], tokens[b]['cell'], tokens[d]['cell']
+        ui, uj, vi, vj = di - ai, dj - aj, bi - di, bj - dj
+        lu, lv = (ui * ui + uj * uj) ** 0.5, (vi * vi + vj * vj) ** 0.5
+        return lu > 0 and lv > 0 and (ui * vi + uj * vj) / (lu * lv) >= 0.5 ** 0.5 - 1e-9
+    def partners(a, d): return [x for x in names if x != a and d in threat[x] and opposite(a, x, d)]
     def boons(a, d):
         if d not in threat[a]: return 0
-        others = [x for x in names if x != a and d in threat[x]]
         cancel = [y for y in names if y != d and a in threat[y]]
-        return max(0, min(2, len(others) - len(cancel)))   # the cancels first, then the limit of 2 Field Boons (2026-11-08)
-    return dict(threat=threat, boons=boons)
+        return 1 if partners(a, d) and not cancel else 0
+    return dict(threat=threat, boons=boons, partners=partners)
 
 def flank_panel(tokens, rows, cols, caption, S=44, reach_of=None, target=None):
     st = flank_state(tokens); g = Svg(rows, cols, S, caption)
@@ -106,20 +113,20 @@ def flanking_diagrams():
     facts = {}
     # Philip (P) and John (J) are the two allies of the examples; the other allies are "a third ally", "a fourth ally", "a fifth ally": tokens 3, 4, 5
     A = {'John': T((2, 1), 'a', 'J'), 'Philip': T((2, 3), 'a', 'P'), 'G': T((2, 2), 'b', 'G')}
-    g, st = flank_panel(A, 5, 5, 'Two flankers: 1 Field Boon each', target='G'); out.append(g.figure()); facts['two'] = boons_of(st, A, 'G')
-    B = {'John': T((2, 1), 'a', 'J'), 'Philip': T((2, 3), 'a', 'P'), 'a3': T((1, 2), 'a', '3'), 'G': T((2, 2), 'b', 'G')}
-    g, st = flank_panel(B, 5, 5, 'Three flankers: 2 Field Boons each (the limit)', target='G'); out.append(g.figure()); facts['three'] = boons_of(st, B, 'G')
-    C = dict(B); C['a4'] = T((3, 2), 'a', '4'); C['a5'] = T((3, 3), 'a', '5')
-    g, st = flank_panel(C, 5, 5, 'Four or more: still 2 Field Boons each', target='G'); out.append(g.figure()); facts['five'] = boons_of(st, C, 'G')
+    g, st = flank_panel(A, 5, 5, 'Opposite sides: 1 Field Boon each', target='G'); out.append(g.figure()); facts['two'] = boons_of(st, A, 'G')
+    B = {'John': T((2, 1), 'a', 'J'), 'Philip': T((1, 3), 'a', 'P'), 'a3': T((1, 2), 'a', '3'), 'G': T((2, 2), 'b', 'G')}
+    g, st = flank_panel(B, 5, 5, 'The three squares across count (Philip, diagonal); the ally beside John (3) has no one across from it', target='G'); out.append(g.figure()); facts['generous'] = boons_of(st, B, 'G')
+    C = {'John': T((2, 1), 'a', 'J'), 'Philip': T((2, 3), 'a', 'P'), 'a3': T((1, 2), 'a', '3'), 'a4': T((3, 2), 'a', '4'), 'a5': T((3, 3), 'a', '5'), 'G': T((2, 2), 'b', 'G')}
+    g, st = flank_panel(C, 5, 5, 'More flankers add nothing: 1 Field Boon each', target='G'); out.append(g.figure()); facts['five'] = boons_of(st, C, 'G')
     D = {'John': T((2, 1), 'a', 'J'), 'Philip': T((2, 4), 'a', 'P', 2), 'G': T((2, 2), 'b', 'G')}
     g, st = flank_panel(D, 5, 7, 'Range 2: a weapon with Range 2 flanks from 2 squares away', target='G', reach_of='Philip'); out.append(g.figure()); facts['reach'] = boons_of(st, D, 'G')
-    # an ally of the defender next to an attacker cancels a Boon (the picture that led to this rule)
+    # an ally of the defender that threatens an attacker cancels its Boon
     E = {'John': T((2, 2), 'a', 'J'), 'Philip': T((2, 4), 'a', 'P'), 'A': T((1, 1), 'b', 'A'), 'B': T((1, 3), 'b', 'B'), 'C': T((3, 3), 'b', 'C')}
-    g, st = flank_panel(E, 5, 6, 'Three goblins on John, with Philip next to two of them: each ally of John that threatens a goblin cancels one of its Boons', target='John'); out.append(g.figure()); facts['cancel'] = boons_of(st, E, 'John')
-    # two lines: the neighbors of the defender cancel the boons, except for the fighter at the end of a line
+    g, st = flank_panel(E, 5, 6, 'Three goblins on John: A and C stand across from each other; Philip threatens C, which cancels its Boon; B has no one across from it', target='John'); out.append(g.figure()); facts['cancel'] = boons_of(st, E, 'John')
+    # two lines: no one stands on the far side of D, so no one flanks it
     lines = {}
     for c in range(1, 5): lines[f'a{c}'] = T((1, c), 'a', 'D' if c == 2 else 'A'); lines[f'b{c}'] = T((2, c), 'b', 'B')
-    g, st = flank_panel(lines, 4, 6, 'Two lines of fighters, all against the second fighter on the left (D): its neighbors cancel the Boons, only the enemy at the end of the line gets 1', target='a2'); out.append(g.figure())
+    g, st = flank_panel(lines, 4, 6, 'Two lines of fighters, all against the second fighter on the left (D): no one stands on its far side, so no one flanks it', target='a2'); out.append(g.figure())
     facts['lines'] = boons_of(st, lines, 'a2')
     facts['lines_all'] = sorted((a, d, st['boons'](a, d)) for a in lines for d in lines if lines[a]['side'] != lines[d]['side'] and st['boons'](a, d))
     return out, facts

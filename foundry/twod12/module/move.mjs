@@ -306,7 +306,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
   }
   if (spent && !useEvade) newMoveAction(c.id);   // v0.0.274: a drag that spends AP is a new Advance (a new Move Action for the Reactions); before any await
   const evadeEnded = useEvade > 0 && evade <= 0;
-  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(spent && !useEvade ? { [`flags.${F}.advOwn`]: true, [`flags.${F}.advInteract`]: false } : {}), ...(evadeEnded ? { ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.noFarther`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
+  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(spent && !useEvade ? { [`flags.${F}.advOwn`]: true, [`flags.${F}.advInteract`]: false } : {}), ...(evadeEnded ? { ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`), ...unset(`flags.${F}.noFarther`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
   if (evadeEnded) promptStowAfter(c).catch(e => console.warn("twod12 | stow after Evade", e));
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
@@ -407,12 +407,12 @@ function hardStep(doc, to, step, cost, from = null) {
     const senses = sightSenses(doc.actor);   // v0.0.459: Blinded too
     let hard = cells.some(c => seenLight(lightAt(canvas.grid.getCenterPoint(c)), senses) === "dark");
     if (!hard) {
-      const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor && !t.document?.hidden && (t.document.disposition ?? 0) !== (doc.disposition ?? 0));
+      // the core rework batch 4: an ally's or a Down creature's square is Difficult Terrain; an enemy's blocks (the move hook refuses it; Tumble passes at no extra cost)
+      const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor && !t.document?.hidden && wayKind(t, doc) === "dt");
       hard = others.some(t => tokenCells(t).some(c => cells.some(m => m.i === c.i && m.j === c.j)));
     }
-    // v0.0.171: a diagonal between two creatures is Difficult Terrain too, so the movement label shows it while dragging.
+    // (v0.0.171 made the diagonal between two creatures Difficult Terrain; batch 4 blocks it: the move hook refuses it)
     const f0 = from ? squareOf(from) : null, fromTl = f0 ? shift(f0) : null;
-    if (!hard && fromTl) hard = stepCorners(fromTl, at, { w, h, creatureAt: c => unwillingIn(c, doc) }).kind === "creatures";
     // v0.0.345 (book, Frightened): a step that brings it closer to the source of a "Difficult Terrain" Movement limit costs double
     if (!hard && from) hard = moveLimitsOf(doc).some(l => l.how === "difficult" && moveLimitBreaks(l.dir, limitSquares(fromTl, l.token), limitSquares(at, l.token)));
     if (!hard) hard = areaDifficult(doc, cells);   // v0.0.327 (PACK ZONE): a Zone's or an Aura's Difficult Terrain, for the creatures its row reaches only
@@ -538,6 +538,14 @@ const ownSolid = () => (ownCorners() ? solidCorner : () => false);
  * Difficult Terrain only when both are unwilling; a willing creature letting you pass is left to the players).
  */
 const unwillingIn = (cell, doc) => { const t = creatureIn(cell, [doc.id]); return t && (t.document?.disposition ?? 0) !== (doc.disposition ?? 0) ? t : null; };
+/**
+ * The core rework batch 4 (Lucas, 2026-11-25; book, Chapter 3, Creatures in your way): an unwilling creature's space blocks your own movement; an ally's
+ * (a willing creature's) space and a Down or dead creature's are Difficult Terrain. Pure on a token: "block" or "dt".
+ */
+export const downTok = t => { const a = t?.actor; return !!(a?.system?.atZero || ["dead", "dying", "shattered", "unconscious", "desperate"].some(s => a?.statuses?.has?.(s))); };
+export const wayKind = (t, doc) => (!downTok(t) && (t?.document?.disposition ?? 0) !== (doc?.disposition ?? 0) ? "block" : "dt");
+/** An enemy that blocks (unwilling and not Down) in a square, for the diagonal between two of them (book: blocked). */
+const blockerIn = (cell, doc) => { const t = unwillingIn(cell, doc); return t && !downTok(t) ? t : null; };
 
 /** The system setting that lets the movement buttons work when there is no combat. */
 export const movesOutsideCombat = () => { try { return !!game.settings.get(F, "moveOutsideCombat"); } catch (e) { return false; } };
@@ -593,6 +601,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (combat?.combatant?.id !== c.id) await c.setFlag(F, "offTurnAt", turnStamp(combat));   // v0.0.421: granted off its turn (a Reaction): tracked during this turn only
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
+  if (cfg.passEnemies) await c.setFlag(F, "passEnemies", true);   // batch 4: Tumble
   const fAct = ctx?.message?.getFlag?.(F, "action");
   if (cfg.stow && fAct?.drawnWeaponId) await c.setFlag(F, "stowAfter", { weaponId: fAct.drawnWeaponId });
   let nfNote = "";
@@ -689,7 +698,7 @@ export async function evadeAsAdvance(combatantId, { quiet = false } = {}) {
   if (!c?.isOwner) return warn("Only the owner can change this movement.");
   const n = num(c.getFlag(F, "evadeMove"));
   if (!n) return warn("There is no Evade movement left.");
-  await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.freeMove`]: num(c.getFlag(F, "freeMove")) + n, ...unset(`flags.${F}.ignoreTerrain`) });
+  await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.freeMove`]: num(c.getFlag(F, "freeMove")) + n, ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`) });
   if (!quiet) await post(`<b>${esc(c.name)}</b> uses the movement as an Advance of up to ${n} square${n === 1 ? "" : "s"} instead of an Evade.`);
   showRange(c, n);
 }
@@ -750,7 +759,7 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0, skipL
     if (!teardown()) return;
     lastBar = { id: c.id, until: Date.now() + 2500 };
     const l = left();
-    if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), ...unset(`flags.${F}.ignoreTerrain`) });
+    if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`) });
     clearRange();
     await writeLine();
   };
@@ -791,7 +800,7 @@ export async function endMoveFor(combatantId) {
   if (c.getFlag(F, "charge")) return endMovement(combatantId);
   if (!c.isOwner) return warn("Only the owner can end this movement.");
   const hadStow = !!c.getFlag(F, "stowAfter");
-  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.moveLeft`]: 0, ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.noFarther`) });
+  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.moveLeft`]: 0, ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`), ...unset(`flags.${F}.noFarther`) });
   clearRange();
   if (hadStow) promptStowAfter(c).catch(e => console.warn("twod12 | stow after Evade", e));
 }
@@ -809,7 +818,7 @@ export async function endMovement(combatantId) {
   if (!c) return warn("That combatant is no longer in the combat.");
   if (!c.isOwner) return warn("Only the owner can end this movement.");
   const charging = c.getFlag(F, "charge"), hadStow = !!c.getFlag(F, "stowAfter");
-  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.charge`), ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.noFarther`) });
+  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.charge`), ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`), ...unset(`flags.${F}.noFarther`) });
   clearRange();
   if (hadStow) promptStowAfter(c).catch(e => console.warn("twod12 | stow after Evade", e));
   // v0.0.219 (Lucas): giving up a Charge before it moves takes it back: its AP are refunded.
@@ -1519,7 +1528,9 @@ function cellLine(a, b) {
  * between two creatures (Difficult Terrain: 1 extra square each).
  */
 export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
-  const out = { through: [], endIn: "", extra: 0, dark: 0, solidCorner: false, cornerDT: 0 };
+  // batch 4: through = the enemies whose spaces it passes (blocked), allies = the allies' and Down creatures' (Difficult Terrain), allyExtra = the steps
+  // those cost more, cornerBlock / cornerBy = the diagonals between two enemies (blocked); cornerDT stays 0 (no Difficult Terrain from creatures' corners)
+  const out = { through: [], allies: [], endIn: "", extra: 0, allyExtra: 0, dark: 0, solidCorner: false, cornerDT: 0, cornerBlock: 0, cornerBy: [] };
   try {
     const pts = points.filter(p => p && Number.isFinite(p.x) && Number.isFinite(p.y));
     if (pts.length < 2) return out;
@@ -1533,21 +1544,19 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
       for (const c of line) for (const key of foot(c)) if (!start.has(key) && !end.has(key)) passed.add(key);
       for (let n = 1; n < line.length; n++) steps.push(foot(line[n]));
       for (let n = 1; n < line.length; n++) {
-        const st = stepCorners(line[n - 1], line[n], { w, h, solidAt: ownSolid(), creatureAt: c => unwillingIn(c, doc) });
+        const st = stepCorners(line[n - 1], line[n], { w, h, solidAt: ownSolid(), creatureAt: c => blockerIn(c, doc) });
         if (st.kind === "solid") out.solidCorner = true;
-        else if (st.kind === "creatures" && !ignoring) out.cornerDT++;
+        else if (st.kind === "creatures" && !ignoring) { out.cornerBlock++; for (const t of st.creatures ?? []) if (!out.cornerBy.includes(t.name)) out.cornerBy.push(t.name); }   // batch 4: blocked
       }
     }
     const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor && !t.document?.hidden);
     const occ = others.map(t => ({ t, cells: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
     const endT = occ.find(o => [...end].some(k => o.cells.has(k)));
     if (endT) out.endIn = endT.t.name;
-    const enemyCells = new Set();
     for (const o of occ) {
-      if ((o.t.document.disposition ?? 0) === (doc.disposition ?? 0)) continue;   // the same side: willing, no extra cost
       let hit = false;
-      for (const k of passed) if (o.cells.has(k)) { enemyCells.add(k); hit = true; }
-      if (hit) out.through.push(o.t.name);
+      for (const k of passed) if (o.cells.has(k)) { hit = true; break; }
+      if (hit) out[wayKind(o.t, doc) === "block" ? "through" : "allies"].push(o.t.name);   // batch 4: an enemy blocks, an ally or a Down creature is Difficult Terrain
     }
     // Darkness: the squares it enters (the one it ends in too) that its Sight sees as Darkness are Difficult Terrain for it (Dark Sight sees them as Bright).
     const senses = sightSenses(doc.actor), darkCells = new Set();   // v0.0.459: Blinded too
@@ -1560,12 +1569,13 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
     // v0.0.460 (Lucas, checklist v0.0.459, large-difficult: "a 2x2 token moving through a 1x1 token ... should take two movements to completely
     // move around them and this would be 4 squares ... Instead of 2"): a step costs 1 more when the squares the token covers after it hold an
     // unwilling creature's square or Darkness it can't see in (not one it started in): two steps alongside the creature cost 2 more, not 1
-    const enemyAll = new Set(); for (const o of occ) if ((o.t.document.disposition ?? 0) !== (doc.disposition ?? 0)) for (const k of o.cells) if (!start.has(k)) enemyAll.add(k);
+    const enemyAll = new Set(); for (const o of occ) if (wayKind(o.t, doc) === "dt") for (const k of o.cells) if (!start.has(k)) enemyAll.add(k);   // batch 4: the Difficult Terrain creatures (allies, Down); an enemy's space blocks
     const isDark = k => darkCells.has(k);
     try { for (const st of steps) for (const k of st) if (!start.has(k) && !darkCells.has(k)) { const [i, j] = k.split(",").map(Number); if (seenLight(lightAt(canvas.grid.getCenterPoint({ i, j })), senses) === "dark") darkCells.add(k); } } catch (e) { /* no light on the path */ }
     const hardSteps = steps.filter(st => st.some(k => !start.has(k) && ((enemyAll.has(k) && !end.has(k)) || isDark(k))));   // ending on a creature is endIn, not a cost (as before)
     out.dark = steps.filter(st => st.some(k => !start.has(k) && isDark(k))).length;
     out.extra = hardSteps.length;   // (Cut Through: the caller ignores it, as before)
+    out.allyExtra = steps.filter(st => st.some(k => !start.has(k) && enemyAll.has(k) && !end.has(k)) && !st.some(k => !start.has(k) && isDark(k))).length;   // batch 4: the steps only an ally made cost more
   } catch (e) { console.warn("twod12 | creatures on the path", e); }
   return out;
 }
@@ -1595,11 +1605,12 @@ export function chargeLine(doc, from, to, via = []) {
 /** Why the Charge can't go from square a into square b (the top-left squares of its space): "" when it can. */
 function chargeSquareProblem(doc, a, b, w = 1, h = 1) {
   const foot = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) foot.push({ i: b.i + di, j: b.j + dj });
-  const other = foot.map(c => creatureIn(c, [doc.id])).find(t => t && (t.document.disposition ?? 0) !== (doc.disposition ?? 0));
-  if (other) return `the straight line passes through ${other.name} (an unwilling creature's space is Difficult Terrain)`;
-  const corner = a ? stepCorners(a, b, { w, h, solidAt: ownSolid(), creatureAt: c => unwillingIn(c, doc) }) : { kind: "" };
+  // the core rework batch 4 (book, Chapter 3): an enemy's space blocks; an ally's or a Down creature's is Difficult Terrain, which a Charge can't cross either
+  const other = foot.map(c => creatureIn(c, [doc.id])).find(Boolean);
+  if (other) return wayKind(other, doc) === "block" ? `the straight line passes through ${other.name} (an unwilling creature's space blocks movement)` : `the straight line passes through ${other.name} (an ally's or a Down creature's space is Difficult Terrain)`;
+  const corner = a ? stepCorners(a, b, { w, h, solidAt: ownSolid(), creatureAt: c => blockerIn(c, doc) }) : { kind: "" };
   if (corner.kind === "solid") return "the straight line cuts a solid corner";
-  if (corner.kind === "creatures") return `the straight line passes diagonally between ${corner.creatures.map(t => t.name).join(" and ")} (Difficult Terrain)`;
+  if (corner.kind === "creatures") return `the straight line passes diagonally between ${corner.creatures.map(t => t.name).join(" and ")} (two enemies corner to corner block it)`;
   try { if (foot.some(c => seenLight(lightAt(cellCenter(c.i, c.j)), sightSenses(doc.actor)) === "dark")) return "the straight line crosses Darkness, which is Difficult Terrain for a creature that can't see in it"; } catch (e) { /* no light to read */ }
   return "";
 }
@@ -1795,6 +1806,7 @@ export function snapshotMoveUndo(c, undoCtx, cost) {
       advOwn: !!c?.getFlag?.(F, "advOwn"),
       advInteract: !!c?.getFlag?.(F, "advInteract"),
       ignoreTerrain: c?.getFlag?.(F, "ignoreTerrain") ?? null,
+      passEnemies: c?.getFlag?.(F, "passEnemies") ?? null,
       noFarther: cloneVal(c?.getFlag?.(F, "noFarther") ?? null)
     },
     turnLog: cloneVal(c?.getFlag?.(F, "turnLog") ?? [])
@@ -2032,6 +2044,7 @@ export function registerMovement() {
       const c = currentCombatantFor(doc);
       if (!c) return;
       const ignoring = !!c.getFlag(F, "ignoreTerrain");   // Cut Through: through creatures, and terrain costs nothing extra
+      const passing = ignoring || !!c.getFlag(F, "passEnemies");   // batch 4: Tumble passes enemies' spaces (its Check by hand)
       const to = movement?.destination ?? { x: doc.x, y: doc.y };
       const origin = leanOf(doc) ? homePos(doc) : (movement?.origin ?? { x: doc.x, y: doc.y });   // a Leaning token is nudged: it moves from its own square
       let squares = num(movement?.pending?.cost) || num(movement?.pending?.distance);
@@ -2060,11 +2073,16 @@ export function registerMovement() {
       const ch = c.getFlag(F, "charge");
       // Corners: no movement cuts a solid corner (a Charge is judged by its straight line, below).
       if (!ch && way.solidCorner) { warn("You can't cut a solid corner (a wall, a pillar or an object reaches the corner point): go around it."); return false; }
-      // Evade can't enter or pass through Difficult Terrain (the path costs more than its length, or crosses an unwilling creature).
+      // the core rework batch 4 (book, Chapter 3, Creatures in your way): an enemy's space and the diagonal between two enemies block your movement;
+      // Tumble (or Cut Through, Weave) passes them
+      if (!passing && way.through.length) { warn(`${way.through.join(", ")}'s space blocks your movement (an unwilling creature's space). Tumble to pass through, or go around.`); return false; }
+      if (!passing && way.cornerBlock) { warn(`You can't slip diagonally between ${way.cornerBy.join(" and ")}: two enemies corner to corner block it. Tumble to pass, or go around.`); return false; }
+      // Evade can't enter or pass through Difficult Terrain (the path costs more than its length, or crosses Darkness); batch 4: an ally's space is the one
+      // Difficult Terrain it can cross (at double cost)
       const dist = num(movement?.pending?.distance), cost = num(movement?.pending?.cost);
       const evading = num(c.getFlag(F, "evadeMove")) > 0;
-      if (evading && !ignoring && ((dist > 0 && cost > dist + 1e-6) || way.through.length || way.dark || way.cornerDT)) {
-        warn(`Evade can't enter or pass through Difficult Terrain${way.through.length ? ` (${way.through.join(", ")}: an unwilling creature's space)` : ""}${way.dark ? " (Darkness: it can't see in it)" : ""}${way.cornerDT ? " (a diagonal between two creatures)" : ""}. Choose another path, or use End movement to give up the Evade.`);
+      if (evading && !ignoring && ((dist > 0 && cost - (way.allyExtra ?? 0) > dist + 1e-6) || way.dark)) {
+        warn(`Evade can't enter or pass through Difficult Terrain${way.dark ? " (Darkness: it can't see in it)" : ""}${way.cornerDT ? " (a diagonal between two creatures)" : ""}. Choose another path, or use End movement to give up the Evade.`);
         return false;
       }
       if (ch) {
@@ -2181,7 +2199,10 @@ export function showRange(c, squares, dest = null, par = 0) {
     // v0.0.224: Difficult Terrain for this creature (Darkness it can't see in, a Difficult Terrain area, an unwilling creature's space): an Advance
     // pays 1 more to enter it, an Evade can't enter it (unless it ignores terrain, Cut Through).
     const evading = num(c.getFlag?.(F, "evadeMove")) > 0 || c.kind === "evade", ignoring = !!c.getFlag?.(F, "ignoreTerrain");
+    const passing = ignoring || !!c.getFlag?.(F, "passEnemies");   // batch 4: Tumble passes enemies' spaces
     const senses = sightSenses(tok.actor), memo = new Map();
+    // the core rework batch 4: a creature's square: an enemy's blocks (unless it passes), an ally's or a Down creature's is Difficult Terrain (an Evade can cross it)
+    const whoAt = cell => { const o2 = creatureIn(cell, [tok.id]); return o2 ? wayKind(o2, tok.document) : ""; };
     let regions = [];
     try { regions = (canvas.regions?.placeables ?? []).filter(r => r.document.behaviors?.some(x => ["difficultTerrain", "modifyMovementCost"].includes(x.type) && !x.disabled)); } catch (e) { /* none */ }
     const own = new Set(cells.map(x => `${x.i},${x.j}`));
@@ -2197,14 +2218,14 @@ export function showRange(c, squares, dest = null, par = 0) {
         const p = pt(cell);
         d = seenLight(lightAt(p), senses) === "dark" || regions.some(r => regionHasPoint(r.document, p, tok.document.elevation ?? 0))
           || areaDifficult(tok.document, [cell])
-          || diffLimits.some(l => moveLimitBreaks(l.dir, l.d0, limitSquares(cell, l.token)))
-          || (!own.has(k) && !!(() => { const o2 = creatureIn(cell, [tok.id]); return o2 && (o2.document.disposition ?? 0) !== (tok.document.disposition ?? 0); })());
+          || diffLimits.some(l => moveLimitBreaks(l.dir, l.d0, limitSquares(cell, l.token)));
       } catch (e) { d = false; }
       memo.set(k, d);
       return d;
     };
-    const enterCost = cell => (ignoring ? 0 : difficult(cell) ? (evading ? Infinity : 1) : 0);
-    const blocked = (a, b) => wallBetween(pt(a), pt(b)) || (!own.has(`${b.i},${b.j}`) && cantCell(b));
+    const enterCost = cell => (ignoring ? 0 : difficult(cell) ? (evading ? Infinity : 1) : (!own.has(`${cell.i},${cell.j}`) && whoAt(cell) === "dt" ? 1 : 0));
+    const betweenTwo = (a, b) => a.i !== b.i && a.j !== b.j && whoAt({ i: a.i, j: b.j }) === "block" && whoAt({ i: b.i, j: a.j }) === "block";   // batch 4: two enemies corner to corner
+    const blocked = (a, b) => wallBetween(pt(a), pt(b)) || (!own.has(`${b.i},${b.j}`) && (cantCell(b) || (!passing && (whoAt(b) === "block" || betweenTwo(a, b)))));
     const area = reachableCells(cells, squares, blocked, par, enterCost);
     rangeGfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(rangeGfx);   // the movement area stays under the tokens (a large pale area)
