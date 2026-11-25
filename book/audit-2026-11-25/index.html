@@ -1,0 +1,264 @@
+<title>2d12 Cleanup Audit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
+<style>
+/* Layout: one reading column of questions under a sticky bar that counts answers, filters and copies them. The project's settled look (STYLE-3):
+   dark by default, Source Serif 4 for the title only, Source Sans 3 for everything read, color only for a meaning, flat surfaces and thin lines. */
+:root {
+  --pg: #1f1c18; --pg2: #28241d; --band: #332c22; --hair: #4a4132; --rule: #7a683f;
+  --ink: #ece3cf; --mute: #b3a68e; --faint: #8a7f6b; --gold: #d4a548; --ok: #7fb58a; --warn: #d98f5c;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "Source Sans 3", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) { --pg: #f4ede0; --pg2: #eae0c8; --band: #dfd2b6; --hair: #cdb88a; --rule: #8a6d3b; --ink: #2a241d; --mute: #5d5446; --faint: #7d7563; --gold: #8a5d0a; --ok: #2f6f3e; --warn: #9a4a16; color-scheme: light }
+}
+:root[data-theme="light"] { --pg: #f4ede0; --pg2: #eae0c8; --band: #dfd2b6; --hair: #cdb88a; --rule: #8a6d3b; --ink: #2a241d; --mute: #5d5446; --faint: #7d7563; --gold: #8a5d0a; --ok: #2f6f3e; --warn: #9a4a16; color-scheme: light }
+
+body { background: var(--pg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--pg); }
+.wrap { max-width: 46rem; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top .wrap { padding-block: 2rem 1rem; }
+h1 { font-family: var(--serif); font-weight: 600; font-size: 2rem; line-height: 1.15; margin: 0 0 .5rem; text-wrap: balance; }
+.lede { color: var(--mute); margin: 0; max-width: 40rem; }
+.lede + .lede { margin-top: .5rem; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--pg2); border-block: 1px solid var(--hair); }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; padding-block: .6rem; }
+.count { font-weight: 700; font-variant-numeric: tabular-nums; }
+.count small { font-weight: 400; color: var(--mute); font-size: 1em; }
+.grow { flex: 1 1 8rem; min-width: 0; }
+.bar label { color: var(--mute); display: inline-flex; align-items: center; gap: .35rem; }
+select, input[type="text"], textarea { font: inherit; color: var(--ink); background: var(--pg); border: 1px solid var(--hair); padding: .3rem .5rem; border-radius: 2px; }
+select:focus-visible, input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+button { font: inherit; font-weight: 600; color: var(--ink); background: transparent; border: 1px solid var(--rule); padding: .3rem .7rem; border-radius: 2px; cursor: pointer; }
+button:hover { background: var(--band); }
+button.main { background: var(--gold); border-color: var(--gold); color: var(--pg); }
+button.main:hover { filter: brightness(1.08); background: var(--gold); }
+.save { flex-basis: 100%; font-size: .9rem; color: var(--mute); margin: 0; }
+.save.bad { color: var(--warn); }
+
+main .wrap { padding-block: 1rem 5rem; display: flex; flex-direction: column; gap: 0; }
+h2 { font-family: var(--sans); font-weight: 700; font-size: 1.35rem; margin: 2.2rem 0 .2rem; padding-bottom: .3rem; border-bottom: 2px solid var(--rule); }
+.sectnote { color: var(--mute); margin: .4rem 0 0; }
+.grouphead { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem 1rem; margin: 1.8rem 0 0; padding-bottom: .25rem; border-bottom: 1px solid var(--hair); }
+h3 { font-size: 1.05rem; font-weight: 700; margin: 0; flex: 1 1 12rem; min-width: 0; }
+.grouphead button { font-weight: 400; font-size: .9rem; padding: .15rem .5rem; }
+
+.q { padding: 1.1rem 0 1.2rem; border-bottom: 1px solid var(--hair); display: flex; flex-direction: column; gap: .55rem; scroll-margin-top: 7rem; }
+.meta { color: var(--mute); font-size: .92rem; margin: 0; display: flex; flex-wrap: wrap; gap: 0 .5rem; }
+.meta .id { font-family: var(--mono); font-size: .85rem; color: var(--faint); }
+.meta .kind { color: var(--ink); font-weight: 600; }
+.meta .done { color: var(--ok); }
+.problem { margin: 0; }
+blockquote { margin: 0; padding: .1rem 0 .1rem .8rem; border-left: 2px solid var(--rule); color: var(--ink); overflow-wrap: anywhere; }
+blockquote .src { display: block; color: var(--faint); font-size: .85rem; font-family: var(--mono); overflow-wrap: anywhere; }
+.facts { margin: 0; color: var(--mute); font-size: .95rem; }
+.facts b { color: var(--ink); font-weight: 600; }
+.opts { display: flex; flex-direction: column; gap: .15rem; margin: .1rem 0 0; padding: 0; border: 0; min-width: 0; }
+.opts legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.opt { display: flex; gap: .55rem; align-items: baseline; padding: .2rem .3rem; border-radius: 2px; cursor: pointer; min-width: 0; }
+.opt:hover { background: var(--pg2); }
+.opt input { flex: none; accent-color: var(--gold); margin: 0; transform: translateY(1px); }
+.opt span { min-width: 0; overflow-wrap: anywhere; }
+.opt .pick { color: var(--gold); font-weight: 600; white-space: nowrap; }
+.opt.on { background: var(--band); }
+.note { display: flex; }
+.note input { flex: 1 1 auto; min-width: 0; }
+.empty { color: var(--mute); padding: 2rem 0; }
+#out { width: 100%; min-height: 12rem; font-family: var(--mono); font-size: .85rem; margin-top: 1rem; box-sizing: border-box; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<header class="top"><div class="wrap">
+  <h1>The cleanup audit</h1>
+  <p class="lede">Every problem the audit found in the rulebook, in Foundry and in the project's files, each as one question. Nothing has been changed: an answer here is what gets applied.</p>
+  <p class="lede">Tick an answer for each, or write your own in the line under it. When you are done, press <b>Copy my answers</b> and paste them into the chat.</p>
+</div></header>
+
+<div class="bar"><div class="wrap">
+  <span class="count" id="count">Loading the questions</span>
+  <label for="f-section">Show <select id="f-section"><option value="">everything</option></select></label>
+  <label for="f-kind">of kind <select id="f-kind"><option value="">any</option></select></label>
+  <label for="f-open"><input type="checkbox" id="f-open"> unanswered only</label>
+  <span class="grow"></span>
+  <button type="button" class="main" id="copy">Copy my answers</button>
+  <p class="save" id="save" role="status"></p>
+</div></div>
+
+<main><div class="wrap">
+  <div id="list"><p class="empty">Loading the questions.</p></div>
+  <textarea id="out" hidden readonly aria-label="Your answers, to copy"></textarea>
+</div></main>
+
+<script>
+(function () {
+  "use strict";
+  var KIND = {
+    "contradiction": "Two places disagree", "stated-once": "A rule written in one place only", "undefined-word": "A word with no rule",
+    "stale": "Left over from something replaced", "placeholder-unmarked": "A placeholder not marked as one", "ambiguity": "Can be read two ways",
+    "wording-instruction": "Wording: a note to the writer, not a rule", "wording-rationale": "Wording: a reason, not a rule", "wording-repeat": "Wording: the same rule repeated",
+    "other": "Other", "dropped-rule": "A rule the book dropped", "two-sources": "Two sources for one thing", "tool": "A tool that is frozen, failing or stale",
+    "dead": "Dead code or files", "records": "A file that is history"
+  };
+  var SECTION = { book: "The rulebook", foundry: "Foundry and the tools", records: "The project's files" };
+  var NOTE = {
+    book: "Each quote is copied from the rulebook's source, with its file and line.",
+    foundry: "What the system and the tools still carry that the book no longer has. Nothing is removed until you say so.",
+    records: "Which files are current and which are history. A file marked history would move to the archive folder, not be deleted."
+  };
+  var LS = "twod12-audit-2026-11-25";
+  var $ = function (id) { return document.getElementById(id); };
+  var findings = [], answers = {}, db = null, timers = {};
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function lsRead() { try { return JSON.parse(localStorage.getItem(LS) || "{}") || {}; } catch (e) { return {}; } }
+  function lsWrite() { try { localStorage.setItem(LS, JSON.stringify(answers)); } catch (e) { /* the page works without it */ } }
+  function answered(id) { var a = answers[id]; return !!a && (a.choice != null || (a.note || "").trim() !== ""); }
+
+  function say(text, bad) { var s = $("save"); s.textContent = text; s.classList.toggle("bad", !!bad); }
+  function persist(id) {
+    lsWrite();
+    if (!db) return;
+    clearTimeout(timers[id]);
+    timers[id] = setTimeout(function () {
+      var a = answers[id] || {};
+      db.doc("answers/" + id).set({ choice: a.choice == null ? null : a.choice, note: a.note || "" })
+        .then(function () { say("Your answers are saved with this page as you go."); })
+        .catch(function () { say("Saving with the page failed just now. Your answers are kept in this browser; Copy my answers still works.", true); });
+    }, 500);
+  }
+
+  function count() {
+    var n = findings.filter(function (f) { return answered(f.id); }).length;
+    var c = $("count"); c.textContent = n + " of " + findings.length + " ";
+    c.appendChild(el("small", "", "answered"));
+  }
+
+  function setAnswer(id, patch) {
+    answers[id] = Object.assign({ choice: null, note: "" }, answers[id] || {}, patch);
+    persist(id); count(); mark(id);
+  }
+  function mark(id) {
+    var box = document.querySelector('[data-q="' + id + '"]'); if (!box) return;
+    var a = answers[id] || {};
+    box.querySelectorAll(".opt").forEach(function (o, i) { var on = a.choice === i; o.classList.toggle("on", on); o.querySelector("input").checked = on; });
+    var d = box.querySelector(".done"); if (d) d.hidden = !answered(id);
+    var n = box.querySelector(".note input"); if (n && document.activeElement !== n) n.value = a.note || "";
+  }
+
+  function quote(q) {
+    var b = el("blockquote"); b.appendChild(document.createTextNode(q.quote || ""));
+    if (q.file) b.appendChild(el("span", "src", q.file + (q.line ? ":" + q.line : "")));
+    return b;
+  }
+  function card(f) {
+    var a = answers[f.id] || {}, box = el("section", "q"); box.dataset.q = f.id; box.id = "q-" + f.id;
+    var m = el("p", "meta");
+    m.appendChild(el("span", "kind", KIND[f.kind] || f.kind || ""));
+    if (f.where) m.appendChild(el("span", "", "· " + f.where));
+    if (f.confidence && f.confidence !== "high") m.appendChild(el("span", "", "· " + f.confidence + " confidence"));
+    m.appendChild(el("span", "id", f.id));
+    var d = el("span", "done", "· answered"); d.hidden = !answered(f.id); m.appendChild(d);
+    box.appendChild(m);
+    if (f.what) box.appendChild(el("p", "problem", f.what)).style.fontWeight = "700";
+    if (f.problem) box.appendChild(el("p", "problem", f.problem));
+    if (f.quote) box.appendChild(quote(f));
+    (f.other || []).forEach(function (o) { box.appendChild(quote(o)); });
+    [["Where", (f.paths || []).join(", ")], ["How I know", f.evidence], ["How big", f.size], ["If removed", f.risk]].forEach(function (r) {
+      if (!r[1]) return; var p = el("p", "facts"); p.appendChild(el("b", "", r[0] + ": ")); p.appendChild(document.createTextNode(r[1])); box.appendChild(p);
+    });
+    var fs = el("fieldset", "opts"); fs.appendChild(el("legend", "", "Your answer for " + f.id));
+    (f.options || []).forEach(function (text, i) {
+      var l = el("label", "opt" + (a.choice === i ? " on" : "")), r = el("input");
+      r.type = "radio"; r.name = "o-" + f.id; r.id = "o-" + f.id + "-" + i; r.checked = a.choice === i;
+      r.addEventListener("click", function () { setAnswer(f.id, { choice: (answers[f.id] || {}).choice === i ? null : i }); });
+      var s = el("span", "", text);
+      if (i === f.pick) { s.appendChild(document.createTextNode(" ")); s.appendChild(el("span", "pick", "(Claude's pick)")); }
+      l.appendChild(r); l.appendChild(s); fs.appendChild(l);
+    });
+    box.appendChild(fs);
+    var nw = el("div", "note"), n = el("input"); n.type = "text"; n.id = "n-" + f.id; n.placeholder = "Something else, or a note"; n.value = a.note || "";
+    n.setAttribute("aria-label", "A note or another answer for " + f.id);
+    n.addEventListener("input", function () { setAnswer(f.id, { note: n.value }); });
+    nw.appendChild(n); box.appendChild(nw);
+    return box;
+  }
+
+  function render() {
+    var sec = $("f-section").value, kind = $("f-kind").value, open = $("f-open").checked, list = $("list");
+    list.textContent = "";
+    var shown = findings.filter(function (f) { return (!sec || f.section === sec) && (!kind || f.kind === kind) && (!open || !answered(f.id)); });
+    if (!shown.length) { list.appendChild(el("p", "empty", findings.length ? "Nothing left to show with these filters." : "No questions were found.")); return; }
+    var lastSec = null, lastGroup = null;
+    shown.forEach(function (f) {
+      if (f.section !== lastSec) {
+        lastSec = f.section; lastGroup = null;
+        list.appendChild(el("h2", "", SECTION[f.section] || f.section));
+        if (NOTE[f.section]) list.appendChild(el("p", "sectnote", NOTE[f.section]));
+      }
+      if (f.group !== lastGroup) {
+        lastGroup = f.group;
+        var gh = el("div", "grouphead"); gh.appendChild(el("h3", "", f.group || ""));
+        var inGroup = shown.filter(function (x) { return x.section === f.section && x.group === f.group; });
+        var b = el("button", "", "Take Claude's pick for the unanswered here"); b.type = "button";
+        b.addEventListener("click", function () { inGroup.forEach(function (x) { if (!answered(x.id) && x.pick != null) setAnswer(x.id, { choice: x.pick }); }); });
+        gh.appendChild(b); list.appendChild(gh);
+      }
+      list.appendChild(card(f));
+    });
+  }
+
+  function answersText() {
+    var lines = ["2d12 cleanup audit, my answers (" + findings.filter(function (f) { return answered(f.id); }).length + " of " + findings.length + ")"];
+    findings.forEach(function (f) {
+      var a = answers[f.id]; if (!answered(f.id)) return;
+      var t = f.id + ": ";
+      if (a.choice != null) t += "[" + (a.choice + 1) + "] " + ((f.options || [])[a.choice] || "");
+      if ((a.note || "").trim()) t += (a.choice != null ? " | note: " : "note: ") + a.note.trim();
+      lines.push(t);
+    });
+    var open = findings.filter(function (f) { return !answered(f.id); }).map(function (f) { return f.id; });
+    if (open.length) lines.push("Not answered: " + open.join(", "));
+    return lines.join("\n");
+  }
+  $("copy").addEventListener("click", function () {
+    var text = answersText(), out = $("out");
+    var show = function () { out.hidden = false; out.value = text; out.focus(); out.select(); say("Copying was refused here: the answers are in the box at the bottom of the page, selected. Copy them from there."); };
+    try { navigator.clipboard.writeText(text).then(function () { say("Copied. Paste it into the chat."); }, show); } catch (e) { show(); }
+  });
+  ["f-section", "f-kind", "f-open"].forEach(function (id) { $(id).addEventListener("change", function () { render(); try { localStorage.setItem(LS + "-f", JSON.stringify([$("f-section").value, $("f-kind").value, $("f-open").checked])); } catch (e) { /* optional */ } }); });
+
+  function start(data) {
+    findings = Array.isArray(data) ? data : [];
+    answers = lsRead();
+    var secs = [], kinds = [];
+    findings.forEach(function (f) { if (secs.indexOf(f.section) < 0) secs.push(f.section); if (kinds.indexOf(f.kind) < 0) kinds.push(f.kind); });
+    secs.forEach(function (s) { var o = el("option", "", SECTION[s] || s); o.value = s; $("f-section").appendChild(o); });
+    kinds.forEach(function (k) { var o = el("option", "", KIND[k] || k); o.value = k; $("f-kind").appendChild(o); });
+    try { var f = JSON.parse(localStorage.getItem(LS + "-f") || "null"); if (f) { $("f-section").value = f[0] || ""; $("f-kind").value = f[1] || ""; $("f-open").checked = !!f[2]; } } catch (e) { /* optional */ }
+    count(); render();
+    say("Your answers are kept in this browser while you work.");
+    if (!(window.claude && window.claude.use)) return;
+    window.claude.use("db").then(function (d) {
+      if (!d) return;
+      var t = setTimeout(function () { say("Saving with the page isn't answering. Your answers are kept in this browser; Copy my answers still works.", true); }, 10000);
+      d.collection("answers").get().then(function (snap) {
+        clearTimeout(t); db = d;
+        var local = answers; answers = {};
+        snap.docs.forEach(function (doc) { var v = doc.data() || {}; answers[doc.id] = { choice: typeof v.choice === "number" ? v.choice : null, note: typeof v.note === "string" ? v.note : "" }; });
+        Object.keys(local).forEach(function (id) { if (!answers[id] && (local[id].choice != null || (local[id].note || "").trim())) { answers[id] = local[id]; persist(id); } });
+        lsWrite(); count(); render();
+        say("Your answers are saved with this page as you go.");
+      }).catch(function () { clearTimeout(t); say("Your answers are kept in this browser only. Copy my answers still works.", true); });
+    });
+  }
+
+  fetch("findings.json").then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); }).then(start).catch(function () {
+    $("count").textContent = "The questions could not be loaded";
+    $("list").textContent = ""; $("list").appendChild(el("p", "empty", "The file of questions (findings.json) did not load. Reload the page; if it stays like this, tell Claude."));
+  });
+})();
+</script>
