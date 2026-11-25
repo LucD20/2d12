@@ -1,6 +1,6 @@
 # The Ogre Chieftain: the first Elite (the record)
 
-> **Status (2026-11-25, later): DECIDED, IN THE BOOK AND BUILT (Foundry v0.0.508).** Chapter 14 writes it as a stat block; its cards: `cards/stage0/bestiary.json` (Crushing Grip and Hurled Goblin Silver, the rest Gold). Not tested by Lucas. The sheet near the end of this file is the creature; the "Closed" section is the last word.
+> **Status (2026-11-25, later): DECIDED, IN THE BOOK AND BUILT (Foundry v0.0.519).** Chapter 14 writes it as a stat block; its cards: `cards/stage0/bestiary.json` (Crushing Grip and Hurled Goblin Silver, the rest Gold). Not tested by Lucas. The sheet near the end of this file is the creature; the "Closed" section is the last word.
 
 ## Lucas's words (2026-11-25)
 

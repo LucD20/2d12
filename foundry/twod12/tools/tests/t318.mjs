@@ -1,4 +1,4 @@
-// Run with: node tools/tests/run.mjs (or node tools/tests/t311.mjs)
+// Run with: node tools/tests/run.mjs (or node tools/tests/t318.mjs)
 // The Bestiary's rebuild in Foundry (2026-11-25; book, Bestiary; book/bestiary-design.md): Minion ticks (the seven rules), squads of 2, the ranks'
 // CV and no Elite Escalation, Resistance / Weakness / Immunity the word first, and the general settings the four playtest creatures' cards need.
 import fs from "node:fs";

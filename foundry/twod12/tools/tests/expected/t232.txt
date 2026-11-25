@@ -1,6 +1,6 @@
 an area not placed, no creature: blocked? "" | the DC: 13
 a typed DC: 15 | the field in the window (once placed; v0.0.460: before, the Place button stands there): true | not placed, the Place button: true
 the roll's input gives an area the No target row (DC 13): true
-an NPC's Rally Point is a quarter of its Health Pool, rounded up (v0.0.508): true | the old table is gone: true | it spends nothing: true
+an NPC's Rally Point is a quarter of its Health Pool, rounded up (v0.0.519): true | the old table is gone: true | it spends nothing: true
 the book says it: true
 an Action sent to the chat is the new card: true

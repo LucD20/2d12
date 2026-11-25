@@ -1,6 +1,6 @@
 # The Goblin Sneak: the first Minion (the record)
 
-> **Status (2026-11-25, later): DECIDED, IN THE BOOK AND BUILT (Foundry v0.0.508, with Minion ticks).** Chapter 14 writes it as a stat block and the tick rules as its Ticks section; its cards: `cards/stage0/bestiary.json` (all Gold). Not tested by Lucas. The sheet at the end of this file is the creature.
+> **Status (2026-11-25, later): DECIDED, IN THE BOOK AND BUILT (Foundry v0.0.519, with Minion ticks).** Chapter 14 writes it as a stat block and the tick rules as its Ticks section; its cards: `cards/stage0/bestiary.json` (all Gold). Not tested by Lucas. The sheet at the end of this file is the creature.
 
 ## Lucas's words (2026-11-25)
 

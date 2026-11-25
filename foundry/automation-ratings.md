@@ -120,7 +120,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 button on the line), Weight of Judgment (a Speed −2 effect on the Judged creature), Interact (the draw / stow / swap as its choices), Hide (waits
 for the book).
 
-## The Bestiary's rebuilt creatures (v0.0.508, 2026-11-25; `book/cards/stage0/bestiary.json`; Chapter 14's stat blocks)
+## The Bestiary's rebuilt creatures (v0.0.519, 2026-11-25; `book/cards/stage0/bestiary.json`; Chapter 14's stat blocks)
 
 ### Goblin Sneak (Minion; the record: `book/cards/goblin-sneak-redesign.md`)
 | Card | Rating | What is by hand |
@@ -145,8 +145,8 @@ for the book).
 | Hamstringing Axe | Gold | |
 | Barbed Javelin | Gold | (the Setup's draw is text: an NPC's items are flavor) |
 | War Howl | Gold | |
-| Blood for Blood | Gold | (v0.0.508: offered by itself, the moment selfDamage with Vigor and Bloodied; its Basic attack button takes the one that reaches) |
-| Cornered | Gold | (v0.0.508: the hook stateBoon) |
+| Blood for Blood | Gold | (v0.0.519: offered by itself, the moment selfDamage with Vigor and Bloodied; its Basic attack button takes the one that reaches) |
+| Cornered | Gold | (v0.0.519: the hook stateBoon) |
 
 ### Ogre Chieftain (Elite; `book/cards/ogre-chieftain-redesign.md`)
 | Card | Rating | What is by hand |
