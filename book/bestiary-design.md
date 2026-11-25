@@ -381,8 +381,10 @@ Lucas: "Push it to the work branch, then lets do the next NPC. Also, I think its
 
 **So decision 17's first rank is opened: the Default Grunt (proposed, Claude's derivation):** half a Standard. Health 18 (9 / 9); Defenses 13 / 13 and Modifiers +2 / +2 (a rank moves none); about 4 damage to Health a turn at the table (eight Grunts get about 12.4 turns in a normal fight: 51 ÷ 12.4), about 4½ on paper moving and 6 standing; 3 AP and dice that never explode (Chapter 14's two rules for Minor enemies, kept: K7); a Basic attack of 1d4 / 1d6; a 2 AP Special of about 5½ / 8½ on one creature or 2½ / 4½ on each of two. **Open with it: how many cards a Grunt's sheet has** (the Standard's four, or its Basic attacks and one more: Claude's pick). The wisp's record, with the ideas at Grunt size: `cards/grave-wisp-redesign.md`. Waiting for his review.
 
+**Lucas's answers (2026-11-25):** the Default Grunt stands. **Every enemy has two Basic attacks by default, whatever its rank** ("normally one melee and one range, is possible one vs AD another vs WD [...] no hard limits here: A npc can have 2 basic melee attacks, each targeting a different defense for example"); so a sheet has no fixed number of cards. The Grave Wisp's set is chosen (Slipping Touch, Guttering Glance, Pass Through, Dying Flare, Drifting; Resistance Psychic 3, Weakness Holy 3, Immunity Cold; Mind +2; Armor Defense 12, Ward Defense 14: a point moved between its Defenses, the total held). **Resistance, Weakness and Immunity are written the word first** (his 2026-11-19 decision, `decided.md`; Chapter 1 and Foundry still print "Resist 2 Fire").
+
 ### What comes next
 
-- **Lucas's review of the Grave Wisp's ideas and of the Default Grunt** (`cards/grave-wisp-redesign.md`).
+- **Lucas's word on the Grave Wisp's sheet and Claude's review of it** (`cards/grave-wisp-redesign.md`, the last section), then the next creature.
 - The creatures that need block B: a Minion (the ticks, K2), an Elite (K6), a Boss (its turns).
 - **The Foundry pass for every creature at once** (`foundry/foundry-backlog.md`), then **decision 16, to the table**, and one Foundry version.
