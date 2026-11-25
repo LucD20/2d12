@@ -424,7 +424,8 @@
   "options": [
    "Remove the example (the two sample cards above already show a card) and correct the Glossary entry to \"[V] 1d4! / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]\"",
    "Keep the example and correct its Tier 1 to \"[V] 1d4!\" (and the Glossary entry)",
-   "Keep it as it is"
+   "Keep it as it is",
+   "Keep the example and write its Tier 1 as [V] 1d4!; correct the Glossary's Basic Attack row too"
   ],
   "pick": 0,
   "confidence": "high"
@@ -2135,36 +2136,6 @@
   "confidence": "low"
  },
  {
-  "id": "B3-003",
-  "section": "book",
-  "group": "Chapter 9 (glossary)",
-  "kind": "stale",
-  "where": "Chapter 9, Glossary: Basic Attack",
-  "file": "book/rules-src/09-glossary.md",
-  "line": 26,
-  "quote": "a Strike with the weapon you wield ([V] [Mod] / 1[W] + [Mod] / 1[W] + 1[D] + [Mod])",
-  "other": [
-   {
-    "file": "book/cards/basic-actions.json",
-    "line": 380,
-    "quote": "\"[V] 1d4!\","
-   },
-   {
-    "file": "book/rules-src/01-roll.md",
-    "line": 286,
-    "quote": "> **Tier 1:** [V] [Mod]"
-   }
-  ],
-  "problem": "The Basic Attack card's Tier 1 is [V] 1d4! (changed on 2026-11-23, v0.0.481). The glossary row and Chapter 1's example card (\"As X AP\") still write the old Tier 1, [V] [Mod].",
-  "options": [
-   "The card wins: write Tier 1 as [V] 1d4! in the glossary row and in Chapter 1's example card",
-   "The glossary wins: put the Basic Attack card's Tier 1 back to [V] [Mod]",
-   "Keep it as it is"
-  ],
-  "pick": 0,
-  "confidence": "high"
- },
- {
   "id": "B3-004",
   "section": "book",
   "group": "Chapter 9 (glossary)",
@@ -2190,36 +2161,6 @@
   "confidence": "medium"
  },
  {
-  "id": "B3-005",
-  "section": "book",
-  "group": "Chapter 9 (glossary)",
-  "kind": "contradiction",
-  "where": "Chapter 9, Glossary: Bloodied, Strained",
-  "file": "book/rules-src/09-glossary.md",
-  "line": 30,
-  "quote": "No effect by itself: Actions and features use them.",
-  "other": [
-   {
-    "file": "book/rules-src/04-health.md",
-    "line": 158,
-    "quote": "- Your **Speed** is lowered by 2 (to a minimum of 1)."
-   },
-   {
-    "file": "book/rules-src/04-health.md",
-    "line": 163,
-    "quote": "**at the start of your turn, you don't regain your [[Action Points|Reaction Point]]**"
-   }
-  ],
-  "problem": "The glossary says Bloodied and Strained do nothing by themselves. Chapter 4 gives each an effect: Bloodied lowers Speed by 2 and Steadiness by 1, Strained stops you regaining your Reaction Point.",
-  "options": [
-   "Chapter 4 wins. Reword the row's last sentence: \"Bloodied: your Speed is lowered by 2 (minimum 1) and your Steadiness by 1. Strained: you don't regain your Reaction Point. Actions and features use them too.\"",
-   "The glossary wins: Bloodied and Strained do nothing by themselves (their effects leave Chapter 4)",
-   "Keep it as it is"
-  ],
-  "pick": 0,
-  "confidence": "high"
- },
- {
   "id": "B3-006",
   "section": "book",
   "group": "Chapter 9 (glossary)",
@@ -2243,36 +2184,6 @@
   ],
   "pick": 0,
   "confidence": "medium"
- },
- {
-  "id": "B3-007",
-  "section": "book",
-  "group": "Chapter 9 (glossary)",
-  "kind": "contradiction",
-  "where": "Chapter 9, Glossary: Critical",
-  "file": "book/rules-src/09-glossary.md",
-  "line": 45,
-  "quote": "Only Actions with a Critical row use it",
-  "other": [
-   {
-    "file": "book/rules-src/01-roll.md",
-    "line": 45,
-    "quote": "**A Basic attack** (the [[Basic Attack]], [[Fists]], a class's Power Basic attack, an NPC's [[Basic attacks|Basic attack]]) deals **1d10!** more damage."
-   },
-   {
-    "file": "book/rules-src/09-glossary.md",
-    "line": 26,
-    "quote": "A Basic attack's Critical deals 1d10! more."
-   }
-  ],
-  "problem": "The Critical row says only Actions with a Critical row use a Critical. Chapter 1 (and the glossary's own Basic Attack row) gives every Basic attack 1d10! more on a Critical, with no row needed.",
-  "options": [
-   "Chapter 1 wins. Reword the row's second sentence: \"A Basic attack deals 1d10! more, an Action with a Critical row gets that row, any other Action gets nothing more; applying it is optional. Once an encounter, it also raises your Escalation by 1.\"",
-   "The glossary wins: only a Critical row matters (the Basic attacks' 1d10! leaves Chapter 1)",
-   "Keep it as it is"
-  ],
-  "pick": 0,
-  "confidence": "high"
  },
  {
   "id": "B3-008",
@@ -2319,39 +2230,28 @@
   "confidence": "high"
  },
  {
-  "id": "B3-010",
+  "id": "B3-077",
   "section": "book",
   "group": "Chapter 9 (glossary)",
   "kind": "contradiction",
-  "where": "Chapter 9, Glossary: Reaction Point",
+  "where": "Chapter 9, Glossary: Hearing",
   "file": "book/rules-src/09-glossary.md",
-  "line": 149,
-  "quote": "that pays only for Reactions",
+  "line": 93,
+  "quote": "you perceive creatures that make noise within 10 squares as Hidden, even through walls",
   "other": [
    {
-    "file": "book/rules-src/02-turns.md",
-    "line": 48,
-    "quote": "The Reaction Point pays only for [[Reactions]], on your turn or another creature's."
-   },
-   {
-    "file": "book/cards/stage0/paladin.json",
-    "line": 104,
-    "quote": "When you use Smite, you can spend your Reaction Point to roll 1 more Smite die."
-   },
-   {
-    "file": "book/cards/stage0/archer.json",
-    "line": 111,
-    "quote": "you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target"
+    "file": "book/rules-src/03-movement.md",
+    "line": 466,
+    "quote": "around corners and through walls, unless a **thick wall** is between you"
    }
   ],
-  "problem": "The rule says the Reaction Point pays only for Reactions; Smite and Steady Draw both spend it on extra dice, which is no Reaction. \"Specific beats general\" covers it, but the two places say \"only\", and nothing says whether a Staggered creature (no Reactions) can still spend the point this way.",
+  "problem": "The Hearing row says \"even through walls\" with no exception. Chapter 3 (since the Hide rules) stops Hearing at a thick wall, a wall at least 1 square thick.",
   "options": [
-   "Reword the row and Chapter 2's sentence: \"...pays for Reactions, and for what a card says it can be spent on (Smite's extra die, Steady Draw's 2dE); spending it that way is not a Reaction.\"",
-   "Keep it as it is (a card beats the general rule)",
-   "The rule wins: Smite and Steady Draw get another cost"
+   "Reword the row: \"A sense every creature has: you perceive creatures that make noise within 10 squares as Hidden, around corners and through walls, unless a thick wall is between you.\"",
+   "Keep it as it is"
   ],
   "pick": 0,
-  "confidence": "low"
+  "confidence": "medium"
  },
  {
   "id": "B3-011",
@@ -3512,6 +3412,31 @@
   ],
   "pick": 0,
   "confidence": "high"
+ },
+ {
+  "id": "B3-078",
+  "section": "book",
+  "group": "Chapter 14 (bestiary)",
+  "kind": "wording-rationale",
+  "where": "Bestiary, What an Action attacks, rolls and damages",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 164,
+  "quote": "Some creatures deal only [R]: Resolve is most PCs' low pool, so they are the creatures that make PCs Strained.",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 8,
+    "quote": "When you build your character, you assign one to Vigor and the other to Resolve"
+   }
+  ],
+  "problem": "The sentence is commentary on why a designer would pick Resolve damage, and its premise (\"Resolve is most PCs' low pool\") is a guess: every PC chooses which threshold gets the high value.",
+  "options": [
+   "Remove it",
+   "Reword: \"A creature can deal only [R]: it is then the one that makes PCs Strained.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
  },
  {
   "id": "B3-065",

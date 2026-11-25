@@ -25,7 +25,13 @@ const ORDER = f => { const m = /rules-src\/(\d+)-/.exec(f || ""); return m ? Num
 /** Findings left out after Claude's review, each with its reason. */
 const DROP = {
   "B1-057": "Lucas decided on 2026-11-25 that the book says nothing about an NPC's Escalation (\"They might have\").",
+  "B3-003": "the same finding as B1-019 (the Basic Attack's old Tier 1 in Chapter 1's example and the Glossary); its answer is added to B1-019's options",
+  "B3-005": "the same finding as B1-087 (the Glossary's Bloodied, Strained row against Chapter 4)",
+  "B3-007": "the same finding as B1-003 (the Glossary's Critical row against Chapter 1)",
+  "B3-010": "the same finding as B1-029 (the Reaction Point pays only for Reactions; Smite and Steady Draw)",
 };
+/** An answer another reader proposed for the same finding, added to its options. */
+const MORE = { "B1-019": ["Keep the example and write its Tier 1 as [V] 1d4!; correct the Glossary's Basic Attack row too"] };
 const out = [], bad = [];
 for (const file of ["findings-book-1.json", "findings-book-2.json", "findings-book-3.json"]) {
   const list = read(file); if (!list) { console.log(`(no ${file} yet)`); continue; }
@@ -34,7 +40,7 @@ for (const file of ["findings-book-1.json", "findings-book-2.json", "findings-bo
     const n = place(f); if (n == null) { bad.push(`${f.id}: quote not found in ${f.file}:${f.line}`); continue; }
     const other = [];
     for (const o of f.other ?? []) { const k = place(o); if (k == null) bad.push(`${f.id}: the other quote not found in ${o.file}:${o.line} (kept without it)`); else other.push({ ...o, line: k }); }
-    out.push({ id: f.id, section: "book", group: CHAPTER(f.file), order: ORDER(f.file), kind: f.kind, where: f.where, file: f.file, line: n, quote: f.quote, other, problem: f.problem, options: f.options, pick: f.pick, confidence: f.confidence });
+    out.push({ id: f.id, section: "book", group: CHAPTER(f.file), order: ORDER(f.file), kind: f.kind, where: f.where, file: f.file, line: n, quote: f.quote, other, problem: f.problem, options: [...f.options, ...(MORE[f.id] ?? [])], pick: f.pick, confidence: f.confidence });
   }
 }
 out.sort((a, b) => a.order - b.order || a.file.localeCompare(b.file) || a.line - b.line);

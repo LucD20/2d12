@@ -220,6 +220,28 @@
   "confidence": "high"
  },
  {
+  "id": "B3-077",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 93,
+  "where": "Chapter 9, Glossary: Hearing",
+  "kind": "contradiction",
+  "quote": "you perceive creatures that make noise within 10 squares as Hidden, even through walls",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 466,
+    "quote": "around corners and through walls, unless a **thick wall** is between you"
+   }
+  ],
+  "problem": "The Hearing row says \"even through walls\" with no exception. Chapter 3 (since the Hide rules) stops Hearing at a thick wall, a wall at least 1 square thick.",
+  "options": [
+   "Reword the row: \"A sense every creature has: you perceive creatures that make noise within 10 squares as Hidden, around corners and through walls, unless a thick wall is between you.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
   "id": "B3-010",
   "file": "book/rules-src/09-glossary.md",
   "line": 149,
@@ -1579,6 +1601,29 @@
   ],
   "pick": 0,
   "confidence": "high"
+ },
+ {
+  "id": "B3-078",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 164,
+  "where": "Bestiary, What an Action attacks, rolls and damages",
+  "kind": "wording-rationale",
+  "quote": "Some creatures deal only [R]: Resolve is most PCs' low pool, so they are the creatures that make PCs Strained.",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 8,
+    "quote": "When you build your character, you assign one to Vigor and the other to Resolve"
+   }
+  ],
+  "problem": "The sentence is commentary on why a designer would pick Resolve damage, and its premise (\"Resolve is most PCs' low pool\") is a guess: every PC chooses which threshold gets the high value.",
+  "options": [
+   "Remove it",
+   "Reword: \"A creature can deal only [R]: it is then the one that makes PCs Strained.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
  },
  {
   "id": "B3-065",
