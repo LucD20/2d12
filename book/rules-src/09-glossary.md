@@ -47,6 +47,7 @@
 | [[Sight Senses\|**Dark Sight**]] | A Sight Sense: Dim light and Darkness count as Bright for you. |
 | [[Daunted\|**Daunted**]] | Of a source: 1 Bane on all your Rolls, and moving closer to it is Difficult Terrain, while you see it. |
 | [[Dazed\|**Dazed**]] | A condition with a value: you lose that many AP right away (never the Reaction Point); the rest, if any, from your next turn's AP. |
+| [[Escalation die\|**dE**]] | The Escalation die: twice your Escalation's sides, at least a d4 (d4, d4, d6, d8, d10, d12 at Escalation 1 to 6); it never explodes. |
 | [[Deadly Hazards\|**Deadly Hazard**]] | A hazard that kills Minor enemies at once and leaves anyone else Imperiled. |
 | [[Defenses\|**Defense**]] | Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + Power Modifier + Ward value + items + bonuses − penalties), or an Attribute DC (11 + the Attribute). "+1 Defense" raises all of them. |
 | [[Desperate\|**Desperate**]] | You are Down and still fighting (some Nonlethal damage, and a Nonlethal blow took you Down): Slowed 1, or your Slowed value + 1 (at most 3). |

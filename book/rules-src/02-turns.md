@@ -337,6 +337,10 @@ An Action whose card says **Escalation N** can be used only while your Escalatio
 > [!example]
 > Nari's party has Momentum 1, so he starts a fight at Escalation 2. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.
 
+#### Escalation Die
+
+**dE**, the **Escalation die**, is a die with twice your Escalation's sides, **at least a d4**: a d4 at Escalation 1 and 2, a d6 at 3, a d8 at 4, a d10 at 5 and a d12 at 6. It never explodes. A card writes how many to roll: "2dE" at Escalation 3 is 2d6. It is the Escalation of the creature using the card, when it rolls.
+
 NPCs have no Escalation, except Elites (see [[Elite Escalation]]).
 
 ### Momentum

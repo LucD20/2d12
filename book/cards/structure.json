@@ -4583,7 +4583,7 @@
   "name": "Steady Draw",
   "escalation": null,
   "frequency": null,
-  "flavor": "A rattled foe holds still for a heartbeat, and your second arrow follows the first.",
+  "flavor": "A rattled foe holds still for a heartbeat, and when the arrow finds its mark you let the next fly before it can move.",
   "distance": null,
   "area": null,
   "target": null,
@@ -4592,7 +4592,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** Against a Strained target, a Tier 3 deals 1[D] more."
+    "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** Against a Strained target, a Tier 3 deals 1[D] more. **Special:** Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target."
    }
   ],
   "blocks": [],

@@ -1,6 +1,19 @@
 {
  "groups": [
   {
+   "name": "Characters and sheets",
+   "items": [
+    {
+     "id": "steady-draw-de",
+     "v": "v0.0.509",
+     "title": "Steady Draw: 2dE for the Reaction Point, once an encounter",
+     "do": "In a combat, on Kaela's turn, use Basic Attack with her bow against Goblin Sneak until one gets a Tier 2 or 3. On that chat card, click the Special line's \"2dE more\" button. Click it again. Next round (Escalation 2, or higher), try it on a Tier 1 card, then on another Tier 2 card.",
+     "expect": "The Basic Attack card (sheet, HUD, chat) has a Special line: \"Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target.\" The first click spends her Reaction Point and posts a damage card to the Goblin: 2d4 at Escalation 1 or 2 (2d6 at 3, 2d8 at 4...), the bow's subtype, no exploding dice. The second click is refused (already used this encounter); on a Tier 1 card: \"Only on a Tier 2 or 3\"; with no Reaction Point left: refused. In a new combat it works again.",
+     "rev": 1
+    }
+   ]
+  },
+  {
    "name": "Movement",
    "items": [
     {
