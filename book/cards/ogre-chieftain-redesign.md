@@ -1,6 +1,6 @@
 # The Ogre Chieftain: the first Elite (the record)
 
-> **Status (2026-11-25): DECIDED but for one name. The Elite's rule is a slot ("an Elite has an Encounter Action of its own, worth about a turn"); the ogre's cards and the Slam's numbers are his; the Backhand is rewritten his way (it does not disrupt the movement). The last section is the sheet. Open: the Slam's name ("more ogreish"), and one consequence of the Backhand for a Charge. Design only: no card source, no Foundry.** The Bestiary's record is `book/bestiary-design.md`; the earlier creatures', `orc-warrior-redesign.md`, `grave-wisp-redesign.md`, `goblin-sneak-redesign.md`.
+> **Status (2026-11-25): DECIDED (Lucas: "Crack the Ground is good"; the Backhand stays with no roll). The sheet near the end of this file is the creature. Design only: no card source, no Foundry (the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the earlier creatures', `orc-warrior-redesign.md`, `grave-wisp-redesign.md`, `goblin-sneak-redesign.md`.
 
 ## Lucas's words (2026-11-25)
 
@@ -236,4 +236,11 @@ So the "something" has a size: it is worth about seven tenths of a Standard's tu
 - **Hurled Goblin** (Special; Round, 2 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). *The goblin has time to look surprised.* Requirement: a willing Minion ally is within the ogre's Reach. Tier 2: [V] 1d4! Bl. Tier 3: [V] 1 + 1d6! Bl. Effect: the Minion is Repositioned to an empty square adjacent to the target, the ogre's choice (hit or miss); it takes no damage.
 - **Crack the Ground** (the Elite's Encounter Action; Encounter, 2 AP; [Weapon, Save, Area]; Area: Line 3, from any square of the ogre's edge; all creatures in the Area; Instinct Save against its Weapon DC, 13). *It brings the club down two-handed, and the floor gives.* Tier 1: [V] 5 + 2d8 Bl. Tier 2: [V] 3 + 1d8 Bl. Tier 3: no effect. Effect: the squares of the Line are Difficult Terrain for every creature (EoE).
 - **Backhand** (Reaction; Turn, 1R). *You stepped inside its reach as if it weren't looking.* Trigger: an enemy enters a square adjacent to the ogre. Effect: it takes [V] 1 Bl and is Pushed 2. Its movement isn't disrupted: it goes on with the movement it has left.
+
+## Closed (Lucas, 2026-11-25)
+
+"Crack the Ground is good. Charge: Its fine, or we can add a Body/Instinct save (t1 is normal effect, t2 is the 1 damageo only, t3 no effect) if it is too strong."
+
+- **The Encounter Action is Crack the Ground.**
+- **The Backhand stays as written, with no roll** (Claude's call, as he left it): what it takes is 2 squares of movement and 1 damage, once a round for the ogre's Reaction Point; an Evade walks past it; only a Charge loses an Action to it, and that is a lesson learned once. A roll would add an interruption to every approach for a card that small. **On watch for the table; his fix is ready if it proves too strong: a Body or Instinct Save (Tier 1 the whole effect, Tier 2 the 1 damage only, Tier 3 nothing).**
 

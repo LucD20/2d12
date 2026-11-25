@@ -433,8 +433,38 @@ Lucas, on the Elite's open rule (K6): "Ok, lets settle it and start." **Proposed
 
 **DECIDED (Lucas, 2026-11-25: "1. Yes"): K6 is closed. An Elite has an Encounter Action of its own, worth about a turn** (the size is the rank's: one extra turn's worth in a fight, about 9 or 10 more damage to Health at the table or the like in effect; the form is the creature's). **The Default Elite:** a Standard with twice the Health (72), the same Defenses, Modifiers, AP and attacks, and that Encounter Action (by default one that hits several creatures for about twice a Round Special); CV 200. The Ogre Chieftain is decided but for the name of its Encounter Action (`cards/ogre-chieftain-redesign.md`, the last section); its Backhand does not disrupt the mover (his ruling: a Trigger, 2 squares of movement and 1 damage, not an Action).
 
+**The Ogre Chieftain is decided** (Lucas: "Crack the Ground is good"; a Charge against the Backhand: "Its fine", with a Body or Instinct Save kept ready if the table finds it too strong).
+
+### The Boss: its rule, proposed three ways (2026-11-25; decision 9 of section 6; nothing decided)
+
+**What is fixed:** a Boss is "for a single-boss or boss + 1 to 2 fight, with its own turn mechanic" (G2: Nimble's one turn a PC, or Draw Steel's two turns); classes never shut it down (H9). **From the research:** one creature against a party loses on turns, is shut down by one condition, then dies in a round or grinds; the fixes tables accept are more turns and a protection the boss visibly pays for; a free negation is the most disliked rule found; the bosses tied to the number of PCs (Nimble, ICON) get the best verdicts.
+
+**Its Health (all three ways): 36 for each PC it stands for** (four Standards' worth against four PCs: 144). A Boss alone is the whole budget, CV 100 a PC; with one or two others it stands for fewer PCs.
+
+**The count** (a lone Boss, the PCs each dealing 17 a turn at the table; the fight ends in round 2.6 whatever the way; "needs" is damage to Health a Boss turn for a normal fight's 1½ Rally Points a PC):
+
+| The Boss's turns | 3 PCs | 4 PCs | 5 PCs | 6 PCs |
+|---|---|---|---|---|
+| **1. A turn after each PC's turn** | 6.4 turns, needs 6.0 | 8.5, needs 6.0 | 10.6, needs 6.0 | 12.6, needs 6.1 |
+| **2. Two turns a round** | 4.4, needs 8.6 | 4.2, needs 12.0 | 4.3, needs 14.8 | 4.2, needs 18.2 |
+| **3. A turn for each Standard's worth of Health it has left** | 4.3, needs 8.9 | 5.4, needs 9.5 | 6.4, needs 9.9 | 7.5, needs 10.2 |
+
+- **Way 1 (Claude's pick): a turn after each PC's turn, 3 AP each.** One stat block serves any party: the damage a turn it needs is 6.0 for 3, 4, 5 or 6 PCs, about three quarters of a Standard's turn, which is what 3 AP of a Standard's cards deal. It is the zipper as it is (sides alternate), with the Boss taking every enemy place. A condition costs it a quarter of its round, not its round: the dilution the research names as the fair protection. No number on its sheet is above a PC's but its Health.
+- **Way 2: two full turns a round.** Lumpy (a third of a PC a turn or more), and what it must deal changes with the party's size (8.6 to 18.2): a table by party size, or a Boss that is wrong for three PCs and for six.
+- **Way 3: the shrinking Boss** (the Angry GM's paragon): as many turns as it has Standards' worth of Health left; each time it loses 36 Health it loses a turn and its conditions end. It is exactly the Standards it replaces; it grows weaker as the fight goes, which some tables find an anticlimax; one more thing to track.
+
+**What way 1 needs written (Claude's proposals):**
+
+1. **Its turns:** a Boss built for N PCs takes N turns a round, one after each PC's turn (after each of its enemies' turns, up to N). Each turn it regains 3 AP.
+2. **A Round is the round:** its Round Actions are once a round, not once a turn; it regains its one Reaction Point at the start of the round.
+3. **AP taken from it** (Dazed, Slowed) come off one of its turns a round only.
+4. **Its EoT conditions end at the end of its next turn,** as for anyone: on a Boss that is soon.
+5. **Never shut down (H9): at the end of each of its turns, a Boss can take 1d6 damage that nothing reduces to end one condition on itself.** The players' card still did something, the Boss visibly pays, and the rule is printed: the three things the accepted protections share.
+6. **Its Encounter Actions** are the creature's own (as an Elite's): its arc, and where the big dice are.
+
+**Open with it:** which creature the first Boss is (there was none in the old Bestiary).
+
 ### What comes next
 
-- **The Ogre Chieftain's last two points** (the name of its Encounter Action; a Charge against its Backhand).
-- A Boss (its turns, its Health a PC, the rule against shutdown: G2, H9).
+- **Lucas's choice for the Boss's rule, and the first Boss's creature.**
 - **The Foundry pass for every creature at once** (`foundry/foundry-backlog.md`), then **decision 16, to the table**, and one Foundry version.
