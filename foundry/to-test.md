@@ -21,20 +21,7 @@ differ):
 
 ## Hiding
 
-### hide-owner-only · v0.0.518 · The Hide lines: only the GM and the hider's player
-Do: Make Kaela hide from Goblin Sneak. Select or hover her as the GM, as Kaela's player, and as another player (Sylwen's).
-Expect: The GM and Kaela's player see the lines and plates; Sylwen's player sees none.
-
-### hiding-fold · v0.0.518 · The HUD's Hiding entry folds to its title
-Do: Select Kaela while she hides from two creatures; click "Hiding" in the HUD's Situational tab; click it again. Reload, select her.
-Expect: The first click folds it to its title ("Hiding · from Hide · 2" with a chevron), the second unfolds it. After a reload it stays as you left it (for you only).
-
 ## The HUD
-
-### charge-reselect · v0.0.518 · Charge by targeting: clicks select as usual, the Charge's candidates too
-Do: As the GM, start Orc Warrior's Charge (Durgan within its reach). Click Durgan, then click the Orc again; click an empty square; target Durgan (T) and click the Charge button.
-Expect: Clicking Durgan selects him (the gold squares under him don't stop the click), and clicking the Orc selects it again with its Charge bar back in its HUD. Targeting Durgan aims the Charge at him; only the Charge button (or Enter) charges.
-Rev: 4
 
 ## Starting a combat
 
