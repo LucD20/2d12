@@ -4,7 +4,7 @@ import { tokenDistance, lightAt, seenLight, sightSenses, regionHasPoint, vertica
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
 import { sysCard, sysLine, apText } from "./sysmsg.mjs";
-import { logMove, logPush, voidLastAction, patchLine } from "./enclog.mjs";   // v0.0.223: the Encounter Log
+import { logMove, logPush, voidLastAction, patchLine, logBlocked } from "./enclog.mjs";   // v0.0.223: the Encounter Log
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells, tokensInEmanation } from "./template.mjs";
 import * as MK from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
 import { tierDistance } from "./inline.mjs";
@@ -2075,8 +2075,10 @@ export function registerMovement() {
       if (!ch && way.solidCorner) { warn("You can't cut a solid corner (a wall, a pillar or an object reaches the corner point): go around it."); return false; }
       // the core rework batch 4 (book, Chapter 3, Creatures in your way): an enemy's space and the diagonal between two enemies block your movement;
       // Tumble (or Cut Through, Weave) passes them
-      if (!passing && way.through.length) { warn(`${way.through.join(", ")}'s space blocks your movement (an unwilling creature's space). Tumble to pass through, or go around.`); return false; }
-      if (!passing && way.cornerBlock) { warn(`You can't slip diagonally between ${way.cornerBy.join(" and ")}: two enemies corner to corner block it. Tumble to pass, or go around.`); return false; }
+      // v0.0.511 (core rework section R, batch 4): each refusal goes to the Encounter Log (moves refused by blocking)
+      const blockMode = () => (num(c.getFlag(F, "evadeMove")) > 0 ? "Evade" : ch ? "Charge" : "Advance");
+      if (!passing && way.through.length) { warn(`${way.through.join(", ")}'s space blocks your movement (an unwilling creature's space). Tumble to pass through, or go around.`); try { logBlocked(doc, way.through.join(", "), blockMode()); } catch (e) { /* no log */ } return false; }
+      if (!passing && way.cornerBlock) { warn(`You can't slip diagonally between ${way.cornerBy.join(" and ")}: two enemies corner to corner block it. Tumble to pass, or go around.`); try { logBlocked(doc, `the diagonal between ${way.cornerBy.join(" and ")}`, blockMode()); } catch (e) { /* no log */ } return false; }
       // Evade can't enter or pass through Difficult Terrain (the path costs more than its length, or crosses Darkness); batch 4: an ally's space is the one
       // Difficult Terrain it can cross (at double cost)
       const dist = num(movement?.pending?.distance), cost = num(movement?.pending?.cost);

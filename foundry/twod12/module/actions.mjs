@@ -1665,6 +1665,13 @@ export async function useAction(actor, item, opts = {}) {
         doubles: !!r0.doubles,
         crit: !!r0.crit
       } : null;
+      // v0.0.511 (core rework section R, batch 4): Flanking on each target of a [Melee] Action (flanking.mjs, the rule the roll dialog used)
+      if (it.traits.has("melee") && selfToken && canvas?.ready) {
+        try {
+          const { flankingFor } = await import("./flanking.mjs");
+          for (const t of tgs) { const tok = canvas.tokens?.placeables?.find(x => x.document?.uuid === t.uuid || x.actor?.uuid === t.uuid); if (!tok) continue; const fl = flankingFor(selfToken, tok); if (fl.boons > 0) t.flank = fl.boons; else if (fl.raw > 0) t.flankCancel = true; }
+        } catch (e) { /* no flanking info */ }
+      }
       logAction(selfToken ?? actor, item, { ap: version.ap, targets: tgs, save: saveAct ? (TWOD12.attributes[it.vs] ?? it.vs ?? "") : "", free: !!opts.free, roll });
     } catch (e) { console.warn("twod12 | encounter log", e); }
   }

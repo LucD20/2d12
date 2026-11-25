@@ -99,7 +99,7 @@ export function lineText(e, nm = r => r?.name ?? "?", an = n => n) {
   const d = e.d ?? {};
   switch (e.k) {
     case "act": {
-      const tg = (d.tg ?? []).map(t => `${nm(t)}${t.tier != null && !d.save ? ` T${t.tier}${t.crit ? "!" : ""}` : ""}`);
+      const tg = (d.tg ?? []).map(t => `${nm(t)}${t.tier != null && !d.save ? ` T${t.tier}${t.crit ? "!" : ""}` : ""}${t.flank ? " (flanked)" : t.flankCancel ? " (flank cancelled)" : ""}`);
       const vs = tg.length ? ` vs ${tg.join(", ")}${d.save ? ` (${d.save} Save)` : ""}` : "";
       return `${an(d.name)}${d.multiAp ? ` ${d.ap}${d.react ? "R" : "A"}` : ""}${vs}`;
     }
@@ -114,6 +114,8 @@ export function lineText(e, nm = r => r?.name ?? "?", an = n => n) {
     case "cond": return `${nm(e.who)}: ${cleanEffectName(d.name)}`;
     case "state": return `${nm(e.who)} becomes ${d.state}${d.by ? ` (${d.by})` : ""}${d.cardLine ? ` · ${d.cardLine}` : ""}`;
     case "rx": return `${nm(e.who)} ${d.outcome === "used" ? "uses" : d.outcome === "skipped" ? "skipped" : "passed"} ${an(d.action)}${d.trigger ? ` on ${d.trigger}` : ""}${d.detail ? ` (${d.detail})` : ""}`;
+    case "block": return `${nm(e.who)}'s ${d.mode || "movement"} is blocked${d.by ? ` by ${d.by}` : ""}`;
+    case "check": return `${nm(e.who)}: ${d.label} ${d.total} vs DC ${d.dc}${d.vs ? ` (${d.vs})` : ""}${d.banes ? `, ${d.banes} Bane${d.banes === 1 ? "" : "s"}` : ""} T${d.tier}`;
     case "turn": return `End of turn: AP ${d.apSpent ?? 0}/${d.apMax ?? 4}${d.apKept ? ` · kept ${d.apKept}${d.guard ? ` (+${d.guard} Guard)` : ""}` : ""}`;
     case "down": return `${nm(e.who)} goes Down`;
     case "up": return `${nm(e.who)} is back up`;
@@ -189,7 +191,8 @@ export function computeEncounterStats(log, creatures = []) {
     id: c.id, actorUuid: c.actorUuid ?? "", name: c.fullName ?? c.name ?? "?", abbr: c.abbr ?? c.name ?? "?",
     side: c.side ?? "npc", maxHp: Number(c.maxHp) || 0, startHp: Number.isFinite(c.startHp) ? c.startHp : (Number(c.maxHp) || 0),
     liveHp: Number.isFinite(c.liveHp) ? c.liveHp : null,
-    rawTaken: 0, reducedTaken: 0, reducedNotes: [], selfAllyTaken: 0, adjust: 0,
+    rawTaken: 0, reducedTaken: 0, reducedNotes: [], selfAllyTaken: 0, adjust: 0, cardsTaken: 0,
+    rawDealt: 0, removedOff: 0, cardsOff: 0,   // v0.0.511: its own damage, before reductions, and what reductions (and cards among them) took off it
     takenV: 0, takenR: 0, dealtV: 0, dealtR: 0, dealtAllies: 0, prevented: 0,
     healGiven: 0, healTaken: 0, rpSpent: 0,
     t1: 0, t2: 0, t3: 0, crit: 0, rolls: 0,
@@ -209,7 +212,7 @@ export function computeEncounterStats(log, creatures = []) {
     return byId.get(ref.id) ?? byUuid.get(ref.actorUuid ?? ref.uuid) ?? byName.get(cleanCreatureName(ref.name)) ?? null;
   };
   const labelOf = ref => find(ref)?.name ?? ref?.name ?? "?";
-  const sectionR = { crits: [], states: [], rxCollision: [], pushZero: [] };
+  const sectionR = { crits: [], states: [], rxCollision: [], pushZero: [], flanks: [], flankCount: { pc: 0, npc: 0, cancelled: 0 }, blocks: [], checks: [] };
   const turnSeen = new Set();
 
   for (const e of active) {
@@ -239,6 +242,10 @@ export function computeEncounterStats(log, creatures = []) {
             if (tg.tier === 1) src.t1++;
             else if (tg.tier === 2) src.t2++;
             else if (tg.tier >= 3) src.t3++;
+            if (tg.flank || tg.flankCancel) {   // v0.0.511 (section R, batch 4): Flanking Boons gained, by side, and the cancels
+              if (tg.flank) sectionR.flankCount[src.side === "pc" ? "pc" : "npc"] += Number(tg.flank) || 1; else sectionR.flankCount.cancelled++;
+              sectionR.flanks.push(`R${r} ${src.name} ${d.name} vs ${labelOf(tg)}${tg.flank ? "" : " (cancelled)"}`);
+            }
             if (tg.crit || d.roll?.crit) {
               src.crit++;
               sectionR.crits.push(`R${r} ${src.name} ${d.name} vs ${labelOf(tg)}${d.roll?.critDie ? `: ${d.roll.critDie}` : ""}${d.roll?.critType ? ` ${d.roll.critType}` : ""}`);
@@ -261,7 +268,7 @@ export function computeEncounterStats(log, creatures = []) {
       const red = Number.isFinite(d.reducedBy) ? Number(d.reducedBy) : Math.max(0, raw - amt);
       if (src) {
         if (d.ally) src.dealtAllies += amt;
-        else { src.dealtV += amtV; src.dealtR += amtR; src.byRound[r].dealt += amt; }
+        else { src.dealtV += amtV; src.dealtR += amtR; src.byRound[r].dealt += amt; if (!d.manual) { src.rawDealt += raw; src.removedOff += red; src.cardsOff += Number(d.cards) || 0; } }
       }
       if (dst) {
         if (d.manual) {
@@ -271,6 +278,7 @@ export function computeEncounterStats(log, creatures = []) {
         } else {
           dst.rawTaken += raw;
           dst.reducedTaken += red;
+          dst.cardsTaken += Number(d.cards) || 0;
           if (d.reducedNote) dst.reducedNotes.push(`R${r}: ${d.reducedNote}`);
         }
         dst.takenV += amtV;
@@ -298,6 +306,8 @@ export function computeEncounterStats(log, creatures = []) {
       }
       continue;
     }
+    if (e.k === "block") { sectionR.blocks.push(`R${r} ${labelOf(e.who)}${d.mode ? ` (${d.mode})` : ""}${d.by ? ` by ${d.by}` : ""}`); continue; }
+    if (e.k === "check") { sectionR.checks.push(`R${r} ${labelOf(e.who)} ${d.label} ${d.total}/${d.dc}${d.vs ? ` vs ${d.vs}` : ""}${d.banes ? ` (${d.banes} Bane${d.banes === 1 ? "" : "s"})` : ""} T${d.tier}`); continue; }
     if (e.k === "push" && Number(d.n) === 0) {
       sectionR.pushZero.push(`R${r} ${labelOf(e.who)} → ${labelOf(d.target)} Pushed 0${d.note ? ` (${d.note})` : ""}`);
       continue;
@@ -404,8 +414,19 @@ export function exportAnalysis(log, creatures = [], { title = "Encounter", outco
   }
 
   const sr = st.sectionR;
-  if (sr.crits.length || sr.states.length || sr.rxCollision.length || sr.pushZero.length) {
+  // v0.0.511 (the Bestiary: a monster is checked on what would have reached a plain PC): each enemy's damage before reductions, what reductions took, and
+  // the class cards' share of it (another creature's reduction, Judge, Guard a card gave; the unspent AP's Guard and Resist are not cards)
+  if (st.npcs.some(c => c.rawDealt > 0)) {
+    lines.push("", "## Enemy Damage: What Reached the Party, and What Cards Took");
+    lines.push("| Enemy | Raw | Reductions took | Of it, class cards | Landed | Would reach a plain PC |");
+    lines.push("|---|---:|---:|---:|---:|---:|");
+    for (const c of st.npcs.filter(x => x.rawDealt > 0)) lines.push(`| ${c.name} | ${c.rawDealt} | ${c.removedOff} | ${c.cardsOff} | ${c.dealtV + c.dealtR} | ${c.dealtV + c.dealtR + c.cardsOff} |`);
+  }
+  if (sr.crits.length || sr.states.length || sr.rxCollision.length || sr.pushZero.length || sr.flanks.length || sr.blocks.length || sr.checks.length) {
     lines.push("", "## Core Rework Watchlist (Section R)");
+    if (sr.flanks.length) lines.push(`- **Flanking Boons:** PCs ${sr.flankCount.pc}, enemies ${sr.flankCount.npc}, cancelled ${sr.flankCount.cancelled} · ${sr.flanks.join("; ")}`);
+    if (sr.blocks.length) lines.push(`- **Moves refused by blocking:** ${sr.blocks.join("; ")}`);
+    if (sr.checks.length) lines.push(`- **Checks (Tumbles and others):** ${sr.checks.join("; ")}`);
     if (sr.crits.length) lines.push(`- **Crits:** ${sr.crits.join("; ")}`);
     if (sr.states.length) lines.push(`- **States & Lines:** ${sr.states.join("; ")}`);
     if (sr.rxCollision.length) lines.push(`- **Reactions on Collision:** ${sr.rxCollision.join("; ")}`);
@@ -478,7 +499,7 @@ export function logAction(actor, item, { ap = 0, targets = [], save = "", free =
   const multiAp = new Set((item?.system?.versions ?? []).map(v => v.ap)).size > 1;
   const payload = {
     name: item?.name ?? "?", ap, multiAp,
-    tg: targets.map(t => ({ id: idOf(t.uuid) || t.id || "", name: cleanCreatureName(t.name), tier: t.tier ?? null, ...(t.crit ? { crit: true } : {}) })),
+    tg: targets.map(t => ({ id: idOf(t.uuid) || t.id || "", name: cleanCreatureName(t.name), tier: t.tier ?? null, ...(t.crit ? { crit: true } : {}), ...(t.flank ? { flank: t.flank } : {}), ...(t.flankCancel ? { flankCancel: true } : {}) })),
     save, free, react: !!item?.system?.reaction
   };
   if (roll) payload.roll = roll;
@@ -498,7 +519,7 @@ export function noteCardDamageApplied(actorUuid) {
 }
 
 /** v0.0.488: rich card-damage entry (raw, net Vigor/Resolve, reducedBy, protector source, ally flag, collision). Returns the entry id for Undo voiding. */
-export async function logDamageCard({ origin = null, target = null, v = 0, r = 0, raw = null, reducedBy = 0, reducedSource = null, reducedNote = "", ally = false, collision = false, note = "" } = {}) {
+export async function logDamageCard({ origin = null, target = null, v = 0, r = 0, raw = null, reducedBy = 0, reducedSource = null, reducedNote = "", ally = false, collision = false, note = "", mods = [] } = {}) {
   const n = (Number(v) || 0) + (Number(r) || 0);
   if (n <= 0 && !(Number(raw) > 0)) return "";
   const tgtRef = refOf(target);
@@ -520,11 +541,29 @@ export async function logDamageCard({ origin = null, target = null, v = 0, r = 0
     ...(origin ? { origin: refOf(origin) } : {}),
     ...(ally ? { ally: true } : {}),
     ...(collision ? { collision: true } : {}),
-    ...(note ? { note } : {})
+    ...(note ? { note } : {}),
+    // v0.0.511 (the Bestiary: "the Encounter Log keeps apart what their class cards took"): what cards removed (another creature's reduction or Judge, Guard a card
+    // gave) apart from what the target did itself (the unspent AP's Guard) and Resist
+    ...(cardShare(mods) ? { cards: cardShare(mods) } : {})
   }, id);
   return id;
 }
 
+/** Pure (v0.0.511): of a damage's reductions (damage.mjs report.mods), what cards took: another creature's reduction (byUuid) or Judge, and Guard
+ *  beyond the unspent AP's. 0 when none. */
+export function cardShare(mods = []) {
+  let n = 0;
+  for (const m of mods ?? []) {
+    const v = Math.max(0, Number(m?.v) || 0);
+    if (m?.kind === "reduce" && (m.byUuid || /^Judge \(/.test(String(m.label ?? "")))) n += v;
+    else if (m?.kind === "guard") n += Math.max(0, v - Math.max(0, Number(m.ap) || 0));
+  }
+  return n;
+}
+/** v0.0.511 (core rework section R, batch 4): a movement refused because a creature blocks the way (Chapter 3, Creatures in your way). */
+export const logBlocked = (actor, by = "", mode = "") => logLine("block", refOf(actor), { by, mode });
+/** v0.0.511 (section R: Tumbles and their Checks): a Check rolled from a card (a Tumble's Appeal or Instinct Check against its targets). */
+export const logCheck = (actor, { label = "Check", total = 0, dc = 13, tier = 0, vs = "", banes = 0 } = {}) => logLine("check", refOf(actor), { label, total, dc, tier, ...(vs ? { vs } : {}), ...(banes ? { banes } : {}) });
 /** v0.0.488: log every offered Reaction row (used, passed, or skipped) when a Reactions stack finishes. */
 export function logReactionMoment(st) {
   if (!game.combat?.started || !st?.rows?.length) return;

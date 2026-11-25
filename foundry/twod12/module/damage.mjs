@@ -57,7 +57,7 @@ export async function applyToActor(actor, a, opts = {}) {
     }
   } catch (e) { console.warn("twod12 | Judge", e); }
   const g = absorbGuard(actor.system.guard, a, actor.system.apGuard, opts.guardFirst === "M" ? "M" : "B");   // v0.0.283: the creature's choice of pool
-  if (g.taken && rep) rep.push({ kind: "guard", label: "Guard", v: g.taken });
+  if (g.taken && rep) rep.push({ kind: "guard", label: "Guard", v: g.taken, ap: g.takenAp ?? 0 });   // v0.0.511: ap, the unspent AP's share (the rest is Guard a card gave: the Encounter Log)
   if (g.taken) { a.B = g.a.B; a.M = g.a.M; early["system.guard"] = g.guard; early["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
   // v0.0.272: the Guard and the reduction this damage used are written first, so a Guard a "would go Down" Reaction gives is not overwritten
   if (Object.keys(early).length) await writeDamage(actor, early);

@@ -237,7 +237,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
     const srcTok = src?.documentName === "Token" ? src : src?.token ?? src?.getActiveTokens?.()[0]?.document ?? src?.prototypeToken ?? null;
     const tgtTok = actor?.token ?? actor?.getActiveTokens?.()[0]?.document ?? actor?.prototypeToken ?? null;
     const isAlly = !!src && ((src?.actor ?? src)?.uuid === actor.uuid || sameSideCheck(srcTok?.disposition, tgtTok?.disposition));
-    try { dmgLogId = (await (await import("./enclog.mjs")).logDamageCard({ origin: src, target: actor, v: took.B, r: took.M, raw: rawPre, reducedBy: redBy, reducedSource: protActor, reducedNote: redParts.join(", "), ally: isAlly, note: g.crit ? "Critical" : "" })) || ""; } catch (e) { console.warn("twod12 | encounter dmg log", e); }
+    try { dmgLogId = (await (await import("./enclog.mjs")).logDamageCard({ origin: src, target: actor, v: took.B, r: took.M, raw: rawPre, reducedBy: redBy, reducedSource: protActor, reducedNote: redParts.join(", "), ally: isAlly, note: g.crit ? "Critical" : "", mods: report.mods ?? [] })) || ""; } catch (e) { console.warn("twod12 | encounter dmg log", e); }
     if (netTot > 0) {
       try { await (await import("./damagelog.mjs")).logDamage({ originUuid: s.originUuid ?? "", originName: src?.name ?? s.name ?? "", targetName: r.name, targetUuid: r.uuid ?? "", amount: netTot }); } catch (e) { console.warn("twod12 | damage log", e); }
       try { (await import("./halfhint.mjs")).clearHalfHint(s.originUuid); } catch (e) { /* none */ }

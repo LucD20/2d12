@@ -547,6 +547,8 @@ async function doCheck(kind, cfg, ctx = {}) {
     const dc = Number(data.dc) || 13;
     const chk = await performCheck({ mod, boons: fxm.boons + manB, banes: fxm.banes + manN, dc, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
     expireOnUse(actor, new Set(), new Set(), { rolled: true }).catch(() => {});   // v0.0.458: a Bane "on its next roll" (Dirty Trick) is spent by a Save or a Check too
+    // v0.0.511 (core rework section R: Tumbles and their Checks): a card's Check goes to the Encounter Log (a Save is logged by its own card)
+    if (kind === "Check") { try { (await import("./enclog.mjs")).logCheck(actor, { label, total: Number(chk.total) || 0, dc, tier: Number(chk.tier) || 0, vs: vsT?.names ?? "", banes: vsT?.banes ?? 0 }); } catch (e) { /* no log */ } }
     const labels = [`\u2264 ${dc - 1}`, `${dc}\u2013${dc + 6}`, `\u2265 ${dc + 7}`];
     const dbl = chk.doubles;
     const rows = [];
