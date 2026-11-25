@@ -337,7 +337,7 @@ An Action whose card says **Escalation N** can be used only while your Escalatio
 > [!example]
 > Nari's party has Momentum 1, so he starts a fight at Escalation 2. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.
 
-NPCs have no Escalation, except Elites (see [[Elite Escalation]]).
+NPCs have no Escalation.
 
 ### Momentum
 

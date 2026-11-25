@@ -1,7 +1,7 @@
 <!-- part: Part III: Reference -->
 # Chapter 6: Basic Actions
 
-Every creature can use these Actions, except that an NPC has no Basic Attack card (its own Basic attack takes its place; it uses Fists only without a weapon that fits it) and no Steel Yourself (it has no Rally Points): see [[The Basic attack]].
+Every creature can use these Actions, except that an NPC has no Basic Attack card (its own Basic attacks take its place; it uses Fists only without a weapon that fits them) and no Steel Yourself (it has no Rally Points): see [[Basic attacks]].
 
 @@CARD:Advance@@
 

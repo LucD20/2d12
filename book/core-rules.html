@@ -349,7 +349,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p>A result is a <strong>Critical</strong> when you roll <strong>Doubles on a result that is already Tier 3</strong>, when your total is <strong>20 or more above the DC</strong> (33 or more against DC 13), or when a <strong><span class="kw-pos">Favored</span></strong> roll shows <strong>the same number on all three dice</strong>. Doubles that raise a Tier 2 to Tier 3 are not a Critical.</p>
 <p>On a Critical you get the Tier 3 result, and:</p>
 <ul>
-<li><strong>A Basic attack</strong> (the <a class="xref" href="#card-basic-attack">Basic Attack</a>, <a class="xref" href="#card-fists">Fists</a>, a class's Power Basic attack, an NPC's <a class="xref" href="bestiary.html#the-basic-attack">Basic attack</a>) deals <strong>1d10!</strong> more damage. Before you roll it, choose one of the damage types the Action deals, with its pool and subtype: an Action that deals only [V] Piercing adds <span class="pool-b">[V] 1d10!</span> <span class="dcode" style="--dc:#44513f;--dcd:#a9b8a4">Pi</span>; one that deals [V] Piercing and [R] <span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span> adds either, your choice.</li>
+<li><strong>A Basic attack</strong> (the <a class="xref" href="#card-basic-attack">Basic Attack</a>, <a class="xref" href="#card-fists">Fists</a>, a class's Power Basic attack, an NPC's <a class="xref" href="bestiary.html#basic-attacks">Basic attack</a>) deals <strong>1d10!</strong> more damage. Before you roll it, choose one of the damage types the Action deals, with its pool and subtype: an Action that deals only [V] Piercing adds <span class="pool-b">[V] 1d10!</span> <span class="dcode" style="--dc:#44513f;--dcd:#a9b8a4">Pi</span>; one that deals [V] Piercing and [R] <span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span> adds either, your choice.</li>
 <li><strong>An Action with a Critical row</strong> (written under Tier 3 and above the Effects, such as <a class="xref" href="#card-trip">Trip</a> and <a class="xref" href="#card-shove">Shove</a>) gets that effect instead. A Basic attack with a Critical row of its own uses the row, not the 1d10!.</li>
 <li><strong>Any other Action:</strong> a Critical is simply a Tier 3.</li>
 </ul>
@@ -538,7 +538,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p>Vigor and Resolve are not the <span class="at-body">Body</span> and <span class="at-mind">Mind</span> Attributes: an Action of any Attribute can deal either.</p>
 <p>Some Actions include two types of damage. For example, "<span class="pool-b">[V] 1d4+1d6+3</span> <span class="dcode" style="--dc:#4a5058;--dcd:#c3c9d1">Sl</span> + <span class="pool-m">[R] 1d8</span> <span class="dcode" style="--dc:#a3335c;--dcd:#e07a9e">Ps</span>" deals 1d4+1d6+3 <span class="dmgword" style="--dc:#4a5058;--dcd:#c3c9d1">Slash</span> Vigor damage and 1d8 <span class="dmgword" style="--dc:#a3335c;--dcd:#e07a9e">Psychic</span> Resolve damage.</p>
 <h3 id="damage-subtypes">Damage Subtypes</h3>
-<p>Subtypes don't have rules by themselves, but other rules use them, such as Resist and Weak. They are shortened to <strong>two letters</strong>, so they never look like the damage types [V], [R] and [C]:</p>
+<p>Subtypes don't have rules by themselves, but other rules use them, such as Resistance and Weakness. They are shortened to <strong>two letters</strong>, so they never look like the damage types [V], [R] and [C]:</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -585,17 +585,17 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 </tbody>
 </table></div>
-<h3 id="resist-weak-and-immune">Resist, Weak and Immune</h3>
-<p>Some creatures take less, or more, damage of a subtype. It is written on the creature, with a number: <strong>Resist 2 Fire</strong>, <strong>Weak 5 <span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span></strong>, <strong>Immune Fire</strong>. A Hatchling might have Resist 2 Fire, a Young dragon Resist 5 and an Ancient one Immune Fire.</p>
+<h3 id="resistance-weakness-and-immunity">Resistance, Weakness and Immunity</h3>
+<p>Some creatures take less, or more, damage of a subtype. It is written on the creature <strong>the word first, then each subtype with its number</strong>: <strong>Resistance Fire 2</strong>, <strong>Weakness <span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span> 5</strong>, <strong>Immunity Fire</strong>; with several subtypes, <strong>Weakness Fire 2, <span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span> 3</strong>. On a stat block each kind has one line: <strong>Resistance</strong> Fire 5, <span class="dmgword" style="--dc:#136f8f;--dcd:#4fc3e8">Cold</span> 2 · <strong>Weakness</strong> <span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span> 5 · <strong>Immunity</strong> <span class="dmgword" style="--dc:#136f8f;--dcd:#4fc3e8">Cold</span>. A rule that gives one says "you gain Resistance Fire 2"; one that names the kind with no number says "a creature with Fire Weakness". A Hatchling might have Resistance Fire 2, a Young dragon Resistance Fire 5 and an Ancient one Immunity Fire.</p>
 <ul>
-<li>Each time you take damage from one Action or effect, add up <strong>all its damage of that subtype</strong>, Vigor and Resolve together, and apply your line <strong>once</strong>: <strong>Resist N</strong> reduces the total by N (minimum 0), <strong>Weak N</strong> adds N. "<span class="pool-b">[V] 1d8</span> <span class="dcode" style="--dc:#a63a17;--dcd:#ef6a3a">Fi</span> + <span class="pool-m">[R] 5</span> <span class="dcode" style="--dc:#a63a17;--dcd:#ef6a3a">Fi</span>" against Resist 5 Fire is (1d8 + 5) − 5: one reduction, never one per part.</li>
-<li>When the damage is split between Vigor and Resolve, the resisting creature chooses which part it reduces first; for Weak, the origin chooses where the extra goes.</li>
-<li><strong>Immune</strong> makes that damage 0.</li>
-<li>Damage that comes back each turn, such as <a class="xref" href="#lingering">Lingering</a>, counts each time it lands: Resist 5 Fire stops a Lingering 3 <span class="dcode" style="--dc:#a63a17;--dcd:#ef6a3a">Fi</span> entirely.</li>
-<li>Two Resists or two Weaks of the same subtype don't add up: the highest applies (see <a class="xref" href="#stacking">Stacking</a>).</li>
+<li>Each time you take damage from one Action or effect, add up <strong>all its damage of that subtype</strong>, Vigor and Resolve together, and apply your line <strong>once</strong>: <strong>Resistance N</strong> reduces the total by N (minimum 0), <strong>Weakness N</strong> adds N. "<span class="pool-b">[V] 1d8</span> <span class="dcode" style="--dc:#a63a17;--dcd:#ef6a3a">Fi</span> + <span class="pool-m">[R] 5</span> <span class="dcode" style="--dc:#a63a17;--dcd:#ef6a3a">Fi</span>" against Resistance Fire 5 is (1d8 + 5) − 5: one reduction, never one per part.</li>
+<li>When the damage is split between Vigor and Resolve, the resisting creature chooses which part it reduces first; for a Weakness, the origin chooses where the extra goes.</li>
+<li><strong>Immunity</strong> makes that damage 0.</li>
+<li>Damage that comes back each turn, such as <a class="xref" href="#lingering">Lingering</a>, counts each time it lands: Resistance Fire 5 stops a Lingering 3 <span class="dcode" style="--dc:#a63a17;--dcd:#ef6a3a">Fi</span> entirely.</li>
+<li>Two Resistances or two Weaknesses of the same subtype don't add up: the highest applies (see <a class="xref" href="#stacking">Stacking</a>).</li>
 </ul>
 <h3 id="riders">Riders</h3>
-<p>In a tier cell, what follows the damage is a <strong>rider</strong>: "<span class="pool-b">[V] 2d8</span> <span class="dcode" style="--dc:#44513f;--dcd:#a9b8a4">Pi</span>; Prone" knocks the target Prone on that Tier. <strong>A rider happens whatever damage is dealt:</strong> Resist, Immune, a damage reduction or <a class="xref" href="#guard"><span class="kw-guard">Guard</span></a> can take the damage to 0 (all of it, or one of several damages), and the rider still happens. A <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action's cells read the same way, each on its own result.</p>
+<p>In a tier cell, what follows the damage is a <strong>rider</strong>: "<span class="pool-b">[V] 2d8</span> <span class="dcode" style="--dc:#44513f;--dcd:#a9b8a4">Pi</span>; Prone" knocks the target Prone on that Tier. <strong>A rider happens whatever damage is dealt:</strong> a Resistance, an Immunity, a damage reduction or <a class="xref" href="#guard"><span class="kw-guard">Guard</span></a> can take the damage to 0 (all of it, or one of several damages), and the rider still happens. A <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action's cells read the same way, each on its own result.</p>
 <h3 id="cleave">Cleave</h3>
 <p>When you <strong>Cleave</strong> N, you deal the Modifier used as damage (with the same damage type and subtype as your weapon) to up to N creatures that are adjacent to the original target.</p>
 <h2 id="several-targets">Several Targets</h2>
@@ -1034,7 +1034,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </ul>
 <p>An Action whose card says <strong>Escalation N</strong> can be used only while your Escalation is at least N; it spends nothing. Your class's <strong>Apex</strong> is an Encounter Action that needs <strong>Escalation 6</strong>; it comes at level 4, the first level of Stage 1 (see <a class="xref" href="#escalation-abilities">Escalation Abilities</a>). Your Escalation also feeds your cards that grow with it, such as the Paladin's Smite.</p>
 <div class="callout example"><div class="ctitle">Example</div><p>Nari's party has Momentum 1, so he starts a fight at Escalation 2. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.</p></div>
-<p>NPCs have no Escalation, except Elites (see <a class="xref" href="bestiary.html#elite-escalation">Elite Escalation</a>).</p>
+<p>NPCs have no Escalation.</p>
 <h3 id="momentum">Momentum</h3>
 <p><strong>Momentum</strong> is the edge your party builds over an expedition: a number from <strong>0 to 4</strong> that the whole party shares. Each of you starts an encounter at Escalation 1 + Momentum, so at 5 at most.</p>
 <ul>
@@ -1639,7 +1639,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <h2 id="guard">Guard</h2>
 <p>Some effects give you <strong><span class="kw-guard">Guard</span></strong>, written with a value: <strong><span class="kw-guard">Guard 6</span></strong>. When you take damage, your <span class="kw-guard">Guard</span> takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your <span class="kw-guard">Guard</span> takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A <a class="xref" href="#riders">rider</a> on that damage still happens: a rider happens whatever damage is dealt.</p>
 <ul>
-<li>Damage reduction (such as Shield of Faith) applies first; <span class="kw-guard">Guard</span> takes what is left. Reductions from different effects add up (Judge's and Shield of Faith's), and each applies once to an Action's damage to that creature, after <a class="xref" href="#resist-weak-and-immune">Resist</a>. <strong>Collision damage</strong> from the same Action's Forced Movement is that Action's damage too, but a separate instance: a reduction applies to only one of the two, chosen when the Action's own damage would be dealt: reduce it now, or wait for the Collision, which may not come (the origin may not move the target). A Reaction that triggers when an Action "would damage" a creature can be used on either, the same way.</li>
+<li>Damage reduction (such as Shield of Faith) applies first; <span class="kw-guard">Guard</span> takes what is left. Reductions from different effects add up (Judge's and Shield of Faith's), and each applies once to an Action's damage to that creature, after <a class="xref" href="#resistance-weakness-and-immunity">Resistance</a>. <strong>Collision damage</strong> from the same Action's Forced Movement is that Action's damage too, but a separate instance: a reduction applies to only one of the two, chosen when the Action's own damage would be dealt: reduce it now, or wait for the Collision, which may not come (the origin may not move the target). A Reaction that triggers when an Action "would damage" a creature can be used on either, the same way.</li>
 <li><span class="kw-guard">Guard</span> isn't Health: it can't be healed, and <span class="kw-rally">Rally Points</span> don't restore it.</li>
 <li>It doesn't stack: if you gain <span class="kw-guard">Guard</span> while you have some, keep the higher value (see <a class="xref" href="#stacking">Stacking</a>). The exception is the <span class="kw-guard">Guard</span> your <a class="xref" href="#unspent-ap">Unspent AP</a> give you: it adds to your other <span class="kw-guard">Guard</span>, damage takes it first, and it lasts 1 round (from the start of your turn until you regain AP again).</li>
 <li>It ends at the end of the encounter.</li>
@@ -1985,7 +1985,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <div class="callout tbd"><div class="ctitle">To be decided</div><p>No class has an Escalation ability at levels 1 to 3 now; the Escalation abilities of levels 2 and 4 are being redesigned.</p></div></div></details></section>
 <div class="part">Part III: Reference</div>
 <section class="chapter"><details open><summary><h1 id="chapter-6-basic-actions">Chapter 6: Basic Actions</h1></summary><div class="cbody">
-<p>Every creature can use these Actions, except that an NPC has no Basic Attack card (its own Basic attack takes its place; it uses Fists only without a weapon that fits it) and no Steel Yourself (it has no <span class="kw-rally">Rally Points</span>): see <a class="xref" href="bestiary.html#the-basic-attack">The Basic attack</a>.</p>
+<p>Every creature can use these Actions, except that an NPC has no Basic Attack card (its own Basic attacks take its place; it uses Fists only without a weapon that fits them) and no Steel Yourself (it has no <span class="kw-rally">Rally Points</span>): see <a class="xref" href="bestiary.html#basic-attacks">Basic attacks</a>.</p>
 <div class="acard" id="card-advance" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Advance</b><span class="ameta">At-will &middot; 1 AP</span></div><div class="abody"><div class="flavor">You press forward, one deliberate step at a time.</div><div class="traits"><span class="tchip" style="--tg:var(--g-kind)" title="Kind">Move</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-kind)" title="Kind">Self</span></div><div class="cl"><b>Effect</b><span>You move up to your Speed in squares, in one piece: the movement you don't use is lost (you can't move part of it, use another Action and move the rest later). Once during this Advance, at any point of the movement, you can use the Interact Action (paying its <span class="kw-ap">1 AP</span> then) and go on moving.</span></div></div></div>
 <div class="acard" id="card-aid" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Aid</b><span class="ameta">Round &middot; 1 AP</span></div><div class="abody"><div class="flavor">You call the opening, and a friend takes it.</div><div class="traits"><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Appeal</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Instinct</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Focus</span></div><div class="cgrid"><span><b>Distance:</b> 5 sq.</span><span class="tgt"><b>Target:</b> One ally that can hear you</span></div><div class="cl"><b>Effect</b><span>The target is Quickened 1 on its next turn.</span></div><div class="cl"><b>Special</b><span>If the target is Daunted, you also make an <span class="at-appeal">Appeal</span> or <span class="at-instinct">Instinct</span> Check against the Action DC of the Action that Daunted it: on a Tier 2 or 3, the target is no longer Daunted.</span></div></div></div>
 <div class="acard" id="card-basic-attack" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Basic Attack</b><span class="ameta">At-will &middot; 1 AP</span></div><div class="abody"><div class="flavor">You strike with the weapon in your hands.</div><div class="traits"><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Weapon</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-kind)" title="Kind">Strike</span></div><div class="cgrid"><span><b>Distance:</b> Weapon</span><span class="tgt"><b>Target:</b> One creature</span></div><div class="cl"><b>Special</b><span>You attack with the weapon you are wielding. Basic Attack takes the <span class="trhl" style="--tc:var(--g-requires)">Melee</span> or <span class="trhl" style="--tc:var(--g-requires)">Ranged</span> trait of that weapon, and its Range.</span></div><div class="cl"><b>Attack</b><span>Weapon vs. Armor Defense</span></div><div class="cl"><b>Tier 1</b><span><span class="pool-b">[V] 1d4!</span></span></div><div class="cl"><b>Tier 2</b><span><span class="pool-b">[V] 1[W] + [Mod]</span></span></div><div class="cl"><b>Tier 3</b><span><span class="pool-b">[V] 1[W] + 1</span>[D] + [Mod]</span></div></div></div>
@@ -2244,8 +2244,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>A weapon property: it can't be disarmed and uses no hand, but needs a free hand.</td>
 </tr>
 <tr>
-<td><a class="xref" href="bestiary.html#the-basic-attack"><strong>Basic attack</strong></a></td>
-<td>An NPC's main attack: <span class="kw-ap">1 AP</span>, At-will, Vs. AD or WD, with its rank's points an AP (see Points into damage: a flat number plus at most one small die, nothing added).</td>
+<td><a class="xref" href="bestiary.html#basic-attacks"><strong>Basic attack</strong></a></td>
+<td>An NPC's own attack: <span class="kw-ap">1 AP</span>, At-will. Every NPC has two by default (a melee and a ranged one, or one against each Defense), sharing one At-will count; its Tier 1 deals nothing unless its card says so.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#blinded"><strong>Blinded</strong></a></td>
@@ -2296,8 +2296,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt.</td>
 </tr>
 <tr>
-<td><a class="xref" href="bestiary.html#the-targets"><strong>Combat Value (CV)</strong></a></td>
-<td>What an NPC counts for in an encounter: Minion 25, Grunt 50, Standard 100, Elite 200; less for an NPC of an earlier Stage than the party. CV 100 per PC is a normal fight.</td>
+<td><a class="xref" href="bestiary.html#building-an-encounter"><strong>Combat Value (CV)</strong></a></td>
+<td>What an NPC counts for in an encounter: Minion 30, Grunt 50, Standard 100, Elite 200. CV 100 a PC is a normal fight.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#corners"><strong>Corners</strong></a></td>
@@ -2389,7 +2389,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#elites"><strong>Elite</strong></a></td>
-<td>An NPC rank with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: the 1-to-6 ladder, +1 a round and at each phase, with its own three steps at 2, 4 and 6).</td>
+<td>An NPC rank with CV 200: a Standard with Health 72 and an Encounter Action of its own, worth about a turn.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#areas"><strong>Emanation</strong></a></td>
@@ -2469,7 +2469,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#grunts"><strong>Grunt</strong></a></td>
-<td>An NPC rank with CV 50 and <span class="kw-ap">3 AP</span> a turn: about 26 Health at Stage 0, dies to about 1 PC turn.</td>
+<td>An NPC rank with CV 50: half a Standard (Health 18), <span class="kw-ap">3 AP</span> a turn.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#guard"><strong><span class="kw-guard">Guard</span></strong></a></td>
@@ -2516,8 +2516,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>No Move Actions or Evade, and a movement you are making ends; Break Free (<span class="kw-ap">1 AP</span> [Move], a <span class="at-body">Body</span> or <span class="at-instinct">Instinct</span> Check against the Action DC of the Action that Immobilized you) ends it; Forced Movement without a roll fails on you.</td>
 </tr>
 <tr>
-<td><a class="xref" href="#resist-weak-and-immune"><strong>Immune</strong></a></td>
-<td>Damage of that subtype is 0 for you.</td>
+<td><a class="xref" href="#resistance-weakness-and-immunity"><strong>Immunity</strong></a></td>
+<td>Immunity (subtype): damage of that subtype is 0 for you.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#imperiled"><strong>Imperiled</strong></a></td>
@@ -2589,7 +2589,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#minions"><strong>Minion</strong></a></td>
-<td>An NPC rank with CV 25: about 12 Health at Stage 0, <span class="kw-ap">3 AP</span> a turn, no Reactions. Up to 3 Minions act in the same turn slot (the GM makes the squads: about one for every 2 Minions is recommended; the GM picks who goes next).</td>
+<td>An NPC rank with CV 30: 2 ticks instead of Health, <span class="kw-ap">3 AP</span> a turn and no Reaction Point (it pays a Reaction with an AP it kept); Minions act in squads of up to 2.</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#minor-enemies"><strong>Minor enemies</strong></a></td>
@@ -2700,12 +2700,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>Using a [<span class="trhl" style="--tc:var(--g-requires)">Ranged</span>] Action while Engaged: the roll is <span class="kw-neg">Doomed</span>. Against a creature Engaged with someone else: 1 Field <span class="kw-bane">Bane</span>.</td>
 </tr>
 <tr>
-<td><a class="xref" href="bestiary.html#the-targets"><strong>Rank</strong></a></td>
-<td>How much an NPC counts for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and the tables its ratings use.</td>
-</tr>
-<tr>
-<td><a class="xref" href="bestiary.html#ratings"><strong>Rating</strong></a></td>
-<td>How strong one of an NPC's numbers is for its rank: Terrible, Low, Medium, High or Extreme (Minions have no Extreme). A GM can pick a number between two ratings.</td>
+<td><a class="xref" href="bestiary.html#the-ranks"><strong>Rank</strong></a></td>
+<td>How much an NPC counts for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and default numbers; it never moves its Defenses or Modifiers.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#reach"><strong>Reach</strong></a></td>
@@ -2752,8 +2748,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>What you need to use an Action.</td>
 </tr>
 <tr>
-<td><a class="xref" href="#resist-weak-and-immune"><strong>Resist</strong></a></td>
-<td>Resist N (subtype): each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0).</td>
+<td><a class="xref" href="#resistance-weakness-and-immunity"><strong>Resistance</strong></a></td>
+<td>Resistance (subtype) N: each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#health-pool"><strong>Resolve, Vigor</strong></a></td>
@@ -2765,11 +2761,11 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#riders"><strong>Rider</strong></a></td>
-<td>What follows the damage in a tier cell ("; Prone"): it happens on that Tier whatever damage is dealt (Resist, Immune, a reduction or <span class="kw-guard">Guard</span> don't stop it).</td>
+<td>What follows the damage in a tier cell ("; Prone"): it happens on that Tier whatever damage is dealt (a Resistance, an Immunity, a reduction or <span class="kw-guard">Guard</span> don't stop it).</td>
 </tr>
 <tr>
-<td><a class="xref" href="bestiary.html#roles"><strong>Role</strong></a></td>
-<td>What an NPC does in a fight (Striker, Soldier, Skirmisher, Artillery, Controller, Leader): a ready set of ratings, with no rules of its own.</td>
+<td><a class="xref" href="bestiary.html#an-npcs-numbers"><strong>Role</strong></a></td>
+<td>What an NPC does in a fight: a ready set of numbers and a way to play it, with no rules of its own (not rebuilt yet).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rolls"><strong>Roll</strong></a></td>
@@ -2840,8 +2836,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>A card's line that is a rule about the card itself.</td>
 </tr>
 <tr>
-<td><a class="xref" href="bestiary.html#actions-the-turn-budget"><strong>Special Action</strong></a></td>
-<td>An NPC Action beyond its Basic attack: any AP cost and any Frequency, bought with the points of its rank's turn budget.</td>
+<td><a class="xref" href="bestiary.html#special-actions"><strong>Special Action</strong></a></td>
+<td>An NPC Action that is not a Basic attack: <span class="kw-ap">2 AP</span> and Round by default; it can hit up to two creatures.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rules-language"><strong>Specific beats general</strong></a></td>
@@ -2854,6 +2850,10 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <tr>
 <td><a class="xref" href="#split"><strong>Split</strong></a></td>
 <td>A trait: the Action has a Weapon mode and a Power mode, and you choose one each time you use it.</td>
+</tr>
+<tr>
+<td><a class="xref" href="bestiary.html#squads"><strong>Squad</strong></a></td>
+<td>Up to 2 Minions that share one place in the turn order (one Initiative roll); each takes its own whole turn.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#squeezing"><strong>Squeezing</strong></a></td>
@@ -2881,7 +2881,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#standards"><strong>Standard</strong></a></td>
-<td>An NPC rank with CV 100: about 60 Health at Stage 0, dies to about 2 to 3 PC turns.</td>
+<td>An NPC rank with CV 100, one PC's worth: Health 36 by default.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#the-start-of-the-encounter"><strong>Start of the encounter</strong></a></td>
@@ -2932,6 +2932,10 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>A weapon property: the weapon can be used in hand or thrown, with a Range for each. A thrown weapon stays in your hand for the rules: the game doesn't track where it lands.</td>
 </tr>
 <tr>
+<td><a class="xref" href="bestiary.html#ticks"><strong>Ticks</strong></a></td>
+<td>A Minion's staying power instead of Health (2 by default): an Action removes its Tier's ticks once, damage with no Tier removes 1, a heal restores 1; at 0 it is <span class="kw-neg">Down</span>.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#outcome-tiers"><strong>Tier</strong></a></td>
 <td>The outcome of a roll: 1, 2 or 3.</td>
 </tr>
@@ -2950,10 +2954,6 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <tr>
 <td><a class="xref" href="#frequency"><strong>Turn</strong></a></td>
 <td>A Frequency: once per turn, on your turn and on each other creature's turn.</td>
-</tr>
-<tr>
-<td><a class="xref" href="bestiary.html#actions-the-turn-budget"><strong>Turn budget</strong></a></td>
-<td>The points of an NPC's whole turn, by rank and damage rating (a Medium Standard: 100, 25 points an AP), spent on its Actions: damage, riders, help, a Reaction.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#turns-and-rounds"><strong>Turn-cycle</strong></a></td>
@@ -2988,8 +2988,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>Ward Defense (WD) — 11 + <span class="mod-power">Power Modifier</span> + Ward value + other items + bonuses − penalties. The Defense against <span class="trhl" style="--tc:var(--g-roll)">Power</span> Actions.</td>
 </tr>
 <tr>
-<td><a class="xref" href="#resist-weak-and-immune"><strong>Weak</strong></a></td>
-<td>Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once.</td>
+<td><a class="xref" href="#resistance-weakness-and-immunity"><strong>Weakness</strong></a></td>
+<td>Weakness (subtype) N: each Action's damage of that subtype, both pools together, is increased by N once.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#save-actions"><strong>Weapon DC, Power DC</strong></a></td>

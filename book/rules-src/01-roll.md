@@ -42,7 +42,7 @@ A result is a **Critical** when you roll **Doubles on a result that is already T
 
 On a Critical you get the Tier 3 result, and:
 
-- **A Basic attack** (the [[Basic Attack]], [[Fists]], a class's Power Basic attack, an NPC's [[The Basic attack|Basic attack]]) deals **1d10!** more damage. Before you roll it, choose one of the damage types the Action deals, with its pool and subtype: an Action that deals only [V] Piercing adds [V] 1d10! Pi; one that deals [V] Piercing and [R] Holy adds either, your choice.
+- **A Basic attack** (the [[Basic Attack]], [[Fists]], a class's Power Basic attack, an NPC's [[Basic attacks|Basic attack]]) deals **1d10!** more damage. Before you roll it, choose one of the damage types the Action deals, with its pool and subtype: an Action that deals only [V] Piercing adds [V] 1d10! Pi; one that deals [V] Piercing and [R] Holy adds either, your choice.
 - **An Action with a Critical row** (written under Tier 3 and above the Effects, such as [[Trip]] and [[Shove]]) gets that effect instead. A Basic attack with a Critical row of its own uses the row, not the 1d10!.
 - **Any other Action:** a Critical is simply a Tier 3.
 
@@ -184,7 +184,7 @@ Some Actions include two types of damage. For example, "[V] 1d4+1d6+3 Sl + [R] 1
 
 ### Damage Subtypes
 
-Subtypes don't have rules by themselves, but other rules use them, such as Resist and Weak. They are shortened to **two letters**, so they never look like the damage types [V], [R] and [C]:
+Subtypes don't have rules by themselves, but other rules use them, such as Resistance and Weakness. They are shortened to **two letters**, so they never look like the damage types [V], [R] and [C]:
 
 | Subtype | Short | Subtype | Short | Subtype | Short |
 |---|---|---|---|---|---|
@@ -193,19 +193,19 @@ Subtypes don't have rules by themselves, but other rules use them, such as Resis
 | {{dt:Cold}} | {{dc:Co}} | {{dt:Holy}} | {{dc:Ho}} | {{dt:Thunder}} | {{dc:Th}} |
 | {{dt:Electricity}} | {{dc:El}} | {{dt:Pierce}} | {{dc:Pi}} | {{dt:Unholy}} | {{dc:Un}} |
 
-### Resist, Weak and Immune
+### Resistance, Weakness and Immunity
 
-Some creatures take less, or more, damage of a subtype. It is written on the creature, with a number: **Resist 2 Fire**, **Weak 5 Holy**, **Immune Fire**. A Hatchling might have Resist 2 Fire, a Young dragon Resist 5 and an Ancient one Immune Fire.
+Some creatures take less, or more, damage of a subtype. It is written on the creature **the word first, then each subtype with its number**: **Resistance Fire 2**, **Weakness Holy 5**, **Immunity Fire**; with several subtypes, **Weakness Fire 2, Holy 3**. On a stat block each kind has one line: **Resistance** Fire 5, Cold 2 · **Weakness** Holy 5 · **Immunity** Cold. A rule that gives one says "you gain Resistance Fire 2"; one that names the kind with no number says "a creature with Fire Weakness". A Hatchling might have Resistance Fire 2, a Young dragon Resistance Fire 5 and an Ancient one Immunity Fire.
 
-- Each time you take damage from one Action or effect, add up **all its damage of that subtype**, Vigor and Resolve together, and apply your line **once**: **Resist N** reduces the total by N (minimum 0), **Weak N** adds N. "[V] 1d8 Fi + [R] 5 Fi" against Resist 5 Fire is (1d8 + 5) − 5: one reduction, never one per part.
-- When the damage is split between Vigor and Resolve, the resisting creature chooses which part it reduces first; for Weak, the origin chooses where the extra goes.
-- **Immune** makes that damage 0.
-- Damage that comes back each turn, such as [[Lingering]], counts each time it lands: Resist 5 Fire stops a Lingering 3 Fi entirely.
-- Two Resists or two Weaks of the same subtype don't add up: the highest applies (see [[Stacking]]).
+- Each time you take damage from one Action or effect, add up **all its damage of that subtype**, Vigor and Resolve together, and apply your line **once**: **Resistance N** reduces the total by N (minimum 0), **Weakness N** adds N. "[V] 1d8 Fi + [R] 5 Fi" against Resistance Fire 5 is (1d8 + 5) − 5: one reduction, never one per part.
+- When the damage is split between Vigor and Resolve, the resisting creature chooses which part it reduces first; for a Weakness, the origin chooses where the extra goes.
+- **Immunity** makes that damage 0.
+- Damage that comes back each turn, such as [[Lingering]], counts each time it lands: Resistance Fire 5 stops a Lingering 3 Fi entirely.
+- Two Resistances or two Weaknesses of the same subtype don't add up: the highest applies (see [[Stacking]]).
 
 ### Riders
 
-In a tier cell, what follows the damage is a **rider**: "[V] 2d8 Pi; Prone" knocks the target Prone on that Tier. **A rider happens whatever damage is dealt:** Resist, Immune, a damage reduction or [[Guard]] can take the damage to 0 (all of it, or one of several damages), and the rider still happens. A Save Action's cells read the same way, each on its own result.
+In a tier cell, what follows the damage is a **rider**: "[V] 2d8 Pi; Prone" knocks the target Prone on that Tier. **A rider happens whatever damage is dealt:** a Resistance, an Immunity, a damage reduction or [[Guard]] can take the damage to 0 (all of it, or one of several damages), and the rider still happens. A Save Action's cells read the same way, each on its own result.
 
 ### Cleave
 

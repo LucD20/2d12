@@ -192,5 +192,5 @@ Each class has an **Armor Training**: Light, Medium or Heavy. Each one includes 
 If you wear armor you are not trained in, **all your Rolls are Doomed**, and **Actions that roll against your Armor Defense or Ward Defense are Favored**.
 
 > [!tbd]
-> Armor properties and named armors are not written yet: Resist by damage subtype (padded, mail, plate), drawbacks (Bulky −1 Speed, Noisy for stealth), Warded (+1 WD), shields (a Block Reaction), and an unarmored Talent tree.
+> Armor properties and named armors are not written yet: Resistance by damage subtype (padded, mail, plate), drawbacks (Bulky −1 Speed, Noisy for stealth), Warded (+1 WD), shields (a Block Reaction), and an unarmored Talent tree.
 
