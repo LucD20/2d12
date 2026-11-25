@@ -425,8 +425,12 @@ The monsters' side is the same; the PCs' side is half again as strong here. So a
 - **What the playtest should tell before choosing:** how often a PC goes Down at today's cost (if often, a third makes it worse; if fights feel toothless, a third is the move), and whether hits of 3 or 4 vanish under Guard and reductions.
 - **Cheaper texture, if only the look is the problem:** let Minor enemies' dice explode; fewer and bigger rolls on a creature.
 
+### The fourth creature: the Ogre Chieftain, as an Elite (2026-11-25)
+
+Lucas, on the Elite's open rule (K6): "Ok, lets settle it and start." **Proposed three ways** (`cards/ogre-chieftain-redesign.md`), with the count that sizes it: two Elites of 72 Health get about 3.9 turns where four Standards get 6.7, so an Elite must deal 13.1 a turn at the table (1.7 times a Standard), or get one extra turn in the fight and deal a Standard's 8.6. **Way 1, Claude's pick: Roused** (the first time an Elite becomes Bloodied or Strained in an encounter, it takes a turn when the current turn ends; once): a Standard's attacks and Defenses, twice its Health, one more turn, a visible change at half Health, and the second place in the turn order one body lacks. Way 2: every attack hits up to two creatures. Way 3: two Reaction Points and two Reactions with bigger hits. Rejected: twice the damage a hit, two turns every round (the Boss's), more AP, ending a condition each turn (for the Boss), a commander's orders as the rank's rule. **The Default Elite under way 1:** Health 72 (36 / 36), Defenses 13 / 13, Modifiers +2 / +2, 4 AP, a Standard's Basic attack and Special, Roused, CV 200. The ogre's ideas, three a slot, are in its record. Waiting for his review.
+
 ### What comes next
 
-- **Lucas's word on the Goblin Sneak's sheet** (`cards/goblin-sneak-redesign.md`, the last section), then the next creature.
-- The creatures that need block B: an Elite (K6), a Boss (its turns).
+- **Lucas's choice for the Elite's rule (K6) and the Ogre Chieftain's ideas** (`cards/ogre-chieftain-redesign.md`).
+- A Boss (its turns, its Health a PC, the rule against shutdown: G2, H9).
 - **The Foundry pass for every creature at once** (`foundry/foundry-backlog.md`), then **decision 16, to the table**, and one Foundry version.
