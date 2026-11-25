@@ -5742,7 +5742,11 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 /* v0.0.502 (Lucas on v0.0.501: "Vigor is above, Resolve is not"): the two boxes side by side were wider than the token, and the Token HUD's right
    column (drawn after the middle one) covered the Resolve box */
 /* v0.0.503 (on v0.0.502: stacked "Now its worse"): side by side again, inside Foundry's own Health box (bar1, under the token), centered on it */
-#token-hud .attribute.bar1.twod12-hpbar1 { display: flex; justify-content: center; overflow: visible; background: none; border: none; box-shadow: none; }
-#token-hud .twod12-hpbar1 .twod12-hphud { position: relative; z-index: 5; flex-direction: row; flex-wrap: nowrap; width: max-content; }
+/* v0.0.504 (on v0.0.503: "we need to actually click the other buttons as well ... just two plain boxes, with the outline red and blue, with the
+   number"): two plain inputs that share Foundry's Health box (the token's width), nothing past it */
+#token-hud .attribute.bar1.twod12-hpbar1 { display: flex; background: none; border: none; box-shadow: none; }
+#token-hud .twod12-hpbar1 .twod12-hphud { flex: 1 1 auto; display: flex; gap: 4px; width: 100%; height: 100%; }
+#token-hud .twod12-hphud input.twod12-hpbox { flex: 1 1 0; min-width: 0; width: auto; height: 100%; min-height: 28px; padding: 0 2px; margin: 0; box-sizing: border-box; text-align: center; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; color: #f0ece4; background: rgba(0, 0, 0, 0.6); border: 2px solid var(--c); border-radius: 3px; }
+#token-hud .twod12-hphud input.twod12-hpbox.v { --c: #c23b32; } #token-hud .twod12-hphud input.twod12-hpbox.r { --c: #3f73c9; }
 /* v0.0.503 (Lucas on v0.0.502): the whole row of the status palette is the button */
 #token-hud .twod12-statuspal .twod12-sitem { cursor: pointer; }

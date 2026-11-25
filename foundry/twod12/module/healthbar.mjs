@@ -131,13 +131,13 @@ function rect(g, x, y, w, h, color, alpha = 1) {
   else { g.rect(x, y, w, h); g.fill({ color, alpha }); }
 }
 
-function roundRectFill(g, x, y, w, h, r, color, alpha = 1) {
+export function roundRectFill(g, x, y, w, h, r, color, alpha = 1) {
   if (w <= 0 || h <= 0) return;
   if (typeof g.beginFill === "function") { g.beginFill(color, alpha); g.drawRoundedRect(x, y, w, h, r); g.endFill(); }
   else { g.roundRect(x, y, w, h, r); g.fill({ color, alpha }); }
 }
 
-function roundRectStroke(g, x, y, w, h, r, width, color, alpha = 1) {
+export function roundRectStroke(g, x, y, w, h, r, width, color, alpha = 1) {
   if (w <= 0 || h <= 0) return;
   if (typeof g.lineStyle === "function") { g.lineStyle(width, color, alpha); g.drawRoundedRect(x, y, w, h, r); g.lineStyle(0); }
   else { g.roundRect(x, y, w, h, r); g.stroke({ width, color, alpha }); }

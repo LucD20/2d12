@@ -21,19 +21,14 @@ differ):
 
 ## The HUD
 
-### hud-hp-boxes · v0.0.503 · The Token HUD's Vigor (red) and Resolve (blue) boxes, where Foundry's Health box was
-Do: Right-click Orc Warrior's token. In the red Vigor box type -5 and Enter; then +2; in the blue Resolve box type 3.
-Expect: The two boxes sit side by side under the token, where Foundry's own Health box was, both whole and clickable (nothing over them, not over the token). -5 deals 5 to Vigor only, +2 heals 2 of it, a plain number sets what is left of that pool (Resolve 3).
-Rev: 4
+### hud-hp-boxes · v0.0.504 · The Token HUD's two plain boxes, Vigor (red outline) and Resolve (blue outline)
+Do: Right-click Orc Warrior's token. In the red-outlined box type -5 and Enter; then +2; in the blue-outlined box type 3. Then click the Token HUD's other buttons (the conditions, the target, the visibility).
+Expect: Two plain boxes with only the number, side by side where Foundry's Health box was, no wider than the token: red outline for Vigor, blue for Resolve. -5 deals 5 to Vigor, +2 heals 2, a plain number sets what is left (Resolve 3). Every other button of the Token HUD can be clicked. No "Invalid Asset" error in the console on load.
+Rev: 5
 
-### status-palette-clicks · v0.0.503 · The status palette: the whole row is the button; a right-click lowers a value
-Do: Right-click Orc Warrior's token and open its status effects. Click anywhere in Slowed's row (its frame, not only the icon or the word); click it again; then right-click it twice. Click Prone's row, then right-click it.
-Expect: The first click gives Slowed 1, the second makes it Slowed 2; each right-click lowers it by 1, and at 1 a right-click removes it. Prone's row toggles it with a click anywhere in the row; its right-click does Foundry's right-click (the large overlay icon).
-
-### cond-numbers · v0.0.503 · A condition's number: none on the token, readable beside the chat and in the HUD
-Do: Give Orc Warrior Vulnerable 1 and Slowed 2 (the palette). Look at its token; select it and look at the effects beside the chat, then the HUD's conditions row. (A world from v0.0.501 or 502: reload it as GM first.)
-Expect: The token shows the plain icons (no number). Beside the chat, each valued icon has a large white number on a dark box at its lower right corner. In the HUD's row the number is bold after the icon.
-Rev: 4
+### alt-cond-line · v0.0.504 · Hold Alt: every visible token's conditions in a line under it
+Do: Give Orc Warrior Vulnerable 1 and Slowed 2, Goblin Sneak Prone. Hold Alt over the map; while holding it, add Daunted to Orc Warrior from its sheet or the panel beside the chat; let go of Alt.
+Expect: While Alt is held, under each visible token with conditions (under its name) a dark plate with a gold edge reads its conditions with their numbers ("Vulnerable 1 · Slowed 2"; "Prone"); a token with none shows nothing. Daunted joins the line at once. Letting go of Alt removes every plate. Nothing shows while typing in a box.
 
 ## Starting a combat
 

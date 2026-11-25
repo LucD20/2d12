@@ -44,3 +44,13 @@ console.log("Pushed 2, a Large origin above it:", show(MV.pushShifts(big, [{ i: 
 console.log("Pulled 2 from 3 squares to its left:", show(MV.pullShifts(big, [{ i: 0, j: -4 }], 2)));
 const book = fs.readFileSync(`${ROOT}../../book/rules-src/03-movement.md`, "utf8");
 console.log("the book's rule:", book.includes("**A larger creature being moved is measured from its squares nearest the origin.**"));
+
+console.log("--- v0.0.504: the HUD's boxes plain (Lucas: \"just two plain boxes, with the outline red and blue, with the number\")");
+const H = await import(ROOTURL + "module/hudhp.mjs"), hh = H.hudHpHtml({ vigorLeft: 9, bdt: 14, resolveLeft: 4, mdt: 10 });
+console.log("two inputs, no words:", (hh.match(/<input /g) ?? []).length, !/Vigor<|Resolve<|\/ 14/.test(hh.replace(/aria-label="[^"]*"/g, "")), "| within the token's width:", src("styles/system.css").includes("#token-hud .twod12-hpbar1 .twod12-hphud { flex: 1 1 auto; display: flex; gap: 4px; width: 100%;"));
+console.log("--- v0.0.504: an old numbered icon is plain in memory before the tokens draw (no Invalid Asset)");
+console.log(src("module/condnum.mjs").includes("P.prepareDerivedData = wrapped;"), src("module/condnum.mjs").includes("restoredImg({ img: e._source?.img ?? e.img })"));
+console.log("--- v0.0.504: Alt shows every visible token's conditions (condline.mjs; Lucas: \"C is good\")");
+const CL = await import(ROOTURL + "module/condline.mjs");
+const fx = [{ name: "Vulnerable 1 (1 round)" }, { name: "Slowed", flags: { twod12: { value: 2 } } }, { name: "Prone" }, { name: "Gone", disabled: true }, { name: "Wound", flags: { twod12: { wound: true } } }, { name: "Aim", flags: { twod12: { grants: [{ spec: "Basic Attack" }] } } }, { name: "Prone" }];
+console.log(JSON.stringify(CL.condLine(fx)), "| none:", JSON.stringify(CL.condLine([])), "| wired:", src("module/twod12.mjs").includes("registerCondLine();"), "| no hover text:", !/data-tooltip|title=/.test(src("module/condline.mjs")));

@@ -1,5 +1,6 @@
 // v0.0.500 (Lucas on v0.0.499: "Right-click the token should show two entries on the bottom, one blue and one red, for Vigor and Resolve, so you
-// can apply damage to each individually"): the Token HUD's bottom box (Foundry's one Health input) becomes two, Vigor (red) and Resolve (blue).
+// can apply damage to each individually"): the Token HUD's bottom box (Foundry's one Health input) becomes two, Vigor (red) and Resolve (blue);
+// v0.0.504: two plain boxes, the number only, in Foundry's own Health box (the other buttons stay clickable).
 // Each is a correction of that pool, as the sheet's bars are (no Guard, no Reactions): "-5" adds 5 damage, "+5" heals 5, "12" (or "=12") sets
 // what is left to 12. Healing takes the Lethal damage first, then the Nonlethal. Pure helper first (the tests load it).
 
@@ -25,7 +26,9 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "
 
 /** Pure: the two boxes' HTML for an actor's system (its derived bdt, mdt, vigorLeft, resolveLeft). */
 export function hudHpHtml(sys = {}) {
-  const box = (pool, word, cls, left, max) => `<label class="twod12-hpbox ${cls}"><span class="k">${word}</span><input type="text" data-twod12-pool="${pool}" value="${esc(left)}" aria-label="${word}: type -5 to deal 5, +5 to heal 5, or a number to set what is left"><span class="max">/ ${esc(max)}</span></label>`;
+  // v0.0.504 (Lucas on v0.0.503: "do like foundry, just two plain boxes, with the outline red and blue, with the number"): two plain inputs,
+  // side by side inside Foundry's Health box (the token's width), no words; their names for screen readers only
+  const box = (pool, word, cls, left, max) => `<input type="text" class="twod12-hpbox ${cls}" data-twod12-pool="${pool}" value="${esc(left)}" aria-label="${word} (${esc(left)} of ${esc(max)}): type -5 to deal 5, +5 to heal 5, or a number to set what is left">`;
   return `<div class="twod12-hphud">${box("body", "Vigor", "v", sys.vigorLeft ?? 0, sys.bdt ?? 0)}${box("mind", "Resolve", "r", sys.resolveLeft ?? 0, sys.mdt ?? 0)}</div>`;
 }
 

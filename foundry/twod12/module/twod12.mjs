@@ -36,6 +36,7 @@ import { registerClock, moveClock } from "./clock.mjs";
 import { registerSleep, bumpExhausted } from "./sleep.mjs";
 import { registerHudHp } from "./hudhp.mjs";   // v0.0.500: the Token HUD's Vigor and Resolve boxes
 import { registerStatusPalette } from "./statuspal.mjs";   // v0.0.500: the status palette in groups, with names
+import { registerCondLine } from "./condline.mjs";   // v0.0.504: Alt shows every token's conditions
 import { registerCondNumbers } from "./condnum.mjs";   // v0.0.501: the numbered condition icons (a condition's number on the token)
 import { registerLight } from "./light.mjs";
 import { registerLightOverlay } from "./lightoverlay.mjs";
@@ -90,6 +91,7 @@ Hooks.once("init", () => {
   registerHudHp();
   registerStatusPalette();
   registerCondNumbers();
+  registerCondLine();
   registerClock();
   registerEffectEditor();
   registerAppliedEditor();

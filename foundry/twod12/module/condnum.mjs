@@ -26,13 +26,23 @@ export function valueOf(data) {
 export const restoredImg = data => { const c = iconOf(data?.img); return c?.numbered ? `${BASE}${c.id}.svg` : ""; };
 
 export function registerCondNumbers() {
+  // v0.0.504 (Lucas's console on v0.0.503: "Invalid Asset .../numbered/vulnerable-2.svg" at Token._drawEffect): the tokens drew before the GM's
+  // pass below fixed the data, so an effect's prepared data takes the plain icon at once, in memory, on every client
+  try {
+    const P = CONFIG.ActiveEffect?.documentClass?.prototype, inner = P?.prepareDerivedData;
+    if (P && typeof inner === "function" && !inner.twod12Plain) {
+      const wrapped = function (...args) { const r = inner.apply(this, args); try { const w = restoredImg({ img: this.img }); if (w) this.img = w; } catch (e) { /* kept */ } return r; };
+      wrapped.twod12Plain = true;
+      P.prepareDerivedData = wrapped;
+    }
+  } catch (e) { console.warn("twod12 | a condition's icon", e); }
   Hooks.on("preCreateActiveEffect", (doc, data) => { try { const w = restoredImg({ img: data?.img ?? doc?.img }); if (w) doc.updateSource({ img: w }); } catch (e) { /* kept */ } });
   Hooks.on("preUpdateActiveEffect", (doc, change) => { try { if ("img" in change) { const w = restoredImg(change); if (w) change.img = w; } } catch (e) { /* kept */ } });
   Hooks.once("ready", async () => {
     if (!game.user?.isActiveGM) return;
     const fix = async parent => {
       const ups = [];
-      for (const e of parent?.effects ?? []) { const w = restoredImg({ img: e.img }); if (w) ups.push({ _id: e.id, img: w }); }
+      for (const e of parent?.effects ?? []) { const w = restoredImg({ img: e._source?.img ?? e.img }); if (w) ups.push({ _id: e.id, img: w }); }   // the stored data (the prepared one is plain already)
       if (ups.length) { try { await parent.updateEmbeddedDocuments("ActiveEffect", ups); } catch (e) { console.warn("twod12 | a condition's icon", e); } }
     };
     for (const a of game.actors ?? []) await fix(a);
