@@ -538,3 +538,5 @@ today's Bestiary; the refit is Health ×1.10, damage ×1.38 for a third; an Elit
 ## The benchmark PC turn (2026-11-25)
 
 `node book/ruler/benchmark.mjs [AD] [WD]`: what each level 1 pregen's turn deals on paper against a creature with those Defenses (default 13 13), by exact dice math on the current cards; no map, no movement, not the SIM. It is decision 4 of `book/bestiary-design.md`: what a monster's Health is counted against. Re-run it (and update the record) when a level 1 class card, the Basic Attack or a designed weapon changes.
+
+`node book/ruler/fight-identity.mjs [benchmark turn] [cost]`: a turn-by-turn count (not a simulation of the game: no map, no cards) of the round a fight ends in and the enemy turns that happen, for the Bestiary's decisions 13 and 14: an enemy's damage a turn = the fight's cost ÷ those turns.
