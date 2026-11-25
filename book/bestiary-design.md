@@ -375,7 +375,10 @@ His words: "I think this is the same problem we were having, but lessened: NPCs 
 
 "Lets do one default standard first. It will be the Orc Warrior as the Standard. dont copy anything from the old sheet. The NPC has to have: One melee basic, one ranged basic (both share at-will, like PCs), one special, one reaction. They can also have features." **A Standard's sheet, from now on: a melee Basic attack, a ranged Basic attack (one At-will count), one Special, one Reaction, Features if wanted.** Its record, with the ideas shown (three for each slot): `cards/orc-warrior-redesign.md`. **He chose a set the same day** (Hamstringing Axe, Barbed Javelin, War Howl with Vulnerable 1 in place of Daunted, Blood for Blood, a Boon to Shove while Bloodied), **under review, not built. Two rules of his from it:** don't lean on Daunted; no damage line that is only a flat number (so decision 15's fixed Specials are gone: every damage line has a die). **Built the same day** (the card source and Foundry's compendium build, no Foundry version: "only push it all when we have all NPCs done"), with Vigor 22, Resolve 14 and Mind -1 (his: "the orcs should actually have -1 mind, 14 resolve and 22 vigor"; a creature moves Health between its two thresholds, the total held). **Waiting for his review of the build before the next creature.**
 
-### What comes next
+### The second creature: the Grave Wisp (2026-11-25)
+
+Lucas: "Push it to the work branch, then lets do the next NPC. Also, I think its best we do the foundry pass when all NPCs are done." **From here each creature is designed and recorded; the card source and Foundry come in one pass at the end.** Claude chose the Grave Wisp (a Standard that deals only [R] against Ward Defense: the Default Standard's twin, and the one creature that waits on no open rank rule). Its ideas, three a slot: `cards/grave-wisp-redesign.md`. Waiting for his review.
+
 
 - **Lucas's review of the Orc Warrior as built** (`cards/orc-warrior-redesign.md`, the last section), then the next creature.
 - **Decision 16, to the table:** four Orc Warriors against the four pregens, the Encounter Log reading decision 1's two yardsticks.
