@@ -1688,7 +1688,7 @@ export async function useAction(actor, item, opts = {}) {
         if (r0?.tier >= 3) who = allies;
         else if (r0?.tier === 2 && allies.length) {
           const { pickBar } = await import("./pickbar.mjs");
-          const id = allies.length === 1 ? allies[0].id : await pickBar({ icon: "fa-eye", text: `<b>Point Out</b>: which ally perceives <b>${esc(r0.name)}</b> better?`, options: allies.map(t => ({ id: t.id, label: t.name })), cancel: "" });
+          const id = allies.length === 1 ? allies[0].id : await pickBar({ icon: "fa-eye", text: `<b>Point Out</b>: which ally perceives <b>${esc(r0.name)}</b> better? (click here or the token)`, options: allies.map(t => ({ id: t.id, label: t.name, token: t })), cancel: "" });   // v0.0.516 (Lucas: "allow clicking on the token, blinking")
           who = allies.filter(t => t.id === id);
         }
         if (r0 && who.length) await H.improve(who.map(t => ({ hiderUuid: r0.uuid, observerId: t.id })), `${actor.name}'s Point Out`);

@@ -21,37 +21,20 @@ differ):
 
 ## Hiding
 
-### hide-marks · v0.0.515 · The Hide marks: seals at rest, lines on select or hover for 5 seconds
-Do: Make Kaela Unsensed to Goblin Sneak and Hidden to Orc Warrior with Hide. Look at her token with nothing selected; then select her; wait; hover her. Then log in as a player (or look with a player's view) and do the same; once as the GM, make Goblin Sneak hide from Kaela and look at its token as a player.
-Expect: At rest, two small seals on Kaela's left edge: an empty dashed ring (Unsensed) and a half-filled disc (Hidden). Selected or hovered: a dotted line to the Goblin with a plate "Unsensed" under it, a dashed line to the Orc with "Hidden"; after 5 seconds they fade, and come back when she is selected or hovered again. Players see Kaela's marks; they don't see the Goblin's (only the GM does).
+### hide-lines-only · v0.0.516 · Hide: no marks on the token, the lines on select or hover
+Do: Make Kaela Unsensed to Goblin Sneak and Hidden to Orc Warrior with Hide. Look at her token with nothing selected, then select her.
+Expect: No small rings or discs on her token. Selected (or hovered): the dotted and dashed lines with their plates, gone after 5 seconds.
 
-### lines-5s · v0.0.515 · Line of Effect's and Flanking's lines fade after 5 seconds
-Do: Turn on Show Line of Effect and Show Flanking in the token controls. With Aveline selected and Orc Warrior targeted (Durgan opposite the Orc), wait 5 seconds; then hover a token, and select or target again; move a token while the lines are up.
-Expect: The lines and their plates fade out 5 seconds after the last selection, hover or target, and come back with the next one. Moving a token doesn't keep them up. Turning a toggle on shows its lines for 5 seconds.
-
-### hide-auto · v0.0.514 · Hide targets by itself, and isn't Doomed through a wall
-Do: Put Kaela behind a wall from Goblin Sneak (it can't see her) and behind a crate from Orc Warrior (High Cover; it sees her). Target nobody and click Hide.
-Expect: It targets the Goblin and the Orc by itself (not a creature that sees her without High Cover); the roll against each is not Doomed (no Hidden or No Line of Effect penalty), only against its Instinct DC. Afterwards, with the Goblin selected (its vision), Kaela shows no sound ripple to it (Unsensed); the Orc still has its ripple or sight of her.
-
-### hud-basic-5 · v0.0.514 · The HUD's Basic tab in five columns
-Do: Select Kaela and open the HUD's Basic tab. Then select Orc Warrior.
-Expect: Five columns: Attack, Movement, Control, Stealth (Hide, Sneak, Seek, Point Out, Lean), Utility, five or six Actions each, none cut off. The Actions tab on the sheet keeps its four groups.
-
-### check-card-new · v0.0.514 · A card's Check button posts the new Check card
-Do: Target Goblin Sneak and use Tumble with Kaela; in its chat card click Appeal Check.
-Expect: The result is the new card (the stamp, the ladder against the DC, the breakdown), titled "Appeal Check vs Goblin Sneak", against the Goblin's Appeal DC. Not the old block with a Tier table.
-
-### seek-pointout · v0.0.514 · Seek finds, Point Out shows
-Do: With Kaela Unsensed to Goblin Sneak and Hidden to Orc Warrior from Hide, on the Goblin's turn click Seek in the HUD (the 1 AP and the 2 AP Version once each), without targeting anyone. On the Orc's turn, use Point Out on Kaela (the Orc must perceive her better than the Goblin does).
-Expect: No error. Seek targets by itself the creatures hiding from the Goblin within 5 squares (1 AP) or 10 (2 AP; from the sheet it asks which); no Doomed roll for Senses; on a Tier 2 or 3 the Goblin perceives her 1 step better. With nobody hiding in range it warns and spends nothing. Point Out on a Tier 2 asks which ally within 10 squares (or picks the only one) and improves its perception of Kaela 1 step; on a Tier 3, every ally within 10 squares.
-Rev: 2
+### pointout-pick · v0.0.516 · Point Out's Tier 2: pick the ally on the map
+Do: With Kaela hiding from Goblin Sneak, and two of Goblin Sneak's allies within 10 squares (or, from the PCs' side: Sylwen Points Out a hiding Goblin with Aveline and Durgan near her), get a Tier 2 on Point Out. Read the card's Tier 3 line too.
+Expect: The pick bar asks which ally, and the allies' tokens blink on the map: clicking one picks it. The Tier 3 line reads as a whole sentence (every ally within 10 squares perceives the target 1 step better), as do Hide's and Seek's Tier 3.
 
 ## The HUD
 
-### charge-reselect · v0.0.514 · Charge: an empty click deselects, the bar comes back; only the button confirms
-Do: On Durgan's turn, start a Charge and pick Orc Warrior. Click the Orc again. Click an empty part of the map, then select Durgan again. Click the Charge button. When the Charge ends in Reach, look at the HUD's Situational tab; another time, click its Cancel.
-Expect: Clicking the Orc again doesn't launch the Charge (only the button, or Enter, does). The empty click deselects Durgan; reselecting him brings the Charge bar back into his HUD. After the movement the Situational tab's "Charge · Basic Attack (1A)" pulses, as a Reaction does; Cancel removes it.
-Rev: 2
+### charge-reselect · v0.0.516 · Charge by targeting: clicks select as usual
+Do: On Durgan's turn, start a Charge. Target Orc Warrior (T, or Foundry's targeting). Then target Goblin Sneak instead. Click an empty part of the map, then click Durgan to select him again, and click another token. Click the Charge button. Another time, target the Orc before using Charge.
+Expect: Targeting a creature makes it the Charge's enemy (the line goes to it); targeting another changes it. Clicks select and deselect tokens as usual and never launch the Charge; the bar comes back into Durgan's HUD when he is selected. Only the Charge button (or Enter) charges. With the Orc already targeted, the Charge starts aimed at it.
+Rev: 3
 
 ## Starting a combat
 

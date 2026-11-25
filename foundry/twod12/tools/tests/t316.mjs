@@ -10,8 +10,7 @@ globalThis.foundry ??= { utils: {} };
 const HM = await import(ROOTURL + "module/hidemark.mjs"), MK = await import(ROOTURL + "module/mapmark.mjs");
 console.log("who sees: GM", HM.hideMarksVisible(true, -1), "| a player, a PC's marks", HM.hideMarksVisible(false, 1), "| a player, an NPC's", HM.hideMarksVisible(false, -1));
 console.log("seal order:", JSON.stringify(HM.sealOrder([["o", "hidden", "Orc"], ["g", "unsensed", "Goblin"], ["x", "clear", "Archer"], ["a", "hidden", "Archer"]]).map(e => e[2])));
-const L = HM.hideSealLayout(3, 100);
-console.log("seals down the left edge:", L.every(s => s.x < 20), "| spaced:", L[1].y - L[0].y > 0, "| r", L[0].r);
+console.log("v0.0.516: no seals at rest:", !src("module/hidemark.mjs").includes("drawSeals") && !("hideSealLayout" in HM));
 console.log("trimmed line:", JSON.stringify(HM.trimmedLine({ x: 0, y: 0 }, { x: 100, y: 0 }, 10, 20)));
 console.log("5 seconds:", MK.LINE_SHOW_MS, "| shown before", MK.lineShown(Date.now() + 1000), "| after", MK.lineShown(Date.now() - 1));
 console.log("tracked: Hide", src("module/hidemark.mjs").includes('MK.trackLines("hide", box)'), "| Line of Effect", src("module/loe.mjs").includes('MK.trackLines("loe", box)'), "| Flanking", src("module/flankoverlay.mjs").includes('MK.trackLines("flank", box)'),

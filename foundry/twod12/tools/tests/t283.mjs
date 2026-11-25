@@ -29,7 +29,7 @@ console.log("an Advance bought during the drag, 2 back:", JSON.stringify(M.backR
   "| all the way: the AP too:", src("module/moment.mjs").includes('ap: Number(c.getFlag(F, "ap")) || 0 } : null;'));
 console.log("--- Charge, the HUD, the strip, the cover lines");
 const mv = src("module/move.mjs");
-console.log("another enemy clicked becomes the target:", mv.includes("const other = tokenAtPoint(pos);"), "| never on a creature's space:", mv.includes("const freeBack = (cells, idx)"), "| in the Situational section:", mv.includes('bar.classList.toggle("in-side", inSide)'),
+console.log("another enemy targeted becomes the target (v0.0.516: targeting, not a click):", mv.includes('const targetHook = Hooks.on("targetToken", onTarget);'), "| never on a creature's space:", mv.includes("const freeBack = (cells, idx)"), "| in the Situational section:", mv.includes('bar.classList.toggle("in-side", inSide)'),
   "| its Weapon Attack chip's name uses it:", !src("module/inline.mjs").includes('if (kind === "Use" && cfg.target'));
 console.log("a Large token's space (v0.0.468: read from a drag's first step, top-left or center):", mv.includes('if (f && f.i === tl0.i && f.j === tl0.j) bigMode.set(doc.id, "tl");') && mv.includes("const at = shift(c0);"), "| the Light weapon a warning:", src("module/rollinput.mjs").includes("blocked.push(...(c.warns ?? []));"));
 console.log("the HUD's struck stamps are clicked:", src("module/hudview.mjs").includes('class="hb-st${s.off ? " no" : ""}" data-hud='), "| no state tag on the strip:", src("module/carousel.mjs").includes('const htag = "";'), "| the Reaction diamond gold:", src("tools/build-theme.mjs").includes(".twod12-type.twod12-type #twod12-carousel .tp-marks .hm-r i.on { background: #d2a75a;"));

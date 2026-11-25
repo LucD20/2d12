@@ -1,6 +1,6 @@
 who sees: GM true | a player, a PC's marks true | a player, an NPC's false
 seal order: ["Goblin","Archer","Orc"]
-seals down the left edge: true | spaced: true | r 9
+v0.0.516: no seals at rest: true
 trimmed line: {"x1":10,"y1":0,"x2":80,"y2":0,"len":70}
 5 seconds: 5000 | shown before true | after false
 tracked: Hide true | Line of Effect true | Flanking true | shown again on select, hover, target true | registered true

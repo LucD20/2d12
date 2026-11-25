@@ -2327,13 +2327,13 @@ export function openChargePicker(c, token) {
   if (chargePick) chargePick.close(false);
   const gfx = new PIXI.Graphics();
   MK.addOnTop(gfx);
-  const prevInteractive = canvas.tokens.interactiveChildren;
-  canvas.tokens.interactiveChildren = false;
+  // v0.0.516 (Lucas on v0.0.515: "targeting is the only thing that causes the charge to target, and click is now free to work normally"): the
+  // tokens stay clickable (selecting as usual); the Charge's enemy is the creature you target (T, or Foundry's targeting), or one picked in the bar
   const a = cellAt({ x: homePos(doc).x + 2, y: homePos(doc).y + 2 });
   const reach = Math.max(1, num(c.actor?.system?.reach) || 1);
   // v0.0.219 (Lucas): the limit is outlined (every square within its maximum, counted from your space), so nobody has to guess how far it goes.
   const limit = emanationCells(tokenCells(doc), Math.max(0, Math.floor(num(ch.max))));
-  let side = "left", pos = null, cur = null;
+  let side = "left", cur = null;
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-chargebar";
   // v0.0.461 (the map notes' redesign, e): before a target the bar lists the enemies it can Charge as pictures (as the map marks them); with one,
@@ -2360,7 +2360,7 @@ export function openChargePicker(c, token) {
   try { dockHook = Hooks.on("controlToken", () => setTimeout(() => placeBar(0), 150)); } catch (e) { dockHook = null; }
   // v0.0.461 (e, choices 3A and 4A): a Charge always picks an enemy first (the book's Charge); v0.0.514: only the Charge button or Enter confirms
   const text = () => {
-    if (!target) return `<b>Pick the enemy to Charge</b>, on the map or here. You run straight at it (at least ${ch.min}, up to ${ch.max} squares), then make a Basic Attack (1A).${cands.filter(x => !x.ok).length ? ` <span class="lb-tag">${cands.filter(x => !x.ok).map(x => `${esc(x.t.name)}: ${esc(x.why)}`).join(" \u00b7 ")}</span>` : ""}`;
+    if (!target) return `<b>Target the enemy to Charge</b> (on the map, or pick it here). You run straight at it (at least ${ch.min}, up to ${ch.max} squares), then make a Basic Attack (1A).${cands.filter(x => !x.ok).length ? ` <span class="lb-tag">${cands.filter(x => !x.ok).map(x => `${esc(x.t.name)}: ${esc(x.why)}`).join(" \u00b7 ")}</span>` : ""}`;
     const r = cur?.path; if (!r) return "";
     const who = cur.inReach.some(t => t.id === target.id);
     if (cur.tooFar) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">too far</span> A Charge goes up to ${ch.max} squares: you stop after ${cur.stopSq}, out of Reach, and the Charge is disrupted.`;
@@ -2376,7 +2376,6 @@ export function openChargePicker(c, token) {
   const footOf = cell => { const out = []; for (let di = 0; di < Math.max(1, Math.round(doc.height)); di++) for (let dj = 0; dj < Math.max(1, Math.round(doc.width)); dj++) out.push(`${cell.i + di},${cell.j + dj}`); return out; };
   const taken = () => { const set = new Set(); for (const t of canvas.tokens?.placeables ?? []) { if (t.id === doc.id || t.document?.hidden) continue; for (const x of tokenCells(t)) set.add(`${x.i},${x.j}`); } return set; };
   const freeBack = (cells, idx) => { const occ = taken(); let n = idx; while (n > 0 && footOf(cells[n]).some(k => occ.has(k))) n--; return n; };
-  const tokenAtPoint = p => (canvas.tokens?.placeables ?? []).find(t => t.id !== doc.id && !t.document?.hidden && t.visible !== false && Number(t.document?.disposition) !== Number(doc.disposition) && t.bounds?.contains?.(p.x, p.y)) ?? null;   // a creature of another side
   const tl0 = cell => canvas.grid.getTopLeftPoint({ i: cell.i, j: cell.j });
   const virtAt = cell => { const t = tl0(cell); return { id: doc.id, document: { id: doc.id, x: t.x, y: t.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } }; };
   const computeTarget = () => {
@@ -2469,21 +2468,9 @@ export function openChargePicker(c, token) {
   bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); close(true); });
   // v0.0.343 (Lucas, playtest 4): "Charge!" next to Give up: the line shown (toward the target, or the last square pointed at) goes, as a confirmed click
   bar.querySelector(".lb-go").addEventListener("click", async ev => { ev.preventDefault(); ev.stopPropagation(); await confirm(); });   // v0.0.461: Charge (or Charge anyway)
-  const local = ev => (ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage));
-  // v0.0.461 (choice 3A): no destination square: the pointer only shows which enemy a click would pick
-  const move = ev => { pos = local(ev); const hit = tokenAtPoint(pos); canvas.app.view.style.cursor = hit && (target ? true : cands.some(x => x.ok && x.t.id === hit.id)) ? "pointer" : ""; };
-  const down = async ev => {
-    if (ev.button !== 0) return;   // v0.0.460 (Lucas, checklist v0.0.459: "right clicking cancels it"): a right-click is Foundry's (panning the map); Escape or Cancel ends it
-    pos = local(ev);
-    // v0.0.453 (Lucas, playtest 6): a click on another enemy makes it the target; v0.0.461 (choice 4A): a click on the target confirms; a click
-    // anywhere else does nothing (it launched the Charge)
-    // v0.0.514 (Lucas on v0.0.513: "clicking on an empty space doesnt unselect the token"; "remove the behavior of double clicking the target on the
-    // map to confirm, only allow through the button"): an empty click deselects (the bar stays, and follows the next selection); a click on a creature
-    // only picks it; the Charge button (or Enter) confirms
-    const other = tokenAtPoint(pos);
-    if (!other) { try { canvas.tokens?.releaseAll?.(); } catch (e) { /* nothing selected */ } return; }
-    if (other.id !== target?.id && (target || cands.some(x => x.ok && x.t.id === other.id))) await setTarget(other);
-  };
+  // the target you set is the Charge's enemy (a creature it can Charge; you and your allies are left alone)
+  const onTarget = (user, tok, on) => { if (user !== game.user || !on || !tok || tok.id === doc.id) return; if (tok.id !== target?.id && (target || cands.some(x => x.ok && x.t.id === tok.id))) setTarget(tok); };
+  const targetHook = Hooks.on("targetToken", onTarget);
   const confirm = async () => {
     if (!target || !cur) return;
     const r = cur.path;
@@ -2498,9 +2485,8 @@ export function openChargePicker(c, token) {
     if (ev.key === "Tab") { ev.preventDefault(); ev.stopImmediatePropagation(); if (cur?.path.ties) flip(); }
   };
   const close = giveUp => {
-    canvas.stage.off("pointermove", move); canvas.stage.off("pointerdown", down);
+    try { Hooks.off("targetToken", targetHook); } catch (e) { /* gone */ }
     window.removeEventListener("keydown", key_, true);
-    canvas.tokens.interactiveChildren = prevInteractive;
     try { gfx.destroy(); marks.destroy({ children: true }); } catch (e) { /* gone */ }
     try { canvas.app.view.style.cursor = ""; } catch (e) { /* gone */ }
     bar.remove();
@@ -2509,10 +2495,10 @@ export function openChargePicker(c, token) {
     chargePick = null;
     if (giveUp) endMovement(c.id).catch(() => {});
   };
-  canvas.stage.on("pointermove", move);
-  canvas.stage.on("pointerdown", down);
   window.addEventListener("keydown", key_, true);
   chargePick = { c, close, bar };
+  // v0.0.516: a creature you already target, that it can Charge, is its enemy at once
+  if (!target) { const tg = [...(game.user?.targets ?? [])].filter(t => t.id !== doc.id && cands.some(x => x.ok && x.t.id === t.id)); if (tg.length === 1) { target = tg[0]; c.setFlag(F, "charge", { ...ch, targetId: target.id }).catch(() => {}); } }
   if (target) { cur = computeTarget(); }
   draw();
   return true;

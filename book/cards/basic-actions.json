@@ -577,7 +577,7 @@
           "tiers": [
             "No effect against that creature.",
             "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it (see [[Hiding]]).",
-            "As Tier 2, and that creature takes 1 Bane on Seek and Point Out against you (1 round)."
+            "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it. It takes 1 Bane on Seek and Point Out against you (1 round)."
           ]
         }
       ],
@@ -607,7 +607,7 @@
           "tiers": [
             "No effect.",
             "One ally within 10 squares who can see or hear you perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow.",
-            "As Tier 2, for every ally within 10 squares who can see or hear you."
+            "Every ally within 10 squares who can see or hear you perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow."
           ]
         }
       ],
@@ -638,7 +638,7 @@
           "tiers": [
             "No effect.",
             "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow.",
-            "As Tier 2, and you gain 1 Boon on Point Out against the target (EoT)."
+            "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow, and you gain 1 Boon on Point Out against it (EoT)."
           ]
         },
         {
@@ -646,7 +646,7 @@
           "tiers": [
             "No effect.",
             "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow.",
-            "As Tier 2, and you gain 1 Boon on Point Out against the target (EoT)."
+            "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow, and you gain 1 Boon on Point Out against it (EoT)."
           ]
         }
       ],
