@@ -5,7 +5,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 29.7 | 348 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.4 | 356 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.5 | 355 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 46.3 | 498 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 15.1 | 261 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.9 | 103 |
@@ -16,7 +16,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 3.7 | 94 |
 | 13-archer.md | Archer | archer |  | 4.3 | 97 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 23.5 | 240 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 23.5 | 238 |
 | 15-gear.md | Gear | gear |  | 14.0 | 197 |
 
 ## 01-roll.md: Chapter 1: The Roll
@@ -59,40 +59,40 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 40: ## Turns and Rounds
 - 46: ## Action Points
 - 50:   ### Unspent AP
-- 61:   ### Losing and Gaining Action Points
-- 68: ## Reactions
-- 82:   ### What a Reaction Responds To
-- 91:   ### A Reaction's Target
-- 110:   ### Disrupting Actions
-- 120:   ### Moving Closer
-- 124:   ### Moving Away
-- 138: ## Actions
-- 146:   ### Setup
-- 156:   ### Targets
-- 160:   ### Willing and Unwilling
-- 164:   ### Requirements
-- 168:   ### 0 AP Actions
-- 172:   ### Linked Actions
-- 188:   ### Targets of Effects
-- 196:   ### Effect Timing
-- 210:   ### Buffs
-- 221:     #### Stacking
-- 242:   ### Frequency
-- 248:     #### At-will
-- 256:     #### Turn
-- 260:     #### Round
-- 264:     #### Encounter
-- 268:     #### Daily
-- 272: ## Versus
-- 276:   ### Defenses
-- 291: ## Rounds and Durations
-- 293:   ### Until
-- 297:   ### Your Next Action
-- 303:   ### Rounds
-- 312:   ### End of Turn
-- 318:   ### End of Encounter
-- 324: ## Escalation
-- 342:   ### Momentum
+- 62:   ### Losing and Gaining Action Points
+- 69: ## Reactions
+- 83:   ### What a Reaction Responds To
+- 92:   ### A Reaction's Target
+- 111:   ### Disrupting Actions
+- 121:   ### Moving Closer
+- 125:   ### Moving Away
+- 139: ## Actions
+- 147:   ### Setup
+- 157:   ### Targets
+- 161:   ### Willing and Unwilling
+- 165:   ### Requirements
+- 169:   ### 0 AP Actions
+- 173:   ### Linked Actions
+- 189:   ### Targets of Effects
+- 197:   ### Effect Timing
+- 211:   ### Buffs
+- 222:     #### Stacking
+- 243:   ### Frequency
+- 249:     #### At-will
+- 257:     #### Turn
+- 261:     #### Round
+- 265:     #### Encounter
+- 269:     #### Daily
+- 273: ## Versus
+- 277:   ### Defenses
+- 292: ## Rounds and Durations
+- 294:   ### Until
+- 298:   ### Your Next Action
+- 304:   ### Rounds
+- 313:   ### End of Turn
+- 319:   ### End of Encounter
+- 325: ## Escalation
+- 341:   ### Momentum
 
 ## 03-movement.md: Chapter 3: Movement and the Environment
 
@@ -300,23 +300,23 @@ Open (to be decided) boxes: 19: "Levels 1 to 3 are written. Level 4 (the Apex an
 - 103:   ### Minor enemies
 - 107:   ### Standards
 - 116:   ### Elites
-- 124:   ### The Boss
-- 129: ## An NPC's numbers
-- 141:   ### Speed, Size and Steadiness
-- 145:   ### NPCs and Health
-- 149: ## An NPC's Actions
-- 158:   ### What an Action attacks, rolls and damages
-- 172:   ### Basic attacks
-- 180:   ### Losing its weapon
-- 184:   ### Special Actions
-- 188:   ### NPC Reactions
-- 195: ## The playtest creatures (Stage 0, level 1)
-- 199:   ### Goblin Sneak
-- 208:   ### Grave Wisp
-- 220:   ### Orc Warrior
-- 230:   ### Ogre Chieftain
+- 122:   ### The Boss
+- 127: ## An NPC's numbers
+- 139:   ### Speed, Size and Steadiness
+- 143:   ### NPCs and Health
+- 147: ## An NPC's Actions
+- 156:   ### What an Action attacks, rolls and damages
+- 170:   ### Basic attacks
+- 178:   ### Losing its weapon
+- 182:   ### Special Actions
+- 186:   ### NPC Reactions
+- 193: ## The playtest creatures (Stage 0, level 1)
+- 197:   ### Goblin Sneak
+- 206:   ### Grave Wisp
+- 218:   ### Orc Warrior
+- 228:   ### Ogre Chieftain
 
-Open (to be decided) boxes: 31: "How many fights a day between Rests holds: the old guide (two easy, tw"; 50: "Not rebuilt yet: the CV of the easy, hard and deadly bands; the caps ("; 126: "The Boss (a rank for a fight against a single creature, or one with on"; 138: "Not rebuilt yet: the ratings (Terrible, Low, Medium, High, Extreme) an"; 192: "Pricing an NPC's Actions is not rebuilt yet: the old points engine, th"
+Open (to be decided) boxes: 31: "How many fights a day between Rests holds: the old guide (two easy, tw"; 50: "Not rebuilt yet: the CV of the easy, hard and deadly bands; the caps ("; 124: "The Boss (a rank for a fight against a single creature, or one with on"; 136: "Not rebuilt yet: the ratings (Terrible, Low, Medium, High, Extreme) an"; 190: "Pricing an NPC's Actions is not rebuilt yet: the old points engine, th"
 
 ## 15-gear.md: Gear
 

@@ -119,8 +119,6 @@ A Grunt has Health, so a big hit kills it at once; a Minion's ticks don't care h
 
 **An Elite's Encounter Action is worth about a turn:** about one extra Standard's turn in a fight (9 or 10 more damage to Health at the table, or the like in effect). The size is the rank's; the form is the creature's, written on its card where the players can read it. By default it hits several creatures for about twice a Round Special. An Elite uses it on its own turn.
 
-No NPC has Escalation.
-
 ### The Boss
 
 > [!tbd]
@@ -214,7 +212,7 @@ The four creatures of the next playtest, one for each rank. **Their numbers are 
 - **Drifting** (Feature). *Nothing in its way is quite solid to it.* The wisp's own movement can pass through creatures' spaces (it can't end in one), and a creature's space is never Difficult Terrain for it.
 - **Slipping Touch** (Basic attack; At-will, 1 AP; [Power, Melee, Strike]; Reach (1); one creature; Power vs. Ward Defense). *It reaches for you and is already somewhere else.* Tier 1: the wisp can Evade 1. Tier 2: [R] 1d4 Co. Tier 3: [R] 1d6 Co.
 - **Guttering Glance** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike]; 6 sq.; one creature; Power vs. Ward Defense). *The light goes out behind your eyes.* Tier 2: [R] 1d4 Ps. Tier 3: [R] 1d4 Ps; Half-Blinded (EoT).
-- **Pass Through** (Special; Round, 2 AP; [Power, Move, Strike]; up to two enemies; Power vs. Ward Defense). *It drifts straight through you, and the cold stays.* Setup: the wisp Advances in a straight line; the targets are enemies whose space it passed through. Tier 2: [R] 1d4 Co. Tier 3: [R] 1 + 1d6 Co.
+- **Pass Through** (Special; Round, 2 AP; [Power, Move, Strike]; up to two enemies; Power vs. Ward Defense). *It drifts straight through you, and the cold stays.* Setup: the wisp Advances up to its Speed in a straight line; the targets are enemies whose space it passed through. Tier 2: [R] 1d4 Co. Tier 3: [R] 1 + 1d6 Co.
 - **Dying Flare** (Reaction; Encounter, 1R; [Power, Save, Area]; Area: 1 Emanation; all creatures in the Area; Instinct Save against its Power DC, 13). *It goes out the way a lamp does when it is dropped.* Interrupt: the wisp would go Down. Tier 1: [R] 1d4 Co; Hindered (EoT). Tier 2: [R] 1d4 Co. Tier 3: no effect. Then the wisp goes Down.
 
 ### Orc Warrior

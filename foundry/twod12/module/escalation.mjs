@@ -40,7 +40,7 @@ export function canPayEscalation(actor, cost) {
   const n = Number(cost) || 0;
   if (n <= 0) return { ok: true, why: "" };
   const have = escalationOf(actor);
-  if (have === null) return { ok: false, why: `${actor?.name ?? "This creature"} has no Escalation (only PCs and Elites do).` };
+  if (have === null) return { ok: false, why: `${actor?.name ?? "This creature"} has no Escalation.` };
   if (have < n) return { ok: false, why: `${actor.name} is at Escalation ${have}; this needs Escalation ${n}.` };
   return { ok: true, why: "" };
 }

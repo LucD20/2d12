@@ -7,7 +7,7 @@ round 3: Kai 2
 Kai needs 1: {"ok":true,"why":""}
 Kai needs 3: {"ok":false,"why":"Kai is at Escalation 2; this needs Escalation 3."}
 Lonny needs 1: {"ok":true,"why":""}
-Goblin needs 1: {"ok":false,"why":"Goblin has no Escalation (only PCs and Elites do)."}
+Goblin needs 1: {"ok":false,"why":"Goblin has no Escalation."}
 Kai needs 0: {"ok":true,"why":""}
 Kai after using an Escalation 2 Action: 2 | spendEscalation gone: undefined
 --- passives (an effect with a minimum Escalation)

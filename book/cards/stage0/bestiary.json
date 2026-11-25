@@ -480,7 +480,7 @@
    "body": [
     {
      "label": "Setup",
-     "text": "The wisp Advances in a straight line; the targets are enemies whose space it passed through."
+     "text": "The wisp Advances up to its Speed in a straight line; the targets are enemies whose space it passed through."
     },
     {
      "label": "Attack",

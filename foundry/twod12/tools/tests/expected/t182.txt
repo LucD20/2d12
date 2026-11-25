@@ -8,7 +8,7 @@ Nari 2 Kai 2 | Momentum now 1 | line: Momentum 1: the party starts this encounte
 --- the end of the encounter: back to 1, the Guards end
 Nari 1 Guard 0 AP Guard 0 | Kai 1 used cleared: null
 --- the requirement: the Apex needs 3, nothing is spent
-[{"ok":false,"why":"Kai is at Escalation 1; this needs Escalation 3."},"Nari is at Escalation 1; this needs Escalation 3.","Goblin has no Escalation (only PCs and Elites do)."]
+[{"ok":false,"why":"Kai is at Escalation 1; this needs Escalation 3."},"Nari is at Escalation 1; this needs Escalation 3.","Goblin has no Escalation."]
 --- the hook setting
 escHooks: [{"when":"allyState","range":5},{"when":"markDown","range":0}] | sentences: Once an encounter, when an ally within 5 squares becomes Bloodied or goes Down, its Escalation rises by 1 (at 3: nothing, and the once isn't used up). | Escalation +1 when its mark goes Down
 the hooks a creature has: [{"when":"allyState","range":5,"source":"Kindled Wrath"}]

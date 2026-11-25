@@ -54,6 +54,7 @@ If you end your turn without spending all your AP, you keep the rest until your 
 - This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends 1 round later, when you regain AP again. Damage takes it before your other Guard.
 - A kept AP you spend on a Reaction is one AP less when your turn starts, so it gives no Guard.
 - Your Reaction Point never becomes Guard, and your first turn of an encounter has no unused AP.
+- An NPC gains no Guard from unspent AP (see [[NPC Reactions]]).
 
 > [!example]
 > Drak (Stage 0) has Guard 5 from a card and ends his turn with 1 AP left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 for 1 round, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.
@@ -336,8 +337,6 @@ An Action whose card says **Escalation N** can be used only while your Escalatio
 
 > [!example]
 > Nari's party has Momentum 1, so he starts a fight at Escalation 2. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.
-
-NPCs have no Escalation.
 
 ### Momentum
 
