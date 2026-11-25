@@ -248,7 +248,10 @@ export function basicEntry(c) {
   if (s.weaponUse) e.weaponUse = s.weaponUse;
   if (s.weaponNeeds) e.weaponNeeds = s.weaponNeeds;
   if (s.description) e.description = s.description;
-  if (s.lines) e.lines = s.lines;   // v0.0.429 (CARD-ONE step 6): its Specials as the card's lines
+  if (s.lines) e.lines = s.lines;
+  // v0.0.510 (Lucas on v0.0.508: Tumble's Check "should roll against their attribute"): foundry.checkDc "targets": its Checks roll against the targeted
+  // creatures' Attribute DC (the highest; 1 Bane for each creature beyond the first: inline.mjs doCheck)
+  if (c.foundry?.checkDc === "targets" && e.lines) e.lines = e.lines.map(l => ({ ...l, text: String(l.text ?? "").replace(/@Check\[(\w+)\]/g, "@Check[$1|dc:targets]") }));   // v0.0.429 (CARD-ONE step 6): its Specials as the card's lines
   if (s.special) e.special = s.special;
   if (s.reaction) Object.assign(e, { reaction: true, reactionKind: s.reactionKind, trigger: s.trigger });   // pack R-core: Opportunity Attack, the basic Reaction
   for (const k of ["moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (s[k] !== undefined) e[k] = s[k];   // v0.0.272 (pack RX): its moment

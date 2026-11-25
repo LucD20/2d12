@@ -551,8 +551,9 @@
       ],
       "foundry": {
         "basic": "tumble",
+        "checkDc": "targets",
         "automation": "silver",
-        "automationNote": "the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the Check: by hand.",
+        "automationNote": "the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the card posts first: its Appeal Check and Instinct Check roll against the targeted creatures' DC of that Attribute (the highest, 1 Bane for each creature beyond the first; no target: DC 13), then its Move button.",
         "img": "icons/svg/wingfoot.svg"
       }
     }

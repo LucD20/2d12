@@ -12,5 +12,5 @@ const mv = new Set(["move"]);
 console.log("Advance is movement-only:", !!A.pureMove({ traits: mv }, B.advance.versions[0], "advance"), "| Tumble 1 AP:", A.pureMove({ traits: new Set(B.tumble.traits) }, B.tumble.versions[0], "tumble"), "| Tumble 2 AP:", A.pureMove({ traits: new Set(B.tumble.traits) }, B.tumble.versions[1], "tumble"));
 console.log("A or B Check:", G.convertEffects("make an Appeal or Instinct Check against"));
 console.log("one Check still one button:", G.convertEffects("an Instinct Check against the DC"), "|", G.convertEffects("DC 14 Body Check"));
-console.log("Tumble's card line:", B.tumble.lines.map(l => l.text).join(" ").match(/an @Check\[appeal\]\{Appeal Check\} or @Check\[instinct\]\{Instinct Check\}/) ? "both buttons" : "missing");
+console.log("Tumble's card line:", B.tumble.lines.map(l => l.text).join(" ").match(/an @Check\[appeal(\|dc:targets)?\]\{Appeal Check\} or @Check\[instinct(\|dc:targets)?\]\{Instinct Check\}/) ? "both buttons" : "missing");
 console.log("Aid's card:", JSON.stringify(B.aid).includes("@Check[appeal]{Appeal Check} or @Check[instinct]{Instinct Check}") ? "both buttons" : "missing");

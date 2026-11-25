@@ -27,7 +27,7 @@ import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches, demoralizedTarget, markDemoralized } from "./usage.mjs";   // (markAtWill: imported where used)
 import { tierProbs, topStep, bbCount, bbResolve } from "./calc.mjs";
-import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged
+import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS, escalationDie } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged; v0.0.510: escalationDie (Steady Draw's dE)
 import { weaponDiceFormula, weaponDieOnlyFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, minorNpc } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die; core rework batch 3: [D]
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
@@ -1365,6 +1365,23 @@ export async function useAction(actor, item, opts = {}) {
   }
   // v0.0.292: the roll dialog's roll mode, for this roll only (the chat's own mode stays as it is)
   const rdMode = (() => { const d = {}, m = data.rollMode, CM = ChatMessage.implementation ?? ChatMessage; if (m) try { if (typeof CM.applyRollMode === "function") CM.applyRollMode(d, m); else d.rollMode = m; } catch (e) { console.warn("twod12 | roll mode", e); } return d; })();
+  // v0.0.510 (Steady Draw): the roll dialog's 2dE chip, paid only when the roll got a Tier 2 or 3: the Reaction Point (in combat), once an encounter
+  let steadyDE = 0;
+  if (data.steadyDE === "on") {
+    try {
+      const h = activeHooks(actor, "basicLine").find(x => Number(x.hook?.deMore) > 0), key = h?.item?.name ?? "deMore";
+      const tiers = mres ? mres.map(r => Number(r.chk?.tier) || 0) : [Number(chk?.tier) || 0];
+      if (h && steadyPays(tiers)) {
+        const C = await import("./combat.mjs"), cb = game.combat?.started ? C.combatantOf(actor) : null;
+        if (cb && !(C.getRAP(cb) > 0)) ui.notifications.warn(`${actor.name} has no Reaction Point left: no ${key} dice.`);
+        else {
+          if (cb) await C.setRAP(cb, C.getRAP(cb) - 1);
+          if (game.combat?.started) await actor.setFlag("twod12", "onceUsed", { ...(actor.getFlag("twod12", "onceUsed") ?? {}), [key]: game.combat.id });
+          steadyDE = Number(h.hook.deMore) || 2;
+        }
+      }
+    } catch (e) { console.warn("twod12 | Steady Draw", e); }
+  }
   const cmsg = bannerMove ? null : await ChatMessage.create({
     ...rdMode,
     speaker: ChatMessage.getSpeaker({ actor }),
@@ -1397,6 +1414,7 @@ export async function useAction(actor, item, opts = {}) {
           mode: opts.splitMode ?? "",
           triggerUuid: opts.triggerUuid ?? "",   // v0.0.409: a Reaction's triggering creature (@Condition[...|to:trigger])
           smiteMore,   // v0.0.409 (Smite): the Reaction Point spent for 1 more Smite die
+          steadyDE,   // v0.0.510 (Steady Draw): n dE on Tiers 2 and 3 (the Reaction Point spent)
           attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
           isWeapon: modOnWeapon(src, useTraits),
           escalation: escCost > 0,   // the effects it applies end with the encounter (escalation.mjs)
@@ -1765,6 +1783,13 @@ export function mergeBasicStateLines(base, hooks = []) {
   }
   return Object.values(out).some(v => String(v ?? "").trim()) ? out : null;
 }
+/** Pure (v0.0.510, Steady Draw): does a roll with these Tiers (one per target) pay for the 2dE? Any Tier 2 or 3. */
+export const steadyPays = (tiers = []) => (tiers ?? []).some(t => Number(t) >= 2);
+/** Pure (v0.0.510, Steady Draw): the n dE on a Tier 2 or 3 as a damage instance (the weapon's subtype; dE: roundrules.mjs escalationDie). */
+export function steadyDice(n, tier, escalation, source = "") {
+  if (!(Number(n) > 0) || tier < 2) return [];
+  return [{ pool: "B", useW: false, wCount: 1, useD: false, dCount: 1, dice: `${Number(n)}d${escalationDie(escalation)}`, useAt: false, subtype: "", source: source || `${Number(n)}dE` }];
+}
 /** Pure (core rework batch 3, Steady Draw): extra [D] instances on Tier 3 when a target was already Strained before the roll. */
 export function strainedExtraD(hooks = [], tier = 0, targets = [], preStrained = []) {
   if (tier !== 3 || !(hooks ?? []).length) return [];
@@ -1801,7 +1826,7 @@ export async function rollDamage(message, { again = false } = {}) {
   let empUsed = false, empLater = false;   // v0.0.426: with several targets the Empowered die is rolled once, after the Tiers, for one creature
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who, crit = false) => {
-    const extraD = strainedExtraD(basicLines, tier, targets, preStrained);
+    const extraD = [...strainedExtraD(basicLines, tier, targets, preStrained), ...steadyDice(f.steadyDE, tier, actor.system?.escalation, basicLines.find(h => Number(h.hook?.deMore) > 0)?.item?.name ?? "")];
     const insts = [...(moreW ? withMoreW(version[`t${tier}`], moreW, moreWName) : version[`t${tier}`]), ...extraD, ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
     const riders = f.ridersOnDamage && version[`t${tier}`]?.some(i => i.useW || i.useD || i.dice || i.useAt) ? (version.fx?.[`t${tier}`] ?? []).filter(x => x.mode === "auto").map(x => ({ ...x, rider: true })) : [];
     const fx = [...[...(version.fx?.all ?? []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]

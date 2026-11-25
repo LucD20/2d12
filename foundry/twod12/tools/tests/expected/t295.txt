@@ -9,7 +9,7 @@ Fists weapon table: {"t1":{"count":0,"die":"","mod":0},"t2":{"count":0,"die":"",
 Fists card tiers: [V] 1 Bl / [V] 2 + [Mod] Bl / [V] 1d6! + [Mod] Bl
 NPC Fists gets Weapon Modifier on T2/T3: true
 --- Class basicLine hooks (Sworn Blade, Steady Draw)
-Sworn Blade hook: [{"kind":"basicLine","strained":"You can @Move[slid|distance:1]{Slide the target 1}."}] | Steady Draw hook: [{"kind":"basicLine","strainedBeforeD":1,"specialLine":"Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal @Damage[2dE|to:card|on:2,3|pay:r|once:encounter|key:Steady Draw]{2dE more} to the target."}]
+Sworn Blade hook: [{"kind":"basicLine","strained":"You can @Move[slid|distance:1]{Slide the target 1}."}] | Steady Draw hook: [{"kind":"basicLine","strainedBeforeD":1,"specialLine":"Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target.","deMore":2}]
 Paladin Basic Attack card lines: Special | Attack | Tier 1 | Tier 2 | Tier 3 | Strained
 Archer Basic Attack card lines: Special | Strained | Special | Attack | Tier 1 | Tier 2 | Tier 3
 mergeBasicStateLines (Sworn Blade): {"strained":"You can @Move[slid|distance:1]{Slide the target 1}."}

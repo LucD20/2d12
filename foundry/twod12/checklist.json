@@ -5,11 +5,11 @@
    "items": [
     {
      "id": "steady-draw-de",
-     "v": "v0.0.509",
-     "title": "Steady Draw: 2dE for the Reaction Point, once an encounter",
-     "do": "In a combat, on Kaela's turn, use Basic Attack with her bow against Goblin Sneak until one gets a Tier 2 or 3. On that chat card, click the Special line's \"2dE more\" button. Click it again. Next round (Escalation 2, or higher), try it on a Tier 1 card, then on another Tier 2 card.",
-     "expect": "The Basic Attack card (sheet, HUD, chat) has a Special line: \"Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target.\" The first click spends her Reaction Point and posts a damage card to the Goblin: 2d4 at Escalation 1 or 2 (2d6 at 3, 2d8 at 4...), the bow's subtype, no exploding dice. The second click is refused (already used this encounter); on a Tier 1 card: \"Only on a Tier 2 or 3\"; with no Reaction Point left: refused. In a new combat it works again.",
-     "rev": 1
+     "v": "v0.0.510",
+     "title": "Steady Draw: the roll dialog's 2dE chip, paid on a Tier 2 or 3",
+     "do": "In a combat, open Kaela's Basic Attack roll dialog (her bow) against Goblin Sneak and tick the chip \"Reaction Point: 2dE more on a Tier 2 or 3\". Roll until one roll gets a Tier 1 and another a Tier 2 or 3 (tick the chip each time), then roll its damage. Open the roll dialog once more.",
+     "expect": "The chip is off until ticked; ticked, the Tier 2 and Tier 3 previews show +2d4 (2d6 at Escalation 3, 2d8 at 4...). On a Tier 1 nothing is spent and the chip is offered again. On a Tier 2 or 3 her Reaction Point is spent and the damage shows 2 more dice named Steady Draw (the bow's subtype, no exploding dice). After that, the chip is gone for the rest of the combat; with no Reaction Point left, a warning and no extra dice. The chat card has no 2dE button any more.",
+     "rev": 2
     }
    ]
   },
@@ -18,19 +18,11 @@
    "items": [
     {
      "id": "tumble-pass",
-     "v": "v0.0.508",
-     "title": "Tumble posts its card: the Check, then the movement past enemies",
-     "do": "On Kaela's turn, use Tumble (1 AP: Advance half her Speed). In the chat card, click Appeal Check or Instinct Check, then the card's Move button, and drag her through Goblin Sneak's square to the far side. Use it again (2 AP: Evade 2) between Orc Warrior and Goblin Sneak corner to corner. Try to end inside the Goblin's square.",
-     "expect": "Each use posts Tumble's card to the chat (it no longer starts the movement by itself), with two Check buttons (Appeal Check, Instinct Check; set the DC and the Banes in the roll dialog by hand) and a Move button. The movement passes the enemies; she can't end in an enemy's square. After the Tumble, a normal Advance is blocked by the enemies again.",
-     "rev": 2
-    },
-    {
-     "id": "aid-two-checks",
-     "v": "v0.0.508",
-     "title": "Aid's Check: an Appeal and an Instinct button",
-     "do": "Make Sylwen Daunted, then on Kaela's turn use Aid on Sylwen and look at the card in the chat.",
-     "expect": "The card's line reads \"an Appeal Check or Instinct Check\" with a button on each (was a button only on Instinct); each rolls that Attribute.",
-     "rev": 1
+     "v": "v0.0.510",
+     "title": "Tumble: the Check against the targeted creatures' DC, then the movement past enemies",
+     "do": "On Kaela's turn, target Goblin Sneak and use Tumble (1 AP). In the chat card, click Instinct Check, then the card's Move button, and drag her through the Goblin's square. Then target both Goblin Sneak and Orc Warrior, use Tumble (2 AP: Evade 2) and click Appeal Check; pass between them corner to corner.",
+     "expect": "The roll dialog says \"vs Goblin Sneak\" and its DC is the Goblin's Instinct DC (11 + its Instinct), not 13. With two targets: the higher of their Appeal DCs and 1 Bane. With no target: DC 13. The movement passes the enemies; she can't end in an enemy's square.",
+     "rev": 3
     }
    ]
   }

@@ -119,10 +119,11 @@
      {
       "kind": "basicLine",
       "strainedBeforeD": 1,
-      "specialLine": "Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal @Damage[2dE|to:card|on:2,3|pay:r|once:encounter|key:Steady Draw]{2dE more} to the target."
+      "specialLine": "Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target.",
+      "deMore": 2
      }
     ],
-    "automationNote": "on your Basic Attack's Tier 3 against a target already Strained when you roll, its damage rolls 1[D] more; on the attack's chat card, the Special's 2dE button (a Tier 2 or 3 target): it spends your Reaction Point (in combat), once an encounter, and deals your Escalation die twice (d4 at Escalation 1 and 2, d6 at 3... d12 at 6) as the weapon's damage."
+    "automationNote": "on your Basic Attack's Tier 3 against a target already Strained when you roll, its damage rolls 1[D] more; the roll dialog's chip \"Reaction Point: 2dE more on a Tier 2 or 3\" (off until ticked, once an encounter): on a Tier 2 or 3 it spends your Reaction Point and adds your Escalation die twice to the damage (d4 at Escalation 1 and 2 ... d12 at 6); on a Tier 1 nothing is spent."
    }
   },
   {

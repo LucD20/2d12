@@ -21,7 +21,6 @@ import { handleMove, moveDistance } from "./move.mjs";
 import { handleRally } from "./rally.mjs";
 import { gainGuard } from "./guard.mjs";
 import { handleUse } from "./freeuse.mjs";
-import { escalationDie, withEscalationDie } from "./roundrules.mjs";   // v0.0.509: dE
 import { squaresBetween } from "./move.mjs";
 import { evalExpr } from "./refs.mjs";
 import { ignoredBy, adjustCover } from "./automation.mjs";
@@ -90,15 +89,6 @@ export function parseInline(kind, inner) {
     cfg.nonlethal = segs.slice(1).some(s => s.toLowerCase() === "nonlethal");
     const lab = segs.slice(1).find(s => /^label\s*:/i.test(s));
     if (lab) cfg.label = lab.replace(/^label\s*:\s*/i, "");
-    // v0.0.509 (Steady Draw): to:card (the card's targets on the Tiers of on:2,3), pay:r (the Reaction Point), once:encounter|key:<name>; dE is the user's Escalation die
-    for (const sg of segs.slice(1)) {
-      const [k, ...v] = sg.split(":"), key = k.trim().toLowerCase(), val = v.join(":").trim();
-      if (key === "to") cfg.to = val.toLowerCase();
-      else if (key === "on") cfg.onTiers = val.split(",").map(x => Number(x.trim())).filter(n => [1, 2, 3].includes(n));
-      else if (key === "pay") cfg.pay = val.toLowerCase();
-      else if (key === "once") cfg.once = val.toLowerCase();
-      else if (key === "key") cfg.key = val;
-    }
     return cfg;
   }
   if (kind === "Mark") { cfg.kind = String(segs[0] ?? "").trim().toLowerCase(); return cfg; }   // v0.0.418: @Mark[judge]
@@ -150,6 +140,7 @@ export function parseInline(kind, inner) {
     const k = s.indexOf(":");
     if (k < 0) continue;
     const key = s.slice(0, k).trim().toLowerCase(), val = s.slice(k + 1).trim();
+    if (key === "dc" && /^targets$/i.test(val)) { cfg.dcTargets = true; cfg.dcSet = true; continue; }   // v0.0.510 (Tumble): the targeted creatures' Attribute DC
     if (key === "dc") { const ref = val.match(/^@(weapon|power|signature|body|mind|appeal|instinct)(?:\.dc)?$/i); if (ref) cfg.dcRef = ref[1].toLowerCase(); else cfg.dc = Number(val) || 13; cfg.dcSet = true; }
     else if (key === "distance") { if (/^[\d.]+$/.test(val)) cfg.distance = Number(val) || 0; else { cfg.distance = 0; cfg.distanceExpr = val.toLowerCase().replace(/\s+/g, ""); } }
     else if (["adj", "boon", "bane"].includes(key)) cfg[key] = Number(val) || 0;
@@ -512,6 +503,14 @@ async function resolveSaveTier(actor, title, subtitle, cfg, tier, pre = null) {
   await postDamageCard({ actor, title, subtitle, comps, rolls: pre ? [] : rolls, texts: await Promise.all(parts.texts.map(t => enrich(t))), applied });
 }
 
+/** Pure (v0.0.510, Tumble): a Check against creatures' Attribute DC (Chapter 1: 11 + the Attribute): the highest, 1 Bane for each creature beyond
+ *  the first. creatures: actors (or { system: { attributes } }). null with none. */
+export function targetsCheckDc(key, creatures = []) {
+  const list = (creatures ?? []).filter(Boolean);
+  if (!list.length) return null;
+  const dcs = list.map(a => (TWOD12.vsBase ?? 11) + (Math.trunc(Number(a.system?.attributes?.[key])) || 0));
+  return { dc: Math.max(...dcs), banes: list.length - 1, names: list.map(a => a.name ?? "?").join(", ") };
+}
 async function doCheck(kind, cfg, ctx = {}) {
   // A Save carries the traits of the Action that caused it ("from"), so Talents can give bonuses against, say, Divine Actions.
   const fromList = kind === "Save" ? (ctx.message?.getFlag?.("twod12", "action")?.traits ?? []) : [];
@@ -523,17 +522,20 @@ async function doCheck(kind, cfg, ctx = {}) {
     // v0.0.176 (book 2026-10-25): only the light where the TARGET is matters, so the light where you stand no longer changes a Check
     // (the "requires sight" penalties of Dim light and Darkness are gone; |sight:yes is still read and does nothing).
     const tierPreview = kind === "Save" && cfg.tiers ? { t1: cfg.tiers.t1 ?? "", t2: cfg.tiers.t2 ?? "", t3: cfg.tiers.t3 ?? "" } : null;
+    // v0.0.510 (Lucas on v0.0.508: Tumble's Check "should roll against their attribute"): dc:targets, the targeted creatures' DC of this Attribute
+    // (the highest; 1 Bane for each creature beyond the first); with no target, the written DC
+    const vsT = cfg.dcTargets ? targetsCheckDc(key, [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a !== actor)) : null;
     const data = await askRoll(actor, {
-      title: `${label}: ${actor.name}`,
+      title: `${label}: ${actor.name}${vsT ? ` vs ${vsT.names}` : ""}`,
       attrKey: key,
       traits: new Set([...(cfg.traits ?? []), key, kind === "Save" ? "__save" : "__check"]),
       from: fromList.length ? new Set(fromList) : null,
       tiers: tierPreview,
       defaults: {
-        dc: cfg.dc,
+        dc: vsT?.dc ?? cfg.dc,
         mod: cfg.adj,
         boons: cfg.boon,
-        banes: cfg.bane,
+        banes: cfg.bane + (vsT?.banes ?? 0),
         doomed: unconsciousDoom(actor, key, kind),
         doomedWhy: `${doomStatus(actor) || "Unconscious"}: all your Rolls are Doomed`,
         doomedLabel: `${doomStatus(actor) || "Unconscious"} (Doomed)`
@@ -564,48 +566,14 @@ async function doCheck(kind, cfg, ctx = {}) {
   }
 }
 
-async function doDamage(cfg, ctx = {}) {
-  // v0.0.509 (Steady Draw): a button with a price and a limit, on an Action card: the user's dE, its card's targets on the Tiers named, the Reaction Point, once an encounter
-  const priced = cfg.to === "card" || cfg.pay || cfg.once || cfg.parts.damage.some(p => /\dE\b|^dE\b/.test(p.formula));
-  if (!priced) {
-    const { comps, rolls } = await rollParts(cfg.parts.damage, cfg.nonlethal);
-    if (!comps.length && !cfg.parts.texts.length && !cfg.parts.uuids.length) return;
-    return postDamageCard({
-      title: "Damage", comps, rolls, texts: await Promise.all(cfg.parts.texts.map(t => enrich(t))),
-      fx: cfg.parts.uuids.map(u => ({ uuid: u, mode: "auto" })),
-      targets: handTargetTokens({}).map(t => ({ uuid: t.document.uuid, name: t.name }))   // v0.0.252: the selected tokens first
-    });
-  }
-  const flag = ctx?.message?.getFlag?.("twod12", "action") ?? null;
-  const user = (flag?.actorUuid ? await fromUuid(flag.actorUuid).catch(() => null) : null) ?? originActor(ctx);
-  if (!user) return ui.notifications.warn("No creature to use this for.");
-  const plan = pricedDamagePlan(cfg, { flag, escalation: user.system?.escalation, inCombat: !!game.combat?.started, used: user.getFlag?.("twod12", "onceUsed") ?? {}, combatId: game.combat?.id ?? "" });
-  if (plan.why) return ui.notifications.warn(plan.why);
-  let cb = null;
-  if (cfg.pay === "r" && game.combat?.started) {
-    const C = await import("./combat.mjs"); cb = C.combatantOf(user);
-    if (cb) { if (!(C.getRAP(cb) > 0)) return ui.notifications.warn(`${user.name} has no Reaction Point left this round.`); await C.setRAP(cb, C.getRAP(cb) - 1); }
-  }
-  if (cfg.once && cfg.key && game.combat?.started) await user.setFlag("twod12", "onceUsed", { ...(user.getFlag("twod12", "onceUsed") ?? {}), [cfg.key]: game.combat.id });
-  const sub = flag?.weaponSub ?? "";
-  const { comps, rolls } = await rollParts(plan.parts.map(p => ({ ...p, pool: p.pool || "B", sub: p.sub || sub })), cfg.nonlethal || !!flag?.nl);
-  return postDamageCard({ actor: user, title: cfg.key || "Damage", subtitle: plan.subtitle, comps, rolls, texts: [], targets: plan.targets, originUuid: user.uuid });
-}
-/**
- * Pure (v0.0.509, Steady Draw): what a priced @Damage button does. flag: the Action card's (its results with each target's Tier); escalation: the
- * user's; used: the user's once-an-encounter marks ({ key: combat id }). { why } when it can't be used, else { parts (dE resolved), targets, subtitle }.
- */
-export function pricedDamagePlan(cfg, { flag = null, escalation = 1, inCombat = false, used = {}, combatId = "" } = {}) {
-  if (cfg.once && cfg.key && inCombat && used?.[cfg.key] && used[cfg.key] === combatId) return { why: `${cfg.key}: already used this encounter.` };
-  let targets = [];
-  if (cfg.to === "card") {
-    const res = flag?.results ?? (flag?.targets ?? []).map(t => ({ ...t, tier: flag?.tier ?? 0 }));
-    if (!res.length) return { why: "Use it from the chat card of the Action that hit." };
-    targets = res.filter(r => !cfg.onTiers?.length || cfg.onTiers.includes(Number(r.tier))).map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier }));
-    if (!targets.length) return { why: `Only on a Tier ${(cfg.onTiers ?? []).join(" or ")}.` };
-  }
-  const die = escalationDie(escalation);
-  return { parts: cfg.parts.damage.map(p => ({ ...p, formula: withEscalationDie(p.formula, escalation) })), targets, subtitle: `dE is a d${die} (Escalation ${Math.max(1, Number(escalation) || 1)})` };
+async function doDamage(cfg) {
+  const { comps, rolls } = await rollParts(cfg.parts.damage, cfg.nonlethal);
+  if (!comps.length && !cfg.parts.texts.length && !cfg.parts.uuids.length) return;
+  await postDamageCard({
+    title: "Damage", comps, rolls, texts: await Promise.all(cfg.parts.texts.map(t => enrich(t))),
+    fx: cfg.parts.uuids.map(u => ({ uuid: u, mode: "auto" })),
+    targets: handTargetTokens({}).map(t => ({ uuid: t.document.uuid, name: t.name }))   // v0.0.252: the selected tokens first
+  });
 }
 
 /** The creature a button acts for: the one the after-damage chain names, the card's creature, the selected token or your character. */
@@ -942,7 +910,7 @@ export async function handleInline(kind, cfg0, ctx = {}) {
   if (kind === "Release") return handleRelease(ctx);
   if (kind === "Regrip") return handleRegrip(ctx);
   if (kind === "Check" || kind === "Save") return doCheck(kind, cfg, ctx);
-  if (kind === "Damage") return doDamage(cfg, ctx);
+  if (kind === "Damage") return doDamage(cfg);
   if (kind === "SaveCard") return postSaveCard(cfg, ctx);
   if (kind === "Template") return startTemplate(cfg, ctx);
   if (kind === "Boon") return boonFlow(cfg, ctx);
