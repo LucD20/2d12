@@ -149,8 +149,10 @@ blockquote .src { display: block; color: var(--faint); font-size: .85rem; font-f
     var n = box.querySelector(".note input"); if (n && document.activeElement !== n) n.value = a.note || "";
   }
 
+  /* The book's source marks, taken off for reading: **bold**, [[Link]] and [[Link|shown]]. */
+  function plain(t) { return String(t).replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, "$1").replace(/\\\|/g, "|").replace(/\*\*/g, ""); }
   function quote(q) {
-    var b = el("blockquote"); b.appendChild(document.createTextNode(q.quote || ""));
+    var b = el("blockquote"); b.appendChild(document.createTextNode(plain(q.quote || "")));
     if (q.file) b.appendChild(el("span", "src", q.file + (q.line ? ":" + q.line : "")));
     return b;
   }
