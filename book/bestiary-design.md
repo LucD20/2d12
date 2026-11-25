@@ -1,6 +1,6 @@
 # The Bestiary: the design record
 
-> **Status (2026-11-25): THE REDESIGN HAS BEGUN. Decisions 1 to 4 (the frame) and 12 to 14 are taken: the Default Standard has Defenses 13 / 13, Modifiers +2 / +2, Health 36 and about 8 damage to Health a turn at the table. Decision 15 (the shape of its turn) is proposed. Nothing is in the book yet: Chapter 14 stays as placeholders until the Default Standard has been to the table.** This file is the Bestiary's record, the way `magic-design.md` is magic's and `talents-design.md` the Talents': his words, what stays, what the core gives a monster to be measured against, the research, the problems, the order of the decisions, then each decision as it is taken. It is batches 6 and 7 of `core-rework.md` (section P).
+> **Status (2026-11-25): THE REDESIGN HAS BEGUN. Decisions 1 to 4 (the frame) and 12 to 15 are taken. The benchmark is the plain PC, never a class (Lucas: "we should compare to the core"). The Default Standard: Defenses 13 / 13, Modifiers +2 / +2, Health 36, a Basic attack of nothing / 3 / 6, a 2 AP Special of nothing / 7 / 11, about 8 damage to Health a turn at the table. Next: decision 16, to the table. Nothing is in the book yet: Chapter 14 stays as placeholders until the Default Standard has been played.** This file is the Bestiary's record, the way `magic-design.md` is magic's and `talents-design.md` the Talents': his words, what stays, what the core gives a monster to be measured against, the research, the problems, the order of the decisions, then each decision as it is taken. It is batches 6 and 7 of `core-rework.md` (section P).
 
 ---
 
@@ -10,6 +10,8 @@
 - **The research he asked for:** "Search how in ttrpgs people like about enemies, minions, enemies above and below level. Compare to the core 2d12, see monster building from PF2e, 4e, Draw Steel on their own rules. See other tactical systems that have good monster building, balance reputation."
 - **How we build:** "Then we will build slowly, one by one, numbers. We need to decide what comes first in the design as well: Numbers, roles/ranks, what do we compare them to, what defines a difficulty of an encounter (here i am guessing is Rally points uses/hp lost)."
 - **2026-11-25, after the research:** "Lets take what the research found is the best way forward and begin the redesign now." Read as: where the research gives an answer, that answer is the decision (his to revert, like any default); where it doesn't, the decision is still asked.
+- **2026-11-25, on what a monster is compared to:** "I see you are mostly comparing to the two current classes, we should compare to the core. If a party has no paladin for example, there is no judge and shield of faith, less guard etc. We dont want people to be forced to play certain roles, maybe no one wants to play a front-line HP support like the Paladin." **A standing test from now on (P11): a monster's number never assumes a class.**
+- **2026-11-25, on a monster's Tier 1:** nothing by default, "but some creature can do something on a tier 1, we can get to that when designing the enemies."
 - **2026-11-21, the core rework** (`core-rework.md`, G1): keep ranks, roles, sheets; rebuild the numbers; mechanics first, the tables later. I4: he distrusts the SIM's white-room numbers; measure at the table.
 - **2026-11-21** (H9): classes have a better chance of "shutting down" than Talents, but never shut a boss down.
 - **The system's standing tests (CLAUDE.md):** fun, engaging, tactical, **the least ambiguity possible**; growth is horizontal (a level gives options, never a number on a roll or a DC).
@@ -172,6 +174,7 @@ Six independent researchers, one pass each, about 40,000 words in `research/raw/
 | P8 | **A budget that lies** | 5e 2014, Weird Wizard | Does CV see turns? Is what it can't see said in the rule? |
 | P9 | **The GM's load** | "about three stat blocks" a fight | How many different blocks and Actions does one fight put before the GM (here Lucas alone, on every side)? |
 | P10 | **A party state the budget assumes** | the fifteen-minute day; fresh parties | Is the fight built for a fresh party or a fifth fight, and does Momentum enter? |
+| P11 | **A number that assumes a class** | Lucas, 2026-11-25 | Is this number still right for a party with no Paladin (no Judge, no Shield of Faith, no Lay On Hands)? What a class adds must show as a fight cheaper or shorter than its band, never be priced into the monster |
 
 ### Two arithmetic notes on what is already decided
 
@@ -255,9 +258,28 @@ G9's targets (decided 2026-11-21) restated in decision 1's unit, each with its D
 - **Built for a fresh party at Momentum 0:** full Health, Rally Points in hand. **Momentum doesn't change the budget:** it is the party's reward (one line of advice: late in a good expedition a party can take a band more). Draw Steel does the opposite and had to recalculate it in testing.
 - **The enemies spread their attacks as far as their Actions make them** (G6: Specials that hit two creatures). All of them on one PC is the GM's dial, not the baseline (G7).
 
-### Decision 4 (taken): the benchmark PC
+### Decision 4 (revised by Lucas, 2026-11-25): the benchmark is the plain PC
 
-**The four level 1 pregens on the cards of v0.0.507, their turn averaged over a 3½-round fight.** `node book/ruler/benchmark.mjs` computes the paper numbers by exact dice math (no map, no movement, no enemy):
+**Lucas:** "we should compare to the core [...] We dont want people to be forced to play certain roles." The first version of this decision used the four pregens (two Paladins, two Archers) and let their cards into the monster's numbers (Judge, Shield of Faith, Lay On Hands' Guard). **A monster is built against the core alone.**
+
+**The plain PC** (the PC budget's own word since 2026-11-13, `cards/README.md`: "its class's Health, armor, weapon and Modifiers and nothing else; its turn is three Weapon Attacks", 100 points, a class about 130 at level 1):
+
+- **What every PC has, whatever its class:** Modifiers +2 and +1; 4 AP and the Reaction Point; the Basic Attack with a weapon; the Basic Actions; Guard 2 for each AP it keeps; Rally Points, each a quarter of its Health; Cover, range and position.
+- **What a class sets today** (so a range, not a core number): Health 29 to 35 (32 used), 6 or 7 Rally Points, Armor Defense 12 to 14 and Ward Defense 12 to 13 (13 used).
+- **Its turn on paper: three Basic Attacks at +2 against Defense 13** (`node book/ruler/benchmark.mjs`, exact dice math):
+
+| Weapon | Its turn | Its first Basic Attack |
+|---|---:|---:|
+| Longsword | 30.8 | 11.2 |
+| Arming Sword | 23.6 | 8.5 |
+| Hunting Bow | 18.3 | 6.5 |
+| Recurve Bow | 19.0 | 6.8 |
+| **The four designed weapons** | **22.9** | **92 a round of four** |
+
+- **The benchmark turn: 23 on paper, about 17 at the table (69 a round).** The table number is an estimate: playtest 7's party dealt about three quarters of its day's paper number (57 a round, 64 at expected dice, against about 85). One point of Defense is about 6.6% of it.
+- **What a class adds is not in the monster.** A class's 30 points are damage (the fight is shorter), protection or healing (the fight is cheaper), control (enemy turns lost). **A real party should find a normal fight cheaper or shorter than a plain one would, by about the same margin whatever its classes:** keeping that margin equal is the class charter's work, not the Bestiary's. Whether a band's cost is the plain party's or a real party's is asked once the table gives the margin (decision 16).
+
+**The test party** is the four level 1 pregens on the cards of v0.0.507 (the same script; a 3½-round fight was assumed for the Encounter Action):
 
 | PC | Paper turn | With its Encounter Action | The turn |
 |---|---:|---:|---|
@@ -267,11 +289,9 @@ G9's targets (decided 2026-11-21) restated in decision 1's unit, each with its D
 | Kaela (Recurve Bow, Weapon +2) | 24.0 | 24.0 | Strafe on 2 creatures and 2 Basic Attacks |
 | **The four** | **22.6** | **24.3** | **97 a round** |
 
-Against Armor Defense 13 and Ward Defense 13. **One point of Defense is 6.6% of it** (25.9 at 12, 22.7 at 14, 21.1 at 15).
-
-- **The benchmark turn: 24 on paper, about 18 at the table (73 a round).** The table number is an estimate: playtest 7's party dealt 57 a round (64 at expected dice) when the cards of that day gave about 85 on paper, three quarters. **It is replaced by the Encounter Log's number at playtest 8** (P7), and re-read whenever a level 1 card, the Basic Attack or a designed weapon changes (run the script).
-- **The party:** Health 128 (35, 35, 29, 29), 26 Rally Points, 34 removed by one Rally Point each. Armor Defense 14, 14, 12, 12; Ward Defense 13, 13, 12, 12.
-- **The spread inside the party is wide** (Aveline 33, Durgan 17): a monster sized on the average dies faster to two strikers and slower to two supports. One benchmark, said so.
+- **At level 1 the pregens deal what four plain PCs do** (22.6 against 22.9 before Smite): their classes' worth is in protection, control and movement, which is why it must be read apart.
+- Health 128 (35, 35, 29, 29), 26 Rally Points, 34 removed by one Rally Point each. Armor Defense 14, 14, 12, 12; Ward Defense 13, 13, 12, 12.
+- **When they test a monster, the Encounter Log keeps apart what their class cards took** (Judge, Shield of Faith, Lay On Hands' Guard, turns an enemy lost to Binding Light or Snap Shot): the monster is checked on what would have reached a plain PC.
 
 ### Decisions 12 to 14: the Default Standard's first numbers
 
@@ -287,19 +307,19 @@ G8 (2026-11-21): one number for each stat, a "Default Standard"; the roles' vari
 
 **13. Health 36: Vigor 18, Resolve 18.** *Decided (Lucas, 2026-11-25).*
 
-- 2 rounds (decision 3) × 18, the benchmark turn at the table (decision 4). 1.1 times a PC's Health, as in 4e, 13th Age and Draw Steel; 3 to 4 landed Strikes (the pregens' landed Strike averages 10).
+- 2 rounds (decision 3) × the benchmark turn at the table (decision 4): 34 against the plain PC's 17, 36 against the pregens' 18; Lucas took 36. 1.1 times a PC's Health, as in 4e, 13th Age and Draw Steel; 3 to 4 landed Strikes (the pregens' landed Strike averages 10).
 - Even thresholds: a Default Standard is Bloodied at about half its Health under weapon damage, as 4e's bloodied is. Strained stays rare until Resolve damage is common (K3, accepted).
-- If the Encounter Log shows the party dealing more or less than 73 a round, Health moves with it: 2 × the measured turn.
+- If the Encounter Log shows a plain turn worth more or less than 17 at the table, Health moves with it: 2 × the measured turn.
 
-**14. Damage: about 8 to a PC's Health in each Standard turn at the table (a quarter of a PC, one Rally Point); on paper about 10 in a turn that has to move, 14 in one that doesn't.** *Decided as "the damage that gives the normal fight its cost"; the number corrected by Claude from 10 to 8, see below.*
+**14. Damage: about 8 to a PC's Health in each Standard turn at the table (a quarter of a PC, one Rally Point); on paper about 9 in a turn that has to move, 12 in one that doesn't.** *Decided as "the damage that gives the normal fight its cost"; the number corrected by Claude from 10 to 8; the paper numbers lowered when Lucas put the benchmark on the core (decision 4).*
 
-- **The identity:** the normal fight costs 1½ Rally Points a PC, about 51 damage to the four pregens' Health. Counted turn by turn in zipper order (`node book/ruler/fight-identity.mjs`: the PCs each dealing 18 a turn to one enemy at a time, no map and no cards), four Standards of 36 Health get **about 6.4 turns** before the last one falls. 51 ÷ 6.4 = 8.
-- **A correction (Claude, 2026-11-25).** The "about 10 a turn" Lucas was shown, and the 7 for the 54-Health draft, came from counting 5 and 7½ enemy turns: an enemy that falls after t rounds was given t turns, when in zipper order it has usually acted once more before it falls. The count gives 6.4 and 8.9. **At 10 a turn the normal fight would cost about 1.9 Rally Points a PC,** between normal and hard. The decided thing is the cost (decision 2, his G9), so the number is 8; 10 is his to take back, with the cost it brings.
-- **The paper number** (attacks against Defense 13) is higher by what the table takes away: a Standard usually spends 1 AP reaching its target, and Guard, Judge, Shield of Faith, Cover and the PCs' control remove part (unmeasured: I assume a fifth). 8 ÷ 0.8 = 10 for 3 AP of attacks; a fourth AP of attacks brings it to about 14.
-- **Both are estimates; the table number is the target the log checks.** If four Default Standards cost more or less than 1½ Rally Points a PC at the table, the paper number moves.
-- **Focus:** three Standards on one PC in a round take about 24 of its 29 to 35 Health at the table. An Archer stands, barely; a fourth takes it Down. The lever already decided is G6: part of a Standard's turn should be a Special that hits two creatures.
+- **The identity:** the normal fight costs 1½ Rally Points a PC, about 51 damage to four PCs' Health. Counted turn by turn in zipper order (`node book/ruler/fight-identity.mjs`: the PCs each dealing the benchmark turn to one enemy at a time, no map and no cards), four Standards of 36 Health get **about 6½ turns** before the last one falls (6.4 at 18 a PC turn, 6.7 at 17). 51 ÷ 6½ = 8.
+- **A correction (Claude, 2026-11-25).** The "about 10 a turn" Lucas was shown, and the 7 for the 54-Health draft, came from counting 5 and 7½ enemy turns: an enemy that falls after t rounds was given t turns, when in zipper order it has usually acted once more before it falls. **At 10 a turn the normal fight would cost about 1.9 Rally Points a PC,** between normal and hard. The decided thing is the cost (decision 2, his G9), so the number is 8; 10 is his to take back, with the cost it brings.
+- **The paper number assumes no class** (P11): only what the table takes from anyone, a turn or an AP spent reaching a target, Cover, a condition. The first version added a fifth for Judge, Shield of Faith and Guard: removed. With a Paladin in the party a Standard's 8 becomes less, and that is the Paladin's worth showing.
+- **Both are estimates; the table number is the target the log checks.**
+- **Focus:** three Standards on one PC in a round take about 24 of its 29 to 35 Health at the table. An Archer stands, barely; a fourth takes it Down. The lever already decided is G6: a Special that hits two creatures.
 
-**The Default Standard so far:** Defenses 13 / 13, Modifiers +2 / +2, Health 36 (18 / 18), 4 AP, about 8 damage to Health a turn at the table. Not yet: its Basic attack and Special (decision 15), Attributes, Speed, a Reaction.
+**The Default Standard so far:** Defenses 13 / 13, Modifiers +2 / +2, Health 36 (18 / 18), 4 AP; a Basic attack of nothing / 3 / 6 and a 2 AP Round Special of nothing / 7 / 11 on one creature or 5 / 8 on each of two (decision 15); about 8 damage to Health a turn at the table. Not yet: Attributes, Speed, a Reaction, riders.
 
 ### Lucas on decision 13 (2026-11-25): "A standard has 54 HP is too much"
 
@@ -336,21 +356,22 @@ His words: "I think this is the same problem we were having, but lessened: NPCs 
 - **What it costs:** the fight is decided in round 2 and over in round 3. Escalation reaches 2, or 3 if the fight runs on: the level 2 Escalation 3 ability and Smite's third die show mostly from Momentum 1 or in hard fights (F2 assumed 3 to 3½ rounds). The same cost lands in fewer, bigger turns: three Standards on one Archer nearly take it Down in a round at the table (24 of 29). Shorter fights swing more (Dunn).
 - **What more bodies cost:** 6 to 8 enemy turns a round with one GM; under the zipper the spare enemy turns come in a row; hits of 3 to 4 against Judge's 2, Shield of Faith's 3 and Guard (the small hits that vanish: C6's worry).
 
-### Decision 15 (proposed, 2026-11-25): the shape of its turn
+### Decision 15 (taken as the default, 2026-11-25): the shape of its turn
 
-**The problem the shape has to solve.** 8 to Health a turn is small beside what the PCs take off a hit: Judge 2 (once a round), Shield of Faith 3 (each enemy turn), Guard 2 for each AP kept, Lay On Hands' Guard 4. Spread over three attacks of 3 or 4, most of a Standard's hits would vanish (C6's note: "small level 1 hits [...] are a Bestiary number"). **So: few, bigger hits.**
+**Lucas: "As a default, yes, but some creature can do something on a tier 1, we can get to that when designing the enemies."** The numbers below are the ones he was shown, rebased on the core the same day (decision 4): the Basic attack went from nothing / 4 / 8 to nothing / 3 / 6; the Special didn't move.
 
-1. **A Standard's turn is counted as 1 AP to move, a 2 AP Special and 1 Basic attack.** A turn that doesn't need to move gets a second Basic attack, with its At-will Bane.
-2. **An NPC's Tier 1 deals nothing unless its card says so** (the rule Chapter 14 has). The PCs' Basic Attack deals a little on a Tier 1 because a wasted turn hurts whoever waits for the next one, and it is the players who wait; "being missed by a monster feels awesome" (`research/enemies-at-the-table.md`). A role's effect that works on a Tier 1 (Bilsland's soldier that marks on a miss) comes with the roles.
-3. **The Basic attack: [V] nothing / 4 / 8, and the Critical's 1d10!.** 4.2 a use against Defense 13. Below every pregen's Basic Attack (the bows' 6 / 10, the swords' 7 to 10 / 13 to 18).
-4. **The default Special (2 AP, Round): [V] nothing / 7 / 11 to one creature, or nothing / 5 / 8 to each of up to two** (G6). 6.1 a use on one; 8.8 when it catches two. Below every Hallmark Action (10 to 14½ / 17 to 19½).
-5. **Its turn on paper:** moving, 10.4 (the Special on one and a Basic attack); standing, 14.1. Decision 14 asked for about 10 and 14.
-6. **How the numbers are written:** as averages here. On a card, by the rule kept from Chapter 14, a flat number and at most one small die, the Basic attack's exploding (1 + 1d4! / 4 + 1d6!). The research's other answer is fixed damage (13th Age: the attack roll already decides most of it, and swing in monster damage hurts the PCs); with three Tiers and a two-round fight it would cut the swing. Claude's default: keep the die on the Basic attack (his 2026-11-13 decision), fixed numbers on Specials.
+**Few, bigger hits.** 8 to Health a turn spread over three attacks would be three hits of 2 or 3, which Guard from one kept AP nearly erases, and three rolls for the GM where two will do.
+
+1. **A Standard's usual turn: 1 AP to move, a 2 AP Special and 1 Basic attack.** A turn that doesn't need to move gets a second Basic attack, with its At-will Bane.
+2. **An NPC's Tier 1 deals nothing unless its card says so.** The default; a creature can have a Tier 1 that does something, decided when that creature is designed. (The PCs' Basic Attack deals a little on a Tier 1 because a wasted turn hurts whoever waits for the next one, and it is the players who wait.)
+3. **The Basic attack: [V] nothing / 3 / 6, and the Critical's 1d10!.** 3.2 a use against Defense 13. On a card, with the kept rule's exploding die: 1d4! / 2 + 1d6!. Below every plain PC's Basic Attack (the bows' 6 / 10, the swords' 8 to 11 / 14 to 19 at +2).
+4. **The default Special (2 AP, Round): [V] nothing / 7 / 11 to one creature, or nothing / 5 / 8 to each of up to two** (G6). 6.1 a use on one; 8.8 when it catches two.
+5. **Its turn on paper:** moving, 9.4 (the Special on one and a Basic attack); standing, 12.2; three Basic attacks and a move, 8.6. Decision 14 asked for about 9 and 12. **The Special is the turn's main hit:** it is worth a little more than the two Basic attacks it replaces (6.1 against 5.4). (With the first Basic attack, nothing / 4 / 8, three Basic attacks beat the Special and a Basic attack: Claude's slip, gone with the rebase.)
+6. **How the numbers are written:** as averages here. On a card, a flat number and at most one small die; the Basic attack's die explodes (his 2026-11-13 decision); a Special's numbers are fixed unless the creature's design says otherwise (less swing in a two-round fight).
 
 **Not in it yet:** how much of a Standard's damage is [R] (the Default Standard deals [V] against Armor Defense; its twin deals [R] against Ward Defense with the same numbers), riders, a Reaction, Attributes, Speed.
 
 ### What comes next
 
-- Lucas's word on decision 15.
 - **Decision 16, to the table:** four Default Standards against the four pregens, the Encounter Log reading decision 1's two yardsticks.
 - Block B (decisions 5 to 10) in its order, then the ranks as multiples.

@@ -1,4 +1,4 @@
-// The benchmark PC turn (bestiary-design.md, decision 4): what a level 1 pregen's turn deals ON PAPER,
+// The benchmark PC turn (bestiary-design.md, decision 4): what the plain PC's turn, and each level 1 pregen's, deals ON PAPER,
 // by exact dice math on the cards of v0.0.507 (no Arts, no Escalation Passives). Not the SIM: no map,
 // no movement, no Cover, no enemy. Run: node book/ruler/benchmark.mjs [AD] [WD]   (default 13 13)
 // Re-read (and re-run) when a level 1 class card, the Basic Attack or a designed weapon changes.
@@ -77,6 +77,11 @@ export function pregens(ad = 13, wd = 13, rounds = 3.5) {
   return out;
 }
 
+/** The plain PC (the PC budget's word, cards/README.md): Weapon Modifier +2, a designed weapon, three Basic Attacks a turn, no class card. */
+export function plain(ad = 13) {
+  return Object.entries(WEAPON).map(([name, w]) => ({ name, turn: basic(w, 2, ad) + basic(w, 2, ad, 0, 1) + basic(w, 2, ad, 0, 2), first: basic(w, 2, ad) }));
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   const ad = +(process.argv[2] ?? 13), wd = +(process.argv[3] ?? 13);
   const f = x => x.toFixed(1);
@@ -88,6 +93,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   for (const p of ps) console.log(`| ${p.name} | ${f(p.turn)} | ${f(p.fight)} | ${p.note} |`);
   const avg = k => ps.reduce((s, p) => s + p[k], 0) / ps.length;
   console.log(`| **The four** | **${f(avg("turn"))}** | **${f(avg("fight"))}** | a round: ${f(4 * avg("fight"))} |`);
+  const pl = plain(ad), pavg = pl.reduce((x, y) => x + y.turn, 0) / pl.length;
+  console.log("\nThe plain PC (Weapon +2, three Basic Attacks, no class card):");
+  console.log("| Weapon | Its turn | Its first Basic Attack |\n|---|---:|---:|");
+  for (const x of pl) console.log(`| ${x.name} | ${f(x.turn)} | ${f(x.first)} |`);
+  console.log(`| **The four weapons** | **${f(pavg)}** | a round of four: ${f(4 * pavg)} |`);
   console.log(`Party: Health ${ps.reduce((s, p) => s + p.health, 0)} (average ${f(avg("health"))}), Rally Points ${ps.reduce((s, p) => s + p.rally, 0)}; a Rally Point removes ${f(avg("health") / 4)} on average.`);
   console.log(`A creature with Modifier +2 against these PCs' Armor Defense (14, 14, 12, 12): Tier 1 ${(100 * (odds(2, 14)[0] + odds(2, 12)[0]) / 2).toFixed(1)}%.`);
 }
