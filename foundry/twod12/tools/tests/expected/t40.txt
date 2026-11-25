@@ -1,5 +1,5 @@
-NPC basic actions: Advance, Evade, Reload, Interact, Crawl, Regrip, Release, Stand, Break Free, Charge, Lean, Fists, Relocate, Trip, Shove, Haul, Shake Off, Aid, Demoralize, Feint, Heal, Tumble, Fists
-Character basic actions: Basic Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Regrip, Release, Stand, Break Free, Charge, Lean, Fists, Relocate, Trip, Shove, Haul, Shake Off, Aid, Demoralize, Feint, Heal, Tumble, Fists
+NPC basic actions: Advance, Evade, Reload, Interact, Crawl, Regrip, Release, Stand, Break Free, Charge, Lean, Fists, Relocate, Trip, Shove, Haul, Shake Off, Aid, Demoralize, Feint, Heal, Tumble, Hide, Sneak, Seek, Point Out, Fists
+Character basic actions: Basic Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Regrip, Release, Stand, Break Free, Charge, Lean, Fists, Relocate, Trip, Shove, Haul, Shake Off, Aid, Demoralize, Feint, Heal, Tumble, Hide, Sneak, Seek, Point Out, Fists
 missing for NPC with all but Rally: false
 Shove 1AP tier text: No effect. | @Move[pushed|distance:2] | @Move[pushed|distance:3] | instances: 0
 Trip 2AP: @Condition[hindered|eot] | @Condition[prone] | ["2d6!Bl"] @Condition[prone]

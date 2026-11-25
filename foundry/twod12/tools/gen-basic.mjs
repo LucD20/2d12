@@ -9,7 +9,7 @@ import { loadCards, basicEntry } from "./cardgen.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 // The order of the entries (the Actions tab groups and the NPC compendium keep it): today's, new keys after.
-const ORDER = ["basicWeaponAttack", "advance", "safeMovement", "reload", "interact", "rally", "crawl", "regrip", "release", "stand", "breakFree", "charge", "leaning", "fists", "relocate", "trip", "shove", "haul", "shakeOff", "aid", "demoralize", "feint", "heal", "tumble"];
+const ORDER = ["basicWeaponAttack", "advance", "safeMovement", "reload", "interact", "rally", "crawl", "regrip", "release", "stand", "breakFree", "charge", "leaning", "fists", "relocate", "trip", "shove", "haul", "shakeOff", "aid", "demoralize", "feint", "heal", "tumble", "hide", "sneak", "seek", "pointOut"];   // v0.0.513: the Hide package
 
 // v0.0.407 (Stage 0 in Foundry; book, Chapter 6): a Basic Action listed in book/cards/set-aside.txt (Opportunity Attack) is no longer a Basic Action:
 // its card stays in basic-actions.json, but no creature gets it (a Talent brings it back later).

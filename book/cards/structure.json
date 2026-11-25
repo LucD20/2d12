@@ -2097,17 +2097,36 @@
  "Hide": {
   "name": "Hide",
   "escalation": null,
-  "frequency": null,
-  "flavor": null,
+  "frequency": "Turn",
+  "flavor": "You drop out of sight, still your breath, and let the shadows take you.",
   "distance": null,
   "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "",
+  "target": "Each creature that can't see you, or against which you have High Cover (no Line of Effect needed)",
+  "traits": [
+   "instinct",
+   "subtle"
+  ],
+  "cost": "1 AP",
   "body": [
    {
-    "label": "",
-    "text": "**Not written yet.** Hiding and sneaking are an open item (see [[Senses]]). This card holds the place, so that other cards can refer to Hide."
+    "label": "Requirement",
+    "text": "At least one creature can't see you, or you have High Cover against it."
+   },
+   {
+    "label": "Attack",
+    "text": "Instinct vs. Instinct DC"
+   },
+   {
+    "label": "Tier 1",
+    "text": "No effect against that creature."
+   },
+   {
+    "label": "Tier 2",
+    "text": "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it (see [[Hiding]])."
+   },
+   {
+    "label": "Tier 3",
+    "text": "As Tier 2, and that creature takes 1 Bane on Seek and Point Out against you (1 round)."
    }
   ],
   "blocks": [],
@@ -2371,6 +2390,10 @@
    {
     "label": "Effect",
     "text": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action; stowing and swapping need no free hand); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an Advance Action without ending the Advance (see [[Advance]])."
+   },
+   {
+    "label": "Special",
+    "text": "Interact isn't [Subtle]: while you are Hidden or Unsensed, a quiet use (taking an item you carry, opening a door slowly) can be, as the GM decides (see [[Subtle]])."
    }
   ],
   "blocks": [],
@@ -2650,7 +2673,8 @@
   "area": null,
   "target": null,
   "traits": [
-   "self"
+   "self",
+   "subtle"
   ],
   "cost": "1 AP",
   "body": [
@@ -3277,6 +3301,45 @@
    {
     "label": "Tier 2 or 3",
     "text": "While you are Engaged, this attack takes 1 Bane for it instead of 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Point Out": {
+  "name": "Point Out",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "A sharp shout and a pointed glance, and now everyone knows where they are.",
+  "distance": null,
+  "area": null,
+  "target": "One creature you perceive",
+  "traits": [
+   "appeal",
+   "instinct"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You perceive the target better than at least one ally does."
+   },
+   {
+    "label": "Attack",
+    "text": "Appeal or Instinct vs. Instinct DC"
+   },
+   {
+    "label": "Tier 1",
+    "text": "No effect."
+   },
+   {
+    "label": "Tier 2",
+    "text": "One ally within 10 squares who can see or hear you perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow."
+   },
+   {
+    "label": "Tier 3",
+    "text": "As Tier 2, for every ally within 10 squares who can see or hear you."
    }
   ],
   "blocks": [],
@@ -4103,6 +4166,69 @@
   "after": [],
   "passive": true
  },
+ "Seek": {
+  "name": "Seek",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You stop, listen, and scan the room for the slightest shift.",
+  "distance": null,
+  "area": null,
+  "target": "Each creature Hidden or Unsensed to you from Hide within 5 squares (1 AP) or 10 squares (2 AP) (no Line of Effect needed)",
+  "traits": [
+   "instinct",
+   "mind",
+   "subtle"
+  ],
+  "cost": "1 or 2 AP",
+  "body": [
+   {
+    "label": "Special",
+    "text": "Senses don't change this roll: you don't need to perceive the targets, and the roll isn't Doomed against a Hidden one."
+   },
+   {
+    "label": "Attack",
+    "text": "Instinct or Mind vs. Instinct DC"
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow."
+     },
+     {
+      "label": "Tier 3",
+      "text": "As Tier 2, and you gain 1 Boon on Point Out against the target (EoT)."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow."
+     },
+     {
+      "label": "Tier 3",
+      "text": "As Tier 2, and you gain 1 Boon on Point Out against the target (EoT)."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
  "Seizing Cut": {
   "name": "Seizing Cut",
   "escalation": null,
@@ -4464,6 +4590,38 @@
    {
     "label": "Tier 3",
     "text": "[V] 1[W] + [Mod]; Immobilized (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Sneak": {
+  "name": "Sneak",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You slip from shadow to shadow, careful where every foot falls.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "move",
+   "self",
+   "subtle"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You are Hidden or Unsensed to at least one creature from Hide."
+   },
+   {
+    "label": "Special",
+    "text": "This movement doesn't trigger Reactions from creatures to which you are Hidden. Against a creature to which you are Unsensed from Hide, you stay Unsensed only if it can't see you at any point of the movement; otherwise you are Hidden to it. Against a creature to which you are Hidden from Hide, you stay Hidden during the movement; if you end it without High Cover against that creature and it can see you, Hide ends against it at the end of your turn (or sooner, if something else ends it)."
+   },
+   {
+    "label": "Effect",
+    "text": "Advance half your Speed (rounded down)."
    }
   ],
   "blocks": [],

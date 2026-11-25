@@ -92,6 +92,8 @@
 | [[Rally Points\|**Heal**]] | To remove damage. The creature chooses which damage. |
 | [[Senses\|**Hearing**]] | A sense every creature has: you perceive creatures that make noise within 10 squares as Hidden, even through walls. |
 | [[Senses\|**Hidden**]] | Your Actions against the creature are Doomed; its Actions against you are Favored when it perceives you better than you perceive it (two creatures Hidden to each other are both Doomed). |
+| [[Hide\|**Hide**]] | A Basic Action (Turn, 1 AP, [Subtle]): Instinct against each creature that can't see you (you become Unsensed to it) or against which you have High Cover (Hidden), from Hide. |
+| [[Hiding\|**Hidden or Unsensed from Hide**]] | What Hide gives against one creature; it ends when that creature gains Sight of you without High Cover, finds you (Seek, Point Out), or after you use an Action that isn't [Subtle]. |
 | [[Hindered\|**Hindered**]] | Your Speed is halved (after every other change to it). |
 | [[Immobilized\|**Immobilized**]] | No Move Actions or Evade, and a movement you are making ends; Break Free (1 AP [Move], a Body or Instinct Check against the Action DC of the Action that Immobilized you) ends it; Forced Movement without a roll fails on you. |
 | [[Resist, Weak and Immune\|**Immune**]] | Damage of that subtype is 0 for you. |
@@ -127,6 +129,7 @@
 | [[Rules Language\|**Origin**]] | The creature that uses an Action, or the Point of Origin of an Area. |
 | [[Class Actions, Picks and the Repertoire\|**Pick**]] | One choice from a class's Repertoire; the level list says how many you take and from which list. |
 | [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
+| [[Point Out\|**Point Out**]] | A Basic Action (At-will, 1 AP): an ally (Tier 2) or every ally within 10 squares (Tier 3) perceives a creature you perceive 1 step better. |
 | [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Power Actions roll it; Ward Defense adds it. |
 | [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |
 | [[Pressed\|**Pressed**]] | A condition with a value: your [Strike] Actions take that many Pressure Banes (at most 2 count). |
@@ -162,6 +165,7 @@
 | [[Rounds\|**Round**]] | One full cycle of turns. |
 | [[Saves\|**Save**]] | A roll a creature makes against an effect; its three values are for Tier 1 / 2 / 3. |
 | [[Save Actions\|**Save Action**]] | An Action with the Save trait: its targets roll the named Save against 11 + your Modifier; Tier 1 is the worst for them. |
+| [[Seek\|**Seek**]] | A Basic Action (At-will, 1 or 2 AP, [Subtle]): you perceive 1 step better each creature Hidden or Unsensed to you from Hide within 5 or 10 squares; Senses don't change its roll. |
 | [[Senses\|**Sense**]] | A way to perceive creatures: Sight, Hearing, Heatsight... Your best sense decides if a creature is Clear, Obscured, Hidden or Unsensed to you. |
 | [[Setup\|**Setup**]] | What an Action does before the rest of it; optional unless it says you must. |
 | [[Several Targets\|**Several Targets**]] | One roll for every target of an Action, each calculated separately. |
@@ -174,6 +178,7 @@
 | [[Sleep\|**Sleep**]] | 8 hours of non-strenuous activity, at most once every 16 hours; it renews Daily Actions. |
 | [[Slid\|**Slid**]] | Forced Movement along a path the origin chooses (it can curve); the origin needs Line of Effect. |
 | [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction Point doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
+| [[Sneak\|**Sneak**]] | A Basic Action (Round, 1 AP, [Subtle]): an Advance of half your Speed that keeps Hide, as its card says. |
 | [[Reading an Action\|**Special**]] | A card's line that is a rule about the card itself. |
 | [[Actions: the turn budget\|**Special Action**]] | An NPC Action beyond its Basic attack: any AP cost and any Frequency, bought with the points of its rank's turn budget. |
 | [[Rules Language\|**Specific beats general**]] | A card or feature that says something different from a general rule wins for that case. |
@@ -191,11 +196,13 @@
 | [[Steel Yourself\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |
 | [[Strike\|**Strike**]] | An Action that tries to hit a creature. At most 3 per turn; At-will [Strike] Actions share one At-will count. |
 | [[Strung\|**Strung**]] | A weapon property of bows: held in one hand and drawn with the other; 3 Banes on its Strikes while your other hand holds something. |
+| [[Subtle\|**Subtle**]] | A Keyword trait: the Action doesn't end Hide. |
 | [[Outcome Tiers\|**Success**]] | A Tier 2 or 3 result. |
 | [[Named Boons and Banes\|**Support**]] | A named Boon an effect gives several allies at once. Up to 2. |
 | [[Swapping Places\|**Swap squares**]] | Two creatures each enter the square the other left; a Reposition for each. |
 | [[Tags\|**Tag**]] | A word on a creature (not an Action) that other rules refer to, such as Profane. |
 | [[Taunted\|**Taunted**]] | By a creature: 1 Bane on your Actions against anyone else. |
+| [[Senses\|**Thick wall**]] | A wall at least 1 square thick: it usually blocks Hearing and Tremorsense. |
 | [[Flanking\|**Threatens**]] | A creature threatens every enemy within the normal range of a Melee weapon, for as long as it qualifies to use that weapon's Basic Attack (1A); a Non-threatening weapon doesn't (not adjacent ones with a Long weapon). |
 | [[Thrown\|**Thrown**]] | A weapon property: the weapon can be used in hand or thrown, with a Range for each. A thrown weapon stays in your hand for the rules: the game doesn't track where it lands. |
 | [[Outcome Tiers\|**Tier**]] | The outcome of a roll: 1, 2 or 3. |

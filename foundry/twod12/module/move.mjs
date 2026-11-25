@@ -603,6 +603,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
   if (cfg.passEnemies) await c.setFlag(F, "passEnemies", true);   // batch 4: Tumble
+  if (cfg.sneak) await c.setFlag(F, "sneaking", true);   // v0.0.513 (Sneak): Hide holds during this movement (hide.mjs reviewHide); cleared at the turn's end
   const fAct = ctx?.message?.getFlag?.(F, "action");
   if (cfg.stow && fAct?.drawnWeaponId) await c.setFlag(F, "stowAfter", { weaponId: fAct.drawnWeaponId });
   let nfNote = "";

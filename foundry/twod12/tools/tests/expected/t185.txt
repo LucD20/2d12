@@ -3,7 +3,7 @@ you or one ally in the light gain @Guard[1d8+mod]{Guard 1d8 + [Mod]} (2d6 + [Mod
 @Guard[2d6+3]{Guard 2d6 + 3} for 1 round; The target gains @Guard[rally]{Guard RP}.
 A @Template[line|distance:6] of fire, a @Template[line|distance:2], Line of Effect is needed, Bright light in a @Template[emanation|distance:2|rounds:1] for 1 round, a @Template[burst|distance:3].
 --- the book's links in Foundry
-try to {{link:Hide|Hide}}, gain @Book[Guard]{Guard} 1d8, use @Book[Evade]{Evade} or @Book[Straight Line]{a straight line}; {{link:Smite|Smite}} again
+try to @Book[Hide]{Hide}, gain @Book[Guard]{Guard} 1d8, use @Book[Evade]{Evade} or @Book[Straight Line]{a straight line}; {{link:Smite|Smite}} again
 resolved by content.mjs: @UUID[Compendium.twod12.actions.Item.<id>]{Hide} @UUID[Compendium.twod12.features.Item.<id>]{the Passive}
 --- the area chips and [Mod] as a number (inline.mjs)
 labels: 1 Emanation | 2 Burst | 6 Line | icons: emanation, burst, line | each an <i> masked with the shape's SVG file (v0.0.247): true

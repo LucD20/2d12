@@ -19,6 +19,24 @@ differ):
 
 ## Characters and sheets
 
+## Hiding
+
+### hide-basic · v0.0.513 · Hide: Unsensed or Hidden to each targeted creature
+Do: In a combat, put Kaela behind a wall corner so Goblin Sneak can't see her, and Orc Warrior can see her over a crate or wall that gives her High Cover. Target both and use Hide (Utility in the HUD's Basic tab).
+Expect: One roll against each one's Instinct DC (the roll dialog shows both). On a Tier 2 or 3, a chat line says Kaela is Unsensed to the Goblin and Hidden to the Orc. The Goblin's roll dialog against her then says it can't target her (Unsensed); the Orc's is Doomed (Hidden), and Kaela is Favored against the Orc.
+
+### hide-ends · v0.0.513 · Hide ends: an Action without [Subtle], or Sight without High Cover
+Do: With Kaela Hidden to Orc Warrior (above), move the Orc to where it sees her with no cover. Hide again, then have Kaela use Basic Attack against Goblin Sneak. Hide again, then use Lean.
+Expect: When the Orc sees her without High Cover, a chat line says Hide ends against it. After the Basic Attack, a line says Kaela's Hide ends (Basic Attack isn't [Subtle]). After Lean, Hide holds (Lean is [Subtle]).
+
+### sneak-move · v0.0.513 · Sneak: the movement keeps Hide, and triggers no Reaction
+Do: On Goblin Sneak's turn, behind cover where Sylwen can't see it, use Hide (target Sylwen) until it is Unsensed or Hidden to her. Next turn, use Sneak and move it into a square adjacent to Sylwen (her Snap Shot answers an enemy entering a square next to her), ending in the open. End its turn.
+Expect: Sneak is an Advance of half its Speed. Sylwen is offered no Snap Shot while the Goblin is Hidden or Unsensed to her. If she sees it during the movement while it was Unsensed, it becomes Hidden to her (a chat line). At the end of its turn, in her sight with no High Cover, Hide ends against her.
+
+### seek-pointout · v0.0.513 · Seek finds, Point Out shows
+Do: With Kaela Unsensed to Goblin Sneak and Hidden to Orc Warrior from Hide, on the Goblin's turn use Seek (1 AP, 5 squares; or 2 AP, 10 squares), without targeting anyone. On the Orc's turn, use Point Out on Kaela (the Orc must perceive her better than the Goblin does).
+Expect: Seek targets by itself the creatures Hidden or Unsensed to the Goblin within its range (Kaela), with no Doomed roll for Senses; on a Tier 2 or 3 the Goblin perceives her 1 step better (Unsensed to Hidden). With nobody hiding in range it warns and spends nothing. Point Out on a Tier 2 asks which ally within 10 squares (or picks the only one) and improves its perception of Kaela 1 step; on a Tier 3, every ally within 10 squares.
+
 ## The HUD
 
 ### slip-away-chain · v0.0.512 · Slip Away: the Evade 1, then the Advance 2, by themselves

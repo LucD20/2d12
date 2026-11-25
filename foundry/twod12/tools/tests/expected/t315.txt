@@ -1,0 +1,12 @@
+Hide: turn · 1 AP · [instinct, subtle] · vs instinct · silver
+Sneak: round · 1 AP · [move, self, subtle] · vs - · silver
+Seek: atwill · 1 AP / 2 AP · [instinct, mind, subtle] · vs instinct · silver
+Point Out: atwill · 1 AP · [appeal, instinct] · vs instinct · silver
+Lean is Subtle: true | Interact isn't, with its note: true true | Sneak keeps Hide: true
+hideResult: T1 "" | T2 unseen unsensed | T2 High Cover hidden | T3 seen, no cover ""
+stepBetter: hidden "" | hideStateOf: unsensed ""
+afterView: unseen keeps "unsensed" | Unsensed, seen, High Cover "hidden" | Unsensed, seen, none "" | Hidden, seen, High Cover "hidden" | Hidden, seen, none ""
+Sneak: Unsensed seen during it "hidden" | Hidden seen during it "hidden" | at the turn's end, no cover ""
+endsHide: Basic Attack true | Sneak false | an array false
+the placeholder Hide gone: true | Subtle is a Keyword: true
+wired: perceive reads Hide true | Seek targets by itself true | no LoE needed true | Seek ignores Senses true | Tiers applied true | ends after a non-Subtle Action true | Sneak's flag true | no Reactions true | registered true

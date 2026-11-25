@@ -138,7 +138,7 @@ const CAP = { unsensed: "Unsensed", hidden: "Hidden", obscured: "Obscured", clea
  * The GM's Obscured / Hidden / Unsensed statuses on the target only ever make it worse.
  * Returns { level: "clear" | "obscured" | "hidden" | "unsensed", why }.
  */
-export function perceive(observer, target, { loe = true } = {}) {
+export function perceive(observer, target, { loe = true, noHide = false } = {}) {
   const o = observer?.actor, t = target?.actor;
   const os = o?.system?.senses ?? {};
   if (o?.statuses?.has?.("unconscious")) return { level: "unsensed", why: "Unconscious: every creature is Unsensed to you", name: CAP.unsensed };   // the Unconscious rule
@@ -176,6 +176,8 @@ export function perceive(observer, target, { loe = true } = {}) {
   }
   const st = perceptionOf(t);
   if (st && RANK[st] < RANK[best[0]]) best = [st, `${CAP[st]} (status)`];
+  // v0.0.513 (the Hide package; book, Chapter 3, Hiding): Hidden or Unsensed from Hide, against this observer only; the worse of it and the senses
+  if (!noHide && observer?.document?.id) { const hs = t?.getFlag?.("twod12", "hide")?.[observer.document.id]; if ((hs === "hidden" || hs === "unsensed") && RANK[hs] < RANK[best[0]]) best = [hs, `${CAP[hs]} (Hide)`]; }
   return { level: best[0], why: best[1], name: CAP[best[0]] };
 }
 

@@ -86,6 +86,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "tooltipDelay", { name: "Tooltip delay (ms)", hint: "How long the pointer rests on something before its tooltip shows. Foundry's own is 500.", scope: "client", config: true, type: Number, default: 900, range: { min: 0, max: 3000, step: 100 }, onChange: tipDelay });
   tipDelay(game.settings.get("twod12", "tooltipDelay"));
   registerSenses();
+  import("./hide.mjs").then(m => m.registerHide()).catch(e => console.warn("twod12 | Hide", e));   // v0.0.513: the Hide package
   try { hearingOnPrepare(); } catch (e) { console.warn("twod12 | Hearing on every token", e); }   // v0.0.319: every token hears (in memory)
   registerSleep();
   registerHudHp();

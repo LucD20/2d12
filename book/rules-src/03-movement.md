@@ -463,12 +463,28 @@ So two creatures that are each Obscured to the other each take 1 Field Bane and 
 Every creature has **Sight** and **Hearing**:
 
 - **Sight:** You perceive creatures in Bright light as Clear and creatures in Dim light as Obscured. You can't see creatures in Darkness, or creatures you have no [[Line of Effect]] to.
-- **Hearing:** You perceive creatures that make noise within **10 squares** as Hidden, even through walls. Creatures in combat make noise, even standing in the same square on their turn. A creature can **Hide** to stop making noise.
+- **Hearing:** You perceive creatures that make noise within **10 squares** as Hidden, around corners and through walls, unless a **thick wall** is between you. Creatures in combat make noise, even standing in the same square on their turn. A creature can [[Hide]] to stop making noise.
+
+A **thick wall** is a wall at least **1 square** thick. A thick wall usually blocks Hearing and Tremorsense; the GM can rule otherwise for a wall that carries sound (a hollow wooden wall, a pipe through stone).
 
 So in Darkness you usually still hear a creature, and it is Hidden to you; an invisible creature that you only hear is Hidden too.
 
-> [!tbd]
-> Hiding and sneaking are not written yet.
+### Hiding
+
+The [[Hide]] Action makes you **Hidden** or **Unsensed** to some creatures **from Hide**. This is kept for each creature on its own: you can be Unsensed to one Goblin, Hidden to another and Clear to a third. Against a creature, you use whichever is worse for it: what Hide gave you, or what its senses give it.
+
+- **Moving while hidden:** an Advance, an Evade or any other movement isn't [Subtle]: once it is resolved, Hide ends against every creature. To move and stay hidden, use [[Sneak]].
+- **Finding a hidden creature:** [[Seek]] finds creatures that are Hidden or Unsensed to you from Hide; [[Point Out]] shows one you perceive to your allies.
+- **Reactions:** a creature to which you are Hidden can still react to you, and one to which you are Unsensed can't (see [[Reactions]]).
+
+**Hide ends** against a creature when any of these happens:
+
+1. **It gains Sight of you without High Cover:** Hide ends against it. If you were Unsensed to it and you still have High Cover against it, you are Hidden to it instead.
+2. **It finds you:** its [[Seek]], or an ally's [[Point Out]], improves how it perceives you.
+3. **You use an Action that isn't [Subtle]:** once that Action is resolved, Hide ends against every creature, and your Senses are back to normal. Attacking from Darkness leaves you Hidden by Hearing to the creature you attacked, not Clear: its senses still decide how it perceives you.
+
+> [!example]
+> Drak crouches behind a crate (High Cover) in a dark storeroom while two Goblins search for him. He uses Hide: against the first Goblin, which can't see him, he gets a Tier 2 and is Unsensed to it; against the second, which has Dark Sight and sees him over the crate, he gets a Tier 2 and is Hidden to it. He uses Sneak to reach the door. The first Goblin never sees him, so he stays Unsensed to it. The second one does: he stays Hidden to it during the movement, but at the door he has no High Cover against it, so Hide ends against it at the end of his turn. On his next turn he strikes the first Goblin with his Basic Attack: the Action isn't [Subtle], so after it Hide ends, and the Goblin perceives him with its own senses again (Hidden, by Hearing, in the dark).
 
 ### Sight Senses
 
