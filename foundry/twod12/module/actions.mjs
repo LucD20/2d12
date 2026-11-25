@@ -170,6 +170,9 @@ export function pureMove(it, version, basicKey = "") {
   const txt = String(version.effects ?? ""), moves = [...txt.matchAll(/@Move\[([^\]]+)\]/g)];
   if (moves.length !== 1 || /@(?!Move\[)\w+\[/.test(txt)) return null;
   if (!["advance", "walk", "move", "evade"].includes(moves[0][1].split("|")[0].trim().toLowerCase())) return null;
+  // v0.0.508 (Lucas on v0.0.507: "Tumble didnt send the message to the chat, just asked to move the token, so no check happened"): a movement that
+  // passes enemies (Tumble) needs its Check first, so it posts its card (the Check buttons, then the Move button) like any other Action
+  if (/\|\s*pass\s*:/.test(moves[0][1])) return null;
   const traits = it?.traits;
   if (!(traits?.has?.("move") || (Array.isArray(traits) && traits.includes("move")) || basicKey === "safeMovement")) return null;
   return moves[0][1];

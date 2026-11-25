@@ -99,7 +99,9 @@ export function convertEffects(text) {
   s = s.replace(new RegExp(`\\bDC\\s*(\\d+)\\s*(${ATTRS})\\s*Save\\b`, "gi"), (m, dc, a) => `@Save[${a.toLowerCase()}|dc:${dc}]`);
   s = s.replace(new RegExp(`\\b(${ATTRS})\\s+Save\\b(?![\\w\\[])`, "g"), (m, a) => `@Save[${a.toLowerCase()}]`);
   s = s.replace(new RegExp(`\\bDC\\s*(\\d+)\\s*(${ATTRS})\\s*Check\\b`, "gi"), (m, dc, a) => `@Check[${a.toLowerCase()}|dc:${dc}]`);
-  s = s.replace(new RegExp(`\\b(${ATTRS})\\s+Check\\b(?![\\w\\[])`, "g"), (m, a) => `@Check[${a.toLowerCase()}]`);
+  // v0.0.508 (Lucas on v0.0.507: Tumble's "Appeal or Instinct Check" made only the Instinct button): "A or B Check" is a button for each
+  s = s.replace(new RegExp(`\\b(${ATTRS})\\s+or\\s+(${ATTRS})\\s+Check\\b(?![\\w\\[])`, "g"), (m, a, b) => `@Check[${a.toLowerCase()}]{${a} Check} or @Check[${b.toLowerCase()}]{${b} Check}`);
+  s = s.replace(new RegExp(`(?<!\\{)\\b(${ATTRS})\\s+Check\\b(?![\\w\\[])`, "g"), (m, a) => `@Check[${a.toLowerCase()}]`);   // (?<!{): not inside a label just written
   const REF = "(?:\\d+|speed|walk|move|body|mind|appeal|instinct|level|weapon|hp|rally)";
   const EXPR = `${REF}(?:\\s*[/*+\\-]\\s*${REF})*`;
   // v0.0.458 (Lucas, 2026-11-19): a named Boon or Bane on "its next roll" (Dirty Trick) or "their next [Weapon] Action" (Rally the Tribe) is a Boon
