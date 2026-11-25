@@ -21,15 +21,19 @@ differ):
 
 ## The HUD
 
-### hud-hp-boxes · v0.0.502 · The Token HUD's Vigor (red) and Resolve (blue) boxes, stacked
-Do: Right-click Orc Warrior's token (the system's HUD bar open at the bottom of the screen). In the red Vigor box type -5 and Enter; then +2; in the blue Resolve box type 3.
-Expect: The two boxes are stacked under the token (Vigor, then Resolve), both whole and both clickable, nothing over them. -5 deals 5 to Vigor only, +2 heals 2 of it, a plain number sets what is left of that pool (Resolve 3).
-Rev: 3
+### hud-hp-boxes · v0.0.503 · The Token HUD's Vigor (red) and Resolve (blue) boxes, where Foundry's Health box was
+Do: Right-click Orc Warrior's token. In the red Vigor box type -5 and Enter; then +2; in the blue Resolve box type 3.
+Expect: The two boxes sit side by side under the token, where Foundry's own Health box was, both whole and clickable (nothing over them, not over the token). -5 deals 5 to Vigor only, +2 heals 2 of it, a plain number sets what is left of that pool (Resolve 3).
+Rev: 4
 
-### cond-numbers · v0.0.502 · A condition's number: larger on the token, readable beside the chat
-Do: On Aveline's turn, Demoralize Orc Warrior (GM Force Tier 2: Vulnerable 1); give it Slowed 2 from the palette (then raise it to 3). Look at its token at your usual zoom; select it and look at the effects beside the chat, then the HUD's conditions row.
-Expect: On the token, each valued icon carries its number in a large dark disc with a gold ring covering most of the icon's lower right: readable at a normal zoom. Beside the chat, each icon is the plain icon with a large white number on a dark disc at its lower right corner. In the HUD's row the number is bold after the icon.
-Rev: 3
+### status-palette-clicks · v0.0.503 · The status palette: the whole row is the button; a right-click lowers a value
+Do: Right-click Orc Warrior's token and open its status effects. Click anywhere in Slowed's row (its frame, not only the icon or the word); click it again; then right-click it twice. Click Prone's row, then right-click it.
+Expect: The first click gives Slowed 1, the second makes it Slowed 2; each right-click lowers it by 1, and at 1 a right-click removes it. Prone's row toggles it with a click anywhere in the row; its right-click does Foundry's right-click (the large overlay icon).
+
+### cond-numbers · v0.0.503 · A condition's number: none on the token, readable beside the chat and in the HUD
+Do: Give Orc Warrior Vulnerable 1 and Slowed 2 (the palette). Look at its token; select it and look at the effects beside the chat, then the HUD's conditions row. (A world from v0.0.501 or 502: reload it as GM first.)
+Expect: The token shows the plain icons (no number). Beside the chat, each valued icon has a large white number on a dark box at its lower right corner. In the HUD's row the number is bold after the icon.
+Rev: 4
 
 ## Starting a combat
 

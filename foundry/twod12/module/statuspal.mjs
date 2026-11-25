@@ -1,8 +1,7 @@
 // v0.0.500 (Lucas on v0.0.499):
 //   - "Can the assign status effect window on the token show each category instead of just a list? Even better if it can show the names": the
 //     Token HUD's status palette is grouped (Health, Movement, Senses, Harmful, Helpful; the book has no groups: Claude's) and each icon has its
-//     name beside it. Foundry's own icons are kept (moved into the groups), so its click and right-click still work on them; a click on a name
-//     clicks its icon.
+//     name beside it. Foundry's own icons are kept (moved into the groups); v0.0.503: the whole row is the button (groupPalette).
 //   - (v0.0.501: the numbers on the map's icons are the numbered icons of condnum.mjs; v0.0.500's drawing over Foundry's effect sprites showed
 //     nothing and is gone. effectNumber stays for the tests.)
 // Pure helpers first (the tests load them).
@@ -59,14 +58,29 @@ export function groupPalette(app, html) {
       const name = document.createElement("span");
       name.className = "twod12-sname";
       name.textContent = nameOf(id);
-      // a click (or right-click) on the name is a click on its icon (Foundry's handlers stay on the icon)
-      for (const type of ["click", "contextmenu"]) name.addEventListener(type, ev => { ev.preventDefault(); ev.stopPropagation(); icon.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, button: type === "contextmenu" ? 2 : 0 })); });
       row.append(name);
+      row.dataset.statusRow = id;
       list.append(row);
     }
     frag.append(sec);
   }
   pal.replaceChildren(frag);
+  // v0.0.503 (Lucas on v0.0.502: "it should allow to click on the whole selection box it appears when you hover"; "Right-clicking isnt reducing"):
+  // the whole row is the button, and the system handles it itself (Foundry's handler on the icon no longer reached the valued rule): a click
+  // toggles the condition (a valued one already on: +1; Shift: its settings, Ctrl: remove), a right-click lowers a valued one by 1 (at 1 it goes)
+  // or does Foundry's right-click on the others (effects.mjs wrapConditions, through toggleStatusEffect)
+  const actor = (app?.document ?? app?.object)?.actor;
+  const act = async (ev, right) => {
+    const row = ev.target.closest?.("[data-status-row]");
+    if (!row || !actor) return;
+    ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation?.();
+    const id = row.dataset.statusRow, on = !!actor.statuses?.has?.(id);
+    try { await actor.toggleStatusEffect(id, right ? { overlay: true, active: on } : { active: !on }); }
+    catch (e) { console.warn("twod12 | the status palette", e); }
+    try { globalThis.canvas?.hud?.token?.render?.(); } catch (e) { /* no HUD open */ }
+  };
+  pal.addEventListener("click", ev => act(ev, false), true);
+  pal.addEventListener("contextmenu", ev => act(ev, true), true);
   return true;
 }
 

@@ -46,12 +46,15 @@ export function hpHud(app, html) {
   const wrap = document.createElement("div");
   wrap.innerHTML = hudHpHtml(sys);
   const el = wrap.firstElementChild;
-  if (bar1) { bar1.style.display = "none"; bar1.after(el); }
+  // v0.0.503 (Lucas on v0.0.502: stacked "Now its worse"): the boxes go inside Foundry's own Health box (bar1), which Foundry places under the
+  // token, clear of the side columns; its own input stays, hidden (the HUD's form still has it)
+  if (bar1) { for (const c of bar1.children) c.style.display = "none"; bar1.classList.add("twod12-hpbar1"); bar1.append(el); }
   else (root.querySelector(".col.middle") ?? root).append(el);
   for (const input of el.querySelectorAll("input[data-twod12-pool]")) {
     input.addEventListener("focus", () => input.select());
     input.addEventListener("keydown", ev => { ev.stopPropagation(); if (ev.key === "Enter") { ev.preventDefault(); input.blur(); } });
-    input.addEventListener("change", async () => {
+    input.addEventListener("change", async ev => {
+      ev.stopPropagation();   // v0.0.503: the HUD's own form doesn't submit it
       const pool = input.dataset.twod12Pool, d = actor.system.damage ?? {};
       const now = { left: pool === "body" ? actor.system.vigorLeft : actor.system.resolveLeft, lethal: d[`${pool}Lethal`], nonlethal: d[`${pool}Nonlethal`] };
       const next = hudHpChange(input.value, now);
