@@ -1,6 +1,6 @@
 # The Goblin Sneak: the first Minion (the record)
 
-> **Status (2026-11-25): IDEAS SHOWN, with a proposed Default Minion, waiting for Lucas's review. Nothing is chosen. Design only: no card source, no Foundry (the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the earlier creatures', `orc-warrior-redesign.md` and `grave-wisp-redesign.md`.
+> **Status (2026-11-25): LUCAS HAS CHOSEN ITS SET; the sheet at the end of this file is the current one, with Claude's notes. Design only: no card source, no Foundry (the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the earlier creatures', `orc-warrior-redesign.md` and `grave-wisp-redesign.md`.
 
 ## Lucas's words (2026-11-25)
 
@@ -115,3 +115,35 @@ None proposed: Chapter 14 gives a Minion no Reaction Point (two or three act in 
 - Two plain Basic attacks against the two Defenses, and one thing of its own that is about position.
 - Its turn on paper: a move and two Shivs, 4.4; a move and Knife in the Back, 5.3; Knife in the Back and a Shiv, 7.6. The Default Minion wants about 4½ moving and 6 standing: the flanking turn runs over, which is the goblin's whole point.
 - With the others: goblins Jeer and circle, the orcs hold the front and howl, the wisps go through to the back.
+
+## Lucas's choice (2026-11-25)
+
+"4 - Remember, Once per Action so tier 2 that deals damage + forced movement doesnt remove 3 ticks."
+
+"Ok, lets do Squads of 2."
+
+"M1 + R3 + T1 + An Encounter reaction: 1R trigger: an ally goblin die; They can Evade 1 then Jeer. This requires goblin to save a whole action for a potential trigger, so i think its fine."
+
+**Decided with it:**
+
+- **The Default Minion stands** (2 ticks, a Grunt's Basic attack, 3 AP, CV 30) and the seven tick rules, with rule 4 said his way: **one tick reduction an Action, whatever it does.** An Action whose Tier already removed ticks removes no more through its own Forced Movement's Collision; damage with no Tier removes 1 only when it comes from something that hasn't ticked that Minion (a Shove's Collision, a Lingering, a hazard, a zone).
+- **Squads of 2:** a turn slot holds up to two Minions (Chapter 14 says up to 3).
+- **A Minion can have a Reaction.** It still has no Reaction Point, so it pays with an AP it kept from its turn: the price is the Action it didn't take. (Chapter 14 says Minions have no Reactions.)
+
+### The sheet now (not built)
+
+**Goblin Sneak.** Minion, CV 30, level 1. **2 ticks.** Armor Defense 13, Ward Defense 12. Weapon +2, Power +2. Instinct +2, Body 0, Mind 0, Appeal -1. Speed 6, Reach 1. 3 AP, no Reaction Point. Its dice never explode. It acts in squads of 2. Tag: Goblin.
+
+- **Shiv** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *A short, ugly blade, and it knows where the armor ends.* Tier 2: [V] 1d4 Pi. Tier 3: [V] 1d6 Pi.
+- **Jeer** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike]; 6 sq.; one creature; Power vs. Ward Defense). *It says something about your mother, in Goblin, and somehow you understand.* Tier 2: [R] 1d4 Ps. Tier 3: [R] 1d4 Ps; Taunted by the goblin (1 round).
+- **Knife in the Back** (Special; Round, 2 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *You were looking at the other one.* Requirement: the goblin flanks the target. Tier 2: [V] 2 + 1d6 Pi. Tier 3: [V] 4 + 1d8 Pi.
+- **Shriek and Scatter** (Reaction; Encounter, 1R; the name is Claude's). *One of them drops, and the rest remember how much they hate you.* Trigger: an ally with the Goblin Tag within 6 squares goes Down. Effect: the goblin can Evade 1, then uses Jeer.
+
+### Claude's notes (2026-11-25)
+
+1. **Three things the Reaction's card has to say, filled with defaults:** how far the dying goblin can be (6 squares, Jeer's own Distance); which allies count (the Goblin Tag, so the word "goblin" has a rule); whom it Jeers (any creature in Jeer's Distance: usually the one that made the kill, but the card doesn't force it).
+2. **Its price is the AP it keeps.** A goblin that keeps 1 AP gives up a Shiv (2.4) for a Jeer (2.2), an Evade and a chance to Taunt, and gets nothing if no goblin near it falls. An NPC's kept AP gives no Guard (Chapter 14), so the wait is a real cost. Fair as he says.
+3. **Several goblins can answer one death,** each once a fight: a chorus of Jeers at whoever made the kill. Taunted comes from one source at a time (Chapter 8), so the last Jeer that lands is the one that holds.
+4. **Its turn on paper:** a move and two Shivs, 4.4; a move and Knife in the Back when it flanks, 5.3; Knife in the Back and a Shiv, 7.6.
+5. **Squads of 2 fit Knife in the Back:** the two goblins of a slot go to opposite sides of one PC. That is about 10 on paper in one slot; it is also the play the players can stop by where they stand.
+

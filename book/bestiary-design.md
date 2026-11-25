@@ -388,8 +388,23 @@ Lucas: "Push it to the work branch, then lets do the next NPC. Also, I think its
 
 Lucas: "Wisp is good, next is the Goblin Sneak as a Minion." **The Grave Wisp is decided.** The Minion rank is opened with the goblin (`cards/goblin-sneak-redesign.md`): **the Default Minion, proposed:** 2 ticks; Defenses 13 / 13 and Modifiers +2 / +2; 3 AP and no Reaction Point (Chapter 14's rules, kept); a Basic attack of 1d4 / 1d6, a Grunt's (a Minion hits like a Grunt and dies like a Minion); about 3½ damage to Health a turn at the table; **CV 30** (the count: about 13 such Minions are a normal fight for four PCs; 8 cost 0.7 Rally Points a PC, 12 cost 1.2, 16 cost 2.0: not a straight line, so the rule keeps a cap). **K2 proposed with it, seven sentences:** an Action removes its Tier's ticks once, only if that Tier damages the Minion; a Save Action by the Minion's Save turned over; an Area by each Minion's own Tier; damage with no Tier (Collision, Lingering, a hazard, a zone) removes 1; a rider with no damage removes none; a heal restores 1; Minions and their ticks are announced. Waiting for his review.
 
+**Lucas's answers on the goblin (2026-11-25):** the Default Minion and the tick rules stand, with **one tick reduction an Action, whatever it does** (a Tier 2 with a Forced Movement that collides removes 2, not 3); **squads of 2** (Chapter 14: up to 3); **a Minion can have a Reaction, paid with an AP it kept** (no Reaction Point: "This requires goblin to save a whole action for a potential trigger"). The Goblin Sneak's set: Shiv, Jeer (against Ward Defense), Knife in the Back (it must flank), and an Encounter Reaction when another goblin goes Down (an Evade 1, then a Jeer).
+
+### Lucas on the size of NPC damage (2026-11-25; on watch, nothing changed)
+
+"I am noting the damage from NPCs are just flat dice, barely any variation. Is this caused by PCs health being low? Because there is a clear disparity here that could be hurtful for the game. But at the same time, HP is the daily resource, so even 1 damage is still something, unlike most games. Could be my mind with PF2e and similar systems where healing is trivial."
+
+**Claude's reading:**
+
+- **It is not the PCs' Health.** A Standard's turn takes about a quarter of a PC (8 of 32), the same share as a Draw Steel monster's signature takes of a hero (about 26%). What differs is how it arrives: there in one number, here in two or three rolls of 3 to 6.
+- **Three things make the dice look small and alike:** a turn of several attacks splits the quarter; the two Specials chosen so far hit areas or two creatures, so they are small dice too; and the last two creatures are half-size ranks whose dice never explode (Chapter 14's rule for Minor enemies).
+- **What sets the quarter is the day, not Health:** 6 or 7 Rally Points of a quarter each make a day of about 2.75 times a PC's Health for five fights, so a normal fight can cost about 37% of it. Draw Steel's heroes have 8 to 12 Recoveries of a third each, about twice the healing, and its monsters can take more of a hero in a fight.
+- **The real disparity is on the PCs' side:** a PC's turn takes about half of a Standard (17 of 36), against a third in Draw Steel. That is the two-round fight (decision 3), chosen so that a Standard has a PC's Health.
+- **His own answer holds:** where healing is a daily budget, a point of damage is a point of the day (one eighth of a Rally Point); where healing is free between fights, only big hits register. The research says the same of attrition games.
+- **What to watch at the table:** whether hits of 3 or 4 disappear under Guard and reductions; whether Grunts and Minions feel like nothing. **Levers, smallest first:** fewer and bigger rolls on a creature (decision 15's shape); letting Minor enemies' dice explode (dropping that Chapter 14 rule); fewer fights between Rests or more Rally Points (the bands' cost, G9 and C8); doubling the PC side's grain (Health, a Rally Point's heal, Guard and reductions all twice as large, NPC damage with them), which changes no proportion and is a core change.
+
 ### What comes next
 
-- **Lucas's review of the Default Minion, the tick rules and the Goblin Sneak's ideas** (`cards/goblin-sneak-redesign.md`).
+- **Lucas's word on the Goblin Sneak's sheet** (`cards/goblin-sneak-redesign.md`, the last section), then the next creature.
 - The creatures that need block B: an Elite (K6), a Boss (its turns).
 - **The Foundry pass for every creature at once** (`foundry/foundry-backlog.md`), then **decision 16, to the table**, and one Foundry version.
