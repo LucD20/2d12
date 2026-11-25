@@ -1,107 +1,117 @@
-# The Grave Wisp: the second Standard (the record)
+# The Grave Wisp: the first Grunt (the record)
 
-> **Status (2026-11-25): IDEAS SHOWN, waiting for Lucas's review. Nothing is chosen. Design only: no card source, no Foundry (Lucas, 2026-11-25: the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the first creature's, `orc-warrior-redesign.md`.
+> **Status (2026-11-25): IDEAS SHOWN at Grunt size, waiting for Lucas's review. Nothing is chosen. Design only: no card source, no Foundry (the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the first creature's, `orc-warrior-redesign.md`.
 
-## Why this one next (Claude's choice; Lucas said "lets do the next NPC")
+## Lucas's words (2026-11-25)
 
-- It needs no rule that is still open: a Minion waits on the ticks (K2), an Elite on its "something beyond Health" (K6), a Boss on its turns. A second Standard waits on nothing.
-- It is the Default Standard's twin: it deals only Resolve damage, against Ward Defense. With the Orc Warrior it gives a fight both pools, which the record's decision 15 left for "its twin".
-- **Nothing is copied from the old sheet** (no Chilling Touch, no Dread Whisper, no Daunted or Dazed rider, none of its ratings). "Flies" is left out too: Flying isn't written (Chapter 3), so it would be a word with no rule.
+- "Push it to the work branch, then lets do the next NPC." Claude proposed the Grave Wisp as a second Standard (the creature that deals only Resolve damage against Ward Defense) and showed ideas at a Standard's size.
+- **"Wait, lets do the grave wisp as a grunt."** So the wisp is the first Grunt, and the Grunt's defaults have to exist first: they are below, derived the way the Standard's were.
+- **Nothing is copied from the old sheet** (no Chilling Touch, no Dread Whisper, no Daunted or Dazed rider, none of its ratings). "Flies" is left out: Flying isn't written (Chapter 3).
 
-## What every idea stands on
+## The Default Grunt (Claude's derivation; his to change)
 
-- **The Default Standard:** Health 36, Armor Defense 13, Ward Defense 13, Weapon +2, Power +2, 4 AP and the Reaction Point. A Tier 1 deals nothing unless the card says so.
-- **A Standard's sheet (Lucas, the Orc Warrior):** a melee Basic attack and a ranged one on one At-will count, one Special (2 AP, Round), one Reaction, Features if wanted.
-- **His rules from the Orc Warrior:** no damage line that is only a flat number; don't lean on Daunted; a creature can do something on a Tier 1; Health moves between Vigor and Resolve, the total held.
-- **The numbers** (decision 15): a melee Basic attack of 1d4! / 2 + 1d6!; a ranged one about 1 lower on its Tier 3; a Special worth about 6 on one creature or 4½ on each of two; a paper turn of about 9 moving and 12 standing.
-- **No number assumes a class** (P11). Prices are [judgment].
-- **Every attack below is a [Power] Action against Ward Defense and deals [R].** A PC's Resolve is usually its low threshold (10 to 12 of 29 to 35), so three or four hits make it Strained: no Reaction Point at the start of its turns.
+**A Grunt is half a Standard: CV 50, two of them for a PC** (G2: "weaker than a PC").
 
-## Its numbers (to choose)
+| | Default Standard | Default Grunt | Why |
+|---|---|---|---|
+| Health | 36 | **18** (9 / 9) | Half. About two landed PC Strikes (a landed Strike averages 10) |
+| Defenses, Modifiers | 13 / 13, +2 / +2 | **the same** | A rank moves none (decision 12, P3) |
+| Damage to Health a turn, at the table | about 8 | **about 4** | The same count (`ruler/fight-identity.mjs`): eight Grunts of 18 Health get about 12.4 turns in a normal fight; 51 ÷ 12.4 = 4.1 |
+| On paper, moving / standing | 9 / 12 | **about 4½ / 6** | The same ratios |
+| AP | 4 | **3** | Chapter 14's rule, kept (K7): a Grunt's turn is a move and two AP, which is how it deals half without hits too small to matter |
+| Basic attack | 1d4! / 2 + 1d6! | **1d4 / 1d6** | Chapter 14's rule, kept: a Minor enemy's dice never explode. 2.4 a use; a move and two of them 4.4; three of them 6.2 |
+| Special (2 AP, Round) | 7 / 11 on one, 5 / 8 on each of two | **about 5½ / 8½ on one, 2½ / 4½ on each of two** | 4.8 on one: a little more than the two Basic attacks it replaces (4.4) |
 
-| | Strict | Claude's proposal |
-|---|---|---|
-| Vigor / Resolve | 18 / 18 | **12 / 24** (little body to hurt: one good weapon hit Bloodies it; it is hard to Strain) |
-| Attributes | | **Mind +2, Instinct +1, Appeal +1, Body -1** (a total of 3, as the Orc Warrior's) |
-| Speed | 5 | **6**, paid for by Vigor 12: Bloodied takes 2 of it |
-| Defenses | 13 / 13 | 13 / 13 (a rank moves none; a role may, later) |
+- **Eight Grunts make a longer fight than four Standards** (it ends in round 3.3, not 2.9): more bodies waste more of each PC turn. Grunts are for mixing in (two Orc Warriors and four wisps), not for a fight of their own.
+- **A Grunt against a 3-tick Minion** (decision 7): the Grunt has Health, so it can be Bloodied or Strained, takes conditions, has its own turn and can have a Reaction; a big hit kills it at once and three small ones are needed otherwise. A Minion has ticks: any Tier 2 or 3 does the same to it whatever the damage. Grunts reward the heavy hitter, Minions the many attacks.
+- **Open, small:** does a Grunt's Basic attack still get the Critical's 1d10! (Chapter 1 says an NPC's Basic attack does; "never explode" is about its own dice)? Assumed yes.
 
-## The ideas
+### How many cards on a Grunt's sheet (a choice for Lucas, three ways)
+
+A fight has twice as many Grunts as it would Standards, so each should be lighter to run (the research counts the load by the encounter, not the creature).
+
+- **A. The Standard's sheet** (two Basic attacks, a Special, a Reaction): the richest, the heaviest.
+- **B. Its Basic attacks and one more card** (a Special or a Reaction), a Feature if wanted. *Claude's pick.*
+- **C. One Basic attack and one more card.**
+
+## Its numbers (Claude's proposal)
+
+- **Health 18: Vigor 6, Resolve 12** (6 is the floor, a third). Any weapon hit Bloodies it; it is hard to Strain.
+- **Speed 6**, paid for by Vigor 6: Bloodied takes 2 of it.
+- **Mind +1, Instinct +1, Appeal 0, Body -1.** Defenses 13 / 13. Power +2, Weapon +2. 3 AP and the Reaction Point.
+- **Every attack is a [Power] Action against Ward Defense and deals [R].** A PC's Resolve is usually its low threshold, so the wisps are what makes a PC Strained.
+
+## The ideas, at Grunt size
 
 ### The melee Basic attack (1 AP, At-will; [Power, Melee, Strike]; Reach (1); one creature; Power vs. Ward Defense)
 
 **M1. Hollow Touch** (the plain one). *The light brushes you, and something you were sure of is gone.*
-- Tier 2: [R] 1d4! Co. Tier 3: [R] 2 + 1d6! Co.
+- Tier 2: [R] 1d4 Co. Tier 3: [R] 1d6 Co.
 
 **M2. Slipping Touch** (something on a Tier 1). *It reaches for you and is already somewhere else.*
-- Tier 1: the wisp Evades 1. Tier 2: [R] 1d4! Co. Tier 3: [R] 2 + 1d6! Co.
-- Lucas's "some creature can do something on a tier 1", with no damage in it: a miss still moves it out of reach. Free [judgment]. It makes the wisp hard to pin without making it hard to hit.
+- Tier 1: the wisp Evades 1. Tier 2: [R] 1d4 Co. Tier 3: [R] 1d6 Co.
+- A miss still moves it out of reach: hard to pin without being hard to hit. Free [judgment].
 
 **M3. Unsteadying Touch.** *Your hands forget, for a moment, what they were about to do.*
-- Tier 2: [R] 1d4! Co. Tier 3: [R] 2 + 1d6! Co; Staggered (EoT).
-- No Reactions until the end of your turn. Free [judgment] on a Tier 3. With Strained (no Reaction Point) it is the same theme twice: the wisp takes your Reactions.
+- Tier 2: [R] 1d4 Co. Tier 3: [R] 1d6 Co; Staggered (EoT).
+- No Reactions until the end of your turn. With Strained it is the same theme twice: the wisps take your Reactions.
 
-### The ranged Basic attack (1 AP, At-will; [Power, Ranged, Strike]; one creature; Power vs. Ward Defense)
+### The ranged Basic attack (1 AP, At-will; [Power, Ranged, Strike]; 6 sq.; one creature; Power vs. Ward Defense)
 
-**R1. Cold Gleam** (the plain one). *A thread of pale light crosses the room and finds you.* Distance 6 sq.
-- Tier 2: [R] 1d4! Ps. Tier 3: [R] 1 + 1d4! Ps.
+**R1. Cold Gleam** (the plain one). *A thread of pale light crosses the room and finds you.*
+- Tier 2: [R] 1d4 Ps. Tier 3: [R] 1d4 Ps (no rider: the range is its worth).
 
-**R2. Beckoning Light.** *It bobs just out of reach, and you cannot look anywhere else.* Distance 6 sq.
-- Tier 2: [R] 1d4! Ps. Tier 3: [R] 1d4! Ps; Taunted by the wisp (1 round).
-- The will-o'-the-wisp: your Actions against anyone else take 1 Bane, so you chase the thing that keeps slipping away. The Tier 3 loses its extra point for it [judgment]. A learnable behaviour: it pulls a PC's attention off the orcs.
+**R2. Beckoning Light.** *It bobs just out of reach, and you cannot look anywhere else.*
+- Tier 2: [R] 1d4 Ps. Tier 3: [R] 1d4 Ps; Taunted by the wisp (1 round).
+- The will-o'-the-wisp: your Actions against anyone else take 1 Bane. It pulls a PC's attention off the orcs, onto a creature worth half as much.
 
-**R3. Guttering Glance.** *The light goes out behind your eyes.* Distance 6 sq.
-- Tier 2: [R] 1d4! Ps. Tier 3: [R] 1d4! Ps; Half-Blinded (EoT).
-- Nothing is better than Obscured to you until the end of your turn. It hurts a shooter most. Risk: the Senses rules are the heaviest in the book to run.
+**R3. Guttering Glance.** *The light goes out behind your eyes.*
+- Tier 2: [R] 1d4 Ps. Tier 3: [R] 1d4 Ps; Half-Blinded (EoT).
+- It hurts a shooter most. The Senses rules are the heaviest in the book to run, and there would be several wisps.
 
 ### The Special (2 AP, Round)
 
 **S1. Pass Through.** [Power, Move, Strike]; up to two creatures; Power vs. Ward Defense. *It drifts straight through you, and the cold stays.*
 - Setup: the wisp moves up to its Speed in a straight line. This movement can pass through creatures' spaces (it can't end in one). The targets are creatures whose space it passed through.
-- Tier 2: [R] 1d6 Co. Tier 3: [R] 2 + 1d6! Co.
-- Its signature and its answer to the back line (D8): it crosses the front line and ends beside the Archers, touching two PCs on the way (G6). 3.2 a creature, 6.4 on two, and a move inside it [judgment: the move is why the damage is under a Standard's 4½ each]. The exception to "an enemy's space blocks" is on its card, as the rule for exceptions asks.
+- Tier 2: [R] 1d4 Co. Tier 3: [R] 1 + 1d6 Co.
+- Its signature and its answer to the back line (D8). 2.4 a creature, 4.7 on two, with its move inside. For a 3 AP creature it is nearly the whole turn: through the line, then one touch.
 
 **S2. Unravel.** [Power, Melee, Strike]; Reach (1); one creature; Power vs. Ward Defense. *It pours into you, looking for the thread that holds you together.*
-- Tier 2: [R] 3 + 1d8 Ps. Tier 3: [R] 5 + 1d10 Ps.
-- **Strained** (after the Tiers): if this makes the target Strained, the target is Slowed 1.
-- The single heavy hit, 6.2 a use, with one of the new Strained lines (C4): the blow that Strains you costs you 1 AP on your next turn. Once a PC a fight at most.
+- Tier 2: [R] 2 + 1d6 Ps. Tier 3: [R] 4 + 1d8 Ps.
+- **Strained** (after the Tiers): if this makes the target Strained, the target is Staggered (EoT).
+- The heavy hit, 4.8 a use. (At a Standard's size the line gave Slowed 1; too much for a Grunt.)
 
 **S3. Lead Astray.** [Power, Ranged, Strike]; 6 sq.; one creature; Power vs. Ward Defense. *You take three steps toward the light before you know you are walking.*
-- Tier 2: [R] 1d6 Ps; Slid 2. Tier 3: [R] 2 + 1d6 Ps; Slid 3.
-- The lure as Forced Movement: the wisp chooses the path, into the orcs' reach, out of Cover, against a wall. 3.1 damage a use and the Slide [judgment: the Slide is the Special]. It does the most with allies around it and nothing alone.
+- Tier 2: [R] 1d4 Ps; Slid 2. Tier 3: [R] 1d6 Ps; Slid 3.
+- The lure as Forced Movement: the wisp chooses the path, into the orcs' reach, out of Cover, against a wall. It does the most with allies around it.
 
 ### The Reaction (1R)
 
 **X1. Wink Out** (Round). *Your blade passes through where it was.*
-- Trigger: the target gets a Tier 1 on a [Strike] Action against the wisp. Target: the triggering creature.
-- Effect: the wisp Evades 2.
-- A miss lets it go. About three Strikes in ten against it trigger it, once a round: little interruption, no damage. With M2 it would be too slippery: one of the two.
+- Trigger: the target gets a Tier 1 on a [Strike] Action against the wisp. Target: the triggering creature. Effect: the wisp Evades 2.
+- With M2 it would be too slippery: one of the two.
 
 **X2. Feed on the Frayed** (Round). *It brightens as you falter.*
-- Trigger: the target, within 5 squares of the wisp, becomes Strained. Target: the triggering creature.
-- Effect: the wisp gains Guard 1d6!.
-- A visible change the players cause themselves, at most once a PC. Guard, not healing: the fight doesn't get longer. The players' answer: kill the wisp before its attacks add up.
+- Trigger: the target, within 5 squares of the wisp, becomes Strained. Target: the triggering creature. Effect: the wisp gains Guard 1d6.
+- A visible change the players cause, once a PC. With several wisps, each one near brightens.
 
 **X3. Dying Flare** (Encounter). *It goes out the way a lamp does when it is dropped.*
 - Interrupt: the wisp would go Down. Area: 1 Emanation. All creatures in the Area. Instinct Save against its Power DC (13).
-- Tier 1: [R] 1d6! Ps; Half-Blinded (EoT). Tier 2: [R] 1d4 Ps. Tier 3: no effect. Then the wisp goes Down.
-- "Don't be next to it when it dies." It hits the orcs beside it too, so where it dies matters to both sides. About 2 damage to each creature adjacent [judgment].
+- Tier 1: [R] 1d4 Ps; Half-Blinded (EoT). Tier 2: [R] 1d4 Ps. Tier 3: no effect. Then the wisp goes Down.
+- "Don't be next to it when it dies": Grunts die often, so this would be seen every fight. It hits the orcs beside it too.
 
 ### Features (optional)
 
-**F1. Drifting.** The wisp's own movement can pass through creatures' spaces (it can't end in one).
-- The same exception as Pass Through, all the time. It makes the whole map its ground. With S1 it is said twice: take it only if the Special is S2 or S3.
+**F1. Drifting.** The wisp's own movement can pass through creatures' spaces (it can't end in one). Only if the Special isn't Pass Through.
 
-**F2. Weak 3 Holy.** (Chapter 1, Resist, Weak and Immune.)
-- A weakness the players can find. It rewards a Paladin without needing one (P11: nothing here is priced on it).
+**F2. Weak 3 Holy.** A weakness to find; with 18 Health, 3 more is a lot: it rewards a Paladin without needing one.
 
 **F3. No Feature.**
 
 ## Claude's pick (not decided)
 
-**Vigor 12, Resolve 24, Speed 6. Hollow Touch (M1), Beckoning Light (R2), Pass Through (S1), Feed on the Frayed (X2), no Feature.**
+**Sheet B. Hollow Touch (M1), Beckoning Light (R2), Pass Through (S1); no Reaction, no Feature.**
 
-- One thing of its own: it goes through the front line. Beckoning Light is the lure; the plain touch keeps the block short.
-- It makes Strained matter on both sides: its damage Strains PCs, and that feeds it.
-- Paper turn: Pass Through on two creatures and two touches, 12.5; on one, 9.3. A turn of three touches, 8.6.
-- With the Orc Warrior: the orcs hold the front and howl, the wisp crosses to the back. Both press Resolve when two PCs stand together, so "spread out" is the first lesson of the pair.
+- One thing of its own: it goes through the front line. Three cards, because there will be several wisps.
+- Its turn (3 AP): Pass Through and a touch. On paper 4.7 when it passes one creature, 7.1 when it passes two; three touches, 6.2. The Default Grunt wants about 4½ moving and 6 standing.
+- With the Orc Warrior: two orcs and four wisps is a normal fight for four PCs. The orcs hold the front and howl; the wisps cross to the back and make the PCs Strained.
