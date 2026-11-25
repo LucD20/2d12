@@ -308,6 +308,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
   const evadeEnded = useEvade > 0 && evade <= 0;
   await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(spent && !useEvade ? { [`flags.${F}.advOwn`]: true, [`flags.${F}.advInteract`]: false } : {}), ...(evadeEnded ? { ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`), ...unset(`flags.${F}.noFarther`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
   if (evadeEnded) promptStowAfter(c).catch(e => console.warn("twod12 | stow after Evade", e));
+  if (evadeEnded) runThenMove(c).catch(e => console.warn("twod12 | the next movement", e));   // v0.0.512: Slip Away's Advance 2 after its Evade 1
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
   if (!useEvade) await expireOnUse(c.actor, new Set(["move"])).catch(() => {});
@@ -762,6 +763,7 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0, skipL
     if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`) });
     clearRange();
     await writeLine();
+    if (drop) runThenMove(c).catch(e => console.warn("twod12 | the next movement", e));   // v0.0.512: End movement on a chained movement starts the next one
   };
   const cancel = () => { if (!teardown()) return; lastBar = { id: "", until: 0 }; clearRange(); };
   moveBar = {
@@ -803,6 +805,19 @@ export async function endMoveFor(combatantId) {
   await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.moveLeft`]: 0, ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`), ...unset(`flags.${F}.noFarther`) });
   clearRange();
   if (hadStow) promptStowAfter(c).catch(e => console.warn("twod12 | stow after Evade", e));
+  runThenMove(c).catch(e => console.warn("twod12 | the next movement", e));   // v0.0.512: ending a chained movement starts the next one
+}
+/** v0.0.512 (playtest 7, Slip Away): the movements left of a Reaction's chain (actions.mjs autoMoveChain): the next one starts when this one ends. */
+async function runThenMove(c) {
+  const rest = c?.getFlag?.(F, "thenMove");
+  if (!Array.isArray(rest) || !rest.length || !c.isOwner) return;
+  await c.setFlag(F, "thenMove", rest.slice(1));
+  await new Promise(r => setTimeout(r, 400));   // the ending movement's bar closes first
+  const token = c.token?.object ?? c.actor?.getActiveTokens?.()[0] ?? null;
+  if (!token) return;
+  const { parseInline } = await import("./inline.mjs");
+  const cfg = parseInline("Move", rest[0]); cfg.traits = [...new Set([...(cfg.traits ?? []), "self"])];
+  await handleMove(cfg, { actor: c.actor, token });
 }
 /** v0.0.198: the strip's Advance instead (an Evade becomes an Advance; the movement's line says Advanced). */
 export async function evadeToAdvance(combatantId) {
@@ -1494,13 +1509,14 @@ export function creaturesInReach(token, reach = 1) {
 }
 
 /** After a Charge's movement: if no creature is within Reach, its required Weapon Attack (1A) can't be made, so the Charge is disrupted. */
-function chargeFollowUp(c, doc, reach, to = null) {
+function chargeFollowUp(c, doc, reach, to = null, messageId = "") {
   const token = doc.object ?? canvas.tokens?.get?.(doc.id);
   if (!token) return;
   // v0.0.215 (Lucas, playtest 2: "disrupted" when it wasn't): measured from the Charge's end square, not from where the token is drawn
   // 600 ms later (a long Charge was still moving, so nobody seemed to be within Reach).
   const at = to ? { id: doc.id, document: { id: doc.id, x: to.x, y: to.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } } : token;
-  if (creaturesInReach(at, reach).length) return;
+  // v0.0.512 (playtest 7: "Charge's Weapon Attack isn't in the HUD's Situational tab"): its Basic Attack (1A) waits there, from the Charge's card
+  if (creaturesInReach(at, reach).length) { if (messageId && c.isOwner) c.setFlag(F, "chargeUse", { messageId }).catch(() => {}); return; }
   postCard("Charge", `${esc(c.name)}'s Charge is disrupted`, "No creature within Reach for its Basic Attack (1A). The AP stay spent.", "chargemsg").catch(() => {});
 }
 
@@ -2324,8 +2340,23 @@ export function openChargePicker(c, token) {
   const back = Math.max(0, num(ch.refund));
   bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-opts lb-cands"></span><span class="lb-side"><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-go">Charge</button><button type="button" class="lb-give">Give up${back ? ` \u00b7 ${back} AP back` : ""}</button><span class="lb-keys"></span>`;
   // v0.0.453 (Lucas, playtest 6: "Charge should show in the situational section of the hud"): it asks there, as End movement and a Setup do
-  const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, inSide = !!slot?.classList?.contains("hb-ask");
+  let hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null;
+  const inSide = !!slot?.classList?.contains("hb-ask");
   if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", inSide); slot.append(bar); hud.hudAsking(true, inSide); } else document.body.append(bar);
+  // v0.0.512 (playtest 7: "Charge, then deselecting and reselecting the token, loses the HUD"): the bar follows the HUD's redraw, as the pick bar
+  // does (pickbar.mjs place, v0.0.473): a new selection puts it back in the HUD's ask slot
+  const placeBar = (n = 0) => {
+    if (!bar.isConnected && chargePick?.bar !== bar) return;
+    const h = globalThis.__twod12Hud ?? null, sl = h?.hudAskSlot?.() ?? null, sideNow = !!sl?.classList?.contains("hb-ask");
+    if (sl && sl.contains(bar)) return;
+    if (!sl) { if (n < 6) return setTimeout(() => placeBar(n + 1), 250); if (!bar.isConnected) { bar.classList.remove("in-hud", "in-side"); document.body.append(bar); } return; }
+    if (!sideNow && n < 6) return setTimeout(() => placeBar(n + 1), 250);
+    if (slot && hud && slot !== sl) { try { hud.hudAsking(false); } catch (e) { /* gone */ } }
+    hud = h; slot = sl;
+    bar.classList.add("in-hud"); bar.classList.toggle("in-side", sideNow); sl.append(bar); h.hudAsking(true, sideNow);
+  };
+  let dockHook = null;
+  try { dockHook = Hooks.on("controlToken", () => setTimeout(() => placeBar(0), 150)); } catch (e) { dockHook = null; }
   // v0.0.461 (e, choices 3A and 4A): a Charge always picks an enemy first (the book's Charge); only the Charge button, Enter or a click on the target confirms
   const text = () => {
     if (!target) return `<b>Pick the enemy to Charge</b>, on the map or here. You run straight at it (at least ${ch.min}, up to ${ch.max} squares), then make a Basic Attack (1A).${cands.filter(x => !x.ok).length ? ` <span class="lb-tag">${cands.filter(x => !x.ok).map(x => `${esc(x.t.name)}: ${esc(x.why)}`).join(" \u00b7 ")}</span>` : ""}`;
@@ -2470,6 +2501,7 @@ export function openChargePicker(c, token) {
     try { gfx.destroy(); marks.destroy({ children: true }); } catch (e) { /* gone */ }
     try { canvas.app.view.style.cursor = ""; } catch (e) { /* gone */ }
     bar.remove();
+    if (dockHook !== null) { try { Hooks.off("controlToken", dockHook); } catch (e) { /* gone */ } dockHook = null; }   // v0.0.512
     try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ }
     chargePick = null;
     if (giveUp) endMovement(c.id).catch(() => {});
@@ -2477,7 +2509,7 @@ export function openChargePicker(c, token) {
   canvas.stage.on("pointermove", move);
   canvas.stage.on("pointerdown", down);
   window.addEventListener("keydown", key_, true);
-  chargePick = { c, close };
+  chargePick = { c, close, bar };
   if (target) { cur = computeTarget(); }
   draw();
   return true;
@@ -2488,6 +2520,7 @@ async function runCharge(c, doc, go, reach) {
   const r = go.path, end = r.bad >= 0 ? r.bad - 1 : r.cells.length - 1;
   const points = r.cells.slice(1, end + 1).map(cell => r.tl(cell));
   if (!points.length) return endMovement(c.id);
+  const chargeMsgId = c.getFlag(F, "charge")?.messageId ?? "";   // v0.0.512: its card, for the HUD's Basic Attack (1A)
   await c.unsetFlag(F, "charge").catch(() => {});
   if (r.bad >= 0) await postCard("Charge", `${esc(c.name)}'s Charge stops early`, `${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}: it ends on the last legal square (${go.stopSq} squares).`, "chargemsg");
   await moveThrough(doc, points);
@@ -2495,5 +2528,5 @@ async function runCharge(c, doc, go, reach) {
   await chargeMovement(c, go.stopSq, null, { logMode: "Charge" });
   await c.update({ [`flags.${F}.freeMove`]: 0 });
   clearRange();
-  chargeFollowUp(c, doc, reach, go.stopTl);
+  chargeFollowUp(c, doc, reach, go.stopTl, chargeMsgId);
 }

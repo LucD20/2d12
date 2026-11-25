@@ -21,6 +21,18 @@ differ):
 
 ## The HUD
 
+### slip-away-chain · v0.0.512 · Slip Away: the Evade 1, then the Advance 2, by themselves
+Do: Kaela has Slip Away (her Hallmark Reaction). On Orc Warrior's turn, move it toward her until her Slip Away is offered; Use it. Move her 1 square (or click End movement), then move her again. Another time, use Slip Away and, during its Evade, use another Action instead.
+Expect: Use starts the Evade 1 at once (no button to click). When it ends (its square used, or End movement), the Advance 2 starts by itself. If she uses another Action first, the Advance 2 doesn't come.
+
+### charge-situational · v0.0.512 · Charge: its Basic Attack (1A) waits in the HUD's Situational tab
+Do: On Aveline's turn, Charge Orc Warrior (at least 3 squares away) and let the Charge end within Reach. Look at the HUD's Situational tab, click "Basic Attack (1A)" there. Another time, use the Basic Attack from the Charge's chat card instead.
+Expect: After the movement, the Situational tab shows "Charge" with a "Basic Attack (1A)" button; it rolls the Basic Attack with the Charge's Boon, free, and the entry goes. Used from the card, the entry goes too. A Charge that ends out of Reach shows nothing there (its card says it is disrupted).
+
+### charge-reselect · v0.0.512 · Charge: deselecting and reselecting the token keeps the Charge in the HUD
+Do: On Durgan's turn, start a Charge (the bar asks to pick the enemy), click an empty part of the map to deselect him, then select him again (and once select Aveline, then Durgan).
+Expect: The Charge bar comes back into Durgan's HUD (Situational) and still works: pick the enemy, Charge. Nothing is lost or stuck.
+
 ## Starting a combat
 
 ### enclog-new-lines · v0.0.511 · The Encounter Log: Flanking, blocked moves, Checks, and what cards took

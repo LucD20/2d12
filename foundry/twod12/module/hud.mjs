@@ -275,6 +275,11 @@ async function barModel(actor, token = null) {
       }
     }
   } catch (e) { /* no loadout */ }
+  // v0.0.512 (playtest 7): a Charge that reached a creature: its Basic Attack (1A) from the Charge's card, in the Situational tab
+  try {
+    const cu = cb?.c?.getFlag?.(F, "chargeUse"), cmsg = cu?.messageId ? game.messages?.get?.(cu.messageId) : null;
+    if (cmsg) extras.push({ lead: "Charge", tag: "Strike", text: "", btns: [{ label: "Basic Attack (1A)", hud: "chargeuse", data: { msg: cmsg.id } }] });
+  } catch (e) { /* no Charge waiting */ }
   let tiles = null;
   try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }
   return {
@@ -631,6 +636,7 @@ async function onClick(ev) {
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
   if (kind === "line" && item && !ev.target.closest(".hb-st")) { const vs0 = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions ?? [], first = vs0.find(v => !v.off) ?? vs0.find(v => !v.lock); /* v0.0.453: a spent one too (the dialog warns) */ if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
+  if (kind === "chargeuse") { const msg = game.messages.get(b.dataset.msg); if (msg) { const { chargeUseFromCard } = await import("./freeuse.mjs"); await chargeUseFromCard(actor, msg); } return renderHud(); }   // v0.0.512
   if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0, b.dataset.target || ""); }
   if (kind === "grantcancel") { const { cancelGrantOf } = await import("./freeuse.mjs"); return cancelGrantOf(actor, b.dataset.effect); }
   if (kind === "more") return openPanel("more", st.moreIds ?? []);
@@ -780,6 +786,7 @@ export function registerHud() {
   for (const h of ["controlToken", "canvasReady", "updateCombat", "combatTurn", "combatRound", "deleteCombat", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect"]) Hooks.on(h, () => renderHud());
   const mine = a => a && (a.uuid === st.actorUuid || (globalThis.canvas?.tokens?.controlled ?? []).some(t => t.actor === a));
   Hooks.on("updateActor", a => { if (mine(a)) renderHud(); });
+  Hooks.on("updateCombatant", (c, ch) => { if (mine(c?.actor) && JSON.stringify(ch?.flags?.twod12 ?? {}).includes("chargeUse")) renderHud(); });   // v0.0.512: the Charge's Basic Attack waits in Situational
   for (const h of ["createItem", "updateItem", "deleteItem"]) Hooks.on(h, i => { if (mine(i.parent)) renderHud(); });
   Hooks.on("renderHotbar", () => { if (root) placeHotbar(); });
   for (const h of ["collapseSidebar", "changeSidebarTab", "renderSceneControls", "renderChatLog", "renderSidebar"]) Hooks.on(h, () => { placeRoot(); fitNames(); setTimeout(() => { placeRoot(); fitNames(); }, 450); });

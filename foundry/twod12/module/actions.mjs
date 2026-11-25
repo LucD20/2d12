@@ -58,6 +58,15 @@ export function autoEffectEvadeTag(version) {
   return m ? m[1] : "";
 }
 
+/** Pure (v0.0.512, playtest 7: "Slip Away's Evade 1 then Advance 2 should run by themselves"): a no-roll Reaction whose Effect is only your own movements
+ *  ("You @Move[evade|...], then @Move[advance|...]."): their tags in order, [] for anything else (a roll, another button, someone else moved). */
+export function autoMoveChain(version, reaction = false) {
+  if (!reaction || !version?.noTiers) return [];
+  const txt = String(version.effects ?? "").trim();
+  if (!/^You\s+@Move\[/i.test(txt) || /@(?!Move\[)\w+\[/.test(txt)) return [];
+  const tags = [...txt.matchAll(/@Move\[([^\]]+)\]/g)].map(m => m[1]);
+  return tags.every(t => ["evade", "advance"].includes(t.split("|")[0].trim().toLowerCase())) ? tags : [];
+}
 /** Text form of a damage instance, e.g. "[V] 1[W] + 1d4 H" (v0.0.234: the pool B / M written [V] / [R]). */
 export function instanceText(i) {
   const parts = [];
@@ -1706,6 +1715,16 @@ export async function useAction(actor, item, opts = {}) {
     if (useTraits.has("strike") && targets.length && rollsAtOthers) M.strikeMoment(actor, targets);
     if (basicKey === "stand" && selfToken?.document) M.moveMoment(selfToken.document, null, null, { stand: true });
   } catch (e) { console.warn("twod12 | Reactions", e); }
+  // v0.0.512 (playtest 7): a Reaction that only moves you (Slip Away: Evade 1, then Advance 2) runs its movements by itself, one after the other
+  const chain = autoMoveChain(version, !!it.reaction);
+  if (chain.length && selfToken && game.combat?.started && !actor.statuses?.has?.("prone")) {
+    try {
+      const { parseInline } = await import("./inline.mjs"), { handleMove } = await import("./move.mjs"), cb = (await import("./combat.mjs")).combatantOf(actor);
+      if (cb && chain.length > 1) await cb.setFlag("twod12", "thenMove", chain.slice(1));
+      const mcfg = parseInline("Move", chain[0]); mcfg.traits = [...new Set([...(mcfg.traits ?? []), "self"])];
+      handleMove(mcfg, { actor, token: selfToken, message: cmsg }).catch(e => console.warn("twod12 | Reaction movement", e));
+    } catch (e) { console.warn("twod12 | Reaction movement", e); }
+  }
   // v0.0.498 (Pass 3): Quick Shots / Darting Blade / Volley — start the Effects row's Evade automatically after rolling
   const autoEvade = autoEffectEvadeTag(version);
   if (autoEvade && !saveAct && !bannerMove && selfToken && game.combat?.started && !actor.statuses?.has?.("prone")) {

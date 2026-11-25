@@ -215,7 +215,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automationNote": "2[W] / 3[W] by Tier, the Evade 2 (the button), and +1 AP on a Critical (when applied).",
+    "automationNote": "2[W] / 3[W] by Tier, the Evade 2 (it starts by itself after the roll), and +1 AP on a Critical (when applied).",
     "automation": "gold"
    }
   },
@@ -287,7 +287,7 @@
     "folder": "Archer",
     "moment": "enemyAdjacent",
     "momentRange": 5,
-    "automationNote": "offered by itself in the Reactions message when an enemy within 5 squares would enter a square adjacent to you (Move back: it stops before that square); Use: the Evade 1 and the Advance 2 (the buttons).",
+    "automationNote": "offered by itself in the Reactions message when an enemy within 5 squares would enter a square adjacent to you (Move back: it stops before that square); Use: the Evade 1 starts by itself, then the Advance 2 when it ends (or at End movement; another Action gives it up).",
     "automation": "gold"
    }
   },

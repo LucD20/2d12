@@ -833,12 +833,12 @@ World Clock and the quick time bar (the date can be set since v0.0.94); Exhauste
 - [ ] **The Wounds roll (`rest.mjs`) and the inline Check chip (`inline.mjs`) still draw the old check block.**
 
 ## PLAYTEST 7 (2026-11-21, on v0.0.475): FOUND WHILE PLAYING, NOT BUILT (Lucas: "Don't add anything yet")
-- [ ] **Two numberings of same-name creatures:** `damagelog.mjs numberSameNames` numbers them by initiative order, `enclog.mjs creatureAbbrs / fullNames` by creation order, so the damage report's "Goblin Sneak 3" is the log's GS2 (found by the core review, 2026-11-21).
+- [x] **(v0.0.488: one numbering, by the turn order: `enclog.mjs unifiedCreatures`, `damagelog.mjs numberSameNames`; checked in v0.0.512)** **Two numberings of same-name creatures:** `damagelog.mjs numberSameNames` numbers them by initiative order, `enclog.mjs creatureAbbrs / fullNames` by creation order, so the damage report's "Goblin Sneak 3" is the log's GS2 (found by the core review, 2026-11-21).
 - [x] **(v0.0.477: Break Free allowed while Prone)** **Prone + Break Free:** the book allows Break Free while Prone (Chapter 8, Prone, since v0.0.431); `actions.mjs` (the Prone check, about line 547) still allows only Crawl and Stand, and the HUD shows a Break Free button that is then refused.
-- [ ] **Charge's Weapon Attack isn't in the HUD's Situational tab** (it is a chip on the card, not a granted use).
-- [ ] **Charge, then deselecting and reselecting the token, loses the HUD** (as Judge did; the Charge picker likely isn't the pick bar that follows the selection, v0.0.473).
-- [ ] **Quick Shots' Evade 2 and Slip Away's Evade 1 then Advance 2 should run by themselves** (today: buttons).
-- [ ] **Darting Blade: after its Evade, ask whether to stow the Light weapon** (the pick bar: Stow / Keep).
+- [x] **(v0.0.512: `chargeUse`, the Situational entry)** **Charge's Weapon Attack isn't in the HUD's Situational tab** (it is a chip on the card, not a granted use).
+- [x] **(v0.0.512: the Charge bar's `placeBar`)** **Charge, then deselecting and reselecting the token, loses the HUD** (as Judge did; the Charge picker likely isn't the pick bar that follows the selection, v0.0.473).
+- [x] **(Quick Shots: v0.0.498 `autoEffectEvadeTag`; Slip Away: v0.0.512 `autoMoveChain`)** **Quick Shots' Evade 2 and Slip Away's Evade 1 then Advance 2 should run by themselves** (today: buttons).
+- [x] **(v0.0.498: `stow:drawn`, `promptStowAfter`; checked in v0.0.512)** **Darting Blade: after its Evade, ask whether to stow the Light weapon** (the pick bar: Stow / Keep).
 - [x] **(v0.0.477: the sheet's `--ps-strike`)** **The combat strip's Strike pips use the old colors** (the HUD's and the sheet's marks since group 1, v0.0.443).
 - [x] **(v0.0.477: `hud.mjs` dims an Action no Version of which can be paid)** **Sylwen, round 3: with 1 AP left, Quick Shots (2 AP) wasn't faded in the token bar** (`sheetmodel.mjs versionCant` exists; the bar likely doesn't call it).
 - [x] **(v0.0.477: Daunted and Taunted carry `endsWithOrigin`)** **Frightened (Daunted) doesn't end when its source dies** (waits for the rule; the flag `endsWithOrigin` exists: Grabbed uses it).
