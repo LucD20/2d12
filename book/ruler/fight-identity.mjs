@@ -19,6 +19,27 @@ export function count(H, N = 4, B = 18, trials = 60000) {
   }
   return { rounds: rounds / trials, turns: turns / trials };
 }
+/**
+ * The same count for Minions (ticks, not Health; core-rework G3): M Minions of `ticks` ticks in squads of `squad` to a turn slot, against 4 plain PCs.
+ * A PC turn at the table is taken as 2 Basic Attacks, or 3 one turn in four (three quarters of its paper turn); each attack removes its Tier's
+ * ticks (a Tier 1 of the Basic Attack deals damage, so it removes 1); nothing carries over to another Minion. odds(bonus, dc) comes from benchmark.mjs.
+ */
+export function countMinions(M, ticks, odds, { squad = 2, dc = 13, mod = 2, trials = 40000 } = {}) {
+  let rounds = 0, turns = 0;
+  const tierOf = bane => { const o = odds(mod - bane, dc), r = Math.random(); return r < o[0] ? 1 : r < o[0] + o[1] ? 2 : 3; };
+  for (let t = 0; t < trials; t++) {
+    const hp = Array(M).fill(ticks); let r = 0; const pcFirst = Math.random() < 0.5;
+    while (hp.some(h => h > 0) && r < 30) {
+      r++; const acted = Array(M).fill(false); const order = [...Array(M).keys()].sort(() => Math.random() - 0.5);
+      const pc = () => { const n = Math.random() < 0.25 ? 3 : 2; for (let a = 0; a < n; a++) { const k = hp.findIndex(h => h > 0); if (k < 0) break; hp[k] = Math.max(0, hp[k] - tierOf(a)); } };
+      const slot = () => { let n = 0; for (const j of order) { if (n >= squad) break; if (hp[j] > 0 && !acted[j]) { acted[j] = true; turns++; n++; } } };
+      const slots = Math.max(4, Math.ceil(M / squad));
+      for (let i = 0; i < slots; i++) { if (pcFirst) { if (i < 4) pc(); slot(); } else { slot(); if (i < 4) pc(); } }
+    }
+    rounds += r;
+  }
+  return { rounds: rounds / trials, turns: turns / trials };
+}
 if (import.meta.url === `file://${process.argv[1]}`) {
   const B = +(process.argv[2] ?? 18), cost = +(process.argv[3] ?? 51);
   console.log("| Enemies | Health each | The fight ends in round | Enemy turns | Damage a turn for the cost | Three on one PC |");

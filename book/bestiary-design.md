@@ -11,6 +11,7 @@
 - **How we build:** "Then we will build slowly, one by one, numbers. We need to decide what comes first in the design as well: Numbers, roles/ranks, what do we compare them to, what defines a difficulty of an encounter (here i am guessing is Rally points uses/hp lost)."
 - **2026-11-25, after the research:** "Lets take what the research found is the best way forward and begin the redesign now." Read as: where the research gives an answer, that answer is the decision (his to revert, like any default); where it doesn't, the decision is still asked.
 - **2026-11-25, on what a monster is compared to:** "I see you are mostly comparing to the two current classes, we should compare to the core. If a party has no paladin for example, there is no judge and shield of faith, less guard etc. We dont want people to be forced to play certain roles, maybe no one wants to play a front-line HP support like the Paladin." **A standing test from now on (P11): a monster's number never assumes a class.**
+- **2026-11-25, on levels:** "NPcs will also have levels. These are Stage 0 Level 1 enemies. Level is mainly guidance, since PCs get stronger in the sense of more options (talents, magic, equipment, mastery...) NPCs need to get also horizontaly stronger." **A creature's level adds options (Actions, riders, Features), never a number on a roll or a Defense; the Orc Warrior, the Grave Wisp and the Goblin Sneak are level 1.**
 - **2026-11-25, on a monster's Tier 1:** nothing by default, "but some creature can do something on a tier 1, we can get to that when designing the enemies."
 - **2026-11-21, the core rework** (`core-rework.md`, G1): keep ranks, roles, sheets; rebuild the numbers; mechanics first, the tables later. I4: he distrusts the SIM's white-room numbers; measure at the table.
 - **2026-11-21** (H9): classes have a better chance of "shutting down" than Talents, but never shut a boss down.
@@ -383,8 +384,12 @@ Lucas: "Push it to the work branch, then lets do the next NPC. Also, I think its
 
 **Lucas's answers (2026-11-25):** the Default Grunt stands. **Every enemy has two Basic attacks by default, whatever its rank** ("normally one melee and one range, is possible one vs AD another vs WD [...] no hard limits here: A npc can have 2 basic melee attacks, each targeting a different defense for example"); so a sheet has no fixed number of cards. The Grave Wisp's set is chosen (Slipping Touch, Guttering Glance, Pass Through, Dying Flare, Drifting; Resistance Psychic 3, Weakness Holy 3, Immunity Cold; Mind +2; Armor Defense 12, Ward Defense 14: a point moved between its Defenses, the total held). **Resistance, Weakness and Immunity are written the word first** (his 2026-11-19 decision, `decided.md`; Chapter 1 and Foundry still print "Resist 2 Fire").
 
+### The third creature: the Goblin Sneak, as a Minion (2026-11-25)
+
+Lucas: "Wisp is good, next is the Goblin Sneak as a Minion." **The Grave Wisp is decided.** The Minion rank is opened with the goblin (`cards/goblin-sneak-redesign.md`): **the Default Minion, proposed:** 2 ticks; Defenses 13 / 13 and Modifiers +2 / +2; 3 AP and no Reaction Point (Chapter 14's rules, kept); a Basic attack of 1d4 / 1d6, a Grunt's (a Minion hits like a Grunt and dies like a Minion); about 3½ damage to Health a turn at the table; **CV 30** (the count: about 13 such Minions are a normal fight for four PCs; 8 cost 0.7 Rally Points a PC, 12 cost 1.2, 16 cost 2.0: not a straight line, so the rule keeps a cap). **K2 proposed with it, seven sentences:** an Action removes its Tier's ticks once, only if that Tier damages the Minion; a Save Action by the Minion's Save turned over; an Area by each Minion's own Tier; damage with no Tier (Collision, Lingering, a hazard, a zone) removes 1; a rider with no damage removes none; a heal restores 1; Minions and their ticks are announced. Waiting for his review.
+
 ### What comes next
 
-- **Lucas's word on the Grave Wisp's sheet and Claude's review of it** (`cards/grave-wisp-redesign.md`, the last section), then the next creature.
-- The creatures that need block B: a Minion (the ticks, K2), an Elite (K6), a Boss (its turns).
+- **Lucas's review of the Default Minion, the tick rules and the Goblin Sneak's ideas** (`cards/goblin-sneak-redesign.md`).
+- The creatures that need block B: an Elite (K6), a Boss (its turns).
 - **The Foundry pass for every creature at once** (`foundry/foundry-backlog.md`), then **decision 16, to the table**, and one Foundry version.

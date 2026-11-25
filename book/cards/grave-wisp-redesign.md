@@ -1,6 +1,6 @@
 # The Grave Wisp: the first Grunt (the record)
 
-> **Status (2026-11-25): LUCAS HAS CHOSEN ITS SET; the sheet at the end of this file is the current one, with Claude's review. Design only: no card source, no Foundry (the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the first creature's, `orc-warrior-redesign.md`.
+> **Status (2026-11-25): DECIDED (Lucas: "Wisp is good"). The sheet at the end of this file is the creature. Design only: no card source, no Foundry (the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the first creature's, `orc-warrior-redesign.md`.
 
 ## Lucas's words (2026-11-25)
 
