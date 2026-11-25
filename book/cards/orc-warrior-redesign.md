@@ -1,6 +1,6 @@
 # The Orc Warrior: the first Default Standard (the record)
 
-> **Status (2026-11-25): LUCAS HAS CHOSEN A SET, UNDER REVIEW ("Dont build anything yet, lets review"). Nothing is in the book or in Foundry.** The Bestiary's record is `book/bestiary-design.md`; this file is the Orc Warrior's, the way `bows-redesign.md` is the bows'.
+> **Status (2026-11-25): THE SET IS CHOSEN AND REVIEWED ONCE; the sheet at the end of this file is the current one. Open: Blood for Blood's Banes (1 or 2) and Frequency, and whether the orc keeps the strict default thresholds or his Vigor 22 / Resolve 14 / Mind -1. NOT BUILT: nothing is in the book or in Foundry.** The Bestiary's record is `book/bestiary-design.md`; this file is the Orc Warrior's, the way `bows-redesign.md` is the bows'.
 
 ## Lucas's brief (2026-11-25)
 
@@ -137,3 +137,44 @@ It shares the At-will count with the melee one. Like any ranged Strike it is Doo
 7. **The Shove Feature: 1 Boon, not 2.** His own card rule: an unnamed Boon is 1, rarely 2. Shove rolls Body, so the orc needs its Attributes. A Shove against a wall is already worth an axe (2 Collision damage a square not moved: 4 / 6 for 1 AP; the 2 AP Shove averages 6.0 with no Boon, 6.4 with one, 6.8 with two), so the Feature shows near walls and other creatures, and does nothing in the open. A visible change: a Bloodied orc starts shoving.
 8. **Two things at Bloodied** (Blood for Blood once, the Shove Boon standing). They read as one idea, the orc changes when Bloodied. With Vigor 18 that is after about two landed hits; Bloodied also takes 2 from its Speed and 1 from its Steadiness, so it is slower and easier to push while it pushes harder.
 9. **Cost:** Blood for Blood adds about 2 damage a fight for each orc, roughly a sixth on top of the normal fight's cost. Left for the table to judge.
+
+## Lucas's answers to the review (2026-11-25)
+
+"1. Lets do 1d6! + 1. Bit stronger. 2. Thats fine. 3. Thats fine. 4. Thats fine. 5. Change to 1d4. 6. 1 boon it is. 7. Fine for now. 8. Thats fine. 9. Change blood for blood to: requirements: the orc is bloodied; range 2sq; trigger: a creature deals Vigor damage to the orc; orc advances 2 and makes a basic attack with 1 (or 2) bane."
+
+"I think the orcs should actually have -1 mind, 14 resolve and 22 vigor. But we are building a standard one. Do you think we should be strict or adding these changes is good for the playtest?"
+
+| # | His answer | What changes |
+|---|---|---|
+| 1 | "1d6! + 1. Bit stronger" | War Howl's **Tier 1** is [R] 1 + 1d6! Ps (read as the Tier 1: it is the line that was 1d6!; the Tier 2 stays 1 + 1d4). About 3.2 a PC in the Area (it was 2.9) |
+| 2, 3, 4, 8 | Fine | Nothing: the Howl's worth on two PCs, Vulnerable under the zipper, four Saves a round, two things at Bloodied |
+| 5 | "Change to 1d4" | Barbed Javelin's Tier 3: Lingering 1d4 (Bo/In) |
+| 6 | "1 boon it is" | The Feature: 1 Boon to Shove while Bloodied |
+| 7 | "Fine for now" | Attributes Body +2, Instinct +1, Appeal +1, Mind 0, until the strict-or-not question is answered |
+| 9 | Blood for Blood rewritten | Requirements: the orc is Bloodied. Distance 2 sq. Trigger: the target deals Vigor damage to the orc. Effect: the orc Advances up to 2 toward the target and makes a Basic attack against it with 1 (or 2) Banes |
+
+### Claude's notes on the changes
+
+- **Blood for Blood now has its answer in the core's two pools:** it needs Vigor damage, so a party that switches to Resolve damage once the orc is Bloodied (every class has a Power Basic attack), or strikes from 3 squares or more, is never answered. A Strained orc also regains no Reaction Point. That is a behaviour players can learn, and no class is needed for it.
+- **Three things to write down so the card isn't ambiguous:** (1) **its Frequency.** Lucas gave none; it was Encounter. Claude: **Round** (a Reaction Point comes back each turn, so Round is what the point already allows; Turn would let an orc that keeps AP answer every PC). (2) **Does the blow that Bloodies it count?** The orc is Bloodied when the Trigger is checked, so yes; the card should say so. (3) **1 Bane or 2.** Claude: **1.** A use is then worth 2.9 (an axe with 1 Bane); with 2 Banes, 2.5. About 1.3 uses an orc a fight, and not every one in reach: about 2 damage a fight for each orc, the same as the first version.
+- **Lingering 1d4 makes the first javelin that sticks a real choice:** 2.5 at the end of each turn against 1 AP and a Save that fails about a third of the time. It still doesn't add up on one PC, so the second sticking javelin wastes its rider. A javelin's damage is 2.4 a throw and it sticks on 27% of throws.
+- **War Howl with the stronger Tier 1:** two PCs in the Area, 6.4; the paper turn 9.6 moving and 12.5 standing (decision 14 wanted 9 and 12).
+
+### Strict, or his Vigor 22 / Resolve 14 / Mind -1? (Claude's answer: add them)
+
+- **They don't touch anything the playtest is there to measure.** The total stays 36, so the hits it takes and the rounds the fight lasts are the same; Defenses, Modifiers and damage don't move.
+- **They test something the playtest should test anyway:** that the two thresholds matter on an NPC (K3: Strained barely exists on enemies today). At 14 Resolve an orc can be Strained in a fight; at 22 Vigor it is Bloodied later (after 61% of its Health in weapon damage, not half), so Blood for Blood fires a little less.
+- **It is a weakness the players can find** (among the liked features in `research/enemies-at-the-table.md`), and it costs nothing: Health moved from one threshold to the other.
+- **The rule it suggests for every creature:** a creature moves Health between Vigor and Resolve as it likes, the total held; neither under a third of the total (12 of 36), as for a PC.
+- **One thing to choose with Mind -1:** the Attributes then total 3, where a PC's total 4. Body +3 would restore it (stronger Shove, harder to Shove or Trip, Mind DC 10 for Feint): the same idea as the thresholds, strong and dull. Or leave the total at 3.
+- **What "strict" would still be good for:** nothing here; the Default Standard stays written in `bestiary-design.md` as the numbers, and the Orc Warrior is those numbers with 4 Health moved.
+
+### The sheet now (not built)
+
+**Orc Warrior.** Standard. Health 36 (Vigor 18, Resolve 18; *or 22 and 14*). Armor Defense 13, Ward Defense 13. Weapon +2, Power +2. Speed 5. Body +2, Instinct +1, Appeal +1, Mind 0 (*or Mind -1*). A one-handed axe, the other hand free, javelins on its back.
+
+- **Hamstringing Axe** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *The orc cuts low, at the leg that would carry you away.* Tier 2: [V] 1d4! Sl. Tier 3: [V] 2 + 1d6! Sl; Hindered (EoT).
+- **Barbed Javelin** (Basic attack; At-will, 1 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). *The orc throws a short spear that stays in the wound.* Setup: the orc draws a javelin. Tier 2: [V] 1d4! Pi. Tier 3: [V] 1d4! Pi; Lingering 1d4 (Bo/In).
+- **War Howl** (Special; Round, 2 AP; [Power, Save, Fear]; Area: 2 Emanation; all enemies in the Area; Mind Save against its Power DC, 13). *The orc throws its head back and howls, and the sound gets into your bones.* Tier 1: [R] 1 + 1d6! Ps; Vulnerable 1 (EoT). Tier 2: [R] 1 + 1d4 Ps. Tier 3: no effect.
+- **Blood for Blood** (Reaction; *Round*, 1R; Distance 2 sq.). *The wound only makes it angrier.* Requirements: the orc is Bloodied. Trigger: the target deals Vigor damage to the orc (the blow that Bloodies it counts). Target: the triggering creature. Effect: the orc Advances up to 2 toward the target, then makes a Basic attack against it with *1 Bane*.
+- **Cornered** (Feature; the name is Claude's). *Hurt, it stops fencing and starts throwing its weight around.* While the orc is Bloodied, its [[Shove]] gains 1 Boon.
