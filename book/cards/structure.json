@@ -3141,7 +3141,7 @@
    },
    {
     "label": "Effect",
-    "text": "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead."
+    "text": "You can make a Basic Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead."
    }
   ],
   "blocks": [],

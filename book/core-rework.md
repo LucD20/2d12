@@ -70,7 +70,7 @@ What came out of playtest 7 and the core review (seven reviewers; three rounds o
 | E1 | **Frightened → Daunted** | Built (batch 1, v0.0.477) | Commandment's Courage: "ignore Daunted". Foundry's status id changes (a migration). |
 | E2 | **A condition with a source ends when its source goes Down** (Daunted, Taunted; Grabbed has it) | Built (batch 1, v0.0.477) | The word stays **source** (Chapter 8's); "origin" stays for Forced Movement and areas. |
 | E3 | **Prone has been given too liberally**; Save riders "Tier 1 or 2" depend on the rider | Built (batch 3, v0.0.480: Kneel) | Kneel knocks the Orc Prone 83% for 1 AP, Trip 23%. Touches class cards: see question 3. |
-| E4 | **Save-ends leftovers** (02-turns.md "until a Save ends it"; 08 "the Save that would end Frightened"); **EoT in the Glossary** says which turn | Built (batch 1, v0.0.477) except Chapter 2's duration list, which still names "until a Save ends it" | Text fixes. |
+| E4 | **Save-ends leftovers** (02-turns.md "until a Save ends it"; 08 "the Save that would end Frightened"); **EoT in the Glossary** says which turn | Built (batch 1, v0.0.477; Chapter 2's duration list fixed 2026-11-25) | Text fixes. |
 | E5 | "Doomed on its next roll" priced as a Mild rider | Open (batch 7) | With the Bestiary's rider prices. |
 
 ## F. Escalation and Surge
