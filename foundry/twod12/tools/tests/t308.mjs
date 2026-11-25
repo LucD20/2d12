@@ -36,7 +36,9 @@ console.log(src("module/hudhp.mjs").includes('layer.style.zIndex = "1000"'));
 
 console.log("--- a Large token in a wall");
 const mv = src("module/move.mjs");
-console.log("inset corners tested:", mv.includes("squareProbes(c.i + di, c.j + dj, size)"), "| every position change checked (preUpdateToken):", mv.includes("every position change of a larger token is checked here too"));
+console.log("inset corners tested (the Alt-drag):", mv.includes("squareProbes(c.i + di, c.j + dj, size)"), "| a willing drag isn't checked (v0.0.502):", !mv.includes("every position change of a larger token is checked here too"));
+console.log("--- v0.0.502: the HUD's boxes stacked above the Token HUD's columns; the panel beside the chat draws the plain icon and a large number");
+console.log(src("styles/system.css").includes("#token-hud .twod12-hphud { position: relative; z-index: 5; flex-direction: column;"), src("module/effects.mjs").includes("const img = plainIcon(e.img);"), src("styles/system.css").includes("#twod12-effects .fx-val { right: -6px; bottom: -6px; min-width: 22px;"));
 
 console.log("--- the cone of a larger creature being moved (book, Chapter 3)");
 const big = [{ i: 0, j: 0 }, { i: 0, j: 1 }, { i: 1, j: 0 }, { i: 1, j: 1 }];

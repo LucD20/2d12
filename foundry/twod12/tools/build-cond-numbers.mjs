@@ -11,8 +11,10 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SRC = path.join(ROOT, "icons/conditions"), OUT = path.join(SRC, "numbered");
 
 export function numberedSvg(svg, n) {
-  const badge = `<g class="twod12-num"><circle cx="49" cy="49" r="14" fill="#0b0b0d" stroke="#d8b24a" stroke-width="3"/>`
-    + `<text x="49" y="56" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="900" fill="#ffffff">${n}</text></g>`;
+  // v0.0.502 (Lucas on v0.0.501: "on the token itself, is way too small"): the badge takes most of the icon's lower right (a token draws its
+  // effect icons at about a fifth of its width)
+  const badge = `<g class="twod12-num"><circle cx="40" cy="40" r="22.5" fill="#0b0b0d" fill-opacity="0.92" stroke="#e2bd52" stroke-width="3.5"/>`
+    + `<text x="40" y="53.5" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="900" fill="#ffffff">${n}</text></g>`;
   return String(svg).replace(/<\/svg>\s*$/, `${badge}</svg>\n`);
 }
 

@@ -19,7 +19,9 @@ the dialog carries the cards' color tokens (dark theme): true | in the theme: tr
 --- the Token HUD above the interface
 true
 --- a Large token in a wall
-inset corners tested: true | every position change checked (preUpdateToken): true
+inset corners tested (the Alt-drag): true | a willing drag isn't checked (v0.0.502): true
+--- v0.0.502: the HUD's boxes stacked above the Token HUD's columns; the panel beside the chat draws the plain icon and a large number
+true true true
 --- the cone of a larger creature being moved (book, Chapter 3)
 nearest squares, a Medium at its left: [{"i":0,"j":0}] | from straight above its middle (a Large origin): [{"i":0,"j":0},{"i":0,"j":1}]
 Pushed 2, a Medium at its left: -1,1 -1,2 -2,2 0,1 0,2 1,1 1,2 2,2

@@ -22,7 +22,7 @@ used by the dialog: true
 --- the sheet's bars: a click raises, a right-click lowers
 true true
 --- a Large token in a wall (move.mjs spaceInWall)
-refused on a willing drag: true | the Alt-drag stops before: true
+the Alt-drag stops before: true | a willing drag isn't checked (v0.0.502, Lucas: "The alt-drag correction is enough"): true
 --- the retired names, out of what Foundry shows (templates, the Basic Actions' groups, labels)
 Mark Quarry gone
 Marked Quarry gone

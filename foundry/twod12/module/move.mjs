@@ -869,7 +869,8 @@ function wallBetween(a, b) {
 /**
  * v0.0.500 (Lucas on v0.0.479: "Foundry allows part of the token to go inside of the walls"): Foundry tests a drag's walls along the token's
  * center only, so a Large token could end with a column of its squares behind a wall. A space (its top-left square c, w x h squares) is in a
- * wall when a wall stands between the space's center and the center of one of its squares.
+ * wall when a wall stands between the space's center and the center of one of its squares. v0.0.502 (Lucas on v0.0.501: "I dont think this is
+ * necessary. The alt-drag correction is enough"): only the GM's Alt-drag uses it (a willing drag is no longer checked).
  */
 /** The points of a square a space's walls are tested to: its center and its corners, 15% in from its sides. */
 function squareProbes(i, j, size) {
@@ -2022,12 +2023,6 @@ export function registerMovement() {
         return;
       }
       if (operation?.twod12Forced || operation?.twod12Lean || operation?.twod12Undo) return;
-      // v0.0.500 (Lucas on v0.0.479): a Large token's space can't end partly behind a wall (Foundry checks only its center), in or out of combat;
-      // the GM's Alt-drag stops on the last space that fits
-      if (canvas?.grid?.isSquare && movement?.destination && ((doc.width ?? 1) > 1 || (doc.height ?? 1) > 1)) {
-        const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1)), d = movement.destination;
-        if (spaceInWall(cellAt({ x: d.x + 2, y: d.y + 2 }), w, h)) { warn(`${doc.name} doesn't fit there: part of its space would be inside a wall.`); return false; }
-      }
       // the core rework I2 (Lucas, 2026-11-21: "some, not all"; playtest 7: the Immobilized Ogre Advanced): an Immobilized creature can't move by
       // itself, so its token isn't dragged during a combat, on its turn or not (v0.0.478: v0.0.477 checked only on its turn); Forced Movement and
       // the GM's Alt-drag still move it; Break Free first
@@ -2096,17 +2091,6 @@ export function registerMovement() {
       const undoCtx = { doc, from: { x: origin.x, y: origin.y, elevation: doc.elevation ?? 0 }, to: { x: to.x, y: to.y, elevation: to.elevation ?? doc.elevation ?? 0 }, histLen: Array.isArray(doc.movementHistory) ? doc.movementHistory.length : 0, movementId: movement?.id ?? "" };
       chargeMovement(c, squares, to, { par, undoCtx }).catch(e => console.error("twod12 | could not charge movement", e));
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
-  });
-  // v0.0.501 (Lucas on v0.0.500: "Still ends inside it"): every position change of a larger token is checked here too (whatever path the
-  // drag took to it); the system's own moves (Forced Movement, Leaning, Undo) carry their option and pass
-  Hooks.on("preUpdateToken", (doc, changes, options, userId) => {
-    try {
-      if (userId !== game.user.id || options?.twod12Forced || options?.twod12Lean || options?.twod12Undo || !("x" in changes || "y" in changes)) return;
-      if (!canvas?.grid?.isSquare || !((doc.width ?? 1) > 1 || (doc.height ?? 1) > 1) || doc.parent?.id !== canvas.scene?.id) return;
-      const w = Math.max(1, Math.round(changes.width ?? doc.width ?? 1)), h = Math.max(1, Math.round(changes.height ?? doc.height ?? 1));
-      const x = changes.x ?? doc.x, y = changes.y ?? doc.y;
-      if (spaceInWall(cellAt({ x: x + 2, y: y + 2 }), w, h)) { warn(`${doc.name} doesn't fit there: part of its space would be inside a wall.`); return false; }
-    } catch (e) { /* not checked */ }
   });
   // Fallback when preMoveToken does not report the move: the plain update of the position.
   Hooks.on("preUpdateToken", (doc, changes, options, userId) => {

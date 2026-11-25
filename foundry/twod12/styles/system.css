@@ -5733,3 +5733,13 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 /* v0.0.500 (Lucas on v0.0.499): a condition's number on its HUD pill is a badge on the icon (hudview.mjs condPillHtml) */
 /* v0.0.501 (on v0.0.500: the row clips at 20 px, so the badge on the icon was cut): the number beside the icon, bold, never cut */
 .twod12-hud .h3-c .h3-cnum { flex: none; font-size: .82rem; font-weight: 800; line-height: 1; color: var(--hud-ink); font-variant-numeric: tabular-nums; }
+
+/* v0.0.502 (Lucas on v0.0.501: the numbers of the effects next to the chat "are still difficult to read"): a large number, white on a dark disc
+   with a gold ring, over the icon's lower right */
+#twod12-effects .fx-icon { overflow: visible; }
+#twod12-effects .fx-val { right: -6px; bottom: -6px; min-width: 22px; height: 22px; padding: 0 4px; box-sizing: border-box; border-radius: 3px; background: #0b0b0d; border: 2px solid #e2bd52; color: #fff; font-size: 15px; font-weight: 800; line-height: 18px; text-align: center; font-variant-numeric: tabular-nums; z-index: 1; }
+
+/* v0.0.502 (Lucas on v0.0.501: "Vigor is above, Resolve is not"): the two boxes side by side were wider than the token, and the Token HUD's right
+   column (drawn after the middle one) covered the Resolve box: they are stacked, and above the columns */
+#token-hud .twod12-hphud { position: relative; z-index: 5; flex-direction: column; align-items: center; gap: 3px; margin-top: 4px; }
+#token-hud .twod12-hphud .twod12-hpbox { width: 9.5em; justify-content: space-between; }

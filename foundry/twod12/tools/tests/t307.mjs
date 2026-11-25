@@ -32,7 +32,7 @@ console.log(sh.includes('t.addEventListener("click", ev => { if (ev.target.close
 
 console.log("--- a Large token in a wall (move.mjs spaceInWall)");
 const mv = src("module/move.mjs");
-console.log("refused on a willing drag:", mv.includes("doesn't fit there: part of its space would be inside a wall"), "| the Alt-drag stops before:", mv.includes("wallBetween(mid(p), mid(q)) || spaceInWall(q, w, h)"));
+console.log("the Alt-drag stops before:", mv.includes("wallBetween(mid(p), mid(q)) || spaceInWall(q, w, h)"), "| a willing drag isn't checked (v0.0.502, Lucas: \"The alt-drag correction is enough\"):", !mv.includes("doesn't fit there: part of its space would be inside a wall"));
 
 console.log("--- the retired names, out of what Foundry shows (templates, the Basic Actions' groups, labels)");
 const shown = [src("templates/parts/settings.hbs"), src("templates/item-sheet.hbs"), src("module/actionsheet.mjs"), sh.match(/const list = \[[^\n]*/)[0], src("module/builder.mjs"), src("module/twod12.mjs").match(/quick\("quickAttack"[^\n]*/)[0]].join("\n");

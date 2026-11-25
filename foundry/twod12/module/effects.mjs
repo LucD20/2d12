@@ -1,4 +1,5 @@
 import { allEffects } from "./passives.mjs";
+import { plainIcon } from "./condnum.mjs";   // v0.0.502
 import { seesOrigin, isSpent } from "./escalation.mjs";
 import { appliedFlags } from "./appliedflags.mjs";
 import { effectOff } from "./escalation.mjs";
@@ -648,8 +649,11 @@ function renderPanel() {
       const el = document.createElement("div");
       el.className = `fx-icon${e.getFlag(F, "linkedTo") && shown.some(p => p.id === e.getFlag(F, "linkedTo")) ? " fx-linked" : ""}`;
       el.dataset.effectId = e.id;
-      el.innerHTML = `<img src="${e.img}" alt="">${isExhaustedFx(e) && actor.type === "character" && actor.system.exhausted > 0 ? `<span class="fx-val">${actor.system.exhausted}</span>` : ""}`;
-      if (isValued(e)) el.innerHTML = `<img src="${e.img}" alt=""><span class="fx-val">${Number(e.getFlag(F, "value")) || 1}</span>`;
+      // v0.0.502 (Lucas on v0.0.501: "on the effects next to the chat ... numbers there are still difficult to read"): the plain icon (not the
+      // token's numbered one, condnum.mjs) and a large number
+      const img = plainIcon(e.img);
+      el.innerHTML = `<img src="${img}" alt="">${isExhaustedFx(e) && actor.type === "character" && actor.system.exhausted > 0 ? `<span class="fx-val">${actor.system.exhausted}</span>` : ""}`;
+      if (isValued(e)) el.innerHTML = `<img src="${img}" alt=""><span class="fx-val">${Number(e.getFlag(F, "value")) || 1}</span>`;
       el.setAttribute("aria-label", e.name);   // v0.0.421 (the audit): a picture only: its name for screen readers (the hover card went in v0.0.420)
       panel.appendChild(el);
     }
