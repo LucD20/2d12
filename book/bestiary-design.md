@@ -300,6 +300,41 @@ G8 (2026-11-21): one number for each stat, a "Default Standard"; the roles' vari
 
 **The Default Standard so far:** Defenses 13 / 13, Modifiers +2 / +2, Health 54 (27 / 27), 4 AP, about 11 damage a paper turn. Not yet: its Basic attack and Special (decision 15), Attributes, Speed, a Reaction.
 
+### Lucas on decision 13 (2026-11-25): "A standard has 54 HP is too much"
+
+His words: "I think this is the same problem we were having, but lessened: NPCs having too much HP. [...] This might be an underlying core problem that has being tackled some other way. Likely making Standard below PCs level and Elite becomes the PCs on level enemy. Or reduce HP in favor of damage, but I know players squint at seeing enemies with much higher damage modifiers like in PF2e. What does the reesarch say?" **Decisions 13 and 14 are reopened; decision 3's length with them. Nothing is decided.**
+
+**What the research says (Claude's reading, from the three notes):**
+
+- **He is right by every comparison.** The one-a-PC monster elsewhere has about a PC's hit points and dies to 3 or 4 landed hits; the monsters of a standard fight together have 1.0 to 1.4 times the party's hit points.
+
+| | One-a-PC monster's hit points ÷ a PC's, at level 1 | Landed hits to kill it |
+|---|---|---|
+| 4e | 32 against 22 to 33: about 1.2 [PC side memory] | 4 by intent |
+| 13th Age | 27 against 18 to 30: about 1.1 [PC side memory] | 3 to 4 |
+| Draw Steel | 30 against 27: 1.1 (roles 0.75 to 1.5) [computed from read text] | about 3 |
+| Pathfinder 2e | 20 against 15 to 25: about 1.0 [PC side memory] | about 2 |
+| **The draft (54)** | **54 against 32: 1.7** | **5 to 6** (a landed Strike of the four pregens averages 10) |
+
+- **Where the 54 came from: rounds were the wrong unit.** "Three rounds" elsewhere means about three attacks a PC. A 2d12 turn has 4 AP and up to 3 Strikes: the pregens deal 18 a turn at the table against 32 Health, **56% of their own Health a turn** (75% on paper); a Draw Steel hero's signature is about 35% of its Stamina, a 4e PC's turn about a quarter. Sized on three 2d12 rounds, a Standard absorbs twice the hits those games give theirs. **This is the underlying core fact:** a 2d12 round is about two of their rounds.
+- **The total is fixed by the party's damage and the rounds, whoever carries it.** A fight of R rounds needs about R × 73 enemy Health in all. Making the Standard "below level" (his first idea: Pathfinder 2e's Moderate fight is built that way, and Draw Steel's hordes are two a hero) splits the same total over more bodies; it doesn't lower it, and the on-level Elite would be the 54 again.
+- **Every retune on record is his second idea:** fewer hit points, more damage (4e in 2010; 4e's R&D house rule halving hit points; Heinsoo's own speed-up for 13th Age: hit points down a third, damage up a third to a half). A third off 54 is 36.
+- **On the squint:** what Pathfinder 2e's players object to is the creature's higher attack modifier and its criticals, the PCs' own cards working less. Nothing found objects to a monster's damage as such, except at level 1, where Pathfinder is called lethal.
+
+**The variants** (the normal fight's cost held at 1½ Rally Points a PC; the party at 73 a round at the table; a PC: Health 32, 18 a turn):
+
+| The fight | Bodies | Health each | Against a PC's | Damage a turn at the table | Against a PC's | Three on one PC |
+|---|---:|---:|---:|---:|---:|---:|
+| 3 rounds (the draft) | 4 | 54 | 1.7 | 7 | 0.4 | 20 |
+| 2½ rounds | 4 | 46 | 1.4 | 8 | 0.45 | 24 |
+| **2 rounds** | **4** | **36** | **1.1** | **10** | **0.55** | **31** |
+| 3 rounds, more bodies | 6 | 36 | 1.1 | 5 | 0.3 | 15 |
+| 3 rounds, two a PC | 8 | 27 | 0.85 | 4 | 0.2 | 11 |
+
+- **The 2-round row is the one with the other games' proportions:** about a PC's Health, 3 to 4 landed hits, the same roll and Defenses, damage a little over half a PC's. Nothing on its sheet is above a PC's.
+- **What it costs:** the fight is decided in round 2 and over in round 3. Escalation reaches 2, or 3 if the fight runs on: the level 2 Escalation 3 ability and Smite's third die show mostly from Momentum 1 or in hard fights (F2 assumed 3 to 3½ rounds). The same cost lands in fewer, bigger turns: three Standards on one Archer take it Down in a round at the table. Shorter fights swing more (Dunn).
+- **What more bodies cost:** 6 to 8 enemy turns a round with one GM; under the zipper the spare enemy turns come in a row; hits of 4 to 5 against Judge's 2, Shield of Faith's 3 and Guard (the small hits that vanish: C6's worry).
+
 ### What comes next
 
 - Lucas's word on 12, 13 and 14.
