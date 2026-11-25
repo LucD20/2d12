@@ -1,6 +1,6 @@
 # The Orc Warrior: the first Default Standard (the record)
 
-> **Status (2026-11-25): THE SET IS CHOSEN AND REVIEWED ONCE; the sheet at the end of this file is the current one. Open: Blood for Blood's Banes (1 or 2) and Frequency, and whether the orc keeps the strict default thresholds or his Vigor 22 / Resolve 14 / Mind -1. NOT BUILT: nothing is in the book or in Foundry.** The Bestiary's record is `book/bestiary-design.md`; this file is the Orc Warrior's, the way `bows-redesign.md` is the bows'.
+> **Status (2026-11-25): BUILT in the card source and in Foundry's compendium build, on the work branch, with no Foundry version (Lucas: "only push it all when we have all NPCs done"). Not in the book: Chapter 14 is not rewritten yet. The last section is the build; the sheet before it is what was built.** Waiting for Lucas's review of the build before the next creature.
 
 ## Lucas's brief (2026-11-25)
 
@@ -178,3 +178,41 @@ It shares the At-will count with the melee one. Like any ranged Strike it is Doo
 - **War Howl** (Special; Round, 2 AP; [Power, Save, Fear]; Area: 2 Emanation; all enemies in the Area; Mind Save against its Power DC, 13). *The orc throws its head back and howls, and the sound gets into your bones.* Tier 1: [R] 1 + 1d6! Ps; Vulnerable 1 (EoT). Tier 2: [R] 1 + 1d4 Ps. Tier 3: no effect.
 - **Blood for Blood** (Reaction; *Round*, 1R; Distance 2 sq.). *The wound only makes it angrier.* Requirements: the orc is Bloodied. Trigger: the target deals Vigor damage to the orc (the blow that Bloodies it counts). Target: the triggering creature. Effect: the orc Advances up to 2 toward the target, then makes a Basic attack against it with *1 Bane*.
 - **Cornered** (Feature; the name is Claude's). *Hurt, it stops fencing and starts throwing its weight around.* While the orc is Bloodied, its [[Shove]] gains 1 Boon.
+
+## Lucas's go (2026-11-25) and the build
+
+"Yes to all, keep Body +2, build it, using the same image as the old orc. But you should likely build it locally or something, and only push it all when we have all NPCs done. Show me the full build."
+
+**Decided with it:** Vigor 22, Resolve 14, Mind -1 (Body stays +2: the Attributes total 3); Blood for Blood is Round, with 1 Bane, and the blow that Bloodies the orc counts.
+
+**The sheet as built**
+
+**Orc Warrior.** Standard, CV 100. Health 36 (Vigor 22, Resolve 14). Armor Defense 13, Ward Defense 13. Weapon +2, Power +2. Body +2, Instinct +1, Appeal +1, Mind -1. Speed 5, Reach 1, Medium, Steadiness 0. 4 AP and the Reaction Point. A war axe in one hand, the other free, javelins on its back. The old sheet's portrait.
+
+| Card | What it is | Its lines |
+|---|---|---|
+| **Hamstringing Axe** | Basic attack. At-will, 1 AP. [Weapon, Melee, Strike]. Reach. One creature | Attack: Weapon vs. Armor Defense. Tier 2: [V] 1d4! Sl. Tier 3: [V] 2 + 1d6! Sl; Hindered (EoT) |
+| **Barbed Javelin** | Basic attack. At-will, 1 AP. [Weapon, Ranged, Strike]. 6 sq. One creature | Setup: the orc draws a javelin. Attack: Weapon vs. Armor Defense. Tier 2: [V] 1d4! Pi. Tier 3: [V] 1d4! Pi; Lingering 1d4 (Bo/In) |
+| **War Howl** | Special Action. Round, 2 AP. [Power, Save, Area, Fear]. Area: 2 Emanation. All enemies in the Area | Save: Mind (against its Power DC, 13). Tier 1: [R] 1 + 1d6! Ps; Vulnerable 1 (EoT). Tier 2: [R] 1 + 1d4 Ps. Tier 3: no effect |
+| **Blood for Blood** | Reaction. Round, 1R. 2 sq. The triggering creature | Trigger: the target deals Vigor damage to the orc (the blow that makes it Bloodied counts). Requirement: the orc is Bloodied. Effect: the orc Advances up to 2 toward the target, then makes a Basic attack against it with 1 Bane |
+| **Cornered** | Feature | While the orc is Bloodied, its Shove gains 1 Boon |
+
+It also has every Basic Action (Charge, Shove, Trip, Grab, Demoralize, Feint and the rest) and Fists, as any creature does.
+
+**Where it is built**
+
+- **The cards:** `book/cards/stage0/bestiary.json` (the Structure, each with `npc`, `book: false`), laid over `book/cards/bestiary.json`.
+- **The NPC:** `foundry/twod12/tools/content.mjs` (its numbers typed, not read from the old tables; the war axe and the javelin as its items).
+- **What Foundry does by itself** (Claude's rating; not tried in Foundry: it can't be run here): both Basic attacks Gold (the exploding die, the Critical's 1d10!, one At-will count, Hindered and Lingering on a Tier 3); War Howl Gold (the area, each Save, the damage, Vulnerable); **Blood for Blood Silver** (its buttons work; it is not offered by itself yet); **Cornered Bronze** (text). The two missing pieces, the Foundry fix found on the way, the tests and the checklist to add: `foundry/foundry-backlog.md`, "THE BESTIARY'S REBUILD IN FOUNDRY".
+- **No Foundry version:** nothing is released until every NPC is done.
+
+**What the numbers say** (paper, against Defense 13 and a Mind of 0 to +2; decision 14 wanted about 9 moving and 12 standing):
+
+| Its turn | Paper |
+|---|---:|
+| A move and three axes | 8.6 |
+| A move, the Howl on two PCs, an axe | 9.6 |
+| The Howl on two PCs and two axes | 12.5 |
+| The Howl on three PCs and two axes | 15.7 |
+| Blood for Blood, each use | 2.9 |
+

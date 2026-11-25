@@ -273,12 +273,12 @@ const embedded = (actorName, type, name, img, system, flags = {}) => ({ _id: idO
 const npcWeapon = (actorName, text, img) => { const w = parseWeaponText(text); if (w.problems.length) throw new Error(`${text}: ${w.problems.join("; ")}`); return embedded(actorName, "weapon", w.name, img, { ...weaponSystemData(w), wielded: true }); };
 const npcAction = (actorName, name, img, system, flags = {}) => embedded(actorName, "action", name, img, system, flags);
 // The Bestiary (v0.0.163): a role and ratings. By default its Weapon Attribute is High, the others Medium, Appeal Low (Appeal Medium when Appeal is its Weapon Attribute).
-const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLead = "weapon", ratings = {}, speed = 5, extra = [], npcRole = "", size = 3 }) => {
+const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLead = "weapon", ratings = {}, speed = 5, extra = [], npcRole = "", size = 3, custom = null, armorDef = null, wardDef = null }) => {
   const r = { body: "medium", mind: "medium", appeal: "low", instinct: "medium", bodyHm: "medium", mindHm: "medium", ad: "medium", wd: "medium", damage: "medium", [weaponAttribute]: "high", ...ratings };
   const basics = Object.keys(BASIC_ACTIONS).filter(k => wanted({ type: "npc" }, k)).map(k => { const d = basicItemData(k); return embedded(name, "action", d.name, d.img, d.system, d.flags); });
   // v0.0.184: the Speed is a rating (3 to 7, or Custom with system.speed), as the Builder sets it
   r.speed = [3, 4, 5, 6, 7].includes(speed) ? String(speed) : "custom";
-  actors.push({ name, img, system: { level: 1, size, role, npcRole, speed, weaponAttribute, powerAttribute, modLead, ratings: r, useEscalation: role === "elite" }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
+  actors.push({ name, img, system: { level: 1, size, role, npcRole, speed, weaponAttribute, powerAttribute, modLead, ratings: r, useEscalation: role === "elite", ...(custom ? { custom } : {}), ...(armorDef != null ? { armorDef } : {}), ...(wardDef != null ? { wardDef } : {}) }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
 };
 // v0.0.333 (Lucas): the portraits (art/npcs/; the Grave Wisp has none yet).
 // v0.0.183 (Lucas: a complete rebuild, simple NPCs to test with): one NPC for each rank, at level 1. v0.0.407 (Stage 0 in Foundry): the Bestiary's
@@ -294,10 +294,18 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLea
   npc({ name: n, img: "systems/twod12/art/npcs/bandit-thug.png", role: "grunt", weaponAttribute: "body",
     extra: [club] });
 }
+// The Bestiary's rebuild (2026-11-25; book/bestiary-design.md, decisions 12 to 15; book/cards/orc-warrior-redesign.md): the Orc Warrior is the first
+// Default Standard, built from the ground up: its numbers are typed (Custom), not read from the old tables: Health 36 (Vigor 22, Resolve 14: the
+// default's 18 / 18 with 4 moved), Armor and Ward Defense 13, Body +2, Instinct +1, Appeal +1, Mind -1; Weapon and Power +2 (a Standard's Medium).
+// Its cards: book/cards/stage0/bestiary.json (two Basic attacks, a Special, a Reaction, a Feature). The old sheet's cards (Cleaver, Brutal Swing,
+// Avenge Kin) left Foundry: OLD_CLASS_DOCS keeps them for the tests of the machinery they exercised.
 {
-  const n = "Orc Warrior", cleaver = npcWeapon(n, "cleaver: melee, slash, 0/1d8/2d8", "icons/svg/sword.svg");
-  npc({ name: n, img: "systems/twod12/art/npcs/orc-warrior.png", role: "standard", weaponAttribute: "body", ratings: { bodyHm: "high", mindHm: "low", wd: "low", wmod: "medium", pmod: "medium" },
-    extra: [cleaver] });
+  const n = "Orc Warrior", axe = npcWeapon(n, "war axe: melee, slash, 0/1d4/1d6", "icons/svg/sword.svg"), jav = npcWeapon(n, "javelin: melee, thrown 6, pierce, 0/1d4/1d4", "icons/svg/thrust.svg");
+  jav.system.wielded = false;   // on its back: the Barbed Javelin's Setup draws it
+  npc({ name: n, img: "systems/twod12/art/npcs/orc-warrior.png", role: "standard", weaponAttribute: "body",
+    ratings: { body: "custom", mind: "custom", appeal: "custom", instinct: "custom", bodyHm: "custom", mindHm: "custom", ad: "custom", wd: "custom", wmod: "medium", pmod: "medium" },
+    custom: { body: 2, mind: -1, appeal: 1, instinct: 1, bodyHealth: 22, mindHealth: 14 }, armorDef: 13, wardDef: 13,
+    extra: [axe, jav] });
 }
 // v0.0.240 (pack R-bestiary): a Standard that attacks Ward Defense only (its Actions are Power Actions dealing [R]); no weapon in its hands.
 {
@@ -434,7 +442,8 @@ for (const c of CARDS) {
     const actor = actors.find(a => a.name === c.npc); if (!actor) throw new Error(`${c.name}: no NPC called ${c.npc}`);
     const w = c.foundry?.npcWeapon ? actor.items.find(i => i.type === "weapon" && i.name.toLowerCase() === c.foundry.npcWeapon.toLowerCase()) : null;
     if (c.foundry?.npcWeapon && !w) throw new Error(`${c.name}: ${c.npc} has no weapon called ${c.foundry.npcWeapon}`);
-    const it = npcAction(c.npc, c.name, img, cardSystem(c, resolveRefs), w ? { twod12: { weaponId: w._id } } : {});
+    // the Bestiary's rebuild (2026-11-25): an NPC's card with no Versions is its Feature (Cornered), embedded like its Actions
+    const it = isAction(c) ? npcAction(c.npc, c.name, img, cardSystem(c, resolveRefs), w ? { twod12: { weaponId: w._id } } : {}) : embedded(c.npc, "feature", c.name, img, featureSystem(c, resolveRefs));
     const at = actor.items.findIndex(i => i.flags?.twod12?.basic);
     actor.items.splice(at < 0 ? actor.items.length : at, 0, it);
     continue;

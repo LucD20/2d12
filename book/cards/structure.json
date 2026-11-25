@@ -138,6 +138,42 @@
   "after": [],
   "passive": false
  },
+ "Barbed Javelin": {
+  "name": "Barbed Javelin",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "The orc throws a short spear that stays in the wound.",
+  "distance": "6 sq.",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "ranged",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Setup",
+    "text": "The orc draws a javelin."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4! Pi."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d4! Pi; [[Lingering]] 1d4 (Bo/In)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Basic Attack": {
   "name": "Basic Attack",
   "escalation": null,
@@ -309,6 +345,34 @@
   "blocks": [],
   "after": [],
   "passive": true
+ },
+ "Blood for Blood": {
+  "name": "Blood for Blood",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "The wound only makes it angrier.",
+  "distance": "2 sq.",
+  "area": null,
+  "target": "The triggering creature",
+  "traits": [],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Trigger",
+    "text": "The target deals Vigor damage to the orc (the blow that makes it Bloodied counts)."
+   },
+   {
+    "label": "Requirement",
+    "text": "The orc is Bloodied."
+   },
+   {
+    "label": "Effect",
+    "text": "The orc Advances up to 2 toward the target, then makes a Basic attack against it with 1 Bane."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
  },
  "Bloodlust": {
   "name": "Bloodlust",
@@ -837,6 +901,26 @@
   "blocks": [],
   "after": [],
   "passive": false
+ },
+ "Cornered": {
+  "name": "Cornered",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Hurt, it stops fencing and starts throwing its weight around.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While the orc is Bloodied, its [[Shove]] gains 1 Boon."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
  },
  "Covering Fire": {
   "name": "Covering Fire",
@@ -1834,6 +1918,38 @@
   "blocks": [],
   "after": [],
   "passive": true
+ },
+ "Hamstringing Axe": {
+  "name": "Hamstringing Axe",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "The orc cuts low, at the leg that would carry you away.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "melee",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4! Sl."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 2 + 1d6! Sl; Hindered (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
  },
  "Hand of Mercy": {
   "name": "Hand of Mercy",
@@ -5217,6 +5333,43 @@
    {
     "label": "Effect",
     "text": "You Evade 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "War Howl": {
+  "name": "War Howl",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "The orc throws its head back and howls, and the sound gets into your bones.",
+  "distance": null,
+  "area": "2 Emanation",
+  "target": "All enemies in the Area",
+  "traits": [
+   "power",
+   "save",
+   "area",
+   "fear"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Save",
+    "text": "Mind"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[R] 1 + 1d6! Ps; Vulnerable 1 (EoT)."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1 + 1d4 Ps."
+   },
+   {
+    "label": "Tier 3",
+    "text": "No effect."
    }
   ],
   "blocks": [],

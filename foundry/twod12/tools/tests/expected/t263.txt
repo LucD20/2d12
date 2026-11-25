@@ -9,7 +9,7 @@ Darting Blade | lines above the roll: [{"label":"Special","text":"You make this 
 Hit and Run | lines above the roll: [{"label":"Special","text":"The bow's hit is Doomed if you are Engaged when you make it."}] | Special at the end: "[W] is the weapon that hit."
 --- (4) The Bestiary
 Goblin Sneak: Dirty Trick | Tier 2 @Boon[-1|bb:pressure|next:roll]{1 Pressure Bane} on its next roll. | Tier 3 @Boon[-1|bb:pressure|next:roll]{1 Pressure Bane} on its next roll. | Effect "" | after -
-Orc Warrior: Cleaver | Tier 2 @Move[pushed|distance:1] | Tier 3 @Move[pushed|distance:1] | Effect "" | after -
+Orc Warrior: Hamstringing Axe | Tier 2  | Tier 3 @Condition[hindered|eot] | Effect "" | after -
 Ogre Chieftain: Club | Tier 2 @Move[pushed|distance:1] | Tier 3 @Move[pushed|distance:1] | Effect "" | after -
 Ogre Chieftain: Overhead Smash | Tier 2 @Move[pushed|distance:2] | Tier 3 @Move[pushed|distance:2] | Effect "" | after -
 the book's bullets: 3 Pushed | 9 Reach (1)

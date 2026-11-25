@@ -26,7 +26,7 @@ console.log("--- the rest");
 const T = src("module/twod12.mjs");
 console.log("an NPC Down on more Nonlethal falls Unconscious; equal, the GM picks:", T.includes('else if (s.nonlethal > s.lethal) want = "unconscious";') && T.includes('options: [{ k: "dead", l: "It dies" }, { k: "unconscious", l: "It falls Unconscious" }]'));
 const C = await import(ROOTURL + "tools/content.mjs");
-const avenge = [...C.docs, ...C.actors.flatMap(a => a.items ?? [])].find(x => x.name === "Avenge Kin");
+const avenge = [...C.docs, ...C.actors.flatMap(a => a.items ?? []), ...C.OLD_CLASS_DOCS].find(x => x.name === "Avenge Kin");   // the Bestiary's rebuild (2026-11-25): the old Orc Warrior's cards left the packs; OLD_CLASS_DOCS keeps them for this machinery
 console.log("Avenge Kin offered by itself:", avenge?.system?.moment, avenge?.system?.momentRange);
 console.log("the Elite rank turns Escalation on:", src("module/actor-sheets.mjs").includes('const was = this.actor.system.role, now = target.dataset.role, esc = now === "elite"'));
 const { ELITE_RUNGS } = await import(ROOTURL + "module/sheetmodel.mjs");

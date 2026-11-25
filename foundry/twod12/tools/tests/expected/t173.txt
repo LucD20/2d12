@@ -8,7 +8,7 @@ NPC's Basic attack box: true
   Goblin Sneak: Basic attack box on Rusty Knife
   Grave Wisp: Basic attack box on Chilling Touch
   Ogre Chieftain: Basic attack box on Club
-  Orc Warrior: Basic attack box on Cleaver
+  Orc Warrior: Basic attack box on Hamstringing Axe, Barbed Javelin
 v0.0.217: remove a target by right-click or the x (one capturing listener on the dialog): true
 v0.0.219: the Charge picker outlines its limit: true | no chat line when it opens: true | giving up refunds the AP and the use: true | a fixed-size bar: true
 a Charge given up is usable again this round: true -> false

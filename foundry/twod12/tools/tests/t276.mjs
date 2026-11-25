@@ -13,7 +13,7 @@ globalThis.game = { settings: { get: () => false }, user: { id: "u" }, combat: n
 const C = await import(ROOTURL + "tools/content.mjs");
 const CM = await import(ROOTURL + "module/cardmodel.mjs"), AC = await import(ROOTURL + "module/actioncard.mjs"), SM = await import(ROOTURL + "module/sheetmodel.mjs");
 foundry.applications.ux = { TextEditor: { implementation: { enrichHTML: async t => t } } };   // content.mjs brings its own stand-ins
-const all = [...C.docs, ...C.actors.flatMap(a => a.items ?? [])];
+const all = [...C.docs, ...C.actors.flatMap(a => a.items ?? []), ...C.OLD_CLASS_DOCS];   // the Bestiary's rebuild (2026-11-25): Avenge Kin is kept in OLD_CLASS_DOCS
 const item = n => { const d = all.find(x => x.name === n && x.type === "action"); return { id: n, name: d.name, getFlag: () => undefined, system: { ...d.system, traits: new Set(d.system.traits ?? []) } }; };
 const strip = h => h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 console.log("--- the short card's model: what it leaves out");

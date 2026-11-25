@@ -41,7 +41,7 @@ const aside = new Set(fs.readFileSync(ROOT + "../../book/cards/set-aside.txt", "
 // The card Structure (2026-11-16): the book also reads book/cards/stage0/*.json (the redesigned classes), a card there taking the place of the old card of its name;
 // Foundry and the ruler read only the old files until the Foundry pass.
 const s0dir = ROOT + "../../book/cards/stage0/";
-const stage0 = fs.existsSync(s0dir) ? fs.readdirSync(s0dir).filter(f => f.endsWith(".json")).flatMap(f => JSON.parse(fs.readFileSync(s0dir + f, "utf8")).cards.map(c => c.name)) : [];
+const stage0 = fs.existsSync(s0dir) ? fs.readdirSync(s0dir).filter(f => f.endsWith(".json")).flatMap(f => JSON.parse(fs.readFileSync(s0dir + f, "utf8")).cards.filter(c => c.book !== false).map(c => c.name)) : [];   // the Bestiary's rebuild (2026-11-25): a stage0 card the book does not show yet (an NPC's: book: false) is not placed
 // v0.0.409 (pack F2): the book's cards are the old files' (load.mjs loadCards) with stage0's in their place: these checks read the old files, as before
 const bookCards = (await import(ROOTURL + "../../book/cards/load.mjs")).loadCards();
 const shown = bookCards.filter(c => c.book !== false && !aside.has(c.name));
@@ -60,7 +60,7 @@ const same = (have, mine, what) => { const a = { ...have }, b = { ...mine }; del
   if (JSON.stringify(a) !== JSON.stringify(b)) bad.push(what); };
 const one = (c, type, mine) => { const have = docs.filter(d => d.name === c.name && d.type === type); if (have.length !== 1) bad.push(`${c.name}: ${have.length} ${type} items`); else same(have[0].system, mine, `${c.name}: the ${type} item differs from the card`); };
 for (const c of compendium) {
-  if (c.npc) { const a = actors.find(x => x.name === c.npc), it = a?.items.filter(i => i.name === c.name && i.type === "action") ?? []; if (it.length !== 1) bad.push(`${c.name}: ${it.length} on ${c.npc}`); else same(it[0].system, cardSystem(c, resolveRefs), `${c.name}: the NPC's item differs from the card`); continue; }
+  if (c.npc) { const act = isAction(c), a = actors.find(x => x.name === c.npc), it = a?.items.filter(i => i.name === c.name && i.type === (act ? "action" : "feature")) ?? []; if (it.length !== 1) bad.push(`${c.name}: ${it.length} on ${c.npc}`); else same(it[0].system, act ? cardSystem(c, resolveRefs) : featureSystem(c, resolveRefs), `${c.name}: the NPC's item differs from the card`); continue; }   // the Bestiary's rebuild (2026-11-25): an NPC's card with no Versions is its Feature (Cornered)
   if (isAction(c)) one(c, "action", cardSystem(c, resolveRefs));
   if (c.talent) one(c, "talent", talentSystem(c, resolveRefs)); else if (!isAction(c)) one(c, "feature", featureSystem(c, resolveRefs));
   if (c.weapon && !gone.has(c.name)) { const w = docs.find(d => d.type === "weapon" && d.name.toLowerCase() === c.weapon.toLowerCase()); if (w && !(w.system.actions ?? []).includes(uuidOf("actions", c.name))) bad.push(`${c.name}: not on its weapon`); }

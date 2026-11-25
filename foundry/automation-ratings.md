@@ -119,3 +119,15 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 **The Bronze ones, the first to raise:** Hit and Run (one roll applied to every creature passed), Opening Shot (the ally's 1R Weapon Attack as a
 button on the line), Weight of Judgment (a Speed −2 effect on the Judged creature), Interact (the draw / stow / swap as its choices), Hide (waits
 for the book).
+
+## The Bestiary's rebuilt creatures (2026-11-25; no Foundry version yet: built on the work branch, released when every NPC is done)
+
+### Orc Warrior (`book/cards/stage0/bestiary.json`; the record: `book/cards/orc-warrior-redesign.md`)
+| Card | Rating | What is by hand |
+|---|---|---|
+| Hamstringing Axe | Gold | |
+| Barbed Javelin | Gold | (the Setup's draw is text: an NPC's items are flavor) |
+| War Howl | Gold | |
+| Blood for Blood | Silver | it is not offered by itself: the GM uses it from the sheet when a creature within 2 squares deals Vigor damage to the Bloodied orc. Its Basic attack button is the axe; for the javelin, use it from the sheet and add the Bane |
+| Cornered | Bronze | text: the GM adds the Boon in the roll dialog when a Bloodied orc Shoves |
+

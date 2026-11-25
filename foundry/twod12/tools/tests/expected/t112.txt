@@ -41,6 +41,6 @@ Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
 Grave Wisp (standard, speed 5): Chilling Touch atwill, Dread Whisper round
 Ice Pillar (minion, speed 0): 
 Ogre Chieftain (elite, speed 4): Club atwill, Overhead Smash round, Ground Slam encounter, Rally the Tribe round
-Orc Warrior (standard, speed 5): Cleaver atwill, Brutal Swing round, Avenge Kin round reaction
+Orc Warrior (standard, speed 5): Hamstringing Axe atwill, Barbed Javelin atwill, War Howl round, Blood for Blood round reaction
 keys unique in each pack (embedded Items too): yes
 NPC Speed as a rating: Goblin Sneak 7, Grave Wisp 5, Ice Pillar custom, Ogre Chieftain 4, Orc Warrior 5

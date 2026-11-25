@@ -52,7 +52,9 @@ export { tierOfLabel };
 const L = (label, text, fmt) => ({ label, text: String(text ?? ""), fmt });
 /** Pure: a Version's Tier n as written, with no creature: its damage and its rider (the key that decides how the Tiers are grouped). */
 export function rawCell(it, v, n) {
-  const { dmg, effects } = rawTierLine(v[`t${n}`] ?? [], v[`x${n}`], n >= 2 && !it.traits?.has?.("save") && (it.traits?.has?.("weapon") || v.mode === "weapon"));
+  // the Bestiary's rebuild (2026-11-25, the Orc Warrior's Basic attacks drawn with no creature read "1d4! + [Mod]"): a Structure card writes its
+  // [Mod] where it counts (rollsource.mjs: nothing is added by the kind of roll), so the card with no creature adds none either
+  const { dmg, effects } = rawTierLine(v[`t${n}`] ?? [], v[`x${n}`], n >= 2 && !it.structure && !it.traits?.has?.("save") && (it.traits?.has?.("weapon") || v.mode === "weapon"));
   return dmg ? `${dmg}${effects.length ? ` | ${effects.join("; ")}` : ""}` : (effects.join("; ") || "&mdash;");
 }
 

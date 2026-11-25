@@ -28,7 +28,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 for (const n of ["Darting Blade", "Hit and Run"]) { const d = C.docs.find(x => x.name === n); console.log(n, "| lines above the roll:", JSON.stringify(d.system.lines ?? []), "| Special at the end:", JSON.stringify(d.system.special ?? "")); }
 
 console.log("--- (4) The Bestiary");
-for (const a of C.actors) for (const x of a.items ?? []) if (["Cleaver", "Club", "Overhead Smash", "Dirty Trick"].includes(x.name) && x.type === "action") { const v = x.system.versions[0]; console.log(`${a.name}: ${x.name} | Tier 2 ${v.x2} | Tier 3 ${v.x3} | Effect "${v.effects}" | after ${v.after ?? "-"}`); }
+for (const a of C.actors) for (const x of a.items ?? []) if (["Hamstringing Axe", "Club", "Overhead Smash", "Dirty Trick"].includes(x.name) && x.type === "action") { const v = x.system.versions[0]; console.log(`${a.name}: ${x.name} | Tier 2 ${v.x2} | Tier 3 ${v.x3} | Effect "${v.effects}" | after ${v.after ?? "-"}`); }
 console.log("the book's bullets:", (book("rules-src/14-bestiary.md").match(/, and Pushed \d\./g) ?? []).length, "Pushed |", (book("rules-src/14-bestiary.md").match(/Reach \(1\)/g) ?? []).length, "Reach (1)");
 const CF = src("module/config.mjs");
 console.log("Foundry's Distance: an NPC's melee \"Reach (X)\":", CF.includes("return npcOf && !String(r.melee).includes(\"/\") ? `Reach (${r.melee})` : sp(r.melee);") && CF.includes("return a?.type === \"npc\" && n > 0 ? `Reach (${n})` : \"Reach\";"));

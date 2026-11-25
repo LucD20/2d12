@@ -1,0 +1,193 @@
+{
+ "_about": "The Bestiary's rebuilt creatures, written in the card Structure (book/cards/card-structure.md). The record: book/bestiary-design.md; each creature's own: book/cards/orc-warrior-redesign.md. Foundry reads these laid over ../bestiary.json (load.mjs FOUNDRY_OVERLAY): a rebuilt creature's old cards leave Foundry (they stay in ../bestiary.json as fixtures for the tests of the machinery they exercised). 'npc' names the creature the card belongs to; 'book': false, since Chapter 14 is not rewritten yet. The numbers are the Default Standard's (bestiary-design.md, decisions 12 to 15); no number assumes a class.",
+ "structure": 2,
+ "cards": [
+  {
+   "name": "Hamstringing Axe",
+   "category": "Basic attack",
+   "npc": "Orc Warrior",
+   "book": false,
+   "ruler": false,
+   "flavor": "The orc cuts low, at the leg that would carry you away.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "traits": [
+    "weapon",
+    "melee",
+    "strike"
+   ],
+   "distance": "Reach",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1d4! Sl."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 2 + 1d6! Sl; Hindered (EoT)."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "npcWeapon": "War Axe",
+    "automation": "gold",
+    "automationNote": "a Basic attack (the exploding die, the Critical's 1d10!); Hindered (EoT) when a Tier 3 lands."
+   }
+  },
+  {
+   "name": "Barbed Javelin",
+   "category": "Basic attack",
+   "npc": "Orc Warrior",
+   "book": false,
+   "ruler": false,
+   "flavor": "The orc throws a short spear that stays in the wound.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "traits": [
+    "weapon",
+    "ranged",
+    "strike"
+   ],
+   "distance": "6 sq.",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Setup",
+     "text": "The orc draws a javelin."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1d4! Pi."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1d4! Pi; [[Lingering]] 1d4 (Bo/In)."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/thrust.svg",
+    "npcWeapon": "Javelin",
+    "automation": "gold",
+    "automationNote": "a Basic attack (the exploding die, the Critical's 1d10!; it shares the At-will count with the axe); Lingering 1d4 (Bo/In) when a Tier 3 lands. The Setup's draw is text: an NPC's items are flavor."
+   }
+  },
+  {
+   "name": "War Howl",
+   "category": "Special Action",
+   "npc": "Orc Warrior",
+   "book": false,
+   "ruler": false,
+   "flavor": "The orc throws its head back and howls, and the sound gets into your bones.",
+   "frequency": "Round",
+   "cost": "2 AP",
+   "traits": [
+    "power",
+    "save",
+    "area",
+    "fear"
+   ],
+   "area": "2 Emanation",
+   "target": "All enemies in the Area",
+   "body": [
+    {
+     "label": "Save",
+     "text": "Mind"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[R] 1 + 1d6! Ps; Vulnerable 1 (EoT)."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[R] 1 + 1d4 Ps."
+    },
+    {
+     "label": "Tier 3",
+     "text": "No effect."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sound.svg",
+    "areaCfg": {
+     "targets": "enemies",
+     "center": true
+    },
+    "automation": "gold",
+    "automationNote": "the 2 Emanation around the orc, each enemy's Mind Save against its Power DC and its damage; Vulnerable 1 (EoT) on a Tier 1."
+   }
+  },
+  {
+   "name": "Blood for Blood",
+   "category": "Reaction",
+   "npc": "Orc Warrior",
+   "book": false,
+   "ruler": false,
+   "flavor": "The wound only makes it angrier.",
+   "frequency": "Round",
+   "cost": "1R",
+   "traits": [],
+   "distance": "2 sq.",
+   "target": "The triggering creature",
+   "body": [
+    {
+     "label": "Trigger",
+     "text": "The target deals Vigor damage to the orc (the blow that makes it Bloodied counts)."
+    },
+    {
+     "label": "Requirement",
+     "text": "The orc is Bloodied."
+    },
+    {
+     "label": "Effect",
+     "text": "The orc Advances up to 2 toward the target, then makes a Basic attack against it with 1 Bane."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/blood.svg",
+    "automation": "silver",
+    "automationNote": "Use: the Advance (the button) and a Basic attack with 1 Bane (the button: the axe; for the javelin, use it from the sheet and add the Bane). NOT offered by itself yet: the GM uses it from the sheet when a creature within 2 squares deals Vigor damage to the Bloodied orc (the moment 'you take damage', with its pool and its state, is in foundry-backlog.md).",
+    "version": {
+     "sub": [
+      [
+       "Advances up to 2 toward the target",
+       "@Move[advance|distance:2]{Advances up to 2} toward the target"
+      ],
+      [
+       "makes a Basic attack against it with 1 Bane",
+       "makes a @Use[Basic Attack|banes:1|label:Basic attack (1 Bane)] against it"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "name": "Cornered",
+   "category": "Feature",
+   "npc": "Orc Warrior",
+   "book": false,
+   "ruler": false,
+   "flavor": "Hurt, it stops fencing and starts throwing its weight around.",
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "While the orc is Bloodied, its [[Shove]] gains 1 Boon."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/hazard.svg",
+    "automation": "bronze",
+    "automationNote": "text: the GM adds the Boon in the roll dialog when a Bloodied orc Shoves (a Boon on a Basic Action while in a state is in foundry-backlog.md)."
+   }
+  }
+ ]
+}

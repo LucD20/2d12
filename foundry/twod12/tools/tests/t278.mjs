@@ -18,7 +18,7 @@ console.log("a click on a condition applies it (its rule on a right-click):", sr
 const H = await import(ROOTURL + "module/hud.mjs");
 console.log("the HUD's Basic tab in the fixed order:", H.basicOrder([{ bkey: "stand", name: "Stand" }, { bkey: "fists", name: "Fists" }, { bkey: "advance", name: "Advance" }]).map(x => x.name).join(", "));
 const Cn = await import(ROOTURL + "tools/content.mjs");
-const avenge = Cn.actors.flatMap(a => a.items ?? []).find(x => x.name === "Avenge Kin");
+const avenge = [...Cn.actors.flatMap(a => a.items ?? []), ...Cn.OLD_CLASS_DOCS].find(x => x.name === "Avenge Kin");   // the Bestiary's rebuild (2026-11-25): kept in OLD_CLASS_DOCS
 console.log("Avenge Kin aims at the attacker:", avenge?.system?.momentTarget);
 const { halveComps } = await import(ROOTURL + "module/conditions.mjs");
 console.log("Shake Off's half rounds up (book, Rounding): 1 →", halveComps([{ total: 1 }])[0].total, "| 7 →", halveComps([{ total: 7 }])[0].total, "| 3 + 2 →", halveComps([{ total: 3 }, { total: 2 }]).map(c => c.total).join(" + "));

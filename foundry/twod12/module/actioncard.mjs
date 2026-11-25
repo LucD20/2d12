@@ -42,7 +42,8 @@ export function traitLine(traits) {
 /** One cell of the table: the tier's damage as written, its rider on its own line after "↳", then (with changes) Empowered/Enfeebled and bonus damage in green or red. */
 async function cell(item, v, n, ch) {
   const insts = v[`t${n}`] ?? [];
-  const { dmg, effects } = rawTierLine(insts, v[`x${n}`], n >= 2 && !item.system.traits.has("save") && (item.system.traits.has("weapon") || v.mode === "weapon"));
+  // the Bestiary's rebuild (2026-11-25): a Structure card writes its [Mod] where it counts, so none is added here (cardmodel.mjs rawCell, the same rule)
+  const { dmg, effects } = rawTierLine(insts, v[`x${n}`], n >= 2 && !item.system.structure && !item.system.traits.has("save") && (item.system.traits.has("weapon") || v.mode === "weapon"));
   const riders = await Promise.all(effects.map(x => enrich(x, item)));
   // v0.0.373 (STYLE-2, Lucas): bonus damage of the same pool, die and type is merged into the line ("[R] 2d6 Ho + 1d6 Ho + 1d6 Ho" reads
   // "[R] 4d6 Ho"); what was added is named once after it, in green ("+ Radiant Zeal ×2"). A bonus with words in it keeps its own chip.
