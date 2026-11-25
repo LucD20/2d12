@@ -371,7 +371,12 @@ His words: "I think this is the same problem we were having, but lessened: NPCs 
 
 **Not in it yet:** how much of a Standard's damage is [R] (the Default Standard deals [V] against Armor Defense; its twin deals [R] against Ward Defense with the same numbers), riders, a Reaction, Attributes, Speed.
 
+### The first creature: the Orc Warrior (Lucas, 2026-11-25)
+
+"Lets do one default standard first. It will be the Orc Warrior as the Standard. dont copy anything from the old sheet. The NPC has to have: One melee basic, one ranged basic (both share at-will, like PCs), one special, one reaction. They can also have features." **A Standard's sheet, from now on: a melee Basic attack, a ranged Basic attack (one At-will count), one Special, one Reaction, Features if wanted.** Its record, with the ideas shown (three for each slot) and Claude's pick: `cards/orc-warrior-redesign.md`. Waiting for his review.
+
 ### What comes next
 
-- **Decision 16, to the table:** four Default Standards against the four pregens, the Encounter Log reading decision 1's two yardsticks.
+- **Lucas's review of the Orc Warrior's ideas** (`cards/orc-warrior-redesign.md`).
+- **Decision 16, to the table:** four Orc Warriors against the four pregens, the Encounter Log reading decision 1's two yardsticks.
 - Block B (decisions 5 to 10) in its order, then the ranks as multiples.
