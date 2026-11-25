@@ -162,7 +162,7 @@ function weapPane(r) {
   const rows = [["Changes", seg("mode", r.mode, [["prop", "A property"], ["mastery", "Starting Mastery"]], "w")]];
   if (r.mode === "prop") rows.push(["Weapon", sel("weapon", r.weapon, [["fists", "Fists"], ["all", "All its weapons"]], "Weapon")], ["Property", `<span class="fr-m">Loses</span> ${sel("prop", r.prop, PROPS(), "Property")}`]);
   else rows.push(["Weapon", `<span class="fr-m">the player chooses one with</span> ${sel("mprop", r.mprop, Object.entries(TWOD12.weaponTraits ?? {}), "Property")}`], ["Starts at", `${step("mval", r.mval, 0, 15)} <span class="fr-m">Mastery</span>`]);
-  return grid(rows) + help(r.mode === "prop" ? "Only the properties listed can be taken away for now (Brawler: Non-threatening)." : "Asked once, on the Mastery tab; the choice is kept.");
+  return grid(rows) + help(r.mode === "prop" ? "Only the properties listed can be taken away for now (Non-threatening)." : "Asked once, on the Mastery tab; the choice is kept.");
 }
 function escPane(r) {
   const opts = Object.entries(TWOD12.escHookWhen ?? {});

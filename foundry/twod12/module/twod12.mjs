@@ -34,6 +34,8 @@ import { registerEffectEditor } from "./fxeditor.mjs";
 import { registerAppliedEditor } from "./fxapplied.mjs";
 import { registerClock, moveClock } from "./clock.mjs";
 import { registerSleep, bumpExhausted } from "./sleep.mjs";
+import { registerHudHp } from "./hudhp.mjs";
+import { registerStatusPalette } from "./statuspal.mjs";   // v0.0.500: the status palette in groups, the numbers on the map's icons   // v0.0.500: the Token HUD's Vigor and Resolve boxes
 import { registerLight } from "./light.mjs";
 import { registerLightOverlay } from "./lightoverlay.mjs";
 import { CharacterData, NpcData, SpeciesData, ClassData, FeatureData, ActionData, WeaponData, EffectData, TalentData, ArmorData, GearData } from "./data.mjs";
@@ -84,6 +86,8 @@ Hooks.once("init", () => {
   registerSenses();
   try { hearingOnPrepare(); } catch (e) { console.warn("twod12 | Hearing on every token", e); }   // v0.0.319: every token hears (in memory)
   registerSleep();
+  registerHudHp();
+  registerStatusPalette();
   registerClock();
   registerEffectEditor();
   registerAppliedEditor();
@@ -131,7 +135,7 @@ Hooks.once("init", () => {
   // v0.0.221 (Lucas, pack K): shortcuts for common Actions of the selected token, and End turn. Configure Controls can change them.
   const quick = (key, name, hint, code) => game.keybindings.register("twod12", key, { name, hint, editable: [{ key: code, modifiers: ["Shift"] }], onDown: () => { import("./actions.mjs").then(m => m.quickBasic(key === "quickAttack" ? "basicWeaponAttack" : key === "quickRally" ? "rally" : "advance")); return true; } });
   quick("quickAdvance", "Advance", "Uses Advance with your selected token: its movement starts at once.", "KeyA");
-  quick("quickAttack", "Weapon Attack", "Uses Weapon Attack with your selected token (an NPC: its Basic attack).", "KeyW");
+  quick("quickAttack", "Basic Attack", "Uses Basic Attack with your selected token (an NPC: its Basic attack).", "KeyW");
   quick("quickRally", "Steel Yourself", "Uses Steel Yourself with your selected token (choose its version).", "KeyR");
   game.keybindings.register("twod12", "quickEndTurn", { name: "End turn", hint: "Ends the current turn when it is yours (the combat strip's Next turn).", editable: [{ key: "KeyQ", modifiers: ["Shift"] }],
     onDown: () => {

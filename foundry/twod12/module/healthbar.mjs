@@ -204,8 +204,10 @@ function draw(token, number, bar) {
   const p = planHealthBar(s, token.actor.statuses, w);
   const hasGuard = p.guardW > 0;
   const ext = Math.max(2, Math.min(3, h * 0.24));
-  const gh = hasGuard ? Math.max(3.5, Math.round(h * 0.36)) : 0;
-  const gap = hasGuard ? Math.ceil(ext) + 2 : 0;
+  // v0.0.500 (Lucas on v0.0.499: "Guard bar can be a bit bigger to the bottom, so it is closer to the Health bar"): the crown grows down into
+  // the old gap (the bar keeps its height): 2 px from the Health bar, the brass pin's top may touch it
+  const gap0 = hasGuard ? Math.ceil(ext) + 2 : 0, gap = hasGuard ? 2 : 0;
+  const gh = hasGuard ? Math.max(3.5, Math.round(h * 0.36)) + (gap0 - gap) : 0;
   const barY = gh + gap;
   const total = barY + h;
 

@@ -851,6 +851,20 @@ function wallBetween(a, b) {
   try { return !!canvas.walls.checkCollision(new foundry.canvas.geometry.Ray(a, b), { type: "move", mode: "any" }); } catch (e) { return false; }
 }
 
+/**
+ * v0.0.500 (Lucas on v0.0.479: "Foundry allows part of the token to go inside of the walls"): Foundry tests a drag's walls along the token's
+ * center only, so a Large token could end with a column of its squares behind a wall. A space (its top-left square c, w x h squares) is in a
+ * wall when a wall stands between the space's center and the center of one of its squares.
+ */
+export function spaceInWall(c, w = 1, h = 1) {
+  if (w <= 1 && h <= 1) return false;
+  try {
+    const size = canvas.grid.size, t = canvas.grid.getTopLeftPoint({ i: c.i, j: c.j }), mid = { x: t.x + (w * size) / 2, y: t.y + (h * size) / 2 };
+    for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) if (wallBetween(mid, canvas.grid.getCenterPoint({ i: c.i + di, j: c.j + dj }))) return true;
+  } catch (e) { return false; }
+  return false;
+}
+
 function gfxLine(g, pts, color, width, alpha = 1) {
   if (pts.length < 2) return;
   if (typeof g.lineStyle === "function") { g.lineStyle(width, color, alpha); g.moveTo(pts[0].x, pts[0].y); for (const p of pts.slice(1)) g.lineTo(p.x, p.y); }
@@ -1600,7 +1614,7 @@ function forcedDragPlan(doc, dest) {
   const mid = c => { const t = canvas.grid.getTopLeftPoint({ i: c.i, j: c.j }); return { x: t.x + (w * size) / 2, y: t.y + (h * size) / 2 }; };
   const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor).map(t => ({ t, set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
   const foot = c => { const out = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) out.push(`${c.i + di},${c.j + dj}`); return out; };
-  const r = forcedDragPath(cells, { wallAt: (p, q) => wallBetween(mid(p), mid(q)), creatureAt: c => others.find(o => foot(c).some(k => o.set.has(k)))?.t ?? null });
+  const r = forcedDragPath(cells, { wallAt: (p, q) => wallBetween(mid(p), mid(q)) || spaceInWall(q, w, h), creatureAt: c => others.find(o => foot(c).some(k => o.set.has(k)))?.t ?? null });
   const end = canvas.grid.getTopLeftPoint({ i: cells[r.done].i, j: cells[r.done].j });
   return { r, cells, end, w, h };
 }
@@ -1985,6 +1999,12 @@ export function registerMovement() {
         return;
       }
       if (operation?.twod12Forced || operation?.twod12Lean || operation?.twod12Undo) return;
+      // v0.0.500 (Lucas on v0.0.479): a Large token's space can't end partly behind a wall (Foundry checks only its center), in or out of combat;
+      // the GM's Alt-drag stops on the last space that fits
+      if (canvas?.grid?.isSquare && movement?.destination && ((doc.width ?? 1) > 1 || (doc.height ?? 1) > 1)) {
+        const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1)), d = movement.destination;
+        if (spaceInWall(cellAt({ x: d.x + 2, y: d.y + 2 }), w, h)) { warn(`${doc.name} doesn't fit there: part of its space would be inside a wall.`); return false; }
+      }
       // the core rework I2 (Lucas, 2026-11-21: "some, not all"; playtest 7: the Immobilized Ogre Advanced): an Immobilized creature can't move by
       // itself, so its token isn't dragged during a combat, on its turn or not (v0.0.478: v0.0.477 checked only on its turn); Forced Movement and
       // the GM's Alt-drag still move it; Break Free first

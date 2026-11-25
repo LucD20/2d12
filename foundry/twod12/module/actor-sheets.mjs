@@ -7,7 +7,7 @@ export function basicGroupsOf(rows) {
   const used = new Set(), out = [];
   for (const g of TWOD12.basicGroups) {
     // v0.0.289: the character sheet shows Opportunity Attack with the Reactions; the NPC sheet keeps it with the Attack group
-    const list = [...g.names, ...(g.key === "attack" ? ["Opportunity Attack"] : [])].map(n => rows.find(r => r.name === n)).filter(Boolean);
+    const list = [...g.names].map(n => rows.find(r => r.name === n)).filter(Boolean);
     list.forEach(r => used.add(r));
     if (list.length) out.push({ key: g.key, label: g.label, rows: list });
   }
@@ -745,7 +745,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
   }
 
-  /** The health view: click adds damage to the part clicked (a Body or Mind slice or bar), right-click removes it; Shift for Nonlethal, Ctrl for 5. */
+  /** The health view: right-click adds damage to the part clicked (a Body or Mind slice or bar), click removes it; Shift for Nonlethal, Ctrl for 5.
+   *  v0.0.500 (Lucas on v0.0.499: "right-click reduces, left increases"): the bars count down since v0.0.499, so a click raises the bar. */
   _bindHealth() {
     const change = async (ev, pool, sign) => {
       ev.preventDefault();
@@ -758,8 +759,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // v0.0.442 (Lucas on v0.0.441: "the Resolve and Vigor bar need a bigger click area"): the small sheet's whole gauge (its word, its track and the
     // room around it) is the click area; its numbers still open the edit
     this.element.querySelectorAll(".np-track[data-pool], .np-gauge[data-pool]").forEach(t => {
-      t.addEventListener("click", ev => { if (ev.target.closest(".hpnum")) return; change(ev, t.dataset.pool, 1); });
-      t.addEventListener("contextmenu", ev => { if (ev.target.closest(".hpnum")) return; change(ev, t.dataset.pool, -1); });
+      t.addEventListener("click", ev => { if (ev.target.closest(".hpnum")) return; change(ev, t.dataset.pool, -1); });
+      t.addEventListener("contextmenu", ev => { if (ev.target.closest(".hpnum")) return; change(ev, t.dataset.pool, 1); });
     });
     // v0.0.183: the Guard button works like the health view: click +1, right-click -1, Ctrl 5 at a time.
     for (const gb of this.element.querySelectorAll(".np-guardbtn")) for (const [evName, sign] of [["click", 1], ["contextmenu", -1]]) gb.addEventListener(evName, async ev => {
@@ -778,8 +779,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const r = donut.getBoundingClientRect();
         return donutPoolAt(ev.clientX - (r.left + r.width / 2), ev.clientY - (r.top + r.height / 2), Number(donut.dataset.bodyDeg) || 0);
       };
-      donut.addEventListener("click", ev => change(ev, poolAt(ev), 1));
-      donut.addEventListener("contextmenu", ev => change(ev, poolAt(ev), -1));
+      donut.addEventListener("click", ev => change(ev, poolAt(ev), -1));
+      donut.addEventListener("contextmenu", ev => change(ev, poolAt(ev), 1));
     }
   }
 

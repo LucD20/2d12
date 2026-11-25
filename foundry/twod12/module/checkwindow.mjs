@@ -13,6 +13,28 @@ function showOddsEnabled() {
   try { return !!game.settings?.get?.("twod12", "showOdds"); } catch (e) { return false; }
 }
 
+/**
+ * Pure (v0.0.500, Lucas on v0.0.499: the Save dialog "shows the tiers effect as 3d6[mind,holy] etc instead of just the descriptions"): a Tier
+ * written in the @Save chip's code ("3d6+2[mind,holy], \"Pushed 1.\"") as the card writes it ("[R] 3d6 + 2 Ho; Pushed 1."). Plain text is kept.
+ */
+export function saveTierWords(text) {
+  const t = String(text ?? "").trim();
+  if (!t || t === "0") return "No effect.";
+  if (!/\[(?:body|mind)(?:,[^\]]*)?\]|^"/i.test(t)) return t;
+  const codeOf = name => Object.entries(TWOD12.subtypes ?? {}).find(([k, v]) => k && String(v).toLowerCase() === String(name ?? "").trim().toLowerCase())?.[0] ?? "";
+  const parts = [], re = /"((?:[^"]|"")*)"|((?:\[[^\]]*\]|[^,\["])+)/g;
+  let m;
+  while ((m = re.exec(t))) {
+    if (m[1] !== undefined) { const x = m[1].trim(); if (x) parts.push({ text: x }); continue; }
+    const p = m[2].trim(), d = p.match(/^(.*?)\[(body|mind)(?:,([^\]]*))?\]$/i);
+    if (!d) { if (p && p !== "0") parts.push({ text: p }); continue; }
+    const amt = d[1].replace(/\s*\+\s*/g, " + ").trim(), sub = codeOf(d[3]);
+    parts.push({ dmg: `[${d[2].toLowerCase() === "mind" ? "R" : "V"}] ${amt}${sub ? ` ${sub}` : ""}` });
+  }
+  const dmg = parts.filter(x => x.dmg).map(x => x.dmg).join(" + "), txt = parts.filter(x => x.text).map(x => x.text).join(" ");
+  return [dmg, txt].filter(Boolean).join("; ").replace(/([^.!?])$/, "$1.") || "No effect.";
+}
+
 /** Pure model for the compact Check / Save Roll Dialog. */
 export function checkRollHtml(st) {
   const attrName = TWOD12.attributes[st.attrKey] ?? "";
@@ -63,7 +85,7 @@ export function checkRollHtml(st) {
   const odds = showOddsEnabled() ? oddsOf({ mod: baseMod + adj, dc, bbAdd: b.add, state: b.state }, false) : null;
   const tiers = st.tiers ?? null;
   const tierHtml = lad.map((row, i) => {
-    const body = tiers?.[`t${i + 1}`] ? `<div class="ck-tbody">${highlightText(esc(tiers[`t${i + 1}`]))}</div>` : "";
+    const body = tiers?.[`t${i + 1}`] ? `<div class="ck-tbody">${highlightText(esc(saveTierWords(tiers[`t${i + 1}`])))}</div>` : "";
     const pct = odds ? `<span class="ck-pct">${odds[i]}%</span>` : "";
     return `<div class="ck-tier ${row.k}"><div class="ck-thead"><b>${esc(row.label)}</b>${pct}</div>${body}</div>`;
   }).join("");

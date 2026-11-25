@@ -1,0 +1,34 @@
+--- the HUD's Health boxes (left 12: 8 Lethal, 2 Nonlethal)
+"-5" -> {"lethal":13,"nonlethal":2}
+"+5" -> {"lethal":3,"nonlethal":2}
+"+12" -> {"lethal":0,"nonlethal":0}
+"10" -> {"lethal":10,"nonlethal":2}
+"=15" -> {"lethal":5,"nonlethal":2}
+"12" -> null
+"abc" -> null
+"" -> null
+two boxes, Vigor then Resolve: data-twod12-pool="body" data-twod12-pool="mind" | values: value="9" value="4" | no hover text: true
+--- the status palette's groups
+[{"key":"health","label":"Health","ids":["bloodied","dead"]},{"key":"movement","label":"Movement","ids":["prone"]},{"key":"senses","label":"Senses","ids":["blinded"]},{"key":"harmful","label":"Harmful","ids":["vulnerable"]},{"key":"helpful","label":"Helpful","ids":["empowered"]},{"key":"other","label":"Other","ids":["mystery"]}]
+every status in one group: 32 statuses, true | no group names a status that isn't one: true
+the map's numbers: 1 2 0 3
+--- the Save dialog's Tier words
+"3d6[mind,holy]" -> [R] 3d6 Ho.
+"2d6+3[body,slash], \"Pushed 1.\"" -> [V] 2d6 + 3 Sl; Pushed 1.
+"\"No effect (Lingering continues).\"" -> No effect (Lingering continues).
+"0" -> No effect.
+"1d6![body]" -> [V] 1d6!
+used by the dialog: true
+--- the sheet's bars: a click raises, a right-click lowers
+true true
+--- a Large token in a wall (move.mjs spaceInWall)
+refused on a willing drag: true | the Alt-drag stops before: true
+--- the retired names, out of what Foundry shows (templates, the Basic Actions' groups, labels)
+Mark Quarry gone
+Marked Quarry gone
+Opportunity Attack gone
+Sharpshooter gone
+Brawler gone
+Long Draw gone
+Beacon's Step gone
+Weapon Attack gone

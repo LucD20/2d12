@@ -75,7 +75,7 @@ function whenSec(m) {
     ["Damage", sel('name="system.momentSplit"', s.momentSplit ?? "", [["", "As it is"], ["half", "Split: half to you (rounded up; your Resistance and Immunity don't count)"]], "Damage")],
     ["Used on", seg("system.momentTarget", s.momentTarget ?? "subject", [["subject", "The creature of the moment"], ["source", "The one that caused it"]], "w")],
     ["Card line", named("system.trigger", s.trigger, "An enemy within 5 squares makes a [Strike] Action against an ally.", "wide")],
-    s.momentThreat ? ["Old", tog("system.momentThreat", true, "Only a creature you threaten (turn it off: Opportunity Attack uses Within 1)")] : null
+    s.momentThreat ? ["Old", tog("system.momentThreat", true, "Only a creature you threaten (turn it off: any creature within the range)")] : null
   ]) + help("When the moment comes, the Reactions message offers it (Use / Pass). An Interrupt holds the damage until answered; a Trigger is offered after. Moment None: used by hand.");
   const where = a.withinRange ? "weapon" : Number(a.within) > 0 ? "sq" : "self";
   const ar = grid([

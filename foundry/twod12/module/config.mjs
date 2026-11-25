@@ -153,7 +153,7 @@ export const TWOD12 = {
     melee: "These Actions target creatures in close combat. Normally uses your Reach as the Distance.",   // pack TALENTS-PT (book, Chapter 7, 2026-11-19): [Melee] no longer asks for a weapon (the [Weapon] trait does)
     ranged: "Requires a Ranged weapon. The weapon defines the Distance.",
     barehanded: "Can't be disarmed and uses no hand, but you need a free hand to use it.",
-    nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it; Brawler removes it).",
+    nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it).",
     move: "You must have a Speed of at least 1."
   },
   // v0.0.261 (Lucas, Divine Intervention): the moment a Reaction watches for by itself ("would go Down": asked before the damage lands)

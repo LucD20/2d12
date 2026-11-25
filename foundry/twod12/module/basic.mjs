@@ -140,7 +140,7 @@ export function registerBasicHooks() {
         if (!old) { const upd = ratingUpdates(actor); if (upd.length) await actor.updateEmbeddedDocuments("Item", upd); }
       } catch (e) { console.warn("twod12 | could not update the Basic Actions of", actor.name, e); }
     }
-    if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (their cards changed; NPCs have no Weapon Attack).`);
+    if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (their cards changed; NPCs have no Basic Attack: their own Basic attack takes its place).`);
   });
 }
 

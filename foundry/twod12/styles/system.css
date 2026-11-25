@@ -5701,3 +5701,36 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-rcnt { display: inline-flex; align-items: center; justify-content: center; min-width: 15px; height: 15px; padding: 0 4px; font-size: .68rem; font-weight: 700; line-height: 1; border: 1px solid var(--hud-line); color: var(--hud-mute); }
 .twod12-hud .h3-side.has-urg .h3-rcnt { background: var(--s-gold); border-color: var(--s-gold); color: var(--hud-bg); }
 .twod12-hud .h3-side.has-sit:not(.has-urg) .h3-rt-sit { color: var(--hud-ink); }
+
+/* v0.0.500 (Lucas on v0.0.499: "the health bar moves when the damage is reduced by single numbers"; "Bloodied and Strained ... also moves the
+   bar"): the sheet's gauge keeps its track still: the number's column is a fixed width (digits of one width), and the tag's column stays when
+   there is no tag */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge { grid-template-columns: auto 9ch minmax(40px, 1fr) 8.5ch; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .hpnum { font-variant-numeric: tabular-nums; text-align: right; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-tag { justify-self: start; white-space: nowrap; }
+
+/* v0.0.500 (Lucas on v0.0.499): the Token HUD's bottom box is two, Vigor (red) and Resolve (blue) (hudhp.mjs) */
+#token-hud .twod12-hphud { display: flex; gap: 4px; justify-content: center; pointer-events: all; }
+#token-hud .twod12-hphud .twod12-hpbox { display: flex; align-items: center; gap: 3px; padding: 0 5px; height: 30px; border: 1px solid var(--c); background: rgba(10, 10, 12, 0.85); border-radius: 3px; color: #e8e4dc; font-size: 12px; }
+#token-hud .twod12-hphud .twod12-hpbox.v { --c: #c23b32; } #token-hud .twod12-hphud .twod12-hpbox.r { --c: #3f73c9; }
+#token-hud .twod12-hphud .twod12-hpbox .k { color: var(--c); font-weight: 700; filter: brightness(1.35); }
+#token-hud .twod12-hphud .twod12-hpbox input { width: 3.2em; height: 22px; padding: 0 2px; text-align: center; font-variant-numeric: tabular-nums; background: transparent; border: none; border-bottom: 1px solid var(--c); color: inherit; font-size: 14px; font-weight: 700; }
+#token-hud .twod12-hphud .twod12-hpbox .max { opacity: 0.75; white-space: nowrap; }
+
+/* v0.0.500 (Lucas on v0.0.499: "show each category instead of just a list ... even better if it can show the names"): the Token HUD's status
+   palette in groups, each icon with its name (statuspal.mjs) */
+#token-hud .status-effects.twod12-statuspal { display: flex !important; flex-direction: column; gap: 6px; width: 430px; max-height: 70vh; overflow-y: auto; padding: 8px; grid-template-columns: none; }
+#token-hud .twod12-statuspal .twod12-sg h4 { margin: 0 0 3px; padding: 0 0 2px; border-bottom: 1px solid rgba(201, 162, 39, 0.45); font-size: 11px; font-weight: 700; letter-spacing: .02em; color: #d9c48f; }
+#token-hud .twod12-statuspal .twod12-sg-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px 6px; }
+#token-hud .twod12-statuspal .twod12-sitem { display: flex; align-items: center; gap: 5px; min-width: 0; padding: 1px 3px; border: 1px solid transparent; }
+#token-hud .twod12-statuspal .twod12-sitem:hover { border-color: rgba(201, 162, 39, 0.6); }
+#token-hud .twod12-statuspal .twod12-sitem [data-status-id] { flex: none; width: 24px; height: 24px; margin: 0; }
+#token-hud .twod12-statuspal .twod12-sname { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #c9c4b8; cursor: pointer; }
+#token-hud .twod12-statuspal .twod12-sitem:has(.active) .twod12-sname { color: #ffffff; font-weight: 700; }
+#token-hud .twod12-statuspal .twod12-sitem:has(.active) { border-color: rgba(201, 162, 39, 0.85); background: rgba(201, 162, 39, 0.12); }
+
+/* v0.0.500 (Lucas on v0.0.499): a condition's number on its HUD pill is a badge on the icon (hudview.mjs condPillHtml) */
+.twod12-hud .h3-c i { position: relative; overflow: visible; }
+.twod12-hud .h3-c i .h3-cnum { position: absolute; right: -5px; bottom: -4px; min-width: 11px; height: 11px; padding: 0 2px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; line-height: 1; color: #fff; background: #111; border: 1px solid var(--s-gold, #c9a227); border-radius: 6px; font-style: normal; }
+.twod12-hud .h3-c { overflow: visible; }
+.twod12-hud .h3-c > span { margin-left: 3px; }

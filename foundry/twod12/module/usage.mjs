@@ -7,12 +7,14 @@ import { allEffects } from "./passives.mjs";
 import { effectOff } from "./escalation.mjs";
 const F = "twod12";
 
-/** Does a grant spec ("Weapon Attack", "category:Weapon Technique", "trait:strike") name this Action? */
+/** Does a grant spec ("Basic Attack", "category:Weapon Technique", "trait:strike") name this Action? */
 export function grantMatches(spec, item) {
   const s = String(spec ?? "").trim(), low = s.toLowerCase();
   if (low.startsWith("category:")) return String(item.system.category ?? "").trim().toLowerCase() === low.slice(9).trim();
   if (low.startsWith("trait:")) return item.system.traits?.has?.(low.slice(6).trim()) ?? false;
-  return item.name.trim().toLowerCase() === low;
+  // v0.0.500: the Weapon Attack is the Basic Attack since v0.0.480; a grant an older world wrote with the old name still names it
+  const alias = n => (n === "weapon attack" ? "basic attack" : n);
+  return alias(item.name.trim().toLowerCase()) === alias(low);
 }
 
 /** The granted uses of an Action the creature has right now: [{ effect, index, grant }]. */

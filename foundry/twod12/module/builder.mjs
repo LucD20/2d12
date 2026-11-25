@@ -91,7 +91,7 @@ export function buildCommand(d) {
     if (num("anear")) p.push(`near:${num("anear")}`);
     return `@${d.type[0].toUpperCase()}${d.type.slice(1)}[${[...p, ...lab].join("|")}]`;
   }
-  if (d.type === "use") { const p = [cleanLabel(d.uname) || "Weapon Attack"]; if (d.uap !== "" && d.uap != null) p.push(`ap:${Math.max(0, num("uap"))}`); return `@Use[${[...p, ...lab].join("|")}]`; }
+  if (d.type === "use") { const p = [cleanLabel(d.uname) || "Basic Attack"]; if (d.uap !== "" && d.uap != null) p.push(`ap:${Math.max(0, num("uap"))}`); return `@Use[${[...p, ...lab].join("|")}]`; }
   const p = [d.shape, `distance:${num("distance", 1)}`];
   if (d.targets && d.targets !== "all") p.push(`targets:${d.targets}`);
   if (d.self && d.shape !== "line") p.push("self:yes");   // v0.0.356 (D44): a Line has no creature it is around
@@ -168,7 +168,7 @@ const SUBS = () => [["", "No subtype"], ...Object.entries(TWOD12.subtypes ?? {})
 export const newBuilderState = () => ({ words: "", src: "fields", type: "check", attr: "body", dcMode: "card", dc: 13, adj: 0, boon: 0, bane: 0, traits: [], t1: "", t2: "", t3: "", cardTiers: true, label: "",
   f1: "", p1: "vigor", s1: "", n1: false, f2: "", p2: "vigor", s2: "", n2: false, f3: "", p3: "vigor", s3: "", n3: false, f4: "", p4: "vigor", s4: "", n4: false, nlAll: false,
   drows: 1, mkind: "pushed", mdistance: "2", mfrom: "", mpick: false, marea: 2, mterrain: false, more: false, shape: "emanation", distance: 2, targets: "all", self: false, rounds: 0,
-  cname: "prone", cvalue: 0, cdur: "", crounds: 1, fxUuid: "", fxName: "", aformula: "1d8+mod", awho: "", anear: 0, rn: 1, uname: "Weapon Attack", uap: 0, help: false });
+  cname: "prone", cvalue: 0, cdur: "", crounds: 1, fxUuid: "", fxName: "", aformula: "1d8+mod", awho: "", anear: 0, rn: 1, uname: "Basic Attack", uap: 0, help: false });
 
 function traitsRow(traits) {
   const have = new Set(traits);
@@ -201,7 +201,7 @@ function fieldsHtml(s) {
     ["Who", seg("awho", s.awho, s.type === "guard" ? [["", "You"], ["pick", "You or one ally (a pick)"], ["all", "You and every ally"]] : [["", "The target"], ["pick", "You or one ally (a pick)"], ["all", "Every ally"]], "w")],
     s.awho ? ["Within", `${step("anear", s.anear, 0, 30)} <span class="fr-m">squares of you (0: anywhere)</span>`] : null]);
   if (s.type === "rally") return grid([["Rally Points", step("rn", s.rn, 1, 9)]]);
-  if (s.type === "use") return grid([["Action", `${text("uname", s.uname, "Weapon Attack", "wide")}`], ["For", `${step("uap", s.uap, 0, 5)} <span class="fr-m">AP (a free use: no Frequency)</span>`]]);
+  if (s.type === "use") return grid([["Action", `${text("uname", s.uname, "Basic Attack", "wide")}`], ["For", `${step("uap", s.uap, 0, 5)} <span class="fr-m">AP (a free use: no Frequency)</span>`]]);
   return "";
 }
 /** The window's HTML. s: the state; read: wordsToButtons(s.words); look: { cmd, html (the button enriched), problem }; recent: [cmd]. */

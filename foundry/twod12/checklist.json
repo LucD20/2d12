@@ -4,11 +4,19 @@
    "name": "Characters and sheets",
    "items": [
     {
-     "id": "ui-token-bars-hp",
-     "v": "v0.0.499",
-     "title": "Concept A flat token HP bars, overlays & count-down HP on sheets/HUD",
-     "do": "Open Aveline and Orc Warrior on the canvas and sheets. Deal Vigor Lethal, Vigor Nonlethal, Resolve damage, Guard, overflow past Vigor threshold (Bloodied), Strained, Down, and Dead (0 HP).",
-     "expect": "Token bars show flat matte converging Vigor (crimson, left) & Resolve (cobalt, right) with brass center pin, type-colored Nonlethal hatches, directional overflow hatches across the pin, Guard crown bar above, and crisp rim vignettes + micro-ribbons (Bloodied, Strained, Dying/Shattered/Unconscious, faded Dead — no giant Foundry skull overlay). PC/NPC sheets and HUD count down from max (0 = Bloodied/Strained, negative on overflow).",
+     "id": "guard-bar",
+     "v": "v0.0.500",
+     "title": "The token's Guard bar is taller, closer to the Health bar",
+     "do": "Give Aveline Guard 4 (her sheet's Guard button), and look at her token's bars.",
+     "expect": "The blue Guard bar above the Health bar reaches further down: about 2 pixels from the Health bar (the brass pin may touch it). The whole bar block keeps its height.",
+     "rev": 1
+    },
+    {
+     "id": "sheet-bars-click",
+     "v": "v0.0.500",
+     "title": "The sheet's bars: a click raises, a right-click lowers; the bar stays still",
+     "do": "Open Aveline's sheet. Right-click her Vigor bar a few times, then left-click it; take her Vigor from 10 down to 9, and on to Bloodied (Ctrl+right-click: 5 at a time); do the same on Resolve until Strained.",
+     "expect": "A right-click lowers the bar (1 damage), a left-click raises it (1 healed). The bar's track doesn't move or change width when the number loses a digit (10 to 9) or when the Bloodied / Strained tag appears.",
      "rev": 1
     }
    ]
@@ -17,11 +25,27 @@
    "name": "The HUD",
    "items": [
     {
-     "id": "ui-cond-icons-marks",
-     "v": "v0.0.499",
-     "title": "32 custom tactical condition SVG icons & Heraldic Portrait Seal marks",
-     "do": "Apply several conditions on Orc Warrior via the Token HUD or Actions (e.g. Vulnerable, Daunted, Prone, Empowered, Slowed, Exhausted, Grabbed, Lingering). Have Aveline use Judge and Sylwen use Mark Quarry on the same Orc Warrior.",
-     "expect": "All 32 conditions display crisp custom tactical SVG icons across the Token HUD, sheets, and HUD condition pills (with Frightened removed). Judge shows a gilded 8-point starburst Portrait Seal and Mark Quarry shows a crimson broadhead Portrait Seal stacked cleanly along the token's right edge without overlapping.",
+     "id": "hud-hp-boxes",
+     "v": "v0.0.500",
+     "title": "The Token HUD's Vigor (red) and Resolve (blue) boxes",
+     "do": "Right-click Orc Warrior's token. In the red Vigor box at the bottom type -5 and Enter; then +2; in the blue Resolve box type 3 (a plain number).",
+     "expect": "Two boxes at the bottom of the Token HUD in place of Foundry's one: Vigor (red) and Resolve (blue), each with its number left and \"/ max\". -5 deals 5 to Vigor only, +2 heals 2 of it, a plain number sets what is left of that pool (Resolve 3). The token's bars, Bloodied and Strained follow. Guard isn't used (a correction, like the sheet's bars).",
+     "rev": 1
+    },
+    {
+     "id": "status-palette-groups",
+     "v": "v0.0.500",
+     "title": "The status palette in groups, with names",
+     "do": "Right-click Orc Warrior's token and open its status effects (the conditions button). Click Prone's icon, then click the word Daunted; right-click an icon.",
+     "expect": "The palette is in five groups (Health, Movement, Senses, Harmful, Helpful), each condition's icon with its name beside it; an active one is lit (bold name, a gold frame). A click on the icon or on the name toggles it as before; a right-click does what Foundry's right-click did.",
+     "rev": 1
+    },
+    {
+     "id": "cond-numbers",
+     "v": "v0.0.500",
+     "title": "A condition's number on the token and on the HUD's pills",
+     "do": "On Aveline's turn, Demoralize Orc Warrior (GM Force Tier 2: Vulnerable 1); give it Slowed 2 from the palette. Look at its token, then select it and look at the HUD's conditions row.",
+     "expect": "On the map, the Vulnerable and Slowed icons show their numbers (1, 2) in a white badge with a dark edge on the icon's corner. In the HUD, the pill's icon carries the number as a small badge, so it shows even when the name is cut short.",
      "rev": 1
     }
    ]
@@ -30,32 +54,11 @@
    "name": "The roll dialog",
    "items": [
     {
-     "id": "pass3-save-breakdown",
-     "v": "v0.0.498",
-     "title": "Save Roll Dialog named chips & live Modifier Breakdown",
-     "do": "Put Vulnerable 1 on Orc Warrior, have Aveline use Word of Radiance (or switch it to Nonlethal, or cast while Daunted/Bane) so Orc Warrior is inside with Low or High Cover, then click Orc Warrior's Save button on the chat card.",
-     "expect": "Vulnerable 1, Cover (Low/Medium/High), Nonlethal Save, and Caster's Banes appear as named toggleable chips (not anonymous Boon/Bane counters), and a live Modifier Breakdown line appears directly under the roll formula updating as you toggle chips or manual modifiers.",
-     "rev": 1
-    },
-    {
-     "id": "pass3-setup-reminder",
-     "v": "v0.0.498",
-     "title": "Setup-move Actions show \"Modifiers before Setup\" reminder",
-     "do": "On Kaela's turn, open Strafe's Roll Dialog (or Charge on Aveline); compare with opening Basic Attack's Roll Dialog.",
-     "expect": "Strafe / Charge shows a subtle bronze-bordered note above the Roll button (\"Setup movement runs after Roll: set any manual modifiers now — range, Cover, and Flanking update automatically after you move.\"); Basic Attack does not show it.",
-     "rev": 1
-    }
-   ]
-  },
-  {
-   "name": "Conditions and their Tiers",
-   "items": [
-    {
-     "id": "pass3-feint-auto",
-     "v": "v0.0.498",
-     "title": "Feint T2 (+2 Boons), T3 (Favored) & Critical (no Reactions vs. you)",
-     "do": "On Sylwen's turn (GM Force Tier), use Feint on Orc Warrior (target A) with a second enemy (target B) nearby: (1) Force T2 — open Basic Attack vs target B, then vs target A and roll; (2) Force T3 — check Basic Attack vs target A; (3) Force Critical (accept Critical row) — move Sylwen away from Orc Warrior (Opportunity Attack) vs moving Kaela away.",
-     "expect": "(1) T2 gives +2 Boons vs target A only and is NOT consumed by striking target B, then expires after striking target A; (2) T3 makes next Strike vs target A Favored; (3) Critical blocks Orc Warrior's Opportunity Attack against Sylwen (\"Feinted: no Reactions vs. Sylwen\") until EoT, while Kaela still triggers it normally.",
+     "id": "save-tier-words",
+     "v": "v0.0.500",
+     "title": "The Save dialog writes each Tier as the card does",
+     "do": "Have Aveline (the level 4 build) use Word of Radiance on Orc Warrior, then click Orc Warrior's Save button on the card.",
+     "expect": "The Save dialog's three Tiers read like the card (\"[R] 3d6 Ho.\", \"No effect.\", an effect's words), never the code (\"3d6[mind,holy]\").",
      "rev": 1
     }
    ]
@@ -64,19 +67,11 @@
    "name": "Movement",
    "items": [
     {
-     "id": "pass3-auto-evade",
-     "v": "v0.0.498",
-     "title": "Quick Shots & Darting Blade auto-start Evade 2 after rolling",
-     "do": "On Sylwen's turn in combat, roll Quick Shots (and try Darting Blade too) against an enemy.",
-     "expect": "Immediately after rolling, Evade 2 starts automatically with the movement range and HUD Evade banner (no extra click on the chat card Evade button); Roll Damage works normally; Darting Blade still prompts to stow its Light weapon once Evade ends.",
-     "rev": 1
-    },
-    {
-     "id": "pass3-moveback-push",
-     "v": "v0.0.498",
-     "title": "Reaction \"Move back\" ruler reset + Large Push aiming & wall slam damage",
-     "do": "(a) Trigger an enemy Opportunity Attack by dragging Sylwen away in combat, then click \"Move back\" on the Reaction card. (b) Use Shove / Push 3 on Large (2×2) Ogre Chieftain — hover squares directly off its right/bottom outer edge and diagonally off its corners; also push a creature standing right next to a wall or another creature by hovering just 1 square into the wall/creature (and compare hovering 1–2 squares in open space).",
-     "expect": "(a) Move back refunds 2d12 movement AND resets Foundry's movement ruler/history cleanly; (b) Large 2×2 Push aims smoothly from every outer edge & diagonal (hovering inside the Ogre's own squares does not aim Push 1, and the farthest gold squares are reachable); aiming into an adjacent wall/creature automatically computes full N-square collision damage (while clicking 1–2 squares in open space still allows a short push).",
+     "id": "large-in-wall",
+     "v": "v0.0.500",
+     "title": "A Large token can't end partly inside a wall",
+     "do": "Drag Ogre Chieftain (2 x 2) beside a wall so that one column of its squares would end behind it (its center in the open); then, as the GM, Alt-drag it (Forced Movement) toward the wall.",
+     "expect": "The drag is refused: \"Ogre Chieftain doesn't fit there: part of its space would be inside a wall.\" A drag where the whole space fits works as before. The Alt-drag stops on the last space where it fits whole (the rest is a Collision).",
      "rev": 1
     }
    ]

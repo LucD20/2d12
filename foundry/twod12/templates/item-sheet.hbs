@@ -123,7 +123,7 @@
         {{#each prereqRows}}
         {{#unless @first}}<a class="pq-join" data-action="togglePrereqMode">{{../prereqJoin}}</a>{{/unless}}
         <span class="pq-chip pq-{{kind}}"><span class="pq-kind">{{kindLabel}}</span>
-          {{#if isTalent}}<input type="text" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Brawler" list="twod12-talent-names">{{/if}}
+          {{#if isTalent}}<input type="text" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Ricochet" list="twod12-talent-names">{{/if}}
           {{#if isLevel}}<input type="number" class="n" min="1" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
           {{#if isTrait}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../traitChoices selected=name blank="(trait)"}}</select><span class="pq-kind">Action</span>{{/if}}
           {{#if isAttribute}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../attrChoices selected=name blank="(Attribute)"}}</select><input type="number" class="n" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
