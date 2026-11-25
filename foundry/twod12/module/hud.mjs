@@ -150,7 +150,7 @@ const partyActors = () => (game.actors?.contents ?? []).filter(a => a.type === "
 /** The Action lines of a tab, grouped in columns by Frequency (three lines a column; Basic: "+N more" past four columns). */
 /** v0.0.440 (Lucas, checklist: "I don't see the Fists" on the Orc): the Basic Actions in the sheet's fixed order (the attacks first), so the ones
  *  past the tab's last column ("+N more") are the movements and the rest, never an NPC's Fists added after its other items. */
-export const BASIC_ORDER = ["basicWeaponAttack", "fists", "rally", "heal", "aid", "charge", "shove", "haul", "relocate", "trip", "demoralize", "feint", "advance", "safeMovement", "tumble", "stand", "leaning", "interact", "reload"];
+export const BASIC_ORDER = ["basicWeaponAttack", "fists", "rally", "heal", "aid", "charge", "shove", "haul", "relocate", "trip", "demoralize", "feint", "advance", "safeMovement", "tumble", "sneak", "stand", "hide", "seek", "pointOut", "leaning", "interact", "reload"];   // v0.0.513: the Hide package
 export const basicOrder = list => [...list].sort((x, y) => { const p = k => { const n = BASIC_ORDER.indexOf(k); return n < 0 ? 99 : n; }; return p(x.bkey) - p(y.bkey) || String(x.name).localeCompare(String(y.name)); });
 function colsOf(lines, { per = 3, maxCols = 6 } = {}) {
   const cols = [];
@@ -240,7 +240,7 @@ async function barModel(actor, token = null) {
   const { TWOD12 } = await import("./config.mjs");
   const strikeOf = id => !!actor.items.get(id)?.system?.traits?.has?.("strike");
   const bLines = basic.map(l => ({ ...l, strike: strikeOf(l.id) })), placed = new Set();
-  const basicGroups = TWOD12.basicGroups.map(g => ({ label: g.label, lines: g.names.map(n => bLines.find(l => l.name === n)).filter(Boolean) })).filter(g => g.lines.length);
+  const basicGroups = (TWOD12.hudBasicGroups ?? TWOD12.basicGroups).map(g => ({ label: g.label, lines: g.names.map(n => bLines.find(l => l.name === n)).filter(Boolean) })).filter(g => g.lines.length);
   basicGroups.forEach(g => g.lines.forEach(l => placed.add(l.id)));
   const restB = bLines.filter(l => !placed.has(l.id));
   if (restB.length) (basicGroups.at(-1) ?? basicGroups[basicGroups.push({ label: "Other", lines: [] }) - 1]).lines.push(...restB);
@@ -276,11 +276,26 @@ async function barModel(actor, token = null) {
       }
     }
   } catch (e) { /* no loadout */ }
+  // v0.0.512 (playtest 7): a Charge that reached a creature: its Basic Attack (1A) from the Charge's card, in the Situational tab
+  let chargeSit = null, hiding = null;
+  // v0.0.517 (Lucas: the Hiding entry, layout A, "default to all others"): to whom this creature hides, set or fixed by hand
+  try {
+    const H = await import("./hide.mjs"), map = actor.getFlag?.(F, "hide") ?? {}, selfTok = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
+    const names = Object.fromEntries((canvas.tokens?.placeables ?? []).map(t => [t.id, t.name]));
+    const hidThisTurn = !!H.turnStamp() && actor.getFlag?.(F, "hidTurn") === H.turnStamp();
+    hiding = H.hidingModel(map, { names, targets: [...(game.user?.targets ?? [])].map(t => ({ id: t.id, name: t.name })), hidThisTurn, selfId: selfTok?.id ?? "" });
+    if (hiding) { let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.hideFold") ?? "[]"); } catch (e) { folded = []; } hiding.folded = folded.includes(actor.uuid); }   // v0.0.518: folded by this viewer
+  } catch (e) { hiding = null; }
+  try {
+    const cu = cb?.c?.getFlag?.(F, "chargeUse"), cmsg = cu?.messageId ? game.messages?.get?.(cu.messageId) : null;
+    // v0.0.514 (Lucas on v0.0.513: "Charge from it needs to have the blinking as well and a cancel button"): an urgent entry (it pulses, as a Reaction does)
+    if (cmsg) chargeSit = { pulse: true, lead: "Charge", tag: "Strike", text: "", btns: [{ label: "Basic Attack (1A)", hud: "chargeuse", data: { msg: cmsg.id } }, { label: "Cancel", q: true, hud: "chargecancel", data: { msg: cmsg.id } }] };
+  } catch (e) { /* no Charge waiting */ }
   let tiles = null;
   try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }
   return {
     h3: true, basicGroups, conds,
-    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, tiles, view: st.view },
+    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, charge: chargeSit, hiding, tiles, view: st.view },
     npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
@@ -632,6 +647,21 @@ async function onClick(ev) {
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
   if (kind === "line" && item && !ev.target.closest(".hb-st")) { const vs0 = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions ?? [], first = vs0.find(v => !v.off) ?? vs0.find(v => !v.lock); /* v0.0.453: a spent one too (the dialog warns) */ if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
+  if (kind === "hidefold") {   // v0.0.518: the Hiding entry folded to its title (or unfolded), for this viewer only
+    let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.hideFold") ?? "[]"); } catch (e) { folded = []; }
+    folded = folded.includes(actor.uuid) ? folded.filter(u => u !== actor.uuid) : [...folded, actor.uuid];
+    try { localStorage.setItem("twod12.hideFold", JSON.stringify(folded.slice(-50))); } catch (e) { /* no storage */ }
+    return renderHud();
+  }
+  if (kind === "hideflip" || kind === "hiderm" || kind === "hideadd") {   // v0.0.517: the Hiding entry's buttons
+    const H = await import("./hide.mjs");
+    if (kind === "hideflip") await H.setHideByHand(actor, [b.dataset.obs], H.flipState(b.dataset.state));
+    else if (kind === "hiderm") await H.setHideByHand(actor, [b.dataset.obs], "");
+    else await H.setHideByHand(actor, String(b.dataset.ids ?? "").split(",").filter(Boolean), b.dataset.state);
+    return renderHud();
+  }
+  if (kind === "chargecancel") { try { const C = await import("./combat.mjs"), cb = C.combatantOf(actor); await cb?.unsetFlag?.(F, "chargeUse"); } catch (e) { /* gone */ } return renderHud(); }   // v0.0.514: the Charge's Basic Attack given up
+  if (kind === "chargeuse") { const msg = game.messages.get(b.dataset.msg); if (msg) { const { chargeUseFromCard } = await import("./freeuse.mjs"); await chargeUseFromCard(actor, msg); } return renderHud(); }   // v0.0.512
   if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0, b.dataset.target || ""); }
   if (kind === "grantcancel") { const { cancelGrantOf } = await import("./freeuse.mjs"); return cancelGrantOf(actor, b.dataset.effect); }
   if (kind === "more") return openPanel("more", st.moreIds ?? []);
@@ -781,6 +811,8 @@ export function registerHud() {
   for (const h of ["controlToken", "canvasReady", "updateCombat", "combatTurn", "combatRound", "deleteCombat", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect"]) Hooks.on(h, () => renderHud());
   const mine = a => a && (a.uuid === st.actorUuid || (globalThis.canvas?.tokens?.controlled ?? []).some(t => t.actor === a));
   Hooks.on("updateActor", a => { if (mine(a)) renderHud(); });
+  Hooks.on("updateCombatant", (c, ch) => { if (mine(c?.actor) && JSON.stringify(ch?.flags?.twod12 ?? {}).includes("chargeUse")) renderHud(); });
+  Hooks.on("targetToken", user => { if (user === game.user && st.actorUuid) renderHud(); });   // v0.0.517: the Hiding entry's Add follows your targets   // v0.0.512: the Charge's Basic Attack waits in Situational
   for (const h of ["createItem", "updateItem", "deleteItem"]) Hooks.on(h, i => { if (mine(i.parent)) renderHud(); });
   Hooks.on("renderHotbar", () => { if (root) placeHotbar(); });
   for (const h of ["collapseSidebar", "changeSidebarTab", "renderSceneControls", "renderChatLog", "renderSidebar"]) Hooks.on(h, () => { placeRoot(); fitNames(); setTimeout(() => { placeRoot(); fitNames(); }, 450); });

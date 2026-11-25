@@ -23,17 +23,7 @@ differ):
 Do: In a new world (or after importing them again from the NPCs compendium), open the Goblin Sneak, the Grave Wisp, the Orc Warrior and the Ogre Chieftain.
 Expect: Goblin Sneak: Minion, CV 30, 2 ticks (a "Ticks 2/2" bar, no Vigor or Resolve), AD 13, WD 12, Weapon and Power +2, Speed 6, Shiv, Jeer, Knife in the Back, Shriek and Scatter. Grave Wisp: Grunt, CV 50, Vigor 6, Resolve 12, AD 12, WD 14, Speed 6, its new portrait, the damage line "Immunity Cold · Resistance Psychic 3 · Weakness Holy 3", Drifting, Slipping Touch, Guttering Glance, Pass Through, Dying Flare. Orc Warrior: Standard, Vigor 22, Resolve 14, 13 / 13, Speed 5. Ogre Chieftain: Elite, CV 200, Vigor 44, Resolve 28, AD 14, WD 12, Large, Reach 2, Steadiness 1, Speed 5, no Escalation; Crushing Grip, Roar, Great Sweep, Hurled Goblin, Crack the Ground, Backhand. None of the old cards (Rusty Knife, Club, Rally the Tribe...).
 
-### b5-migrate · v0.0.507 · An old world: the Arts and the Escalation Passives removed once
-Do: In your playtest world (back it up first), load as the GM. A window "Arts and Escalation" asks to Remove: click Remove. Then open Durgan's sheet (or any of your Paladins and Archers that had an Art).
-Expect: The window lists the characters that had them. A GM chat card lists, per character, what was removed. Durgan has no Hold the Line, Commandment, Armor of Faith, Tireless Vigil or Hallowed Stance any more; Smite, Judge, Lay On Hands, Shield of Faith, Kindled Wrath and Bulwark of Faith are still there. The window doesn't come back at the next load.
-
-### b5-build-tab · v0.0.507 · The class window: no Art and no Escalation choices
-Do: Open Kaela's sheet, the Build tab, and open the class window (Change level or the Class entry) at levels 1, 2 and 3. Do the same for Aveline.
-Expect: Level 1: Features, a Hallmark Action, a Hallmark Reaction, a Skill Talent (no Art, no Escalation 2 ability). Level 2: the Escalation Hook, an Encounter Pick, a Talent (no Escalation 4 ability). Level 3: only a Skill Talent. Nothing is marked as missing or incomplete because of a removed choice.
-
-### b5-pregens · v0.0.507 · The compendium's pregens without Arts or Escalation abilities
-Do: Import Aveline, Durgan, Sylwen and Kaela (level 1 and level 4) from the PCs compendium and look at their Actions tab and the HUD in a combat.
-Expect: No Art (no Modes button), no Escalation Passive, no Reckoning. Aveline level 1: Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke and the Basic Actions. Smite still rolls 1 die per Escalation; the Escalation ladder and Momentum still show.
+## Hiding
 
 ## The HUD
 
@@ -57,10 +47,6 @@ Expect: Bloodied: the roll dialog shows a "Cornered" Boon, on; the roll has it. 
 Do: With a Goblin Sneak, target Kaela and use Knife in the Back, once with another goblin on Kaela's opposite side and once alone.
 Expect: Flanking: no warning, the flanking Field Boon in the dialog. Alone: the dialog warns "doesn't flank Kaela (its Requirement). Used anyway."
 
-### flank-opposite · v0.0.506 · Flanking: a flat 1 Field Boon from opposite sides, and the cancel
-Do: Put Aveline and Durgan on opposite sides of Orc Warrior (Durgan diagonally across from Aveline counts too) and open Aveline's Basic Attack roll dialog against it. Then move Durgan beside Aveline (both on the Orc's same side) and open it again. Then put Goblin Sneak next to Aveline, Durgan back across, and open it a third time.
-Expect: First: a "Flanking" chip, 1 Field Boon (never "Flanking 2", whoever else stands around). Second: no Boon; its n/a reason says Durgan threatens the Orc "but not from its opposite side". Third: no Boon; the reason names Goblin Sneak (the Orc's side) threatening Aveline.
-
 ## Chat cards
 
 ### bst-ticks-damage · v0.0.519 · Damage removes a Minion's ticks by the Tier
@@ -80,18 +66,6 @@ Expect: The Shove's Collision removes 1 tick (the Shove dealt it no damage). Wor
 ### bst-drift · v0.0.519 · The Grave Wisp's Drifting
 Do: In a combat, drag the Grave Wisp through Aveline's space and through another wisp's, then try to end its movement in Aveline's square.
 Expect: The movement passes through both spaces with no extra cost (no Difficult Terrain); ending in a creature's space is refused. An Orc Warrior can't pass through Aveline's space (it blocks).
-
-### block-enemy · v0.0.506 · An enemy's space blocks; an ally's is Difficult Terrain; the diagonal between two enemies blocks
-Do: In combat on Sylwen's turn, drag her through Orc Warrior's square; then diagonally between Orc Warrior and Goblin Sneak placed corner to corner; then through Kaela's square (Advance), and with Evade 2 and Evade 1 through Kaela. Look at the movement range shown while dragging.
-Expect: Through the Orc: refused ("Orc Warrior's space blocks your movement ... Tumble to pass through, or go around"). The diagonal between the two enemies: refused ("You can't slip diagonally between ..."). Through Kaela: allowed, her square counts 2 on the ruler. Evade 2 through Kaela: allowed (her square costs 2); Evade 1 can't reach past her. The range area doesn't spread through enemies or between two corner-to-corner enemies.
-
-### tumble-pass · v0.0.506 · Tumble passes enemies and the diagonal between two
-Do: On Kaela's turn, use Tumble (1 AP: Advance half her Speed) and drag her through Goblin Sneak's square to the far side; use it again (2 AP: Evade 2) between Orc Warrior and Goblin Sneak corner to corner. Try to end inside the Goblin's square.
-Expect: Both movements pass (the Check is by hand: its card says so); she can't end in an enemy's square. After the Tumble, a normal Advance is blocked by the enemies again.
-
-### charge-and-down · v0.0.506 · Charge stops at allies and enemies; a Down creature is Difficult Terrain
-Do: Aim Aveline's Charge at Ogre Chieftain with Durgan on the straight line, then with Goblin Sneak on it. Then bring Goblin Sneak to 0 (Down) and drag Sylwen through its square.
-Expect: The Charge stops before Durgan ("an ally's or a Down creature's space is Difficult Terrain") and before the Goblin ("blocks movement"). The Down Goblin's square can be crossed by an Advance at double cost.
 
 ## Reactions and Judge
 

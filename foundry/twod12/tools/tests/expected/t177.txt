@@ -1,17 +1,17 @@
-cards: 131 | files: basic-actions.json, bestiary.json, gear.json, placeholders.json, talents.json, stage0/talents-pt.json, stage0/gear.json, stage0/bestiary.json, stage0/paladin.json, stage0/archer.json
+cards: 134 | files: basic-actions.json, bestiary.json, gear.json, talents.json, stage0/talents-pt.json, stage0/gear.json, stage0/bestiary.json, stage0/paladin.json, stage0/archer.json
 --- the generated Basic Actions
 module/basic-data.mjs up to date: true module/basic-data.mjs is up to date
 set aside, not a Basic Action: Opportunity Attack
-Basic Action cards: 24 | keys in basic-data.mjs: 24 | the same set: true
+Basic Action cards: 28 | keys in basic-data.mjs: 28 | the same set: true
 every Basic Action card is a Basic Action: true | every card in basic-actions.json has a key: true
 the generator gives the data of the file: true
 --- the book places every card it shows
 set aside: 93 | each is a card: true | none is placed: true
-shown in the book: 36 | placed once: true | markers with no card: none | stage0 cards, each placed once: 28 true
+shown in the book: 39 | placed once: true | markers with no card: none | stage0 cards, each placed once: 28 true
 cards of the files still written by hand in a chapter: none
 a card the book does not show (book: false): Cudgel, Low Blow, Hamstringing Axe, Barbed Javelin, War Howl, Blood for Blood, Cornered, Shiv, Jeer, Knife in the Back, Shriek and Scatter, Drifting, Slipping Touch, Guttering Glance, Pass Through, Dying Flare, Crushing Grip, Roar, Great Sweep, Hurled Goblin, Crack the Ground, Backhand
 --- the compendium items are the cards (content.mjs reads book/cards)
-compendium cards: 106 | one item each, equal to the card: all | CARDS exported: true
+compendium cards: 105 | one item each, equal to the card: all | CARDS exported: true
 Techniques whose weapon is not in the compendium yet (information, for pack X): 0 
 --- every card reads for Foundry and the ruler
 ruler lines: 84 | they parse: true

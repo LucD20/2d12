@@ -305,7 +305,7 @@ When an effect gives **another creature** its next roll or its next Action ("its
 
 A **round** is one full cycle of turns. It starts with the first creature's turn and ends when the last creature ends their turn.
 
-An effect that lasts a number of rounds counts down by 1 at the end of the initiative slot in which it was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn), starting with that slot's next turn: the end of the turn in which it was applied doesn't count. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". A duration is one of these: [[End of Turn|EoT]]; a number of rounds; [[End of Encounter|EoE]] (until the encounter ends); until a Save ends it; or a condition's own end (Prone lasts until you Stand). Nothing lasts "until the start of your next turn".
+An effect that lasts a number of rounds counts down by 1 at the end of the initiative slot in which it was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn), starting with that slot's next turn: the end of the turn in which it was applied doesn't count. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". A duration is one of these: [[End of Turn|EoT]]; a number of rounds; [[End of Encounter|EoE]] (until the encounter ends); or a condition's own end (Prone lasts until you Stand). Nothing lasts "until the start of your next turn".
 
 > [!example]
 > On the first round of combat, Victor (the first creature in the turn order) causes an effect on Wes that lasts 2 rounds. The effect ends at the end of Victor's turn on the third round.
@@ -337,6 +337,10 @@ An Action whose card says **Escalation N** can be used only while your Escalatio
 
 > [!example]
 > Nari's party has Momentum 1, so he starts a fight at Escalation 2. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.
+
+#### Escalation Die
+
+**dE**, the **Escalation die**, is a die with twice your Escalation's sides, **at least a d4**: a d4 at Escalation 1 and 2, a d6 at 3, a d8 at 4, a d10 at 5 and a d12 at 6. It never explodes. A card writes how many to roll: "2dE" at Escalation 3 is 2d6. It is the Escalation of the creature using the card, when it rolls.
 
 ### Momentum
 

@@ -167,7 +167,8 @@ export async function spendAP(actor, cost, label = "", { quiet = false, reaction
   // v0.0.200: a movement still under way is written to the Turn Log before this Action (its line comes first). v0.0.428 (the audit: the line read
   // "Advance 5 sq." after 2): written before its squares left are cleared, so it counts only the squares moved
   if (!goesOn) { try { const { closeMoveLine } = await import("./move.mjs"); await closeMoveLine(c); } catch (e) { /* none */ } }
-  if (evading) await c.update({ [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) });   // v0.0.182: an Evade left unused ends when another Action is used
+  if (evading || c.getFlag(F, "thenMove")?.length) await c.update({ [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.thenMove`) });
+  if (c.getFlag(F, "chargeUse") && !reaction) await c.update(unset(`flags.${F}.chargeUse`));   // v0.0.512: another Action (or the Charge's Basic Attack itself, free: not here) ends the wait   // v0.0.512: and a Reaction's chained movement is given up   // v0.0.182: an Evade left unused ends when another Action is used
   if (upd) await c.update(Object.fromEntries(Object.entries(upd).map(([k, v]) => [`flags.${F}.${k}`, v])));
   if (pay.fromRap) await setRAP(c, rap - pay.fromRap);
   // v0.0.274: a kept AP that pays a Reaction is simply one AP less at the start of the next turn (its Guard comes then: setUnusedApGuard)
@@ -348,7 +349,7 @@ async function startTurn(combat) {
   // v0.0.204: a creature that swapped had its turn start this round already; its new slot is a new start (it thaws), so frozen skips this check.
   if (c.getFlag(F, "apTurn") === key && !c.getFlag(F, "frozen")) return;
   const hadTurn = !!c.getFlag(F, "apTurn"), apLeft = getAP(c);   // v0.0.274: the AP its last turn left unused (none on its first turn)
-  const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) };
+  const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.thenMove`), ...unset(`flags.${F}.chargeUse`) };
   if (c.getFlag(F, "frozen")) {
     // It swapped initiative earlier: it carries on with the AP it had left.
     await c.update({ ...fresh, [`flags.${F}.frozen`]: false, [`flags.${F}.thawed`]: key });   // v0.0.205: a thawed turn can't swap again

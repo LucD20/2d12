@@ -81,6 +81,10 @@ A Split Action has two modes, **Weapon** and **Power**, and you choose one each 
 
 Strike is any Action that tries to hit a creature, such as an attack with a weapon or a spell. You can make at most 3 Strikes per turn. All At-will [Strike] Actions share one At-will count: your second At-will [Strike] in a turn takes 1 Bane, and your third takes 2 Banes, even if they are different Actions.
 
+### Subtle
+
+A Subtle Action doesn't draw attention: using it doesn't end [[Hiding|Hide]], while any Action without this trait ends Hide against every creature once it is resolved. [[Hide]], [[Sneak]], [[Seek]] and [[Lean]] are Subtle. [[Interact]] is not, but a quiet use while you are Hidden or Unsensed (taking an item you carry, opening a door slowly) can be Subtle: the GM decides, and can call for a Check.
+
 ### Unfailing
 
 When the roll of an Unfailing Action gets a Tier 1, that use doesn't count toward the Action's Frequency: you can use it again. You still spend its AP, and its Tier 1 still happens. An Encounter Action with Unfailing that gets a Tier 1 is still unspent this encounter.

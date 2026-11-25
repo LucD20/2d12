@@ -89,6 +89,8 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
     }
   }
   for (const [k, label] of [["bloodiedBefore", "Bloodied"], ["strainedBefore", "Strained"]]) if (String(SL[k] ?? "").trim()) top.push(L(label, SL[k], "rich"));
+  // v0.0.509 (Steady Draw, Lucas 2026-11-25): a class line written as a Special on Basic Attack (its once-an-encounter 2dE button)
+  if (actor && (item.getFlag?.("twod12", "basic") ?? item.flags?.twod12?.basic) === "basicWeaponAttack") for (const h of activeHooks(actor, "basicLine")) if (String(h.hook.specialLine ?? "").trim()) top.push(L("Special", h.hook.specialLine, "rich"));
   if (rl && !modes) top.push(L(rl.label, rl.text, "esc"));
   const versionModel = v => {
     const lines = [];

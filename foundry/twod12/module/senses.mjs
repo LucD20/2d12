@@ -45,6 +45,8 @@ export function registerSenses() {
         // v0.0.315 (Lucas): a Blinded creature still hears (the ripple stays); only its Sight is gone
         const actor = target?.document?.actor ?? target?.actor;
         if (actor?.statuses?.has?.("unsensed")) return false;   // nobody perceives it: not even by its noise
+        // v0.0.514 (Lucas on v0.0.513: "Kaela unsensed vs the goblin still allow the goblin to see the ripples"): Unsensed to this viewer from Hide
+        if (actor?.getFlag?.("twod12", "hide")?.[visionSource?.object?.document?.id ?? visionSource?.object?.id] === "unsensed") return false;
         if (actor?.statuses?.has?.("hidden")) return true;   // the GM's Hidden status
         return !!visionSource?.object && !!target && visionSource.object !== target && hears(visionSource.object, target);   // a creature in combat within range
       }
@@ -138,7 +140,7 @@ const CAP = { unsensed: "Unsensed", hidden: "Hidden", obscured: "Obscured", clea
  * The GM's Obscured / Hidden / Unsensed statuses on the target only ever make it worse.
  * Returns { level: "clear" | "obscured" | "hidden" | "unsensed", why }.
  */
-export function perceive(observer, target, { loe = true } = {}) {
+export function perceive(observer, target, { loe = true, noHide = false } = {}) {
   const o = observer?.actor, t = target?.actor;
   const os = o?.system?.senses ?? {};
   if (o?.statuses?.has?.("unconscious")) return { level: "unsensed", why: "Unconscious: every creature is Unsensed to you", name: CAP.unsensed };   // the Unconscious rule
@@ -176,6 +178,8 @@ export function perceive(observer, target, { loe = true } = {}) {
   }
   const st = perceptionOf(t);
   if (st && RANK[st] < RANK[best[0]]) best = [st, `${CAP[st]} (status)`];
+  // v0.0.513 (the Hide package; book, Chapter 3, Hiding): Hidden or Unsensed from Hide, against this observer only; the worse of it and the senses
+  if (!noHide && observer?.document?.id) { const hs = t?.getFlag?.("twod12", "hide")?.[observer.document.id]; if ((hs === "hidden" || hs === "unsensed") && RANK[hs] < RANK[best[0]]) best = [hs, `${CAP[hs]} (Hide)`]; }
   return { level: best[0], why: best[1], name: CAP[best[0]] };
 }
 

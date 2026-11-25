@@ -1,0 +1,15 @@
+cardShare: 8 | AP Guard only: 0 | none: 0
+lines: Basic Attack vs Orc Warrior T2 (flanked) | Cleaver vs Aveline T3 (flank cancelled) | Aveline takes 4 Vigor (raw 10, Judge (Aveline) −2, Guard −4) | Kaela takes 5 Vigor (raw 7, Guard −2) | Kaela's Advance is blocked by Orc Warrior | Tumble | Kaela: Instinct Check 15 vs DC 14 (Orc Warrior, Goblin Sneak), 1 Bane T2
+flanks: {"pc":1,"npc":0,"cancelled":1} | blocks: 1 | checks: 1
+Orc: {"rawDealt":10,"removedOff":6,"cardsOff":4} | Aveline cardsTaken: 4
+| Orc Warrior | 0 | 0 | 0 | 0 | 0 (0/0) | 60 | 0 (0) | 60 | **0%** | 0% |
+| Goblin Sneak | 0 | 0 | 0 | 0 | 0 (0/0) | 30 | 0 (0) | 30 | **0%** | 0% |
+| Orc Warrior | 4 (4/0) | 2.0 | — | — | — | 0/0/1/0 | — | 0 | — |
+| Goblin Sneak | 5 (5/0) | 2.5 | — | — | — | — | — | 0 | — |
+## Enemy Damage: What Reached the Party, and What Cards Took
+| Orc Warrior | 10 | 6 | 4 | 4 | 8 |
+| Goblin Sneak | 7 | 2 | 0 | 5 | 5 |
+- **Flanking Boons:** PCs 1, enemies 0, cancelled 1 · R1 Aveline Basic Attack vs Orc Warrior; R1 Orc Warrior Cleaver vs Aveline (cancelled)
+- **Moves refused by blocking:** R2 Kaela (Advance) by Orc Warrior
+- **Checks (Tumbles and others):** R2 Kaela Instinct Check 15/14 vs Orc Warrior, Goblin Sneak (1 Bane) T2
+wired: actions (flank) true | move (logBlocked) 2 | inline (logCheck) true | ccdamage (mods) true | damage (Guard's ap) true

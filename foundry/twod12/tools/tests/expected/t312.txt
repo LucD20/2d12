@@ -1,0 +1,9 @@
+dE by Escalation 1 to 6: d4 d4 d6 d8 d10 d12 | out of range: 4 12
+2dE at 3: 2d6 | dE at 6: 1d12 | no explosion: true | other dice untouched: 1d6! + 2
+pays on: [false,true,true,false,true] | the dice: Tier 2 at Escalation 3: [{"pool":"B","useW":false,"wCount":1,"useD":false,"dCount":1,"dice":"2d6","useAt":false,"subtype":"","source":"2dE"}] | Tier 1: 0 | off: 0
+the roll dialog's chip: true | on the Tiers: true | paid after the roll, once an encounter: true | no chat button any more: true
+targetsCheckDc: {"dc":14,"banes":1,"names":"Goblin, Orc"} | none: null
+parsed dc:targets: {"dcTargets":true,"dc":13}
+Tumble's line: true | Aid keeps its own DC: true
+Steady Draw's hook: basicLine: strainedBeforeD 1, deMore 2, specialLine: Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target.
+the card model draws it: true | the book: dE in Chapter 2: true | Steady Draw's text: true

@@ -36,7 +36,11 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Demoralize | Gold |  |
 | Feint | Gold |  |
 | Heal | Silver | the Check against DC 13 and the Rally Point button on the card; standing from Prone on Tier 3 by hand. |
-| Tumble | Silver | the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the Check: by hand. |
+| Tumble | Silver | the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the card posts first: its Appeal and Instinct Checks roll against the targeted creatures' DC (v0.0.510). |
+| Hide | Silver | v0.0.513: the roll against each targeted creature's Instinct DC; Tier 2 or 3: Unsensed (it can't see you) or Hidden (your High Cover) to it, per creature; Tier 3's Bane on its Seek and Point Out: by hand. |
+| Sneak | Silver | v0.0.513: the Advance keeps Hide (Unsensed to Hidden when seen, Hidden kept during it, the end of turn check); no Reactions from those it is Hidden to. |
+| Seek | Silver | v0.0.513: targets by itself the creatures Hidden or Unsensed to you from Hide within 5 or 10 squares, no Senses on the roll, 1 step better on Tier 2 or 3; Tier 3's Boon on Point Out: by hand. |
+| Point Out | Silver | v0.0.513: Tier 2 one ally within 10 squares (picked), Tier 3 every ally: 1 step better against the target; whether each ally can see or hear you: by hand. |
 | Hide | Bronze | not written in the book yet (a placeholder) |
 
 ## Weapon Techniques (4)

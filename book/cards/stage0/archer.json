@@ -102,13 +102,13 @@
    "name": "Steady Draw",
    "category": "Archer Feature",
    "level": 1,
-   "_note": "2026-11-22 (Lucas, the core rework batch 3, `cards/basic-attacks-redesign.md`): the Archer's line on the shared Basic Attack (above the roll: it changes the damage).",
-   "flavor": "A rattled foe holds still for a heartbeat, and your second arrow follows the first.",
+   "_note": "2026-11-22 (Lucas, the core rework batch 3, `cards/basic-attacks-redesign.md`): the Archer's line on the shared Basic Attack (above the roll: it changes the damage). 2026-11-25 (Lucas, batch 5: \"A, apply it to Steady Draw\"): the Archer tests dE, a Special once an encounter on a Tier 2 or 3 for the Reaction Point (his sketch: \"you can use 1R when you roll Tier 2 or 3 on this Action to deal 2dE\").",
+   "flavor": "A rattled foe holds still for a heartbeat, and when the arrow finds its mark you let the next fly before it can move.",
    "cost": "Passive",
    "body": [
     {
      "label": "Passive",
-     "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** Against a Strained target, a Tier 3 deals 1[D] more."
+     "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** Against a Strained target, a Tier 3 deals 1[D] more. **Special:** Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target."
     }
    ],
    "foundry": {
@@ -118,10 +118,12 @@
     "hooks": [
      {
       "kind": "basicLine",
-      "strainedBeforeD": 1
+      "strainedBeforeD": 1,
+      "specialLine": "Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target.",
+      "deMore": 2
      }
     ],
-    "automationNote": "on your Basic Attack's Tier 3 against a target already Strained when you roll, its damage rolls 1[D] more."
+    "automationNote": "on your Basic Attack's Tier 3 against a target already Strained when you roll, its damage rolls 1[D] more; the roll dialog's chip \"Reaction Point: 2dE more on a Tier 2 or 3\" (off until ticked, once an encounter): on a Tier 2 or 3 it spends your Reaction Point and adds your Escalation die twice to the damage (d4 at Escalation 1 and 2 ... d12 at 6); on a Tier 1 nothing is spent."
    }
   },
   {
@@ -213,7 +215,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automationNote": "2[W] / 3[W] by Tier, the Evade 2 (the button), and +1 AP on a Critical (when applied).",
+    "automationNote": "2[W] / 3[W] by Tier, the Evade 2 (it starts by itself after the roll), and +1 AP on a Critical (when applied).",
     "automation": "gold"
    }
   },
@@ -285,7 +287,7 @@
     "folder": "Archer",
     "moment": "enemyAdjacent",
     "momentRange": 5,
-    "automationNote": "offered by itself in the Reactions message when an enemy within 5 squares would enter a square adjacent to you (Move back: it stops before that square); Use: the Evade 1 and the Advance 2 (the buttons).",
+    "automationNote": "offered by itself in the Reactions message when an enemy within 5 squares would enter a square adjacent to you (Move back: it stops before that square); Use: the Evade 1 starts by itself, then the Advance 2 when it ends (or at End movement; another Action gives it up).",
     "automation": "gold"
    }
   },

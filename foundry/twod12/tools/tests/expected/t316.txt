@@ -1,0 +1,6 @@
+who sees (v0.0.518: the GM and the owner): GM true | its owner true | another player false
+seal order: ["Goblin","Archer","Orc"]
+v0.0.516: no seals at rest: true
+trimmed line: {"x1":10,"y1":0,"x2":80,"y2":0,"len":70}
+5 seconds: 5000 | shown before true | after false
+tracked: Hide true | Line of Effect true | Flanking true | shown again on select, hover, target true | registered true

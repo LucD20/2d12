@@ -140,6 +140,7 @@ export function parseInline(kind, inner) {
     const k = s.indexOf(":");
     if (k < 0) continue;
     const key = s.slice(0, k).trim().toLowerCase(), val = s.slice(k + 1).trim();
+    if (key === "dc" && /^targets$/i.test(val)) { cfg.dcTargets = true; cfg.dcSet = true; continue; }   // v0.0.510 (Tumble): the targeted creatures' Attribute DC
     if (key === "dc") { const ref = val.match(/^@(weapon|power|signature|body|mind|appeal|instinct)(?:\.dc)?$/i); if (ref) cfg.dcRef = ref[1].toLowerCase(); else cfg.dc = Number(val) || 13; cfg.dcSet = true; }
     else if (key === "distance") { if (/^[\d.]+$/.test(val)) cfg.distance = Number(val) || 0; else { cfg.distance = 0; cfg.distanceExpr = val.toLowerCase().replace(/\s+/g, ""); } }
     else if (["adj", "boon", "bane"].includes(key)) cfg[key] = Number(val) || 0;
@@ -156,7 +157,8 @@ export function parseInline(kind, inner) {
     else if (key === "label") cfg.label = val;
     else if (key === "min") cfg.min = Math.max(0, Number(val) || 0);
     else if (key === "uncapped") cfg.uncapped = /^(yes|true)$/i.test(val);   // @Move[charge|distance:speed+2|uncapped:yes]: it may go beyond your Speed (an ability says so)
-    else if (key === "pass") cfg.passEnemies = /^(enemies|yes|true)$/i.test(val);   // batch 4 (Tumble): @Move[advance|...|pass:enemies]: through enemies' spaces (never ending in one)
+    else if (key === "pass") cfg.passEnemies = /^(enemies|yes|true)$/i.test(val);
+    else if (key === "sneak") cfg.sneak = /^(yes|true)$/i.test(val);   // v0.0.513 (the Hide package, Sneak): the movement keeps Hide (hide.mjs)   // batch 4 (Tumble): @Move[advance|...|pass:enemies]: through enemies' spaces (never ending in one)
     else if (key === "terrain") cfg.ignoreTerrain = /^(ignore|ignores|yes|true)$/i.test(val);   // @Move[evade|distance:2|terrain:ignore]: it moves through creatures and ignores Difficult Terrain (Cut Through)
     else if (key === "upto") cfg.upto = /^(yes|true|1|y)$/i.test(val);
     else if (key === "expire") cfg.expire = val.toLowerCase();
@@ -502,6 +504,14 @@ async function resolveSaveTier(actor, title, subtitle, cfg, tier, pre = null) {
   await postDamageCard({ actor, title, subtitle, comps, rolls: pre ? [] : rolls, texts: await Promise.all(parts.texts.map(t => enrich(t))), applied });
 }
 
+/** Pure (v0.0.510, Tumble): a Check against creatures' Attribute DC (Chapter 1: 11 + the Attribute): the highest, 1 Bane for each creature beyond
+ *  the first. creatures: actors (or { system: { attributes } }). null with none. */
+export function targetsCheckDc(key, creatures = []) {
+  const list = (creatures ?? []).filter(Boolean);
+  if (!list.length) return null;
+  const dcs = list.map(a => (TWOD12.vsBase ?? 11) + (Math.trunc(Number(a.system?.attributes?.[key])) || 0));
+  return { dc: Math.max(...dcs), banes: list.length - 1, names: list.map(a => a.name ?? "?").join(", ") };
+}
 async function doCheck(kind, cfg, ctx = {}) {
   // A Save carries the traits of the Action that caused it ("from"), so Talents can give bonuses against, say, Divine Actions.
   const fromList = kind === "Save" ? (ctx.message?.getFlag?.("twod12", "action")?.traits ?? []) : [];
@@ -513,17 +523,20 @@ async function doCheck(kind, cfg, ctx = {}) {
     // v0.0.176 (book 2026-10-25): only the light where the TARGET is matters, so the light where you stand no longer changes a Check
     // (the "requires sight" penalties of Dim light and Darkness are gone; |sight:yes is still read and does nothing).
     const tierPreview = kind === "Save" && cfg.tiers ? { t1: cfg.tiers.t1 ?? "", t2: cfg.tiers.t2 ?? "", t3: cfg.tiers.t3 ?? "" } : null;
+    // v0.0.510 (Lucas on v0.0.508: Tumble's Check "should roll against their attribute"): dc:targets, the targeted creatures' DC of this Attribute
+    // (the highest; 1 Bane for each creature beyond the first); with no target, the written DC
+    const vsT = cfg.dcTargets ? targetsCheckDc(key, [...(game.user?.targets ?? [])].map(t => t.actor).filter(a => a && a !== actor)) : null;
     const data = await askRoll(actor, {
-      title: `${label}: ${actor.name}`,
+      title: `${label}: ${actor.name}${vsT ? ` vs ${vsT.names}` : ""}`,
       attrKey: key,
       traits: new Set([...(cfg.traits ?? []), key, kind === "Save" ? "__save" : "__check"]),
       from: fromList.length ? new Set(fromList) : null,
       tiers: tierPreview,
       defaults: {
-        dc: cfg.dc,
+        dc: vsT?.dc ?? cfg.dc,
         mod: cfg.adj,
         boons: cfg.boon,
-        banes: cfg.bane,
+        banes: cfg.bane + (vsT?.banes ?? 0),
         doomed: unconsciousDoom(actor, key, kind),
         doomedWhy: `${doomStatus(actor) || "Unconscious"}: all your Rolls are Doomed`,
         doomedLabel: `${doomStatus(actor) || "Unconscious"} (Doomed)`
@@ -535,6 +548,8 @@ async function doCheck(kind, cfg, ctx = {}) {
     const dc = Number(data.dc) || 13;
     const chk = await performCheck({ mod, boons: fxm.boons + manB, banes: fxm.banes + manN, dc, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
     expireOnUse(actor, new Set(), new Set(), { rolled: true }).catch(() => {});   // v0.0.458: a Bane "on its next roll" (Dirty Trick) is spent by a Save or a Check too
+    // v0.0.511 (core rework section R: Tumbles and their Checks): a card's Check goes to the Encounter Log (a Save is logged by its own card)
+    if (kind === "Check") { try { (await import("./enclog.mjs")).logCheck(actor, { label, total: Number(chk.total) || 0, dc, tier: Number(chk.tier) || 0, vs: vsT?.names ?? "", banes: vsT?.banes ?? 0 }); } catch (e) { /* no log */ } }
     const labels = [`\u2264 ${dc - 1}`, `${dc}\u2013${dc + 6}`, `\u2265 ${dc + 7}`];
     const dbl = chk.doubles;
     const rows = [];
@@ -545,6 +560,18 @@ async function doCheck(kind, cfg, ctx = {}) {
     }
     const pre = kind === "Save" ? await rollParts(parseParts(cfg.tiers[`t${chk.tier}`]).damage, cfg.nonlethal) : null;
     const all = combineRolls([...chk.rolls, ...(pre?.rolls ?? [])]);
+    // v0.0.514 (Lucas on v0.0.513: "Appeal check from Tumble is using old chat card"; foundry-backlog: "the inline Check chip still old"): a Check is drawn as
+    // roll.mjs rollCheck draws one, the chat card of an Action (the stamp, the ladder against its DC, the breakdown); the old block only if that fails
+    if (kind === "Check") {
+      let content = "";
+      try {
+        const CC = await import("./chatcards.mjs"), { ccRowOf } = await import("./actions.mjs");
+        const row = { ...ccRowOf({ ...chk, dcLabel: vsT ? `${TWOD12.attributes[key]} DC` : "DC" }, String(vsT?.names ?? actor?.name ?? ""), "", TWOD12.attributes[key] ?? "Modifier") };
+        content = CC.cardContent({ kind: "attack", name: `${label}${vsT ? ` vs ${vsT.names}` : ""}`, freq: "", cost: "", traitsHtml: "", flavor: "", hasDamage: false, outcomes: {}, rows: [row], locked: true })
+          .replace(/<hr class="cc-hr"><div class="cc-foot">[\s\S]*?<\/div>(?=(?:<div class="cc-des|<div class="cc-pfoot|<\/div>\s*$))/, "");
+      } catch (e) { console.warn("twod12 | the Check card", e); content = ""; }
+      if (content) { await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: all ? [all] : [], content }); continue; }
+    }
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }), rolls: all ? [all] : [],
       content: `<div class="twod12 chat action"><div class="ahead"><b>${esc(label)}</b><span>DC ${dc}</span></div>${checkHtml(`${TWOD12.attributes[key]} ${sgn(mod)}`, chk, [])}<table class="tiers">${rows.join("")}</table></div>`

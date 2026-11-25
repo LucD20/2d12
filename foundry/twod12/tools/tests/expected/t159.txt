@@ -1,4 +1,4 @@
-16 mapped: 26 | every one is a Basic Action: true | Basic Actions not in a group: []
-Attack: Basic Attack, Charge, Fists, Reload | Movement: Advance, Evade, Tumble, Crawl, Stand, Break Free | Control: Shove, Trip, Haul, Relocate, Demoralize, Feint | Utility: Steel Yourself, Heal, Aid, Interact, Shake Off, Regrip, Release, Lean
-an NPC without Steel Yourself, and a homebrew one: Attack 4, Movement 6, Control 6, Utility 7, Other 1
+16 mapped: 30 | every one is a Basic Action: true | Basic Actions not in a group: []
+Attack: Basic Attack, Charge, Fists, Reload | Movement: Advance, Evade, Tumble, Sneak, Crawl, Stand, Break Free | Control: Shove, Trip, Haul, Relocate, Demoralize, Feint | Utility: Steel Yourself, Heal, Aid, Hide, Seek, Point Out, Interact, Shake Off, Regrip, Release, Lean
+an NPC without Steel Yourself, and a homebrew one: Attack 4, Movement 7, Control 6, Utility 10, Other 1
 the grid and the legend: false | no Frequency column: false | name / Range / AP / Use: false | one column when narrow: false

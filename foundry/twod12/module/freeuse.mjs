@@ -83,10 +83,25 @@ export async function handleUse(cfg, ctx = {}) {
     onUsed: ({ targets }) => { used[key] = [...(used[key] ?? []), ...targets.map(t => t.uuid)]; }
   });
   if (!ok) return;
+  // v0.0.512: the Charge's Basic Attack used from its card's own button: the HUD's Situational entry goes too
+  try { const { combatantOf } = await import("./combat.mjs"), cb = combatantOf(actor); if (msg?.id && cb?.getFlag?.(F, "chargeUse")?.messageId === msg.id) await cb.unsetFlag(F, "chargeUse"); } catch (e) { /* no combat */ }
   uses[key] = (uses[key] ?? 0) + 1;
   try { await msg?.update({ [`flags.${F}.uses`]: uses, [`flags.${F}.usedTargets`]: used }); } catch (e) { /* not the author: the count is not kept */ }
 }
 
+/** Pure (v0.0.512): the first @Use[...] of a card's text, as its inner tag ("" when none). */
+export const firstUseTag = text => /@Use\[([^\]]+)\]/.exec(String(text ?? ""))?.[1] ?? "";
+/** v0.0.512 (playtest 7, Charge): the HUD's Situational button uses the @Use of the Charge's card (its Basic Attack (1A), its Boon), as the card's own button does. */
+export async function chargeUseFromCard(actor, msg) {
+  const f = msg?.getFlag?.(F, "action"), item = f?.itemId ? actor?.items?.get?.(f.itemId) : null;
+  const text = (item?.system?.versions ?? []).map(v => v.effects ?? "").join(" ");
+  const tag = firstUseTag(text);
+  const { combatantOf } = await import("./combat.mjs"), cb = combatantOf(actor);
+  try { await cb?.unsetFlag?.(F, "chargeUse"); } catch (e) { /* gone */ }
+  if (!tag) return ui.notifications.warn("The Charge's card has no Basic Attack to use.");
+  const { parseInline } = await import("./inline.mjs");
+  return handleUse(parseInline("Use", tag), { message: msg });
+}
 /** Chat hook: the @Use buttons show how many uses are left, and are dimmed when none are. */
 export function updateUseButtons(msg, html) {
   const el = html instanceof HTMLElement ? html : html?.[0];

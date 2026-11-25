@@ -1,0 +1,5 @@
+Advance is movement-only: true | Tumble 1 AP: null | Tumble 2 AP: null
+A or B Check: make an @Check[appeal]{Appeal Check} or @Check[instinct]{Instinct Check} against
+one Check still one button: an @Check[instinct] against the DC | @Check[body|dc:14]
+Tumble's card line: both buttons
+Aid's card: both buttons

@@ -13,6 +13,7 @@ const actionTraits = sortObj({
   instinct: "Instinct",
   magic: "Power",   // the key stays "magic" (saved worlds and content use it); the trait is called Power since v0.0.117
   magical: "Magical",   // v0.0.494 (Playtest 8 Pass 1): Keyword trait marking a magical Action/attack
+  subtle: "Subtle",   // v0.0.513 (the Hide package): it doesn't end Hide
   melee: "Melee",
   mind: "Mind",
   move: "Move",
@@ -144,6 +145,7 @@ export const TWOD12 = {
     instinct: "Rolls Instinct.",
     magic: "Power: rolls your Power Modifier. Its damage is the dice on the card: no Attribute is added, on any Tier. Needs no weapon.",
     magical: "Marks a magical Action or attack for other rules and features.",
+    subtle: "Doesn't draw attention: it doesn't end Hide. An Action without it ends Hide against every creature once it is resolved.",
     signature: "Rolls your Signature Modifier (the higher of Weapon and Power). On every Tier, Tier 1 included, your Signature Attribute is added to the first damage instance. Never needs a weapon.",
     split: "Two modes, Weapon and Power: choose one each time you use it. In that mode it takes the mode's trait and is an Action of that mode for every rule (a Weapon Action needs a weapon; a Power Action doesn't). Frequency, target, trigger and Critical are shared; the damage and traits are the mode's.",
     fear: "No rules of its own: other features refer to it.",
@@ -187,9 +189,18 @@ export const TWOD12 = {
   basicGroups: [
     // v0.0.289 (PACK SHEET, Lucas's design): four columns, Attack | Movement | Control | Utility; core rework batch 3: Basic Attack + Aid, Demoralize, Feint, Heal, Tumble
     { key: "attack", label: "Attack", names: ["Basic Attack", "Weapon Attack", "Charge", "Fists", "Reload"] },
+    { key: "movement", label: "Movement", names: ["Advance", "Evade", "Tumble", "Sneak", "Crawl", "Stand", "Break Free"] },
+    { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate", "Demoralize", "Feint"] },
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Heal", "Aid", "Hide", "Seek", "Point Out", "Interact", "Shake Off", "Regrip", "Release", "Lean", "Leaning"] }   // v0.0.513: the Hide package
+  ],
+  // v0.0.514 (Lucas on v0.0.513: "The Basic tab on the HUD is very cluttered, lets try to make 5 columns ... aiming to keep the same amount of actions per
+  // column"): the HUD's Basic tab in five groups of five or six (the sheet keeps basicGroups); a Basic Action in none goes to the last one
+  hudBasicGroups: [
+    { key: "attack", label: "Attack", names: ["Basic Attack", "Weapon Attack", "Charge", "Fists", "Reload", "Regrip", "Release"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Tumble", "Crawl", "Stand", "Break Free"] },
     { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate", "Demoralize", "Feint"] },
-    { key: "utility", label: "Utility", names: ["Steel Yourself", "Heal", "Aid", "Interact", "Shake Off", "Regrip", "Release", "Lean", "Leaning"] }
+    { key: "stealth", label: "Stealth", names: ["Hide", "Sneak", "Seek", "Point Out", "Lean", "Leaning"] },
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Heal", "Aid", "Interact", "Shake Off"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   // v0.0.355 (PACK ACTION-SHEET; the audit's D21, D22): the highest Escalation, read by the Action sheet's Escalation field and a rule's "Works"
@@ -223,7 +234,7 @@ export const TWOD12 = {
     { key: "requires", label: "Requires", traits: ["gun", "handle", "melee", "ranged", "shot"] },
     { key: "kind", label: "Kind", traits: ["area", "move", "self", "strike"] },
     { key: "damage", label: "Damage", traits: ["nonlethal"] },
-    { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear", "magical", "unfailing"] }
+    { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear", "magical", "subtle", "unfailing"] }
   ],
   // The Bestiary (book: bestiary.html; v0.0.163, refit by E3 in v0.0.181, re-fitted to pack R by R-bestiary in v0.0.240: book/ruler/bestiary-r.json): an NPC is a role plus a rating for each number.
   //   attr: the Medium Attribute; hb: the Health Base; defense: the Medium Defense; cv: the Combat Value at the party's Stage, one Stage below, two Stages below
@@ -465,7 +476,7 @@ export const categoryText = d => {
 export const FREQ_COLORS = { atwill: "#3B6D11", turn: "#0F6E6E", round: "#185FA5", encounter: "#A32D2D", daily: "#5B3FA6", "": "#5F5E5A", none: "#5F5E5A" };
 export const cardColorFor = d => FREQ_COLORS[effectiveFrequency(d ?? {})] ?? FREQ_COLORS[""];
 
-const TRAIT_WORDS = { Strike: "strike", Nonlethal: "nonlethal", Divine: "divine", Focus: "focus", Handle: "handle", Magical: "magical", Power: "magic", Signature: "signature", Melee: "melee", Ranged: "ranged", Self: "self", Weapon: "weapon", Reload: "reload", "Two-handed": "twohanded" };
+const TRAIT_WORDS = { Strike: "strike", Nonlethal: "nonlethal", Divine: "divine", Focus: "focus", Handle: "handle", Magical: "magical", Subtle: "subtle", Power: "magic", Signature: "signature", Melee: "melee", Ranged: "ranged", Self: "self", Weapon: "weapon", Reload: "reload", "Two-handed": "twohanded" };
 const DAMAGE_WORDS = { Acid: "Ac", Blunt: "Bl", Cold: "Co", Electricity: "El", Fire: "Fi", Force: "Fo", Holy: "Ho", Pierce: "Pi", Psychic: "Ps", Slash: "Sl", Thunder: "Th", Unholy: "Un" };
 const famColor = key => traitColor(key);
 // v0.0.192: every trait name (as the book writes them in brackets) → its key, for "[Ranged, Shot]".

@@ -314,6 +314,7 @@ The numbers on the two cards below are the numbers of the list. The first card n
 | [[Linked Actions\|**Basic Attack (1A)**, **(1A/2A)**]] | A Linked Action and the Version you use (or a choice of two). |
 | [[Reactions\|**1R**, **0R**]] | A Reaction that uses 1 AP, or none (which AP can pay: see [[Reactions]]). |
 | [[Escalation\|**Escalation 4**]] | The Escalation an Action needs: you can use it only while your Escalation is at least that number. Nothing is spent. |
+| [[Escalation die\|**2dE**]] | Your Escalation die, rolled that many times: twice your Escalation's sides, at least a d4; it never explodes. |
 
 ### Rules Language
 

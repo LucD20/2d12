@@ -49,7 +49,8 @@ console.log("automation:", sys.automation, "|", sys.automationNote);
 console.log("the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16):", src("../../book/cards.py").includes("def structure("), "| the built book links a rule on a card (Covering Fire's Hazardous Terrain; was Lantern of Faith's Bright light until batch 5):", /<a class="xref" href="[^"]*">Hazardous Terrain<\/a>/.test(src("../../book/archer.html")), "| every card an anchor:", src("../../book/core-rules.html").includes('id="card-basic-attack"'));
 
 console.log("--- the placeholder card (Hide) and the Smite light effects");
-const hide = G.loadCards().find(c => c.name === "Hide"), hs = G.cardSystem(hide);
+// v0.0.513: Hide is written (the Hide package): the placeholder machinery is tested on a stand-in card
+const hide = G.loadCards().find(c => c.placeholder) ?? { name: "Hide", category: "Basic Action", placeholder: true, text: "**Not written yet.** Hiding and sneaking are an open item (see [[Senses]]). This card holds the place, so that other cards can refer to Hide.", foundry: { img: "icons/svg/mystery-man.svg", folder: "Basic Actions" } }, hs = G.cardSystem(hide);
 console.log("Hide: placeholder", hide.placeholder, "| an Action:", G.isAction(hide), "| versions:", hs.versions.length, "| frequency:", JSON.stringify(hs.frequency), "| text:", hs.description.replace(/<[^>]+>/g, ""));
 console.log("in the Actions pack:", C.docs.filter(d => d.name === "Hide").map(d => `${d.pack}/${d.type}`).join(", "), "| placed in Chapter 6:", src("../../book/rules-src/06-basic-actions.md").includes("@@CARD:Hide@@"));
 // v0.0.409 (pack F2): the light effects of Lantern of Faith (the old Smite's are in the old cards' folder)

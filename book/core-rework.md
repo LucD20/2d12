@@ -12,113 +12,113 @@ What came out of playtest 7 and the core review (seven reviewers; three rounds o
 
 | # | Item | Status | Detail |
 |---|---|---|---|
-| A1 | **A Critical gets something every time** | Decided | Today: a Tier 3, plus Escalation once an encounter. |
-| A2 | Its extra: **an exploding die** | Leaning | 1d6!, 1d8! or 1d10! (Claude: **1d8!**, average 5, above Empowered's 1d6!). Replaces the earlier "a d12 or regain 1 AP" and the review's +1d12. |
-| A3 | **The five-Boons cliff**: a Favored or Doomed source counts as 5 Boons or 5 Banes; cancel; 5 or more left is Favored or Doomed | Stands | Today the 5th Bane can help a Doomed roll (Chapter 1). |
-| A4 | **Save Actions feel the user's Banes**: each Bane on the user gives every target 1 Boon on its Save | Stands | **Reverses** Chapter 1's rule that a Save Action ignores the user's own Banes (Taunted, Daunted, Pressed never touch Kneel or Ground Slam today). Confirm in its session. |
-| A5 | **Exhausted gives Banes** (not "a penalty equal to the value") | Decided | Then it counts toward 5 and cancels with Boons. |
-| A6 | Range Banes stay unnamed | Decided (asked whether to change) | Field is "where you and the target are"; a range Bane is not a Field Bane. A one-line note may be enough. |
-| A7 | Three formulas for an Attribute's number (Action DC 11 + A, Vs. Attribute 12 + A, Attribute Save DC 11 + ⌈A÷2⌉ + 1) | Stands (to look at) | The review flagged it; no fix chosen. |
+| A1 | **A Critical gets something every time** | Changed (batch 2, v0.0.479): only Basic attacks get the die; Actions with a Critical row get the row | Today: a Tier 3, plus Escalation once an encounter. |
+| A2 | Its extra: **an exploding die** | Built (batch 2, v0.0.479; 1d10!, Basic attacks only) | 1d6!, 1d8! or 1d10! (Claude: **1d8!**, average 5, above Empowered's 1d6!). Replaces the earlier "a d12 or regain 1 AP" and the review's +1d12. |
+| A3 | **The five-Boons cliff**: a Favored or Doomed source counts as 5 Boons or 5 Banes; cancel; 5 or more left is Favored or Doomed | Built (batch 1, v0.0.477) | Today the 5th Bane can help a Doomed roll (Chapter 1). |
+| A4 | **Save Actions feel the user's Banes**: each Bane on the user gives every target 1 Boon on its Save | Built (batch 1, v0.0.477) | **Reverses** Chapter 1's rule that a Save Action ignores the user's own Banes (Taunted, Daunted, Pressed never touch Kneel or Ground Slam today). Confirm in its session. |
+| A5 | **Exhausted gives Banes** (not "a penalty equal to the value") | Built (batch 1, v0.0.477) | Then it counts toward 5 and cancels with Boons. |
+| A6 | Range Banes stay unnamed | Built (batch 1, v0.0.477) | Field is "where you and the target are"; a range Bane is not a Field Bane. A one-line note may be enough. |
+| A7 | Three formulas for an Attribute's number (Action DC 11 + A, Vs. Attribute 12 + A, Attribute Save DC 11 + ⌈A÷2⌉ + 1) | Built (batch 1, v0.0.477) | The review flagged it; no fix chosen. |
 
 ## B. The turn's filler and the Basic Actions
 
 | # | Item | Status | Detail |
 |---|---|---|---|
-| B1 | **Weapon Attack, Tier 1 deals [Mod]** (PCs) | Decided | The convention the class cards already use. |
-| B2 | Weapon Attack, **Tier 3 adds the weapon's die again** | Leaning ("interesting") | Bows' Tier 3 is one point above Tier 2 today. |
-| B3 | **The At-will Bane stays** | Decided | The review's "from the third use" is rejected. |
-| B4 | **Each class carries its own Basic attacks, a Weapon one and a Power one** (a class with no Power, the Archer, still has a small themed one) | Leaning (an idea) | Would also end the Paladin's At-will Bane problem (two At-will Strikes to alternate). **Decide before B1/B2 are written:** if each class has its own, B1/B2 may become the template, not one card. |
-| B5 | **New Basic Actions open to all**: a debuff on an enemy, a help for an ally (PF2e's Demoralize and Aid as models), a Mind-damage basic attack | Decided (the shapes open) | The cheapest debuff ("a Weapon Attack can deal [R]") rejected. |
-| B6 | **Mind and Appeal get their own Basic Actions**, so Body and Instinct aren't kings; **an Action can have several Attributes** | Decided | Starting map (not one Attribute an Action): Body: Shove, Grab, Haul; Instinct: Trip, Break Free, reflexes; Mind: Feint, Tumble, Heal; Appeal: Demoralize, Aid, Heal. |
-| B7 | **Trip and Shove are subpar**: lose the Strike trait or get better | Decided (how open) | |
-| B8 | **Tumble**: a Basic Action to pass through an enemy's square | Decided (its roll open) | Goes with D3. Maybe on Mind. |
-| B9 | **Heal (allies)**: for the playtest, **Heal · At-will · 2 AP; Mind or Appeal vs DC 13; Tier 1 no effect, Tier 2 the ally can use 1 Rally Point, Tier 3 2** | Decided (playtest version) | For a Down ally, who can't Steel Yourself. The Medicine skill (first round) waits for skills: the book has none. Lay On Hands keeps its Reach and Guard. |
-| B10 | **Steel Yourself: a Round Action, 1 AP (1 Rally Point) or 2 AP (2)** | Decided | Already Round; today 2 / 3 AP. |
-| B11 | **Break Free written in Tiers** (Lucas's draft: At-will · 1 AP; Body, Instinct, Move; "Body or Instinct vs. Action DC"; Tier 2 or 3: no longer Immobilized) | Decided (wording open) | Claude's notes: a "Check:" roll line, not "Attack:"; Doubles now free you below the DC; Self as a trait and a Distance is redundant. Foundry v0.0.476 rolls a Check today. |
-| B12 | **Leaning → the Action Lean** (the state stays Leaning); **it ends when you leave your square** (an Evade and a push too) | Decided | |
+| B1 | **Weapon Attack, Tier 1 deals [Mod]** (PCs) | Built (batch 3, v0.0.480) | The convention the class cards already use. |
+| B2 | Weapon Attack, **Tier 3 adds the weapon's die again** | Built (batch 3, v0.0.480) | Bows' Tier 3 is one point above Tier 2 today. |
+| B3 | **The At-will Bane stays** | Built (kept; one shared At-will [Strike] count, v0.0.494) | The review's "from the third use" is rejected. |
+| B4 | **Each class carries its own Basic attacks, a Weapon one and a Power one** (a class with no Power, the Archer, still has a small themed one) | Built (batch 3, v0.0.480: one shared Basic Attack, a class line and a Power Basic attack each) | Would also end the Paladin's At-will Bane problem (two At-will Strikes to alternate). **Decide before B1/B2 are written:** if each class has its own, B1/B2 may become the template, not one card. |
+| B5 | **New Basic Actions open to all**: a debuff on an enemy, a help for an ally (PF2e's Demoralize and Aid as models), a Mind-damage basic attack | Built (batch 3, v0.0.480; Demoralize reworked v0.0.494) | The cheapest debuff ("a Weapon Attack can deal [R]") rejected. |
+| B6 | **Mind and Appeal get their own Basic Actions**, so Body and Instinct aren't kings; **an Action can have several Attributes** | Built (batch 3, v0.0.480) | Starting map (not one Attribute an Action): Body: Shove, Grab, Haul; Instinct: Trip, Break Free, reflexes; Mind: Feint, Tumble, Heal; Appeal: Demoralize, Aid, Heal. |
+| B7 | **Trip and Shove are subpar**: lose the Strike trait or get better | Built (batch 3, v0.0.480) | |
+| B8 | **Tumble**: a Basic Action to pass through an enemy's square | Built (batch 3, v0.0.480; its diagonal, batch 4 v0.0.506) | Goes with D3. Maybe on Mind. |
+| B9 | **Heal (allies)**: for the playtest, **Heal · At-will · 2 AP; Mind or Appeal vs DC 13; Tier 1 no effect, Tier 2 the ally can use 1 Rally Point, Tier 3 2** | Built (v0.0.480); changed v0.0.494: 1 / 2 / 2 Rally Points + Stand | For a Down ally, who can't Steel Yourself. The Medicine skill (first round) waits for skills: the book has none. Lay On Hands keeps its Reach and Guard. |
+| B10 | **Steel Yourself: a Round Action, 1 AP (1 Rally Point) or 2 AP (2)** | Built (batch 1, v0.0.477) | Already Round; today 2 / 3 AP. |
+| B11 | **Break Free written in Tiers** (Lucas's draft: At-will · 1 AP; Body, Instinct, Move; "Body or Instinct vs. Action DC"; Tier 2 or 3: no longer Immobilized) | Built (batch 1, v0.0.477) | Claude's notes: a "Check:" roll line, not "Attack:"; Doubles now free you below the DC; Self as a trait and a Distance is redundant. Foundry v0.0.476 rolls a Check today. |
+| B12 | **Leaning → the Action Lean** (the state stays Leaning); **it ends when you leave your square** (an Evade and a push too) | Built (batch 1, v0.0.477) | |
 
 ## C. Health and damage that matter
 
 | # | Item | Status | Detail |
 |---|---|---|---|
-| C1 | **Bloodied: Speed −2 (minimum 1) and Steadiness −1** | Decided | Replaces "no effect by itself" (Chapter 4) and playtest 1's "Bloodied and Strained lose their Banes, become hooks". −2 stacks with Hindered by Chapter 3's order (changes first, then halve). Rejected: losing Guard from unspent AP (and NPCs gain none anyway, Chapter 14), halving Speed, Pressed. |
-| C2 | **Steadiness can be negative; a negative Steadiness adds to Forced Movement** | Decided | Chapter 3 says "never negative" today. See conflict K4. |
-| C3 | **Strained: the creature doesn't gain its free Reaction AP** (it must keep AP for Reactions) | Decided | Rejected: a Minion or Grunt fleeing at Strained (Bloodied and Strained should be even). |
-| C4 | **Bloodied: and Strained: lines on Actions**, labeled like Attack and Special ("Bloodied: the target is Pushed 1"; "Strained: Tier 3 gains Dazed 1") | Decided | Timing (Claude's proposal): the line applies if the target is Bloodied as the Action resolves, after its own damage. A card-Structure change (CARD-ONE: `card-structure.md`, `cardmodel.mjs`, `cards.py`). |
-| C5 | **Reductions don't reduce Collision damage** (Judge, Shield of Faith: Collision is another instance) | Decided | |
+| C1 | **Bloodied: Speed −2 (minimum 1) and Steadiness −1** | Built (batch 2, v0.0.479) | Replaces "no effect by itself" (Chapter 4) and playtest 1's "Bloodied and Strained lose their Banes, become hooks". −2 stacks with Hindered by Chapter 3's order (changes first, then halve). Rejected: losing Guard from unspent AP (and NPCs gain none anyway, Chapter 14), halving Speed, Pressed. |
+| C2 | **Steadiness can be negative; a negative Steadiness adds to Forced Movement** | Built (batch 2, v0.0.479) | Chapter 3 says "never negative" today. See conflict K4. |
+| C3 | **Strained: the creature doesn't gain its free Reaction AP** (it must keep AP for Reactions) | Built (batch 2, v0.0.479) | Rejected: a Minion or Grunt fleeing at Strained (Bloodied and Strained should be even). |
+| C4 | **Bloodied: and Strained: lines on Actions**, labeled like Attack and Special ("Bloodied: the target is Pushed 1"; "Strained: Tier 3 gains Dazed 1") | Built (batch 2, v0.0.479) | Timing (Claude's proposal): the line applies if the target is Bloodied as the Action resolves, after its own damage. A card-Structure change (CARD-ONE: `card-structure.md`, `cardmodel.mjs`, `cards.py`). |
+| C5 | **Reductions don't reduce Collision damage** (Judge, Shield of Faith: Collision is another instance) | Built (batch 1, v0.0.477, as corrected in Q); Foundry: a reduction on a Collision by hand | |
 | C6 | ~~**A protection floor** (reductions never take a hit below half: Draw Steel)~~ **Rejected (Lucas, 2026-11-25: "No floor", after "this might be a bit unnecessary and kill the joy of teamwork")** | Rejected | Protecting a Dying ally must stay possible. **Why (rechecked 2026-11-25, batch 4, decision 3):** the floor gives back 1 to 3 damage a round to the enemies (Shield of Faith is a Reaction, Judge once a round) against about 40 they deal; the core review's real problem is focus fire, and Judge and Shield of Faith are its answer; zeroing a Goblin's 2.5 with your one Reaction is a poor trade by itself; small level 1 hits (1d4 / 1d6 + a little) are a Bestiary number (batch 6), not a rule; a full block is teamwork's payoff. The Encounter Log watches the share reductions remove (section R). |
 | C7 | **Down stays a setback**; the Wound table is a placeholder | Later (asked: now?) | Claude: after combat feels good (playtest 8), as Lucas first said. |
-| C8 | **Expedition pace**: the Rest is the tick; between Rests about **2 easy, 2 moderate, 1 hard fight** (4 to 6) | Decided (a rough guide) | Consistent with the review's targets: about 190% of the party's Health against 1.7 to 2× Health in Rally Points. |
+| C8 | **Expedition pace**: the Rest is the tick; between Rests about **2 easy, 2 moderate, 1 hard fight** (4 to 6) | Open (batch 7, with G9) | Consistent with the review's targets: about 190% of the party's Health against 1.7 to 2× Health in Rally Points. |
 
 ## D. Movement and position
 
 | # | Item | Status | Detail |
 |---|---|---|---|
-| D1 | **Flanking: a flat 1 Field Boon, the cancel kept** (helping a flanked ally), **"opposite" generous** (the three squares opposite) | Decided ("needs careful ruling"); **ruled 2026-11-25 (batch 4, decision 1; Lucas: "all rest seems good", then on the flat 1: "Keep it")** | The review's "no cancels" rejected. **The ruling:** two creatures flank an enemy when both threaten it and the second is within 45° of the straight line from the first through the enemy's center (between square centers; the 45° edge counts; next to a one-square enemy, the three squares across; any square of each flanker's space, so reach and Large creatures work); a flanker gains 1 Field Boon on its [Melee] Actions against that enemy (more flankers add nothing); an ally of the enemy that threatens the flanker cancels it; [Melee] only; Minions included (D2). **Why flat 1 (rechecked 2026-11-25):** the core review's "flanking rewards piling on" (the old rule added about 22% to a swarm's damage on a Paladin); 1 Boon is about +7.5% damage per attacker against +14% for 2; it leaves the Field cap's second Boon to Prone (Trip) and the rest; one check, no counting. |
-| D2 | **Minions flank**, for now | Decided | |
-| D3 | **An unwilling creature's square blocks movement** (allies pass); Tumble (B8) is the way through | Decided; **ruled 2026-11-25 (batch 4, decision 2; Lucas: "All good", the diagonal "B, proceed")** | Footwork's Weave becomes the exception it reads as. **The ruling:** your own movement (Advance, Evade, Charge, Crawl) can't enter or pass through an unwilling creature's space; an ally's (any willing creature's) space is Difficult Terrain, never ended in; **an ally's space is the one Difficult Terrain an Evade can cross** (at double cost: Evade 1 can't); **moving diagonally between two unwilling creatures is blocked** (it was Difficult Terrain; no major game does it by rule, players expect it: `research/diagonal-between-creatures.md`), between an ally and an enemy or two allies it stays free; **a Down creature (Dying, Shattered, Unconscious, Desperate) and a dead one is Difficult Terrain** on either side; no size exception; Forced Movement and Reposition keep their rules; Charge can't pass allies (Difficult Terrain) and stops at enemies. **Tumble:** passing diagonally between two enemies counts as crossing one creature: the higher of their DCs, no Bane for the second (Lucas's B; his alternative was a set DC 11). |
-| D4 | **A Large creature's straight line (Charge)**: the line between the centers of its start and destination; every square moves the same steps; the left / right tie as today; **with a diagram** | Decided | |
-| D5 | **A dead or Prone creature gives no Cover** | Decided | Chapter 3 "Creatures in the way"; `cover.mjs`. |
-| D6 | ~~Grazing the center line counts~~ **Reversed (Lucas, 2026-11-22): a line that only touches a creature's space doesn't count** ("on the line") | Decided | Applied in the book and Foundry v0.0.478. |
-| D7 | "Pushed 0" | Decided (a Foundry glitch) | The book still says both "0 squares is no Forced Movement" (03:122) and "Collision at 0 against a wall" (03:173): settle the sentence. |
-| D8 | Every NPC has an **answer to the back line** | Decided | Ranged or thrown options, Evades, movement Reactions, "Setup: Advance 2". |
+| D1 | **Flanking: a flat 1 Field Boon, the cancel kept** (helping a flanked ally), **"opposite" generous** (the three squares opposite) | Built (batch 4, v0.0.506) | The review's "no cancels" rejected. **The ruling:** two creatures flank an enemy when both threaten it and the second is within 45° of the straight line from the first through the enemy's center (between square centers; the 45° edge counts; next to a one-square enemy, the three squares across; any square of each flanker's space, so reach and Large creatures work); a flanker gains 1 Field Boon on its [Melee] Actions against that enemy (more flankers add nothing); an ally of the enemy that threatens the flanker cancels it; [Melee] only; Minions included (D2). **Why flat 1 (rechecked 2026-11-25):** the core review's "flanking rewards piling on" (the old rule added about 22% to a swarm's damage on a Paladin); 1 Boon is about +7.5% damage per attacker against +14% for 2; it leaves the Field cap's second Boon to Prone (Trip) and the rest; one check, no counting. |
+| D2 | **Minions flank**, for now | Built (batch 4: nothing to change) | |
+| D3 | **An unwilling creature's square blocks movement** (allies pass); Tumble (B8) is the way through | Built (batch 4, v0.0.506) | Footwork's Weave becomes the exception it reads as. **The ruling:** your own movement (Advance, Evade, Charge, Crawl) can't enter or pass through an unwilling creature's space; an ally's (any willing creature's) space is Difficult Terrain, never ended in; **an ally's space is the one Difficult Terrain an Evade can cross** (at double cost: Evade 1 can't); **moving diagonally between two unwilling creatures is blocked** (it was Difficult Terrain; no major game does it by rule, players expect it: `research/diagonal-between-creatures.md`), between an ally and an enemy or two allies it stays free; **a Down creature (Dying, Shattered, Unconscious, Desperate) and a dead one is Difficult Terrain** on either side; no size exception; Forced Movement and Reposition keep their rules; Charge can't pass allies (Difficult Terrain) and stops at enemies. **Tumble:** passing diagonally between two enemies counts as crossing one creature: the higher of their DCs, no Bane for the second (Lucas's B; his alternative was a set DC 11). |
+| D4 | **A Large creature's straight line (Charge)**: the line between the centers of its start and destination; every square moves the same steps; the left / right tie as today; **with a diagram** | Built (batch 1, v0.0.477; Foundry already had it) | |
+| D5 | **A dead or Prone creature gives no Cover** | Built (batch 1, v0.0.477) | Chapter 3 "Creatures in the way"; `cover.mjs`. |
+| D6 | ~~Grazing the center line counts~~ **Reversed (Lucas, 2026-11-22): a line that only touches a creature's space doesn't count** ("on the line") | Built (v0.0.478) | Applied in the book and Foundry v0.0.478. |
+| D7 | "Pushed 0" | Built (batch 1, v0.0.477) | The book still says both "0 squares is no Forced Movement" (03:122) and "Collision at 0 against a wall" (03:173): settle the sentence. |
+| D8 | Every NPC has an **answer to the back line** | Open (batch 6) | Ranged or thrown options, Evades, movement Reactions, "Setup: Advance 2". |
 
 ## E. Conditions
 
 | # | Item | Status | Detail |
 |---|---|---|---|
-| E1 | **Frightened → Daunted** | Decided | Commandment's Courage: "ignore Daunted". Foundry's status id changes (a migration). |
-| E2 | **A condition with a source ends when its source goes Down** (Daunted, Taunted; Grabbed has it) | Decided | The word stays **source** (Chapter 8's); "origin" stays for Forced Movement and areas. |
-| E3 | **Prone has been given too liberally**; Save riders "Tier 1 or 2" depend on the rider | Decided (which cards open) | Kneel knocks the Orc Prone 83% for 1 AP, Trip 23%. Touches class cards: see question 3. |
-| E4 | **Save-ends leftovers** (02-turns.md "until a Save ends it"; 08 "the Save that would end Frightened"); **EoT in the Glossary** says which turn | Stands | Text fixes. |
-| E5 | "Doomed on its next roll" priced as a Mild rider | Stands (to look at) | With the Bestiary's rider prices. |
+| E1 | **Frightened → Daunted** | Built (batch 1, v0.0.477) | Commandment's Courage: "ignore Daunted". Foundry's status id changes (a migration). |
+| E2 | **A condition with a source ends when its source goes Down** (Daunted, Taunted; Grabbed has it) | Built (batch 1, v0.0.477) | The word stays **source** (Chapter 8's); "origin" stays for Forced Movement and areas. |
+| E3 | **Prone has been given too liberally**; Save riders "Tier 1 or 2" depend on the rider | Built (batch 3, v0.0.480: Kneel) | Kneel knocks the Orc Prone 83% for 1 AP, Trip 23%. Touches class cards: see question 3. |
+| E4 | **Save-ends leftovers** (02-turns.md "until a Save ends it"; 08 "the Save that would end Frightened"); **EoT in the Glossary** says which turn | Built (batch 1, v0.0.477; Chapter 2's duration list fixed 2026-11-25) | Text fixes. |
+| E5 | "Doomed on its next roll" priced as a Mild rider | Open (batch 7) | With the Bestiary's rider prices. |
 
 ## F. Escalation and Surge
 
 | # | Item | Status | Detail |
 |---|---|---|---|
-| F1 | **The Escalation Passives may go**; martials' Actions grow stronger with Escalation or open new uses (as Smite); casters spend it as **Surge** | Decided (direction) | Surge already exists in the magic record (decisions 66 to 90: gained when Escalation rises and each round, spent by spells; decision 68: "the classes at their next pass"). No conflict: the martial side is the class passes' work. | **Decided 2026-11-22 (Lucas, `rules-backlog.md` "ESCALATION UNLOCKS ACTIONS, NOT PASSIVES"; research `research/escalation-and-guard.md`):** the Escalation Passives go; Escalation unlocks Actions: level 1 an Escalation 2 Action, level 2 an Escalation 4 Action (the Encounter Pick merged in), level 3 no Escalation 6 ability, level 4 the Apex at Escalation 6; gated Actions at full power when unlocked (no hoarding); the Escalation die dE (Escalation × 2: d4 to d12) on Round Actions. **Moved ahead of the Bestiary (Lucas, 2026-11-25): batch 5.** **Amended after the research (Lucas, 2026-11-25; `rules-backlog.md`, the entry "ESCALATION UNLOCKS ACTIONS"):** level 1 keeps no Escalation ability (the Passives go, nothing replaces them); level 2 an Escalation 3 ability (the Encounter Pick merged); level 4 the Apex at 6; the Archer tests dE on one ability; the Arts removed for now. Built: v0.0.507.
-| F2 | The ladder's pace: fights of 3 to 3½ rounds reach Escalation 4 to 5; the 6 rung is a round-4-or-Momentum event | Later | A level 2+ question (a level 1 PC has only its Escalation 2 ability; section N); decide with F1 at the class pass. |
+| F1 | **The Escalation Passives may go**; martials' Actions grow stronger with Escalation or open new uses (as Smite); casters spend it as **Surge** | Built, first step (batch 5, v0.0.507 to v0.0.510); the rest paused (2026-11-25) | Surge already exists in the magic record (decisions 66 to 90: gained when Escalation rises and each round, spent by spells; decision 68: "the classes at their next pass"). No conflict: the martial side is the class passes' work. | **Decided 2026-11-22 (Lucas, `rules-backlog.md` "ESCALATION UNLOCKS ACTIONS, NOT PASSIVES"; research `research/escalation-and-guard.md`):** the Escalation Passives go; Escalation unlocks Actions: level 1 an Escalation 2 Action, level 2 an Escalation 4 Action (the Encounter Pick merged in), level 3 no Escalation 6 ability, level 4 the Apex at Escalation 6; gated Actions at full power when unlocked (no hoarding); the Escalation die dE (Escalation × 2: d4 to d12) on Round Actions. **Moved ahead of the Bestiary (Lucas, 2026-11-25): batch 5.** **Amended after the research (Lucas, 2026-11-25; `rules-backlog.md`, the entry "ESCALATION UNLOCKS ACTIONS"):** level 1 keeps no Escalation ability (the Passives go, nothing replaces them); level 2 an Escalation 3 ability (the Encounter Pick merged); level 4 the Apex at 6; the Archer tests dE on one ability; the Arts removed for now. Built: v0.0.507.
+| F2 | The ladder's pace: fights of 3 to 3½ rounds reach Escalation 4 to 5; the 6 rung is a round-4-or-Momentum event | Later (paused with batch 5) | A level 2+ question (a level 1 PC has only its Escalation 2 ability; section N); decide with F1 at the class pass. |
 
 ## G. The Bestiary (mechanics first, numbers after)
 
 | # | Item | Status | Detail |
 |---|---|---|---|
-| G1 | **Keep ranks, roles, sheets; rebuild the numbers**; **mechanics first, the tables later** | Decided | |
-| G2 | **Five ranks: Minion, Grunt, Standard, Elite, Boss** (Minion fodder; Grunt weaker than a PC; Standard on level; Elite above; **Boss** for a single-boss or boss + 1 to 2 fight, with its own turn mechanic: Nimble's one turn per PC, or Draw Steel's two turns) | Decided (the Boss's mechanic open) | The review gave the Elite two turns; that now belongs to the Boss (see K6). |
-| G3 | **Minions have ticks, not Health**: a Tier removes that many (1 / 2 / 3); most Minions 2; **one tick reduction per Action** (its Forced Movement damage doesn't tick again; Lingering apart); **no overflow** | Decided | Replaces the review's "one hit, a Tier 3 drops another". See K1, K2. |
-| G4 | **NPCs play by the PCs' rules** (no NPC-only Strike limit: PF2e's "different rules" complaint) | Decided (scope open: question 1) | |
-| G5 | **No generic NPC Reaction-AP rule: a Reaction designed for each enemy** | Decided | The review's "idle Reaction AP pays for Stand / Break Free" rejected. |
-| G6 | **NPC Specials hitting up to two creatures: yes, but not all** (modular) | Decided | Spreading damage becomes the card's shape. |
-| G7 | **The GM's focus-fire tip: at most a small note**; no targeting "habit" line | Decided | |
-| G8 | **Defenses by role** (a real spread, AD 11 to 16) and **one Defense point ≈ 10% of Health**; Ward Defense priced low until PC cards attack it | Stands | B5's Mind attack would be the first PC card against Ward Defense. |
-| G9 | **Targets**: easy ~25%, normal ~35-45%, hard ~55-65% of party Health | Decided (with C8) | |
-| G10 | Kept aside for the rebuild: Elite Escalation, the rider list, Frequency pricing, the best-turn check; ranks must differ by more than Health | Decided | |
-| G11 | A simpler pricing (ready lines per rank and AP; the points engine only in Foundry's Builder) | Stands | With the numbers, after the mechanics. |
-| G12 | The examples rebuilt, a Grunt among them | Later (the numbers) | |
+| G1 | **Keep ranks, roles, sheets; rebuild the numbers**; **mechanics first, the tables later** | Open (batches 6 and 7) | |
+| G2 | **Five ranks: Minion, Grunt, Standard, Elite, Boss** (Minion fodder; Grunt weaker than a PC; Standard on level; Elite above; **Boss** for a single-boss or boss + 1 to 2 fight, with its own turn mechanic: Nimble's one turn per PC, or Draw Steel's two turns) | Open (batch 6) | The review gave the Elite two turns; that now belongs to the Boss (see K6). |
+| G3 | **Minions have ticks, not Health**: a Tier removes that many (1 / 2 / 3); most Minions 2; **one tick reduction per Action** (its Forced Movement damage doesn't tick again; Lingering apart); **no overflow** | Open (batch 6) | Replaces the review's "one hit, a Tier 3 drops another". See K1, K2. |
+| G4 | **NPCs play by the PCs' rules** (no NPC-only Strike limit: PF2e's "different rules" complaint) | Open (batch 6) | |
+| G5 | **No generic NPC Reaction-AP rule: a Reaction designed for each enemy** | Open (batch 6) | The review's "idle Reaction AP pays for Stand / Break Free" rejected. |
+| G6 | **NPC Specials hitting up to two creatures: yes, but not all** (modular) | Open (batch 6) | Spreading damage becomes the card's shape. |
+| G7 | **The GM's focus-fire tip: at most a small note**; no targeting "habit" line | Open (batch 6) | |
+| G8 | **Defenses by role** (a real spread, AD 11 to 16) and **one Defense point ≈ 10% of Health**; Ward Defense priced low until PC cards attack it | Changed (Q): a Default Standard and Elite first; batch 6 | B5's Mind attack would be the first PC card against Ward Defense. |
+| G9 | **Targets**: easy ~25%, normal ~35-45%, hard ~55-65% of party Health | Open (batch 7) | |
+| G10 | Kept aside for the rebuild: Elite Escalation, the rider list, Frequency pricing, the best-turn check; ranks must differ by more than Health | Open (batches 6 and 7) | |
+| G11 | A simpler pricing (ready lines per rank and AP; the points engine only in Foundry's Builder) | Open (batch 7) | With the numbers, after the mechanics. |
+| G12 | The examples rebuilt, a Grunt among them | Later (batch 7) | |
 
 ## H. Classes and cards
 
 | # | Item | Status | Detail |
 |---|---|---|---|
-| H1 | **The Paladin's fixed Weapon +1 / Power +2 "defeats the purpose of the system"**: a remedy | Decided (the remedy open) | Claude: he chooses his Modifier order like any class; Smite (already) and Binding Light roll Signature. Reverses the redesign's 2026-11-14 decision. |
-| H2 | **Binding Light gets [Signature]** | Decided (an oversight) | |
-| H3 | **Arts are hard to remember; prompts for every trigger; fewer Modes; an option budget per level** (Root 5) | Decided | Foundry prompts first; Modes and budget at the class passes. |
-| H4 | **A Talent can be just an Action** (Rime Strike as the Talent; Oath of Burden with Bear the Blow inline) | Decided | |
-| H5 | Quick Shots' Critical AP is not dead (movement, help) | Decided (no change) | |
-| H6 | Ranged damage stays low for now; watch the Field Bane on a target Engaged with another creature | Decided (watch) | |
-| H7 | The four playtest Talents were left out of playtest 7 on purpose | Noted | It was played at level 1, where the pregens have no Talent (section N). |
-| H8 | **The Talents' anchor (+6 a turn) and `ruler/pc-budget.md` go stale** with B1/B2 | Stands | Re-anchor after the Weapon Attack; Talents (T15 onward) wait for it. |
-| H9 | "No shutting down a boss" is a Talents rule (talents-design.md) but not a class-card rule | Stands (to settle) | With the Boss (G2). |
+| H1 | **The Paladin's fixed Weapon +1 / Power +2 "defeats the purpose of the system"**: a remedy | Built (batch 3, v0.0.480) | Claude: he chooses his Modifier order like any class; Smite (already) and Binding Light roll Signature. Reverses the redesign's 2026-11-14 decision. |
+| H2 | **Binding Light gets [Signature]** | Built (batch 1, v0.0.477) | |
+| H3 | **Arts are hard to remember; prompts for every trigger; fewer Modes; an option budget per level** (Root 5) | Changed: the Arts removed (v0.0.507); prompts, Modes and the budget Later | Foundry prompts first; Modes and budget at the class passes. |
+| H4 | **A Talent can be just an Action** (Rime Strike as the Talent; Oath of Burden with Bear the Blow inline) | Built (`talents-playtest.md`) | |
+| H5 | Quick Shots' Critical AP is not dead (movement, help) | Done (no change) | |
+| H6 | Ranged damage stays low for now; watch the Field Bane on a target Engaged with another creature | Watch (playtest 8) | |
+| H7 | The four playtest Talents were left out of playtest 7 on purpose | Noted (no action) | It was played at level 1, where the pregens have no Talent (section N). |
+| H8 | **The Talents' anchor (+6 a turn) and `ruler/pc-budget.md` go stale** with B1/B2 | Built (batch 3, in `talents-design.md`; `ruler/pc-budget.md` not rewritten) | Re-anchor after the Weapon Attack; Talents (T15 onward) wait for it. |
+| H9 | "No shutting down a boss" is a Talents rule (talents-design.md) but not a class-card rule | Open (batch 6, with G2) | With the Boss (G2). |
 
 ## I. Foundry and measurement
 
 | # | Item | Status | Detail |
 |---|---|---|---|
-| I1 | **The Encounter Log upgrade** (the review's section 7: per roll, per turn, Reactions offered / used, per creature per round, an automatic summary; one numbering for same-name creatures) | Decided | Before playtest 8, so it measures. |
-| I2 | **Foundry blocks, not warns** (an Advance while Immobilized, a 5th AP), chapter by chapter | Decided | |
-| I3 | Playtest 7's bugs and asks (`foundry-backlog.md`, "PLAYTEST 7"): Prone + Break Free, Charge's Weapon Attack in Situational, the Charge reselect glitch, Quick Shots' and Slip Away's movement, Darting Blade's stow, the strike pips, Quick Shots not faded at 1 AP, Daunted not removed at Down, dead tokens' Cover, the Dying save's old card, hover tips, ± AP on the strip, the current turn | Logged | |
-| I4 | The SIM: Lucas distrusts its white-room numbers | Decided | Measure at the table; run the SIM on the current cards only when a whole-fight comparison is needed. |
+| I1 | **The Encounter Log upgrade** (the review's section 7: per roll, per turn, Reactions offered / used, per creature per round, an automatic summary; one numbering for same-name creatures) | Built (v0.0.488, v0.0.511) | Before playtest 8, so it measures. |
+| I2 | **Foundry blocks, not warns** (an Advance while Immobilized, a 5th AP), chapter by chapter | Built (batch 1, v0.0.477) | |
+| I3 | Playtest 7's bugs and asks (`foundry-backlog.md`, "PLAYTEST 7"): Prone + Break Free, Charge's Weapon Attack in Situational, the Charge reselect glitch, Quick Shots' and Slip Away's movement, Darting Blade's stow, the strike pips, Quick Shots not faded at 1 AP, Daunted not removed at Down, dead tokens' Cover, the Dying save's old card, hover tips, ± AP on the strip, the current turn | Built (v0.0.477 to v0.0.512); the hover tips on effect icons open (a design ask) | |
+| I4 | The SIM: Lucas distrusts its white-room numbers | Done (a working rule, O7) | Measure at the table; run the SIM on the current cards only when a whole-fight comparison is needed. |
 
 ## J. Rejected (so no session reopens them by accident)
 
@@ -226,5 +226,8 @@ The review's section 7 is the start (per roll, per turn, Reactions offered and u
    - **Batches 6 and 7 have their own record since 2026-11-25: `book/bestiary-design.md`** (Lucas: every Chapter 14 number set aside, the rules kept; the research; the order of its decisions, which puts the measure of difficulty, the normal fight and the benchmark PC before both batches).
 8. **The Encounter Log** (I1, with section R's list), then **playtest 8**: the level 1 pregens (Stage 0) against playtest 7's line-up rebuilt plus two Grunts, measured by the new log; solo.
 9. **Later:** H3's Modes at the class passes; C7 (Wounds); the Talents' restart (T15) on the new anchor; magic's playtest kit; progression past Stage 0.
+
+**Lucas, 2026-11-25 (after v0.0.510): "I dont think we should create extra levels until level 1 feels good":** batch 5's other pieces (the level 2 Escalation 3 abilities, F2's pace, Smite in dE, the Apex) wait until level 1 runs well at the table; the order goes on with batch 6.
+**Item 8, corrected (2026-11-25):** the Encounter Log was BUILT in v0.0.488 (2026-11-23; Lucas tested 3/3): I1 and section R as they stood then; section R's batch 4 items (Flanking Boons, moves refused by blocking, Tumbles and their Checks) and the Bestiary's ask (what class cards took, kept apart) built in v0.0.511. Playtest 8 waits for batches 6 and 7.
 
 Each batch: one decision at a time with Lucas, then the book (rules-src first), then one Foundry version (tests, the checklist naming the PC or NPC, the gallery for card changes), the backlogs, HANDOFF.

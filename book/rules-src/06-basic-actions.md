@@ -36,6 +36,8 @@ Every creature can use these Actions, except that an NPC has no Basic Attack car
 
 @@CARD:Lean@@
 
+@@CARD:Point Out@@
+
 @@CARD:Regrip@@
 
 @@CARD:Release@@
@@ -44,9 +46,13 @@ Every creature can use these Actions, except that an NPC has no Basic Attack car
 
 @@CARD:Relocate@@
 
+@@CARD:Seek@@
+
 @@CARD:Shake Off@@
 
 @@CARD:Shove@@
+
+@@CARD:Sneak@@
 
 @@CARD:Stand@@
 

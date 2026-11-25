@@ -115,13 +115,14 @@ function draw() {
     tt.anchor.set(0.5); put(tt, cc.x, cc.y - rr - (nm.height || 14) - 4);
   }
   MK.addOnTop(box, MK.Z.FLANK);
+  MK.trackLines("flank", box);   // v0.0.515: shown 5 seconds after a selection, a hover or a target (mapmark.mjs)
 }
 const redraw = () => { if (!on || queued) return; queued = true; requestAnimationFrame(draw); };
 
 export function toggleFlanking(v) {
   on = !!v;
   if (on) { if (!canvas?.grid?.isSquare) ui.notifications.warn("Flanking is drawn on square grids only."); draw(); }
-  else clear();
+  else { clear(); MK.untrackLines("flank"); }
   return on;
 }
 export const flankingShown = () => on;

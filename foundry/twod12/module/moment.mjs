@@ -344,6 +344,15 @@ async function reactionSight(tk, targetTok, sourceTok) {
  * closer: (ownerToken) => bool (an enemy that moved closer to that creature's side), only: "interrupt" | "trigger" | "" }.
  * Returns { rows: [{ actor, token, item, kind, subject, target, dist }], blocked: [the same, with why] }.
  */
+/** v0.0.513 (Sneak): is the subject sneaking, and Hidden or Unsensed from Hide to this reactor? */
+const sneakHidden = (sj, tk) => {
+  try {
+    const cb = game.combat?.combatants?.find?.(c => c.actor === sj.actor || c.tokenId === (sj.token?.document?.id ?? sj.token?.id));
+    if (!cb?.getFlag?.("twod12", "sneaking")) return false;
+    const st = sj.actor.getFlag?.("twod12", "hide")?.[tk.document?.id ?? tk.id];
+    return st === "hidden" || st === "unsensed";
+  } catch (e) { return false; }
+};
 export async function collectReactions(ev) {
   const rows = [], blocked = [];
   for (const tk of globalThis.canvas?.tokens?.placeables ?? []) {
@@ -378,6 +387,8 @@ export async function collectReactions(ev) {
         if (marked !== null && ![sj.token?.document?.uuid, sj.token?.uuid, sj.actor?.uuid].includes(marked)) continue;   // pack TALENTS-PT: only the creature it marked
         const isSelf = sj.actor.uuid === actor.uuid;
         if (!sideOk(def.who, tk.document?.disposition, sj.token?.document?.disposition ?? sj.disposition, isSelf, item.system.momentSelf)) continue;
+        // v0.0.513 (the Hide package; book, Sneak): a Sneak's movement triggers no Reaction from a creature it is Hidden (or Unsensed) to from Hide
+        if (def.move && !isSelf && sneakHidden(sj, tk)) continue;
         const where = (def.move && ev.at?.[k]) || sj.at || sj.token;
         // v0.0.277 (Lucas: a movement's Reaction sometimes wasn't offered): a movement is measured on every square of its path (an array)
         const dist = isSelf ? 0 : Array.isArray(where) ? Math.min(Infinity, ...where.map(w => tokenDistance(tk, w))) : where ? tokenDistance(tk, where) : Infinity;

@@ -17,7 +17,7 @@ console.log("Done: the rest stay:", h.includes("Done: the rest stay"), "| no Can
 const mv = src("module/move.mjs"), rx = src("module/rxoverlay.mjs"), pb = src("module/pickbar.mjs");
 console.log("--- the code");
 console.log("Reaction ring:", rx.includes("attentionRing(labels, centerOf(me)"), "| its plate:", rx.includes('"Use or Pass in the HUD"'), "| picks:", pb.includes("M.attentionRing(marks, c,"),
-  "| Charge: enemies first:", mv.includes("Pick the enemy to Charge"), "| confirm only by the button, Enter or the target:", mv.includes("const confirm = async () =>") && !mv.includes("if (!cur) return ui.notifications.info(\"Point at the destination"),
+  "| Charge: enemies first:", mv.includes("Target the enemy to Charge"), "| confirm only by the button, Enter or the target:", mv.includes("const confirm = async () =>") && !mv.includes("if (!cur) return ui.notifications.info(\"Point at the destination"),
   "| Evade dashed:", mv.includes("if (evading) MK.dashLine(rangeGfx"), "| no pointer tip:", !mv.includes('tip.style.display = "block"'), "| Escape = Don't move it:", mv.includes("done({ ended: true }); };   // v0.0.461 (choice 5A)"),
   "| Backspace:", mv.includes('ev.key === "Backspace"'), "| Vigor collisions:", !/\$\{d\.self\} Body/.test(mv), "| Escape in a free move:", mv.includes("window.addEventListener(\"keydown\", esc_, true);"),
   "| map text in Source Sans 3:", !/fontFamily: "Signika, sans-serif"/.test(mv + rx + src("module/loe.mjs") + src("module/fearline.mjs") + src("module/flankoverlay.mjs")));

@@ -27,7 +27,7 @@ import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches, demoralizedTarget, markDemoralized } from "./usage.mjs";   // (markAtWill: imported where used)
 import { tierProbs, topStep, bbCount, bbResolve } from "./calc.mjs";
-import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged
+import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS, escalationDie } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged; v0.0.510: escalationDie (Steady Draw's dE)
 import { weaponDiceFormula, weaponDieOnlyFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, minorNpc } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die; core rework batch 3: [D]
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
@@ -58,6 +58,15 @@ export function autoEffectEvadeTag(version) {
   return m ? m[1] : "";
 }
 
+/** Pure (v0.0.512, playtest 7: "Slip Away's Evade 1 then Advance 2 should run by themselves"): a no-roll Reaction whose Effect is only your own movements
+ *  ("You @Move[evade|...], then @Move[advance|...]."): their tags in order, [] for anything else (a roll, another button, someone else moved). */
+export function autoMoveChain(version, reaction = false) {
+  if (!reaction || !version?.noTiers) return [];
+  const txt = String(version.effects ?? "").trim();
+  if (!/^You\s+@Move\[/i.test(txt) || /@(?!Move\[)\w+\[/.test(txt)) return [];
+  const tags = [...txt.matchAll(/@Move\[([^\]]+)\]/g)].map(m => m[1]);
+  return tags.every(t => ["evade", "advance"].includes(t.split("|")[0].trim().toLowerCase())) ? tags : [];
+}
 /** Text form of a damage instance, e.g. "[V] 1[W] + 1d4 H" (v0.0.234: the pool B / M written [V] / [R]). */
 export function instanceText(i) {
   const parts = [];
@@ -170,6 +179,9 @@ export function pureMove(it, version, basicKey = "") {
   const txt = String(version.effects ?? ""), moves = [...txt.matchAll(/@Move\[([^\]]+)\]/g)];
   if (moves.length !== 1 || /@(?!Move\[)\w+\[/.test(txt)) return null;
   if (!["advance", "walk", "move", "evade"].includes(moves[0][1].split("|")[0].trim().toLowerCase())) return null;
+  // v0.0.508 (Lucas on v0.0.507: "Tumble didnt send the message to the chat, just asked to move the token, so no check happened"): a movement that
+  // passes enemies (Tumble) needs its Check first, so it posts its card (the Check buttons, then the Move button) like any other Action
+  if (/\|\s*pass\s*:/.test(moves[0][1])) return null;
   const traits = it?.traits;
   if (!(traits?.has?.("move") || (Array.isArray(traits) && traits.includes("move")) || basicKey === "safeMovement")) return null;
   return moves[0][1];
@@ -691,6 +703,36 @@ export async function useAction(actor, item, opts = {}) {
     if (!outcome.count) ui.notifications.info("No creature is in the area.");
   }
   const rollsAtOthers = !isSelf || !!String(it.area ?? "").trim();
+  // v0.0.513 (the Hide package) / v0.0.514 (Lucas on v0.0.513: "Targeting through walls is not great, likely make it auto-target all qualifying targets";
+  // the crash: the Version isn't chosen yet here): Seek targets by itself the creatures Hidden or Unsensed to you from Hide within 5 (1 AP) or 10
+  // squares (2 AP: the HUD's Version, else a question); Hide targets by itself each creature that can't see you or against which you have High Cover
+  if ((basicKey === "seek" || basicKey === "hide") && selfToken) {
+    const H = await import("./hide.mjs");
+    let found = [];
+    if (basicKey === "seek") {
+      let ap = Number(opts.rdState?.ap) || 0;
+      if (!ap && versions.length > 1) {
+        const { pickBar } = await import("./pickbar.mjs");
+        const pick = await pickBar({ icon: "fa-eye", text: `<b>${esc(item.name)}</b>: how far?`, options: versions.map(v => ({ id: String(v.ap), label: `${v.ap} AP: ${Number(v.ap) >= 2 ? 10 : 5} squares` })), cancel: "Cancel" });
+        if (pick == null || pick === "") return;
+        ap = Number(pick);
+      }
+      ap ||= Number(versions[0]?.ap) || 1;
+      opts.rdState = { ...(opts.rdState ?? {}), ap };
+      versions = versions.filter(v => Number(v.ap) === ap);   // its range is chosen: the dialog keeps that Version
+      const sq = ap >= 2 ? 10 : 5;
+      found = H.seekCandidates(selfToken, sq);
+      if (!found.length) return ui.notifications.warn(`No creature is Hidden or Unsensed to ${actor.name} from Hide within ${sq} squares.`);
+    } else {
+      found = await H.hideCandidates(selfToken);
+      if (!found.length) return ui.notifications.warn(`${actor.name} can't Hide: every creature sees ${actor.name} without High Cover.`);
+    }
+    for (const t of [...game.user.targets]) t.setTarget(false, { releaseOthers: false, groupSelection: true });
+    for (const t of found) t.setTarget(true, { releaseOthers: false, groupSelection: true });
+  }
+  // v0.0.513: a card whose Target line says "(no Line of Effect needed)" (Hide, Seek) reaches creatures behind Total Cover; v0.0.514 (Lucas: "Targeting
+  // through wall makes it Doomed because of LoE. Hide has to ignore it"): Hide's and Seek's rolls ignore Senses (their DC is the creature's Instinct DC)
+  const noLoENeeded = /\(no Line of Effect needed\)/i.test(String(it.targets ?? "")), senseFree = basicKey === "seek" || basicKey === "hide";
   const aimed = rollsAtOthers ? [...game.user.targets] : [];
   const targetToken = rollsAtOthers ? (aimed[0] ?? null) : selfToken;
   let dcInfo = computeDC(item, rollsAtOthers ? (targetToken?.actor ?? null) : actor, preAttr, src);
@@ -792,7 +834,7 @@ export async function useAction(actor, item, opts = {}) {
       const row = { token: tk, uuid: tk.document?.uuid ?? tk.uuid, name: tk.name, actor: a, actorUuid: a.uuid, dcInfo: computeDC(item, a, preAttr, src), favored: false, doomed: false, note: [] };
       if (row.dcInfo.untrained) { row.favored = true; row.note.push({ text: "Untrained armor", cls: "boon" }); }   // its armor is beyond its training: Actions against its Armor or Ward are Favored
       const cov0 = areaOutcome?.cover?.[tk.id] ?? (selfToken && String(it.targets ?? "").trim() ? coverBetween(selfToken, tk) : null);   // an area: cover from its Point of Origin
-      if (cov0?.noLoE) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
+      if (cov0?.noLoE && !noLoENeeded) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
       const covLow = ignoredBy(actor, "coverLower", useTraits), covHi = ignoredBy(a, "coverHigher", new Set());
       const cov = covBanesOn ? adjustCover(cov0, { lower: covLow.length, higher: covHi.length }) : { ...(cov0 ?? {}), banes: 0 };
       if (covBanesOn) pushCoverChanges(cov0, cov, covLow, covHi, tk.name, a.uuid);
@@ -806,7 +848,7 @@ export async function useAction(actor, item, opts = {}) {
         if (lv === "hidden" || lv === "unsensed") extraMods.push({ id: `syn:hidden-na|${a.uuid}`, name: lv === "hidden" ? "Hidden" : "Unsensed", boons: 0, banes: 1, match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${tk.name} as ${lv === "hidden" ? "Hidden" : "Unsensed"}` });
         else if (lv === "obscured") extraMods.push({ id: `syn:obscured-na|${a.uuid}`, name: "Obscured", boons: 0, banes: 1, bb: "field", match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${tk.name} as Obscured` });
       }
-      if (!it.area && selfToken) {
+      if (!it.area && !senseFree && selfToken) {
         const pv = perceive(selfToken, tk, { loe: !cov?.noLoE }), seenT = pv.level === "clear" ? "" : pv.level;
         if (seenT === "unsensed") { skipped.push(`${tk.name}: Unsensed`); continue; }
         if (seenT === "obscured") extraMods.push({ id: `syn:obscured|${a.uuid}`, name: `Obscured (${tk.name})`, boons: 0, banes: 1, bb: "field", match: true, predicate: `You perceive ${tk.name} as Obscured: ${pv.why}` });
@@ -847,7 +889,7 @@ export async function useAction(actor, item, opts = {}) {
     const cov0 = areaOutcome?.cover?.[targetToken?.id] ?? coverBetween(selfToken, targetToken);
     const covLow = ignoredBy(actor, "coverLower", useTraits), covHi = targetToken.actor ? ignoredBy(targetToken.actor, "coverHigher", new Set()) : [];
     const cov = covBanesOn ? adjustCover(cov0, { lower: covLow.length, higher: covHi.length }) : { ...(cov0 ?? {}), banes: 0 };
-    if (cov?.noLoE) {
+    if (cov?.noLoE && !noLoENeeded) {
       dlgWarns.push(`No Line of Effect to ${targetToken.name}: all four corners are blocked`);   // v0.0.453 (R3): a warning in the dialog (it was a stop, or the GM's window)
     } else if (covBanesOn) {
       pushCoverChanges(cov0, cov, covLow, covHi, targetToken.name);
@@ -859,7 +901,7 @@ export async function useAction(actor, item, opts = {}) {
         else extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, bb: "field", match: true, predicate: `${coverWhy(cov)}${covHi.length && cov.banes > (cov0?.banes ?? 0) ? ` (${covHi.join(", ")})` : ""}` });
       }
     }
-    if (!it.area) { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }); seen = pv.level === "clear" ? "" : pv.level; seenWhy = pv.why; }
+    if (!it.area && !senseFree) { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }); seen = pv.level === "clear" ? "" : pv.level; seenWhy = pv.why; }
     else { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }), lv = pv.level === "clear" ? "" : pv.level;   // v0.0.292: an Area ignores Senses (n/a)
       if (lv && lv !== "clear") extraMods.push({ id: `syn:${lv === "obscured" ? "obscured" : "hidden"}-na`, name: lv === "hidden" ? "Hidden" : lv === "unsensed" ? "Unsensed" : "Obscured", boons: 0, banes: 1, ...(lv === "obscured" ? { bb: "field" } : {}), match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${targetToken.name} as ${lv}` }); }
     if (seen === "unsensed") dlgWarns.push(`${targetToken.name} is Unsensed: it can't be targeted (the roll is Doomed)`);   // v0.0.453 (R3)
@@ -867,7 +909,7 @@ export async function useAction(actor, item, opts = {}) {
   }
   // How your target perceives you: Obscured gives 1 boon; Hidden or Unsensed make the Action Empowered.
   let mine = "", mineWhy = "";
-  if (!multi && rollsAtOthers && !it.area && targetToken) {
+  if (!multi && rollsAtOthers && !it.area && !senseFree && targetToken) {
     if (selfToken) { const pv = perceive(targetToken, selfToken, { loe: !coverBetween(targetToken, selfToken)?.noLoE }); mine = pv.level === "clear" ? "" : pv.level; mineWhy = pv.why; }
     else mine = perceptionOf(actor);
   }
@@ -1373,6 +1415,23 @@ export async function useAction(actor, item, opts = {}) {
   }
   // v0.0.292: the roll dialog's roll mode, for this roll only (the chat's own mode stays as it is)
   const rdMode = (() => { const d = {}, m = data.rollMode, CM = ChatMessage.implementation ?? ChatMessage; if (m) try { if (typeof CM.applyRollMode === "function") CM.applyRollMode(d, m); else d.rollMode = m; } catch (e) { console.warn("twod12 | roll mode", e); } return d; })();
+  // v0.0.510 (Steady Draw): the roll dialog's 2dE chip, paid only when the roll got a Tier 2 or 3: the Reaction Point (in combat), once an encounter
+  let steadyDE = 0;
+  if (data.steadyDE === "on") {
+    try {
+      const h = activeHooks(actor, "basicLine").find(x => Number(x.hook?.deMore) > 0), key = h?.item?.name ?? "deMore";
+      const tiers = mres ? mres.map(r => Number(r.chk?.tier) || 0) : [Number(chk?.tier) || 0];
+      if (h && steadyPays(tiers)) {
+        const C = await import("./combat.mjs"), cb = game.combat?.started ? C.combatantOf(actor) : null;
+        if (cb && !(C.getRAP(cb) > 0)) ui.notifications.warn(`${actor.name} has no Reaction Point left: no ${key} dice.`);
+        else {
+          if (cb) await C.setRAP(cb, C.getRAP(cb) - 1);
+          if (game.combat?.started) await actor.setFlag("twod12", "onceUsed", { ...(actor.getFlag("twod12", "onceUsed") ?? {}), [key]: game.combat.id });
+          steadyDE = Number(h.hook.deMore) || 2;
+        }
+      }
+    } catch (e) { console.warn("twod12 | Steady Draw", e); }
+  }
   const cmsg = bannerMove ? null : await ChatMessage.create({
     ...rdMode,
     speaker: ChatMessage.getSpeaker({ actor }),
@@ -1405,6 +1464,7 @@ export async function useAction(actor, item, opts = {}) {
           mode: opts.splitMode ?? "",
           triggerUuid: opts.triggerUuid ?? "",   // v0.0.409: a Reaction's triggering creature (@Condition[...|to:trigger])
           smiteMore,   // v0.0.409 (Smite): the Reaction Point spent for 1 more Smite die
+          steadyDE,   // v0.0.510 (Steady Draw): n dE on Tiers 2 and 3 (the Reaction Point spent)
           attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
           isWeapon: modOnWeapon(src, useTraits),
           escalation: escCost > 0,   // the effects it applies end with the encounter (escalation.mjs)
@@ -1623,6 +1683,31 @@ export async function useAction(actor, item, opts = {}) {
     const dTargets = (mres ? mres.map(r => r.uuid) : targets.map(t => t.uuid)).filter(Boolean);
     if (dTargets.length) await markDemoralized(actor, dTargets);
   }
+  // v0.0.517: Hide or Sneak used: the HUD's Hiding entry shows for the rest of this turn (to add or fix by hand)
+  if (basicKey === "hide" || basicKey === "sneak") { try { await (await import("./hide.mjs")).markHidTurn(actor); } catch (e) { /* no combat */ } }
+  // v0.0.513 (the Hide package): Hide, Seek and Point Out apply their Tiers (hide.mjs)
+  if (["hide", "seek", "pointOut"].includes(basicKey) && !version.noTiers) {
+    try {
+      const H = await import("./hide.mjs");
+      const rows = mres ? mres.map(r => ({ uuid: r.uuid, name: r.name, tier: r.chk.tier })) : targets.map(t => ({ uuid: t.uuid, name: t.name, tier }));
+      const me = selfToken?.document?.id ?? "";
+      if (basicKey === "hide") await H.applyHide(actor, rows);
+      else if (basicKey === "seek") await H.improve(rows.filter(r => r.tier >= 2).map(r => ({ hiderUuid: r.uuid, observerId: me })), `${actor.name}'s Seek`);
+      else {
+        // Point Out: Tier 2, one ally within 10 squares (picked); Tier 3, every ally within 10 squares
+        const r0 = rows[0], { tokenDistance } = await import("./light.mjs");
+        const allies = (canvas.tokens?.placeables ?? []).filter(t => t.actor && t.id !== me && Number(t.document.disposition) === Number(selfToken?.document?.disposition) && selfToken && tokenDistance(selfToken, t) <= 10);
+        let who = [];
+        if (r0?.tier >= 3) who = allies;
+        else if (r0?.tier === 2 && allies.length) {
+          const { pickBar } = await import("./pickbar.mjs");
+          const id = allies.length === 1 ? allies[0].id : await pickBar({ icon: "fa-eye", text: `<b>Point Out</b>: which ally perceives <b>${esc(r0.name)}</b> better? (click here or the token)`, options: allies.map(t => ({ id: t.id, label: t.name, token: t })), cancel: "" });   // v0.0.516 (Lucas: "allow clicking on the token, blinking")
+          who = allies.filter(t => t.id === id);
+        }
+        if (r0 && who.length) await H.improve(who.map(t => ({ hiderUuid: r0.uuid, observerId: t.id })), `${actor.name}'s Point Out`);
+      }
+    } catch (e) { console.warn("twod12 | Hide", e); }
+  }
   // v0.0.498 (Pass 3): Feint T2 (+2 Boons on next Strike vs target this turn) / T3 (next Strike vs target this turn is Favored)
   if (basicKey === "feint" && !version.noTiers) {
     const hits = mres ? mres.filter(r => r.chk.tier >= 2).map(r => ({ uuid: r.uuid, name: r.name, tier: r.chk.tier })) : (tier >= 2 ? targets.map(t => ({ uuid: t.uuid, name: t.name, tier })) : []);
@@ -1655,6 +1740,13 @@ export async function useAction(actor, item, opts = {}) {
         doubles: !!r0.doubles,
         crit: !!r0.crit
       } : null;
+      // v0.0.511 (core rework section R, batch 4): Flanking on each target of a [Melee] Action (flanking.mjs, the rule the roll dialog used)
+      if (it.traits.has("melee") && selfToken && canvas?.ready) {
+        try {
+          const { flankingFor } = await import("./flanking.mjs");
+          for (const t of tgs) { const tok = canvas.tokens?.placeables?.find(x => x.document?.uuid === t.uuid || x.actor?.uuid === t.uuid); if (!tok) continue; const fl = flankingFor(selfToken, tok); if (fl.boons > 0) t.flank = fl.boons; else if (fl.raw > 0) t.flankCancel = true; }
+        } catch (e) { /* no flanking info */ }
+      }
       logAction(selfToken ?? actor, item, { ap: version.ap, targets: tgs, save: saveAct ? (TWOD12.attributes[it.vs] ?? it.vs ?? "") : "", free: !!opts.free, roll });
     } catch (e) { console.warn("twod12 | encounter log", e); }
   }
@@ -1689,6 +1781,18 @@ export async function useAction(actor, item, opts = {}) {
     if (useTraits.has("strike") && targets.length && rollsAtOthers) M.strikeMoment(actor, targets);
     if (basicKey === "stand" && selfToken?.document) M.moveMoment(selfToken.document, null, null, { stand: true });
   } catch (e) { console.warn("twod12 | Reactions", e); }
+  // v0.0.513 (the Hide package; book, Chapter 3, Hiding): an Action that isn't [Subtle] ends Hide against every creature once it is resolved
+  try { await (await import("./hide.mjs")).endHideAfterAction(actor, item); } catch (e) { console.warn("twod12 | Hide", e); }
+  // v0.0.512 (playtest 7): a Reaction that only moves you (Slip Away: Evade 1, then Advance 2) runs its movements by itself, one after the other
+  const chain = autoMoveChain(version, !!it.reaction);
+  if (chain.length && selfToken && game.combat?.started && !actor.statuses?.has?.("prone")) {
+    try {
+      const { parseInline } = await import("./inline.mjs"), { handleMove } = await import("./move.mjs"), cb = (await import("./combat.mjs")).combatantOf(actor);
+      if (cb && chain.length > 1) await cb.setFlag("twod12", "thenMove", chain.slice(1));
+      const mcfg = parseInline("Move", chain[0]); mcfg.traits = [...new Set([...(mcfg.traits ?? []), "self"])];
+      handleMove(mcfg, { actor, token: selfToken, message: cmsg }).catch(e => console.warn("twod12 | Reaction movement", e));
+    } catch (e) { console.warn("twod12 | Reaction movement", e); }
+  }
   // v0.0.498 (Pass 3): Quick Shots / Darting Blade / Volley — start the Effects row's Evade automatically after rolling
   const autoEvade = autoEffectEvadeTag(version);
   if (autoEvade && !saveAct && !bannerMove && selfToken && game.combat?.started && !actor.statuses?.has?.("prone")) {
@@ -1773,6 +1877,13 @@ export function mergeBasicStateLines(base, hooks = []) {
   }
   return Object.values(out).some(v => String(v ?? "").trim()) ? out : null;
 }
+/** Pure (v0.0.510, Steady Draw): does a roll with these Tiers (one per target) pay for the 2dE? Any Tier 2 or 3. */
+export const steadyPays = (tiers = []) => (tiers ?? []).some(t => Number(t) >= 2);
+/** Pure (v0.0.510, Steady Draw): the n dE on a Tier 2 or 3 as a damage instance (the weapon's subtype; dE: roundrules.mjs escalationDie). */
+export function steadyDice(n, tier, escalation, source = "") {
+  if (!(Number(n) > 0) || tier < 2) return [];
+  return [{ pool: "B", useW: false, wCount: 1, useD: false, dCount: 1, dice: `${Number(n)}d${escalationDie(escalation)}`, useAt: false, subtype: "", source: source || `${Number(n)}dE` }];
+}
 /** Pure (core rework batch 3, Steady Draw): extra [D] instances on Tier 3 when a target was already Strained before the roll. */
 export function strainedExtraD(hooks = [], tier = 0, targets = [], preStrained = []) {
   if (tier !== 3 || !(hooks ?? []).length) return [];
@@ -1809,7 +1920,7 @@ export async function rollDamage(message, { again = false } = {}) {
   let empUsed = false, empLater = false;   // v0.0.426: with several targets the Empowered die is rolled once, after the Tiers, for one creature
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who, crit = false) => {
-    const extraD = strainedExtraD(basicLines, tier, targets, preStrained);
+    const extraD = [...strainedExtraD(basicLines, tier, targets, preStrained), ...steadyDice(f.steadyDE, tier, actor.system?.escalation, basicLines.find(h => Number(h.hook?.deMore) > 0)?.item?.name ?? "")];
     const insts = [...(moreW ? withMoreW(version[`t${tier}`], moreW, moreWName) : version[`t${tier}`]), ...extraD, ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
     const riders = f.ridersOnDamage && version[`t${tier}`]?.some(i => i.useW || i.useD || i.dice || i.useAt) ? (version.fx?.[`t${tier}`] ?? []).filter(x => x.mode === "auto").map(x => ({ ...x, rider: true })) : [];
     const fx = [...[...(version.fx?.all ?? []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]

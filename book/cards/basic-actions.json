@@ -148,6 +148,7 @@
       "category": "Basic Action",
       "flavor": "You pull the lever, open the door, grab what you need.",
       "traits": ["handle"],
+      "notes": "Interact isn't [Subtle]: while you are Hidden or Unsensed, a quiet use (taking an item you carry, opening a door slowly) can be, as the GM decides (see [[Subtle]]).",
       "frequency": "At-will",
       "distance": "Reach",
       "versions": [
@@ -160,7 +161,7 @@
       "_note": "2026-11-21 (Lucas, playtest 7; the core rework B12): the Action is Lean, the state stays Leaning; it ends when you leave your square.",
       "category": "Basic Action",
       "flavor": "You lean out from cover, just enough to see.",
-      "traits": ["self"],
+      "traits": ["self", "subtle"],
       "frequency": "At-will",
       "versions": [
         { "ap": 1, "effects": "Until the end of your turn, or until you leave your square, you are Leaning: you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost.",
@@ -178,8 +179,8 @@
       "traits": ["strike"],
       "interrupt": "An enemy adjacent to you would leave a square during a Move Action or uses the Stand Action.",
       "cost": "1R",
-      "text": "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead.",
-      "foundry": { "basic": "opportunityAttack", "img": "icons/svg/combat.svg", "automation": "silver", "sub": [["Weapon Attack (1A)", "@Use[Weapon Attack|label:Weapon Attack (1A)]"]], "moment": "enemyMoves", "momentRange": 1, "momentThreat": false, "automationNote": "offered by itself in the Reactions message when an adjacent enemy moves (not an Evade or a Forced Movement) or stands up (v0.0.335, Lucas: adjacent, not the squares you threaten); the movement is not held (Foundry moves the token first), the Weapon Attack is the card's button." },
+      "text": "You can make a Basic Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead.",
+      "foundry": { "basic": "opportunityAttack", "img": "icons/svg/combat.svg", "automation": "silver", "sub": [["Basic Attack (1A)", "@Use[Basic Attack|label:Basic Attack (1A)]"]], "moment": "enemyMoves", "momentRange": 1, "momentThreat": false, "automationNote": "offered by itself in the Reactions message when an adjacent enemy moves (not an Evade or a Forced Movement) or stands up (v0.0.335, Lucas: adjacent, not the squares you threaten); the movement is not held (Foundry moves the token first), the Weapon Attack is the card's button." },
       "ruler": { "line": "does Weapon Attack" }
     },
     {
@@ -551,9 +552,143 @@
       ],
       "foundry": {
         "basic": "tumble",
+        "checkDc": "targets",
         "automation": "silver",
-        "automationNote": "the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the Check: by hand.",
+        "automationNote": "the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the card posts first: its Appeal Check and Instinct Check roll against the targeted creatures' DC of that Attribute (the highest, 1 Bane for each creature beyond the first; no target: DC 13), then its Move button.",
         "img": "icons/svg/wingfoot.svg"
+      }
+    },
+    {
+      "name": "Hide",
+      "category": "Basic Action",
+      "_note": "2026-11-24 (Lucas, the Hide package; research/hide-and-stealth.md; rules-backlog.md): applied 2026-11-25. It targets creatures, not enemies (an ally too); rolled once for all of them (Several Targets).",
+      "flavor": "You drop out of sight, still your breath, and let the shadows take you.",
+      "traits": [
+        "instinct",
+        "subtle"
+      ],
+      "frequency": "Turn",
+      "requirements": "At least one creature can't see you, or you have High Cover against it.",
+      "target": "Each creature that can't see you, or against which you have High Cover (no Line of Effect needed)",
+      "vs": "Instinct",
+      "versions": [
+        {
+          "ap": 1,
+          "tiers": [
+            "No effect against that creature.",
+            "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it (see [[Hiding]]).",
+            "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it. It takes 1 Bane on Seek and Point Out against you (1 round)."
+          ]
+        }
+      ],
+      "foundry": {
+        "basic": "hide",
+        "automation": "silver",
+        "automationNote": "the roll against each targeted creature's Instinct DC (target them first); Tier 2 or 3 makes you Unsensed (it can't see you) or Hidden (your High Cover) to that creature from Hide (senses.mjs, per creature); Tier 3's Bane on its Seek and Point Out: by hand.",
+        "img": "icons/svg/mystery-man.svg"
+      }
+    },
+    {
+      "name": "Point Out",
+      "category": "Basic Action",
+      "_note": "2026-11-24 (Lucas, the Hide package): renamed from Call Out (Spotter's Mode had that name); applied 2026-11-25.",
+      "flavor": "A sharp shout and a pointed glance, and now everyone knows where they are.",
+      "traits": [
+        "appeal",
+        "instinct"
+      ],
+      "frequency": "At-will",
+      "requirements": "You perceive the target better than at least one ally does.",
+      "target": "One creature you perceive",
+      "vs": "Instinct",
+      "versions": [
+        {
+          "ap": 1,
+          "tiers": [
+            "No effect.",
+            "One ally within 10 squares who can see or hear you perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow.",
+            "Every ally within 10 squares who can see or hear you perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow."
+          ]
+        }
+      ],
+      "foundry": {
+        "basic": "pointOut",
+        "automation": "silver",
+        "automationNote": "the roll against the target's Instinct DC; Tier 2: pick one ally within 10 squares, Tier 3: every ally within 10 squares: its Hide state against the target improves 1 step (senses.mjs); whether the ally can see or hear you: by hand.",
+        "img": "icons/svg/eye.svg"
+      }
+    },
+    {
+      "name": "Seek",
+      "category": "Basic Action",
+      "_note": "2026-11-24 (Lucas, the Hide package); applied 2026-11-25. Its roll ignores Senses (Claude's assumption: you seek what you don't perceive).",
+      "flavor": "You stop, listen, and scan the room for the slightest shift.",
+      "traits": [
+        "instinct",
+        "mind",
+        "subtle"
+      ],
+      "frequency": "At-will",
+      "target": "Each creature Hidden or Unsensed to you from Hide within 5 squares (1 AP) or 10 squares (2 AP) (no Line of Effect needed)",
+      "vs": "Instinct",
+      "rules": "Senses don't change this roll: you don't need to perceive the targets, and the roll isn't Doomed against a Hidden one.",
+      "versions": [
+        {
+          "ap": 1,
+          "tiers": [
+            "No effect.",
+            "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow.",
+            "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow, and you gain 1 Boon on Point Out against it (EoT)."
+          ]
+        },
+        {
+          "ap": 2,
+          "tiers": [
+            "No effect.",
+            "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow.",
+            "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow, and you gain 1 Boon on Point Out against it (EoT)."
+          ]
+        }
+      ],
+      "foundry": {
+        "basic": "seek",
+        "automation": "silver",
+        "automationNote": "targets by itself the creatures Hidden or Unsensed to you from Hide within 5 or 10 squares, rolls against each one's Instinct DC with no Senses modifiers, and improves your perception of each on a Tier 2 or 3; Tier 3's Boon on Point Out: by hand.",
+        "img": "icons/svg/eye.svg"
+      }
+    },
+    {
+      "name": "Sneak",
+      "category": "Basic Action",
+      "_note": "2026-11-24 (Lucas, the Hide package); applied 2026-11-25.",
+      "flavor": "You slip from shadow to shadow, careful where every foot falls.",
+      "traits": [
+        "move",
+        "self",
+        "subtle"
+      ],
+      "frequency": "Round",
+      "requirements": "You are Hidden or Unsensed to at least one creature from Hide.",
+      "rules": "This movement doesn't trigger Reactions from creatures to which you are Hidden. Against a creature to which you are Unsensed from Hide, you stay Unsensed only if it can't see you at any point of the movement; otherwise you are Hidden to it. Against a creature to which you are Hidden from Hide, you stay Hidden during the movement; if you end it without High Cover against that creature and it can see you, Hide ends against it at the end of your turn (or sooner, if something else ends it).",
+      "versions": [
+        {
+          "ap": 1,
+          "effects": "Advance half your Speed (rounded down).",
+          "foundry": {
+            "sub": [
+              [
+                "@Move[advance|distance:floor(speed/2)]",
+                "@Move[advance|distance:floor(speed/2)|sneak:yes]"
+              ]
+            ]
+          }
+        }
+      ],
+      "foundry": {
+        "basic": "sneak",
+        "automation": "silver",
+        "automationNote": "the Advance (half your Speed) keeps Hide: an Unsensed creature that sees you during it makes you Hidden, a Hidden one keeps you Hidden until your turn ends; creatures you are Hidden to don't react to it; the end of turn check without High Cover (senses.mjs).",
+        "img": "icons/svg/stoned.svg"
       }
     }
   ]

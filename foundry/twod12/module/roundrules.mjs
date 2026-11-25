@@ -53,6 +53,10 @@ export const ESC_LADDER_MAX = ESC_MAX, MOMENTUM_MAX = TWOD12.escalation.momentum
 const momentumOf = m => Math.max(0, Math.min(MOMENTUM_MAX, Math.trunc(Number(m)) || 0));
 /** The Escalation an encounter starts at: 1 + the party's Momentum (0 to 4), so 5 at most. */
 export const escalationStartAt = momentum => ESC_MIN + momentumOf(momentum);
+/** v0.0.509 (Lucas, 2026-11-25; book, Chapter 2, The Escalation die): dE, a die with twice your Escalation's sides, at least a d4 (d4 at 1 and 2, d6 at 3 ... d12 at 6); it never explodes. */
+export const escalationDie = esc => Math.max(4, 2 * Math.min(ESC_LADDER_MAX, Math.max(ESC_MIN, Math.trunc(Number(esc)) || ESC_MIN)));
+/** Pure: a damage formula's dE ("2dE", "dE") as the creature's die ("2d6" at Escalation 3); everything else untouched. */
+export const withEscalationDie = (formula, esc) => String(formula ?? "").replace(/(\d*)dE\b/g, (m, n) => `${n || 1}d${escalationDie(esc)}`);
 /** The level after a raise on the 1-to-6 ladder (a new round, a Critical, the class's hook, the GM's valve). */
 export const escalationRaisedTo = (now, by = 1, max = ESC_LADDER_MAX) => Math.max(0, Math.min(max, (Number(now) || 0) + (Number(by) || 0)));
 /**

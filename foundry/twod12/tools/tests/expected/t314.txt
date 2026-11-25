@@ -1,0 +1,5 @@
+Slip Away's chain: ["evade|distance:1","advance|distance:2"] | not a Reaction: 0 | Quick Shots (a roll): 0 | Rebuke: 0
+chain wired: true | next at the Evade's end and at End movement: 4 | given up by another Action: true
+Charge's @Use: Basic Attack | none: ""
+Charge wired: chargeUse set true | HUD Situational true | cleared by another Action true | HUD redraws on it true
+Charge bar follows the selection: true | unhooked on close: true

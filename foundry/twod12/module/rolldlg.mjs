@@ -266,7 +266,7 @@ export function tierAvg(tier, tags = [], net = 0) {
 /* ------------------------------------------------------------------ the Tier table */
 /** The Passives' tags of one Tier ("+1d6 Ho" on T1 to T3; Heavy Blows "+2" on T3), the chips that are on only. */
 // v0.0.440 (Lucas, checklist: Smite's dice "need to grow"): a damage chip with a tag (Smite's Reaction Point die) adds to the Tiers too
-export const tierTags = (inp, st, n) => chipsOf(inp, st, "shared").filter(c => (c.row === "passives" || c.special === "smite") && c.tag && (c.tiers ?? [1, 2, 3]).includes(n) && chipOn(c, st));
+export const tierTags = (inp, st, n) => chipsOf(inp, st, "shared").filter(c => (c.row === "passives" || c.special === "smite" || c.special === "steadyde") && c.tag && (c.tiers ?? [1, 2, 3]).includes(n) && chipOn(c, st));
 /** One Tier's pool lines: [{ pool, text ("1d8 + 2 Sl"), tags: ["+2"] }]; a pool with no damage is left out (no "0" lines). */
 export function poolLines(tier, tags = []) {
   const out = [];
@@ -326,7 +326,8 @@ export function result(inp, st) {
     boons: manB, banes: manN, mod: t.flat, adjLabel: flatNames, adjDefault: t.flat,
     dc: single?.dc ?? 13, favored: (multi ? sh.fav : t.fav) ? "on" : undefined, doomed: (multi ? sh.doom : t.doom) ? "on" : undefined,
     reloadshot: empChip ? "on" : undefined,
-    smiteMore: onIds(all).some(c => c.special === "smite") ? "on" : undefined,   // v0.0.409 (Smite): the Reaction Point spent for 1 more die
+    smiteMore: onIds(all).some(c => c.special === "smite") ? "on" : undefined,
+    steadyDE: onIds(all).some(c => c.special === "steadyde") ? "on" : undefined,   // v0.0.510 (Steady Draw): 2dE for the Reaction Point on a Tier 2 or 3   // v0.0.409 (Smite): the Reaction Point spent for 1 more die
     empowered: t.emp, enfeebled: t.enf, switchNl: onIds(all).some(c => c.special === "nl") ? "on" : undefined,
     forceTier: st.forceTier ? String(st.forceTier) : "", removed: [...(st.removed ?? [])], perTarget, rollMode: st.rollMode, rd
   };
