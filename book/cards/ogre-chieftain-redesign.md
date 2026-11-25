@@ -1,6 +1,6 @@
 # The Ogre Chieftain: the first Elite (the record)
 
-> **Status (2026-11-25): THE ELITE'S RULE (K6) PROPOSED THREE WAYS, the Default Elite derived under Claude's pick, the ogre's ideas shown. Nothing is chosen. Design only: no card source, no Foundry (the Foundry pass comes once, when every NPC is done).** The Bestiary's record is `book/bestiary-design.md`; the earlier creatures', `orc-warrior-redesign.md`, `grave-wisp-redesign.md`, `goblin-sneak-redesign.md`.
+> **Status (2026-11-25): LUCAS HAS CHOSEN THE OGRE'S CARDS AND QUESTIONED ROUSED; Claude's review, one by one, is the last section. Open: the Elite's rule (Claude now proposes a slot, not one effect), Ground Slam's numbers, the Reaction's reading. Design only: no card source, no Foundry.** The Bestiary's record is `book/bestiary-design.md`; the earlier creatures', `orc-warrior-redesign.md`, `grave-wisp-redesign.md`, `goblin-sneak-redesign.md`.
 
 ## Lucas's words (2026-11-25)
 
@@ -130,3 +130,84 @@ So the "something" has a size: it is worth about seven tenths of a Standard's tu
 - An Elite with a job: it fights through its followers, hides behind them, and their nerve goes with it.
 - Its turn on paper: a move, Marching Orders (two orc axes, 6.4) and a Maul, 9.6; standing, 12.5. A Standard's turn, as the Default Elite asks, and it gets one more when it is Roused.
 - If the first Elite should be the plain reference instead: Maul, Thrown Boulder, Great Sweep, Shake It Off, its size only.
+
+## Lucas's answer (2026-11-25)
+
+"Hmm.. Roused is interesting but the Risk is quite big. People will have to synergize dealing both kinds of damage to not trigger it earlier, and causing Roused while it is in melee with another PC, hurts that other PC. Should we do per elite? As features? Or its best to do one default elite feature?"
+
+"M2 + R2 + R3 as an extra special (2AP, round, can keep as is because of its extra special effect) + S1 + A "ground slam" ability, like it hits the ground, hits all creatures in a 3 line, makes it difficult terrain EoE; once an Encounter + X1 but changed to Turn - a flat 1 bludgeoning damage and shove 2, no rolls; literally a backhand from an ogre. + F1"
+
+"Lots of features and questions here. Review it one by one."
+
+## Claude's review, one by one (2026-11-25)
+
+### 1. Roused, and "per Elite or one default?"
+
+- **His two objections hold.** With any thresholds an Elite is Roused exactly once before it dies (one of the two must fill first), so the players never avoid it: they only choose when, and the PC who chooses is often not the PC who pays. That is a quarrel at the table built into a rank.
+- **What can't be per creature is the size.** The count says an Elite must be worth one extra turn in a fight beyond a Standard's turns (about 9 or 10 more damage to Health at the table, or the like in effect). Whatever form it takes, every Elite needs that much, or CV 200 lies.
+- **What should be per creature is the form.** **Claude's proposal now: one default slot, not one default effect. "An Elite has an Encounter Action of its own, worth about a turn."** It is used on the Elite's own turn (no out-of-turn swing landing on a bystander), the GM picks the moment, the players see the card and learn it, and each Elite's is different: the research's elites are noticed when they do something of their own. It is also where bigger dice have a place (a PC's own Encounter Action, Smite, takes about 70% of a Standard).
+- **Lucas's own sheet for the ogre already does this:** his Ground Slam is that Encounter Action. So the ogre needs no Roused.
+- **Roused stays as a possible signature** for a creature meant to enrage (a berserker), written on its sheet where the players can read it, not as the rank's rule.
+- For quick building (G8's "Default Elite"): a Standard with twice the Health and one Encounter Action that hits several creatures for about twice a Round Special.
+
+### 2. Crushing Grip (M2: the melee Basic attack; a Tier 3 adds Grabbed)
+
+- Good for an ogre with Reach 2: a Grabbed PC is Immobilized until it Breaks Free (1 AP, a Body or Instinct Check against DC 13) or is out of the ogre's Reach, and it stands where Great Sweep and Ground Slam land next.
+- **One sentence it needs:** the ogre holds one creature at a time (a club in one hand, the other free); a new Grab lets the first one go.
+- A Tier 3 is about one hit in four, so it is free [judgment].
+
+### 3. Roar (R2: the second Basic attack, against Ward Defense; a Tier 3 adds Staggered (EoT))
+
+- Fine as written. It gives the ogre Resolve damage and its two Basic attacks the two Defenses, his default.
+- Staggered switches off a PC's Reactions until the end of its turn (Shield of Faith, Snap Shot): a short cancel, on a Tier 3 only.
+
+### 4. Hurled Goblin as a second Special (2 AP, Round)
+
+- **It works as a 2 AP card:** a Basic attack's damage (2.9) is well under a Special's 6, and the goblin landing beside the target is what the other 3 points buy: it saves the goblin its move and sets up Knife in the Back.
+- **What the card must say:** the Minion is willing and within the ogre's Reach; the target is within 6 squares with Line of Effect; the goblin is Repositioned to an empty square adjacent to the target, the ogre's choice (hit or miss; no square, no throw); it takes no damage and keeps its own turn. As a Special it has no Critical die.
+- With no goblin beside it the card can't be used; the ogre sweeps instead. Right for a chieftain.
+
+### 5. Great Sweep (S1)
+
+- Fine: up to two creatures in Reach 2, [V] 2 + 1d6 Bl / 4 + 1d8 Bl each (4.8 a creature). The Standard's two-creature Special.
+
+### 6. Ground Slam (new; once an Encounter)
+
+- **The name is the old sheet's** (its Encounter Action was Ground Slam, a different shape). His to keep; otherwise Split the Earth.
+- **What he gave:** the ogre hits the ground; all creatures in a Line 3; the Line is Difficult Terrain until the encounter ends.
+- **What it still needs, with Claude's defaults:** 2 AP. A Save Action: an Instinct Save against its Weapon DC (13), each creature in the Line, allies too. Tier 1: [V] 5 + 2d8 Bl. Tier 2: [V] 3 + 1d8 Bl. Tier 3: no effect. Effect: the squares of the Line are Difficult Terrain for every creature (EoE).
+- **Why that size:** it is the Elite's extra turn. About 8 to each creature in it on average; a Line 3 holds one PC or two. A Tier 1 of 14 is 40 to 48% of a PC in one roll: big, once a fight, and seen coming once the players know the card.
+- **The terrain matters more than it looks:** an Evade can't enter Difficult Terrain and a Charge can't cross it, so the ogre breaks the footing in front of itself for the rest of the fight, for both sides. A lasting change to the map is one of the things the research found tables like.
+- A Line starts from the ogre's own space (Chapter 3); for a Large creature the card should say from which edge: any square of its edge, its choice.
+
+### 7. The Reaction ("X1 but changed to Turn": read as Backhand, X3)
+
+- **Claude's reading:** he wrote X1 (Meat Shield) and described a backhand, which was X3. Taken as **Backhand (Reaction; Turn, 1R). Interrupt: an enemy would enter a square adjacent to the ogre. Effect: it takes [V] 1 Bl and is Pushed 2. No roll.** To confirm.
+- **Turn, not Round:** it can answer each enemy on its own turn, but each use costs 1R: the Reaction Point pays for one a round, and any more come from AP the ogre kept (an NPC's kept AP gives no Guard, so that is a real price).
+- **What it does to the mover:** the push lands before the PC enters the square, so its movement is disrupted and ends where it stood (Chapter 2); it is then 2 squares farther, still inside the ogre's Reach 2, and has to spend again to close. About 1 AP taken from one melee PC a round, with no roll to fail.
+- **The flat 1** is his own exception to "no damage line that is only a flat number": noted on the card as meant.
+- **Collision makes it more than 1:** pushed into a wall it is 2 a square not moved, into another creature 1 each. A PC's Steadiness lowers the 2.
+- **To watch:** it is felt only by PCs who fight in melee; with Grabbed and Great Sweep the ogre is a creature the Archers are safest from. Fine for one Elite, a pattern to avoid across the Bestiary.
+- A Grabbed creature can be pushed by its holder (Chapter 8), and the push takes it out of the Grab's reach only if it leaves Reach 2.
+
+### 8. Its size (F1)
+
+- Large (4), Reach 2, Steadiness 1: free (Chapter 14), and what makes Great Sweep, the Line and Backhand cover real ground.
+
+### 9. The whole sheet against the Elite's size
+
+- **Its turns on paper:** a move, Great Sweep and a Crushing Grip, 8.0 on one PC and 12.7 with two in the Sweep; standing, with a Roar, 10.5 to 15.2. The Ground Slam turn (the Slam and the Sweep), 12.7 to 25.
+- **Over a fight of two such ogres** (about two turns each, one of them the Slam turn): about 27 to Health each at the table with the Backhands, 54 for the pair, against the 51 a normal fight should cost. **The set is an Elite's worth with no Roused.**
+- Six cards and a size line: the most on any sheet so far, on a creature that comes one or two at a time.
+
+### The sheet as it stands (not built; the lines in italics are Claude's defaults)
+
+**Ogre Chieftain.** Elite, CV 200, level 1. Health 72 (*Vigor 44, Resolve 28*). *Armor Defense 14, Ward Defense 12.* Weapon +2, Power +2. *Body +3, Instinct +1, Appeal +1, Mind -1.* Large (4), Reach 2, Steadiness 1, Speed 5. 4 AP and the Reaction Point. A club in one hand, the other free. Tags: Ogre.
+
+- **Crushing Grip** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (2); one creature; Weapon vs. Armor Defense). Tier 2: [V] 1d4! Bl. Tier 3: [V] 2 + 1d6! Bl; Grabbed. *The ogre holds one creature at a time.*
+- **Roar** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike, Fear]; 6 sq.; one creature; Power vs. Ward Defense). Tier 2: [R] 1d4! Ps. Tier 3: [R] 1d4! Ps; Staggered (EoT).
+- **Great Sweep** (Special; Round, 2 AP; [Weapon, Melee, Strike]; Reach (2); up to two creatures; Weapon vs. Armor Defense). Tier 2: [V] 2 + 1d6 Bl. Tier 3: [V] 4 + 1d8 Bl.
+- **Hurled Goblin** (Special; Round, 2 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). Requirement: a willing Minion ally is within the ogre's Reach. Tier 2: [V] 1d4! Bl. Tier 3: [V] 1 + 1d6! Bl. Effect: the Minion is Repositioned to an empty square adjacent to the target, the ogre's choice.
+- **Ground Slam** (Special; Encounter, *2 AP*; [Weapon, Save, Area]; Area: Line 3; all creatures in the Area; *Instinct Save against its Weapon DC, 13*). *Tier 1: [V] 5 + 2d8 Bl. Tier 2: [V] 3 + 1d8 Bl. Tier 3: no effect.* Effect: the squares of the Line are Difficult Terrain (EoE).
+- **Backhand** (Reaction; Turn, 1R). Interrupt: an enemy would enter a square adjacent to the ogre. Effect: it takes [V] 1 Bl and is Pushed 2.
+
