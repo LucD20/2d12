@@ -6,7 +6,7 @@
 // Pure helpers first (the tests load them), then the question and the roll.
 import { bookRoll, diceOfRoll } from "./explode.mjs";
 
-export const CRIT_DIE = "1d10!";   // a new NPC Basic attack's default Critical row: [V] 1d10! (item-sheet.mjs)
+export const CRIT_DIE = "1d10!";   // the die an open Critical row is read with when it names none (askCritical, critComponent)
 const POOL_OF = { V: "B", R: "M", B: "B", M: "M" };
 const POOL_WORD = { B: "V", M: "R" };
 
@@ -82,21 +82,5 @@ export async function critComponent({ pool = "B", sub = "", formula = CRIT_DIE }
   rolls.push(r);
   return { pool, sub, kind: "D", formula, total: r.total, dice: diceOfRoll(r), label, crit: true };
 }
-
-// v0.0.521 (the cleanup audit, B1-003; book, Chapter 14, Basic attacks: "Each Basic attack has a Critical row by default: 1d10! of its own pool and
-// subtype"): ticking "Basic attack" on an Action whose Versions write no Critical row fills it with the open row "[V] 1d10!" (its type is the one the
-// Action deals, chosen on the Critical). A Basic attack made before v0.0.521 with no row has no Critical extra: nothing migrates it.
-export const DEFAULT_CRIT_ROW = `[V] ${CRIT_DIE}`;
-/** Pure: the Versions with the default Critical row where none is written (null when every Version already has one, or there is none). */
-export function withDefaultCritRow(versions = []) {
-  const vs = Array.isArray(versions) ? versions : Object.values(versions ?? {});
-  if (!vs.length || vs.every(v => String(v?.critical ?? "").trim() || v?.noTiers)) return null;
-  return vs.map(v => (String(v?.critical ?? "").trim() || v?.noTiers ? v : { ...v, critical: DEFAULT_CRIT_ROW }));
-}
-export function registerCriticalHooks() {
-  Hooks.on("updateItem", (item, changes, _options, userId) => {
-    if (userId !== game.user.id || item.type !== "action" || foundry.utils.getProperty(changes, "system.basicAttack") !== true) return;
-    const vs = withDefaultCritRow(item.toObject().system?.versions);
-    if (vs) item.update({ "system.versions": vs }).catch(e => console.warn("twod12 | the default Critical row", e));
-  });
-}
+// v0.0.523 (Lucas, 2026-11-26: "Remove the default critical again"): v0.0.521's default row is gone (ticking "Basic attack" no longer fills
+// "[V] 1d10!"): a Critical comes only from the card's own row.

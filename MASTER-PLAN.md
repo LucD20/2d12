@@ -13,7 +13,7 @@ Rule of the order (Lucas, 2026-11-11): decide what changes the numbers before bu
 
 1. The retune of the four ranks' numbers from the table (decision 16).
 2. The Boss (parked; three proposals are in the record).
-3. The budget: the CV of the easy, hard and deadly bands, the caps, the party's size, the fights a day.
+3. The budget: the CV of the easy, hard and deadly difficulties, the caps, the party's size, the fights a day.
 4. Roles; whether the ratings (Terrible to Extreme) come back; a simple pricing of an NPC's Actions.
 5. More creatures; how a level 2 or 3 creature is written (options, never numbers); the list of Tags.
 6. Foundry, once the numbers hold: the NPC Builder tab on the new rules; the ruler and the SIM unfrozen.

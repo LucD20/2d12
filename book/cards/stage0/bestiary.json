@@ -247,7 +247,7 @@
     "img": "icons/svg/dagger.svg",
     "npcWeapon": "Shiv",
     "automation": "gold",
-    "automationNote": "a Basic attack of a Minor enemy (its Tiers' dice don't explode; its Critical row's 1d10!)."
+    "automationNote": "a Basic attack (its Critical row's 1d10!)."
    }
   },
   {

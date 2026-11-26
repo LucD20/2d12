@@ -15,7 +15,7 @@ the Basic Attack with a Longsword: the options [V] 1d10! Sl | the die {"pool":"B
 with Smite's [R] Ho too: the options [V] 1d10! Sl | [R] 1d10! Ho
 Shiv's typed row is asked as it is: Apply: [V] 1d10! Pi.
 no general Basic-attack path left: true true | the row's dice take the kind: true
-the default row when a Basic attack is ticked: ["[V] 1d10!","[V] 1d6! Bl."] | all written: null | registered: true
+v0.0.523: no default row when a Basic attack is ticked: true true true | not registered: true
 --- 2. a Human's choices lock once level 1 is confirmed (a player; the GM still can)
 {"gm":false,"hasClass":true,"chooses":true} -> Locked: your level 1 is confirmed, so these choices can't change (the GM can still change them).
 {"gm":true,"hasClass":true,"chooses":true} -> (open)

@@ -12,16 +12,16 @@ A fight is measured by two things, always together:
 1. **Its cost, in Rally Points a PC.** Add all the damage that reached the PCs' Health during the fight, healed in it or not (what Guard or a reduction took never reached Health, so it doesn't count). Divide it by what one Rally Point of each PC removes, added together. A cost of 1 means: every PC spends one Rally Point and the party is whole again.
 2. **Its Downs:** how many PCs went Down.
 
-### The bands
+### Difficulty
 
-| Band | Cost (Rally Points a PC) | What it promises |
+| Difficulty | Cost (Rally Points a PC) | What it promises |
 |---|---|---|
 | **Easy** | about 1 (up to 1¼) | The party spends a little and nobody should go Down. |
 | **Normal** | about 1½ (above 1¼, up to 2) | A real fight: the party spends, a PC goes Down now and then, the party doesn't lose. |
 | **Hard** | about 2½ (above 2, up to 3) | Expect a PC Down; the party wins if it plays well. |
 | **Deadly** | above 3 | Several PCs Down; the party can lose. |
 
-The bands are wide on purpose: dice swing, and a fight lands outside its band often.
+The difficulties are wide on purpose: dice swing, and a fight often costs more or less than its difficulty says.
 
 > [!tbd]
 > How many fights a day between Rests holds: the old guide (two easy, two normal and one hard fight) spends the whole Rally Point pool; to confirm at the table.
@@ -34,8 +34,6 @@ The bands are wide on purpose: dice swing, and a fight lands outside its band of
 - **It is built for a fresh party at Momentum 0:** full Health, Rally Points in hand. **Momentum doesn't change the budget:** it is the party's reward.
 - **The enemies spread their attacks** as far as their Actions make them. Every enemy striking the same PC is the GM's choice, and it makes the fight harder than its CV says.
 
-**No number in this chapter assumes a class:** with their class cards, the PCs find a fight cheaper or shorter than its band.
-
 ## Building an encounter
 
 Add up the **Combat Value (CV)** of the enemies: Minion 30, Grunt 50, Standard 100, Elite 200 (see [[The ranks]]). **CV 100 a PC is a normal fight.**
@@ -43,7 +41,7 @@ Add up the **Combat Value (CV)** of the enemies: Minion 30, Grunt 50, Standard 1
 - A Minion's CV of 30 is for Minions mixed with other enemies; about three of them count for one PC. A fight of Minions alone is not a straight line: the last ones standing act the most, so eight against four PCs are less than an easy fight and sixteen a hard one.
 
 > [!tbd]
-> Not rebuilt yet: the CV of the easy, hard and deadly bands; the caps (Minions a PC, a Boss); the party's size; what an NPC of an earlier Stage counts for. Until then, the difficulty of a fight is the GM's reading of its CV against CV 100 a PC.
+> Not rebuilt yet: the CV of the easy, hard and deadly difficulties; the caps (Minions a PC, a Boss); the party's size; what an NPC of an earlier Stage counts for. Until then, the difficulty of a fight is the GM's reading of its CV against CV 100 a PC.
 
 ## The ranks
 
@@ -86,28 +84,28 @@ When a Minion goes Down, each tick it lost counts as the damage that removed it,
 
 ### Grunts
 
-**A Grunt is half a Standard:** weaker than a PC. Its default other Action: 2 AP and Round, about 5½ / 8½ on one creature or 2½ / 4½ on each of two.
+**A Grunt is half a Standard:** weaker than a PC. For reference, a 2 AP Round Action of its own deals about 5½ / 8½ to one creature, or 2½ / 4½ to each of two.
 
 Grunts are for mixing in with other enemies: a fight of Grunts alone runs longer than its CV says.
 
 ### Minor enemies
 
-**Minor enemies** are the Minion and Grunt ranks. Both have **3 AP** a turn, and **their damage dice never explode**, an [[Empowered]] die included, except where their card writes ! (their Critical row). A Forced Movement into a [[Deadly Hazards|Deadly Hazard]] kills a Minor enemy.
+**Minor enemies** are the Minion and Grunt ranks. Both have **3 AP** a turn. A Forced Movement into a [[Deadly Hazards|Deadly Hazard]] kills a Minor enemy.
 
 ### Standards
 
 **A Standard is the unit: CV 100, one for each PC in a normal fight.**
 
 - **Its Basic attack:** [V] 1d4! on a Tier 2, [V] 2 + 1d6! on a Tier 3.
-- **Its other Action:** a 2 AP Round Action of about 7 / 11 to one creature, or 5 / 8 to each of up to two. It is the turn's main hit.
-- **Its usual turn:** 1 AP to move, that other Action and a Basic attack; a turn that doesn't need to move adds a second Basic attack, with its At-will Bane.
+- **For reference:** a 2 AP Round Action of its own deals about 7 / 11 to one creature, or 5 / 8 to each of up to two.
+- **The turn its damage a turn counts:** 1 AP to move, a 2 AP Round Action and a Basic attack; a turn that doesn't need to move adds a second Basic attack, with its At-will Bane.
 - **About 8 damage to Health a turn at the table** (a playtest value): a quarter of a PC, about one Rally Point.
 
 ### Elites
 
 **An Elite is two units: CV 200, the place of two Standards in a normal fight.** Its default is a Standard with **Health 72** (Vigor 36, Resolve 36) and **an Encounter Action of its own**: the same Defenses, Modifiers, AP and attacks.
 
-**An Elite's Encounter Action is worth about a turn:** about one extra Standard's turn in a fight (about 8 more damage to Health at the table, or the like in effect). The size is the rank's; the form is the creature's, written on its card. By default it hits several creatures for about twice a Standard's 2 AP Round Action.
+**An Elite's Encounter Action is worth about a turn:** about one extra Standard's turn in a fight (about 8 more damage to Health at the table, or the like in effect). The size is the rank's; the form is the creature's, written on its card. For reference, one that hits several creatures deals about twice a Standard's 2 AP Round Action.
 
 ### The Boss
 
@@ -161,8 +159,6 @@ Every NPC Action that attacks makes **three separate choices**:
 **Every NPC has two Basic attacks by default:** normally a melee one and a ranged one, or one against each Defense. Each is 1 AP and At-will, and **they share one At-will count**, as a PC's At-will [Strike] Actions do (see [[Strike]]): the second one of a turn takes 1 Bane, whichever it is.
 
 - **When a rule calls for a Basic Attack** (the Basic Attack at the end of a [[Charge]], for example), an NPC uses one of its own Basic attacks: one that can reach the target, its choice when both can.
-- **A Standard's or an Elite's Basic attack die explodes:** write it with ! (1d4!; see [[Exploding Dice]]). A Minor enemy's Tiers never do. The dice of its other Actions explode only where the card writes !
-- **Each Basic attack has a Critical row** by default: 1d10! of its own pool and subtype (Critical: [V] 1d10! Pi.), a Minor enemy's too (see [[Critical]]).
 
 ### Losing its weapon
 
@@ -173,14 +169,14 @@ One that loses its weapon (disarmed, the weapon broken) can't use its [Weapon] A
 
 ### Its other Actions
 
-**An NPC's other Actions** (every one that is not a Basic attack) are **2 AP and Round** by default. By default one hits one creature, or two for less damage each; a creature's own card can do otherwise (an area, for example).
+**An NPC's other Actions** are every one that is not a Basic attack. One can have any AP cost and any Frequency: **what limits it is its power**, balanced against the creature's other Actions.
 
 ### NPC Reactions
 
 **No NPC has a Reaction by default:** a Reaction is designed for each creature, **written like any Action, with its Frequency** (At-will, Turn, Round or Encounter; see [[Reactions]]). An NPC pays for one as a PC does, with its Reaction Point or an AP it kept from its turn; a Minion, which has no Reaction Point, only with an AP it kept. **An NPC gains no Guard from unspent AP:** an AP it keeps only pays for a Reaction (see [[Unspent AP]]).
 
 > [!tbd]
-> Pricing an NPC's Actions is not rebuilt yet: the old points engine, the price of riders, the price of a Frequency and the best-turn check are out. Until a simpler pricing is written (ready numbers for each rank and AP cost), an Action is built from its rank's default Basic attack and other Action and checked against its rank's damage a turn.
+> Pricing an NPC's Actions is not rebuilt yet: the old points engine, the price of riders, the price of a Frequency and the best-turn check are out. Until a simpler pricing is written (ready numbers for each rank and AP cost), an Action is checked against its rank's reference numbers and its damage a turn.
 
 ## The playtest creatures (Stage 0, level 1)
 
@@ -188,7 +184,7 @@ The four creatures of the next playtest, one for each rank. **Their numbers are 
 
 ### Goblin Sneak
 
-**Goblin Sneak** (Minion, CV 30, level 1). **2 ticks.** Armor Defense 13, Ward Defense 12. Weapon Modifier +2, Power Modifier +2. Instinct +2, Body 0, Mind 0, Appeal −1. Speed 6, Reach 1, Medium. 3 AP, no Reaction Point. Its damage dice explode only in its Critical rows. It acts in squads of 2. Tag: Goblin. A short blade in its hand.
+**Goblin Sneak** (Minion, CV 30, level 1). **2 ticks.** Armor Defense 13, Ward Defense 12. Weapon Modifier +2, Power Modifier +2. Instinct +2, Body 0, Mind 0, Appeal −1. Speed 6, Reach 1, Medium. 3 AP, no Reaction Point. It acts in squads of 2. Tag: Goblin. A short blade in its hand.
 
 - **Shiv** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *A short, ugly blade, and it knows where the armor ends.* Tier 2: [V] 1d4 Pi. Tier 3: [V] 1d6 Pi. Critical: [V] 1d10! Pi.
 - **Jeer** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike]; 6 sq.; one creature; Power vs. Ward Defense). *It says something about your mother, in Goblin, and somehow you understand.* Tier 2: [R] 1d4 Ps. Tier 3: [R] 1d4 Ps; Taunted by the goblin (1 round). Critical: [R] 1d10! Ps.
@@ -197,7 +193,7 @@ The four creatures of the next playtest, one for each rank. **Their numbers are 
 
 ### Grave Wisp
 
-**Grave Wisp** (Grunt, CV 50, level 1). Health 18 (Vigor 6, Resolve 12). Armor Defense 12, Ward Defense 14. Weapon Modifier +2, Power Modifier +2. Mind +2, Instinct +1, Appeal 0, Body −1. Speed 6, Reach 1, Medium. 3 AP and the Reaction Point. Its damage dice explode only in its Critical rows.
+**Grave Wisp** (Grunt, CV 50, level 1). Health 18 (Vigor 6, Resolve 12). Armor Defense 12, Ward Defense 14. Weapon Modifier +2, Power Modifier +2. Mind +2, Instinct +1, Appeal 0, Body −1. Speed 6, Reach 1, Medium. 3 AP and the Reaction Point.
 
 **Resistance** Psychic 3 · **Weakness** Holy 3 · **Immunity** Cold
 

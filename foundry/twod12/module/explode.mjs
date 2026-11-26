@@ -66,12 +66,11 @@ export async function markEmpoweredUsed(actor) {
   if (!key) return;
   try { if (actor?.isOwner) await actor.setFlag(F, "empoweredUsed", key); } catch (e) { /* not ours */ }
 }
-/** Foundry: roll the Empowered die (1d6!) and return a damage component of the pool and type of the first one given (or null). */
-/** v0.0.435 (the Bestiary audit, question 11): a Minor enemy (a Minion or a Grunt) never explodes its damage dice, an Empowered die included. */
-export const minorNpc = a => a?.type === "npc" && ["minion", "grunt"].includes(a?.system?.role);
-export async function empoweredComponent(first, rolls = [], { explode = true } = {}) {
+/** Foundry: roll the Empowered die (1d6!) and return a damage component of the pool and type of the first one given (or null). v0.0.523 (Lucas,
+ *  2026-11-26): it explodes for every creature (v0.0.435's exception for a Minor enemy, a Minion or a Grunt, is gone: a die explodes where it writes !). */
+export async function empoweredComponent(first, rolls = []) {
   if (!first) return null;
-  const formula = explode ? EMPOWERED_FORMULA : EMPOWERED_FORMULA.replace(/!/g, "");
+  const formula = EMPOWERED_FORMULA;
   const r = await bookRoll(formula).evaluate();
   rolls.push(r);
   return { pool: first.pool || "B", sub: first.sub ?? "", kind: "E", formula, total: r.total, dice: diceOfRoll(r), label: "Empowered", emp: r.total };

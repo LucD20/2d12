@@ -26,7 +26,7 @@
 | [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead. |
 | [[Basic Attack\|**Basic Attack**]] | The Basic Action every PC has: a Strike with the weapon you wield ([V] 1d4! / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]; Critical: [V] 1d10!). Your class adds a line to it and gives you a Power Basic attack; an NPC has its own Basic attacks. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
-| [[Basic attacks\|**Basic attack**]] | An NPC's own attack: 1 AP, At-will. Every NPC has two by default (a melee and a ranged one, or one against each Defense), sharing one At-will count; its Tier 1 deals nothing unless its card says so; its Critical row is 1d10! of its own damage type by default. Its other Actions are 2 AP and Round by default. |
+| [[Basic attacks\|**Basic attack**]] | An NPC's own attack: 1 AP, At-will. Every NPC has two by default (a melee and a ranged one, or one against each Defense), sharing one At-will count; its Tier 1 deals nothing unless its card says so. |
 | [[Blinded\|**Blinded**]] | You can't see: heard creatures are Hidden to you (Doomed against them), sight Rolls are Doomed. |
 | [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). Bloodied: Speed −2 (minimum 1) and Steadiness −1. Strained: you don't regain your Reaction Point. Actions and features use them too. |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
@@ -122,7 +122,7 @@
 | [[Hands\|**Main hand, off hand**]] | Your two hands. [Strike, Weapon] Actions with a weapon in your off hand take 2 Banes (a Light weapon or your Fists: 1; a weapon held with both hands or a Strung weapon: none). |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 with one weapon when your side wins an encounter that was normal or harder. Never lower than half your best in its group. 10 unlocks its Weapon Technique; 20, 30, 45 and 60 its later unlocks. |
 | [[Minions\|**Minion**]] | An NPC rank with CV 30: 2 ticks instead of Health, 3 AP a turn and no Reaction Point (it pays a Reaction with an AP it kept); Minions act in squads of up to 2. |
-| [[Minor enemies\|**Minor enemies**]] | The Minion and Grunt ranks: 3 AP a turn, and their damage dice never explode. A Forced Movement into a [[Deadly Hazards\|Deadly Hazard]] kills a Minor enemy. |
+| [[Minor enemies\|**Minor enemies**]] | The Minion and Grunt ranks: 3 AP a turn. A Forced Movement into a [[Deadly Hazards\|Deadly Hazard]] kills a Minor enemy. |
 | [[Reading an Action\|**Mode**]] | One of several things a card can do at the same cost; you choose one each time you use the card. |
 | [[Momentum\|**Momentum**]] | The party's number from 0 to 4: an encounter starts at Escalation 1 + Momentum. +1 for each encounter overcome; -1 when a PC goes Down and at each Sleep; lost on a retreat and at a Rest. |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |

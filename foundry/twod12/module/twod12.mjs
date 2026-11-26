@@ -29,7 +29,6 @@ import { registerMigrationR, registerMigrationMod, registerMigrationS0, register
 import { registerMigrationFx } from "./fxmigrate.mjs";   // v0.0.323
 import { registerInitiativeSettings, registerInitiativeSocket } from "./initwindow.mjs";
 import { registerArmorHooks } from "./armor.mjs";
-import { registerCriticalHooks } from "./critical.mjs";
 import { registerFloatText } from "./floattext.mjs";
 import { registerEffectEditor } from "./fxeditor.mjs";
 import { registerAppliedEditor } from "./fxapplied.mjs";
@@ -100,7 +99,6 @@ Hooks.once("init", () => {
   registerEffectEditor();
   registerAppliedEditor();
   registerArmorHooks();
-  registerCriticalHooks();   // v0.0.521: a new Basic attack gets the default Critical row
   registerEscalationHooks();
   registerMomentumSetting();   // v0.0.243 (pack R)
   registerStateHooks();   // v0.0.243: Bloodied / Strained announced, the Escalation hooks

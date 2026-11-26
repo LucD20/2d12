@@ -10,7 +10,7 @@ import { performCheck, checkHtml, esc, sgn, showDice, combineRolls } from "./rol
 import { traitChevrons } from "./config.mjs";
 import { askRoll, enrich, adjLabelOf, ccRowOf } from "./actions.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-target Save card
-import { bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, minorNpc } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die
+import { bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die
 import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem } from "./effects.mjs";
 import { parseAttrs, needsOrigin } from "./condrules.mjs";   // v0.0.314 (pack AU): Bleed's Attributes
 import { dealDamageEx } from "./damage.mjs";
@@ -445,7 +445,7 @@ async function prerollTiers(cfg, targets = []) {
     all.push(...rolls);
   }
   // v0.0.426 (the audit; book, Chapter 8, Empowered: one creature takes it): one die, kept apart; saveDamage gives it to one creature
-  if (empUser && empFirst) { const ec = await empoweredComponent(empFirst, all, { explode: !minorNpc(empUser) }); if (ec) out.emp = ec; }
+  if (empUser && empFirst) { const ec = await empoweredComponent(empFirst, all); if (ec) out.emp = ec; }
   if (all.length) { try { await showDice(all); } catch (e) { /* no dice to show */ } }
   if (empUser && out.emp) await markEmpoweredUsed(empUser);
   // v0.0.467 (Lucas, 2026-11-20: "For save Actions, you decide the Empowered die before the enemies roll their Saves"; book, Chapter 8): the

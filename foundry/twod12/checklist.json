@@ -164,15 +164,23 @@
      "v": "v0.0.521",
      "title": "The creatures' Critical rows",
      "do": "With the Goblin Sneak, roll Shiv against Kaela until a Critical; then the Orc Warrior's Hamstringing Axe against Durgan; then the Grave Wisp's Guttering Glance against Sylwen.",
-     "expect": "Each card shows its own Critical row ([V] 1d10! Pi, [V] 1d10! Sl, [R] 1d10! Ps). On the Critical the pick bar asks \"Apply: [V] 1d10! Pi.\" / Don't apply; the 1d10 explodes on a 10 even for the goblin (its Tier dice still don't); the damage is the row's pool and subtype.",
+     "expect": "Each card shows its own Critical row ([V] 1d10! Pi, [V] 1d10! Sl, [R] 1d10! Ps). On the Critical the pick bar asks \"Apply: [V] 1d10! Pi.\" / Don't apply; the 1d10 explodes on a 10; the damage is the row's pool and subtype.",
      "rev": 1
     },
     {
-     "id": "hq-crit-default",
-     "v": "v0.0.521",
-     "title": "A new Basic attack gets the default row",
-     "do": "On the Orc Warrior's sheet, make a new Action, give it a Tier 2 of [V] 1d4 Bl, then tick \"Basic attack\" in its sheet.",
-     "expect": "Its Critical row fills with \"[V] 1d10!\" by itself (an existing row is never overwritten); on a Critical the pick bar offers [V] 1d10! Bl.",
+     "id": "mn-shiv-crit",
+     "v": "v0.0.523",
+     "title": "A Critical on Shiv offers its row; no default row",
+     "do": "With the Goblin Sneak, roll Shiv against Kaela until a Critical (or set the dice). Then, on the Goblin Sneak's sheet, make a new Action, give it a Tier 2 of [V] 1d4 Pi and tick \"Basic attack\" in its sheet.",
+     "expect": "On the Critical the pick bar asks \"Apply: [V] 1d10! Pi.\" / Don't apply; applied, the 1d10 explodes on a 10 (the face counts 9 and is rolled again) and deals Pierce to Kaela's Vigor. The new Action's Critical row stays empty when \"Basic attack\" is ticked: nothing fills it, and a Critical with it adds nothing.",
+     "rev": 1
+    },
+    {
+     "id": "mn-empowered",
+     "v": "v0.0.523",
+     "title": "A Minor enemy's Empowered die explodes",
+     "do": "Outside a combat, give the Grave Wisp Empowered by hand from the Conditions, then roll its Slipping Touch against Sylwen until a Tier 2 or 3, and again until the Empowered die shows a 6 (or set the dice). Then the same with a Goblin Sneak (Empowered from the Conditions) and its Shiv against Kaela.",
+     "expect": "The damage card has the Empowered die as 1d6! (Cold for the wisp, Pierce for the goblin); on a 6 it counts 5 and is rolled again, the exploded face shown, as it does for the Orc Warrior. The Tier's own 1d4 or 1d6 still never explodes (it writes no !).",
      "rev": 1
     },
     {

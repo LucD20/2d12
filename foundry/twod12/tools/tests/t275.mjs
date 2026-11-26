@@ -46,7 +46,7 @@ console.log("(13) Relentless: a Round Special twice", U.usesAllowed("round", new
 const NB = await import(ROOTURL + "module/npcbudget.mjs");
 console.log("(19) an Elite's Extreme Modifier counts as High:", NB.cvSteps("elite", {}, { weapon: "extreme" }) === NB.cvSteps("elite", {}, { weapon: "high" }), "| a Standard's doesn't:", NB.cvSteps("standard", {}, { weapon: "extreme" }) > NB.cvSteps("standard", {}, { weapon: "high" }));
 const EX = await import(ROOTURL + "module/explode.mjs");
-console.log("(11) a Minor enemy's Empowered die doesn't explode:", EX.minorNpc({ type: "npc", system: { role: "grunt" } }), EX.minorNpc({ type: "npc", system: { role: "standard" } }), src("module/explode.mjs").includes('const formula = explode ? EMPOWERED_FORMULA : EMPOWERED_FORMULA.replace(/!/g, "");'));
+console.log("(11) v0.0.523: the Empowered die explodes for every creature (a Minor enemy's too):", !("minorNpc" in EX), src("module/explode.mjs").includes("const formula = EMPOWERED_FORMULA;"), EX.EMPOWERED_FORMULA, "| no rank-based explode left in the system:", !("npcDieExplodes" in (await import(ROOTURL + "module/roundrules.mjs"))), !src("module/actions.mjs").includes("minorNpc"), !src("module/inline.mjs").includes("minorNpc"));
 console.log("(3) no Guard from unspent AP for an NPC:", src("module/combat.mjs").includes('const { guard } = a.type === "npc" ? { guard: 0 } : unusedApGuard('));
 console.log("(8) the Ogre is Large:", C.actors.find(a => a.name === "Ogre Chieftain")?.system?.size, "| (29) Rally the Tribe's traits:", JSON.stringify(C.actors.flatMap(a => a.items ?? []).find(x => x.name === "Rally the Tribe")?.system?.traits ?? []));
 

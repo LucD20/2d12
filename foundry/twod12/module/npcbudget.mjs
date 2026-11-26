@@ -113,12 +113,12 @@ export function presetRatings(key, rank) {
 /**
  * What the Builder suggests for one NPC Action at Stage 0: its points and its written damage (no riders taken off). o: { rank, rating (the NPC's
  * damage rating, or the Basic attack's own), ap, freq ("atwill" | "round" | "encounter" | "enc"), basic (the Basic attack: its die explodes on a
- * Standard or an Elite), ranged (more than 2 squares: one rating lower), explode (an exploding die paid for, 6 points) }. { pts, t2, t3, text, rating }.
+ * Standard or an Elite, as the rank table writes it), ranged (more than 2 squares: one rating lower), explode (an exploding die paid for, 6 points, any rank) }. { pts, t2, t3, text, rating }.
  */
 export function npcSuggest({ rank = "standard", rating = "medium", ap = 1, freq = "atwill", basic = false, ranged = false, explode = false } = {}, P = PRICES()) {
   const r0 = rating in P.rating ? rating : "medium", r = ranged ? ratingBelow(r0) : r0;
   const f = freq === "encounter" ? "enc" : freq === "round" || freq === "enc" ? freq : "atwill";
-  const bang = (basic || explode) && rank !== "minion" && rank !== "grunt";
+  const bang = !!explode || (basic && rank !== "minion" && rank !== "grunt");   // v0.0.523: an exploding die paid for is any rank's (a Minor enemy's too); a Basic attack's ! follows the rank table
   const pts = actionPoints(rank, Math.max(1, Math.trunc(Number(ap)) || 1), f, r, P), dmgPts = Math.max(0, pts - (explode && !basic && bang ? P.explode : 0));
   const [t2, t3] = pointsExpr(dmgPts, P, bang);
   return { pts: Math.round(pts), t2, t3, text: `${Math.round(pts)} points: ${t2} / ${t3}`, rating: r };

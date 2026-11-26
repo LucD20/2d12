@@ -28,7 +28,7 @@ import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches, demoralizedTarget, markDemoralized } from "./usage.mjs";   // (markAtWill: imported where used)
 import { tierProbs, topStep, bbCount, bbResolve } from "./calc.mjs";
 import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS, escalationDie } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged; v0.0.510: escalationDie (Steady Draw's dE)
-import { weaponDiceFormula, weaponDieOnlyFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, minorNpc } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die; core rework batch 3: [D]
+import { weaponDiceFormula, weaponDieOnlyFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die; core rework batch 3: [D]
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
@@ -1958,7 +1958,7 @@ export async function rollDamage(message, { again = false } = {}) {
       chip = `<div class="chips"><span class="chip">${esc(f.attrLabel || "Modifier")} +${f.attrVal}</span></div>`;
     }
     // v0.0.407 (Stage 0 in Foundry; book, Chapter 8, Empowered): the first damage the creature deals on each of its turns adds 1d6! of the Action's pool and type
-    if (empOn && (!again || hadEmp) && !empLater && !empUsed) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls, { explode: !minorNpc(actor) }) : null; if (ec) { comps.push(ec); empUsed = true; } }
+    if (empOn && (!again || hadEmp) && !empLater && !empUsed) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls) : null; if (ec) { comps.push(ec); empUsed = true; } }
     // the core rework batch 2 (book, Chapter 1, Critical; critical.mjs): the card's own Critical row (its dice rolled here, a die with no subtype
     // of a type the Action deals; its conditions applied with the Tier's); always optional: the pick bar asks before the die is rolled
     let critConds = [], critApplied = false;
@@ -2034,7 +2034,7 @@ export async function rollDamage(message, { again = false } = {}) {
             if (pick !== null && pick !== undefined && can.includes(Number(pick))) k = Number(pick);
           } catch (e) { console.warn("twod12 | Empowered pick", e); }
         }
-        const g0 = k >= 0 ? groups[gOf[k]] : null, ec = g0 ? await empoweredComponent(g0.comps.find(c => c.kind === "W" || c.kind === "D"), all, { explode: !minorNpc(actor) }) : null;
+        const g0 = k >= 0 ? groups[gOf[k]] : null, ec = g0 ? await empoweredComponent(g0.comps.find(c => c.kind === "W" || c.kind === "D"), all) : null;
         if (ec) {
           if (rows.filter(r => r.tier === rows[k].tier).length === 1) g0.comps = [...g0.comps, ec];
           else { const at = gOf[k] + 1; groups.splice(at, 0, { ...g0, comps: [...g0.comps, ec] }); for (let j = 0; j < gOf.length; j++) gOf[j] = j === k ? at : gOf[j] >= at ? gOf[j] + 1 : gOf[j]; }

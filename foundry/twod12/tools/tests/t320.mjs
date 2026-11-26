@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t320.mjs)
 // v0.0.521 (Lucas's answers to the cleanup audit's held questions, 2026-11-26; book/audit-2026-11-25/applied.md, "The held questions answered"):
 // (1) the Critical comes only from the card's Critical row (B1-003): every Basic attack card writes its own, an open row ("[V] 1d10!") takes one of
-// the Action's damage types; a ticked Basic attack gets the default row. (2) A Human's choices lock for a player once the first class level is
+// the Action's damage types (v0.0.523: the default row for a ticked Basic attack is gone, Lucas 2026-11-26). (2) A Human's choices lock for a player once the first class level is
 // confirmed (B2-069). (3) Lingerings of different subtypes run together, Shake Off ends one (B2-066). (4) No "Special Actions" in the NPC sense
 // (B3-070). (5) Lay On Hands' "Advance 5 squares" (B2-009).
 import fs from "node:fs";
@@ -26,7 +26,7 @@ console.log("the Basic Attack with a Longsword: the options", CR.critOptions("[V
 console.log("with Smite's [R] Ho too: the options", CR.critOptions("[V] 1d10!", "[V] 1d10!", [...comps, { pool: "M", sub: "Ho", kind: "D", total: 4 }]).map(o => o.label).join(" | "));
 console.log("Shiv's typed row is asked as it is:", CR.critOptions("[V] 1d10! Pi.", "[V] 1d10! Pi.", [{ pool: "B", sub: "Pi", kind: "D", total: 2 }]).map(o => o.label).join(" | "));
 console.log("no general Basic-attack path left:", !("isBasicAttack" in CR), !src("module/actions.mjs").includes("isBasicAttack"), "| the row's dice take the kind:", src("module/actions.mjs").includes("C.critComponent(C.critDieFor(d, ans.kind), rolls)"));
-console.log("the default row when a Basic attack is ticked:", JSON.stringify(CR.withDefaultCritRow([{ ap: 1, critical: "" }, { ap: 2, critical: "[V] 1d6! Bl." }]).map(v => v.critical)), "| all written:", CR.withDefaultCritRow([{ ap: 1, critical: "Prone." }]), "| registered:", src("module/twod12.mjs").includes("registerCriticalHooks();"));
+console.log("v0.0.523: no default row when a Basic attack is ticked:", !("withDefaultCritRow" in CR), !("registerCriticalHooks" in CR), !("DEFAULT_CRIT_ROW" in CR), "| not registered:", !src("module/twod12.mjs").includes("registerCriticalHooks"));
 
 console.log("--- 2. a Human's choices lock once level 1 is confirmed (a player; the GM still can)");
 for (const o of [{ gm: false, hasClass: true, chooses: true }, { gm: true, hasClass: true, chooses: true }, { gm: false, hasClass: false, chooses: true }, { gm: false, hasClass: true, chooses: false }])

@@ -1,9 +1,13 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.522**. Tests: `node tools/tests/run.mjs` (318 tests, see the README; the next new test is t322). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.523**. Tests: `node tools/tests/run.mjs` (318 tests, see the README; the next new test is t322). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
+
+## LUCAS'S REVIEW OF THE BESTIARY'S WORDING: BUILT IN v0.0.523 (2026-11-26)
+
+- [x] **(v0.0.523: the book's Chapter 14 after Lucas's review; `book/rules-backlog.md`, the top entry)** A Minor enemy's dice follow the general rule: a die explodes where its formula writes !, and the Empowered die explodes for a Minion or a Grunt too (`explode.mjs minorNpc` and `roundrules.mjs npcDieExplodes` removed; the SIM keeps its frozen copy in `book/ruler/sim/tables.mjs`). No default Critical row: ticking "Basic attack" fills nothing (`critical.mjs registerCriticalHooks` removed). NOT tested by Lucas: `mn-shiv-crit`, `mn-empowered`.
 
 ## THE CLEANUP AUDIT: WHAT FOUNDRY STILL HAS TO FOLLOW (2026-11-26)
 

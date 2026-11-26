@@ -261,6 +261,8 @@ G9's targets (decided 2026-11-21) restated in decision 1's unit, each with its D
 
 ### Decision 4 (revised by Lucas, 2026-11-25): the benchmark is the plain PC
 
+> **Corrected by Lucas, 2026-11-26 (OPEN):** the benchmark is not "no class at all"; a **margin** for the power a class adds is to be left. See "Lucas's review of the chapter's wording (2026-11-26)" below. The text of this decision is kept as it was.
+
 **Lucas:** "we should compare to the core [...] We dont want people to be forced to play certain roles." The first version of this decision used the four pregens (two Paladins, two Archers) and let their cards into the monster's numbers (Judge, Shield of Faith, Lay On Hands' Guard). **A monster is built against the core alone.**
 
 **The plain PC** (the PC budget's own word since 2026-11-13, `cards/README.md`: "its class's Health, armor, weapon and Modifiers and nothing else; its turn is three Weapon Attacks", 100 points, a class about 130 at level 1):
@@ -484,6 +486,34 @@ Lucas, on the Elite's open rule (K6): "Ok, lets settle it and start." **Proposed
 Lucas: "We need to work more on it. Save it for when we are done running the audit." Nothing is decided and nothing is in the book or in Foundry.
 
 **Claude's proposal (proposed, not decided):** a stat block names a weapon only when the creature can lose it; only the cards that use it write "Requirement: its axe in hand", and the rest still work; it always has the Fists Basic Action; it takes the weapon back with Interact (1 AP) when it is within its Reach; another weapon of the same kind meets the Requirement, another kind doesn't; the GM adjusts nothing mid-fight.
+
+### Lucas's review of the chapter's wording (2026-11-26; applied to Chapter 14 and the Glossary, Foundry v0.0.523)
+
+His words:
+
+- On "An NPC's other Actions are 2 AP and Round by default": "Remove the 2ap and round by default. Again, we shouldn't be hard capping this too much."
+- On the Critical and Minor enemies: "Remove the minor enemies part. People can see minions don't have !. And effects that allow crit, should allow minions to crit. Remove the goblin and wisp exception. Remove the default critical again."
+- In general: "I feel you are doing too much 'by default', it really shouldn't have so many constraints. The limits is the overall power of the action, a 1ap can exist as an npc another action as long as it is balanced against its other counterparts"
+- On "No number in this chapter assumes a class": "Wait, this means the game doesn't take classes into considerations at all? Because when I meant classes will be different and we were comparing to only paladin and archer, i meant to not specifically compare to those but use better judgement and create kind of a 'margin', since classes increase power, so we need a margin."
+- On "The bands": "What does bands mean? And bands edge? I am not getting this part. Is this the encounter difficulty?"
+- Good as they are: the Momentum sentence removed, the Minion's CV sentence, the Elite clause removed, the Standard and Elite "unit" sentences, Hurled Goblin.
+
+**What changed (the book; `rules-backlog.md`, the top entry, has each sentence):**
+
+- **An NPC's other Actions have no default shape:** any AP cost, any Frequency, any number of targets; **what limits one is its power**, balanced against the creature's other Actions. The numbers stay as **reference numbers**: a Grunt's 2 AP Round Action about 5½ / 8½ to one creature or 2½ / 4½ to each of two; a Standard's about 7 / 11 or 5 / 8 to each of up to two; an Elite's Encounter Action that hits several creatures about twice a Standard's 2 AP Round Action (the record, decision K6, says "about twice a Round Special" and no more: neither "each" nor "in total" is settled, so the book keeps the words as written). A Standard's "usual turn" is now "the turn its damage a turn counts" (decision 15's shape is how the damage a turn was counted, not a rule). Decision 15's "default Special" is read the same way from here.
+- **A Minor enemy's dice follow the general rule:** a die explodes where its card writes ! (Chapter 1, Exploding Dice), an Empowered die included. Chapter 14's "their damage dice never explode" (K7's second Minor rule) and the goblin's and the wisp's "Its damage dice explode only in its Critical rows" are gone; the rank table still writes the Minion's and the Grunt's Basic attack dice with no !, which is what the players see.
+- **No default Critical row:** the rule "Each Basic attack has a Critical row by default" is gone (and with it the Foundry hook of v0.0.521 that filled one); the eight creature cards keep their rows (Lucas approved a row on each Basic attack card: B3-052).
+- **"No number in this chapter assumes a class" removed.** Nothing in its place until the margin is decided.
+- **"Band" is "difficulty"** in the book (the section "Difficulty", the table's column, the open box). This record's older entries keep "band"; new entries say "difficulty".
+
+**Decision 4, corrected (OPEN):** the benchmark is not "no class at all". Lucas meant: don't size a monster against the Paladin's and the Archer's cards specifically, but use judgment and leave a **margin** for the power a class adds, whichever class it is. **The size of the margin is not decided; it belongs with the retune (decision 16).** What the record and playtest 8 already hold (facts, not a proposal):
+
+- The PC budget puts a class at about 130 points at level 1 against the plain PC's 100 (`cards/README.md`; 150 at level 3).
+- At level 1 the pregens deal about what four plain PCs do on paper (22.6 against 22.9 a turn before Smite; decision 4's table).
+- In playtest 8 (`playtest-8.md`) the party dealt 18.4 a turn against the table estimate of 17; class cards took 5 of the 50 raw damage the enemies dealt (all of it from the ogre's hits).
+- The fight ended in round 2, against decision 3's "decided in round 2, over in round 3".
+
+**Still open with it:** which cost separates Hard from Deadly (2¾ or 3 Rally Points a PC: the book says 3, the Encounter Log's line about 2.7, its 68%); the other "by default" sentences of Chapter 14, listed for Lucas (every NPC has two Basic attacks; no NPC has a Reaction; 2 ticks; the ranks' table of defaults; a creature changes its rank's default inside the totals; and the rest in the report of 2026-11-26).
 
 ### What comes next
 

@@ -36,3 +36,6 @@ export const ELITE_RUNGS = [1, 2, 3], ELITE_RUNGS_LADDER = [2, 4, 6];
 export const eliteFirstAttackBoons = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[0] ? 1 : 0);
 export const eliteRoundSpecials = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[1] ? 2 : 1);
 export const eliteEncounterBack = (esc, rungs = ELITE_RUNGS) => (Number(esc) || 0) >= rungs[2];
+// roundrules.mjs's npcDieExplodes of v0.0.522 (v0.0.523, Lucas 2026-11-26, removed the rule from the system: a Minor enemy's dice follow the
+// general rule; the SIM is frozen on it): a Minion's or a Grunt's dice never explode; a Standard's or an Elite's Basic attack, or an Action with the trait, does.
+export const npcDieExplodes = (rank, { basic = false, trait = false } = {}) => rank !== "minion" && rank !== "grunt" && (!!basic || !!trait);
