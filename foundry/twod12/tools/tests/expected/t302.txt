@@ -1,6 +1,6 @@
 Magical trait: Magical | group: keywords
-Drawing Light traits: divine,magic,magical,ranged,strike
-Harrying Shot traits: magic,ranged,strike
+Drawing Light traits: divine,magic,magical,paladin,ranged,strike
+Harrying Shot traits: archer,magic,ranged,strike
 Darting Blade AP: 2
 After Basic Attack -> Drawing Light Banes: 1 | Basic Attack Banes: 1 | Heal Banes: 0
 After Drawing Light -> 3rd Strike Banes: 2 | Strikes: 2

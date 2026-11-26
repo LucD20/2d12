@@ -19,6 +19,14 @@ differ):
 
 ## Characters and sheets
 
+### ct-cards · v0.0.522 · The Paladin and Archer traits on the class cards
+Do: Open Aveline's sheet and look at Smite, Judge and Drawing Light (the Actions tab and each card's preview), and her Feature Sworn Blade; then Kaela's Strafe, Slip Away and Harrying Shot, and her Feature Shifting Aim. Use Kaela's Strafe once and look at its chat card.
+Expect: Smite's traits read "Signature · Weapon · Strike · Divine · Paladin · Unfailing", Judge's "Divine · Paladin", Drawing Light's end "Divine · Magical · Paladin"; Strafe's "Weapon · Projectile · Ranged · Strike · Archer", Harrying Shot's end "Strike · Archer"; Slip Away now has a traits line, "Archer". The class word is the Keywords' color, like Divine, with no fill; nothing wraps onto a second line that didn't before. Sworn Blade and Shifting Aim show no trait. The chat card's traits line ends "Archer".
+
+### ct-update · v0.0.522 · An existing world's class cards get the trait
+Do: In an existing world, after the update, accept "Update from the compendium" (or run it from the system settings); open Durgan's Lay On Hands and Sylwen's Quick Shots.
+Expect: Lay On Hands reads "Divine · Focus · Paladin", Quick Shots "Weapon · Projectile · Ranged · Strike · Archer"; their class picks (Hallmark Action, Reaction) are kept.
+
 ### hq-other · v0.0.521 · No "Special Actions" on an NPC; Hurled Goblin and Lay On Hands' words
 Do: As the GM, open the Ogre Chieftain's sheet (Hurled Goblin's card), add an Effect with a "More uses of a Frequency" setting and open its Details; then open Durgan's Lay On Hands.
 Expect: The setting says "its own Round Actions (not the Basic Actions) can be used twice per turn-cycle" (its list line "Own Round Actions twice per turn-cycle"); no "Special" in either; Hurled Goblin's Effect reads "the ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions."; Lay On Hands' Setup button reads "Advance 5 squares".
@@ -58,6 +66,10 @@ Do: Put four Goblin Sneaks in a combat and open the Initiative window.
 Expect: Two squads of two (never three in one); putting three in one squad shows "3 in squad (book: ≤2)".
 
 ## The roll dialog
+
+### ct-filter · v0.0.522 · An Effect can name [Paladin] Actions
+Do: As the GM, add an Effect to Aveline with a "Boons and Banes" setting (1 Boon) whose trait filter is "all of: Paladin" (the picker's Keywords group); roll her Smite, then her Basic Attack. Remove the Effect after.
+Expect: The picker's Keywords list Archer, Divine, Fear, Focus, Magical, Paladin, Subtle, Unfailing. Smite's roll dialog has the Boon; the Basic Attack's doesn't.
 
 ### cu-choose · v0.0.520 · You choose the Attribute you roll
 Do: Kaela targets the Orc Warrior and uses Trip.

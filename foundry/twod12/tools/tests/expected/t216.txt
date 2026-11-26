@@ -15,7 +15,7 @@ a target's chip is left out: true
 --- the card
 no title bar, no Place Area button, no old badge: true
 the new look: true | the Flavor first: true
-trait words: Signature · Weapon · Strike · Divine · Unfailing Gold
+trait words: Signature · Weapon · Strike · Divine · Paladin · Unfailing Gold
 the grid: Distance: Weapon Target: One creature
 labels: Smite dice, Attack, Tier 1, Tier 2, Tier 3, Special, Your roll
 Use buttons: 1 live, 0 struck | at the end of Your roll: true | a button uses its Version: true

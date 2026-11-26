@@ -15,6 +15,7 @@
 | [[Advance\|**Advance**]] | Normal movement, up to the given distance, in one piece: the movement left is lost; one Interact can fit inside the Advance Action. |
 | [[Rules Language\|**Ally**]] | A creature on your side. You are never your own ally. |
 | [[Escalation\|**Apex**]] | A class's big Encounter Action that needs Escalation 6; you choose one at level 4. |
+| [[Archer and Paladin\|**Archer Action**]] | An Action with the Archer trait: one the Archer class gives you. The trait has no rules of its own: other rules and features refer to it. |
 | [[Areas\|**Area**]] | Where an Action's effect goes, written on its own line (with a Distance line when the area can be placed away from you). Those Actions have the Area trait: they target everyone they affect, ignoring Senses. |
 | [[Defenses\|**Armor**]] | Armor Defense (AD) — 11 + Armor value + other items + bonuses − penalties. The Defense a Weapon Action usually attacks. |
 | [[Armor Training\|**Armor Training**]] | The heaviest armor a class can wear (it includes the lighter ones). Untrained: your Rolls are Doomed, Actions against your Armor or Ward are Favored. |
@@ -88,8 +89,8 @@
 | [[Grunts\|**Grunt**]] | An NPC rank with CV 50: half a Standard (Health 18), 3 AP a turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts until you regain AP again. |
 | [[Half-Blinded\|**Half-Blinded**]] | Your Sight perceives no creature better than Obscured. |
-| [[Hallmarks and Picks\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
-| [[Hallmarks and Picks\|**Hallmark Reaction**]] | A choice of two class Reactions at level 1; you take one. |
+| [[Hallmarks and Picks\|**Hallmark Action**]] | A choice of two of your class's Actions at level 1; you take one. |
+| [[Hallmarks and Picks\|**Hallmark Reaction**]] | A choice of two of your class's Reactions at level 1; you take one. |
 | [[Hands\|**Hands**]] | Your main hand and your off hand, chosen when you make your character, and how many of them hold a weapon. |
 | [[Hazardous Terrain\|**Hazardous Terrain [HT]**]] | Terrain that harms the creatures in it. Written [HT: Entering, Turn] in the text of the effect that creates it (notation, not a trait). It affects a creature at most once per turn-cycle. |
 | [[Rally Points\|**Heal**]] | To remove damage. The creature chooses which damage. |
@@ -132,6 +133,7 @@
 | [[Non-threatening\|**Non-threatening**]] | A weapon property: the weapon doesn't threaten, so you can't flank with it, unless a feature says otherwise. Fists have it. |
 | [[Senses\|**Obscured**]] | Your Actions against the creature take 1 Field Bane; its Actions against you gain 1 Field Boon when it perceives you better than you perceive it. |
 | [[Rules Language\|**Origin**]] | The creature that uses an Action, or the Point of Origin of an Area. |
+| [[Archer and Paladin\|**Paladin Action**]] | An Action with the Paladin trait: one the Paladin class gives you. The trait has no rules of its own: other rules and features refer to it. |
 | [[Hallmarks and Picks\|**Pick**]] | One choice from the other Actions a class offers; the level list says how many you take and of which kind. |
 | [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
 | [[Point Out\|**Point Out**]] | A Basic Action (At-will, 1 AP): an ally (Tier 2) or every ally within 10 squares (Tier 3) perceives a creature you perceive 1 step better. |

@@ -15,7 +15,7 @@ a book link: <i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright 
 options: {"formula":"1d8+mod","who":"pick","area":2} {"kind":"pushed","distance":1,"pick":true,"area":2,"from":"target"} {"ref":"Bright","doc":"Core Rules"}
 --- the Smite card (book/cards/stage0/paladin.json since pack F2, v0.0.409) as Foundry data
 2 AP: dice rule smite | tiers  1d6! MHo / [W]++ 1d6! MHo / [W]++ 2d6! MHo
-the Structure card's tiers say 'your Smite dice'; Foundry rolls them: true | encounter divine,signature,strike,unfailing,weapon
+the Structure card's tiers say 'your Smite dice'; Foundry rolls them: true | encounter divine,paladin,signature,strike,unfailing,weapon
 automation: gold | the Smite dice by your Escalation (up to 4, 1 more on a Tier 3), d8s against a Profane creature (Judged by you, or the Profane Tag), the Reaction Point for 1 more die (the roll dialog's chip, paid when used).
 the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16): true | the built book links a rule on a card (Covering Fire's Hazardous Terrain; was Lantern of Faith's Bright light until batch 5): true | every card an anchor: true
 --- the placeholder card (Hide) and the Smite light effects

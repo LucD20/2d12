@@ -7,7 +7,7 @@ Rebuke: full [Trigger, Effect, Save, Tier 1 or 2] distance "3 sq." | short [Trig
 --- the short card drawn
 Snap Shot: no Flavor true (full has one: true) | no rank word true | no Distance true | no Use true | no Ruler true | marked true
 Smite: no Flavor true (full has one: true) | no rank word true | no Distance true | no Use true | no Ruler true | marked true
-Weapon &middot; Projectile &middot; Ranged &middot; Strike Target: One enemy Interrupt The target would enter a square adjacent to you. Tier 1 [Mod] Tier 2 1[W] + [Mod] ↳ @Condition[hindered|eot] Tier 3 1[W] + [Mod] ↳ @Condition[immobilized|eot]
+Weapon &middot; Projectile &middot; Ranged &middot; Strike &middot; Archer Target: One enemy Interrupt The target would enter a square adjacent to you. Tier 1 [Mod] Tier 2 1[W] + [Mod] ↳ @Condition[hindered|eot] Tier 3 1[W] + [Mod] ↳ @Condition[immobilized|eot]
 --- the bar
 {"stamps":[{"ap":1,"label":"1 AP","off":false,"why":""},{"ap":2,"label":"2 AP","off":false,"why":""},{"ap":3,"label":"3 AP","off":true,"why":"Not enough AP: 2 left"}],"dist":"8/16","vs":"AD","fq":"encounter","fqWord":"Encounter"}
 {"stamps":[{"ap":1,"label":"1R","off":true,"why":"Not enough AP: 0 left and 0 Reaction Point"}],"dist":"","vs":"","fq":"turn","fqWord":"Turn"}

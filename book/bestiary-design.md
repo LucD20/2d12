@@ -477,7 +477,13 @@ Lucas, on the Elite's open rule (K6): "Ok, lets settle it and start." **Proposed
 - **"Special Action" dropped (B3-070; "Yes"):** an NPC's **other Actions** (every one that is not a Basic attack) are 2 AP and Round by default; by default one hits one creature, or two for less damage each; its own card can do otherwise. The stat blocks write "(Round, 2 AP; ...)"; the cards' category is "Other Action".
 - **Hurled Goblin (B3-074; "Good"):** "the ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions." (no more "not a Reposition or a Forced Movement").
 - **The Critical (B3-052, with B1-003; "Yes"):** each Basic attack card writes its own Critical row, by default 1d10! of its own pool and subtype (a Minor enemy's too: the only die of a Minor enemy that explodes). Nothing plays differently; each row can now be tuned on its own.
-- **Still held:** an NPC's items and losing its weapon (B3-033, B3-065; B3-069's section stays under its open box).
+- **Still held:** an NPC's items and losing its weapon (B3-033, B3-065; B3-069's section stays under its open box): its own section below, "An NPC losing its weapon".
+
+### An NPC losing its weapon (B3-033, B3-065, B3-069; 2026-11-26; OPEN, to work on with Lucas after the audit)
+
+Lucas: "We need to work more on it. Save it for when we are done running the audit." Nothing is decided and nothing is in the book or in Foundry.
+
+**Claude's proposal (proposed, not decided):** a stat block names a weapon only when the creature can lose it; only the cards that use it write "Requirement: its axe in hand", and the rest still work; it always has the Fists Basic Action; it takes the weapon back with Interact (1 AP) when it is within its Reach; another weapon of the same kind meets the Requirement, another kind doesn't; the GM adjusts nothing mid-fight.
 
 ### What comes next
 

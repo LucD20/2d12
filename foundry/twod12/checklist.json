@@ -4,6 +4,22 @@
    "name": "Characters and sheets",
    "items": [
     {
+     "id": "ct-cards",
+     "v": "v0.0.522",
+     "title": "The Paladin and Archer traits on the class cards",
+     "do": "Open Aveline's sheet and look at Smite, Judge and Drawing Light (the Actions tab and each card's preview), and her Feature Sworn Blade; then Kaela's Strafe, Slip Away and Harrying Shot, and her Feature Shifting Aim. Use Kaela's Strafe once and look at its chat card.",
+     "expect": "Smite's traits read \"Signature · Weapon · Strike · Divine · Paladin · Unfailing\", Judge's \"Divine · Paladin\", Drawing Light's end \"Divine · Magical · Paladin\"; Strafe's \"Weapon · Projectile · Ranged · Strike · Archer\", Harrying Shot's end \"Strike · Archer\"; Slip Away now has a traits line, \"Archer\". The class word is the Keywords' color, like Divine, with no fill; nothing wraps onto a second line that didn't before. Sworn Blade and Shifting Aim show no trait. The chat card's traits line ends \"Archer\".",
+     "rev": 1
+    },
+    {
+     "id": "ct-update",
+     "v": "v0.0.522",
+     "title": "An existing world's class cards get the trait",
+     "do": "In an existing world, after the update, accept \"Update from the compendium\" (or run it from the system settings); open Durgan's Lay On Hands and Sylwen's Quick Shots.",
+     "expect": "Lay On Hands reads \"Divine · Focus · Paladin\", Quick Shots \"Weapon · Projectile · Ranged · Strike · Archer\"; their class picks (Hallmark Action, Reaction) are kept.",
+     "rev": 1
+    },
+    {
      "id": "hq-other",
      "v": "v0.0.521",
      "title": "No \"Special Actions\" on an NPC; Hurled Goblin and Lay On Hands' words",
@@ -82,6 +98,14 @@
   {
    "name": "The roll dialog",
    "items": [
+    {
+     "id": "ct-filter",
+     "v": "v0.0.522",
+     "title": "An Effect can name [Paladin] Actions",
+     "do": "As the GM, add an Effect to Aveline with a \"Boons and Banes\" setting (1 Boon) whose trait filter is \"all of: Paladin\" (the picker's Keywords group); roll her Smite, then her Basic Attack. Remove the Effect after.",
+     "expect": "The picker's Keywords list Archer, Divine, Fear, Focus, Magical, Paladin, Subtle, Unfailing. Smite's roll dialog has the Boon; the Basic Attack's doesn't.",
+     "rev": 1
+    },
     {
      "id": "cu-choose",
      "v": "v0.0.520",

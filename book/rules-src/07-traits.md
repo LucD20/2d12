@@ -3,6 +3,10 @@
 
 An Action's traits are the words under its Flavor. Each trait below has a rule of its own, or is a word other rules and features refer to.
 
+### Archer and Paladin
+
+These are class traits. An Action with the Paladin trait is a **Paladin Action**: one the Paladin class gives you. An Action with the Archer trait is an **Archer Action**: one the Archer class gives you. A class trait has no rules of its own: other rules, Features and Talents refer to it.
+
 ### Area
 
 These Actions have an Area: they affect every creature in it and ignore Senses (see [[Areas]] and [[Senses]]).

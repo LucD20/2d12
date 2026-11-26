@@ -78,7 +78,8 @@
    "traits": [
     "weapon",
     "melee",
-    "strike"
+    "strike",
+    "archer"
    ],
    "distance": "Reach",
    "target": "One creature",
@@ -163,7 +164,8 @@
    "traits": [
     "power",
     "ranged",
-    "strike"
+    "strike",
+    "archer"
    ],
    "distance": "10 sq.",
    "target": "One creature",
@@ -212,7 +214,8 @@
     "weapon",
     "ranged",
     "projectile",
-    "strike"
+    "strike",
+    "archer"
    ],
    "distance": "Weapon",
    "target": "One creature",
@@ -256,7 +259,8 @@
     "weapon",
     "ranged",
     "projectile",
-    "strike"
+    "strike",
+    "archer"
    ],
    "distance": "Weapon",
    "target": "Up to three creatures",
@@ -272,6 +276,9 @@
    "category": "Archer Hallmark Reaction",
    "level": 1,
    "flavor": "The moment a foe commits to reaching you, you are already somewhere else.",
+   "traits": [
+    "archer"
+   ],
    "frequency": "Turn",
    "cost": "1R",
    "body": [
@@ -326,7 +333,8 @@
     "weapon",
     "ranged",
     "projectile",
-    "strike"
+    "strike",
+    "archer"
    ],
    "distance": "Weapon",
    "target": "One enemy",
@@ -648,7 +656,8 @@
     "ranged",
     "projectile",
     "area",
-    "strike"
+    "strike",
+    "archer"
    ],
    "distance": "Weapon (Normal range)",
    "area": "3 Burst",
@@ -707,7 +716,8 @@
     "weapon",
     "projectile",
     "move",
-    "strike"
+    "strike",
+    "archer"
    ],
    "target": "Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range",
    "foundry": {
@@ -734,7 +744,8 @@
     "weapon",
     "ranged",
     "projectile",
-    "area"
+    "area",
+    "archer"
    ],
    "distance": "Weapon (Normal range)",
    "area": "3 Burst",

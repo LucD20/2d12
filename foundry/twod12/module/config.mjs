@@ -2,6 +2,7 @@ import { weaponRanges } from "./weaponrange.mjs";
 import { vsColored } from "./util.mjs";   // v0.0.295: the Vs. value in its color
 const sortObj = o => Object.fromEntries(Object.entries(o).sort((a, b) => a[1].localeCompare(b[1])));
 const actionTraits = sortObj({
+  archer: "Archer",   // v0.0.522 (Lucas, 2026-11-26; the book, Chapter 7, Archer and Paladin): a class trait, on every Archer Action; no rule of its own
   area: "Area",
   appeal: "Appeal",
   body: "Body",
@@ -18,6 +19,7 @@ const actionTraits = sortObj({
   mind: "Mind",
   move: "Move",
   nonlethal: "Nonlethal",
+  paladin: "Paladin",   // v0.0.522: the class trait of every Paladin Action
   ranged: "Ranged",
   save: "Save",
   self: "Self",
@@ -149,6 +151,8 @@ export const TWOD12 = {
     signature: "Rolls your Signature Modifier (the higher of Weapon and Power). On every Tier, Tier 1 included, your Signature Attribute is added to the first damage instance. Never needs a weapon.",
     split: "Two modes, Weapon and Power: choose one each time you use it. In that mode it takes the mode's trait and is an Action of that mode for every rule (a Weapon Action needs a weapon; a Power Action doesn't). Frequency, target, trigger and Critical are shared; the damage and traits are the mode's.",
     fear: "No rules of its own: other features refer to it.",
+    archer: "A class trait: an Archer Action, one the Archer class gives. No rules of its own: other rules, Features and Talents refer to it.",   // v0.0.522
+    paladin: "A class trait: a Paladin Action, one the Paladin class gives. No rules of its own: other rules, Features and Talents refer to it.",
     unfailing: "When its roll gets a Tier 1, that use doesn't count toward its Frequency: you can use it again. You still spend its AP, and its Tier 1 still happens.",
     focus: "Requires concentration. This is not a mechanic by itself, but some features affect your ability to concentrate.",
     weapon:
@@ -234,7 +238,7 @@ export const TWOD12 = {
     { key: "requires", label: "Requires", traits: ["gun", "handle", "melee", "ranged", "shot"] },
     { key: "kind", label: "Kind", traits: ["area", "move", "self", "strike"] },
     { key: "damage", label: "Damage", traits: ["nonlethal"] },
-    { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear", "magical", "subtle", "unfailing"] }
+    { key: "keywords", label: "Keywords", traits: ["archer", "divine", "focus", "fear", "magical", "paladin", "subtle", "unfailing"] }   // v0.0.522: archer, paladin (the class traits)
   ],
   // The Bestiary (book: bestiary.html; v0.0.163, refit by E3 in v0.0.181, re-fitted to pack R by R-bestiary in v0.0.240: book/ruler/bestiary-r.json): an NPC is a role plus a rating for each number.
   //   attr: the Medium Attribute; hb: the Health Base; defense: the Medium Defense; cv: the Combat Value at the party's Stage, one Stage below, two Stages below

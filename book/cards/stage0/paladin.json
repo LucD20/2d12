@@ -16,7 +16,8 @@
     }
    ],
    "traits": [
-    "divine"
+    "divine",
+    "paladin"
    ],
    "distance": "10 sq.",
    "target": "One enemy you can see",
@@ -109,7 +110,8 @@
     "weapon",
     "strike",
     "divine",
-    "unfailing"
+    "unfailing",
+    "paladin"
    ],
    "distance": "Weapon",
    "target": "One creature",
@@ -197,7 +199,8 @@
     "magical",
     "power",
     "ranged",
-    "strike"
+    "strike",
+    "paladin"
    ],
    "distance": "5 sq.",
    "target": "One creature",
@@ -239,7 +242,8 @@
     "signature",
     "weapon",
     "strike",
-    "divine"
+    "divine",
+    "paladin"
    ],
    "distance": "Weapon",
    "target": "One creature",
@@ -265,7 +269,8 @@
    ],
    "traits": [
     "divine",
-    "focus"
+    "focus",
+    "paladin"
    ],
    "distance": "Reach",
    "target": "One willing ally",
@@ -321,7 +326,8 @@
    ],
    "traits": [
     "divine",
-    "focus"
+    "focus",
+    "paladin"
    ],
    "distance": "5 sq.",
    "target": "One ally",
@@ -371,7 +377,8 @@
    "traits": [
     "power",
     "save",
-    "divine"
+    "divine",
+    "paladin"
    ],
    "distance": "3 sq.",
    "target": "One enemy",
@@ -684,7 +691,8 @@
    ],
    "traits": [
     "divine",
-    "focus"
+    "focus",
+    "paladin"
    ],
    "distance": "5 sq.",
    "target": "One ally",
@@ -715,7 +723,8 @@
    ],
    "traits": [
     "area",
-    "divine"
+    "divine",
+    "paladin"
    ],
    "distance": "8 sq.",
    "area": "2 Emanation",
@@ -772,7 +781,8 @@
     "save",
     "area",
     "self",
-    "divine"
+    "divine",
+    "paladin"
    ],
    "area": "2 Emanation",
    "target": "All enemies in the Area",
