@@ -34,6 +34,9 @@ export function weaponsFor(actor, item) {
   const use = item?.system?.weaponUse ?? "";
   if (use === "kick") { const f = fistsOf(actor); return f ? [f] : []; }   // a kick uses the Fists even with no free hand
   if (use === "fists" || item?.getFlag?.(F, "basic") === "fists") { const f = hasFreeHand(actor) ? fistsOf(actor) : null; return f ? [f] : []; }
+  // v0.0.520 (the cleanup audit, B2-020; book, Gear, Fists): the Fists are used with the Fists Basic Action and with a Weapon Action that isn't the
+  // Basic Attack: the Basic Attack never offers them
+  if (item?.getFlag?.(F, "basic") === "basicWeaponAttack") return activeWeapons(actor).filter(w => !isFists(w));
   return activeWeapons(actor);
 }
 /**

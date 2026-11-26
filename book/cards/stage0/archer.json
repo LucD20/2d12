@@ -119,7 +119,7 @@
      {
       "kind": "basicLine",
       "strainedBeforeD": 1,
-      "specialLine": "Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target.",
+      "specialLine": "Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target, as the weapon's damage (its pool and subtype).",
       "deMore": 2
      }
     ],
@@ -285,8 +285,7 @@
     "img": "icons/svg/wing.svg",
     "folder": "Archer",
     "moment": "enemyAdjacent",
-    "momentRange": 5,
-    "automationNote": "offered by itself in the Reactions message when an enemy within 5 squares would enter a square adjacent to you (Move back: it stops before that square); Use: the Evade 1 starts by itself, then the Advance 2 when it ends (or at End movement; another Action gives it up).",
+    "automationNote": "offered by itself in the Reactions message when an enemy would enter a square adjacent to you (Move back: it stops before that square); Use: the Evade 1 starts by itself, then the Advance 2 when it ends (or at End movement; another Action gives it up).",
     "automation": "gold"
    }
   },
@@ -711,7 +710,7 @@
     "img": "icons/svg/sword.svg",
     "folder": "Archer",
     "automation": "bronze",
-    "automationNote": "the Advance (the button) and one roll for the whole Action (Use it against the first creature; apply the same Tier to the others by hand); the free draws and the bow shot by hand."
+    "automationNote": "the Advance (the button) and one roll (Use it against the first creature); each other hit worked out by hand from the same 3d12 (the first two dice, unless that hit is Favored or Doomed), as for Several Targets; the targets before the first square, the free draws and the bow shot by hand."
    }
   },
   {

@@ -95,7 +95,7 @@ not Prone, Evade: no Prone warning: true
 not Prone, Charge: no Prone warning: true
 
 --- Crawl
-the card: 1 AP: You @Move[advance|distance:1|label:move 1 square]. || 2 AP: Requirements: Your Speed is 5 or higher. You @Move[advance|distance:3|label:move 3 squares]. | traits: move/self
+the card: 1 AP: You @Move[advance|distance:1|label:move 1 square]. || 2 AP: You @Move[advance|distance:3|label:move 3 squares]. | traits: move/self
 Speed 3, 2 AP version: warn: Kai's Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version). | card posted: true
 Speed 5, 2 AP version: (allowed) | card posted: true
 
@@ -104,7 +104,7 @@ floor(speed/2): Speed 5 → 2 | 6 → 3 | 1 → 0 | 7 → 3 (capitals and spaces
 speed/2 still rounds up: Speed 5 → 3 | other functions: ceil 3 round 3 min 3 max 8 abs 4 | nested 2
 Charge's expression: 7 | the Evade button: 2
 things it must refuse: null null null null null null null
-Evade in the Basic Actions: @Move[evade|distance:1]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost). || @Move[evade|distance:floor(speed/2)]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost). | traits: self
+Evade in the Basic Actions: @Move[evade|distance:1] || @Move[evade|distance:floor(speed/2)] | traits: self
 
 the Prone effect: Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand. | Hindered linked: "" | settings: boonbane 1b 0n, boonbane 0b 1n
 

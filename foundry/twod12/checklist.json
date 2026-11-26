@@ -4,6 +4,14 @@
    "name": "Characters and sheets",
    "items": [
     {
+     "id": "cu-cards",
+     "v": "v0.0.520",
+     "title": "Tend and the Basic Actions' new cards",
+     "do": "In a world from before v0.0.520, refresh the Basic Actions when asked (or Update from the compendium, Basic Actions too), then open Aveline's Actions tab and the HUD's Basic tab.",
+     "expect": "Heal is now Tend (in Utility, same rolls and Rally Point button); Relocate has no Strike trait; Seek's card writes its lines once, with a Use button for 1 AP and one for 2 AP; Crawl's 2 AP block starts with \"Requirement: Your Speed is 5 or higher.\"; Advance's card has its Advance button, and using Advance still moves at once (no card first).",
+     "rev": 1
+    },
+    {
      "id": "bst-sheets",
      "v": "v0.0.519",
      "title": "The four playtest creatures' sheets",
@@ -43,6 +51,30 @@
    "name": "The roll dialog",
    "items": [
     {
+     "id": "cu-choose",
+     "v": "v0.0.520",
+     "title": "You choose the Attribute you roll",
+     "do": "Kaela targets the Orc Warrior and uses Trip.",
+     "expect": "the roll dialog has two Roll buttons, \"Roll · Instinct +N\" and \"Roll · Body +N\" (the higher first); the second one rolls at once with Body, against the orc's Body DC (the chat card says Body).",
+     "rev": 1
+    },
+    {
+     "id": "cu-fists",
+     "v": "v0.0.520",
+     "title": "The Basic Attack never uses the Fists",
+     "do": "Aveline stows her weapons (both hands empty) and uses Basic Attack, then the Fists Basic Action.",
+     "expect": "Basic Attack is refused with a note (\"holds no weapon ... use the Fists Basic Action\"); Fists works as before. With her sword in hand, Basic Attack offers only the sword.",
+     "rev": 1
+    },
+    {
+     "id": "cu-drawing",
+     "v": "v0.0.520",
+     "title": "Drawing Light isn't Doomed for being Engaged",
+     "do": "Durgan stands next to the Orc Warrior and uses Drawing Light on it.",
+     "expect": "no \"You are Engaged (Doomed)\" chip in the roll dialog (Kaela's bow shot from next to the orc still gets it).",
+     "rev": 1
+    },
+    {
      "id": "bst-cornered",
      "v": "v0.0.519",
      "title": "Cornered: 1 Boon on the Bloodied orc's Shove",
@@ -77,6 +109,14 @@
    "name": "Movement",
    "items": [
     {
+     "id": "cu-inway",
+     "v": "v0.0.520",
+     "title": "A creature Down but still fighting holds its space",
+     "do": "Durgan is Dying and keeps fighting; as the GM, drag the Orc Warrior through Durgan's square. Then Durgan collapses (Unconscious) and you drag it again.",
+     "expect": "first, the move is refused (his space blocks, like any standing creature); after he collapses, the orc can pass through his square as Difficult Terrain (never ending there).",
+     "rev": 1
+    },
+    {
      "id": "bst-ticks-collision",
      "v": "v0.0.519",
      "title": "A Collision removes 1 tick, never a second one for the same Action",
@@ -97,6 +137,14 @@
   {
    "name": "Reactions and Judge",
    "items": [
+    {
+     "id": "cu-feint",
+     "v": "v0.0.520",
+     "title": "Feint's Critical blocks only the Reactions you trigger",
+     "do": "Kaela Feints the Bloodied Orc Warrior with a Critical (Designer mode: Force a Tier, or roll until one), then hits it; then Sylwen hits it.",
+     "expect": "Kaela's hit: Blood for Blood is not offered (a note: Feinted); Sylwen's hit: Blood for Blood is offered against Sylwen as usual.",
+     "rev": 1
+    },
     {
      "id": "bst-blood",
      "v": "v0.0.519",
@@ -155,6 +203,14 @@
   {
    "name": "Ending an encounter and resting",
    "items": [
+    {
+     "id": "cu-dying",
+     "v": "v0.0.520",
+     "title": "Stabilizing rolls nothing; damage while Unconscious and Down rolls the Table",
+     "do": "Durgan is Dying and collapsed (Unconscious). End his turns until his Body Check is a Tier 3; on another Dying try, damage him while he is Unconscious.",
+     "expect": "the Tier 3 says he stabilizes, with no roll on the Dying Table; damage while he is Unconscious and Down rolls the Dying Table (an Unconscious Durgan who wasn't Dying becomes Dying or Shattered by his Dominant Damage first).",
+     "rev": 1
+    },
     {
      "id": "bst-oldworld",
      "v": "v0.0.519",

@@ -5,5 +5,5 @@ the roll dialog's chip: true | on the Tiers: true | paid after the roll, once an
 targetsCheckDc: {"dc":14,"banes":1,"names":"Goblin, Orc"} | none: null
 parsed dc:targets: {"dcTargets":true,"dc":13}
 Tumble's line: true | Aid keeps its own DC: true
-Steady Draw's hook: basicLine: strainedBeforeD 1, deMore 2, specialLine: Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target.
+Steady Draw's hook: basicLine: strainedBeforeD 1, deMore 2, specialLine: Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal 2dE more to the target, as the weapon's damage (its pool and subtype).
 the card model draws it: true | the book: dE in Chapter 2: true | Steady Draw's text: true

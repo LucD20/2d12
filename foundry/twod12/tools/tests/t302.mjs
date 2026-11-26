@@ -125,6 +125,6 @@ console.log("Book rules synced:",
   turnsMd.includes("every Interrupt resolves before any Trigger")
   && moveMd.includes("Cover Banes apply to [Strike] and [Area] Actions")
   && moveMd.includes("check each square it occupies and use the one with the least cover")
-  && traitsMd.includes("### Magical")
+  && traitsMd.includes("### Divine, Fear, Focus and Magical")   /* v0.0.520: the cleanup audit merged the headings */
   && traitsMd.includes("All At-will [Strike] Actions share one At-will count")
 );

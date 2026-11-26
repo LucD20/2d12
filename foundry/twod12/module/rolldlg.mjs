@@ -633,6 +633,9 @@ export function dialogHtml(inp, st) {
   const modes = (inp.rollModes ?? []).length ? `<select class="rd-mode" data-field="rollMode" aria-label="Roll mode">${inp.rollModes.map(([k, l]) => `<option value="${esc(k)}"${k === st.rollMode ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>` : "";
   // v0.0.444 (group 2): two held weapons fit: a Roll button for each ("Roll · Longsword", "Roll · Dagger (thrown)"); one that can't reach is struck (it still rolls)
   const goBtns = inp.dual && !noRoll && !inp.save ? inp.dual.weapons.map(w => `<button type="button" class="rd-go rd-gow${w.out ? " out" : ""}" data-act="roll" data-weapon="${esc(w.id)}"${why ? " disabled" : ""}>Roll \u00b7 ${esc(w.name)}${w.thrown ? " (thrown)" : ""}</button>`).join("")
+    // v0.0.520 (the cleanup audit, B2-046; book, Chapter 1: you choose which Attribute to roll): an Action with two Attribute traits has a Roll button
+    // for each ("Roll · Body +2", "Roll · Instinct +1"); the dialog is the first's, the other's Roll runs the Action again with that Attribute at once
+    : inp.attrs?.list?.length > 1 && !noRoll && !inp.save ? inp.attrs.list.map(x => `<button type="button" class="rd-go rd-gow" data-act="roll" data-attr="${esc(x.key)}"${why ? " disabled" : ""}>Roll \u00b7 ${esc(x.label)} ${x.mod >= 0 ? "+" : "\u2212"}${Math.abs(x.mod)}</button>`).join("")
     : `<button type="button" class="rd-go" data-act="roll"${why ? " disabled" : ""}>${noRoll || inp.save ? "Use" : "Roll"}</button>`;
   const bar = `<footer class="rd-bar">${modes}${vers}${goBtns}</footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
   // v0.0.370 (Lucas): no yellow warning at the bottom (the struck Version and the reason on it say it); warnings() stays for the tests and callers

@@ -36,7 +36,7 @@ export function distanceKey(c) {
   const t = String(c.distance ?? "").trim();
   if (!t) return c.target ? "" : "self";
   if (/^weapon(\s*\((normal|far|maximum) range\))?$/i.test(t)) return "weapon";   // v0.0.427: "Weapon (Normal range)" (an area's placement, areaOf)
-  if (/^reach$/i.test(t)) return "reach";
+  if (/^reach(\s*\(\d+\))?$/i.test(t)) return "reach";   // v0.0.520 (the cleanup audit, B3-075): an NPC card writes its Reach "Reach (1)" / "Reach (2)": the creature's Reach
   if (/^self$/i.test(t)) return "self";
   const m = t.match(/^(\d+)\s*sq\.?$/i);
   return m ? m[1] : t;
@@ -88,6 +88,9 @@ const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; i
 
 /** One Version of a card as the item's version data. */
 export function versionData(c, v, resolve = s => s) {
+  // v0.0.520 (the cleanup audit, B2-015): a Version whose roll a button in its Foundry text makes (foundry.byChip: Shake Off's Save, rolled by the
+  // Lingering creature with its Lingering's Attributes) is one Effect in Foundry, written in full (foundry.text); the book's Tiers are that button's
+  if (v.foundry?.byChip) v = { ...v, tiers: undefined, critical: undefined };
   // v0.0.426 (the audit: Smite lost its Signature Modifier, Trick Shots' "[V] [Mod]" dealt nothing, Seizing Cut's Tier 2 got one the book doesn't
   // write): a Structure card's [Mod] stays where it is written (Chapter 1: a Modifier is added only where the card writes [Mod]); rollsource.mjs adds
   // none for it. The old cards keep the old way (the Weapon Modifier added from Tier 2).
@@ -98,6 +101,7 @@ export function versionData(c, v, resolve = s => s) {
   // v0.0.246 (Lucas): a Version's `foundry.text` is its Foundry text written in full ("As 1 AP, but..." is the book's; Foundry says it all); `foundry.after` the chips that run after the damage.
   const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"))), fx };
   if (v.foundry?.after) out.after = resolve(v.foundry.after);
+  if (v.requirements) out.requirements = stripLinks(v.requirements);   // v0.0.520 (the cleanup audit, B2-015): a Version's own Requirement (Crawl's 2 AP)
   // v0.0.409 (pack F2, Shield of Faith): replacements in the converted text (a button the book's words can't say: Taunted on the triggering creature)
   for (const [a, b] of v.foundry?.sub ?? []) out.effects = out.effects.split(a).join(b);
   // v0.0.254 (Lucas): a card's inline Actions are written on its last Version's Foundry text (a link to the item and its line), so the sheet's preview shows them after "you gain the following Action:"
@@ -174,7 +178,7 @@ export function cardSystem(c, resolve = s => s) {
   if (sys.distance === undefined) delete sys.distance;   // an Action with an Area places it from its areaCfg (within or the weapon's range)
   if (area) sys.areaCfg = area.cfg;
   if (aura) sys.area = c.area.trim();
-  const vs = vsKey(c.vs); if (vs) sys.vs = vs;
+  const vs = c.foundry?.vs !== undefined ? c.foundry.vs : vsKey(c.vs); if (vs) sys.vs = vs;   // v0.0.520: foundry.vs, when a button reads the book's Vs. (Shake Off: "")
   if (c.escalation) sys.escalation = c.escalation;
   if (isReaction(c)) { sys.reaction = true; sys.reactionKind = c.interrupt ? "interrupt" : "trigger"; sys.trigger = stripLinks(c.interrupt ?? c.trigger); }
   if (c.requirements) sys.requirements = stripLinks(c.requirements);
@@ -194,7 +198,7 @@ export function cardSystem(c, resolve = s => s) {
   // the roll, Steel Yourself's at the end); its description keeps them for the other surfaces
   else if (c.category === "Basic Action") { if (c.rules) sys.lines = [{ label: "Special", text: resolve(fxText(c.rules)) }]; if (c.notes) sys.special = resolve(fxText(c.notes)); }
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));   // v0.0.360 (the audit's D17): an Action holds rules (Mark Quarry)
-  for (const k of ["weaponUse", "weaponNeeds", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat", "momentSplit", "momentPool", "momentState", "momentTag", "reqFlank"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // the Bestiary's rebuild: momentPool, momentState, momentTag, reqFlank   // pack TALENTS-PT: momentSplit (Bear the Blow); v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
+  for (const k of ["weaponUse", "weaponNeeds", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat", "momentSplit", "momentPool", "momentState", "momentTag", "reqFlank", "engagedOk"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // the Bestiary's rebuild: momentPool, momentState, momentTag, reqFlank   // pack TALENTS-PT: momentSplit (Bear the Blow); v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }
 

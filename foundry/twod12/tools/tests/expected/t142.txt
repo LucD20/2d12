@@ -26,7 +26,7 @@ Dwarf 1 + a Feature +1                             2 (base 1, Rooted 1)
 0 + a bonus to every Defense (doesn't count)       0 (base 0)
 a Defense setting can be of the kind Steadiness: true | the side tile shows it: true
 --- Relocate keeps the target within your Reach; Reposition avoids Hazardous Terrain
-Relocate's buttons: reposition|distance:1|reach:yes reposition|distance:2|reach:yes | reposition|distance:2|reach:yes reposition|distance:4|reach:yes | reposition|distance:1|reach:yes reposition|distance:3|reach:yes reposition|distance:5|reach:yes
+Relocate's buttons: reposition|distance:1 reposition|distance:2 | reposition|distance:2 reposition|distance:4 | reposition|distance:1 reposition|distance:3 reposition|distance:5
 the button option reach:yes: true | older Relocate copies are replaced: true
 a square in Hazardous Terrain: true | outside it: false | a switched-off area: false
 --- @Move[slid]

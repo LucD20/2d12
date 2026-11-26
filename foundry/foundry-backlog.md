@@ -1,9 +1,27 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.519**. Tests: `node tools/tests/run.mjs` (316 tests, see the README; the next new test is t319). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.520**. Tests: `node tools/tests/run.mjs` (317 tests, see the README; the next new test is t320). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
+
+## THE CLEANUP AUDIT: WHAT FOUNDRY STILL HAS TO FOLLOW (2026-11-26)
+
+The book changed with Lucas's 223 answers (`book/audit-2026-11-25/applied.md`); each of the 81 lines that name something for Foundry was checked against the code: `book/audit-2026-11-25/foundry-needs.md` (29 built in v0.0.520, 40 already so, 12 open). NOT tested by Lucas.
+
+- [x] **(v0.0.520: the book's cards and the small rules)** `basic-data.mjs` regenerated (Heal is Tend; Relocate no [Strike]; the cards' new texts; Advance's Move button; Shake Off's Save button kept, `foundry.byChip`); the card model mirrors `book/cards.py` (a Version's own Requirement, Versions with the same lines printed once: t260); "Reach (N)" read as the Reach; a Save outside a Save Action DC 13; the Table rolled before an encounter counts; stabilizing rolls nothing; damage while Unconscious and Down rolls the Table; moving closer square by square; a Down creature still fighting blocks; Break Free's roll is a Check; Feint's Critical against the triggering creature only; the Basic Attack never uses the Fists; you choose the Attribute (a Roll button each); Drawing Light not Doomed for being Engaged (`engagedOk`); Slip Away without its Distance. Test t319.
+- [ ] **Up to N targets needs one (B1-023).** The book: "up to three creatures" is one, two or three. Foundry: every Action rolls with no target (Lucas's v0.0.393 ruling: "No target" with DC 13). A warning on an "Up to" Target is small, but it reverses that ruling: Lucas's call.
+- [ ] **A Reaction at the moment it names (B1-033).** The book: a movement Trigger fires mid-move, after the square it names. Foundry: `moment.mjs moveMoment` reads the moments after the drag and offers Move back to that square. Stopping the drag there: large (the movement Reactions).
+- [ ] **Charge stops at the weapon's normal Range (B2-014).** The book: the first square from which the target is within the normal Range of the weapon you attack with. Foundry: `move.mjs` (the Charge picker, `computeTarget`) stops at the creature's Reach. The same for a melee weapon; not for a thrown, ranged or Long one. Small to medium.
+- [ ] **Shake Off's face (B2-015).** The book's card: a Save line and three Tiers. Foundry's: one Effect (its Save button rolls for the Lingering creature, `inline.mjs handleShakeOff`); t260 prints this difference. A roll line a button makes (`cardmodel.mjs`, `cardlines.mjs`, the chat card): small to medium.
+- [ ] **One square of Difficult Terrain always (B2-016).** The book: a movement of at least 1 square can always enter one square, whatever it costs. Foundry: `move.mjs` charges 2 for it, so Crawl 1 or Speed 1 can't enter. Small to medium (the movement budget).
+- [ ] **Point Out on any Unsensed creature (B2-030).** The book: Unsensed becomes Hidden whatever the reason, never better than you perceive it. Foundry: `hide.mjs improve` changes only Hide's own states. Needs a per-observer "perceived as Hidden" in `senses.mjs perceive`: medium.
+- [ ] **Empowered's pool and subtype chosen (B2-061).** The book: one of the Action's damages, chosen before the roll. Foundry: the first damage's (`explode.mjs empoweredComponent`). A pick when the Action deals two kinds: small to medium.
+- [ ] **Human's choices locked after creation (B2-069).** Foundry: the sheet's Species window changes them at any time (`specieswindow.mjs editSpecies`). Needs the moment creation ends (Lucas: the first class level confirmed?): small.
+- [ ] **A thick wall blocks Hearing (B3-077).** Foundry: Hearing passes every wall (`senses.mjs hears`, the detection mode's `walls: false`). Needs a mark for a thick wall (a wall that blocks Sound?) and a wall test: small to medium.
+- [ ] **Shifting Aim off the Archer's turn (B3-026).** The book: on another creature's turn, a move made during that turn counts. Foundry: no Boon off its turn (`hooks.mjs strikeHookChipsFor`). The moved flag keyed to the turn in progress for this hook: small.
+- [ ] **Hit and Run (B3-030, B3-031).** The book: the adjacent enemies before the first square too, once each per weapon; the bow's target can take the knife; one 3d12 roll, each hit worked out on its own. Foundry: Bronze, by hand (its note says the book's way). Automating it: large.
+- [ ] **Judge's free re-Judge is a Reaction (B3-022).** The book: 0R, Trigger: the Judged creature goes Down (Staggered stops it). Foundry: the "went Down" message's button uses Judge as an Action (Staggered doesn't stop it). Small to medium.
 
 ## THE BESTIARY'S REBUILD IN FOUNDRY: BUILT IN v0.0.519 (2026-11-25, branch `claude/bestiary-monster-balance-tl4kd6`; NOT tested by Lucas; pushed to the work branch, not released)
 

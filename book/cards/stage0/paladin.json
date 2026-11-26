@@ -202,7 +202,8 @@
     "folder": "Paladin",
     "automation": "gold",
     "basicAttack": true,
-    "automationNote": "the damage, the Pull, and the Bloodied Pull-or-Slide choice; a Critical's 1d10! (a Basic attack)."
+    "engagedOk": true,
+    "automationNote": "the damage, the Pull, and the Bloodied Pull-or-Slide choice; a Critical's 1d10! (a Basic attack); not Doomed for being Engaged."
    }
   },
   {

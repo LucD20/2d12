@@ -92,12 +92,14 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     else if (a === "place") return this._finish({ restart: true, place: true, state: this.st });
     // v0.0.400 (Lucas: "Target button doesn't work to retarget"; its handler sat in the right-click listener): the creatures targeted now (none: no target)
     else if (a === "targetmode") return this._finish({ restart: true, state: this.st });
-    else if (a === "roll") return this._roll(b.dataset.weapon);
+    else if (a === "roll") return this._roll(b.dataset.weapon, b.dataset.attr);
     else return;
     this.render();
   }
 
-  _roll(weaponId = "") {
+  _roll(weaponId = "", attrKey = "") {
+    // v0.0.520 (B2-046): the other Attribute's Roll: the Action runs again with that Attribute and these choices, and rolls at once
+    if (!this.done && attrKey && this.inp.attrs && attrKey !== this.inp.attrs.current && !RD.blockedReason(this.inp, this.st)) return this._finish({ restart: true, rollAfter: true, attrKey, state: this.st });
     // v0.0.444 (group 2): the other weapon's Roll: the Action runs again with that weapon and these choices, and rolls at once
     if (!this.done && weaponId && this.inp.dual && weaponId !== this.inp.dual.current && !RD.blockedReason(this.inp, this.st)) return this._finish({ restart: true, rollAfter: true, weaponId, state: this.st });
     // v0.0.397 (Lucas): an Area Action's Roll places the area first (the dialog's choices kept), then rolls

@@ -7,7 +7,10 @@
 //   Dying or Shattered and fighting, taking damage -> a Body Check (Body damage) or Mind Check (Mind damage): Tier 1 or 2, roll on the Table;
 //   then you may collapse.
 //   End of each turn while Dying or Shattered -> a Body (Dying) or Mind (Shattered) Check: Tier 1, roll on the Table; collapsed and Tier 3,
-//   roll on the Table and stabilize (no longer Dying or Shattered, still Unconscious). Fighting: then you may collapse.
+//   stabilize with no roll (v0.0.520, the cleanup audit B1-089: no longer Dying or Shattered, still Unconscious). Fighting: then you may collapse.
+//   v0.0.520 (B1-091; book, Unconscious): taking damage while both Unconscious and Down -> roll on the Dying or Shattered Table (becoming one first,
+//   by the Dominant Damage, if it was neither). v0.0.520 (B1-026; book, Chapter 2, Encounter): the Table rolled outside an encounter is the roll
+//   of the encounter that follows (no second roll there).
 // The choice (fighting or collapsed) is the actor flag twod12.downChoice; the Table already rolled this encounter: twod12.downTableCombat.
 import { rollCheck, rollTable } from "./roll.mjs";
 import { sysLine } from "./sysmsg.mjs";
@@ -71,6 +74,8 @@ export function firstTimeThisEncounter(flag, cid, kind) {
   if (typeof flag === "string") return flag !== cid;
   return flag.combat !== cid || !(flag.kinds ?? []).includes(kind);
 }
+/** v0.0.520 (the cleanup audit, B1-026): pure: does a Table rolled outside an encounter (the mark "none") count as this encounter's roll? */
+export const carriedTable = (flag, cid, kind) => !!flag && typeof flag === "object" && cid !== "none" && flag.combat === "none" && (flag.kinds ?? []).includes(kind);
 export function tableMark(flag, cid, kind) {
   const kinds = flag && typeof flag === "object" && flag.combat === cid ? [...(flag.kinds ?? [])] : [];
   return { combat: cid, kinds: [...new Set([...kinds, kind])] };
@@ -84,7 +89,9 @@ async function becomeDying(actor) {
   const cid = game.combat?.id ?? "none";
   // v0.0.176 (book, Dying and Shattered): the first time you become Dying in an encounter you roll on the Dying Table, and the first time you
   // become Shattered on the Shattered Table; again in the same encounter, no roll. Each condition counts on its own.
-  if (firstTimeThisEncounter(actor.getFlag(F, "downTableCombat"), cid, kind)) { await rollTable(actor, kind); await actor.setFlag(F, "downTableCombat", tableMark(actor.getFlag(F, "downTableCombat"), cid, kind)); }
+  const flag = actor.getFlag(F, "downTableCombat");
+  if (carriedTable(flag, cid, kind)) await actor.setFlag(F, "downTableCombat", { combat: cid, kinds: [...flag.kinds] });   // v0.0.520: rolled just before this encounter
+  else if (firstTimeThisEncounter(flag, cid, kind)) { await rollTable(actor, kind); await actor.setFlag(F, "downTableCombat", tableMark(flag, cid, kind)); }
   await chooseFight(actor, kind);
 }
 
@@ -124,6 +131,16 @@ export async function afterDamage(actor, before) {
     if ((s.lethal ?? 0) > (before.lethal ?? 0)) return becomeDying(actor);
     return;
   }
+  // v0.0.520 (the cleanup audit, B1-091; book, Chapter 4, Unconscious): damage while both Unconscious and Down: a roll on the Dying or Shattered
+  // Table, after becoming one by the Dominant Damage if it was neither (an Unconscious creature with Nonlethal damage)
+  if (has(actor, "unconscious")) {
+    let k = has(actor, "dying") ? "dying" : (has(actor, "shattered") ? "shattered" : "");
+    if (!k) { k = await dyingKind(actor); await setStatus(actor, k, true); await actor.setFlag(F, "downChoice", "collapsed"); }
+    await rollTable(actor, k);
+    const cid = game.combat?.id ?? "none";
+    await actor.setFlag(F, "downTableCombat", tableMark(actor.getFlag(F, "downTableCombat"), cid, k));
+    return;
+  }
   const kind = has(actor, "dying") ? "dying" : (has(actor, "shattered") ? "shattered" : "");
   if (!kind) return;
   if (actor.getFlag(F, "downChoice") === "fighting" && !has(actor, "unconscious")) {
@@ -143,8 +160,7 @@ export async function endOfTurn(actor, { force = false } = {}) {
   const tier = await downCheck(actor, attr, `${attr === "body" ? "Body" : "Mind"} Check (${kind === "dying" ? "Dying" : "Shattered"}, end of turn)`);
   if (tier === 1) await rollTable(actor, kind);
   if (collapsed && tier === 3) {
-    await rollTable(actor, kind);
-    await setStatus(actor, kind, false);   // stabilized: no longer Dying or Shattered, still Unconscious
+    await setStatus(actor, kind, false);   // v0.0.520 (the cleanup audit, B1-089; book, Dying, Tier 3): stabilizing rolls nothing   // stabilized: no longer Dying or Shattered, still Unconscious
     await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-heart-pulse", `<b>${esc(actor.name)}</b> stabilizes: no longer ${kind === "dying" ? "Dying" : "Shattered"}, still Unconscious.`) });
     return;
   }

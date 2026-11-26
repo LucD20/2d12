@@ -53,7 +53,8 @@ console.log("Rebuke measured on the squares the enemy left; Shield of Faith not 
 const S = src("module/states.mjs");
 console.log("Kindled Wrath: Bloodied or Down, the ally's name:", S.includes('words.filter(w => w === "Bloodied" || w === "Down")') && S.includes("(${actor.name} is ${ally.join"));
 const rescue = JSON.stringify(card("Hold the Line").system.versions), relocate = JSON.stringify(card("Relocate")?.system?.versions ?? []);
-console.log("Rescue's Reposition not held within Reach; Relocate's is:", !rescue.includes("reach:yes") && relocate.includes("reach:yes"));
+// v0.0.520 (the cleanup audit, B2-021; book, Chapter 3, Reposition: every Reposition stays within your Reach): move.mjs holds every one (choosePath)
+console.log("every Reposition held within Reach (move.mjs), Relocate's card writes nothing more:", src("module/move.mjs").includes("if (repo && globalThis.canvas?.tokens?.get?.(origin?.id)) withinReach = true;") && !relocate.includes("reach:yes") && !rescue.includes("reach:yes"));
 console.log("Hallowed Stance's Setup line on a card without one; the range waits only for a Setup movement to come:", src("module/cardlines.mjs").includes('top.splice(at, 0, { label: "Setup", html: setupHtml })') && A.includes('(String(it.setup ?? "").includes("@Move") && !setupDone)'));
 
 console.log("--- the rest");

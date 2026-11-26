@@ -23,7 +23,7 @@ Volley's Burst within the weapon's range: normal
 --- the Paladin
 Rebuke measured on the squares the enemy left; Shield of Faith not against an ally's Strike: true
 Kindled Wrath: Bloodied or Down, the ally's name: true
-Rescue's Reposition not held within Reach; Relocate's is: true
+every Reposition held within Reach (move.mjs), Relocate's card writes nothing more: true
 Hallowed Stance's Setup line on a card without one; the range waits only for a Setup movement to come: true
 --- the rest
 Mastery's +/- from the shown value: true

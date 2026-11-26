@@ -24,7 +24,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Regrip | Silver | the card is text; the regrip itself is on the hands buttons |
 | Release | Gold | |
 | Stand | Gold | |
-| Break Free | Gold | (v0.0.477: its card rolls the Check against the Action DC of what holds you; Tier 2 or 3 frees) |
+| Break Free | Gold | (v0.0.477: its card rolls the Check against the Action DC of what holds you; Tier 2 or 3 frees; v0.0.520: you choose Body or Instinct, a Roll button each) |
 | Lean | Gold | (v0.0.477: Leaning ends when the creature leaves its square) |
 | Fists | Gold | |
 | Relocate | Gold | |
@@ -35,7 +35,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Aid | Silver | Quickened 1 on the target (its next turn's AP); the Check against Daunted: by hand. |
 | Demoralize | Gold |  |
 | Feint | Gold |  |
-| Heal | Silver | the Check against DC 13 and the Rally Point button on the card; standing from Prone on Tier 3 by hand. |
+| Tend (was Heal, v0.0.520) | Silver | the Check against DC 13 and the Rally Point button on the card; standing from Prone on Tier 3 by hand. |
 | Tumble | Silver | the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the card posts first: its Appeal and Instinct Checks roll against the targeted creatures' DC (v0.0.510). |
 | Hide | Silver | v0.0.513: the roll against each targeted creature's Instinct DC; Tier 2 or 3: Unsensed (it can't see you) or Hidden (your High Cover) to it, per creature; Tier 3's Bane on its Seek and Point Out: by hand. |
 | Sneak | Silver | v0.0.513: the Advance keeps Hide (Unsensed to Hidden when seen, Hidden kept during it, the end of turn check); no Reactions from those it is Hidden to. |
@@ -88,7 +88,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Trick Shots | Gold | |
 | Spotter | Silver | Keep Low is only a reminder; Find the Gap's Cover one level lower |
 | Volley | Gold | |
-| Hit and Run | Bronze | one roll for many targets (the other targets by hand), the free draws and the bow shot |
+| Hit and Run | Bronze | one 3d12 roll for many targets (v0.0.520, the book: each other hit worked out by hand from the same dice, as for Several Targets; the targets before the first square too), the free draws and the bow shot |
 | Covering Fire | Gold | |
 | Shifting Aim (Feature) | Gold | |
 | Lean and Loose (Feature) | Gold | |

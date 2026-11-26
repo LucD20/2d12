@@ -1,0 +1,26 @@
+--- 1. the card model mirrors book/cards.py (t260)
+Crawl: # 1 AP | Effect | # 2 AP | Requirement | Effect | the 2 AP Requirement: Your Speed is 5 or higher.
+Seek, its two Versions printed once: Special | Attack | Tier 1 | Tier 2 | Tier 3 | merged: true | heading: 1 AP / 2 AP | both kept: 2
+Relocate's three Versions stay three blocks: 3
+the sheet's card keeps a Use button for each: true
+--- 2. the cards' fields
+Reach (1) / Reach (2) / Reach: reach reach reach
+Heal is Tend: Tend | its group on the sheet and the HUD: true true
+Relocate is no Strike: true | Advance's Move button: true | Shake Off keeps its Save button, no Vs.: true
+Advance still moves at once (a book link is no button): advance|distance:speed
+Drawing Light: engagedOk true | Slip Away: no Distance "" | War Howl's Tier 2: 1d4!+1 | Shriek and Scatter: 6 / One ally with the Goblin Tag
+--- 3. rolls
+B2-046, the Attribute you choose: the higher first instinct | chosen body | a choice it doesn't have instinct
+rollSource with the choice: body | the dialog's buttons: true true
+B2-010, Break Free's roll is a Check: __check | Tend's is an Attribute Action: __attr
+B1-006, a Save a card asks for outside a Save Action: DC 13 true true
+B3-025, engagedOk skips the Engaged Doomed: true
+--- 4. going Down
+B1-026, a Table rolled before the encounter counts: true | not the other Table: false | not out of combat: false | an encounter's own: false
+B1-089, stabilizing rolls nothing: true | B1-091, damage while Unconscious and Down rolls the Table: true
+--- 5. movement and Reactions
+B1-063, in your way: a Dying enemy fighting block | a Desperate one block | an Unconscious one dt | a dead one dt | an NPC at 0 dt
+B1-038, closer square by square: 0,1,2 true | 9,8 (nearer than the square before) true | 2,1,0 (away) false | still false
+B2-019, Feint's Critical: the triggering creature only: true
+--- 6. the Fists
+B2-020, the Basic Attack with a sword and a free hand: Arming Sword | with nothing: 0 | the Fists Action: Fists | another Weapon Action: Arming Sword,Fists

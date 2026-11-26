@@ -32,7 +32,7 @@ console.log("Charge: an ally's space stops it, an enemy's blocks it:", mv.includ
 console.log("--- Tumble passes them");
 console.log(JSON.stringify(IN.parseInline("Move", "advance|distance:floor(speed/2)|pass:enemies")).includes('"passEnemies":true'), "|", B.tumble.versions.map(v => v.effects).join(" || "), "|", B.tumble.automation);
 console.log("its rule:", B.tumble.description?.includes?.("counts as crossing one creature") || JSON.stringify(B.tumble).includes("counts as crossing one creature"));
-console.log("Evade's card:", B.safeMovement.versions[0].effects.includes("an ally's space you can cross"), "| Charge's:", B.charge.versions[0].effects.includes("an ally's space is Difficult Terrain) or an enemy's space"));
+console.log("Evade's card:", src("../../book/rules-src/03-movement.md").includes("it is the one Difficult Terrain an Evade can cross"),   /* v0.0.520: the cleanup audit cut the repeat from the card (Chapter 3 says it) */ "| Charge's:", B.charge.versions[0].effects.includes("an ally's space is Difficult Terrain) or an enemy's space"));
 
 console.log("--- the book");
 const ch3 = fs.readFileSync(`${ROOT}../../book/rules-src/03-movement.md`, "utf8"), cr = fs.readFileSync(`${ROOT}../../book/core-rework.md`, "utf8");

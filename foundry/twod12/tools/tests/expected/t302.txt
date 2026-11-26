@@ -8,7 +8,7 @@ After unmarkUsed(Drawing Light) -> Banes: 1 | Strikes: 1
 After markAtWill(Charge Basic) -> Drawing Light Banes: 2
 Non-Strike At-wills separate -> Heal: 1 | Break Free: 0
 Heal: appeal,handle,mind | AP: 2 | T1: The target can use @Rally[1]. | T2: The target can use @Rally[2]. | T3: The target can use @Rally[2], and if it is Prone it can Stand.
-Demoralize: appeal | T1: No effect. | T2: @Condition[vulnerable|value:1|eot] | T3: @Condition[vulnerable|value:1|rounds:1] | Special: The target is immune to your Demoralize until the end of the encounter (EoE).
+Demoralize: appeal | T1: No effect. | T2: @Condition[vulnerable|value:1|eot] | T3: @Condition[vulnerable|value:1|rounds:1] | Special: After you use Demoralize on a creature, whatever the Tier, you can't use it on that creature again this encounter.
 Demoralize EoE before: false
 Demoralize EoE after: true | other target: false
 Demoralize EoE new combat: false

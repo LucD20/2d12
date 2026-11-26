@@ -12,7 +12,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const H = await import(ROOTURL + "module/hide.mjs");
 const { BASIC_ACTIONS: B } = await import(ROOTURL + "module/basic-data.mjs");
 for (const k of ["hide", "sneak", "seek", "pointOut"]) { const b = B[k]; console.log(`${b.name}: ${b.frequency} · ${b.versions.map(v => v.ap + " AP").join(" / ")} · [${b.traits.join(", ")}] · vs ${b.vs || "-"} · ${b.automation}`); }
-console.log("Lean is Subtle:", B.leaning.traits.includes("subtle"), "| Interact isn't, with its note:", !B.interact.traits.includes("subtle"), JSON.stringify(B.interact).includes("[Subtle]"), "| Sneak keeps Hide:", B.sneak.versions[0].effects.includes("sneak:yes"));
+console.log("Lean is Subtle:", B.leaning.traits.includes("subtle"), "| Interact isn't, with its note:", !B.interact.traits.includes("subtle"), JSON.stringify(B.interact).includes("is Subtle if the GM agrees")   /* v0.0.520: the cleanup audit's wording */, "| Sneak keeps Hide:", B.sneak.versions[0].effects.includes("sneak:yes"));
 console.log("hideResult: T1", JSON.stringify(H.hideResult(1, { seesYou: false })), "| T2 unseen", H.hideResult(2, { seesYou: false }), "| T2 High Cover", H.hideResult(2, { seesYou: true, highCover: true }), "| T3 seen, no cover", JSON.stringify(H.hideResult(3, { seesYou: true, highCover: false })));
 console.log("stepBetter:", H.stepBetter("unsensed"), JSON.stringify(H.stepBetter("hidden")), "| hideStateOf:", H.hideStateOf({ a: "unsensed", b: "x" }, "a"), JSON.stringify(H.hideStateOf({ b: "x" }, "b")));
 const v = (st, o) => JSON.stringify(H.afterView(st, o));

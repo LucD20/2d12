@@ -37,7 +37,7 @@ console.log("the Builder at Stage 0: the old notes hidden, the best turn labelle
 console.log("--- v0.0.434: Lucas's answers to questions 4, 7, 10 and 12");
 // the Bestiary's rebuild (2026-11-25): the new Chapter 14 keeps these rules in fresh text; Pressing (Elite Escalation) is only in the archived chapter
 const B = fs.readFileSync(ROOT + "../../book/rules-src/14-bestiary.md", "utf8"), B0 = fs.readFileSync(ROOT + "../../archive/book-drafts/14-bestiary-to-2026-11-25.md", "utf8");
-console.log("(10) an NPC has a level; no set list of Actions:", B.includes("**Its level is guidance.**") && B.includes("**An NPC has no set list of Actions:**"));
+console.log("(10) an NPC has a level; no set list of Actions:", B.includes("**Its level says which PCs it is built for.**")   /* v0.0.520: the cleanup audit's wording */ && B.includes("**An NPC has no set list of Actions:**"));
 console.log("(4) a Reaction written with its Frequency:", B.includes("**written like any Action, with its Frequency** (At-will, Turn, Round or Encounter") && B.includes("**Blood for Blood** (Reaction; Round, 1R;"));
 console.log("(7) every other Basic Action is theirs:", B.includes("**Every Basic Action is an NPC's too**"), "| Foundry leaves out only:", (await import(ROOTURL + "module/basic.mjs")).NPC_NO_BASIC.join(", "));
 console.log("(12) Pressing on [Strike] (the archived chapter):", B0.includes("**Pressing:** 1 Boon on its first [Strike] Action each turn-cycle."), "| Foundry:", src("module/passives.mjs").includes('boons: 1, all: ["strike"], oncePerRound: true, minEscalation: ER1'));

@@ -11,7 +11,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const action = n => C.docs.find(x => x.name === n && x.type === "action");
 
 console.log("--- (1) Shake Off: the current turn");
-console.log("Chapter 8:", book("rules-src/08-conditions.md").includes("**Tier 2:** you take half the Lingering at the end of the current turn (even when it is another creature's turn"),
+console.log("Chapter 8:", book("rules-src/08-conditions.md").includes("The [[Shake Off]] Action can end it")   /* v0.0.520: the cleanup audit left the Tiers to the card */,
   "| the card:", book("cards/basic-actions.json").includes("at the end of the current turn (whoever's turn it is)"));
 const K = src("module/conditions.mjs");
 console.log("at the end of any turn, a halved Lingering deals its half and ends:", K.includes("bleedAtTurnEnd(c.actor, { onlyHalf: true })") && K.includes('(!onlyHalf || e.getFlag?.("twod12", "shakeHalf"))'));

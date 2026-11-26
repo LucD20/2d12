@@ -19,6 +19,10 @@ differ):
 
 ## Characters and sheets
 
+### cu-cards · v0.0.520 · Tend and the Basic Actions' new cards
+Do: In a world from before v0.0.520, refresh the Basic Actions when asked (or Update from the compendium, Basic Actions too), then open Aveline's Actions tab and the HUD's Basic tab.
+Expect: Heal is now Tend (in Utility, same rolls and Rally Point button); Relocate has no Strike trait; Seek's card writes its lines once, with a Use button for 1 AP and one for 2 AP; Crawl's 2 AP block starts with "Requirement: Your Speed is 5 or higher."; Advance's card has its Advance button, and using Advance still moves at once (no card first).
+
 ### bst-sheets · v0.0.519 · The four playtest creatures' sheets
 Do: In a new world (or after importing them again from the NPCs compendium), open the Goblin Sneak, the Grave Wisp, the Orc Warrior and the Ogre Chieftain.
 Expect: Goblin Sneak: Minion, CV 30, 2 ticks (a "Ticks 2/2" bar, no Vigor or Resolve), AD 13, WD 12, Weapon and Power +2, Speed 6, Shiv, Jeer, Knife in the Back, Shriek and Scatter. Grave Wisp: Grunt, CV 50, Vigor 6, Resolve 12, AD 12, WD 14, Speed 6, its new portrait, the damage line "Immunity Cold · Resistance Psychic 3 · Weakness Holy 3", Drifting, Slipping Touch, Guttering Glance, Pass Through, Dying Flare. Orc Warrior: Standard, Vigor 22, Resolve 14, 13 / 13, Speed 5. Ogre Chieftain: Elite, CV 200, Vigor 44, Resolve 28, AD 14, WD 12, Large, Reach 2, Steadiness 1, Speed 5, no Escalation; Crushing Grip, Roar, Great Sweep, Hurled Goblin, Crack the Ground, Backhand. None of the old cards (Rusty Knife, Club, Rally the Tribe...).
@@ -38,6 +42,18 @@ Do: Put four Goblin Sneaks in a combat and open the Initiative window.
 Expect: Two squads of two (never three in one); putting three in one squad shows "3 in squad (book: ≤2)".
 
 ## The roll dialog
+
+### cu-choose · v0.0.520 · You choose the Attribute you roll
+Do: Kaela targets the Orc Warrior and uses Trip.
+Expect: the roll dialog has two Roll buttons, "Roll · Instinct +N" and "Roll · Body +N" (the higher first); the second one rolls at once with Body, against the orc's Body DC (the chat card says Body).
+
+### cu-fists · v0.0.520 · The Basic Attack never uses the Fists
+Do: Aveline stows her weapons (both hands empty) and uses Basic Attack, then the Fists Basic Action.
+Expect: Basic Attack is refused with a note ("holds no weapon ... use the Fists Basic Action"); Fists works as before. With her sword in hand, Basic Attack offers only the sword.
+
+### cu-drawing · v0.0.520 · Drawing Light isn't Doomed for being Engaged
+Do: Durgan stands next to the Orc Warrior and uses Drawing Light on it.
+Expect: no "You are Engaged (Doomed)" chip in the roll dialog (Kaela's bow shot from next to the orc still gets it).
 
 ### bst-cornered · v0.0.519 · Cornered: 1 Boon on the Bloodied orc's Shove
 Do: Damage the Orc Warrior to Bloodied (22 Vigor damage), then use its Shove on Durgan. Do it again after healing it below 22.
@@ -59,6 +75,10 @@ Expect: Each goblin's own Save, turned over: a Tier 1 Save removes 3 (Down), a T
 
 ## Movement
 
+### cu-inway · v0.0.520 · A creature Down but still fighting holds its space
+Do: Durgan is Dying and keeps fighting; as the GM, drag the Orc Warrior through Durgan's square. Then Durgan collapses (Unconscious) and you drag it again.
+Expect: first, the move is refused (his space blocks, like any standing creature); after he collapses, the orc can pass through his square as Difficult Terrain (never ending there).
+
 ### bst-ticks-collision · v0.0.519 · A Collision removes 1 tick, never a second one for the same Action
 Do: With Durgan, Shove a Goblin Sneak into a wall (Tier 2). Then give a fresh goblin 3 ticks (its Builder tab, Frame, Ticks 3), catch it beside a wall with Aveline's Word of Radiance (until its result against it removes 2 ticks) and click the card's Pushed button to push it into the wall.
 Expect: The Shove's Collision removes 1 tick (the Shove dealt it no damage). Word of Radiance's result removes its ticks once (1 left) and the Collision of its own Push (clicked from its card) removes none.
@@ -68,6 +88,10 @@ Do: In a combat, drag the Grave Wisp through Aveline's space and through another
 Expect: The movement passes through both spaces with no extra cost (no Difficult Terrain); ending in a creature's space is refused. An Orc Warrior can't pass through Aveline's space (it blocks).
 
 ## Reactions and Judge
+
+### cu-feint · v0.0.520 · Feint's Critical blocks only the Reactions you trigger
+Do: Kaela Feints the Bloodied Orc Warrior with a Critical (Designer mode: Force a Tier, or roll until one), then hits it; then Sylwen hits it.
+Expect: Kaela's hit: Blood for Blood is not offered (a note: Feinted); Sylwen's hit: Blood for Blood is offered against Sylwen as usual.
 
 ### bst-blood · v0.0.519 · Blood for Blood is offered by itself
 Do: Make the Orc Warrior Bloodied with Sylwen's Basic Attack from 2 squares away, then hit it again with Vigor damage; then hit it with Resolve damage (Durgan's Drawing Light), and once from 4 squares away.
@@ -96,6 +120,10 @@ Do: With the Ogre Chieftain, use Crack the Ground (aim the Line 3 at Aveline and
 Expect: The Line 3 starts from the ogre's space; each creature in it makes an Instinct Save against DC 13 ([V] 5 + 2d8 / 3 + 1d8 / nothing). The Line stays on the map; moving into it costs double for Aveline and for the ogre too; it is gone when the encounter ends.
 
 ## Ending an encounter and resting
+
+### cu-dying · v0.0.520 · Stabilizing rolls nothing; damage while Unconscious and Down rolls the Table
+Do: Durgan is Dying and collapsed (Unconscious). End his turns until his Body Check is a Tier 3; on another Dying try, damage him while he is Unconscious.
+Expect: the Tier 3 says he stabilizes, with no roll on the Dying Table; damage while he is Unconscious and Down rolls the Dying Table (an Unconscious Durgan who wasn't Dying becomes Dying or Shattered by his Dominant Damage first).
 
 ### bst-oldworld · v0.0.519 · An old world's Minions
 Do: In your playtest world, open an old Goblin Sneak (from before this version), then import the four creatures again from the NPCs compendium.

@@ -170,7 +170,7 @@ export async function buildActionCard(item, { actor = null, use = true, short = 
   const special = M.special ? stLine(M.special.label, await fmt(M.special)) : (M.prose ? `<div class="st-prose">${await enrich(M.prose, item)}</div>` : "");
   // Your roll (read-only), and the Use button of a one-Version card at its end
   let live = "";
-  const oneBtn = versions.length === 1 ? useBtn(versions[0]) : "";
+  const oneBtn = M0.versions.length === 1 ? versions.map(useBtn).join("") : "";   // v0.0.520: Versions printed once (cardmodel.mjs merged) keep a Use button each
   if (actor && !short && !modes && rollsItself(versions, it.traits)) {   // an Art whose Mode has its own Save: no one roll to show
     try {
       const { src, chips } = rollStripSources(actor, item);

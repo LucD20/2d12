@@ -407,7 +407,10 @@ export async function collectReactions(ev) {
       if (sq && target.token && target.token !== tk && tDist > sq) continue;
       const row = { actor, token: tk, item, kind, moment: k, subject: hit.sj, target, dist: hit.dist, role: roleOf(item, def) };
       // v0.0.498 (Pass 3): Feint Critical blocks the target from using Reactions against the feinter until end of feinter's turn
-      const feintBy = [ev.source?.actor, target?.actor, hit.sj?.actor].find(a => a?.uuid && reactionsOffVs(actor, a.uuid));
+      // v0.0.520 (the cleanup audit, B2-019; book, Feint's Critical): only a Reaction for which the feinter is the triggering creature (the mover of a
+      // movement, the source of a Strike or a damage)
+      const trig = def.move || !ev.source?.actor ? hit.sj?.actor : ev.source.actor;
+      const feintBy = trig?.uuid && reactionsOffVs(actor, trig.uuid) ? trig : null;
       // v0.0.410 (book, A Reaction's Target): Line of Effect to the target, and the target and the triggering creature perceived (Hidden is enough)
       const why = (feintBy ? `Feinted: no Reactions vs. ${cleanName(feintBy.name)}` : "") || (await reactionSight(tk, target.token ?? null, ev.source?.token ?? null)) || await blockedWhy(actor, item);
       if (why) blocked.push({ ...row, why }); else rows.push(row);
@@ -1070,6 +1073,9 @@ export function strikeMoment(actor, targets) {
 }
 /** Pure: did the mover come closer to any of these creatures (each { from, to }: its distance before and after)? */
 export const cameCloser = pairs => pairs.some(p => p.to < p.from);
+/** v0.0.520 (the cleanup audit, B1-038; book, Chapter 3, Moving closer): pure: judged square by square: did a step of the path enter a square nearer
+ *  to the creature than the square it came from? path: the squares in order (the first where it started); dist(square) its distance. */
+export const closerStep = (path, dist) => (path ?? []).some((q, i) => i > 0 && dist(q) < dist(path[i - 1]));
 /** v0.0.275: pure: the squares a movement went through (top-left corners in pixels), from its waypoints, along straight steps (40 at most). */
 export function pathSquares(points, gs, w = 1, h = 1) {
   const out = [], seen = new Set(), add = (x, y) => { const k = `${x},${y}`; if (!seen.has(k) && out.length < 40) { seen.add(k); out.push({ x, y, w: w * gs, h: h * gs }); } };
@@ -1156,7 +1162,7 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const ev = {
       kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves", "enemyAway", "enemyAdjacent", "enemyEnters"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered, enemyAway: left, enemyAdjacent: entered, enemyEnters: entered },
       adjacent: tk => entered.some(e => tokenDistance(e, tk) <= 1),
-      closer: tk => cameCloser(sideToks(tk.document.disposition).map(s => ({ from: tokenDistance(fromAt, s), to: Math.min(...entered.map(e => tokenDistance(e, s))) }))),
+      closer: tk => sideToks(tk.document.disposition).some(s => closerStep(sqs.length > 1 ? sqs : [fromAt, toAt], q => tokenDistance(q, s))),   // v0.0.520 (B1-038): square by square
       // v0.0.409 (Rebuke): a step of its path that ends farther from this creature than the square it left
       away: tk => sqs.length > 1 ? sqs.some((q, i) => i > 0 && tokenDistance(q, tk) > tokenDistance(sqs[i - 1], tk)) : tokenDistance(toAt, tk) > tokenDistance(fromAt, tk)
     };
@@ -1169,7 +1175,7 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const name = esc(cleanName(doc.name ?? actor.name)), plain = stand ? `<b>${name}</b> stands up` : `<b>${name}</b> moves`;
     // v0.0.273 (Lucas): Move back: to where this movement started, with the movement it had then (the squares since are refunded)
     // v0.0.279 (Lucas): to the last square where a Reaction offered could come (Shift+click: where this movement started), its share refunded
-    const nearer = (r, sq) => sideToks(r.token.document.disposition).some(s => tokenDistance(sq, s) < tokenDistance(fromAt, s));
+    const nearer = (r, sq) => { const i = sqs.indexOf(sq), prev = i > 0 ? sqs[i - 1] : fromAt; return sideToks(r.token.document.disposition).some(s => tokenDistance(sq, s) < tokenDistance(prev, s)); };   // v0.0.520 (B1-038): nearer than the square it came from
     const idxs = stand || sqs.length < 2 ? [] : backSquareIndices(sqs, open.map(r => { const t = r.item.system.momentThreat ? threatProfile(r.actor) : null; return { moment: r.moment, range: t ? t.max : (Number(r.item.system.momentRange) || 0), min: t ? t.min : 0, token: r.token }; }), (r, sq) => tokenDistance(r.token, sq), nearer);
     const idx = idxs[0] ?? 0;
     const at = sqs[idx] ?? fromAt, steps = Math.max(0, sqs.length - 1 - idx), total = Math.max(1, sqs.length - 1);

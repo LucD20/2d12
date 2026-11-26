@@ -47,7 +47,7 @@ the console line is plain text to copy: undefined | notice: info: Difficult Terr
 squares added to the measured cost: {"the ruler counts them":0,"the ruler counts them, Foundry found terrain":0,"not counted, Foundry found terrain":0,"not counted, none found":5}
 
 --- Release
-the Basic Action: Release | traits self | cost label: 0AP | text: You [button]{drop an object} in your square, or let go of an object you hold wit... | other costs: 1AP 1/2/3AP
+the Basic Action: Release | traits self | cost label: 0AP | text: You [button]{drop an object} you hold, in your square, or take one hand off an o... | other costs: 1AP 1/2/3AP
 the choices offered: ["Hold Greatsword with one hand","Drop Greatsword","Drop Dagger"]
 hold the Greatsword with one hand → Greatsword: 1 hand(s), Dagger: held | info: Kai holds Greatsword with one hand.
 then the choices: ["Drop Greatsword","Drop Dagger"] (the Bow, which is not held, is never offered)

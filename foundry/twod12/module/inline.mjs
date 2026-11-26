@@ -215,6 +215,9 @@ function saveDcFor(doc) {
     if (doc.documentName === "ChatMessage") return Number(doc.getFlag?.("twod12", "action")?.saveDc) || null;
     const actor = doc.parent?.documentName === "Actor" ? doc.parent : null;
     if (doc.documentName !== "Item" || !actor?.system?.attributes || !doc.system?.versions) return null;
+    // v0.0.520 (the cleanup audit, B1-006; book, Chapter 1, Saves): only a Save Action's DC is 11 + its Modifier; any other Save a card asks for
+    // uses the DC it writes (dc:N), or 13
+    if (!doc.system.traits?.has?.("save")) return TWOD12.baseDC ?? 13;
     return saveDcOf(rollSource(actor.system, doc.system), actor.system.attributes);
   } catch (e) { return null; }
 }

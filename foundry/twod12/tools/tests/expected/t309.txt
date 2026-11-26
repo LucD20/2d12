@@ -8,10 +8,10 @@ a flat 1: {"raw":1,"boons":1} | cancelled: {"raw":1,"boons":0} | no partner: {"r
 an enemy: block
 an ally: dt
 a neutral: block
-a Dying enemy: dt
+a Dying enemy: block
 an Unconscious enemy: dt
 a dead enemy: dt
-an enemy at 0: dt
+an enemy at 0: block
 a Prone enemy: block
 refused: an enemy's space and the diagonal between two: true true
 an Evade crosses an ally (its extra cost left out): true | the range preview blocks enemies, the diagonal too: true

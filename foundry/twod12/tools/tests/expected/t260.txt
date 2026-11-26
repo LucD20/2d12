@@ -3,6 +3,9 @@ Actions: 63 | lines missing from a face: none
 e.g. Smite: Smite dice | Attack | Tier 1 | Tier 2 | Tier 3 | Special
 e.g. Lantern of Faith (Modes): # Kindle | Effect | # Reveal | Effect | # Glare | Save | Tier 1 or 2
 --- 2. the same lines as the book's card (book/cards/structure.json)
-the same lines: 63 of 63 | not in the book: none
+the same lines: 62 of 63 | not in the book: none
+Shake Off:
+    Foundry Effect
+    book    Save | Tier 1 | Tier 2 | Tier 3
 --- 3. the gallery
 tools: true | the page: true | saved shots: true | the book writes its model and gallery: true

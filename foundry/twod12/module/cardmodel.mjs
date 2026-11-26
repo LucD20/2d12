@@ -85,7 +85,7 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
   if (actor && (item.getFlag?.("twod12", "basic") ?? item.flags?.twod12?.basic) === "basicWeaponAttack") {
     for (const h of activeHooks(actor, "basicLine")) {
       for (const k of ["bloodied", "strained", "bloodiedBefore", "strainedBefore"]) if (h.hook[k]) SL[k] = SL[k] ? `${SL[k]} ${h.hook[k]}` : h.hook[k];
-      if (Number(h.hook.strainedBeforeD) > 0) { const txt = `Against a Strained target, a Tier 3 deals ${Math.max(1, Number(h.hook.strainedBeforeD) || 1)}[D] more.`; SL.strainedBefore = SL.strainedBefore ? `${SL.strainedBefore} ${txt}` : txt; }
+      if (Number(h.hook.strainedBeforeD) > 0) { const txt = `On a Tier 3, this Action deals ${Math.max(1, Number(h.hook.strainedBeforeD) || 1)}[D] more.`; SL.strainedBefore = SL.strainedBefore ? `${SL.strainedBefore} ${txt}` : txt; }   // v0.0.520: the book's words (Steady Draw)
     }
   }
   for (const [k, label] of [["bloodiedBefore", "Bloodied"], ["strainedBefore", "Strained"]]) if (String(SL[k] ?? "").trim()) top.push(L(label, SL[k], "rich"));
@@ -94,6 +94,8 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
   if (rl && !modes) top.push(L(rl.label, rl.text, "esc"));
   const versionModel = v => {
     const lines = [];
+    // v0.0.520 (the cleanup audit, B2-015; book/cards.py _version_lines): a Version's own Requirement first (Crawl's 2 AP)
+    if (String(v.requirements ?? "").trim()) lines.push(L("Requirement", v.requirements, "hl"));
     if (v.special) lines.push(L("Special", v.special, "rich"));
     if (!v.noTiers) {
       const noDmg = ![1, 2, 3].some(n => (v[`t${n}`] ?? []).length);
@@ -109,7 +111,12 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
       roll: v.modeVs ? L("Save", TWOD12.attributes[v.modeVs] ?? v.modeVs, "esc") : split && !v.noTiers ? splitRoll(v) : null, lines, source: v
     };
   };
-  const vms = versions.map(versionModel);
+  const vms0 = versions.map(versionModel);
+  // v0.0.520 (the cleanup audit, B2-038; book/cards.py structure()): Versions whose lines are all the same are printed once (Seek: the cost says
+  // "1 / 2 AP", the Target line says what changes); each Version keeps its Use button (the faces read allVersions)
+  const sig = vm => JSON.stringify(vm.lines.map(l => (l.kind === "tier" ? [l.label, ...[1, 2, 3].map(n => rawCell(it, vm.source, n))] : [l.label, l.text])));
+  const merged = vms0.length > 1 && !modes && vms0.every(vm => !vm.mode && !vm.roll && !vm.own.traits.length && !vm.own.distance && !vm.own.target && sig(vm) === sig(vms0[0]));
+  const vms = merged ? [{ ...vms0[0], heading: [...new Set(vms0.map(vm => vm.cost))].join(" / "), merged: true }] : vms0;
   // v0.0.429 (CARD-ONE step 6): one Version whose Effect the card writes above the roll (Rebuke, Reckoning, Hit and Run): it goes there
   if (vms.length === 1 && vms[0].source?.effectFirst) { const k = vms[0].lines.findIndex(l => l.label === "Effect"); if (k >= 0) top.splice(effectAt, 0, ...vms[0].lines.splice(k, 1)); }
   const proseText = String(it.description ?? "");
@@ -117,7 +124,7 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
     name: item.name ?? "", frequency: effectiveFrequency(it), cost: [...new Set(versions.map(costOf))].join(" / "), reaction: !!it.reaction,
     flavor: it.flavor ?? "", traits: [...(it.traits ?? [])], automation: it.automation ? { rank: it.automation, note: it.automationNote ?? "" } : null,
     grid: { distance: distanceShort(distanceText(it, weapon)).replace(/^—$/, ""), distTip: distanceNote(it, weapon), area: areaText(it), areaButton: areaButton(it), target: it.targets ?? "" },
-    top, modes, versions: vms,
+    top, modes, versions: vms, allVersions: vms0, merged,
     special: it.special ? L("Special", it.special, "rich") : null,
     prose: !it.structure && !it.special && !(it.lines ?? []).length && proseText.replace(/<[^>]+>/g, "").trim() ? proseText : "",   // v0.0.429: a Basic Action's Specials are lines
     worth: it.worth ?? ""

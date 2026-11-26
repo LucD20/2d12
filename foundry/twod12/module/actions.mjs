@@ -177,7 +177,7 @@ const oddsRow = chk => `<div class="oddsrow">Odds: ${oddsText(chk).html}</div>`;
 export function pureMove(it, version, basicKey = "") {
   if (!version?.noTiers || (version.fx?.all ?? []).length) return null;
   const txt = String(version.effects ?? ""), moves = [...txt.matchAll(/@Move\[([^\]]+)\]/g)];
-  if (moves.length !== 1 || /@(?!Move\[)\w+\[/.test(txt)) return null;
+  if (moves.length !== 1 || /@(?!Move\[|Book\[)\w+\[/.test(txt)) return null;   // v0.0.520: a book link is no button (Advance: "see Advance")
   if (!["advance", "walk", "move", "evade"].includes(moves[0][1].split("|")[0].trim().toLowerCase())) return null;
   // v0.0.508 (Lucas on v0.0.507: "Tumble didnt send the message to the chat, just asked to move the token, so no check happened"): a movement that
   // passes enemies (Tumble) needs its Check first, so it posts its card (the Check buttons, then the Move button) like any other Action
@@ -579,10 +579,12 @@ export async function useAction(actor, item, opts = {}) {
     const ws = weaponsFor(actor, item).filter(w => (!need || hasProp(w, need) || (need === "ranged" && hasProp(w, "thrown"))) && (!it.traits.has("shot") || hasProp(w, "projectile")));
     if (need && !ws.length) return ui.notifications.warn(it.traits.has("shot") ? `${item.name} is a Shot: it needs a wielded Projectile weapon (a bow or a crossbow).` : `${item.name} needs a wielded ${need === "melee" ? "Melee" : "Ranged"} weapon.`);
   }
+  // v0.0.520 (the cleanup audit, B2-020; book, Gear, Fists): the Basic Attack is never made with the Fists: no weapon in hand, the Fists Basic Action
+  if (item.getFlag?.("twod12", "basic") === "basicWeaponAttack" && !item.getFlag("twod12", "weaponId") && !weaponsFor(actor, item).length) return ui.notifications.warn(`${actor.name} holds no weapon: the Basic Attack isn't made with the Fists (use the Fists Basic Action).`);
   let versions = [...it.versions].sort((a, b) => a.ap - b.ap);
   if (!versions.length) return ui.notifications.warn(`${item.name} has no versions yet.`);
   // What the Action rolls (Signature, Weapon, Power or an Attribute) and what its damage adds: rollsource.mjs.
-  const src = rollSource(s, it);
+  const src = rollSource(s, it, opts.attrKey ?? "");   // v0.0.520 (B2-046): the Attribute chosen with the roll dialog's other Roll button
   const preAttr = src.attrKey;
   // A granted use (from an Effect such as Double Shot) is free and does not count. v0.0.182: it is used without asking (the roll dialog says so
   // at the top); a normal use with one waiting: Shift-click the use button (opts.noGrant).
@@ -931,7 +933,8 @@ export async function useAction(actor, item, opts = {}) {
   if (rangedWeapon && selfToken) {
     // v0.0.428: an Interrupt on "would enter a square adjacent to you" (Snap Shot) is rolled before the mover enters: it doesn't Engage you
     const engagedNow = opts.notEngagedBy ? engagedWith(selfToken).some(t => (t.document?.uuid ?? t.uuid) !== opts.notEngagedBy) : isEngaged(selfToken);
-    if (engagedNow && !ignoredBy(actor, "engagedSelf", useTraits).length) extraMods.push(ENGAGED_RANGED_DOOMED
+    // v0.0.520 (the cleanup audit, B3-025): a card that says it isn't Doomed for being Engaged (the setting engagedOk: Drawing Light)
+    if (engagedNow && !it.engagedOk && !ignoredBy(actor, "engagedSelf", useTraits).length) extraMods.push(ENGAGED_RANGED_DOOMED
       ? { id: "syn:engaged", name: "You are Engaged (Doomed)", boons: 0, banes: 0, doomed: true, match: true, predicate: "A [Ranged] Action while you are Engaged is Doomed" }
       : { id: "syn:engaged", name: `You are Engaged (${ENGAGED_RANGED_BANES} Banes)`, boons: 0, banes: ENGAGED_RANGED_BANES, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
     if (!multi && rollsAtOthers && targetToken && !noEngagedTarget.length && engagedWithOther(targetToken, selfToken))   // "Ignore a Bane" (Sharpshooter: [Shot] Actions)
@@ -1014,6 +1017,11 @@ export async function useAction(actor, item, opts = {}) {
       saveAct, setupPending: setupLater && hasSetupMove, notices: [...extraNotices], warns: dlgWarns, opts, dcInfo, seen, seenWhy, mine, unseenYou, untrainedTarget, outOfRange, talentMods: talentModsFor(actor, item), partsFor });
     // v0.0.444 (group 2; Lucas: "it shows buttons for each weapon to use"): two held weapons fit: a column for each (its Distance, its Tiers, its
     // hand's Banes) and a Roll button for each; the dialog is the main hand's, the other's Roll runs the Action again with that weapon at once
+    // v0.0.520 (the cleanup audit, B2-046; book, Chapter 1: an Action with more than one Attribute trait: you choose which to roll): a Roll button for each
+    if (src.kind === "attribute" && !saveAct) {
+      const keys = ["body", "mind", "appeal", "instinct"].filter(k => it.traits.has(k));
+      if (keys.length > 1) inp.attrs = { current: src.attrKey, list: [src.attrKey, ...keys.filter(k => k !== src.attrKey)].map(k => ({ key: k, label: TWOD12.attributes[k] ?? k, mod: Number(s.attributes?.[k]) || 0 })) };
+    }
     if ((opts.dual ?? []).length > 1 && it.traits.has("weapon") && !linkedW) {
       try {
         const all = actor.itemTypes?.weapon ?? [], ws = opts.dual.map(id => actor.items.get(id)).filter(Boolean);
@@ -1043,11 +1051,11 @@ export async function useAction(actor, item, opts = {}) {
     if (setupLater && (!rdData.restart || rdData.rollAfter)) {
       const st = await runSetups();
       if (!st.ok) return;
-      if (st.done) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, setupRan: true, setupDone: true, stanceRan: st.stance, noHandle: true, weaponId: rdData.weaponId ?? previewWeapon?.id ?? opts.weaponId, rollAfterPlace: true });
+      if (st.done) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, setupRan: true, setupDone: true, stanceRan: st.stance, noHandle: true, weaponId: rdData.weaponId ?? previewWeapon?.id ?? opts.weaponId, attrKey: rdData.attrKey ?? opts.attrKey, rollAfterPlace: true });
     }
     // the targets changed on the map, or the area is placed again: the Action runs again with the same choices (no hands or turn question again;
     // v0.0.440: a Setup not made yet still comes when Roll is pressed)
-    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: opts.noSetup || opts.setupRan, setupRan: !!opts.setupRan || (setupLater && !!rdData.rollAfter), noHandle: true, weaponId: rdData.weaponId ?? previewWeapon?.id ?? opts.weaponId, rollAfterPlace: !!rdData.rollAfter });
+    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: opts.noSetup || opts.setupRan, setupRan: !!opts.setupRan || (setupLater && !!rdData.rollAfter), noHandle: true, weaponId: rdData.weaponId ?? previewWeapon?.id ?? opts.weaponId, attrKey: rdData.attrKey ?? opts.attrKey, rollAfterPlace: !!rdData.rollAfter });
   }
   const data = quick ? { ap: String(opts.quickAp), fx: [], bonusOn: [], boons: 0, banes: 0, mod: 0, dc: 13, empowered: 0, enfeebled: 0 } : rdData ? rdData : await askRoll(actor, {   // v0.0.439: only the tests reach this (no ApplicationV2.render): the old dialog, now without its preview
     title: item.name,
@@ -1475,7 +1483,7 @@ export async function useAction(actor, item, opts = {}) {
           targets,
           preStrained,
           attrLabel: src.kind === "attribute" ? (TWOD12.attributes[attrKey] ?? "") : (src.chip ?? ""),
-          saveDc: saveDcOf(src, s.attributes)
+          saveDc: it.traits.has("save") ? saveDcOf(src, s.attributes) : TWOD12.baseDC   // v0.0.520 (B1-006): another Save its card asks for: 13 unless it writes one
         }
       }
     }

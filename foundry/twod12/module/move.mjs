@@ -544,7 +544,10 @@ const unwillingIn = (cell, doc) => { const t = creatureIn(cell, [doc.id]); retur
  * The core rework batch 4 (Lucas, 2026-11-25; book, Chapter 3, Creatures in your way): an unwilling creature's space blocks your own movement; an ally's
  * (a willing creature's) space and a Down or dead creature's are Difficult Terrain. Pure on a token: "block" or "dt".
  */
-export const downTok = t => { const a = t?.actor; return !!(a?.system?.atZero || ["dead", "dying", "shattered", "unconscious", "desperate"].some(s => a?.statuses?.has?.(s))); };
+// v0.0.520 (the cleanup audit, B1-063; book, Chapter 3, Creatures in your way): only an Unconscious or a dead creature is Difficult Terrain; one that
+// is Down and still fighting (Desperate, Dying or Shattered and awake) holds its space like any other. An NPC at 0 is out of the fight (dead or
+// Unconscious by Chapter 4's NPCs Going Down, which the GM decides).
+export const downTok = t => { const a = t?.actor; return !!(["dead", "unconscious"].some(s => a?.statuses?.has?.(s)) || (a?.type === "npc" && a?.system?.atZero)); };
 /**
  * The Bestiary's rebuild (2026-11-25; the Grave Wisp's Drifting: "its own movement can pass through creatures' spaces (it can't end in one), and a
  * creature's space is never Difficult Terrain for it"): a Feature hook on the creature, { kind: "drift" } (a setting anyone can remove).

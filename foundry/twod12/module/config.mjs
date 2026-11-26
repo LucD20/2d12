@@ -191,7 +191,7 @@ export const TWOD12 = {
     { key: "attack", label: "Attack", names: ["Basic Attack", "Weapon Attack", "Charge", "Fists", "Reload"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Tumble", "Sneak", "Crawl", "Stand", "Break Free"] },
     { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate", "Demoralize", "Feint"] },
-    { key: "utility", label: "Utility", names: ["Steel Yourself", "Heal", "Aid", "Hide", "Seek", "Point Out", "Interact", "Shake Off", "Regrip", "Release", "Lean", "Leaning"] }   // v0.0.513: the Hide package
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Tend", "Aid", "Hide", "Seek", "Point Out", "Interact", "Shake Off", "Regrip", "Release", "Lean", "Leaning"] }   // v0.0.513: the Hide package
   ],
   // v0.0.514 (Lucas on v0.0.513: "The Basic tab on the HUD is very cluttered, lets try to make 5 columns ... aiming to keep the same amount of actions per
   // column"): the HUD's Basic tab in five groups of five or six (the sheet keeps basicGroups); a Basic Action in none goes to the last one
@@ -200,7 +200,7 @@ export const TWOD12 = {
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Tumble", "Crawl", "Stand", "Break Free"] },
     { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate", "Demoralize", "Feint"] },
     { key: "stealth", label: "Stealth", names: ["Hide", "Sneak", "Seek", "Point Out", "Lean", "Leaning"] },
-    { key: "utility", label: "Utility", names: ["Steel Yourself", "Heal", "Aid", "Interact", "Shake Off"] }
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Tend", "Aid", "Interact", "Shake Off"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   // v0.0.355 (PACK ACTION-SHEET; the audit's D21, D22): the highest Escalation, read by the Action sheet's Escalation field and a rule's "Works"
@@ -695,10 +695,11 @@ export const effectiveFrequency = d => {
 
 export const ATTR_KEYS = ["body", "mind", "appeal", "instinct"];
 /** The attribute an Action rolls: its Body, Mind, Appeal or Instinct trait (the traits decide the roll). */
-export const checkAttr = (d, attrs = null) => {
+export const checkAttr = (d, attrs = null, pref = "") => {
   const have = ATTR_KEYS.filter(k => d?.traits?.has?.(k));
+  if (pref && have.includes(pref)) return pref;   // v0.0.520 (the cleanup audit, B2-046; book, Chapter 1): you choose which of them to roll
   if (have.length <= 1 || !attrs) return have[0] ?? "";
-  // More than one of the traits (Trip: Body and Instinct): the highest value is used.
+  // More than one of the traits (Trip: Body and Instinct): the highest value is offered first (the roll dialog's other Roll button rolls the other).
   return have.reduce((best, k) => ((attrs[k] ?? 0) > (attrs[best] ?? 0) ? k : best), have[0]);
 };
 

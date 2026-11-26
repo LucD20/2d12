@@ -509,6 +509,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       momentSelf: bool(), momentTarget: choice(TWOD12.momentTargets, "subject"),
       // the Bestiary's rebuild (2026-11-25): what the moment needs: the pool that took damage (B Vigor, M Resolve), the owner's state after it
       // (Bloodied, Strained), the subject's Tag (a word of the world's Tags: "goblin")
+      engagedOk: bool(),   // v0.0.520 (the cleanup audit, B3-025): its [Ranged] roll isn't Doomed for being Engaged (the card says so: Drawing Light)
       reqFlank: bool(),   // the Bestiary's rebuild: its Requirement "it flanks the target" (actions.mjs; flanking.mjs flankingFor)
       momentPool: choice({ "": "Any", B: "Vigor", M: "Resolve" }, ""), momentState: choice({ "": "Any", bloodied: "Bloodied", strained: "Strained" }, ""), momentTag: str(),
       flavor: str(),
@@ -556,6 +557,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
           // Distance, Target and roll (empty: the Action's); "" for the others
           mode: str(), modeTraits: new ArrayField(str()), modeDistance: str(), modeTargets: str(), modeVs: str(),
           special: str(),   // v0.0.411: a Structure block's Special line (Judge's 0 AP: when it can be used)
+          requirements: str(),   // v0.0.520 (the cleanup audit, B2-015): a Version's own Requirement line (Crawl's 2 AP: "Your Speed is 5 or higher.")
           diceRule: str(),   // v0.0.409: "smite" (Smite's dice by Escalation, d8s against a Profane creature) or "profane" (d6s become d8s against one)
           noTiers: bool(),
           orTiers: str(),

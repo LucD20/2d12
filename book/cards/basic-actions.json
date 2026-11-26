@@ -9,7 +9,7 @@
       "frequency": "At-will",
       "versions": [
         { "ap": 1, "effects": "You Advance your Speed. Once during it you can use Interact (see [[Advance]]).",
-          "foundry": { "sub": [["move up to your Speed", "@Move[advance|distance:speed]{move up to your Speed}"]] } }
+          "foundry": { "sub": [["Advance your Speed", "@Move[advance|distance:speed]{Advance your Speed}"]] } }
       ],
       "foundry": { "basic": "advance", "automation": "gold", "img": "icons/svg/wing.svg" }
     },
@@ -253,9 +253,9 @@
       "vs": "The better of the [[Lingering]]'s two Attributes, against DC 13 or the DC the Lingering writes Save",
       "versions": [
         { "ap": 1, "tiers": ["No effect.", "The target takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends.", "The Lingering ends."],
-          "foundry": { "sub": [["makes a Save", "makes a @ShakeOff[save]{Save}"]] } }
+          "foundry": { "byChip": true, "text": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends. **Tier 3:** the Lingering ends.", "sub": [["makes a Save", "makes a @ShakeOff[save]{Save}"]] } }
       ],
-      "foundry": { "basic": "shakeOff", "automation": "silver", "img": "icons/svg/regen.svg" }
+      "foundry": { "basic": "shakeOff", "vs": "", "automation": "silver", "img": "icons/svg/regen.svg" }
     },
     {
       "name": "Shove",
@@ -405,7 +405,7 @@
       "versions": [
         { "ap": 1, "tiers": ["No effect: you stay Immobilized."], "effects": "You are no longer Immobilized, and no longer Grabbed if you were.", "foundry": { "x1": "No effect: you stay Immobilized." } }
       ],
-      "foundry": { "basic": "breakFree", "automation": "gold", "automationNote": "the core rework B11: using it rolls the Body or Instinct Check (the higher) against the Action DC of what holds you (the highest on your Immobilized conditions; 13 with no Action behind it); a Tier 2 or 3 (Doubles count) ends Immobilized and Grabbed.", "img": "icons/svg/net.svg" }
+      "foundry": { "basic": "breakFree", "automation": "gold", "automationNote": "the core rework B11: using it rolls the Body or Instinct Check (you choose: the roll dialog has a Roll button for each, the higher first) against the Action DC of what holds you (the highest on your Immobilized conditions; 13 with no Action behind it); a Tier 2 or 3 (Doubles count) ends Immobilized and Grabbed.", "img": "icons/svg/net.svg" }
     },
     {
       "name": "Aid",
