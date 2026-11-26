@@ -1,4 +1,4 @@
-cards: 134 | files: basic-actions.json, bestiary.json, gear.json, talents.json, stage0/talents-pt.json, stage0/gear.json, stage0/bestiary.json, stage0/paladin.json, stage0/archer.json
+cards: 134 | files: basic-actions.json, bestiary.json, set-aside/gear.json, set-aside/talents.json, stage0/talents-pt.json, stage0/gear.json, stage0/bestiary.json, stage0/paladin.json, stage0/archer.json
 --- the generated Basic Actions
 module/basic-data.mjs up to date: true module/basic-data.mjs is up to date
 set aside, not a Basic Action: Opportunity Attack

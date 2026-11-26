@@ -29,7 +29,6 @@ console.log("payReaction kept (combat.mjs re-exports it):", JSON.stringify(S.pay
 
 console.log("--- labels, Effects lines, the ruler");
 console.log("Tier labels in full:", [1, 2, 3, "crit", "all"].map(V.tierLabel).join(" | "));
-console.log("ruler: Designer on:", JSON.stringify(V.rulerText("Ruler: 2 AP 1.40× · 3 AP 1.45×.", true)), "| off:", JSON.stringify(V.rulerText("Ruler: 2 AP 1.40×", false)), "| no worth:", JSON.stringify(V.rulerText("", true)));
 console.log("Effects: three Versions:", JSON.stringify(V.effectLines([{ ap: 1, effects: "A" }, { ap: 2, effects: "B" }, { ap: 3, effects: "C" }]).lines.map(l => `${l.ap}${l.badge ? "*" : ""}`)),
   "| the same text twice:", JSON.stringify(V.effectLines([{ ap: 2, effects: "A" }, { ap: 3, effects: "A" }])), "| no Tiers:", V.effectLines([{ ap: 1, noTiers: true, effects: "X" }]).title);
 console.log("Modifier:", V.modText("Signature Modifier", 2), "|", V.modText("Power Modifier", -1), "| the strip: Smite", V.rollsItself([{ noTiers: false }]), "a Save Action", V.rollsItself([{ noTiers: false }], new Set(["save"])), "no Tiers", V.rollsItself([{ noTiers: true }]));
@@ -65,7 +64,7 @@ console.log("trait words:", txt(sm.match(/<div class="st-traits">[\s\S]*?<\/div>
 console.log("the grid:", txt(sm.match(/<div class="st-grid">[\s\S]*?<\/div>/)?.[0]));
 console.log("labels:", [...sm.matchAll(/<div class="st-l"><b>([^<]*)<\/b>/g)].map(m => m[1]).join(", "));
 console.log("Use buttons:", (sm.match(/class="ap-vbtn st-use"/g) ?? []).length, "live,", (sm.match(/class="ap-vbtn st-use no"/g) ?? []).length, "struck | at the end of Your roll:", /<b>Your roll<\/b>[\s\S]*ap-vbtn st-use[\s\S]*<\/span><\/div><\/div>/.test(sm), "| a button uses its Version:", /data-action="useVersion" data-ap="2"/.test(sm));
-console.log("Your roll:", txt(sm.match(/<div class="st-live">[\s\S]*?<\/div><\/div>/)?.[0]), "| Boons \"+\" and Banes \"▼\" by class:", /st-rc (g|b)/.test(sm), "| ruler (Designer off):", sm.includes("st-ruler"));
+console.log("Your roll:", txt(sm.match(/<div class="st-live">[\s\S]*?<\/div><\/div>/)?.[0]), "| Boons \"+\" and Banes \"▼\" by class:", /st-rc (g|b)/.test(sm));   // the cleanup audit (2026-11-26): the ruler line is removed
 designer = true;
 const w = await buildActionCard(wor, { actor });
 console.log("Word of Radiance: the Area is the chip:", txt(w.match(/<b>Area:<\/b>[\s\S]*?<\/a>/)?.[0]), /<b>Area:<\/b> <a class="twod12-inline" data-twod12-inline="Template"/.test(w), "| its Save line:", txt(w.match(/<div class="st-l"><b>Save<\/b>[\s\S]*?<\/div>/)?.[0]), "| its Tier labels:", [...w.matchAll(/<div class="st-l"><b>(Tier [^<]*)<\/b>/g)].map(m => m[1]).join(", "), "| no Your roll (the targets roll):", !w.includes("st-live\"><div"));

@@ -1,4 +1,4 @@
-# Archer, level 3, the A1 build with options (pack OT, 2026-10-30; book/options-talents.md): Signature Double Shot, Active Escalation Twin Shot
+# Archer, level 3, the A1 build with options (pack OT, 2026-10-30; archive/book-drafts/options-talents.md): Signature Double Shot, Active Escalation Twin Shot
 # (instead of Pinning Shot), Encounter Volley (instead of Marksman's Shot), Daily Deadeye (instead of Hunter's Focus). Everything else as archer-double-3.
 # Talents are left out (classes are compared with classes). The format: book/ruler/README.md.
 class Archer (Double Shot, options)

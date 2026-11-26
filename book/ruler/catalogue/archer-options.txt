@@ -1,4 +1,4 @@
-# The Archer's options (pack OT, options and Talents, 2026-10-30; PROPOSED: book/options-talents.md), for the price list: node book/ruler/econ.mjs
+# The Archer's options (pack OT, options and Talents, 2026-10-30; PROPOSED: archive/book-drafts/options-talents.md), for the price list: node book/ruler/econ.mjs
 # Every option of a level 1 to 3 Pick slot, written to sit next to the slot's default (catalogue/archer-a1.txt). The Crossbow's Weapon Attack is a Shot.
 class Archer (options)
 level 1
@@ -16,5 +16,5 @@ weapon Crossbow (ranged, projectile, reload, two-handed): 0 / 1d4+2 / 1d10+2
 
 turn Typical: Double Shot 2, Weapon Attack, Weapon Attack
 
-# Passive Escalation slot (defaults Killer's Focus, Elusive): Harrying Shots is priced by hand (1 Bane on the quarry's Strikes: book/options-talents.md)
+# Passive Escalation slot (defaults Killer's Focus, Elusive): Harrying Shots is priced by hand (1 Bane on the quarry's Strikes: archive/book-drafts/options-talents.md)
 passive Killer's Focus

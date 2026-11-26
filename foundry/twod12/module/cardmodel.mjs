@@ -126,8 +126,7 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
     grid: { distance: distanceShort(distanceText(it, weapon)).replace(/^—$/, ""), distTip: distanceNote(it, weapon), area: areaText(it), areaButton: areaButton(it), target: it.targets ?? "" },
     top, modes, versions: vms, allVersions: vms0, merged,
     special: it.special ? L("Special", it.special, "rich") : null,
-    prose: !it.structure && !it.special && !(it.lines ?? []).length && proseText.replace(/<[^>]+>/g, "").trim() ? proseText : "",   // v0.0.429: a Basic Action's Specials are lines
-    worth: it.worth ?? ""
+    prose: !it.structure && !it.special && !(it.lines ?? []).length && proseText.replace(/<[^>]+>/g, "").trim() ? proseText : ""   // v0.0.429: a Basic Action's Specials are lines
   };
 }
 
@@ -137,7 +136,7 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
  * out what it would repeat. Pure: what a face drops from the full card (the model decides; actioncard.mjs buildActionCard({ short }) draws it).
  * A Mode's own Distance and Save stay (the bar shows only the Action's).
  */
-export const SHORT_CARD = { flavor: false, rankWord: false, distance: false, rollLine: false, yourRoll: false, ruler: false, useButtons: false };
+export const SHORT_CARD = { flavor: false, rankWord: false, distance: false, rollLine: false, yourRoll: false, useButtons: false };
 /** Pure: a card model with the short card's lines left out (the top's Attack / Save line; the grid's Distance). */
 export function shortModel(m) {
   // the roll line is the only "Attack" / "Save" line written escaped (a card's own lines are enriched)

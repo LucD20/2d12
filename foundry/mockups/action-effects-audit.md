@@ -1,6 +1,6 @@
 # The Effects audit, before the Action sheet's redesign (PACK ACTION-SHEET, part 1)
 
-2026-11-11, on v0.0.354 (238 tests pass). Nothing here is applied: `module/`, `templates/` and the compendium are untouched. Each finding has a recommendation and a **default**; the defaults are numbered **D1 to D55** (D41 to D55: the buttons, added the same day), so you can answer "all defaults except 7 and 22". The three mockups (`action-sheet-A.html`, `-B.html`, `-C.html`) are built on these defaults.
+2026-11-11, on v0.0.354 (238 tests pass). Nothing here is applied: `module/`, `templates/` and the compendium are untouched. Each finding has a recommendation and a **default**; the defaults are numbered **D1 to D55** (D41 to D55: the buttons, added the same day), so you can answer "all defaults except 7 and 22". The three mockups (`archive/mockups/action-sheet-A.html`, `-B.html`, `-C.html`) are built on these defaults.
 
 ## Summary
 
@@ -116,7 +116,7 @@ Uses: the compendium source (Effects / Features / Talents), then `book/cards/*.j
 
 ---
 
-## 5. Ready for Stage 0 (book/decisions-s1.md)
+## 5. Ready for Stage 0 (archive/book-drafts/decisions-s1.md)
 
 - **Correction (2026-11-11, found while building v0.0.355):** since pack R the Action's `escalation` is already what an Apex needs (checked before the AP is spent, nothing is spent: `actions.mjs:834`), so D21 needs no "Costs / Needs" switch and no new field: one stepper, "an Apex: it needs Escalation N", up to `TWOD12.escalationMax`.
 - **D21. The Escalation cost takes 0 to 3** (`item-sheet.hbs:237`, `max="3"`). **Default: the maximum comes from the config (a new `TWOD12.escalationMax`: 3 today, 6 once Stage 0 is applied), and the field has two meanings chosen by a switch: "Costs N" (an Escalation Action) or "Needs N" (an Apex).** The data has one number today; "Needs" is a new field (`escalationNeeds`), a question below.

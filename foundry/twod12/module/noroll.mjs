@@ -2,7 +2,6 @@
 // Bulwark of Faith, Aim). chatcards.mjs draws it (nonRollCardHtml); this module builds the parts of its model: the numbered steps of its chain
 // (one per @Pause), the granted Action's row (an @Use in its text), and unlocks an "After the damage" step when the held damage lands.
 // The pure functions first (the tests load them); the Foundry ones after.
-import { esc } from "./util.mjs";
 
 /** The chain's steps (an Action's "after": chips, @Pause[label] between them) → [{ label, chips }] (the same split as actions.mjs chainSteps). */
 export function chainOf(after) {
@@ -58,8 +57,6 @@ export function splitUse(html) {
   const rest = String(html).replace(m[0], "").replace(/\s+([.,;])/g, "$1").replace(/<p>\s*<\/p>/g, "").trim();
   return { html: rest, anchor: m[0], name, target };
 }
-/** The grant row's button reads the Action's name with a bolt, or "✓ Used" once spent (updateUseButtons, freeuse.mjs). */
-export const grantButtonHtml = (name, spent) => (spent ? '<i class="fa-solid fa-check"></i> Used' : `<i class="fa-solid fa-bolt"></i> ${esc(String(name ?? "").replace(/\s*\(.*\)\s*$/, ""))}`);
 /**
  * Can a weapon reach the triggering creature (Opportunity Attack: "as long as your weapon can target them")? reaches: [{ name, max }] (squares),
  * dist: squares to the creature. "" when one can; else why ("Bandit Thug is 3 sq. away: Greatsword reaches 1 sq.").

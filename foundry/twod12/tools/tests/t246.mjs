@@ -19,7 +19,7 @@ console.log("Strikes a turn:", R.STRIKES_PER_TURN, "| At-will Banes on the 1st, 
 console.log("--- Escalation");
 console.log("start:", R.escalationStart(false), "| with Momentum:", R.escalationStart(true), "| Nari: round 2:", R.escalationRaised(1), "| a Critical:", R.escalationRaised(2), "| round 3 stays:", R.escalationRaised(3));
 console.log("Momentum after CV 75 a PC (easy) / 100 / 76:", R.givesMomentum(75), R.givesMomentum(100), R.givesMomentum(76));
-console.log("an Elite at 0 / 1 / 2 / 3: first-attack Boons", [0, 1, 2, 3].map(R.eliteFirstAttackBoons).join(" "), "| Round Specials", [0, 1, 2, 3].map(R.eliteRoundSpecials).join(" "), "| Encounter Special back", [0, 1, 2, 3].map(R.eliteEncounterBack).join(" "));
+console.log("the Elite ladder left roundrules.mjs (the cleanup audit, 2026-11-26; the SIM's frozen copy keeps it):", !("eliteFirstAttackBoons" in R) && !("ELITE_RUNGS_LADDER" in R));
 
 console.log("--- Position");
 console.log("Flanking: two flankers:", j(R.flankBoons(1, 0)), "| three:", j(R.flankBoons(2, 0)), "| four and one cancel:", j(R.flankBoons(3, 1)), "| one and one cancel:", j(R.flankBoons(1, 1)), "| never under 0:", j(R.flankBoons(1, 3)));
@@ -36,7 +36,7 @@ console.log("a [Ranged] Action while Engaged is Doomed:", R.ENGAGED_RANGED_DOOME
 { const C = await import(ROOTURL + "module/config.mjs"), S0 = C.TWOD12.npcStage0, expr = /^(\d+|(\d+ \+ )?1d(4|6|8))$/;
   console.log("the Bestiary's Stage 0 table: roles", Object.keys(S0).join(" "), "| a Standard's Vigor or Resolve by rating:", S0.standard.health.join(" / "), "| its Medium Basic attack:", S0.standard.basic[2].join(" / "));
   console.log("every damage is a flat part plus at most one small die:", Object.values(S0).every(r => ["basic", "s1", "s2", "s3"].every(k => !r[k] || r[k].every(c => c.length === 2 && c.every(x => expr.test(x))))), "| Health rises with the rating:", Object.values(S0).every(r => !r.health || r.health.every((h, i) => !i || h > r.health[i - 1])), "| a Minion has no 3 AP Special and no Extreme:", !S0.minion.s3 && S0.minion.basic.length === 4);
-  console.log("a Minion: 6 + 6 Health, no Reaction AP, up to", S0.minion.squad, "in a turn slot (roundrules:", R.MINION_SQUAD + "):", S0.minion.health[2] === 6 && S0.minion.reactionAp === 0 && S0.minion.squad === R.MINION_SQUAD, "| a ranged attack's damage steps down:", C.TWOD12.npcRangedStep, "| CV a rating step:", JSON.stringify(C.TWOD12.npcCvStep), "| a Grunt's AP:", S0.grunt.ap, "| an Elite's three abilities on the 1-to-6 ladder at", R.ELITE_RUNGS_LADDER.join(" "), ": Boons at 1 / 2:", R.eliteFirstAttackBoons(1, R.ELITE_RUNGS_LADDER), R.eliteFirstAttackBoons(2, R.ELITE_RUNGS_LADDER), "| Round Specials at 3 / 4:", R.eliteRoundSpecials(3, R.ELITE_RUNGS_LADDER), R.eliteRoundSpecials(4, R.ELITE_RUNGS_LADDER), "| the Encounter Special back at 5 / 6:", R.eliteEncounterBack(5, R.ELITE_RUNGS_LADDER), R.eliteEncounterBack(6, R.ELITE_RUNGS_LADDER)); }
+  console.log("a Minion: 6 + 6 Health, no Reaction AP, up to", S0.minion.squad, "in a turn slot (roundrules:", R.MINION_SQUAD + "):", S0.minion.health[2] === 6 && S0.minion.reactionAp === 0 && S0.minion.squad === R.MINION_SQUAD, "| a ranged attack's damage steps down:", C.TWOD12.npcRangedStep, "| CV a rating step:", JSON.stringify(C.TWOD12.npcCvStep), "| a Grunt's AP:", S0.grunt.ap); }   // the cleanup audit (2026-11-26): the Elite ladder left roundrules.mjs
 
 console.log("--- one copy of each rule");
 const C = await import(ROOTURL + "module/config.mjs");
@@ -50,4 +50,4 @@ console.log("pure (it imports only config, calc and guard):", [...rr.matchAll(/^
 const SM = await import(ROOTURL + "module/sheetmodel.mjs");
 console.log("the old names still work: sheetmodel.payReaction:", j(SM.payReaction(2, 1, 1)));
 const core = fs.readFileSync(ROOT + "../../book/ruler/sim/core.mjs", "utf8"), eng = fs.readFileSync(ROOT + "../../book/ruler/sim/engine.mjs", "utf8"), map = fs.readFileSync(ROOT + "../../book/ruler/map.mjs", "utf8");
-console.log("the environment imports it: core.mjs", core.includes("module/roundrules.mjs"), "| the engine uses it:", /RR\.(unusedApGuard|reactionAPAt|canPayReaction|escalationRaised|eliteRoundSpecials)/.test(eng), "| the map uses it:", /RR\.(flankBoons|coverMods|rangeBanes)/.test(map));
+console.log("the environment imports it: core.mjs", core.includes("module/roundrules.mjs"), "| the engine uses it:", /RR\.(unusedApGuard|reactionAPAt|canPayReaction|escalationRaised)/.test(eng), "| the map uses it:", /RR\.(flankBoons|coverMods|rangeBanes)/.test(map));

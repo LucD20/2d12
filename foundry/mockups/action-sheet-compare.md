@@ -1,6 +1,6 @@
 # The Action sheet: three mockups compared (PACK ACTION-SHEET, part 2)
 
-2026-11-11. The mockups: `action-sheet-A.html`, `action-sheet-B.html`, `action-sheet-C.html` (open them in a browser; the buttons at the top switch between Smite, Rebuke, Covering Fire and Mark Quarry). They are built by `action-sheet-build.mjs` from the system's CSS, the real rules list (`fxsheet.mjs`), the real Action card (`buildSoloCard`) and the four cards in `tools/content.mjs`. All three sit on the audit's defaults (`action-effects-audit.md`) and are ready for Stage 0.
+2026-11-11. The mockups: `archive/mockups/action-sheet-A.html`, `archive/mockups/action-sheet-B.html`, `archive/mockups/action-sheet-C.html` (open them in a browser; the buttons at the top switch between Smite, Rebuke, Covering Fire and Mark Quarry). They are built by `action-sheet-build.mjs` from the system's CSS, the real rules list (`fxsheet.mjs`), the real Action card (`buildSoloCard`) and the four cards in `tools/content.mjs`. All three sit on the audit's defaults (`action-effects-audit.md`) and are ready for Stage 0.
 
 | | A: one page, in the card's order | B: a list and a pane | C: Versions side by side, the card beside them |
 |---|---|---|---|
@@ -24,7 +24,7 @@ C is the one to pick instead if most of your cards will have three Versions (as 
 
 ## After Lucas's answers (2026-11-11)
 
-**A, with the order of events: `action-sheet-A2.html`.** Lucas: "I like A but the side panel of B is good because it looks like an order of events." A2 is A's page with a rail on its left for the selected Version: 1 when it is used (your turn, or the Reaction's moment), 2 the cost, 3 the target or the area, 4 the roll, 5 the Effects applied (on use, or on a Tier 2 or 3), 6 the damage, then, under "after the damage lands", each step. An event jumps to where it is edited; the rail follows the Version's tab; rules the Action holds are listed under "Always, while you have it". The window is 900 px (A is 680).
+**A, with the order of events: `archive/mockups/action-sheet-A2.html`.** Lucas: "I like A but the side panel of B is good because it looks like an order of events." A2 is A's page with a rail on its left for the selected Version: 1 when it is used (your turn, or the Reaction's moment), 2 the cost, 3 the target or the area, 4 the roll, 5 the Effects applied (on use, or on a Tier 2 or 3), 6 the damage, then, under "after the damage lands", each step. An event jumps to where it is edited; the rail follows the Version's tab; rules the Action holds are listed under "Always, while you have it". The window is 900 px (A is 680).
 
 **Generate Action: `generate-action.html`, three ways.**
 

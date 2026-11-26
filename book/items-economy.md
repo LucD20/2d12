@@ -54,7 +54,7 @@ Dropped on the way: a "dregs" heal for any potion (it would get around the one-p
 23. What the treasure curve allows (Part 3's table): a normal saver (half of what they earned) buys an item about **1 level** early; going all-in (owning nothing else) about **3**. Treasure grows about ×1.3 a level, so each level's items cost more than all the levels before.
 
 ### Weapons and armor
-24. **[Lucas]** **Mundane weapons and armor sit in one price band at every Stage.** Mastery, not price, limits a high-Stage weapon: Advanced weapons open at Group Mastery 6 (about level 5) and Exotic at 11 (about level 8) (`book/weapon-trees.md`), and by then your old weapon has grown with you through Mastery. **[agreed]** The bands:
+24. **[Lucas]** **Mundane weapons and armor sit in one price band at every Stage.** Mastery, not price, limits a high-Stage weapon: Advanced weapons open at Group Mastery 6 (about level 5) and Exotic at 11 (about level 8) (`archive/book-drafts/weapon-trees.md`), and by then your old weapon has grown with you through Mastery. **[agreed]** The bands:
 
 | | Basic | Advanced | Exotic |
 |---|---|---|---|

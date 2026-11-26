@@ -1,6 +1,6 @@
 # The Bestiary refit: the numbers (pack E3)
 
-Written by `node book/ruler/bestiary.mjs` (the spec ruler with the map model). Don't edit this file: edit the script and run it again. The proposal that reads it is `book/bestiary-e3.md`.
+Written by `node book/ruler/bestiary.mjs` (the spec ruler with the map model). Don't edit this file: edit the script and run it again. The proposal that reads it is `archive/book-drafts/bestiary-e3.md`.
 
 Runs: 1000 fights a measurement, 600 a calibration step, 600 days. **The parties** (book/ruler/classes): Smite ×2 + Double Shot ×2; Smite ×2 + Rolling Shot ×2; each number is the mean of the two. Half the fights start with Momentum; a Daily only in a hard fight (CV 1.25 a PC or more). **The NPCs:** the level 1 Bestiary (Medium, Foundry's default ratings: Body High) with Health and damage × the factors; Defense and Modifier never change (decided). NPC damage is rolled with the table's exact average (exact: the nearest dice moved by a flat amount), so the tables below are what was simulated. The PCs' Health uses the new factor (Level + 17) / 16 unless a row says *today*.
 

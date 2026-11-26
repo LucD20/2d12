@@ -51,7 +51,7 @@ console.log("the damage card passes its Tier, its Save and its Action:", src("mo
 console.log("--- the ranks");
 const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
 console.log("CV:", Object.entries(TWOD12.npcRoles).map(([k, v]) => `${k} ${v.cv[0]}`).join(", "), "| a Minion's Reaction Point:", TWOD12.npcStage0.minion.reactionAp, "| paid with a kept AP:", R.canPayReaction(1, 1, 0), R.canPayReaction(1, 0, 0));
-console.log("no Elite Escalation by default:", DT.includes("eliteLadder: bool(false)"), src("tools/content.mjs").includes("useEscalation: false,"), "| the HUD:", src("module/hud.mjs").includes('has = actor.type !== "npc" || !!s.useEscalation;'));
+console.log("no Elite Escalation by default:", !DT.includes("eliteLadder: bool"), src("tools/content.mjs").includes("useEscalation: false,"), "| the HUD:", src("module/hud.mjs").includes('has = actor.type !== "npc" || !!s.useEscalation;'));
 const CC = await import(ROOTURL + "module/chatcards.mjs");
 console.log("the word first:", JSON.stringify(CC.parseDmgMods("Resistance Psychic 3, Fire 5 · Weakness Holy 3 · Immunity Cold, Lingering")), "| the old writing still read:", JSON.stringify(CC.parseDmgMods("Resist 5 Fire, Weak 2 Holy, Immune Cold")));
 console.log("written back:", SM.dmgModsText(CC.parseDmgMods("Resist 5 Fire, Weak 2 Holy, Immune Cold"), CC.SUBS ?? { Fi: ["Fire"], Ho: ["Holy"], Co: ["Cold"] }), "| labels:", TWOD12.rwKinds.resist, TWOD12.rwKinds.weak, TWOD12.rwKinds.immune);

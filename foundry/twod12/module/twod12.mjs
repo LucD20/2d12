@@ -298,7 +298,6 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "settingsV186", { scope: "world", config: false, type: Boolean, default: false });   // the cards automated by name get their settings (automation.mjs)
   game.settings.register("twod12", "rallyV176", { scope: "world", config: false, type: Boolean, default: false });   // the Paladin's and Archer's Rally values updated once
   game.settings.register("twod12", "releaseV118", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.361 (PACK PERF, D37): Release at 0 AP, once per world
-  game.settings.register("twod12", "worthFor", { scope: "world", config: false, type: String, default: "" });   // v0.0.361 (D37): the worth lines, once per system version
 
   // Initiative is an Attribute Check rolled by TwoD12Combat#rollInitiative; this formula is only a fallback.
   CONFIG.Combat.initiative = { formula: "1d12 + @attributes.instinct", decimals: 0 };
@@ -365,7 +364,7 @@ function ccRender(msg, html) {
   if (!el) return;
   let designer = false, hideDef = false, hideTgt = false;
   try { designer = game.settings.get("twod12", "designerMode") === true; hideDef = game.settings.get("twod12", "hideEnemyDefenses") === true; hideTgt = game.settings.get("twod12", "hideTargetDetails") === true; } catch (e) { /* not registered yet */ }
-  if (!designer) el.querySelectorAll(".twod12.chat .autodia, .twod12.chat .ac-worth").forEach(x => x.remove());
+  if (!designer) el.querySelectorAll(".twod12.chat .autodia").forEach(x => x.remove());
   const m = msg.getFlag?.("twod12", "cc"), card = el.querySelector(".cc-card");
   if (!m || !card) return;
   const owns = uuid => { try { const d = fromUuidSync(uuid); const a = d?.documentName === "Actor" ? d : d?.actor; return !!a?.isOwner; } catch (e) { return game.user.isGM; } };

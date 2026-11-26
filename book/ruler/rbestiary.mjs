@@ -1,4 +1,4 @@
-// Pack R-bestiary (2026-11-05): the Bestiary re-fitted to the rebuilt party (pack R-classes) under pack R's rules (book/rework-r.md sections 12
+// Pack R-bestiary (2026-11-05): the Bestiary re-fitted to the rebuilt party (pack R-classes) under pack R's rules (archive/book-drafts/rework-r.md sections 12
 // and 14; MASTER-PLAN item 6). The party: the R builds of rework/*.txt (rclasses.mjs's party) with the Stage Health line, Rally + Stage,
 // Guard 2 / 3 / 4 by Stage, one Attribute +1 a Stage, Modifiers +1 at Stage 3 (cap 4), the PCs' WD 13 / 14 / 14 by Stage (the ward sheet)
 // and 2[W] at Stage 3 (Gear: Master, from level 8). The NPCs: the Bestiary's pre-R tables (bestiary-today.mjs) × the factors this script fits,
@@ -15,6 +15,7 @@ const S = await import(new URL("./spec.mjs", import.meta.url).href);
 const BT = await import(new URL("./bestiary-today.mjs", import.meta.url).href);
 const C = await import(new URL("../../foundry/twod12/module/calc.mjs", import.meta.url).href);
 const CF = await import(new URL("../../foundry/twod12/module/config.mjs", import.meta.url).href);
+const FT = await import(new URL("./sim/tables.mjs", import.meta.url).href);   // the cleanup audit (2026-11-26): the SIM's frozen copy of the Bestiary's tables
 const HERE = fileURLToPath(new URL(".", import.meta.url));
 const QUICK = process.argv.includes("--quick");
 const RUNS = QUICK ? 200 : 800;
@@ -108,7 +109,7 @@ function newTables(D, H, ED) {
 /** Each rating strictly above the one before it on both tiers (the rounding to 0.5 can make two equal): raised by 0.5 where needed. */
 const monotone = row => { for (let i = 1; i < row.length; i++) for (const k of [0, 1]) if (row[i][k] <= row[i - 1][k]) row[i][k] = row[i - 1][k] + 0.5; return row; };
 const sameTables = (a, b) => ROLES.every(r => JSON.stringify(a[r].hm) === JSON.stringify(b[r].hm) && JSON.stringify(a[r].basic) === JSON.stringify(b[r].basic));
-const liveTables = () => Object.fromEntries(ROLES.map(r => [r, { hm: CF.TWOD12.npcRoles[r].hm, basic: CF.TWOD12.npcRoles[r].basic }]));
+const liveTables = () => Object.fromEntries(ROLES.map(r => [r, { hm: FT.TABLES.npcRoles[r].hm, basic: FT.TABLES.npcRoles[r].basic }]));
 const mdTables = T => {
   const L = [];
   for (const role of ROLES) {
@@ -123,7 +124,7 @@ const mdTables = T => {
 };
 const jsTables = T => ROLES.map(role => `    // ${role}\n      hm: ${JSON.stringify(T[role].hm)},\n      basic: ${JSON.stringify(T[role].basic)} },`).join("\n");
 /** An NPC's Health with every rating Medium (the book's line under each role): (Attr + 2) × Medium multiplier + Health Base, each pool rounded up. */
-const mediumHealth = (role, T, s) => { const r = CF.TWOD12.npcRoles[role], hm = T[role].hm[s][2], hp = a => Math.ceil((a + 2) * hm + r.hb - 1e-9); return hp(r.attr) + hp(r.attr); };
+const mediumHealth = (role, T, s) => { const r = FT.TABLES.npcRoles[role], hm = T[role].hm[s][2], hp = a => Math.ceil((a + 2) * hm + r.hb - 1e-9); return hp(r.attr) + hp(r.attr); };
 
 /* ------------------------------------------------------------------ the report */
 export function run() {

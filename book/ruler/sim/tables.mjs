@@ -1,0 +1,38 @@
+// The SIM's own frozen copy of the Bestiary's old tables (the cleanup audit, 2026-11-26; Lucas: "Give the SIM its own frozen copy of the old
+// tables so config.mjs can drop them"). Copied from foundry/twod12/module/config.mjs as it was at v0.0.520, values unchanged: the SIM and the
+// ruler's studies (spec.mjs, econ.mjs, bestiary.mjs, rbestiary.mjs, the frozen npcbudget.mjs beside this file) read these, never the live tables,
+// so their reports stay as they were written while the Bestiary is rebuilt from the ground up (book/bestiary-design.md). Don't edit: frozen on purpose.
+// The rules of a round (AP, Reaction AP, Escalation, Guard, the Defense base, Collision) still come from the system's config.mjs (TW below).
+const CF = await import(new URL("../../../foundry/twod12/module/config.mjs", import.meta.url).href);
+export const TABLES = {
+  npcRoles: {"minion":{"label":"Minion","mods":[2,1],"modBy":[0,1,2,3],"cv":[30,20,15],"ap":3,"attr":0,"hb":1,"defense":12,"extreme":false,"deals":"5","takes":"one PC hit","hm":[[0,0.75,1,1.25],[0,1,1.25,1.5],[0,1.5,2,2.75]],"basic":[[[1,2.5],[1.5,3.5],[2,4],[2.5,5]],[[1.5,3.5],[2,5],[3,5.5],[3.5,7]],[[2,5],[3,7],[4,8],[5,10]]]},"grunt":{"label":"Grunt","mods":[2,1],"modBy":[0,1,2,3,4],"cv":[50,40,30],"ap":3,"attr":0,"hb":3,"defense":13,"extreme":true,"deals":"8","takes":"1 PC turn","hm":[[2,3,4.25,5.25,6.25],[2.5,3.75,4.75,6,7.25],[4,6,8,10,12]],"basic":[[[2,3],[2.5,3.5],[3,4],[4,5.5],[4.5,6.5]],[[3,4],[3.5,5],[4,6.5],[5.5,8],[6.5,10]],[[4,6.5],[5,7],[6.5,9],[8,11],[9,14]]]},"standard":{"label":"Standard","mods":[2,2],"modBy":[0,1,2,3,4],"cv":[100,80,65],"ap":4,"attr":1,"hb":4,"defense":13,"extreme":true,"deals":"12","takes":"2 PC turns","hm":[[3.75,5.75,7.75,9.75,11.5],[4.5,6.75,9,11.25,13.5],[7.5,11,15,18.5,22.5]],"basic":[[[3,4],[3.5,6],[4,7.5],[5.5,9],[6.5,11]],[[4,6.5],[5,8.5],[6.5,11.5],[8,13.5],[10,16.5]],[[6.5,9],[7,12],[9,16.5],[11,19],[14,23]]]},"elite":{"label":"Elite","mods":[3,2],"modBy":[1,2,3,4,4],"cv":[200,160,130],"ap":4,"attr":2,"hb":6,"defense":14,"extreme":true,"deals":"17","takes":"4 PC turns","hm":[[6.5,10,13.25,16.5,19.75],[7.75,11.5,15.5,19.25,23.25],[13,19.25,25.5,32,38.5]],"basic":[[[3,4],[4,6.5],[5,7.5],[6.5,9.5],[7.5,11]],[[4,6.5],[6,9],[7.5,11.5],[9,14],[10.5,16]],[[6,9],[8.5,12.5],[10.5,15.5],[12.5,19.5],[15,22.5]]]}},
+  npcRangedStep: 1,
+  npcCvStep: {"minion":5,"grunt":10,"standard":15,"elite":30},
+  npcDefense: {"minion":[10,11,12,13],"grunt":[10,11,13,15,17],"standard":[10,11,13,15,17],"elite":[11,12,14,16,18]},
+  npcBudget: {"perAp":{"minion":18,"grunt":25,"standard":25,"elite":33},"turnAp":{"minion":3,"grunt":3,"standard":4,"elite":4},"rating":{"terrible":0.65,"low":0.8,"medium":1,"high":1.2,"extreme":1.5},"size":[0,0,0,0.05],"round":0.1,"encounter":2,"payBack":[0,0.2,0.25,0.5],"over":0.15,"riders":{"forced":2,"mild":3,"moderate":8,"severe":12,"extreme":18,"step":6},"explode":6,"multi":0.6666666666666666,"multiEnc":0.5,"toDamage":[0.14,0.22],"help":{"boon":3,"health":1},"reaction":{"self":0.3333333333333333,"other":0.25,"twoR":0}},
+  npcStage0: {"minion":{"reactionAp":0,"squad":2,"health":[3,5,6,7],"basic":[["1","2"],["1","1d4"],["2","1 + 1d4"],["1d4","2 + 1d4"]],"s1":[["1","1d4"],["2","1 + 1d4"],["1d4","2 + 1d4"],["1 + 1d4","3 + 1d4"]],"s2":[["2","2 + 1d4"],["1d4","2 + 1d6"],["1 + 1d4","3 + 1d6"],["2 + 1d4","5 + 1d6"]]},"grunt":{"ap":3,"health":[7,10,13,16,19],"basic":[["1","2"],["2","1d4"],["1d4","1 + 1d4"],["1 + 1d4","2 + 1d4"],["1 + 1d4","3 + 1d4"]],"s1":[["2","1d4"],["1d4","1 + 1d4"],["1 + 1d4","2 + 1d4"],["2 + 1d4","2 + 1d6"],["2 + 1d4","3 + 1d6"]],"s2":[["1 + 1d4","2 + 1d4"],["2 + 1d4","2 + 1d6"],["2 + 1d4","3 + 1d6"],["3 + 1d6","6 + 1d6"],["4 + 1d6","7 + 1d6"]],"s3":[["3 + 1d4","4 + 1d6"],["3 + 1d6","6 + 1d6"],["4 + 1d6","7 + 1d6"],["7 + 1d6","10 + 1d8"],["7 + 1d8","13 + 1d8"]]},"standard":{"health":[17,24,30,36,42],"basic":[["1d4","1 + 1d4"],["1d4","2 + 1d4"],["1 + 1d4","2 + 1d6"],["2 + 1d4","3 + 1d6"],["3 + 1d4","5 + 1d6"]],"s1":[["1 + 1d4","2 + 1d4"],["1 + 1d4","3 + 1d6"],["2 + 1d4","4 + 1d6"],["2 + 1d6","6 + 1d6"],["3 + 1d6","7 + 1d8"]],"s2":[["2 + 1d4","3 + 1d6"],["2 + 1d6","6 + 1d6"],["4 + 1d6","8 + 1d8"],["6 + 1d6","10 + 1d8"],["7 + 1d6","14 + 1d8"]],"s3":[["4 + 1d6","7 + 1d6"],["6 + 1d6","11 + 1d8"],["7 + 1d6","15 + 1d8"],["10 + 1d8","19 + 1d8"],["13 + 1d8","24 + 1d8"]]},"elite":{"health":[35,50,65,80,95],"basic":[["1d4","1 + 1d4"],["1 + 1d4","3 + 1d4"],["3 + 1d4","3 + 1d6"],["3 + 1d6","5 + 1d6"],["4 + 1d6","6 + 1d6"]],"s1":[["1 + 1d4","3 + 1d4"],["3 + 1d4","4 + 1d6"],["3 + 1d6","5 + 1d6"],["4 + 1d6","7 + 1d6"],["5 + 1d6","8 + 1d8"]],"s2":[["3 + 1d4","4 + 1d6"],["4 + 1d6","7 + 1d8"],["6 + 1d6","10 + 1d8"],["7 + 1d8","13 + 1d8"],["10 + 1d8","16 + 1d8"]],"s3":[["5 + 1d6","7 + 1d8"],["7 + 1d8","15 + 1d8"],["11 + 1d8","17 + 1d8"],["15 + 1d8","23 + 1d8"],["17 + 1d8","27 + 1d8"]]}},
+  npcRatings: {"terrible":{"label":"Terrible","off":-2,"score":-2,"i":0},"low":{"label":"Low","off":-1,"score":-1,"i":1},"medium":{"label":"Medium","off":0,"score":0,"i":2},"high":{"label":"High","off":1,"score":1,"i":3},"extreme":{"label":"Extreme","off":2,"score":2,"i":4}},
+  npcSpecial: [{"key":"basic","label":"Basic attack","sub":"1 AP, At-will","x":1},{"key":"s1","label":"Special, 1 AP","sub":"Round","x":1.4},{"key":"s2","label":"Special, 2 AP","sub":"Round","x":2.2},{"key":"s3","label":"Special, 3 AP","sub":"Encounter (not Minions)","x":3.5}],
+  pcDamageVsDefense: {"11":27,"12":25.2,"13":23.3,"14":21.3,"15":19.2,"16":17.3},
+};
+/** The system's config with the frozen tables laid over it: what the SIM reads as TW (and the frozen npcbudget.mjs as TWOD12). */
+export const TW = { ...CF.TWOD12, ...TABLES };
+// config.mjs's Bestiary functions of v0.0.520 on the frozen tables (npcHm, npcDamage; data.mjs npcModValue)
+const r5 = n => Math.round(n * 2) / 2;
+const col = (roleKey, rating) => { const role = TABLES.npcRoles[roleKey] ?? TABLES.npcRoles.standard; return Math.min(role.hm[0].length - 1, TABLES.npcRatings[rating]?.i ?? 2); };
+/** The Health Multiplier of a rating at the NPC's level. */
+export const npcHm = (roleKey, rating, lv) => (TABLES.npcRoles[roleKey] ?? TABLES.npcRoles.standard).hm[CF.npcRoleRow(CF.stageOf(lv))][col(roleKey, rating)];
+/** The Basic attack's average damage [Tier 2, Tier 3] of a rating at the NPC's level, times x, rounded to 0.5. */
+export const npcDamage = (roleKey, rating, lv, x = 1) => (TABLES.npcRoles[roleKey] ?? TABLES.npcRoles.standard).basic[CF.npcRoleRow(CF.stageOf(lv))][col(roleKey, rating)].map(v => r5(v * x));
+/** The Modifier of a rating for a role (a Minion's Extreme is its High). */
+export function npcModValue(roleKey, rating) {
+  const role = TABLES.npcRoles[roleKey] ?? TABLES.npcRoles.standard, i = TABLES.npcRatings[rating]?.i ?? 2;
+  return Math.min(CF.TWOD12.modCap, role.modBy[Math.min(i, role.modBy.length - 1)]);
+}
+// roundrules.mjs's Elite Escalation ladder of v0.0.520 (the cleanup audit removed it from the system, Lucas: "Remove the Default ladder"; the SIM
+// is frozen on it). An Elite's first [Strike] Action each turn-cycle has 1 Boon (Pressing), its Round Specials twice per turn-cycle, its Encounter
+// Special back, once. rungs: the Escalation each of the three starts at: [1, 2, 3] (pack R), or ELITE_RUNGS_LADDER on the 1-to-6 ladder.
+export const ELITE_RUNGS = [1, 2, 3], ELITE_RUNGS_LADDER = [2, 4, 6];
+export const eliteFirstAttackBoons = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[0] ? 1 : 0);
+export const eliteRoundSpecials = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[1] ? 2 : 1);
+export const eliteEncounterBack = (esc, rungs = ELITE_RUNGS) => (Number(esc) || 0) >= rungs[2];

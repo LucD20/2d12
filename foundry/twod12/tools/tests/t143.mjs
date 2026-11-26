@@ -23,7 +23,7 @@ for (const role of ["standard", "grunt", "minion"]) for (const lv of [1, 4, 5, 8
   const rs = role === "minion" ? ["low", "medium", "high"] : ["low", "medium", "high", "extreme"];
   console.log(`${role.padEnd(9)} level ${lv}:`, rs.map(r => `${r} x${cf.npcHm(role, r, lv)} ${cf.npcDamage(role, r, lv).join("/")}`).join(" | "));
 }
-console.log("the NPC's Health uses the level:", data.includes("const hmOf = r => npcHm(sys.role, r, sys.level);"), "| the Builder too:", src("module/npcbuilder.mjs").includes("const hmOf = x => npcHm(s.role, x, s.level);"));
+console.log("the NPC's Health uses the level:", data.includes("const hmOf = r => npcHm(sys.role, r, sys.level);"));   // the cleanup audit (2026-11-26): "the Builder too" read npcBuilderContext, removed
 
 console.log("--- Light: only the target's light; a light of size N is an N Emanation");
 console.log("a Check no longer reads the light where you stand:", !src("module/inline.mjs").includes("tokenLight(token)"));

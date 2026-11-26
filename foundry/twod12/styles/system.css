@@ -2707,7 +2707,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* v0.0.288 (Lucas): the damage message's title alone in its header; the Lethal / Nonlethal tag at the bottom right, beside Apply all */
 .twod12.chat.cc .cc-applyall .cc-nl { margin-left: auto; }
 
-/* ==== v0.0.289 PACK SHEET: the character sheet redesign (Lucas's approved prototype: foundry/mockups/sheet-prototype.html). Its own block, scoped to
+/* ==== v0.0.289 PACK SHEET: the character sheet redesign (Lucas's approved prototype: archive/mockups/sheet-prototype.html). Its own block, scoped to
    .twod12.sheet.pcs (the NPC sheet keeps .ns). Light surfaces use fixed dark text (Foundry's theme text is light in dark mode). ==== */
 .twod12.sheet.pcs { --ps-navy: #1b2433; --ps-cell: #222d40; --ps-edge: #33405a; --ps-tile: #243047; --ps-parch: #efebe3; --ps-card: #fffefb; --ps-cline: #c9bfab;
   --ps-strip: #f3efe6; --ps-amber: #d9902f; --ps-amberl: #f3d39c; --ps-teal: #17635c; --ps-tealr: #2fa59a; --ps-ink: #26241f; --ps-mut: #6b665a; --ps-lt: #c9cfda; --ps-k: #9aa6ba;
@@ -3939,7 +3939,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .application .fr-tab .fr-amt .fr-in.amt { width: 150px; min-width: 60px; height: auto; margin: 0; background: var(--fr-field); box-shadow: none; font-size: 13px; text-align: left; padding: 0 6px; }
 .application .fr-tab .fr-pc:has(> .fr-amt) { flex-wrap: wrap; }
 .application .fr-tab .fr-pc:has(> .fr-amt) > .fr-sel { flex: 1 1 140px; width: auto; min-width: 0; }
-/* v0.0.327 PACK ZONE (foundry/mockups/zone-prototype.html, option A): the Set here preview, Place on the map, the greyed Ends rows of a Zone */
+/* v0.0.327 PACK ZONE (archive/mockups/zone-prototype.html, option A): the Set here preview, Place on the map, the greyed Ends rows of a Zone */
 .application .fr-tab .fr-zpv { display: grid; gap: 0; justify-content: center; background: #20262f; border-radius: 3px; padding: 8px 0; margin-top: 8px; }
 .application .fr-tab .fr-zpv i { width: 12px; height: 12px; border-right: 1px solid rgba(255,255,255,.07); border-bottom: 1px solid rgba(255,255,255,.07); }
 .application .fr-tab .fr-zpv i.in { background: color-mix(in srgb, var(--f) 30%, transparent); box-shadow: inset 0 0 0 1px var(--o); }
@@ -4157,7 +4157,7 @@ a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }   /* v0.
 .application.twod12.twod12-actor a.twod12-inline.calc .ti-name, .application.twod12.twod12-actor a.twod12-inline.calc { color: #8fb0ff; }
 .twod12.acard a.twod12-inline.calc .ti-name, .twod12.acard a.twod12-inline.calc, .application.twod12.twod12-actor .acard a.twod12-inline.calc .ti-name, .application.twod12.twod12-actor .acard a.twod12-inline.calc, .application.twod12.twod12-actor .twod12.chat a.twod12-inline.calc .ti-name { color: #1a3fb0; }   /* v0.0.438: every card, not only one in the sheet */
 
-/* ================================================================== v0.0.355 PACK ACTION-SHEET (Lucas's mockup A2, foundry/mockups/action-sheet-A2.html):
+/* ================================================================== v0.0.355 PACK ACTION-SHEET (Lucas's mockup A2, archive/mockups/action-sheet-A2.html):
    the Action's Details tab (actionsheet.mjs). It is built with the fr- pieces of EFFECT-SHEET (v0.0.323, above); this block has only what is new:
    the order of events (the rail), the trait chips row, the Version tabs, the Tier rows, the steps after the damage, the by-Stage row. */
 .application .as-tab .as-flowcols { display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 14px; align-items: start; }
@@ -4440,7 +4440,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.sheet.pcs .ps-strip.v349 { grid-template-columns: minmax(0, 1fr) 150px 150px; }
 .twod12.sheet.pcs.npcs .ps-strip.v349 { grid-template-columns: minmax(0, 1fr); }
 .twod12.sheet.pcs.npcs.elite .ps-strip.v349 { grid-template-columns: minmax(0, 1fr) 160px; }
-/* ==== v0.0.373 (STYLE-2, Lucas: version A of the Immune / Resist / Weak block; foundry/mockups/npc-sheet-dark.html): three lines of chips in their
+/* ==== v0.0.373 (STYLE-2, Lucas: version A of the Immune / Resist / Weak block; archive/mockups/npc-sheet-dark.html): three lines of chips in their
    subtype's icon and color, the twelve subtypes as a compact list (the picked one underlined), a stepper, Resist / Weak / Immune. The side panel's
    chips take the same icon and color. --sc-l / --sc-d come from config.mjs subtypeInk / subtypeColors; the dark values are in the theme. ==== */
 .twod12.sheet.pcs .nb-rw.rwA { --rw-ink: #2a241d; --rw-mute: #5d5446; --rw-hair: #cdb88a; --rw-out: #8c7d63; --rw-res: #2c5b3f; --rw-wk: #a8322d; --rw-ona: #eae0c8; }
@@ -4469,7 +4469,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12 button.ps-dl.rw-chip { display: inline-flex; align-items: center; gap: 4px; background: none; border-color: color-mix(in srgb, var(--sc) 60%, transparent); color: inherit; }
 .twod12 button.ps-dl.rw-chip > i { color: var(--sc); font-size: 11px; }
 .twod12.sheet.pcs .ps-side .rw-chip { --sc: var(--sc-d); }
-/* ==== v0.0.374 (STYLE-2, Lucas: the Class sheet's Details tab redone; foundry/mockups/rest-dark.html): the Action editor's pieces (fr-sec,
+/* ==== v0.0.374 (STYLE-2, Lucas: the Class sheet's Details tab redone; archive/mockups/rest-dark.html): the Action editor's pieces (fr-sec,
    fr-pgrid, fr-seg, fr-step), Health and the Modifiers as tables by Stage, each list a Tier-like row in its Frequency's color. The dark values are in the theme. ==== */
 .application.twod12-styled .sk .fr-tab.cls2 { --cf-ink: #2a241d; --cf-mute: #5d5446; --cf-hair: #cdb88a; --cf-rule: #8a6d3b; --cf-band: #eae0c8; --cf-pg: #f4ede0; }
 .application.twod12-styled .sk .fr-tab.cls2 .fr-sec h3 { display: flex; align-items: baseline; gap: 8px; }

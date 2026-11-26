@@ -10,7 +10,7 @@ disable-model-invocation: true
 Get the branch `$ARGUMENTS` ready for Lucas to test in Foundry. Run from the repository root. If no branch was given, ask for it and stop.
 
 
-**Where this runs:** these steps change the checkout of the session that runs them. In a cloud session that is the cloud copy, not Lucas's PC: say so in the report. On his PC, he double-clicks `Update Foundry.cmd` in the project folder (it runs `tools/sync-pack.ps1 -Interactive`), which does the same: it syncs the newest unmerged pack branch, goes back to main after a merge, and rebuilds the packs when Foundry is closed.
+**Where this runs:** these steps change the checkout of the session that runs them. In a cloud session that is the cloud copy, not Lucas's PC: say so in the report. On his PC nothing is synced by a script (the sync scripts were removed on 2026-11-26): Foundry's Update button installs the release that a push to main or a `pack-*` branch publishes.
 
 1. **Clean tree.** Run `git status --porcelain`. If anything is changed or untracked, stop: show Lucas the list (and `git diff --stat`) and do nothing else.
 2. **Switch.** `git fetch origin`, then `git checkout $ARGUMENTS`, then `git pull`. If any of them fails, show the error and stop.

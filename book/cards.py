@@ -2,6 +2,7 @@
 
 A chapter writes `@@CARD:Name@@` where the card goes. Two sources feed the book (the format: book/cards/README.md):
 - the old files (book/cards/*.json), read by the book, Foundry and the ruler; `structure()` adapts an old card to the Structure without changing a word;
+- the set-aside files (book/cards/set-aside/*.json), read only for the checks (a name written twice, cards/set-aside.txt);
 - the Structure files (book/cards/stage0/*.json, `"structure": 2`), read ONLY by the book: a card there takes the place of the old card of the same name.
 No dependency beyond the standard library.
 """
@@ -10,18 +11,29 @@ import json, os, glob, re
 CARDS_DIR = 'cards'   # beside rules-src/, from the folder build_rules.py runs in
 NEW_DIR = 'stage0'    # inside CARDS_DIR: the cards already written in the Structure
 
-def load(cards_dir=CARDS_DIR):
-    """Every card of every file, in file order; each card knows its file. Raises on a duplicate name or a card with no name."""
+SET_ASIDE_DIR = 'set-aside'   # inside CARDS_DIR: the cards set aside (the placeholder weapons' Techniques, the set-aside Talents, Opportunity Attack)
+
+def load(cards_dir=CARDS_DIR, set_aside=False):
+    """Every card of every file, in file order; each card knows its file. Raises on a duplicate name or a card with no name, the set-aside
+    files' names included. The set-aside cards (set-aside/*.json, the cleanup audit, 2026-11-26) are returned only with set_aside=True:
+    the book reads them only for its checks (rules_tools.report_cards)."""
     out, names = [], {}
-    for f in sorted(glob.glob(os.path.join(cards_dir, '*.json'))):
+    files = [(os.path.basename(f), f, False) for f in glob.glob(os.path.join(cards_dir, '*.json'))]
+    files += [(os.path.basename(f), f, True) for f in glob.glob(os.path.join(cards_dir, SET_ASIDE_DIR, '*.json'))]
+    for base, f, aside in sorted(files):
         data = json.load(open(f, encoding='utf8'))
+        label = (SET_ASIDE_DIR + '/' if aside else '') + base
         for c in data.get('cards', []):
             if not c.get('name'): raise SystemExit(f'{f}: a card has no name')
             if c['name'] in names: raise SystemExit(f'{f}: the card "{c["name"]}" is also in {names[c["name"]]}')
             names[c['name']] = f
-            c['_file'] = os.path.basename(f)
-            out.append(c)
+            c['_file'] = label
+            if set_aside or not aside: out.append(c)
     return out
+
+def load_set_aside(cards_dir=CARDS_DIR):
+    """Only the set-aside cards (set-aside/*.json), for the checks."""
+    return [c for c in load(cards_dir, set_aside=True) if c['_file'].startswith(SET_ASIDE_DIR + '/')]
 
 def load_book(cards_dir=CARDS_DIR):
     """The cards the BOOK shows: the old files' cards in file order, each replaced by the Structure card of the same name when stage0/ has one,

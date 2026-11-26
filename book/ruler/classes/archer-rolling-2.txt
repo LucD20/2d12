@@ -1,4 +1,4 @@
-# Archer, level 2, the A1 main build (pack A1, 2026-10-29; book/class-charter.md, book/progression-lv.md model A): Signature Rolling Shot.
+# Archer, level 2, the A1 main build (pack A1, 2026-10-29; book/class-charter.md, archive/book-drafts/progression-lv.md model A): Signature Rolling Shot.
 # Talents are left out (classes are compared with classes). Level 1: Sharpshooter (the Signature choice; Bow Mastery folded in: Lock & Loose;
 # no Bane for shooting into melee) + Marked Quarry (+1 Boon; [Mod] on a Tier 1, decided); Escalation Killer's Focus (passive) and Pinning Shot (active).
 # Level 2: Encounter Pick Marksman's Shot. Level 3: Daily Pick Hunter's Focus, Passive Escalation Elusive. The format: book/ruler/README.md.

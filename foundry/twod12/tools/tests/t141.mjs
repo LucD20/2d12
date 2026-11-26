@@ -9,7 +9,7 @@ globalThis.Combat = class {}; globalThis.CONFIG = {}; globalThis.Hooks = { on() 
 globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: F, NumberField: F, StringField: F, BooleanField: F, ArrayField: F, SetField: F, HTMLField: F } },
   applications: { api: { DialogV2: {}, ApplicationV2: class {}, HandlebarsApplicationMixin: c => c } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 const src = f => fs.readFileSync(ROOT + f, "utf8");
-const { NpcData } = await import(ROOTURL + "module/data.mjs"), { npcBuilderContext } = await import(ROOTURL + "module/npcbuilder.mjs");
+// the cleanup audit (2026-11-26): npcBuilderContext (the old Builder model, rendered by nothing) removed, and its Steadiness rows here
 const hc = await import(ROOTURL + "module/heightcover.mjs");
 
 console.log("--- the Steadiness tile");
@@ -17,14 +17,6 @@ const sheets = src("module/actor-sheets.mjs");
 console.log("Movement is always 4 tiles:", sheets.includes('{ key: "move", title: "Movement", cols: 4, tiles: ['), "| Steady even at 0:", sheets.includes('tile("Steady", steadinessOf(a).total, s.steadiness ?? 0,'), "| 4 columns of small squares:", src("styles/system.css").includes(".np-grid.n4 { grid-template-columns: repeat(4, minmax(0, 1fr));"));
 
 console.log("--- a custom Steadiness in the Builder tab");
-const mk = (sys, flags = {}) => { const m = Object.create(NpcData.prototype); Object.assign(m, { level: 1, damage: { bodyLethal: 0, bodyNonlethal: 0, mindLethal: 0, mindNonlethal: 0 }, attributes: { body: 0, mind: 0, appeal: 0, instinct: 0 }, custom: { body: 0, mind: 0, appeal: 0, instinct: 0, bodyHealth: 10, mindHealth: 10 }, armorDef: 13, wardDef: 13,
-  weaponAttribute: "body", powerAttribute: "mind", speed: 5, reachBase: 1, armor: "medium", bodyWounds: 0, mindWounds: 0, role: "standard", ratings: {}, steadiness: 0, parent: { type: "npc", items: [], itemTypes: { armor: [] } }, ...sys }); m.prepareDerivedData();
-  return { system: m, getFlag: (s, k) => flags[k] }; };
-const row = a => npcBuilderContext(a).groups.find(g => g.title === "Steadiness").rows[0];
-const show = (label, a) => { const r = row(a); console.log(label.padEnd(34), `${r.chips.map(c => c.label + (c.on ? "*" : "") + (c.click === "custom" ? "(c)" : "")).join(" ")} | custom ${r.custom} | input ${JSON.stringify(r.input)} | ${r.warn || "-"} | ${r.how}`); };
-show("Steadiness 2", mk({ steadiness: 2 }));
-show("Steadiness 2, Custom", mk({ steadiness: 2 }, { steadyCustom: true }));
-show("Steadiness 6 (typed)", mk({ steadiness: 6 }));
 console.log("the button that is on switches to Custom:", sheets.includes('if (target.dataset.rating === "custom") return this.actor.setFlag("twod12", "steadyCustom", true);'), "| a number clears it:", sheets.includes('"flags.twod12.steadyCustom": false'));
 
 console.log("--- the Damage Instance dialog");

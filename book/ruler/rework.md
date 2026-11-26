@@ -1,6 +1,6 @@
 # The playtest 2 rework: the numbers (pack R prep)
 
-Written by `node book/ruler/rework.mjs` (the spec ruler with the map model; `spec.mjs RULES` moves the rules per run). Don't edit this file: edit the script and run it again. The proposal that reads it is `book/rework-r.md`.
+Written by `node book/ruler/rework.mjs` (the spec ruler with the map model; `spec.mjs RULES` moves the rules per run). Don't edit this file: edit the script and run it again. The proposal that reads it is `archive/book-drafts/rework-r.md`.
 
 Runs: 1000 fights a measurement, 300 a calibration step, 3000 pairs a price, 400 days. **The parties:** 2 P1 Smite Paladins + 2 A1 Archers (Double Shot; and Rolling Shot: each number is the mean of the two parties) at level 1, with the book's Health factor (Level + 17) / 16. **Today** = the book's rules (5 AP, Escalation spent, NPCs 5 AP) with the builds of `classes/`; **4 AP** = the rework (4 AP + 1 Reaction AP for PCs and NPCs, Escalation as a level) with the builds of `rework/` (the same cards, the turns cut to 4 AP, a Reaction each: the Paladin's Opportunity Attack, the Archer's Quick Draw as a stand-in for its Hallmark Reaction). Half the fights start with Momentum (1 Escalation); a Daily only in a hard fight. NPCs: the E3 Bestiary at level 1, Medium, exact averages; Elites have an Opportunity Attack.
 

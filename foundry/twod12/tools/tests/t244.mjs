@@ -60,12 +60,13 @@ console.log("the snapshot is not a Combat flag:", !src("module/combat.mjs").incl
 
 console.log("--- D33: the passives cache");
 const P = await import(ROOTURL + "module/passives.mjs");
-const settings = [{ ...P.ELITE_LADDER[0], minEscalation: 0 }];
+const ONE_BOON = { attrs: [], all: ["strike"], any: [], none: [], from: [], tiers: [], predicate: "", boons: 1, banes: 0, bbName: "", empowered: 0, enfeebled: 0, byValue: false, against: false, oncePerRound: true, vsMarked: false, vsOrigin: "", type: "boonbane" };   // the cleanup audit (2026-11-26): was the default Elite ladder's first setting (P.ELITE_LADDER[0], removed)
+const settings = [{ ...ONE_BOON, minEscalation: 0 }];
 const feat = { id: "f1", uuid: "Item.f1", name: "Keen Eye", type: "feature", system: { settings, description: "", hover: "" }, getFlag: () => "" };
 const owner = { itemTypes: { feature: [feat], talent: [], action: [] } };
 const a1 = P.passiveSources(owner), a2 = P.passiveSources(owner);
 console.log("the same sources while the item is unchanged:", a1[0] === a2[0], "|", a1.length, "source");
-feat.system = { ...feat.system, settings: [...settings, { ...P.ELITE_LADDER[0], minEscalation: 2 }] };
+feat.system = { ...feat.system, settings: [...settings, { ...ONE_BOON, minEscalation: 2 }] };
 const a3 = P.passiveSources(owner);
 console.log("an updated item (a new settings array) is read again:", a3[0] !== a1[0], "|", a3.length, "sources");
 feat.name = "Keener Eye"; console.log("a renamed item too:", P.passiveSources(owner)[0].name);
@@ -75,5 +76,5 @@ const sh = src("module/actor-sheets.mjs"), car = src("module/carousel.mjs"), fx 
 console.log("D27 sheets: one redraw each, none for a log:", sh.includes("if (sh?.rendered) renderSoon(sh);") && sh.includes("if (logOnlyChange(ch)) return;"), "| usage.mjs's copy gone:", !src("module/usage.mjs").includes("registerUsageHooks()") && !tw.includes("registerUsageHooks"), "| D40 createCombat asks the open windows:", sh.includes("foundry.applications.instances?.values?.()"));
 console.log("D30 the strip:", car.includes("const draw = perFrame(renderCarousel);") && !car.includes("renderCarousel(); setTimeout(renderCarousel, 50);"), "| D31 one write per tick:", fx.includes("await x.doc.update({ [`flags.${F}.remaining`]: x.rem, [`flags.${F}.lastTick`]: prior.round })"), "| D32 the panel only for its creature:", fx.includes("if (panelShows(effect)) draw();"));
 console.log("D34 limits kept per drag:", mv.includes("now - hit.t < 200"), "| refused moves read them fresh:", mv.includes("for (const l of readMoveLimits(doc))"), "| D35 marks cached:", mk.includes("return marksCache ??= readQuarryMarks();"), "| D36 no old chat hooks:", !/Hooks\.on\("renderChatMessage",/.test(tw));
-console.log("D37 the load passes:", src("module/refresh.mjs").includes('get(F, "worthFor") !== game.system.version') && src("module/basic.mjs").includes('get(F, "releaseV118")') && !src("module/fxmigrate.mjs").includes("migrateEffects({ write: false })"),
+console.log("D37 the load passes:", src("module/basic.mjs").includes('get(F, "releaseV118")') && !src("module/fxmigrate.mjs").includes("migrateEffects({ write: false })"),
   "| D40 Zones on x / y:", src("module/zone.mjs").includes('Hooks.on("updateToken", (doc, ch) => { if (["x", "y",'), "| the Aura hover per frame:", src("module/aura.mjs").includes("hoverDraw();"), "| the light thresholds read once:", src("module/light.mjs").includes("lightSettings.set(k, v)"));

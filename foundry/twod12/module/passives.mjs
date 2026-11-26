@@ -3,7 +3,6 @@
 // hold settings that work at different moments. They are read like applied effects by the rolls (boons and banes, Empowered/Enfeebled), notes,
 // Defense and Speed. v0.0.186: a passive's Bonus Damage works on every matching Action (or the first each round); granted uses still need an applied effect.
 import { appliedFlags } from "./appliedflags.mjs";
-import { ELITE_RUNGS_LADDER } from "./roundrules.mjs";
 const F = "twod12";
 
 /**
@@ -49,32 +48,10 @@ export function passiveSources(actor) {
   return out;
 }
 
-/**
- * v0.0.320 (pack AU part 2; book, Bestiary, Elite Escalation): the default Elite ladder as settings, each with the Escalation it needs:
- * 1: 1 Boon on its first [Strike] Action each turn-cycle (v0.0.434); 2: its Round Special Actions twice per turn-cycle; 3: its Encounter Special Actions a second time (back, once).
- */
-const blank = { attrs: [], all: [], any: [], none: [], from: [], tiers: [], predicate: "", boons: 0, banes: 0, bbName: "", empowered: 0, enfeebled: 0, byValue: false, against: false, oncePerRound: false, vsMarked: false, vsOrigin: "" };
-// v0.0.407 (Stage 0 in Foundry; the Bestiary, Elite Escalation): on the 1-to-6 ladder the three come at Escalation 2, 4 and 6 (roundrules.mjs ELITE_RUNGS_LADDER).
-const [ER1, ER2, ER3] = ELITE_RUNGS_LADDER;
-export const ELITE_LADDER = [
-  { ...blank, type: "boonbane", boons: 1, all: ["strike"], oncePerRound: true, minEscalation: ER1 },   // v0.0.434 (Lucas: Pressing is "[Strike]"; was any Action that rolls against a creature)
-  { ...blank, type: "freqmore", fmWhich: "round", minEscalation: ER2 },
-  { ...blank, type: "freqmore", fmWhich: "encounter", minEscalation: ER3 }
-];
-/** Does this creature use the default Elite ladder? An NPC with Escalation on, unless its "Default ladder" switch is off. */
-export const usesEliteLadder = actor => actor?.type === "npc" && !!actor.system?.useEscalation && actor.system?.eliteLadder !== false;
-let ladderCache = null;   // D33: the same three for every Elite (nothing in them depends on the creature)
-function ladderSources(actor) {
-  if (!usesEliteLadder(actor)) return [];
-  return ladderCache ??= ELITE_RUNGS_LADDER.map(min => {
-    const flags = appliedFlags({ settings: ELITE_LADDER.filter(x => x.minEscalation === min), description: "", hover: "", expireOn: new Set(), expireAll: false }, null);
-    flags.minEscalation = min; flags.passive = true;
-    return { id: `passive-elite-${min}`, name: "Elite Escalation", srcUuid: "", disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) };
-  });
-}
-
+// the cleanup audit (2026-11-26, Lucas: "Remove the Default ladder"): the default Elite ladder (v0.0.320: ELITE_LADDER, usesEliteLadder, its three
+// settings at Escalation 2 / 4 / 6) is gone; an NPC's Escalation switch (useEscalation) still gives it an Escalation, and its own Features do the rest.
 /** The applied effects and the passives of a creature, for anything that reads what changes its rolls. */
-export const allEffects = actor => [...(actor?.effects ?? []), ...passiveSources(actor), ...ladderSources(actor)];
+export const allEffects = actor => [...(actor?.effects ?? []), ...passiveSources(actor)];
 
 /**
  * Part of the creature's base (v0.0.130): a passive that always works. Applied effects and Escalation passives are not:

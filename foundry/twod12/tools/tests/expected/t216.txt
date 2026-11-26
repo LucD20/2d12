@@ -5,7 +5,6 @@ a 1R Reaction, 0 AP and 1 Reaction AP: Use · 1R | 2R: Use · 2R [struck: Not en
 payReaction kept (combat.mjs re-exports it): {"fromRap":1,"fromAp":1} true
 --- labels, Effects lines, the ruler
 Tier labels in full: Tier 1 | Tier 2 | Tier 3 | Critical | Tiers 1–3
-ruler: Designer on: "2 AP 1.40× · 3 AP 1.45×." | off: "" | no worth: ""
 Effects: three Versions: ["1*","2*","3*"] | the same text twice: {"title":"Effects","lines":[{"ap":2,"text":"A","badge":false}]} | no Tiers: Effects
 Modifier: Signature +2 | Power −1 | the strip: Smite true a Save Action false no Tiers false
 reasons: Not this Action: not a Strike | Not now: already used this round | cleanLabel: Flanking
@@ -20,7 +19,7 @@ trait words: Signature · Weapon · Strike · Divine · Unfailing Gold
 the grid: Distance: Weapon Target: One creature
 labels: Smite dice, Attack, Tier 1, Tier 2, Tier 3, Special, Your roll
 Use buttons: 1 live, 0 struck | at the end of Your roll: true | a button uses its Version: true
-Your roll: Your roll Signature +2 Frightened Radiant Zeal Use · 2 AP | Boons "+" and Banes "▼" by class: true | ruler (Designer off): false
+Your roll: Your roll Signature +2 Frightened Radiant Zeal Use · 2 AP | Boons "+" and Banes "▼" by class: true
 Word of Radiance: the Area is the chip: Area: 2 / 3 Burst true | its Save line: Save Appeal | its Tier labels: Tier 1, Tier 2, Tier 3 | no Your roll (the targets roll): true
 Opportunity Attack: Interrupt, Effect | no Tier lines: true | its Use alone: true
 Judge (two blocks): headers 0 AP, 1 AP | a Use button in each header: 2 | Special before Effect: true

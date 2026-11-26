@@ -1,6 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t274.mjs)
 // v0.0.431 (Lucas, 2026-11-18: his answers to the book audit's 40 questions, "All rest default seems good"): the book's new rules and what Foundry
-// follows (book/book-audit.md).
+// follows (archive/book-drafts/book-audit.md).
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(ROOTURL), src = f => fs.readFileSync(ROOT + f, "utf8");
@@ -44,5 +44,3 @@ console.log("Armor of Faith: not Judge's 0R:", A.includes('if (it.reaction && it
 console.log("a Reload Shot: its own 1d6!, Empowered not spent:", A.includes("const empOn = hadEmp || !!f.reloadShot ||") && A.includes("if (empUsed && !hadEmp && !f.reloadShot)"));
 console.log("Opening Shot: once per turn-cycle:", A.includes('!usedThisCycle(game.combat, actor, actor.getFlag("twod12", "openingRound"))'));
 console.log("Trade Places: different Sizes refused:", src("module/inline.mjs").includes("they can't swap squares (Chapter 3, Swapping Places)"));
-const { eliteRung } = await import(ROOTURL + "module/escalation.mjs");
-console.log("the default ladder at 6:", eliteRung(6));

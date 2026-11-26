@@ -1,7 +1,7 @@
 --- the two lists
 a PC: [{"name":"Critical","used":true,"info":"rule:critical"},{"name":"Kindled Wrath","used":false,"info":"rule:hook"}] | 2 Roving Judgment (reached) / 4 Weight of Judgment (reached) / 6 Apex
 its shields: 3 kinds, one outline: true | the 2nd has a chevron, the 3rd a chief too: true
-an Elite: [{"name":"Bloodied +1","used":true,"info":"rule:bloodied"},{"name":"Strained +1","used":false,"info":"rule:strained"}] | 2 Pressing (reached) / 4 Relentless / 6 Second Wind | a Standard: none: true
+an Elite: [{"name":"Bloodied +1","used":true,"info":"rule:bloodied"},{"name":"Strained +1","used":false,"info":"rule:strained"}] |  | a Standard: none: true
 --- the Basic attack's line
 Basic attack · 1 + 1d4! / 3 + 1d6! | Basic attack · 1[W] / 1[W] + 2 | Basic attack
 no rating word, no Boon sentence: true

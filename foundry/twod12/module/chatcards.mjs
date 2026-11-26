@@ -200,14 +200,6 @@ export function headHtml(m) {
   // v0.0.303 (Lucas): the automation diamond beside the name (config.mjs autoChip; its rank and what is done by hand on hover)
   return `<div class="cc-head"><b class="cc-name">${esc(m.name)}${m.auto ?? ""}</b>${chip ? `<span class="cc-cost f-${esc(m.freq || "none")}">${esc(chip)}</span>` : ""}</div>${m.traitsHtml ? `<div class="cc-traits">${m.traitsHtml}</div>` : ""}`;
 }
-/** "Targets ✦ Distance → target", the area button first for an Area Action, the retarget button at the right. */
-export function targetLineHtml(m, view = FULL_VIEW, { locked = false } = {}) {
-  const t = m.tline ?? {}, star = '<span class="cc-star" aria-hidden="true">✦</span>';
-  const names = t.names?.length === 1 ? esc(t.names[0]) : t.names?.length ? `${t.names.length} targets` : "No target";
-  const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? esc(t.dist) : ""].filter(Boolean).join(` ${star} `);
-  const btn = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
-  return `<div class="cc-tline"><span>${bits}${bits ? " " : ""}<span aria-hidden="true">→</span> <b>${names}</b></span>${btn}</div>`;
-}
 /**
  * v0.0.285 (Lucas, after v0.0.284): the attack card's target goes to the bottom, beside its buttons, as on the damage message: the top keeps
  * "Targets ✦ Distance" (the area button for an Area Action); the bottom row has the retarget button, "→ the target" and Damage / Card.
@@ -283,7 +275,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   // v0.0.465 (Lucas, checklist v0.0.464: "the Special and Flavor entries should be above the rolls"): the card's Special and its Flavor come right
   // after its lines, before the roll and the damage (they were under them)
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
-  const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
+  const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const pf = hide ? playerFoot("Player view · enemy Defenses hidden by the GM") : "";
   const head = `${headHtml(m)}${metaLineHtml(m)}${m.card ? cardLinesHtml(m.card.top) + cardLinesHtml(beforeLines) : m.setupHtml ?? ""}`;
   if (one) {
@@ -349,8 +341,6 @@ export function attackCardHtml(m, view = FULL_VIEW) {
 }
 
 /* ------------------------------------------------------------------ the Save card */
-/** The Save's three ranges, as the target's totals: Tier 3 "20+", Tier 2 "13–19", Tier 1 "≤12" for DC 13. */
-export const saveRanges = dc => ({ 3: `${dc + 7}+`, 2: `${dc}–${dc + 6}`, 1: `≤${dc - 1}` });
 /** The creatures of a Save card: [{ uuid, name, result, damageDone, hasDamage }] (a one-target card of v0.0.283 kept its target and result alone). */
 export const saveCreatures = m => m.creatures ?? (m.target ? [{ uuid: m.target.uuid, name: m.target.name, result: m.result ?? null, damageDone: !!m.damageDone, hasDamage: !!m.hasDamage }] : []);
 /**
@@ -399,7 +389,7 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   // between it and the Tiers, the lines after the Tiers (its Effect) under them; a card posted before CARD-ONE keeps its Trigger line
   const topLines = m.card ? cardLinesHtml(m.card.top) : "", trig = m.card ? cardLinesHtml((m.card.before ?? []).filter(l => showStateLine(m, l.label))) : triggerLineHtml(m);
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
-  const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
+  const des = designerFoot([m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   // v0.0.440 (Lucas, checklist: "the message becomes huge. After applying damage, it should collapse"): every creature rolled and every damage
   // row applied: the Save's lines fold under one line (each creature's Tier and name; a click opens them again), the damage part stays
   const settled = cs.length > 0 && cs.every(c => c.result) && (m.dmg?.rows ?? []).length > 0 && m.dmg.rows.every(x => x.applied);
@@ -449,7 +439,7 @@ function nextHtml(m, view) {
 /** v0.0.294 (brief section 13): an Action that makes no roll (Opportunity Attack, Bulwark of Faith, Aim): no stamp, no ladder, no category line, no Effects box. */
 export function nonRollCardHtml(m, view = FULL_VIEW) {
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
-  const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
+  const des = designerFoot([m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const effect = m.effectHtml ? `${m.triggerHtml ? "" : divider(1)}<div class="cc-effect full">${m.effectHtml}</div>` : "";
   return `<div class="cc-card cc-noroll">${headHtml(m)}${metaLineHtml(m)}${m.card ? cardLinesHtml(m.card.top) + cardLinesHtml(m.card.before) : triggerLineHtml(m)}${effect}${nextHtml(m, view)}${flavor}${footHtml(m, view, { hasDamage: false })}${des}</div>`;
 }
@@ -659,8 +649,6 @@ export const rwIcons = (mods = []) => Object.entries(RWI).map(([k, [ic, word]]) 
 const tookTxt = t => { if (Number.isFinite(t?.ticks)) return `Took <b>${t.ticks} tick${t.ticks === 1 ? "" : "s"}</b>`;   // the Bestiary's rebuild: a Minion's ticks
   const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"; };
 const stateChip = s => (s === "down" || s === "both" ? '<span class="cc-state down">Down</span>' : s === "bloodied" ? '<span class="cc-state bloodied">Bloodied</span>' : s === "strained" ? '<span class="cc-state strained">Strained</span>' : "");
-/** A dice summary for a Tier's group: "3d8 Ho". */
-export const diceSummary = comps => [...new Set((comps ?? []).map(c => `${c.formula ?? ""}`.replace(/\s.*$/, "")).filter(Boolean))].join(" + ");
 /**
  * The damage message. m: { name, nl, srcId, groups: [{ tier, crit, comps, riders: [html], rows: [i] }], rows: [{ uuid, name, tier, mods, choice, applied }],
  * designer: { avg, atLeast } }. A row's applied: { took: { B, M }, state, factor }.

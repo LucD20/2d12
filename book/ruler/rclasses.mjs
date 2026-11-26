@@ -1,4 +1,4 @@
-// Pack R-classes (2026-11-04): the rebuilt classes measured under pack R's rules (book/rework-r.md sections 12 and 14, all decided):
+// Pack R-classes (2026-11-04): the rebuilt classes measured under pack R's rules (archive/book-drafts/rework-r.md sections 12 and 14, all decided):
 // 4 AP + 1 Reaction AP for PCs and NPCs, Escalation as a level from 1 (Momentum 2 in half the fights) with the Critical and class hooks,
 // Guard from unspent AP (2 an AP, it can still pay a Reaction), the NPC Specials, Opportunity Attack without the disrupt, the Stage Health
 // line (Human, high on Vigor) and the Bestiary of pack R-bestiary (the live tables of config.mjs; before 2026-11-05: the decision sheet's fit, the pre-R tables × 0.6). The builds: rework/*.txt
@@ -16,7 +16,7 @@ const HERE = fileURLToPath(new URL(".", import.meta.url));
 const QUICK = process.argv.includes("--quick");
 const RUNS = QUICK ? 200 : 800;
 const HF = 1.125;
-const AP_DE = 5.8;   // 1 AP at 4 AP (rework-r.md part 1, section 2)
+const AP_DE = 5.8;   // 1 AP at 4 AP (archive/book-drafts/rework-r.md part 1, section 2)
 const t0 = Date.now(), log = s => process.stderr.write(`${s} (${((Date.now() - t0) / 1000).toFixed(0)} s)\n`);
 const mean = a => a.reduce((s, x) => s + x, 0) / (a.length || 1);
 const f1 = x => (Number.isFinite(x) ? x.toFixed(1) : "-"), f2 = x => (Number.isFinite(x) ? x.toFixed(2) : "-"), pc = x => (Number.isFinite(x) ? `${Math.round(x * 100)}%` : "-");
@@ -72,7 +72,7 @@ export function run() {
   const L = [];
   L.push("# Pack R-classes: the rebuilt Paladin and Archer under pack R's rules", "",
     "Written by `node book/ruler/rclasses.mjs`; don't edit, run it again. Read by `book/rules-backlog.md` (pack R-classes) and the class documents' design notes.", "",
-    `Runs: ${RUNS} fights a measurement. **The party:** the R builds of \`rework/\` (a Smite Paladin, a Lay On Hands Paladin, a Double Shot Archer, a Rolling Shot Archer), level 1, Human, high on Vigor (the Paladin 23 / 12 = 35 Health, the Archer 19 / 10 = 29; Rally Points = Rally + 1). **The rules:** every piece of the rework as decided (rework-r.md section 14): 4 + 1 AP, Escalation as a level from 1 (Momentum 2 in half the fights) with the Critical hook and the class hooks (the Paladin's Kindled Wrath: an ally within 5 squares becomes Bloodied or goes Down), Guard 2 per unspent AP (it can still pay a Reaction), the NPC Specials (a Standard's 2 AP Special × 2.2 once a round), Opportunity Attack without the disrupt, and the Bestiary of pack R-bestiary (config.mjs's tables: today's × 0.7 at Stage 1, with Elite Escalation and the phases; rbestiary.md). **The fight:** 4 Standards (CV 4, the "normal" fight: about a fifth of the party's Health with the Rally Points it spends, a Down in about 1 fight of 5; before R-bestiary the pre-R tables × 0.6). 1 AP = ${AP_DE} DE.`, "");
+    `Runs: ${RUNS} fights a measurement. **The party:** the R builds of \`rework/\` (a Smite Paladin, a Lay On Hands Paladin, a Double Shot Archer, a Rolling Shot Archer), level 1, Human, high on Vigor (the Paladin 23 / 12 = 35 Health, the Archer 19 / 10 = 29; Rally Points = Rally + 1). **The rules:** every piece of the rework as decided (archive/book-drafts/rework-r.md section 14): 4 + 1 AP, Escalation as a level from 1 (Momentum 2 in half the fights) with the Critical hook and the class hooks (the Paladin's Kindled Wrath: an ally within 5 squares becomes Bloodied or goes Down), Guard 2 per unspent AP (it can still pay a Reaction), the NPC Specials (a Standard's 2 AP Special × 2.2 once a round), Opportunity Attack without the disrupt, and the Bestiary of pack R-bestiary (config.mjs's tables: today's × 0.7 at Stage 1, with Elite Escalation and the phases; rbestiary.md). **The fight:** 4 Standards (CV 4, the "normal" fight: about a fifth of the party's Health with the Rally Points it spends, a Down in about 1 fight of 5; before R-bestiary the pre-R tables × 0.6). 1 AP = ${AP_DE} DE.`, "");
   setRules(R);
   const t1 = Date.now();
 
@@ -108,7 +108,7 @@ export function run() {
   log("3. the Hallmark Reactions");
 
   // 4. The Escalation Passives: the wrath ones on the turn tables (a fight to the death caps damage by the NPCs' Health), the mercy ones by what they did in the fights.
-  L.push("## 4. The Escalation Passives", "", "**The wrath Passives** (the Main turn at Defense 13 with and without the Passive, at its rung; Reckoning against a Bloodied target): the damage it adds a turn, in DE and AP. **The mercy Passives:** what each did a fight in the normal fight (4 Standards) and in a hard one (6 Standards, CV 6): the allies' extra damage (Divine Surge), the healing (Mending Light; the extra on the Rally Points used: Font of Mercy), the damage reduced (Hallowed Stance), per turn of its owner and per turn at its rung. The rung budgets (rework-r.md 14.2 item 15): rung 1 about 0.4-0.6 AP a turn, rung 2 0.6-0.8, rung 3 0.8-1; a rung 3 Passive is on for the last turn or two of a normal fight.", "",
+  L.push("## 4. The Escalation Passives", "", "**The wrath Passives** (the Main turn at Defense 13 with and without the Passive, at its rung; Reckoning against a Bloodied target): the damage it adds a turn, in DE and AP. **The mercy Passives:** what each did a fight in the normal fight (4 Standards) and in a hard one (6 Standards, CV 6): the allies' extra damage (Divine Surge), the healing (Mending Light; the extra on the Rally Points used: Font of Mercy), the damage reduced (Hallowed Stance), per turn of its owner and per turn at its rung. The rung budgets (archive/book-drafts/rework-r.md 14.2 item 15): rung 1 about 0.4-0.6 AP a turn, rung 2 0.6-0.8, rung 3 0.8-1; a rung 3 Passive is on for the last turn or two of a normal fight.", "",
     "| Wrath Passive (rung) | Build | Main turn with · without | Worth a turn (DE · AP) |", "|---|---|---|---|");
   const smite = load("paladin-smite-r1");
   for (const [name, rung, blood] of [["Radiant Zeal", 1, false], ["Searing Blows", 2, false], ["Reckoning (against a Strained target)", 3, true]]) {
@@ -182,7 +182,7 @@ export function run() {
   const r = { ...E.rates(1) }; r.perAP = r.B / 4;
   const bands = E.A.bands, verdict = (eff, freq) => { const [lo, hi] = bands[freq] ?? bands.round; return eff < lo * 0.9 ? "under" : eff > hi * 1.1 ? "over" : eff < lo ? "a little under" : eff > hi ? "a little over" : "on target"; };
   const worth = {};
-  const all = CL.loadCards();
+  const all = CL.loadCards(undefined, { setAside: true });
   for (const [cls, file, test] of [["Paladin", "paladin-smite-r1", c => /Paladin|Divine Power/.test(c.category ?? "")], ["Archer", "archer-double-r1", c => /Archer|Sharpshooter|Marked Quarry/.test(c.category ?? "") && c.name !== "Mark Quarry"]]) {
     const cards = all.filter(test), names = S.cardLines(cards).filter(l => l.startsWith("action ")).map(l => l.slice(7).split("|")[0].trim());
     const b = S.parseSpec(read(file).replace(/^health-factor .*$/m, "") + `\nhealth-factor ${HF}\n` + names.map((n, i) => `turn w${i}: ${n}`).join("\n") + "\n", `rework/${file}`);

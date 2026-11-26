@@ -9,14 +9,9 @@ const { parseTierFull, convertEffects } = await import("../module/gen.mjs");
 const { loadFoundryCards, isReaction, hasVersions, splitTier, isDamage, stripLinks, stripBold } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);   // a URL, not a path: a Windows path is not a valid ESM import (v0.0.231)
 // v0.0.409 (pack F2): Foundry's cards: the old files, with the Paladin's replaced by its Structure cards (load.mjs loadFoundryCards; the ruler keeps loadCards)
 export const loadCards = loadFoundryCards;
-// Pack R-classes (Lucas, 2026-11-04): the ruler's worth of each class card (book/ruler/worth.json, written by rclasses.mjs) is printed as a tiny line on the item, for the playtests.
-const { readFileSync, existsSync } = await import("node:fs");
-const WORTH_FILE = new URL("../../../book/ruler/worth.json", import.meta.url);
-export const WORTH = existsSync(WORTH_FILE) ? JSON.parse(readFileSync(WORTH_FILE, "utf8")) : {};
-const worthOf = name => WORTH[name] ?? "";
 // v0.0.246 (cards 1, Lucas): the book's [[links]] stay links in Foundry. A link to a card of the compendium opens that item (anyone can read it: Hide);
 // any other link is a book link (@Book[Heading]{label}: the book's anchor; the Journal import comes later). A Basic Action has no compendium item: a book link.
-const CARD_BY_NAME = new Map(loadCards().map(c => [c.name.toLowerCase(), c]));
+const CARD_BY_NAME = new Map(loadCards(undefined, { setAside: true }).map(c => [c.name.toLowerCase(), c]));   // the set-aside cards too: the deprecated items' links stay as they were
 export function foundryLinks(text) {
   return String(text ?? "").replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (m, ref, label) => {
     const r = ref.trim(), l = (label ?? r).trim(), c = CARD_BY_NAME.get(r.toLowerCase());
@@ -188,7 +183,6 @@ export function cardSystem(c, resolve = s => s) {
   if (c.setup) sys.setup = typeof c.foundry?.setup === "string" ? resolve(c.foundry.setup) : resolve(fxText(c.setup, c.foundry?.appendSetup));   // pack TALENTS-PT: a Setup's Foundry text written in full (Ricochet's must / still movement)
   const prose = [c.rules, c.notes, ...(c.placeholder ? [c.text] : [])].filter(Boolean).map(t => `<p>${boldHtml(foundryLinks(t))}</p>`).join("");
   if (prose) sys.description = resolve(prose);
-  if (worthOf(c.name) && !c.structure) sys.worth = worthOf(c.name);   // v0.0.409: the ruler's worth is of the old card (not a Structure card)
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
@@ -213,7 +207,6 @@ export function featureSystem(c, resolve = s => s) {
   const category = String(c.category).replace(/\s*\(Passive\)$/, "");
   const text = [boldHtml(foundryLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
   const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: text ? resolve(`<p>${text}</p>`) : "" };
-  if (worthOf(c.name) && !c.structure) sys.worth = worthOf(c.name);   // v0.0.409: the ruler's worth is of the old card (not a Structure card)
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));
   if (c.foundry?.actions) sys.actions = c.foundry.actions.map(n => resolve(`{{action:${n}}}`));
   if (c.flavor) sys.flavor = c.flavor;

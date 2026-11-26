@@ -14,8 +14,6 @@ const put = (o, path, v) => { const ks = String(path).split("."), last = ks.pop(
 // Every control names what it changes: data-f (a path in the rule, or "ends.…" / "@field" for the item), data-fr (the action).
 const seg = (f, cur, opts, cls = "") => `<span class="fr-seg ${cls}">${opts.map(([v, l]) => `<button type="button" data-fr="set" data-f="${f}" data-v="${esc(v)}" class="${String(cur) === String(v) ? "on" : ""}" aria-pressed="${String(cur) === String(v)}">${l}</button>`).join("")}</span>`;
 const step = (f, cur, min = 0, max = 5, cls = "", signed = false) => `<span class="fr-step ${cls}"><button type="button" data-fr="step" data-f="${f}" data-d="-1" data-min="${min}" data-max="${max}" aria-label="Less">−</button><span class="v">${signed && Number(cur) > 0 ? "+" : ""}${esc(cur)}</span><button type="button" data-fr="step" data-f="${f}" data-d="1" data-min="${min}" data-max="${max}" aria-label="More">+</button></span>`;
-/** v0.0.324 (Lucas): the names a formula reads, always at hand (the ⓘ beside every formula field). */
-export const FORMULA_HELP = "A number or a formula: + − × ÷, ( ), floor( ), ceil( ). @origin.NAME is the origin's value, @target.NAME the affected creature's. NAME: pow (Power Modifier), wpn (Weapon Modifier), sig (Signature Modifier), body, mind, appeal, instinct (Attributes), stage. Example: @origin.pow + 2, floor(@target.body / 2).";
 /** v0.0.325 (Lucas: the ⓘ showed one short sentence: Foundry reads a tooltip as HTML, and "<name>" was taken for a tag): the list, one line each. */
 export const FORMULA_TIP = ["<b>A number or a formula</b>", "+ − × ÷, ( ), floor( ), ceil( )", "<b>@origin.</b>… the origin's value", "<b>@target.</b>… the affected creature's value", "<b>pow</b> Power Modifier", "<b>wpn</b> Weapon Modifier", "<b>sig</b> Signature Modifier", "<b>body</b>, <b>mind</b>, <b>appeal</b>, <b>instinct</b> its Attributes", "<b>stage</b> its Stage", "Examples: @origin.pow + 2 · floor(@target.body / 2)"].join("<br>");
 const fhelp = () => "";   // v0.0.420 (the tooltip review, H: removed): the formula help icon showed only a hover
@@ -171,7 +169,7 @@ function escPane(r) {
 const usesPane = r => grid([["Gives", seg("which", r.which, [["round", "Round Specials twice"], ["encounter", "Encounter Specials again"]], "w")]]) + help("The Elite ladder (Bestiary, Elite Escalation). Special Actions are the creature's own, not the Basic Actions.");
 const ASW = [["Gold", "#e8a33a"], ["Holy", "#ffd27a"], ["Ally", "#4a8fd8"], ["Enemy", "#c0392b"], ["Arcane", "#9b6bd8"], ["Nature", "#4caf6a"]];
 const colorRow = (f, v, sw) => `<span class="fr-colors"><input type="color" data-fr-in="${f}" value="${esc(/^#[0-9a-f]{6}$/i.test(v) ? v : "#e8a33a")}" aria-label="Color">${sw.map(([n, c]) => `<button type="button" class="fr-sw${v === c ? " on" : ""}" style="--c:${c}" data-fr="set" data-f="${f}" data-v="${c}">${n}</button>`).join("")}</span>`;
-/* v0.0.327 (PACK ZONE): what an area does inside, the Aura's and the Zone's one block (foundry/mockups/zone-prototype.html): four part rows, each with
+/* v0.0.327 (PACK ZONE): what an area does inside, the Aura's and the Zone's one block (archive/mockups/zone-prototype.html): four part rows, each with
    its own Who (Allies / Enemies / Everyone) and "And the origin" (on an Aura: "And this creature itself"). p: the path of the block ("inside", "zone.inside"). */
 const WHO_OPTS = [["allies", "Allies"], ["enemies", "Enemies"], ["all", "Everyone"]];
 function insideHtml(p, inIn, m, selfLabel, head = true) {

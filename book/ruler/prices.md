@@ -98,7 +98,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 
 ## 4. Archer (A1): every Action of `catalogue/archer-a1.txt` (level 1; efficiency also at levels 2 and 3)
 
-**The A1 main build (pack A1, 2026-10-29; PROPOSED: book/archer-a1.md)**: both Signatures and the defaults of every level 1 to 3 Pick.
+**The A1 main build (pack A1, 2026-10-29; PROPOSED: archive/book-drafts/archer-a1.md)**: both Signatures and the defaults of every level 1 to 3 Pick.
 
 | Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -117,7 +117,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 
 ## 4. Archer (options): every Action of `catalogue/archer-options.txt` (level 1; efficiency also at levels 2 and 3)
 
-**The Archer's options (pack OT, 2026-10-30; in the book: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default (A1).
+**The Archer's options (pack OT, 2026-10-30; in the book: archive/book-drafts/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default (A1).
 
 | Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -170,7 +170,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 
 ## 4. Gear (D2 weapons): every Action of `catalogue/gear-d2.txt` (level 1; efficiency also at levels 2 and 3)
 
-**The weapons and Weapon Techniques of D2 (2026-10-31; book/gear-d2.md)**: every weapon's Weapon Attack and its Technique, on a level 1 PC (Weapon Modifier +2).
+**The weapons and Weapon Techniques of D2 (2026-10-31; archive/book-drafts/gear-d2.md)**: every weapon's Weapon Attack and its Technique, on a level 1 PC (Weapon Modifier +2).
 
 | Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -208,7 +208,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 
 ## 4. Paladin (options): every Action of `catalogue/paladin-options.txt` (level 1; efficiency also at levels 2 and 3)
 
-**The Paladin's options (pack OT, 2026-10-30; in the book: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default above.
+**The Paladin's options (pack OT, 2026-10-30; in the book: archive/book-drafts/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default above.
 
 | Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -273,7 +273,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 
 ## 4. Talents (ranged, on the Archer): every Action of `catalogue/talents-ranged.txt` (level 1; efficiency also at levels 2 and 3)
 
-**The Talents, ranged (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the A1 Archer's numbers.
+**The Talents, ranged (pack OT, 2026-10-30; in the book: archive/book-drafts/options-talents.md)**: priced on the A1 Archer's numbers.
 
 | Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -290,7 +290,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 
 ## 4. Talents (melee, on the Paladin): every Action of `catalogue/talents.txt` (level 1; efficiency also at levels 2 and 3)
 
-**The Talents, melee (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the P1 Paladin's numbers.
+**The Talents, melee (pack OT, 2026-10-30; in the book: archive/book-drafts/options-talents.md)**: priced on the P1 Paladin's numbers.
 
 | Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|

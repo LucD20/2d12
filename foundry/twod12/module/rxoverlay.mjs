@@ -29,7 +29,6 @@ export function dropOverlay(id) { if (shown.delete(id)) queue(); }
 export function setHover(id, row) { const h = id ? { id, row } : null; if (JSON.stringify(h) === JSON.stringify(local.hover)) return; local.hover = h; queue(); }
 /** A slab is being dragged in the chat: the pins follow the order shown there (top first), before it is sent. */
 export function previewOrder(id, ids) { if (ids) local.order.set(id, ids); else local.order.delete(id); queue(); }
-export const hasOverlay = () => shown.size > 0;
 
 const kindRank = r => (r?.kind === "interrupt" ? 0 : 1);
 /** Pure: the place of each used row in the stack (1 = resolves first), with a local drag order when there is one. */
@@ -182,7 +181,6 @@ export function replayOverlay(st, { label = "", ms = 6000 } = {}) {
   queue();
   return true;
 }
-export const replaying = id => replays.has(id);
 /** Pure: the frozen positions as a map (uuid -> { x, y }); a list since v0.0.278. */
 export const frozenPos = st => { const raw = st?.snap?.pos ?? []; return new Map((Array.isArray(raw) ? raw : Object.entries(raw).map(([u, p]) => ({ u, ...p }))).filter(p => Number.isFinite(p?.x)).map(p => [p.u, { x: p.x, y: p.y }])); };
 function drawReplay(R, gs, fs) {

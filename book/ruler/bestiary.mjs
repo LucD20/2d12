@@ -1,5 +1,5 @@
 // The Bestiary refit (pack E3, 2026-10-29): the Bestiary measured with the real classes (the P1 Paladin, the A1 Archer: book/ruler/classes)
-// on the map (spec.mjs + map.mjs), with LV's decisions (book/progression-lv.md: model A, standard fights of 3.5 rounds, the CV scale
+// on the map (spec.mjs + map.mjs), with LV's decisions (archive/book-drafts/progression-lv.md: model A, standard fights of 3.5 rounds, the CV scale
 // 3/4 / 1 / 1 1/4 / 1 1/2 a PC, CV by tier gap, the Health factor (Level + 17) / 16).
 //   1. today: the parties of levels 1-3 against today's Bestiary (and today's Health factor),
 //   2. the tier 1 refit: the NPC Health and damage factors for a 3.5-round standard fight that costs the party a target share of its Health,
@@ -16,6 +16,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 const S = await import(new URL("./spec.mjs", import.meta.url).href);
 const CF = await import(new URL("../../foundry/twod12/module/config.mjs", import.meta.url).href);   // the Bestiary's tables (after spec.mjs: it sets Foundry's globals)
+const FT = await import(new URL("./sim/tables.mjs", import.meta.url).href);   // the cleanup audit (2026-11-26): the SIM's frozen copy of the Bestiary's tables
 const HERE = fileURLToPath(new URL(".", import.meta.url));
 const QUICK = process.argv.includes("--quick");
 const RUNS = QUICK ? 300 : 1000, CAL = QUICK ? 250 : 600, DAYS = QUICK ? 200 : 600;
@@ -93,7 +94,7 @@ export function run() {
   Object.assign(S.RULES, S.RULES_PRE_R);   // the catch-up (2026-11-12): a pre-R study (the 5 AP classes of classes/, the rules before pack R); spec.mjs's default is the book today
   const L = [], t0 = Date.now(), log = s => process.stderr.write(`${s} (${((Date.now() - t0) / 1000).toFixed(0)} s)\n`);
   L.push("# The Bestiary refit: the numbers (pack E3)", "",
-    "Written by `node book/ruler/bestiary.mjs` (the spec ruler with the map model). Don't edit this file: edit the script and run it again. The proposal that reads it is `book/bestiary-e3.md`.", "",
+    "Written by `node book/ruler/bestiary.mjs` (the spec ruler with the map model). Don't edit this file: edit the script and run it again. The proposal that reads it is `archive/book-drafts/bestiary-e3.md`.", "",
     `Runs: ${RUNS} fights a measurement, ${CAL} a calibration step${QUICK ? " (--quick: a draft)" : ""}, ${DAYS} days. **The parties** (book/ruler/classes): ${MAIN.map(k => PARTIES[k].name).join("; ")}; each number is the mean of the two. Half the fights start with Momentum; a Daily only in a hard fight (CV 1.25 a PC or more). **The NPCs:** the level 1 Bestiary (Medium, Foundry's default ratings: Body High) with Health and damage × the factors; Defense and Modifier never change (decided). NPC damage is rolled with the table's exact average (exact: the nearest dice moved by a flat amount), so the tables below are what was simulated. The PCs' Health uses the new factor (Level + 17) / 16 unless a row says *today*.`, "");
 
   // 1. Today.
@@ -213,14 +214,14 @@ export function run() {
     `Today's level 1 numbers × the refit (Health ×${f2(P.h)}, damage ×${f2(P.d)}; Elite damage ×${f2(P.x.elite.d)} more, Grunt Health ×${f2(P.x.grunt.h)} more) × the tier (section 6). Health Multipliers rounded to 0.25, damage to 0.5. The ratings keep today's level 1 steps at every tier (no drift between ratings inside a tier). Health Base, Attributes and Defenses don't change.`, "");
   const RT = ["terrible", "low", "medium", "high", "extreme"];
   for (const role of ["minion", "grunt", "standard", "elite"]) {
-    const rr = RT.filter(k => role !== "minion" || k !== "extreme"), fx = P.x?.[role] ?? {}, rd = CF.TWOD12.npcRoles[role];
+    const rr = RT.filter(k => role !== "minion" || k !== "extreme"), fx = P.x?.[role] ?? {}, rd = FT.TABLES.npcRoles[role];
     L.push(`### ${rd.label}`, "", `| Tier | ${rr.map(k => `Health Multiplier ${k}`).join(" | ")} | ${rr.map(k => `damage ${k}`).join(" | ")} | all Medium: Health |`, `|---|${rr.map(() => "---:").join("|")}|${rr.map(() => "---:").join("|")}|---:|`);
     T.forEach((tt, i) => {
-      const hm = k => r25(CF.npcHm(role, k, 1) * P.h * (fx.h ?? 1) * tt.h), dm = k => { const n = S.npcOf(role, k, 1), f = P.d * (fx.d ?? 1) * tt.d; return `${r5(n.t2 * f)} / ${r5(n.t3 * f)}`; };
+      const hm = k => r25(FT.npcHm(role, k, 1) * P.h * (fx.h ?? 1) * tt.h), dm = k => { const n = S.npcOf(role, k, 1), f = P.d * (fx.d ?? 1) * tt.d; return `${r5(n.t2 * f)} / ${r5(n.t3 * f)}`; };
       const med = Math.ceil((rd.attr + 2) * hm("medium") + rd.hb - 1e-9) * 2;
       L.push(`| ${i + 1} (${tt.name}) | ${rr.map(k => `×${hm(k)}`).join(" | ")} | ${rr.map(dm).join(" | ")} | ${med} |`);
     });
-    L.push(`| today, level 1 | ${rr.map(k => `×${CF.npcHm(role, k, 1)}`).join(" | ")} | ${rr.map(k => { const n = S.npcOf(role, k, 1); return `${n.t2} / ${n.t3}`; }).join(" | ")} | ${Math.ceil((rd.attr + 2) * CF.npcHm(role, "medium", 1) + rd.hb - 1e-9) * 2} |`, "");
+    L.push(`| today, level 1 | ${rr.map(k => `×${FT.npcHm(role, k, 1)}`).join(" | ")} | ${rr.map(k => { const n = S.npcOf(role, k, 1); return `${n.t2} / ${n.t3}`; }).join(" | ")} | ${Math.ceil((rd.attr + 2) * FT.npcHm(role, "medium", 1) + rd.hb - 1e-9) * 2} |`, "");
   }
   // 8. The PCs' Health with the new factor.
   L.push("## 8. The PCs' Health: (Level + 10) / 10 today, (Level + 17) / 16 decided", "", "| Build | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 | Level 8 | Level 10 |", "|---|---|---|---|---|---|---|---|");

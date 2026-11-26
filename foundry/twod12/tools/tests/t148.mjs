@@ -9,7 +9,7 @@ globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) 
 globalThis.game = { combat: null };
 const cf = await import(ROOTURL + "module/config.mjs"), { TWOD12 } = cf;
 const { CharacterData, npcBuild } = await import(ROOTURL + "module/data.mjs");
-const { npcBuilderContext, cvTip, stageLabel } = await import(ROOTURL + "module/npcbuilder.mjs");
+const { cvTip, stageLabel } = await import(ROOTURL + "module/npcbuilder.mjs");   // the cleanup audit (2026-11-26): npcBuilderContext (the old Builder model) removed, and its line here
 const G = await import(ROOTURL + "module/guard.mjs"), D = await import(ROOTURL + "module/defense.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 
@@ -29,9 +29,6 @@ console.log("old level factors gone:", !("npcBump" in TWOD12) && !("npcMeasured"
 console.log("--- CV x100, lower for an NPC of an earlier Stage than the party");
 for (const role of Object.keys(TWOD12.npcRoles)) console.log(role.padEnd(9), `its Stage ${cf.npcCv(role, 1, 1)} | one Stage below ${cf.npcCv(role, 1, 4)} | two below ${cf.npcCv(role, 2, 9)} | above the party ${cf.npcCv(role, 8, 1)}`);
 console.log("tooltip:", cvTip(TWOD12.npcRoles.standard));
-const actor = lv => ({ system: { ...{ role: "grunt", level: lv, ratings: all("medium"), custom: {}, weaponMod: 1 } }, getFlag: () => undefined });
-const ctx = npcBuilderContext(actor(6));
-console.log("Builder at level 6:", ctx.stageLabel, "| CV", ctx.cv, "| basic:", ctx.attacks[0].cells.map(c => c.avg).join(" | "), "| check:", ctx.check[1].s.split(".")[0], "| note:", JSON.stringify(ctx.levelNote), "| level 11:", JSON.stringify(npcBuilderContext(actor(11)).levelNote));
 const tpl = src("templates/actor-sheet-pc.hbs");
 console.log("sheet: CV tooltips from the role:", (tpl.match(/\{\{(head|builder)\.cvTip\}\}/g) ?? []).length, "| the Stage under the Level:", tpl.includes("{{builder.stageLabel}}"));
 

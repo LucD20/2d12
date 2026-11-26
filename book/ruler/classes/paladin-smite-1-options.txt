@@ -1,4 +1,4 @@
-# Paladin, level 1, the P1 build with options (pack OT, 2026-10-30; book/options-talents.md): Signature Smite, Encounter Pick Word of Radiance
+# Paladin, level 1, the P1 build with options (pack OT, 2026-10-30; archive/book-drafts/options-talents.md): Signature Smite, Encounter Pick Word of Radiance
 # (instead of Holy Wrath), Active Escalation Aura of Protection (instead of Divine Surge). Everything else as paladin-smite-1.
 # Talents are left out (Lucas, 2026-10-29): classes are compared with classes; a Talent is priced on its own (catalogue/, positions.mjs).
 # The format: book/ruler/README.md, "The spec files". Run: node book/ruler/spec.mjs

@@ -23,7 +23,7 @@ a Critical by total: stamp CRIT 3 Critical | the box: Critical the target is Pro
 Boon / Bane lines: Boon · Bane +1 Flanking −1 Frightened −1 Dim light  | the modifiers colored: 1 1
 every clickable thing is a button with aria-expanded where it toggles: true | the retarget has a label: true | decorative icons hidden: true
 --- settings: Designer mode, hidden Defenses (players), the GM always sees everything
-Designer mode off: no odds, Ruler or automation anywhere: true | on: Odds: T1 20% · T2 50% · T3 30% Ruler: worth 2.1 AP Automation: Mithril
+Designer mode off: no odds, Ruler or automation anywhere: true | on: Odds: T1 20% · T2 50% · T3 30% Automation: Mithril
 player, Defenses hidden: no AD number: true | no ranges: true | no threshold: true | the badge: AD | the footer: Player view · enemy Defenses hidden by the GM
 the GM with the same setting sees the Defense: true
 retarget: only for the author and the GM, gone once locked: false true false

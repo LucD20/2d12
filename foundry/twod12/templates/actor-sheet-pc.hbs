@@ -291,7 +291,6 @@
             {{!-- v0.0.407 (the Bestiary, Roles): a role is a preset of ratings; clicking one sets them --}}
             <div class="ps-roleseg nb-preset" role="group" aria-label="Role">{{#each presets}}<button type="button" class="{{#if on}}on{{/if}}" data-action="setNpcPreset" data-preset="{{key}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{label}}</button>{{/each}}</div>
             {{#if escAny}}<label class="ps-esctog"><input type="checkbox" name="system.useEscalation" {{#if escOn}}checked{{/if}}> Escalation</label>{{/if}}
-            {{#if escOn}}<label class="ps-esctog"><input type="checkbox" name="system.eliteLadder" {{#if ladderOn}}checked{{/if}}> Default ladder</label>{{/if}}
             <span class="ps-right"></span>
             <label class="nb-stat"><span>Level</span><input type="number" min="0" name="system.level" value="{{level}}" aria-label="Level"></label>
             <div class="nb-stat dark"><span>Stage</span><b>{{stage}}</b></div>

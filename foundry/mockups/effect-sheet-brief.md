@@ -3,7 +3,7 @@
 Lucas's design (claude.ai Project "2d12 design", 2026-11-09). This brief is the whole spec: build from it, and use the two mockups for the look and the behavior.
 
 - **Approved mockup (the target):** `foundry/mockups/effect-rules-mockups.html` ("Prototype C", round 13). Open it in a browser: every control is clickable, the hover card and the rule sentences rebuild live, the **?** on the tab bar shows the help texts, and the left list holds worked examples (Vow of Enmity, Radiant Zeal, Beacon, Covering Shot, Brawler, Bow Mastery, Burning aura...).
-- **Earlier mockup (partly superseded):** `foundry/mockups/effect-details-prototype.html` ("redesign 1"). Only these parts of it still stand: the hover card preview with its "Write it yourself" override, and the **Automation** section at the bottom (section 3.8). Its "Who gets it" row (Effect / Aura / Zone), its "+ Add..." menu, its Rules checkboxes and its Ends row are **replaced** by this brief.
+- **Earlier mockup (partly superseded):** `archive/mockups/effect-details-prototype.html` ("redesign 1"). Only these parts of it still stand: the hover card preview with its "Write it yourself" override, and the **Automation** section at the bottom (section 3.8). Its "Who gets it" row (Effect / Aura / Zone), its "+ Add..." menu, its Rules checkboxes and its Ends row are **replaced** by this brief.
 
 The mockups' colors, fonts and pixel sizes are approximations of the system's look. Use the system's own CSS variables, fonts and components (the v0.0.289 sheet and v0.0.292 roll dialog look), not the mockup's hex values.
 
@@ -276,7 +276,7 @@ The old **Token light** block.
 
 
 ### 5.10 Zone (placed on the map) (PACK ZONE, Lucas's decisions 2026-11-10)
-Reference for the layout and the wording: `foundry/mockups/zone-prototype.html`, **option A** (B and C are rejected alternatives). Press **?** in it for the help texts.
+Reference for the layout and the wording: `archive/mockups/zone-prototype.html`, **option A** (B and C are rejected alternatives). Press **?** in it for the help texts.
 
 **Where it is** (the Details tab's first section, under the hover card): full-width segmented `On a creature | On the map (a Zone)`. "On a creature" shows the rule list (sections 3.4, 5.1 to 5.9). "On the map" hides it and shows The area, What it does inside and On the map; Ends stays below. Switching keeps both sides' settings. Help: "On a creature: the rules below need a bearer. On the map: the effect has no bearer; it is the area, and what it does to creatures inside."
 

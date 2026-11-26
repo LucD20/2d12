@@ -1,7 +1,7 @@
 // Stage 0 (levels 1 to 3) as the book has it since 2026-11-12 (pack "Stage 0 into the book"): the report. Writes book/ruler/stage0.md.
 //   node book/ruler/sim/stage0.mjs   (about 8 minutes; --quick 3)
 // The rules: core.mjs RULES_S0 (Escalation 1 to 6, Momentum 0 to 4, no Opportunity Attack, a [Ranged] Action while Engaged is Doomed), the weapon table of
-// Chapter 15, the Bestiary's Stage 0 table (the system's config.mjs npcStage0). The builds: stage0lib.mjs (the R builds cut to decisions-s1.md's level
+// Chapter 15, the Bestiary's Stage 0 table (the system's config.mjs npcStage0). The builds: stage0lib.mjs (the R builds cut to archive/book-drafts/decisions-s1.md's level
 // lists, until the class cards are written for Stage 0). The prototype this replaces: archive/ruler-old/stage0-prototype/.
 import fs from "node:fs";
 import process from "node:process";
@@ -14,7 +14,7 @@ const short = r => `${pc(r.lost)} · ${pc(r.down)} · ${pc(r.won)}`, momMix = k 
 
 const L = ["# Stage 0: levels 1 to 3 in the ruler", "", "Written by `node book/ruler/sim/stage0.mjs`; don't edit, run it again. Stage 0 as the book has it since 2026-11-12: **Escalation 1 to 6**, a fight starts at 1 + **Momentum** (0 to 4); **no Opportunity Attack**; a [Ranged] Action while Engaged is **Doomed**; the weapon table of Chapter 15 (a flat part plus one small die; melee +4 two-handed, +2 one-handed); **the Bestiary's Stage 0 table** (ready numbers: the system's `config.mjs npcStage0`).", "",
   `Runs: ${N} fights a cell on the open field, ${NM} on a map${QUICK ? " (--quick: a draft)" : ""}. Each fight cell: ${CELL}. The decisions are the plan policy's unless a column says otherwise.`, "",
-  "**The builds are not the classes' final Stage 0:** the class cards are still written for the old level lists (card sessions with Lucas come next). Until then the four R builds (Smite and Lay On Hands Paladins with Greatswords, Double Shot and Rolling Shot Archers with Crossbows; Human, 35 and 29 Health, Modifiers +2 / +1, Rally + 1, Guard 2 an unused AP) are cut to `book/decisions-s1.md`'s lists, with the Passives at Escalation 2, 4 and 6, no Apex, no Daily, no Talents:", "",
+  "**The builds are not the classes' final Stage 0:** the class cards are still written for the old level lists (card sessions with Lucas come next). Until then the four R builds (Smite and Lay On Hands Paladins with Greatswords, Double Shot and Rolling Shot Archers with Crossbows; Human, 35 and 29 Health, Modifiers +2 / +1, Rally + 1, Guard 2 an unused AP) are cut to `archive/book-drafts/decisions-s1.md`'s lists, with the Passives at Escalation 2, 4 and 6, no Apex, no Daily, no Talents:", "",
   "| Level | Paladin (Smite / Lay On Hands) | Archer (Double Shot / Rolling Shot) |", "|---|---|---|",
   "| 1 | Smite or Lay On Hands; Rebuke or Shield of Faith; at Escalation 2: Radiant Zeal / Font of Mercy | Sharpshooter, Mark Quarry; Double Shot or Rolling Shot; Overwatch or Covering Shot; at Escalation 2: Killer's Focus |",
   "| 2 | + the hook (Kindled Wrath); Holy Wrath (Encounter); at Escalation 4: Searing Blows / Mending Light | + the hook (Thrill of the Kill); Pinning Shot (Encounter); at Escalation 4: Hunter's Edge |",

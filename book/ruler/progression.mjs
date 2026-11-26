@@ -176,7 +176,7 @@ export function run() {
   const L = [], t0 = Date.now();
   const log = s => { if (!process.argv.includes("--silent")) process.stderr.write(s + "\n"); };
   L.push("# Progression models: the numbers (pack LV)", "",
-    "Written by `node book/ruler/progression.mjs` (the spec ruler, spec.mjs, with the map model). Don't edit this file: edit the script and run it again. The proposal that reads these numbers is `book/progression-lv.md`.", "",
+    "Written by `node book/ruler/progression.mjs` (the spec ruler, spec.mjs, with the map model). Don't edit this file: edit the script and run it again. The proposal that reads these numbers is `archive/book-drafts/progression-lv.md`.", "",
     `Runs: ${RUNS} fights a measurement, ${CAL_RUNS} a calibration step${QUICK ? " (--quick: a draft)" : ""}. Half the fights start with Momentum. The party: 2 weapon users (melee, AD 14) + 2 casters (ranged, AD 13, the round-1 floor). NPCs: the Bestiary's level 1 Medium NPCs with Health and damage multiplied by the level's factors; their Defense and Modifier never change (decided).`, "");
   for (const M of Object.values(MODELS)) L.push(`- **${M.name}.** ${M.note}`);
   L.push("");

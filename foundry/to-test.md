@@ -23,6 +23,14 @@ differ):
 Do: In a world from before v0.0.520, refresh the Basic Actions when asked (or Update from the compendium, Basic Actions too), then open Aveline's Actions tab and the HUD's Basic tab.
 Expect: Heal is now Tend (in Utility, same rolls and Rally Point button); Relocate has no Strike trait; Seek's card writes its lines once, with a Use button for 1 AP and one for 2 AP; Crawl's 2 AP block starts with "Requirement: Your Speed is 5 or higher."; Advance's card has its Advance button, and using Advance still moves at once (no card first).
 
+### cl-escalation · v0.0.520 · An NPC's Escalation switch without the default ladder
+Do: Open the Ogre Chieftain's sheet, Builder tab: turn Escalation on (no "Default ladder" switch beside it any more). Start a combat with it and Aveline, and play two rounds.
+Expect: The Ogre's Escalation rises each round as before; the chat line says "Ogre Chieftain's Escalation rises to N." with no "Now: Pressing..." text; its combat line shows the Bloodied +1 and Strained +1 hooks and the Escalation marks, but no Pressing / Relentless / Second Wind rungs; its first attack each round gets no free Boon. The sheet opens without an error.
+
+### cl-ruler · v0.0.520 · No Ruler line in Designer mode
+Do: Turn on Designer mode, open Aveline's Smite card on her sheet, then use Smite against the Orc Warrior.
+Expect: No "Ruler" line on the card or under the chat card (the Odds and the Automation lines stay in Designer mode).
+
 ### bst-sheets · v0.0.519 · The four playtest creatures' sheets
 Do: In a new world (or after importing them again from the NPCs compendium), open the Goblin Sneak, the Grave Wisp, the Orc Warrior and the Ogre Chieftain.
 Expect: Goblin Sneak: Minion, CV 30, 2 ticks (a "Ticks 2/2" bar, no Vigor or Resolve), AD 13, WD 12, Weapon and Power +2, Speed 6, Shiv, Jeer, Knife in the Back, Shriek and Scatter. Grave Wisp: Grunt, CV 50, Vigor 6, Resolve 12, AD 12, WD 14, Speed 6, its new portrait, the damage line "Immunity Cold · Resistance Psychic 3 · Weakness Holy 3", Drifting, Slipping Touch, Guttering Glance, Pass Through, Dying Flare. Orc Warrior: Standard, Vigor 22, Resolve 14, 13 / 13, Speed 5. Ogre Chieftain: Elite, CV 200, Vigor 44, Resolve 28, AD 14, WD 12, Large, Reach 2, Steadiness 1, Speed 5, no Escalation; Crushing Grip, Roar, Great Sweep, Hurled Goblin, Crack the Ground, Backhand. None of the old cards (Rusty Knife, Club, Rally the Tribe...).

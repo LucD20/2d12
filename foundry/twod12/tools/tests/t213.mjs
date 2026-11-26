@@ -40,7 +40,6 @@ console.log("--- the Basic Actions an NPC can't use, the Strikes pips, the Sense
 console.log("Steel Yourself:", M.basicUnavailable("rally", { npc: true, rallyLeft: 0 }), "| Stand:", M.basicUnavailable("stand", { npc: true }), "| Crawl:", JSON.stringify(M.basicUnavailable("crawl", { npc: true })));
 console.log("Strikes left (0, 1, 3 used):", [0, 1, 3].map(n => M.strikePips(n).map(x => (x ? "◆" : "◇")).join("")).join(" "));
 console.log("senses:", JSON.stringify(M.senseChips({}).map(c => c.label)), JSON.stringify(M.senseChips({ darksight: true, hearing: 10 }).map(c => c.label)), JSON.stringify(M.senseChips({ dimlight: true, hearing: 0, list: [{ name: "Tremorsense", range: 6 }] }).map(c => c.label)));
-console.log("the Elite's ladder:", M.ELITE_RUNGS.map(r => r.label).join(" | "));
 
 console.log("--- the template and the CSS");
 const src = f => fs.readFileSync(ROOT + f, "utf8"), tpl = src("templates/actor-sheet-pc.hbs"), css = src("styles/system.css"), sh = src("module/actor-sheets.mjs");

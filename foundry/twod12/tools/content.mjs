@@ -179,9 +179,9 @@ const weapon = (text, img, actions = []) => {
   if (w.problems.length) throw new Error(`${text}: ${w.problems.join("; ")}`);
   add("weapons", "weapon", w.name, img, { ...weaponSystemData(w), actions });
 };
-// v0.0.407 (Stage 0 in Foundry; book, Chapter 15; book/weapons-flat.md "DECIDED"): Tier 2 and Tier 3 as a flat part plus one die, which explodes (written
+// v0.0.407 (Stage 0 in Foundry; book, Chapter 15; archive/book-drafts/weapons-flat.md "DECIDED"): Tier 2 and Tier 3 as a flat part plus one die, which explodes (written
 // 1d6! in the book: every weapon's die explodes, explode.mjs). The book's table where it has the weapon; the Greatsword, the one-handed Longsword, the
-// Shortbow and the Longbow keep weapons-flat.md's numbers until the Bows and Swords pass replaces them (foundry-backlog.md, F3).
+// Shortbow and the Longbow keep archive/book-drafts/weapons-flat.md's numbers until the Bows and Swords pass replaces them (foundry-backlog.md, F3).
 // v0.0.412 (pack F3 part 2; book, Chapter 15, 2026-11-16): the weapon tables as the book writes them. The two Basic bows (Hunting Bow, Recurve Bow:
 // Strung, one hand) replace the Shortbow and the Longbow; the Arming Sword replaces the one-handed Longsword, and the Longsword is the two-handed sword
 // in the Greatsword's place; Light on the Dagger and the Handaxe. The other weapons are the book's placeholders (their numbers as written).
@@ -448,9 +448,13 @@ actors.push({ name: "Ice Pillar", img: "icons/svg/frozen.svg", tokenExtra: { dis
 const { loadCards, cardSystem, featureSystem, talentSystem, isAction, inlineCards } = await import("./cardgen.mjs");
 // v0.0.246: {{link:Name|label}} (a book link to a card) is Foundry's link to the compendium item, which opens it to read (an Action, else a Feature or Talent).
 export const resolveRefs = s => s.replace(/\{\{npc:([^}]+)\}\}/g, (m, n) => `Compendium.${SYSTEM}.npcs.Actor.${idOf("Actor", n)}`).replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n))
-  .replace(/\{\{link:([^}|]+)\|([^}]+)\}\}/g, (m, n, label) => { const c = CARDS.find(x => x.name === n) ?? CARDS.flatMap(x => inlineCards(x)).find(x => x.name === n); return `@UUID[${uuidOf(c && isAction(c) ? "actions" : "features", n)}]{${label}}`; });   // v0.0.254: an inline Action links to its item too
-export const CARDS = loadCards();
-for (const c of CARDS) {
+  .replace(/\{\{link:([^}|]+)\|([^}]+)\}\}/g, (m, n, label) => { const c = ALL_CARDS.find(x => x.name === n) ?? ALL_CARDS.flatMap(x => inlineCards(x)).find(x => x.name === n); return `@UUID[${uuidOf(c && isAction(c) ? "actions" : "features", n)}]{${label}}`; });   // v0.0.254: an inline Action links to its item too
+// the cleanup audit (2026-11-26): the set-aside cards (book/cards/set-aside/: the placeholder weapons' Techniques, the set-aside Talents) are built
+// here only into deprecatedDocs (the tests' fixtures, foundry/deprecated/); CARDS is what the live packs are built from
+const { isSetAside } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);
+const ALL_CARDS = loadCards(undefined, { setAside: true });
+export const CARDS = ALL_CARDS.filter(c => !isSetAside(c));
+for (const c of ALL_CARDS) {
   if (c.foundry?.basic) continue;
   if (c.foundry === false) continue;   // v0.0.360: a card kept only for the ruler (Marked Quarry: the Mark Quarry Action holds its rules)
   const img = c.foundry?.img ?? "icons/svg/sword.svg", folder = c.foundry?.folder ?? null;
@@ -477,7 +481,7 @@ const { loadCards: loadOldFiles } = await import(new URL("../../../book/cards/lo
 // v0.0.412: and the gear cards the bows and swords replaced (Skirmish Shot, Heartseeker, Guarded Cut, Reaping Sweep: load.mjs FOUNDRY_OVERLAY's drop)
 const { FOUNDRY_OVERLAY } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);
 const OLD_GEAR = new Set(Object.values(FOUNDRY_OVERLAY).flatMap(o => o.drop ?? []));
-export const OLD_CLASS_DOCS = loadOldFiles().filter(c => (["paladin.json", "archer.json"].includes(c._file) || OLD_GEAR.has(c.name)) && c.foundry !== false).flatMap(c => {
+export const OLD_CLASS_DOCS = loadOldFiles(undefined, { setAside: true }).filter(c => (["paladin.json", "archer.json"].includes(c._file) || OLD_GEAR.has(c.name)) && c.foundry !== false).flatMap(c => {
   const img = c.foundry?.img ?? "icons/svg/sword.svg", out = [];
   if (isAction(c)) out.push({ pack: "actions", type: "action", name: c.name, img, folder: "old", system: cardSystem(c, resolveRefs), old: true });
   else out.push({ pack: "features", type: "feature", name: c.name, img, folder: "old", system: featureSystem(c, resolveRefs), old: true });
@@ -485,7 +489,7 @@ export const OLD_CLASS_DOCS = loadOldFiles().filter(c => (["paladin.json", "arch
   return out;
 });
 // v0.0.185: the pick Features of v0.0.181 (Hallmark Action, Encounter Pick, Talent (Level 1)...) are gone: the classes have levels now.
-// The cards the P1 and A1 builds left out (book/paladin-old-cards.md, book/archer-old-cards.md): kept in the compendium, in folders of their own, for the Options step.
+// The cards the P1 and A1 builds left out (archive/book-drafts/paladin-old-cards.md, archive/book-drafts/archer-old-cards.md): kept in the compendium, in folders of their own, for the Options step.
 const OLD = { "Paladin (old cards)": ["Aegis", "Mercy's Reward", "Divine Vigil", "Avenger's Oath", "Vow of Enmity", "Rebuke (old)", "Champion's Challenge", "Divine Retribution", "Call to Arms", "Judgment", "Sanctified Ground", "Divine Vigil (Boon against Fear)",
     // v0.0.409 (pack F2): the effects of the Paladin's pack R cards, out of Foundry's Paladin with them (kept for old worlds' sheets)
     "Divine Power (1 Bane)", "Beacon (+1 Defense)", "Divine Surge", "Radiant Zeal", "Lay On Hands (Holy Strike)", "Smite (Bright light 1)", "Smite (Bright light 2)", "Hallowed Dawn (1 Bane)", "Hallowed Dawn (Bright light 1)", "Consecrated Ground (1 Bane)"],
@@ -579,65 +583,11 @@ pcBoth({ name: "Kaela (Human Archer, Strafe)", token: "Kaela", img: ART("kaela.w
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;
 
-/* ------------------------------------------------------------------ Flavor lines (one per item; a Talent and its Action share it) */
-const FLAVOR = {
- "Weapon Attack": "You strike with the weapon in your hands.",
- "Steel Yourself": "You grit your teeth and find a little more to give.",
- "Charge": "You close the distance in one straight, reckless line.",
- "Shove": "You put your weight behind it and drive them back.",
- "Haul": "You snag them and drag them in.",
- "Trip": "A hooked foot, a twist, and they hit the ground.",
- "Advance": "You press forward, one deliberate step at a time.",
- "Evade": "You slip through the fray without giving anyone an opening.",
- "Stand": "You get your feet back under you.",
- "Leaning": "You lean out from cover, just enough to see.",
- "Interact": "You pull the lever, open the door, grab what you need.",
- "Reload": "You work the mechanism and seat a fresh bolt.",
- "Divine Connection": "Your bond with your god opens new paths.",
- "Precise Aim": "You slow your breath and let the world narrow to one point.",
-  "Profane Judgment": "The profane flinch at your god's light.",
-  "Aegis": "Your watchful presence protects one soul above all.",
-  "Mercy's Reward": "Mercy shown is mercy returned.",
-  "Divine Vigil": "Your watch does not end when the fighting starts.",
-  "Avenger's Oath": "Every wound your friends take is written in the ledger.",
-  "Vow of Enmity": "You name a foe, and your god listens.",
-  "Rebuke (old)": "The hand that strikes the faithful is burned for its trouble.",
-  "Champion's Challenge": "You call them out, and they cannot look away.",
-  "Divine Retribution": "They struck you. Your god strikes back.",
-  "Call to Arms": "Your voice carries further than the fight.",
-  "Judgment": "The verdict is not yours to give, only to deliver.",
-  "Sanctified Ground": "You make a small piece of the world your god's, and it holds."
-};
-FLAVOR["Precise Aim"] = "You slow your breath and let the world narrow to one point.";
-FLAVOR["Quick Draw"] = "You loose before they take the second step.";
-FLAVOR["Wing Clip"] = "A shot at the knee is worth two in the chest.";
-FLAVOR["True Shot"] = "You see the gap in the wall, and the shot goes through it.";
-FLAVOR["Suppressing Fire"] = "They keep their heads down while your friends close in.";
-FLAVOR["Steady Aim"] = "Breathe in. Breathe out. Loose.";
-FLAVOR["Perfect Shot"] = "The arrow has already landed. You have only to release it.";
-FLAVOR["Bow Mastery"] = "One weapon has been in your hands longer than any other.";
-FLAVOR["Patient Hunter"] = "The shot is worth waiting for.";
-// v0.0.188 (OT): the book's Flavor lines of the new cards (Mark Quarry's is new here).
-
-for (const d of docs) if (["action", "talent", "feature"].includes(d.type) && FLAVOR[d.name]) d.system.flavor = FLAVOR[d.name];
-// v0.0.189 (Lucas): how much Foundry does for each current card (a chip on the card). Gold: all of it; Silver: one part by hand;
-// Bronze: buttons or a compendium effect, the rest by hand; Not implemented: text only. Old cards and Basic Actions have none set.
-const AUTO = {
-  gold: ["Rain of Arrows",
-    "Steady Nerves",
-    "Rimebrand", "Challenged", "Lay On Hands (Holy Strike)", "Smite (Bright light 1)", "Smite (Bright light 2)", "Vanish (+1 Defense)"],
-  silver: ["Cut Through"],
-  bronze: ["Harried"],
-  none: ["Class Expertise"]
-};
-// v0.0.215 (Lucas, playtest 2): what each Bronze and Silver card still leaves to the players (the diamond's tooltip, "By hand" on the item).
-const AUTO_NOTE = {
-};
-for (const c of CARDS) for (const d of docs) if (d.type === "effect" && d.name === c.name && c.foundry?.automation) { d.system.automation = c.foundry.automation; if (c.foundry.automationNote) d.system.automationNote = c.foundry.automationNote; }   // an Effect named like a card (Divine Surge, Pinning Shot) shows the card's rank
-for (const [rank, list] of Object.entries(AUTO)) for (const d of docs) if (list.includes(d.name) && ["action", "feature", "talent", "effect"].includes(d.type) && !/old cards/.test(d.folder ?? "") && !d.system.automation) { d.system.automation = rank; if (AUTO_NOTE[d.name] && ["bronze", "silver"].includes(rank)) d.system.automationNote = AUTO_NOTE[d.name]; }
+// the cleanup audit (2026-11-26, Lucas: "Remove them"): the FLAVOR, AUTO and AUTO_NOTE lists are gone (they named only old cards: every card
+// carries its own flavor and automation).
+for (const c of ALL_CARDS) for (const d of docs) if (d.type === "effect" && d.name === c.name && c.foundry?.automation) { d.system.automation = c.foundry.automation; if (c.foundry.automationNote) d.system.automationNote = c.foundry.automationNote; }   // an Effect named like a card (Divine Surge, Pinning Shot) shows the card's rank
 // v0.0.187: the Escalation Passives say so (the Features tab's Escalation section); a card says it with foundry.escalationPassive (Font of Mercy).
 for (const d of docs) if (d.type === "feature" && (/escalation/i.test(d.system.category ?? ""))) d.system.escalationPassive = true;
-for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["action", "talent", "feature"].includes(it.type) && FLAVOR[it.name]) { it.system ??= {}; it.system.flavor = FLAVOR[it.name]; }
 
 // v0.0.323 (PACK EFFECT-SHEET): every Effect, Feature and Talent carries its rules (the Details tab's source), its Ends and the hover text built from
 // them, read from its settings (fxrules.mjs migrate; the settings stay what the rolls read). The names of the dropped Effects come from the packs.

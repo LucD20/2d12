@@ -50,7 +50,7 @@ import { ensureHandsFor, releaseOptions, applyRelease, applyRegrip } from "./han
 import { passiveSources } from "./passives.mjs";
 import { weaponsFor, weaponCandidates, heldFirst, fistsOf, hasProp } from "./fists.mjs";
 import { effectOff } from "./escalation.mjs";
-import { npcBuilderContext, ratingUpdate, cvTip } from "./npcbuilder.mjs";
+import { ratingUpdate, cvTip } from "./npcbuilder.mjs";
 import { pcModel, handMenu, applyHandPick } from "./pcsheet.mjs";   // v0.0.289 (PACK SHEET): the character sheet's new layout
 import { pickConfirm, pickKeepRemove } from "./pickwindow.mjs";
 import { sysLine } from "./sysmsg.mjs";
@@ -108,7 +108,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       downChoice: CharacterSheet.downChoice, downCheck: CharacterSheet.downCheck, recover: CharacterSheet.recover, reviewSlots: CharacterSheet.reviewSlots, openClass: CharacterSheet.openClass, swapRest: CharacterSheet.swapRest
     }
   };
-  static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.289 (PACK SHEET); the NPC sheet keeps actor-sheet.hbs
+  static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.289 (PACK SHEET); the NPC sheet uses the same template since v0.0.291
 
   async _prepareContext(options) {
     const ctx = await super._prepareContext(options);
@@ -1385,16 +1385,13 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
    */
   static async showInfo(event, target) {
     event?.stopPropagation?.();
-    const info = String(target.dataset.info ?? ""), [kind, a, b] = info.split(":");
+    const info = String(target.dataset.info ?? ""), [kind, a] = info.split(":");
     const { pickWith } = await import("./pickwindow.mjs"), SM = await import("./sheetmodel.mjs");
     let name = target.textContent.replace(/\u2713/g, "").trim(), sub = "Escalation", html = "";
     if (kind === "item") {
       const items = String(a ?? "").split(",").map(id => this.actor.items.get(id)).filter(Boolean);
       const cards = await Promise.all(items.map(i => (i.type === "action" ? buildActionCard(i, { actor: this.actor, use: false }) : buildFeatureCard(i, { actor: this.actor }))));
       html = items.map((i, k) => `<h4 class="pw-ih">${esc(i.name)}</h4>${cards[k]}`).join("");
-    } else if (kind === "rule" && a === "elite") {
-      const r = SM.ELITE_RUNGS.find(x => String(x.n) === String(b));
-      name = r?.label?.replace(/^\d+\s*·\s*/, "") ?? name; sub = `Elite Escalation ${b}`; html = `<p>${esc(r?.tip ?? "")}</p>`;
     } else if (kind === "rule") {
       const [t, text] = SM.ESC_RULES[a] ?? [name, ""];
       name = t; html = `<p>${esc(text)}</p>`;
@@ -1595,7 +1592,6 @@ export class NpcSheet extends CharacterSheet {
   async _prepareContext(options) {
     const ctx = await super._prepareContext(options);
     return Object.assign(ctx, {
-      builder: npcBuilderContext(this.actor),   // the Builder tab (v0.0.163)
       weaponAttrChoices: TWOD12.attributes,
       modLeadChoices: { weapon: "Weapon Modifier", power: "Power Modifier" },   // v0.0.305 (pack MOD): an NPC's lead Modifier
       // The stat block's Tags as chips (× removes), and the ones that can still be added (v0.0.136).

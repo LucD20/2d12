@@ -11,8 +11,6 @@ const F = "twod12";
 export const EXPLODE_MOD = "xs";
 /** Pure: the book's notation to Foundry's: every "NdX!" becomes "NdXxs" (a die with no ! is left as it is). */
 export const toFoundryDice = f => String(f ?? "").replace(/(\d*)d(\d+)!/gi, (m, n, d) => `${n || 1}d${d}${EXPLODE_MOD}`);
-/** Pure: does a formula have a die that explodes? */
-export const hasExplodingDie = f => /d\d+!/i.test(String(f ?? ""));
 /** Pure: a weapon's die explodes, so its formula is written with ! ({ count, die: "d6", mod } times n: "2d6!+4"). */
 export function weaponDiceFormula(d, n = 1) {
   const dice = d?.die ? (Number(d.count) || 0) * n : 0, mod = (Number(d?.mod) || 0) * n;
@@ -32,8 +30,6 @@ export function weaponTierText(d) {
 }
 /** Pure: a die's results as the cards show them: the faces rolled (an exploded one included) and which faces exploded. */
 export const diceOfRoll = roll => (roll?.dice ?? []).map(d => { const live = (d.results ?? []).filter(x => x.active !== false); return { faces: d.faces, results: live.map(x => x.result), ex: live.map(x => !!x.exploded) }; });
-/** Pure: a die's total the book's way, from its faces (a face that exploded counts one less). */
-export const explodedTotal = results => (results ?? []).reduce((t, r) => t + (r.active === false ? 0 : (Number(r.result) || 0) - (r.exploded ? 1 : 0)), 0);
 
 /** Foundry: register the xs modifier on its Die (in "init"). Returns whether it could. */
 export function registerExplodingDice() {

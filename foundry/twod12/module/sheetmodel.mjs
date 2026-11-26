@@ -1,4 +1,4 @@
-// PACK SHEET (v0.0.289, Lucas's approved design: foundry/mockups/sheet-prototype.html): the pure pieces of the character sheet.
+// PACK SHEET (v0.0.289, Lucas's approved design: archive/mockups/sheet-prototype.html): the pure pieces of the character sheet.
 // Everything here takes plain data (no Foundry), so the tests (t212) load it; actor-sheets.mjs gathers the data and renders the template.
 
 /** The frequency colors of the sheet (Round blue, Encounter red, Turn and Reactions teal, At-will green, Daily the book's purple). */
@@ -328,13 +328,6 @@ export function senseChips(senses = {}) {
 /** The Strikes pips of the NPC strip: three diamonds, filled = Strikes left this turn. */
 export const strikePips = used => Array.from({ length: 3 }, (_, k) => k < Math.max(0, 3 - (Math.trunc(Number(used)) || 0)));
 
-/** The Elite's default Escalation effects (Bestiary, Elite Escalation; v0.0.407: at Escalation 2, 4 and 6 on the 1-to-6 ladder, ELITE_RUNGS_LADDER). */
-export const ELITE_RUNGS = [
-  { n: 2, label: "2 · Pressing", tip: "Escalation 2, Pressing: 1 Boon on its first [Strike] Action each turn-cycle." },
-  { n: 4, label: "4 · Relentless", tip: "Escalation 4, Relentless: it can use each of its Round Special Actions twice per turn-cycle." },
-  { n: 6, label: "6 · Second Wind", tip: "Escalation 6, Second Wind: it gets its Encounter Special Actions back, once." }
-];
-
 /** Dice (and flat numbers) that come close to an average, the Modifier taken out: 2.5 -> "1d4". "" when the Modifier alone is enough. */
 const DICE = [["", 0], ["1", 1], ["2", 2], ["1d4", 2.5], ["1d6", 3.5], ["1d8", 4.5], ["1d10", 5.5], ["1d12", 6.5], ["2d6", 7], ["2d8", 9], ["2d10", 11], ["2d12", 13], ["3d8", 13.5], ["3d10", 16.5], ["3d12", 19.5], ["4d10", 22], ["4d12", 26], ["5d10", 27.5], ["5d12", 32.5], ["6d12", 39], ["7d12", 45.5]];
 export function diceFor(avg) {
@@ -434,8 +427,6 @@ export function damageLinesMods(lines) {
 }
 /** The Damage block's rows: one per kind that has a line, in the order Immune, Resist, Weak. */
 export const damageLineRows = lines => DMG_KINDS.map(k => ({ kind: k, label: KIND_WORD[k], lines: (lines ?? []).filter(l => l.kind === k) })).filter(r => r.lines.length);
-/** One Immune / Resist / Weak written as text ("Resist 3 Blunt"), and a whole line list as the stored text ("Resist 3 Blunt, Immune Psychic"), for dmgMods fields. */
-export const dmgModsFromLines = (list, names) => list.map(l => (l.kind === "immune" ? `Immunity ${names[l.sub] ?? l.sub}` : `${KIND_WORD[l.kind]} ${names[l.sub] ?? l.sub} ${l.n}`)).join(", ");
 
 /** Pure (v0.0.418, E7): the Rally Points left after a click on pip k (0-based): that pip and the ones before it; the last lit pip clicked: one fewer. */
 export const rallyAfterClick = (k, left) => (k + 1 === left ? k : k + 1);
@@ -492,7 +483,7 @@ export const rungSymbol = k => `<svg class="ps2-sym" viewBox="0 0 24 28" aria-hi
 /**
  * Pure: the combat line's left part (rounds 2 and 3): the hooks and the Escalation ladder, side by side. A PC: its hooks (Critical, then its
  * other hooks; a used one stays, faint, with a check) and its Passives' rungs; an Elite: its phases as its hooks (Bloodied +1, Strained +1, a
- * triggered one checked) and the Elite ladder; a Standard NPC: none (its line holds only the marks). rungs: escRungs' or ELITE_RUNGS' { n, label, lit }.
+ * triggered one checked; no ladder since the cleanup audit, 2026-11-26); a Standard NPC: none (its line holds only the marks). rungs: escRungs' { n, label, lit }.
  */
 export function combatLists({ npc = false, elite = false, hookNames = [], used = {}, rungs = [], bloodied = false, strained = false, info = {} } = {}) {
   if (npc && !elite) return null;

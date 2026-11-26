@@ -31,7 +31,7 @@ folded in (P1, A1, E3). **Where the two disagree, this file wins.** The mockups 
 6. **Sharpshooter contains a choice** (one Projectile weapon starts at 3 Mastery). Weapon Mastery is out of scope: grant the Feature and leave the
    weapon choice to the player / D2. Say so in the version's checklist.
 7. **Sample content in the mockups is old:** the Paladin's Mind Health Multiplier is ×4 (not ×3); Aegis, Vow of Enmity, Divine Vigil, Avenger's
-   Oath, Call to Arms, Judgment, Profane Judgment and others are in `book/paladin-old-cards.md`. The migration fills the Repertoire and Escalation
+   Oath, Call to Arms, Judgment, Profane Judgment and others are in `archive/book-drafts/paladin-old-cards.md`. The migration fills the Repertoire and Escalation
    lists from the compendium **as C1 left it** (the book's cards).
 8. **Stages (E3):** levels 1-4 / 5-7 / 8-10. A level-up into a new Stage (5 or 8) can show a line in the window's header: "Stage 2: your Weapon
    and Power Modifiers +1 (never above +4)" (Chapter 5). The Modifier step itself is C1's work (actor data); this window only tells the player.

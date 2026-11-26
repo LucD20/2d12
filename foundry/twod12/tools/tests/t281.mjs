@@ -14,7 +14,7 @@ console.log("--- the two lists");
 const pcL = SM.combatLists({ hookNames: ["Kindled Wrath"], used: { crit: true }, rungs: SM.escRungs(4, { 2: ["Roving Judgment"], 4: ["Weight of Judgment"] }, true, 6) });
 console.log("a PC:", JSON.stringify(pcL.hooks), "|", pcL.ladder.map(r => `${r.n} ${r.name}${r.lit ? " (reached)" : ""}`).join(" / "));
 console.log("its shields: 3 kinds, one outline:", new Set(pcL.ladder.map(r => r.sym)).size === 3 && pcL.ladder.every(r => r.sym.includes('d="M3.25 3.25H20.75V14')), "| the 2nd has a chevron, the 3rd a chief too:", pcL.ladder[1].sym.includes("M6.6 17.6") && pcL.ladder[2].sym.includes("M3.25 3.25H20.75V10H3.25Z"));
-const el = SM.combatLists({ npc: true, elite: true, rungs: SM.ELITE_RUNGS.map(r => ({ ...r, lit: r.n <= 2 })), bloodied: true });
+const el = SM.combatLists({ npc: true, elite: true, rungs: [], bloodied: true });
 console.log("an Elite:", JSON.stringify(el.hooks), "|", el.ladder.map(r => `${r.n} ${r.name}${r.lit ? " (reached)" : ""}`).join(" / "), "| a Standard: none:", SM.combatLists({ npc: true }) === null);
 console.log("--- the Basic attack's line");
 console.log(SM.basicAttackLine({ t2: [{ dice: "1d4!+1" }], t3: [{ dice: "1d6!+3" }] }), "|", SM.basicAttackLine({ t2: [{ useW: true, wCount: 1, dice: "" }], t3: [{ useW: true, wCount: 1, dice: "2" }] }), "|", SM.basicAttackLine({}));

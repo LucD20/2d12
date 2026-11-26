@@ -119,7 +119,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 | Missing | Where |
 |---|---|
 | ~~The current rules (flat Boons and Banes, Favored, Flanking, High cover, the Field limit, NPC Modifier ratings, pack R's AP as the default)~~ | **done: the catch-up (section 3)** |
-| ~~Stage 0: levels 1 to 3 on `book/decisions-s1.md`'s level lists, no Talents; Escalation 1 to 6 with Momentum 0 to 4~~ | **done as a prototype (2026-11-12): `book/ruler/stage0.md`**; the row and the candidates wait for Lucas |
+| ~~Stage 0: levels 1 to 3 on `archive/book-drafts/decisions-s1.md`'s level lists, no Talents; Escalation 1 to 6 with Momentum 0 to 4~~ | **done as a prototype (2026-11-12): `book/ruler/stage0.md`**; the row and the candidates wait for Lucas |
 | ~~Walls and Line of Effect, Difficult Terrain, Collision~~ (**done: SIM-2**; Speed and the movement conditions priced by map: `book/ruler/maps.md`). Still: Large creatures, elevation, a Slide's Collision | SIM-2 (left) |
 | ~~Areas that last (Consecrated Ground, Covering Fire, Beacon's Aura) and an Action's area on the grid~~ (**done 2026-11-12**: `book/ruler/areas.md`). Still: Covering Fire's 1d4 on entering, Rain of Arrows' hazardous terrain | left |
 | Resist, Weak, Immune | SIM-1 (the system's `creatureDamageLines`) |

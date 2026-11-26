@@ -1,6 +1,6 @@
 // SIM-1 (2026-11-12): the encounter engine: the round and turn loop on the open field, Reactions, the NPCs' turns, days.
 // Moved here from spec.mjs; the decisions it used to make inline are in policy.mjs, and every thing that happens is written to the fight's log.
-import { RULES, C, CF, TW, RR, MP, rng, pick, pickU, rollDamage, parseDamage, npcDamage, guardPerAp } from "./core.mjs";
+import { RULES, C, CF, TW, RR, FT, MP, rng, pick, pickU, rollDamage, parseDamage, npcDamage, guardPerAp } from "./core.mjs";
 import { runTurn, group } from "./turn.mjs";
 import { planPolicy } from "./policy.mjs";
 
@@ -41,8 +41,8 @@ export const npcStrike = (R, f, t, banes, escalation = 3, pcs = [], boons = 0, b
 export function kitSeq(f, ap) {
   const out = []; let basics = 0;
   for (let s = 0; s < 3 && ap > 0; s++) {
-    const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && (f.roundSpecialN ?? 0) < RR.eliteRoundSpecials(f.esc, RULES.eliteRungs) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;
-    const boons = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;
+    const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && (f.roundSpecialN ?? 0) < FT.eliteRoundSpecials(f.esc, RULES.eliteRungs) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;
+    const boons = f.firstAtk ? FT.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;
     if (sp) { ap -= sp.ap; if (enc) f.encUsed = true; else f.roundSpecialN = (f.roundSpecialN ?? 0) + 1; out.push({ k: 0, mult: sp.mult * RULES.npcSpecials, boons }); }
     else { ap--; out.push({ k: basics++, mult: 1, boons }); }
   }
@@ -160,7 +160,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const zoneBanes = f => zones.filter(z => z.left > 0 && z.banes && !z.by.down && sideOf(z.by) !== sideOf(f) && inZone(z, f)).sort((x, y) => y.banes - x.banes)[0];
   const zoneHelp = (t, key) => zones.filter(z => z.left > 0 && z[key] && sideOf(z.by) === sideOf(t) && inZone(z, t))[0];
   /** Pack R-bestiary: an Elite's phases (+1 Escalation when it becomes Bloodied and when it becomes Strained) and its rung 3 (the Encounter Special comes back once). */
-  const eliteRung = f => { if (RR.eliteEncounterBack(f.esc, RULES.eliteRungs) && !f.encBack) { f.encBack = true; f.encUsed = false; f.encDone = null; } };   // encDone: its own Actions (the turn budget)
+  const eliteRung = f => { if (FT.eliteEncounterBack(f.esc, RULES.eliteRungs) && !f.encBack) { f.encBack = true; f.encUsed = false; f.encDone = null; } };   // encDone: its own Actions (the turn budget)
   const phase = f => { if (RULES.eliteEsc && RULES.elitePhases && f.role === "elite" && !f.dead && f.esc > 0 && f.esc < (RULES.eliteMax ?? 3)) { f.esc++; eliteRung(f); } };
   const killCheck = () => { for (const f of foes) {
     if (!f.dead && f.damage >= f.pool) { f.dead = true; f.deadRound = round; ev("dead", { who: nameOf(f) }); for (const p of pcs) if (p.build.escHook === "quarry" && p.quarry === f) hook(p, "class"); }
@@ -273,13 +273,13 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     ap -= f.reaction?.cost === 2 ? 1 : 0;   // a 2R Reaction needs an AP kept from the turn
     for (let guard = 0; guard < 8 && ap > 0 && !f.dead; guard++) {
       if (t?.down || (t && f.melee && !MP.adj(f, t))) t = PN.npcRetarget(E, f);
-      const ok = a => a.ap <= ap && (a.freq !== "enc" || !f.encDone?.has(a.name)) && (a.freq !== "round" || (f.roundDone?.get(a.name) ?? 0) < RR.eliteRoundSpecials(f.esc, RULES.eliteRungs)) && (a.kind === "help" || (t && strikes < RR.STRIKES_PER_TURN)) && actUseful(f, a, t);
+      const ok = a => a.ap <= ap && (a.freq !== "enc" || !f.encDone?.has(a.name)) && (a.freq !== "round" || (f.roundDone?.get(a.name) ?? 0) < FT.eliteRoundSpecials(f.esc, RULES.eliteRungs)) && (a.kind === "help" || (t && strikes < RR.STRIKES_PER_TURN)) && actUseful(f, a, t);
       const c = f.acts.filter(ok).sort((x, y) => (y.freq === "enc") - (x.freq === "enc") || y.pts / y.ap - x.pts / x.ap || (y.freq === "round") - (x.freq === "round") || y.ap - x.ap)[0];
       if (!c) break;
       ap -= c.ap; if (c.freq === "enc") (f.encDone ??= new Set()).add(c.name); if (c.freq === "round") (f.roundDone ??= new Map()).set(c.name, (f.roundDone.get(c.name) ?? 0) + 1);   // an Elite at its second rung: each Round Action twice
       if (c.kind === "help") { actHelp(f, c); continue; }
       const tt = spreadTarget(f, c, t), m = MP.mapMods(f, tt, f.melee ? "melee" : "ranged", W); if (!m) break;
-      const eb = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;
+      const eb = f.firstAtk ? FT.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;
       const k = c.freq === "atwill" ? (aw[c.name] = (aw[c.name] ?? -1) + 1) : 0; strikes++;
       const tg = actTargets(c, tt); if (c.area) { FX(f, "areaHits", tg.length); FX(f, "areaUses"); } for (const x of tg) actHit(f, c, x, k, { ...m, boons: m.boons + eb });
     }
@@ -478,11 +478,11 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     else if (!f.dead && RULES.npcSpecials && f.kit) {   // pack R prep: every AP left goes to attacks: the Encounter Special (once), the Round Special (once a round), Basic attacks (At-will Banes); 3 Strikes
       let basics = 0;
       for (let s = 0; s < 3 && ap > 0; s++) {
-        const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && f.roundSpecialN < RR.eliteRoundSpecials(f.esc, RULES.eliteRungs) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;   // Elite Escalation 2: the Round Special twice a round
+        const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && f.roundSpecialN < FT.eliteRoundSpecials(f.esc, RULES.eliteRungs) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;   // Elite Escalation 2: the Round Special twice a round
         if (t.down || (f.melee && !MP.adj(f, t))) t = PN.npcRetarget(E, f);
         if (!t) break;
         const m = MP.mapMods(f, t, f.melee ? "melee" : "ranged", W); if (!m) break;
-        const eb = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;   // Elite Escalation 1: its first attack each round has 1 Boon
+        const eb = f.firstAtk ? FT.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;   // Elite Escalation 1: its first attack each round has 1 Boon
         if (sp) { ap -= sp.ap; if (enc) f.encUsed = true; else { f.roundSpecial = round; f.roundSpecialN++; } f.curMult = sp.mult * RULES.npcSpecials; npcHit(f, t, 0, m.boons + eb, m.banes, m.doomed); f.curMult = 1; }
         else { ap--; npcHit(f, t, basics++, m.boons + eb, m.banes, m.doomed); }
       }

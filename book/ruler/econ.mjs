@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 const S = await import(new URL("./spec.mjs", import.meta.url).href);
 const C = await import(new URL("../../foundry/twod12/module/calc.mjs", import.meta.url).href);
 const CF = await import(new URL("../../foundry/twod12/module/config.mjs", import.meta.url).href);
-const TW = CF.TWOD12, HERE = fileURLToPath(new URL(".", import.meta.url));
+const TW = (await import(new URL("./sim/tables.mjs", import.meta.url).href)).TW, HERE = fileURLToPath(new URL(".", import.meta.url));
 const PO = await import(new URL("./positions.mjs", import.meta.url).href);   // pack E2: the prices of positions (map.mjs)
 
 /* ------------------------------------------------------------------ the assumptions (each one is in the report) */
@@ -195,12 +195,12 @@ const roleOf = b => A.roles[b.name.split(" (")[0]];
 const CATALOGUE_NOTES = {
   "catalogue/paladin-p1.txt": "**The P1 main build (pack P1, 2026-10-29; in the book since 2026-10-29)**: the defaults of every level 1 to 3 Pick, then the options in the Paladin document (Shield of Faith, Bulwark of Faith, Aura of Protection, Font of Mercy).",
   "catalogue/paladin.txt": "**The Paladin before P1** (the book until 2026-10-29), kept to compare.",
-  "catalogue/paladin-options.txt": "**The Paladin's options (pack OT, 2026-10-30; in the book: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default above.",
-  "catalogue/archer-options.txt": "**The Archer's options (pack OT, 2026-10-30; in the book: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default (A1).",
-  "catalogue/talents.txt": "**The Talents, melee (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the P1 Paladin's numbers.",
-  "catalogue/talents-ranged.txt": "**The Talents, ranged (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the A1 Archer's numbers.",
-  "catalogue/archer-a1.txt": "**The A1 main build (pack A1, 2026-10-29; PROPOSED: book/archer-a1.md)**: both Signatures and the defaults of every level 1 to 3 Pick.",
-  "catalogue/gear-d2.txt": "**The weapons and Weapon Techniques of D2 (2026-10-31; book/gear-d2.md)**: every weapon's Weapon Attack and its Technique, on a level 1 PC (Weapon Modifier +2).",
+  "catalogue/paladin-options.txt": "**The Paladin's options (pack OT, 2026-10-30; in the book: archive/book-drafts/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default above.",
+  "catalogue/archer-options.txt": "**The Archer's options (pack OT, 2026-10-30; in the book: archive/book-drafts/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default (A1).",
+  "catalogue/talents.txt": "**The Talents, melee (pack OT, 2026-10-30; in the book: archive/book-drafts/options-talents.md)**: priced on the P1 Paladin's numbers.",
+  "catalogue/talents-ranged.txt": "**The Talents, ranged (pack OT, 2026-10-30; in the book: archive/book-drafts/options-talents.md)**: priced on the A1 Archer's numbers.",
+  "catalogue/archer-a1.txt": "**The A1 main build (pack A1, 2026-10-29; PROPOSED: archive/book-drafts/archer-a1.md)**: both Signatures and the defaults of every level 1 to 3 Pick.",
+  "catalogue/gear-d2.txt": "**The weapons and Weapon Techniques of D2 (2026-10-31; archive/book-drafts/gear-d2.md)**: every weapon's Weapon Attack and its Technique, on a level 1 PC (Weapon Modifier +2).",
 };
 export function report() {
   Object.assign(S.RULES, S.RULES_PRE_R);   // the catch-up (2026-11-12): a pre-R study (the 5 AP classes of classes/, the rules before pack R); spec.mjs's default is the book today

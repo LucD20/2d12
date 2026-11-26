@@ -1,5 +1,5 @@
 {
- "_about": "The Paladin's cards (the Paladin document, 12-paladin.md). One source per card: book/cards/README.md. Pack R-classes (2026-11-04): the class rebuilt for 4 AP + 1 Reaction AP and Escalation as a level (book/rework-r.md sections 12 and 14).",
+ "_about": "The Paladin's cards (the Paladin document, 12-paladin.md). One source per card: book/cards/README.md. Pack R-classes (2026-11-04): the class rebuilt for 4 AP + 1 Reaction AP and Escalation as a level (archive/book-drafts/rework-r.md sections 12 and 14).",
  "cards": [
   {
    "name": "Divine Power",
@@ -24,7 +24,7 @@
    "name": "Kindled Wrath",
    "category": "Paladin Feature",
    "level": 1,
-   "_note": "Pack R-classes (2026-11-04): the Paladin's Escalation hook (rework-r.md 12.8; Core Rules, Escalation).",
+   "_note": "Pack R-classes (2026-11-04): the Paladin's Escalation hook (archive/book-drafts/rework-r.md 12.8; Core Rules, Escalation).",
    "flavor": "Their blood on the ground is the spark your god was waiting for.",
    "text": "Once an encounter, when an ally within 5 squares of you becomes Bloodied or goes Down, your [[Escalation]] increases by 1.",
    "foundry": {

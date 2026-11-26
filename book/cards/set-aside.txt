@@ -1,4 +1,5 @@
-# Cards set aside: kept in the card files (Foundry and the ruler still read them), shown by no chapter of the book for now.
+# Cards set aside: kept in the card files (the placeholder Techniques and the Talents in set-aside/*.json, read only for the checks, the tests'
+# fixtures and the frozen ruler), shown by no chapter of the book for now.
 # One name a line. To bring a card back: delete its line and place @@CARD:Name@@ in a chapter. (build_rules.py checks this list.)
 #
 # 2026-11-12, pack "Stage 0 into the book" (Lucas: "Talents are on the background until we finish Stage 0 of the two classes and understand the

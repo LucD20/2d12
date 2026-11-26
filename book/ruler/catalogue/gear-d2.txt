@@ -1,4 +1,4 @@
-# The weapons and Weapon Techniques of D2 (2026-10-31; book/gear-d2.md), priced on a level 1 PC (Weapon Modifier +2). Tiers written as dice (each weapon's own).
+# The weapons and Weapon Techniques of D2 (2026-10-31; archive/book-drafts/gear-d2.md), priced on a level 1 PC (Weapon Modifier +2). Tiers written as dice (each weapon's own).
 class Gear (D2 weapons)
 level 1
 attributes body 2, mind 1, instinct 1
@@ -30,7 +30,7 @@ action Thunderclap (Musket) | ap 1 | round | traits ranged strike weapon | vs ad
 
 turn Typical: Weapon Attack, Weapon Attack, Weapon Attack
 
-# Weapon Trees (book/weapon-trees.md): the Hunting Bow's Technique and its step at 20
+# Weapon Trees (archive/book-drafts/weapon-trees.md): the Hunting Bow's Technique and its step at 20
 action Wounding Shot (Hunting Bow) | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d6 + [Mod] / 1d10 + [Mod] | on 3: debuff Hindered (EoT)
 action Wounding Shot at 20 (Hunting Bow) | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d6 + [Mod] / 1d10 + [Mod] | on 2+: debuff Hindered (EoT)
 # Weapon Trees: the Recurve Bow (Basic): Skirmish Shot with its dice, and its step at 8

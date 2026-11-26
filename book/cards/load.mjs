@@ -6,22 +6,38 @@ import { fileURLToPath } from "node:url";
 
 export const CARDS_DIR = path.dirname(fileURLToPath(import.meta.url));
 
-/** Every card of every file, in file order (each knows its `_file`). Throws on a card with no name or a name written twice. */
-export function loadCards(dir = CARDS_DIR) {
-  const out = [], seen = new Map();
-  for (const f of fs.readdirSync(dir).filter(f => f.endsWith(".json")).sort()) {
-    let data;
-    try { data = JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")); }
-    catch (e) { throw new Error(`${f}: ${e.message}`); }
+/**
+ * The set-aside cards (the cleanup audit, 2026-11-26): set-aside/*.json (the placeholder weapons' Techniques, the Talents set aside in the book,
+ * Opportunity Attack). No live build shows them: they are read only for the checks (a name written twice, the book's set-aside list) and as the
+ * fixtures of the tests (content.mjs deprecatedDocs, foundry/deprecated/) and the frozen ruler, each asking for them with { setAside: true }.
+ */
+export const SET_ASIDE_DIR = "set-aside";
+const readFile = (dir, f, label) => {
+  try { return JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")); }
+  catch (e) { throw new Error(`${label}: ${e.message}`); }
+};
+/**
+ * Every card of every file, in file order (each knows its `_file`). Throws on a card with no name or a name written twice, the set-aside
+ * files' names included. With { setAside: true } the set-aside cards are returned too, each in its file's place (`_file` "set-aside/<file>").
+ */
+export function loadCards(dir = CARDS_DIR, { setAside = false } = {}) {
+  const out = [], seen = new Map(), aside = path.join(dir, SET_ASIDE_DIR);
+  const files = fs.readdirSync(dir).filter(f => f.endsWith(".json")).map(f => ({ f, label: f, from: dir }));
+  if (fs.existsSync(aside)) files.push(...fs.readdirSync(aside).filter(f => f.endsWith(".json")).map(f => ({ f, label: `${SET_ASIDE_DIR}/${f}`, from: aside, aside: true })));
+  files.sort((a, b) => (a.f < b.f ? -1 : a.f > b.f ? 1 : 0));
+  for (const { f, label, from, aside: isAside } of files) {
+    const data = readFile(from, f, label);
     for (const c of data.cards ?? []) {
-      if (!c.name) throw new Error(`${f}: a card has no name`);
-      if (seen.has(c.name)) throw new Error(`${f}: the card "${c.name}" is also in ${seen.get(c.name)}`);
-      seen.set(c.name, f);
-      out.push({ ...c, _file: f });
+      if (!c.name) throw new Error(`${label}: a card has no name`);
+      if (seen.has(c.name)) throw new Error(`${label}: the card "${c.name}" is also in ${seen.get(c.name)}`);
+      seen.set(c.name, label);
+      if (!isAside || setAside) out.push({ ...c, _file: label });
     }
   }
   return out;
 }
+/** Is this card one of set-aside/? */
+export const isSetAside = c => String(c?._file ?? "").startsWith(`${SET_ASIDE_DIR}/`);
 
 export const isReaction = c => Boolean(c.interrupt || c.trigger);
 export const hasVersions = c => Array.isArray(c.versions) && c.versions.length > 0;
@@ -45,8 +61,8 @@ export const STRUCTURE_DIR = "stage0";
  * and the old file's other cards stay, but the ones listed in `drop` (the gear: the two bows' and the two swords' Techniques; the placeholder
  * weapons keep theirs).
  */
-export const FOUNDRY_OVERLAY = { "gear.json": { file: "gear.json", drop: ["Skirmish Shot", "Heartseeker", "Guarded Cut", "Reaping Sweep"] },
-  "talents.json": { file: "talents-pt.json" },   // pack TALENTS-PT (2026-11-20): the four playtest Talents (Ricochet takes the old Talent's place)
+export const FOUNDRY_OVERLAY = { "set-aside/gear.json": { file: "gear.json", drop: ["Skirmish Shot", "Heartseeker", "Guarded Cut", "Reaping Sweep"] },
+  "set-aside/talents.json": { file: "talents-pt.json" },   // pack TALENTS-PT (2026-11-20): the four playtest Talents (Ricochet takes the old Talent's place)
   // the Bestiary's rebuild (2026-11-25, book/bestiary-design.md): a rebuilt creature's cards (stage0/bestiary.json, each with its `npc`); its old cards
   // leave Foundry and stay in ../bestiary.json as the fixtures of the tests that exercised their machinery (content.mjs OLD_CLASS_DOCS)
   // (the Goblin Sneak's, the Grave Wisp's and the Ogre Chieftain's old cards too, 2026-11-25: the Foundry pass of the four playtest creatures)
@@ -166,10 +182,11 @@ export function loadStructure(dir = path.join(CARDS_DIR, STRUCTURE_DIR)) {
 }
 /**
  * The cards Foundry builds (pack F2, v0.0.409): loadCards(), with each file of FOUNDRY_STRUCTURE replaced by its Structure file (read through
- * fromStructure). The ruler keeps loadCards().
+ * fromStructure). The ruler keeps loadCards(). The set-aside files are laid under it in their old places (so an overlay's card keeps its place)
+ * and left out, unless { setAside: true }.
  */
-export function loadFoundryCards(dir = CARDS_DIR) {
-  const all = loadCards(dir), st = loadStructure(path.join(dir, STRUCTURE_DIR));
+export function loadFoundryCards(dir = CARDS_DIR, { setAside = false } = {}) {
+  const all = loadCards(dir, { setAside: true }), st = loadStructure(path.join(dir, STRUCTURE_DIR));
   const out = [], over = new Map();
   for (const [oldFile, o] of Object.entries(FOUNDRY_OVERLAY)) for (const c of st[o.file] ?? []) over.set(c.name, { c, oldFile });
   const dropped = new Set(Object.values(FOUNDRY_OVERLAY).flatMap(o => o.drop ?? []));
@@ -184,5 +201,5 @@ export function loadFoundryCards(dir = CARDS_DIR) {
     if (names.has(c.name)) throw new Error(`${newFile}: the card "${c.name}" is also in another file`);
     names.add(c.name); out.push(fromStructure(c));
   }
-  return out;
+  return setAside ? out : out.filter(c => !isSetAside(c));
 }

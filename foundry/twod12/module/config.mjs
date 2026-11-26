@@ -326,7 +326,7 @@ export const TWOD12 = {
   // +1 once an encounter on a Critical and on the class's hook. momentumMax: the party's Momentum (roundrules.mjs momentumAfter).
   escalation: { min: 1, max: 6, momentumMax: 4 },
   npcSpeeds: [3, 4, 5, 6, 7],   // the Builder's Speed choices (5 by default); any other Speed is Custom
-  npcSpecial: [{ key: "basic", label: "Basic attack", sub: "1 AP, At-will", x: 1 }, { key: "s1", label: "Special, 1 AP", sub: "Round", x: 1.4 }, { key: "s2", label: "Special, 2 AP", sub: "Round", x: 2.2 }, { key: "s3", label: "Special, 3 AP", sub: "Encounter (not Minions)", x: 3.5 }],
+  // npcSpecial (the Specials' damage multipliers, 1 / 1.4 / 2.2 / 3.5): removed by the cleanup audit (2026-11-26); only the old Builder model and the SIM read it (its frozen copy: book/ruler/sim/tables.mjs)
   // A Stage 1 PC's damage a turn against a Defense (ruler: book/ruler/defense.mjs, mean of the Paladin's and the Archer's turn), for the Builder's check.
   // v0.0.181: checked against the P1 and A1 main turns (book/ruler/report.md: 24.7 / 23.1 / 21.4 at Defense 12 / 13 / 14), within 2%: kept.
   pcDamageVsDefense: { 11: 27.0, 12: 25.2, 13: 23.3, 14: 21.3, 15: 19.2, 16: 17.3 },

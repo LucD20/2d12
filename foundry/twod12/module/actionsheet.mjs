@@ -1,4 +1,4 @@
-// v0.0.355 PACK ACTION-SHEET (Lucas's pick, 2026-11-11: mockup A2, foundry/mockups/action-sheet-A2.html; the audit foundry/mockups/action-effects-audit.md).
+// v0.0.355 PACK ACTION-SHEET (Lucas's pick, 2026-11-11: mockup A2, archive/mockups/action-sheet-A2.html; the audit foundry/mockups/action-effects-audit.md).
 // The Action's Details tab: one page in the card's order (the card, when and where, a tab per Version with its Tiers, the Effects it applies and
 // the steps after the damage, the rules it holds, Automation at the bottom) and, on its left, the order of events of the selected Version.
 // Built with the EFFECT-SHEET pieces (fr-seg, fr-step, fr-tog, fr-part, fr-drop: system.css) plus the "as-" block (v0.0.355).

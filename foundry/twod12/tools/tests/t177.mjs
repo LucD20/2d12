@@ -16,7 +16,7 @@ const { allDocs: docs, uuidOf, CARDS, resolveRefs } = await import(ROOTURL + "to
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic-data.mjs");
 const S = await import(ROOTURL + "../../book/ruler/spec.mjs");
 
-const cards = loadCards();
+const cards = loadCards(undefined, { setAside: true });   // the cleanup audit (2026-11-26): the set-aside cards too (book/cards/set-aside/, the deprecated items' cards)
 console.log("cards:", cards.length, "| files:", [...new Set(cards.map(c => c._file))].join(", "));
 
 console.log("--- the generated Basic Actions");
@@ -43,7 +43,7 @@ const aside = new Set(fs.readFileSync(ROOT + "../../book/cards/set-aside.txt", "
 const s0dir = ROOT + "../../book/cards/stage0/";
 const stage0 = fs.existsSync(s0dir) ? fs.readdirSync(s0dir).filter(f => f.endsWith(".json")).flatMap(f => JSON.parse(fs.readFileSync(s0dir + f, "utf8")).cards.filter(c => c.book !== false).map(c => c.name)) : [];   // the Bestiary's rebuild (2026-11-25): a stage0 card the book does not show yet (an NPC's: book: false) is not placed
 // v0.0.409 (pack F2): the book's cards are the old files' (load.mjs loadCards) with stage0's in their place: these checks read the old files, as before
-const bookCards = (await import(ROOTURL + "../../book/cards/load.mjs")).loadCards();
+const bookCards = (await import(ROOTURL + "../../book/cards/load.mjs")).loadCards(undefined, { setAside: true });
 const shown = bookCards.filter(c => c.book !== false && !aside.has(c.name));
 console.log("set aside:", aside.size, "| each is a card:", [...aside].every(n => bookCards.some(c => c.name === n) || stage0.includes(n)), "| none is placed:", [...aside].every(n => !placed.has(n)));
 console.log("shown in the book:", shown.length, "| placed once:", shown.every(c => placed.get(c.name)?.length === 1), "| markers with no card:", [...placed.keys()].filter(n => !bookCards.some(c => c.name === n) && !stage0.includes(n)).join(", ") || "none", "| stage0 cards, each placed once:", stage0.filter(n => !aside.has(n)).length, stage0.filter(n => !aside.has(n)).every(n => placed.get(n)?.length === 1));   // pack TALENTS-PT: a stage0 card can be set aside (the playtest Talents)
@@ -66,7 +66,7 @@ for (const c of compendium) {
   if (c.weapon && !gone.has(c.name)) { const w = docs.find(d => d.type === "weapon" && d.name.toLowerCase() === c.weapon.toLowerCase()); if (w && !(w.system.actions ?? []).includes(uuidOf("actions", c.name))) bad.push(`${c.name}: not on its weapon`); }
 }
 const noWeapon = cards.filter(c => c.weapon && !docs.some(d => d.type === "weapon" && d.name.toLowerCase() === c.weapon.toLowerCase())).map(c => `${c.name} (${c.weapon})`);
-console.log("compendium cards:", compendium.length, "| one item each, equal to the card:", bad.length ? bad.join("; ") : "all", "| CARDS exported:", CARDS.length === cards.length);
+console.log("compendium cards:", compendium.length, "| one item each, equal to the card:", bad.length ? bad.join("; ") : "all", "| CARDS exported:", CARDS.length === cards.filter(c => !c._file.startsWith("set-aside/")).length);
 console.log("Techniques whose weapon is not in the compendium yet (information, for pack X):", noWeapon.length, noWeapon.length ? `(${noWeapon.slice(0, 3).join(", ")}...)` : "");
 if (bad.length) problemsEarly.push(...bad);
 console.log("--- every card reads for Foundry and the ruler");
@@ -78,7 +78,7 @@ for (const c of cards) {
 }
 // v0.0.409 (pack F2): the ruler reads the old files (load.mjs loadCards), Foundry the Paladin's Structure cards in their place
 const L0 = await import(ROOTURL + "../../book/cards/load.mjs");
-try { const lines = S.cardLines(L0.loadCards()); S.parseSpec(`class X\n${lines.join("\n")}\n`, "book/cards"); console.log("ruler lines:", lines.length, "| they parse:", true); }
+try { const lines = S.cardLines(L0.loadCards(undefined, { setAside: true })); S.parseSpec(`class X\n${lines.join("\n")}\n`, "book/cards"); console.log("ruler lines:", lines.length, "| they parse:", true); }
 catch (e) { problems.push(`ruler: ${e.message}`); }
 console.log("problems:", problems.length ? problems.join(" ; ") : "none");
 if (problems.length || check.status !== 0 || byHand.length) throw new Error("the card files and their targets disagree (see above)");

@@ -1,11 +1,12 @@
 // The Bestiary's turn budget (pack "The Bestiary's turn budget", 2026-11-12; rules-backlog.md, "THE BESTIARY'S DAMAGE AS A TURN BUDGET").
-// The price list (points), points into damage, and an NPC built from its Actions. The numbers are the system's (config.mjs npcBudget); a run can
+// The price list (points), points into damage, and an NPC built from its Actions. The numbers are the frozen copy of the system's (tables.mjs npcBudget); a run can
 // pass its own (calib.mjs tries several). Nothing here plays a fight: the engine (engine.mjs) runs an NPC's `acts` and `reaction`.
 import { TW, parseDamage, npcS0, avgDamage } from "./core.mjs";
 
 // v0.0.407 (pack "Stage 0 in Foundry"): the price list, points into damage, a rider's and an Action's price and the turn budget are the system's
 // own (foundry/twod12/module/npcbudget.mjs, the Builder's numbers), one copy; this file builds NPCs from them.
-const NB = await import(new URL("../../../foundry/twod12/module/npcbudget.mjs", import.meta.url).href);
+// the cleanup audit (2026-11-26): the frozen copy beside this file (npcbudget.mjs, on the frozen tables of tables.mjs), not the system's live one
+const NB = await import(new URL("./npcbudget.mjs", import.meta.url).href);
 export const { PRICES, expr, pointsAvg, pointsExpr, riderPrice, actionPoints, turnBudget } = NB;
 
 /**

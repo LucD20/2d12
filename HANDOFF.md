@@ -6,7 +6,7 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. **Re
 
 ## Where things stand (2026-11-26)
 
-- **Foundry: v0.0.520** (the cleanup audit followed: `book/audit-2026-11-25/foundry-needs.md`, 29 built, 40 already so, 12 open in `foundry/foundry-backlog.md`, "THE CLEANUP AUDIT: WHAT FOUNDRY STILL HAS TO FOLLOW"). 317 tests pass. Released once it reaches main (v0.0.519 is the release before it). **Not tested by Lucas:** the 15 `bst-*` tests (the Bestiary's rebuild) and the 7 `cu-*` tests (v0.0.520) in `foundry/to-test.md`. Existing worlds need the four creatures imported again from the NPCs compendium, and the Basic Actions refreshed (Heal becomes Tend).
+- **Foundry: v0.0.520** (the cleanup audit followed: `book/audit-2026-11-25/foundry-needs.md`, 29 built, 40 already so, 12 open in `foundry/foundry-backlog.md`, "THE CLEANUP AUDIT: WHAT FOUNDRY STILL HAS TO FOLLOW"). 316 tests pass. Released once it reaches main (v0.0.519 is the release before it). **Not tested by Lucas:** the 15 `bst-*` tests (the Bestiary's rebuild) and the 7 `cu-*` and 2 `cl-*` tests (v0.0.520) in `foundry/to-test.md`. Existing worlds need the four creatures imported again from the NPCs compendium, and the Basic Actions refreshed (Heal becomes Tend).
 - **The book:** Chapters 1 to 9 (Core Rules), 11 Species, 12 Paladin, 13 Archer, 14 Bestiary, 15 Gear; six HTML documents; the Talents document is set aside. Only Stage 0 (levels 1 to 3) is written. `python3 build_rules.py`: 0 unresolved refs, 20 open boxes.
 - **The core rework** (`book/core-rework.md`, section P is its order): batches 1 to 4 built. Batch 5 (Escalation): the first step is built (no Arts, no Escalation Passives, the Escalation Die dE, Steady Draw's 2dE); the rest waits (Lucas: no extra levels until level 1 feels good). Batches 6 and 7 are the Bestiary.
 - **The Bestiary** (`book/bestiary-design.md`): rebuilt from the ground up. Decided and in the book as playtest rules: the measure of a fight (Rally Points a PC, and Downs), the bands, the normal fight (CV 100 a PC), the four ranks' defaults (Minion with ticks, Grunt, Standard, Elite), and four creatures, one a rank (Goblin Sneak, Grave Wisp, Orc Warrior, Ogre Chieftain). **The Boss is parked until after playtest 8. Every number is a playtest value.**
@@ -16,7 +16,7 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. **Re
 ## What is happening now
 
 1. **Playtest 8** (Lucas): level 1 pregens against the new creatures. The fights Claude suggests are in `foundry/foundry-backlog.md`, "Playtest 8, the fights Claude suggests".
-2. **The cleanup audit** (`book/audit-2026-11-25/`): Lucas answered its 282 questions; 223 are applied to the book (`applied.md`), 16 are held as questions (`work-order.json`, `do: "hold"`), and Foundry follows the book in v0.0.520 (`foundry-needs.md`; the 12 open items in `foundry/foundry-backlog.md`).
+2. **The cleanup audit** (`book/audit-2026-11-25/`): Lucas answered its 282 questions; 223 are applied to the book (`applied.md`), 16 are held as questions (`work-order.json`, `do: "hold"`), and Foundry follows the book in v0.0.520 (`foundry-needs.md`; the 12 open items in `foundry/foundry-backlog.md`). The approved removals and moves are done too (old drafts, card builders and mockups in `archive/`; the sync scripts, the Elite ladder, the Ruler line and 21 unused functions gone).
 
 ## Waiting on Lucas
 
@@ -27,9 +27,8 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. **Re
 
 ## Known to be broken or behind
 
-- `node book/ruler/spec.mjs --check` fails on the Paladin's Weapon Attack (since batch 4). The ruler and the SIM (`book/ruler/sim/`) are frozen on the old Bestiary's numbers.
+- The ruler and the SIM (`book/ruler/sim/`) are frozen on the old Bestiary's numbers, on their own copy of the old tables (`book/ruler/sim/tables.mjs`, `npcbudget.mjs`); `node book/ruler/spec.mjs --check` prints "ok".
 - The NPC Builder tab still works on the old rating tables; the four new creatures use typed numbers.
-- The gallery's saved shots (`foundry/twod12/tools/gallery/`) are behind in the cloud environment: run it with `--update` on a machine whose shots are current.
 - Three creature cards leave something by hand: Pass Through, Hurled Goblin, Crushing Grip (`foundry/automation-ratings.md`).
 
 ## Which file is current, by topic

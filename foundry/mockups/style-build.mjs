@@ -1,5 +1,7 @@
 // BUILT (v0.0.369, pack STYLE-1): the system's theme is now made by foundry/twod12/tools/build-theme.mjs (this file's tokens, MAP, TYPE,
 // BY_HAND and CAR_B moved there). This file stays as the record of the approved mockups; it doesn't feed the system.
+// The step pages (*.html) it writes are history: since the cleanup audit (2026-11-26) they are written to archive/mockups/;
+// style-tokens.css and style-dark.css stay here.
 // Builds the STYLE mockups (Lucas, 2026-11-12: "keep collecting mockups; we won't apply anything until all is done"), in the audit's order
 // (style-audit.md). Nothing in the system changes.   node foundry/mockups/style-build.mjs
 //   style-tokens.css / style-tokens.html   1. the shared colors, dark (the default) and light, and the type
@@ -588,7 +590,7 @@ ${Object.entries(SETS).map(([k, css]) => `/* ==== ${k} ==== */\n${css}`).join("\
 ${BY_HAND}`);
 
 /* ------------------------------------------------------------------ the page shell */
-const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-sheet-dark.html", "6b. The NPC sheet"], ["carousel-dark.html", "7a. Carousel"], ["rest-dark.html", "7b. Action, Effect and Class sheets"], ["tools-dark.html", "7c. Generate Action and the log"], ["levels-dark.html", "7f. Levels window"], ["combat-pc-dark.html", "7d. PC sheet in combat"], ["combat-npc-dark.html", "7e. NPC sheet in combat"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
+const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-sheet-dark.html", "6b. The NPC sheet"], ["carousel-dark.html", "7a. Carousel"], ["rest-dark.html", "7b. Action, Effect and Class sheets"], ["tools-dark.html", "7c. Generate Action and the log"], ["levels-dark.html", "7f. Levels window"], ["combat-pc-dark.html", "7d. PC sheet in combat"], ["combat-npc-dark.html", "7e. NPC sheet in combat"], ["../../foundry/mockups/npc-hud-sheet.html", "The NPC sheet"], ["../../foundry/mockups/npc-hud-hud.html", "The HUD"]];
 const SHELL = `
 * { box-sizing: border-box; }
 body { margin: 0; background: #2a2723; color: #eee6d6; font: 14px/1.45 "Signika", "Segoe UI", system-ui, sans-serif; padding: 22px 22px 60px; --font-primary: "Signika", sans-serif; }
@@ -611,7 +613,7 @@ ul.notes { color: #c9c0ad; max-width: 1000px; margin: 6px 0 0; padding-left: 20p
 .stage .twod12-linebar { position: static; transform: none; width: 100%; max-width: none; }
 .stage .twod12-dock.open .td-body { display: block; }
 `;
-const page = (file, title, lead, body, css) => writeFileSync(here(`./${file}`), `<!DOCTYPE html>
+const page = (file, title, lead, body, css) => writeFileSync(here(`../../archive/mockups/${file}`), `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">

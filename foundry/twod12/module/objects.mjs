@@ -22,8 +22,6 @@ export const squareWalls = (x, y, s) => [[x, y, x + s, y], [x + s, y, x + s, y +
 export const actionDcOf = mod => (Number.isFinite(Number(mod)) && mod !== null && mod !== "" ? 11 + Number(mod) : 13);
 /** Pure: what one Action's damage does to an object that breaks at `breakAt`: "breaks" or "nothing". */
 export const hitOutcome = (dmg, breakAt) => ((Number(dmg) || 0) >= (Number(breakAt) || Infinity) ? "breaks" : "nothing");
-/** Pure: is a token's document a placed object (its flag placed)? */
-export const isPlaced = doc => !!(doc?.flags?.[F]?.placed ?? doc?.getFlag?.(F, "placed"));
 
 const actorOf = d => (d?.documentName === "Actor" ? d : d?.actor ?? null);
 const tokOf = actor => actor?.getActiveTokens?.()[0] ?? null;

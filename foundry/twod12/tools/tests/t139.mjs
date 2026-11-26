@@ -9,7 +9,7 @@ globalThis.Combat = class {}; globalThis.CONFIG = {}; globalThis.Hooks = { on() 
 globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: F, NumberField: F, StringField: F, BooleanField: F, ArrayField: F, SetField: F, HTMLField: F } },
   applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p } };
 const mv = await import(ROOTURL + "module/move.mjs"), fx = await import(ROOTURL + "module/fists.mjs"), b = await import(ROOTURL + "module/basic.mjs"), cf = await import(ROOTURL + "module/config.mjs");
-const { NpcData } = await import(ROOTURL + "module/data.mjs"), { npcBuilderContext } = await import(ROOTURL + "module/npcbuilder.mjs");
+const { NpcData } = await import(ROOTURL + "module/data.mjs");   // the cleanup audit (2026-11-26): npcBuilderContext removed, and its Steadiness row check
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 console.log("--- Collision counts the squares to the destination the origin chose");
 const line = n => Array.from({ length: n + 1 }, (_, k) => ({ di: k, dj: 0 }));
@@ -27,8 +27,6 @@ console.log("Pushed and Reposition ask whether to apply it:", mvSrc.includes("Ap
 const mk = sys => { const m = Object.create(NpcData.prototype); Object.assign(m, { level: 1, damage: { bodyLethal: 0, bodyNonlethal: 0, mindLethal: 0, mindNonlethal: 0 }, attributes: { body: 0, mind: 0, appeal: 0, instinct: 0 }, custom: { body: 0, mind: 0, appeal: 0, instinct: 0, bodyHealth: 10, mindHealth: 10 }, armorDef: 13, wardDef: 13,
   weaponAttribute: "body", powerAttribute: "mind", speed: 5, reachBase: 1, armor: "medium", bodyWounds: 0, mindWounds: 0, role: "standard", ratings: {}, steadiness: 0, parent: { type: "npc", items: [], itemTypes: { armor: [] } }, ...sys }); m.prepareDerivedData(); return m; };
 console.log("an NPC's Steadiness:", [0, 1, 3, -1].map(v => `${v} -> ${mk({ steadiness: v }).steadiness}`).join(", "));
-const ctx = npcBuilderContext({ system: mk({ steadiness: 2 }) }), g = ctx.groups.find(x => x.title === "Steadiness"), row = g?.rows[0];
-console.log("the Builder tab's Steadiness row:", row ? `${row.chips.map(c => c.label + (c.on ? "*" : "")).join(" ")} | ${row.how}` : "MISSING", "| its buttons call setSteadiness:", row?.chips.every(c => c.act === "setSteadiness"));
 const tpl = src("templates/item-sheet.hbs"), isj = src("module/item-sheet.mjs"), content = src("tools/content.mjs");
 console.log("species sheet buttons 0-4:", tpl.includes('data-action="setSteadiness"') && isj.includes("steadinessChoices: [0, 1, 2, 3, 4]"), "| Dwarf 1, the others 0:", /sp\("Dwarf"[^;]*4, 1\);/.test(content) && !/sp\("(Human|Elf)"[^;]*, 1\);/.test(content.replace(/sp\("Human"[^;]*;/, m => m.replace(/, 1\)/, ", 0)"))));
 console.log("--- Fists are an ordinary weapon");

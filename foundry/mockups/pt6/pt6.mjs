@@ -117,7 +117,7 @@ function built(a, pc, st) {
   pc.strip.esc.pips = Array.from({ length: 6 }, (_, k) => k < escN);
   pc.strip.esc.hookList = st.hookList ?? [];
   pc.strip.esc.marks = SM.escMarks(escN, 6, [2, 4, 6]);
-  pc.strip.lists = SM.combatLists({ npc: pc.npc, elite: pc.strip.elite, hookNames: st.hookNames ?? [], used: st.used ?? {}, rungs: pc.npc ? SM.ELITE_RUNGS.map(r => ({ ...r, lit: escN >= r.n })) : SM.escRungs(escN, st.rungs ?? {}, true, 6), bloodied: a.system.bloodied, strained: a.system.strained });
+  pc.strip.lists = SM.combatLists({ npc: pc.npc, elite: pc.strip.elite, hookNames: st.hookNames ?? [], used: st.used ?? {}, rungs: pc.npc ? (SM.ELITE_RUNGS ?? []).map(r => ({ ...r, lit: escN >= r.n })) : SM.escRungs(escN, st.rungs ?? {}, true, 6), bloodied: a.system.bloodied, strained: a.system.strained });
   for (const g of pc.basic) for (const r of g.rows) { const f = CFG.effectiveFrequency(r.item.system); r.fq = f === "round" ? "round" : "atwill"; r.cost = String(r.cost).replace(/\s*AP$/, ""); }
   pc.mods.forEach(m => { m.tile = m.label; });
   for (const sc of pc.sections) for (const r of sc.rows) if (r.basicAtk) r.sub = [SM.basicAttackLine(r.item.system.versions?.[0]), ...String(r.sub).split(" · ").filter(x => /^Area/.test(x))].join(" · ");

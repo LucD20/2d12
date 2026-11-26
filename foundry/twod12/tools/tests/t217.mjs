@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t217.mjs)
-// v0.0.301 PACK BB (book Ch. 1, the new Boons and Banes; book/boons-banes.md): a Boon is +1 and a Bane -1, they cancel; Field, Pressure and Support
+// v0.0.301 PACK BB (book Ch. 1, the new Boons and Banes; archive/book-drafts/boons-banes.md): a Boon is +1 and a Bane -1, they cancel; Field, Pressure and Support
 // count up to 2 of each name and side (before cancelling); 5 or more left make the roll Favored / Doomed instead; Favored keeps the two highest, any
 // pair of the three is Doubles, three of a kind a Critical; High cover is Doomed (no Field Banes) and makes a Save Favored; Flanking up to 2.
 import fs from "node:fs";

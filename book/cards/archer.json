@@ -1,5 +1,5 @@
 {
- "_about": "The Archer's cards (the Archer document, 13-archer.md). One source per card: book/cards/README.md. Mark Quarry is Foundry-only. Pack R-classes (2026-11-04): the class rebuilt for 4 AP + 1 Reaction AP and Escalation as a level (book/rework-r.md sections 12 and 14).",
+ "_about": "The Archer's cards (the Archer document, 13-archer.md). One source per card: book/cards/README.md. Mark Quarry is Foundry-only. Pack R-classes (2026-11-04): the class rebuilt for 4 AP + 1 Reaction AP and Escalation as a level (archive/book-drafts/rework-r.md sections 12 and 14).",
  "cards": [
   {
    "name": "Sharpshooter",
@@ -48,7 +48,7 @@
    "name": "Thrill of the Kill",
    "category": "Archer Feature",
    "level": 1,
-   "_note": "Pack R-classes (2026-11-04): the Archer's Escalation hook (rework-r.md 12.8; Core Rules, Escalation).",
+   "_note": "Pack R-classes (2026-11-04): the Archer's Escalation hook (archive/book-drafts/rework-r.md 12.8; Core Rules, Escalation).",
    "flavor": "The first one falls, and the rest of the world sharpens.",
    "text": "Once an encounter, when your Marked Quarry goes Down, your [[Escalation]] increases by 1.",
    "foundry": {
@@ -556,7 +556,7 @@
     "passive": "escalation 1: extra 1d6 first-hit shot strike weapon"
    },
    "escalation": 1,
-   "_note": "Pack R-classes: the Escalation 1 wrath pick (it needed Escalation 2); \"that deals damage\" as Radiant Zeal says (rework-r.md 14.4, Lucas's answer in 14.3): about 0.5 AP a turn."
+   "_note": "Pack R-classes: the Escalation 1 wrath pick (it needed Escalation 2); \"that deals damage\" as Radiant Zeal says (archive/book-drafts/rework-r.md 14.4, Lucas's answer in 14.3): about 0.5 AP a turn."
   },
   {
    "name": "Harrying Shots",

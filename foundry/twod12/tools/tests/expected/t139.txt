@@ -8,7 +8,6 @@ the push preview uses the chosen destination: true | the old value-based call is
 Pushed 3 vs Steadiness 1 = 2 | Pushed 1 vs Steadiness 1 = 0 | Pushed 2 vs Steadiness 4 = 0 | Pushed 5 vs Steadiness 0 = 5 | Pushed 3 vs Steadiness -2 = 3
 Pushed and Reposition ask whether to apply it: true
 an NPC's Steadiness: 0 -> 0, 1 -> 1, 3 -> 3, -1 -> 0
-the Builder tab's Steadiness row: 0 1 2* 3 4 | Forced Movement and Reposition against it are reduced by 2 | its buttons call setSteadiness: true
 species sheet buttons 0-4: true | Dwarf 1, the others 0: true
 --- Fists are an ordinary weapon
 the Fists item: {"traits":["barehanded","melee","nonthreatening"],"range":"1","damage":[0,2,"d6"]} | a weapon property list has Non-threatening: true

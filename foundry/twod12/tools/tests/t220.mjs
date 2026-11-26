@@ -71,7 +71,6 @@ const parsed = (await import(ROOTURL + "module/inline.mjs")).parseInline("Condit
 console.log("@Condition[bleed|...] parsed:", JSON.stringify(parsed.bleed), "| the cond:", parsed.cond);
 
 console.log("--- the Elite's Escalation (escalation.mjs)");
-console.log("rungs (v0.0.407: 2 / 4 / 6):", [1, 2, 3, 4, 5, 6].map(n => `${n}: ${ESC.eliteRung(n)}`).join(" | "));
 console.log("phases from the state words:", JSON.stringify(ESC.elitePhases(["Bloodied"])), JSON.stringify(ESC.elitePhases(["Bloodied", "Strained"])), JSON.stringify(ESC.elitePhases(["Down"])));
 const ups = [];
 const elite = { type: "npc", name: "Ogre Chieftain", system: { useEscalation: true, escalation: 2 }, flags: {}, getFlag(s, k) { return this.flags[k]; }, async update(u) { ups.push(JSON.stringify(u)); if (u["system.escalation"] !== undefined) this.system.escalation = u["system.escalation"]; for (const [k, v] of Object.entries(u)) if (k.startsWith("flags.twod12.escUsed.")) (this.flags.escUsed ??= {})[k.split(".").pop()] = v; } };

@@ -149,7 +149,7 @@ console.log("v0.0.274: a new Move Action, a new key (Opportunity Attack again af
 console.log("--- the eight cards' moments (book texts unchanged)");
 const CG = await import(ROOTURL + "tools/cardgen.mjs");
 const cards = f => JSON.parse(fs.readFileSync(ROOT + "../../book/cards/" + f, "utf8")).cards;
-const all = [...cards("paladin.json"), ...cards("archer.json"), ...cards("basic-actions.json")];
+const all = [...cards("paladin.json"), ...cards("archer.json"), ...cards("basic-actions.json"), ...cards("set-aside/talents.json")];   // Opportunity Attack: set-aside/talents.json since the cleanup audit
 const show = (name, sys) => `${name}: ${sys.moment} ${sys.momentRange ?? 0}${sys.momentSelf ? " +you" : ""}${sys.momentTarget === "source" ? " on the attacker" : ""} (${sys.reactionKind})`;
 for (const n of ["Divine Intervention", "Shield of Faith", "Bulwark of Faith", "Covering Shot", "Rebuke", "Overwatch", "Opportunity Attack"]) console.log(show(n, CG.cardSystem(all.find(c => c.name === n), x => x)));
 const step = CG.inlineCards(all.find(c => c.name === "Beacon")).find(c => c.name === "Beacon's Step");

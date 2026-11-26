@@ -7,7 +7,7 @@
 //   the Tier table (a navy head with a "Use · N AP" button per Version, struck with the reason when you can't pay it and its column dimmed;
 //   "Tier 1", "Tier 2", "Tier 3", "Critical" in full; riders under the damage after "↳");
 //   the Effects block (one line per Version, its AP badge); "Your roll" (the Modifier and the self-side chips the roll dialog detects);
-//   the Flavor at the bottom under ◆ ◆ ◆; the ruler line in Designer mode only.
+//   the Flavor at the bottom under ◆ ◆ ◆ (the ruler line in Designer mode: removed by the cleanup audit, 2026-11-26).
 // With actor: what effects add inside the cells in green or red (as before), the strip, the Version buttons. The pure pieces: cardview.mjs.
 // The chat cards are unchanged (chatcards.mjs, preview.mjs).
 import { mergeDiceLine, namesWithCount } from "./dicemerge.mjs";
@@ -18,7 +18,7 @@ import { actionChanges, unloadedWeapon, traitsFor } from "./actionrows.mjs";
 import { rollSource } from "./rollsource.mjs";
 import { modifierList, damageSteps } from "./effects.mjs";
 import { collectBonuses, bonusesNotNow } from "./bonus.mjs";
-import { versionButtons, rollStripChips, modText, rulerText, rollsItself } from "./cardview.mjs";
+import { versionButtons, rollStripChips, modText, rollsItself } from "./cardview.mjs";
 import { costPill } from "./sheetmodel.mjs";
 import { esc } from "./util.mjs";
 import { cardModel, shortModel, tierLines } from "./cardmodel.mjs";   // Pack CARD-ONE step 2
@@ -27,17 +27,6 @@ const enrich = async (txt, doc = null) => highlightText(await foundry.applicatio
 const MODE = { weapon: "Weapon mode", power: "Power mode" };
 /** The Frequency chip's colors (the brief): Encounter red, Round blue, Turn teal, At-will green, Daily purple. */
 export const FREQ_CHIP = { encounter: "#a8322d", round: "#2c5d9e", turn: "#0F6E6E", atwill: "#4c7a2e", daily: "#5B3FA6" };
-const setting = k => { try { return game.settings.get("twod12", k) === true; } catch (e) { return false; } };
-
-/** The trait line: a block per group (Roll, Requires, Kind, Damage, Keywords), the group's label under its chips, a thin line between blocks. */
-export function traitLine(traits) {
-  const list = [...(traits ?? [])], label = k => String(TWOD12.traits[k] ?? k);
-  const blocks = TWOD12.traitGroups.map(g => {
-    const ks = list.filter(k => traitGroupOf(k) === g.key).sort((a, b) => label(a).localeCompare(label(b)));
-    return ks.length ? `<span class="ap-tg"><span class="ap-cs">${ks.map(k => `<span class="ap-chip g-${g.key}">${esc(label(k))}</span>`).join("")}</span><i>${esc(g.label)}</i></span>` : "";
-  }).filter(Boolean);
-  return blocks.join('<span class="ap-gdiv" aria-hidden="true"></span>');
-}
 
 /** One cell of the table: the tier's damage as written, its rider on its own line after "↳", then (with changes) Empowered/Enfeebled and bonus damage in green or red. */
 async function cell(item, v, n, ch) {
@@ -181,7 +170,6 @@ export async function buildActionCard(item, { actor = null, use = true, short = 
     } catch (e) { console.warn("twod12 | Your roll", e); }
   }
   if (!live && oneBtn) live = `<div class="st-live st-only">${oneBtn}</div>`;
-  const ruler = short ? "" : rulerText(it.worth, setting("designerMode"));
   const rank = it.automation && !short ? `<span class="st-auto">${autoChip(it.automation, it.automationNote)} ${esc(TWOD12.automationRanks?.[it.automation] ?? "")}</span>` : "";
   const traits = it.traits?.size ? traitWords(it.traits) : "";
   return `<div class="twod12 acard d2 st${short ? " st-short" : ""}" data-card-item="${esc(item.id ?? "")}">
@@ -189,7 +177,6 @@ export async function buildActionCard(item, { actor = null, use = true, short = 
     ${traits || rank ? `<div class="st-traits">${traits}${rank}</div>` : ""}
     ${grid ? `<div class="st-grid">${grid}</div>` : ""}${areaRow}
     ${top.join("")}${body}${special}${modifierBlocks(it).join("")}${live}
-    ${ruler ? `<div class="st-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
   </div>`;
 }
 
@@ -197,7 +184,7 @@ export async function buildActionCard(item, { actor = null, use = true, short = 
  * v0.0.298 (Lucas tested v0.0.297: "Features should look similar to cards like Opportunity Attack"): a Feature's or Talent's card on the sheets
  * in the same look as an Action with no table: the trait line (traits, category, Frequency chip), the meta lines (Prerequisites, Requirements),
  * "◆ Effects" and its text, what it grants (each Action as its card, a choice folded), the Talent slots and "Modifies", the Flavor at the bottom,
- * the ruler in Designer mode. A Talent that is only its Action shows that Action's card. v0.0.439 (CARD-ONE step 7): a Species and a Class too (buildInfoCard retired).
+ * (the ruler line: removed by the cleanup audit, 2026-11-26). A Talent that is only its Action shows that Action's card. v0.0.439 (CARD-ONE step 7): a Species and a Class too (buildInfoCard retired).
  */
 export async function buildFeatureCard(item, { actor = null } = {}) {
   // v0.0.411 (pack F2): the same look as the Action card (the book's): the Flavor on top, the trait words and the rank, the labeled lines
@@ -217,13 +204,11 @@ export async function buildFeatureCard(item, { actor = null } = {}) {
   if (grants.length) blocks.push(`<div class="st-b"><div class="st-bh"><span>Grants</span></div>${(await Promise.all(grants.map(async d => `<div class="ap-grant">${head(d)}${await full(d)}</div>`))).join("")}</div>`);
   if (options.length) blocks.push(`<div class="st-b"><div class="st-bh"><span>${esc(s.choiceLabel || "Choose")} ${Math.max(1, s.choiceCount || 1)}</span></div>${(await Promise.all(options.map(async d => `<details class="ap-grant ap-choice"><summary>${head(d)}</summary>${await full(d)}</details>`))).join("")}</div>`);
   if (s.talents) blocks.push(stLine("Talent slots", esc(String(s.talents))));
-  const ruler = rulerText(s.worth, setting("designerMode"));
   const rank = s.automation ? `<span class="st-auto">${autoChip(s.automation, s.automationNote)} ${esc(TWOD12.automationRanks?.[s.automation] ?? "")}</span>` : "";
   return `<div class="twod12 acard d2 st feat" data-card-item="${esc(item.id ?? "")}">
     ${s.flavor ? `<div class="st-flavor">${esc(s.flavor)}</div>` : ""}
     ${traits || rank ? `<div class="st-traits">${traits}${rank}</div>` : ""}
     ${lines}${blocks.join("")}${modifierBlocks(s).join("")}
-    ${ruler ? `<div class="st-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
   </div>`;
 }
 

@@ -2,7 +2,7 @@
 
 Lucas: "I feel at this point, there is more confusion with rules, left over things and others that are getting in the way." Then: "Do it. Also, during the pass, checking for wording (like unnecessary wording you might have added, because I know sometimes some sentences are added because they are more a instruction you needed than necessary to be added). You can then give me in a file, could be a html with the wording/contradiction problems and the 'should be removed' options as well, then from the html I answer them all and send it to you."
 
-Three passes. **Nothing in the rulebook or in Foundry is changed by the audit: every finding is a question on the answer page.**
+Three passes. **The audit itself changed nothing in the rulebook or in Foundry: every finding was a question on the answer page.** What was done after the answers is at the end of this file.
 
 1. **The book against itself** (`findings-book-*.json`): contradictions, a rule stated in one place only, a word with no rule, a number from something replaced, an unmarked placeholder, and wording that is an instruction to the writer and not a rule.
 2. **The records** (`findings-records.json`): which files are current, which are history.
@@ -32,4 +32,14 @@ Pass 2 (these records) was applied directly: `HANDOFF.md` and `MASTER-PLAN.md` r
 
 The answer page is published as the artifact "2d12 Cleanup Audit" (https://claude.ai/artifact/4G7jW9VNCei8tLDPUxTNyf); Lucas's answers save in its database (collection `answers`, one document a finding: `choice` is the option's index from 0, `note` his own words) and its Copy my answers button gives them as text.
 
-**Nothing in the rulebook or in Foundry was changed.** When Lucas sends his answers, one pack applies them: the book first (rules-src, logged in `rules-backlog.md`), then Foundry.
+**Lucas answered all 282 (2026-11-26).** His answers: `answers.json`; how each was read: `work-order.json`; what changed in the book: `applied.md`; what Foundry followed: `foundry-needs.md`; the questions still held for him: `work-order.json`, `do: "hold"`.
+
+## The removals and moves (2026-11-26, after the answers)
+
+Done in Foundry v0.0.520's commit, from Lucas's answers to the Foundry and files questions:
+
+- **Moved to `archive/`:** the card-source proof and proposal and 17 old drafts (`book-drafts/`), the Action Builder and the Card Workbench (`card-builder/`; `book/cards/manual/budget.js` stays, two files read it), 23 old mockup pages (`mockups/`). **Moved to `book/ideas/`:** `base-building.md`, `expedition-loop.md`. **Moved to `book/cards/set-aside/`:** `gear.json`, `talents.json` and Opportunity Attack's card.
+- **Removed:** the sync scripts (`Update Foundry.cmd`, `tools/`), the default Elite ladder, the Ruler line on cards, the old Builder model (`npcBuilderContext`), FLAVOR / AUTO / AUTO_NOTE in `content.mjs`, 21 functions nothing called, test t179.
+- **Repaired:** `node book/ruler/spec.mjs --check` prints "ok" again; the SIM reads its own frozen copy of the old Bestiary's tables (`book/ruler/sim/tables.mjs`, `npcbudget.mjs`), and its reports come out unchanged; the gallery's shots are saved again (98).
+- **Not moved:** `playtest-2.md` to `playtest-6.md` (the SIM reads one; HANDOFF names them). **Not edited:** the guarded magic files, so 15 of them keep the old paths of moved files.
+- **CLAUDE.md** (F-039): the test count, the sync scripts' sentence, the SIM's frozen copy, what `archive/`, `book/ideas/` and `book/cards/set-aside/` hold.

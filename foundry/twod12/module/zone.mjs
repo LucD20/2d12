@@ -130,29 +130,6 @@ export async function refreshZones() {
   finally { running = false; if (again) { again = false; scheduleZoneRefresh(); } }
 }
 export function scheduleZoneRefresh() { clearTimeout(timer); timer = setTimeout(refreshZones, 250); }
-/** At the start of a creature's turn: the heals of the Zones it stands in (rolled, said in the chat, then its Heal window). */
-export async function zoneTurnStart(combatant) {
-  const td = combatant?.token, actor = td?.actor;
-  if (!td || !actor) return 0;
-  const cells = tokenCells(td);
-  let n = 0;
-  for (const r of zonesOf(td.parent)) {
-    const zone = r.getFlag(F, "zone");
-    if (!inZone(zone, cells)) continue;
-    const side = zoneSide(zone, td.disposition);
-    for (const rule of zone.rules ?? []) {
-      if (!rule.heal || !ruleWants(rule, side)) continue;
-      const roll = await new Roll(rule.heal).evaluate();
-      try { const { showDice } = await import("./roll.mjs"); await showDice([roll]); } catch (e) { /* no dice */ }
-      const { sysLine } = await import("./sysmsg.mjs"), { esc } = await import("./roll.mjs");
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-medical", `<b>${esc(zone.name)}</b>: <b>${esc(actor.name)}</b> heals <b>${roll.total}</b> (${esc(rule.heal)}) at the start of its turn.`, "fxm") });
-      const { promptHeal } = await import("./healwin.mjs");
-      await promptHeal(actor, roll.total, { source: zone.name, lead: `${zone.name}: ${roll.total} healing` });
-      n++;
-    }
-  }
-  return n;
-}
 export function registerZoneHooks() {
   const sched = () => scheduleZoneRefresh();
   for (const h of ["canvasReady", "createToken", "deleteToken", "createRegion", "deleteRegion", "updateRegion"]) Hooks.on(h, sched);

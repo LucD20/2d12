@@ -34,7 +34,7 @@ function shapeOf(c, vi) {
   const dist = /aura/i.test(m[1]) ? "self" : sq ? sq[1] : /maximum/i.test(d) ? "max" : /weapon|range/i.test(d) ? "weapon" : "self", t = String(c.target ?? "");
   return `shape ${m[1].toLowerCase()} ${n} dist ${dist} who ${/enem/i.test(t) ? "enemies" : /all(y|ies)/i.test(t) && !/creatures/i.test(t) ? "allies" : "all"}`;
 }
-export function cardLines(cards = CARDS.loadCards()) {
+export function cardLines(cards = CARDS.loadCards(undefined, { setAside: true })) {   // the set-aside cards too (book/cards/set-aside/): the ruler is frozen on them
   const out = [];
   for (const c of cards) {
     if (c.ruler === false || c.ruler?.skip) continue;
@@ -494,10 +494,14 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(proces
     // 2. The map's Boons and Banes: the Field limit, High cover, Flanking (map.mjs against the book's examples).
     for (const [name, got, want] of mapChecks()) if (JSON.stringify(got) !== JSON.stringify(want)) { bad++; console.log(`FAIL map ${name}: got ${JSON.stringify(got)}, want ${JSON.stringify(want)}`); }
     // 3. A turn: one Weapon Attack of each build (no passives) against every Defense, both rule sets' builds.
+    // The cleanup audit (2026-11-26): the build's Weapon Attack is the book's Basic Attack (the alias in parseSpec): each Tier as its card writes it,
+    // a Tier 1 that deals damage ([V] 1d4!) and a weapon die more on Tier 3 (1[D]); it counted only [W] + [Mod] on Tiers 2 and 3.
     const all = [...builds, ...fs.readdirSync(`${HERE}${PRE ? "rework" : "classes"}/`).filter(f => f.endsWith(".txt")).sort().map(f => parseSpec(fs.readFileSync(`${HERE}${PRE ? "rework" : "classes"}/${f}`, "utf8"), `${PRE ? "rework" : "classes"}/${f}`))];
     for (const b of all) for (const d of fights.defenses) {
       const p = C.tierProbs(b.weaponMod, d), w = [0, 1, 2].map(t => weaponTier(b.weapon, t + 1)), avg = x => x.flat + x.dice.reduce((s, [c, n]) => s + c * ((n + 1) / 2 + (RULES.explode && n > 1 ? 0.5 : 0)), 0);   // a weapon's die explodes -1 (the book since 2026-11-12): +0.5 a die
-      const exact = p[1] * (avg(w[1]) + b.weaponMod) + p[2] * (avg(w[2]) + b.weaponMod);
+      const own = dice => dice.reduce((s, [c, n, ex]) => s + c * ((n + 1) / 2 + (ex && n > 1 ? 0.5 : 0)), 0);   // the card's own dice (1d4!: it explodes -1)
+      const wa = b.actions["weapon attack"], tierAvg = (x, i) => (x ? x.flat + x.mod * b.weaponMod + own(x.dice) + x.w * avg(w[i]) + (x.d || 0) * avg({ flat: 0, dice: w[i].dice }) : (i ? avg(w[i]) + b.weaponMod : 0));
+      const exact = [0, 1, 2].reduce((s, i) => s + p[i] * tierAvg(wa?.tiers?.[i], i), 0);
       const sim = turnDamage({ ...b, passives: [], turns: { one: { name: "one", steps: ["Weapon Attack"] } } }, "one", d, { n: 200000 }).avg;
       const ok = Math.abs(sim - exact) < 0.1; if (!ok) { bad++; console.log(`FAIL ${b.file} Weapon Attack vs ${d}: exact ${exact.toFixed(2)}, simulated ${sim.toFixed(2)}`); }
     }

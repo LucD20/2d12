@@ -29,7 +29,7 @@ function model(a, st) {
       const rr = it.basicRating || "medium", rank = TWOD12.npcRoles[s.role] ? s.role : "standard", sug = NB.npcSuggest({ rank, rating: rr, basic: true });
       const est = (Number(s.stage) || 0) === 0 ? `${sug.t2} / ${sug.t3}` : SM.npcRow(TWOD12.npcRoles[rank], TWOD12.npcRatings, rr, s.stage).basic.join(" / ");
       const subs = [`Basic attack · ${TWOD12.npcRatings[rr]?.label ?? rr} · ~${est}`];
-      if (pc.strip.elite && escN >= SM.ELITE_RUNGS[0].n) subs.push("+1 Boon on its first attack this round");
+      if (pc.strip.elite && escN >= (SM.ELITE_RUNGS ?? [])[0]?.n) subs.push("+1 Boon on its first attack this round");
       r.sub = subs.join(" · ");
     }
   }
@@ -75,9 +75,9 @@ function elite(host, pc, a) {
   const s = a.system, ph = [["Bloodied +1", !!s.bloodied], ["Strained +1", !!s.strained]];
   const cell = el("div", "ps2-cell g1-ph");
   cell.innerHTML = `<span class="ps2-hk">Phases</span><span class="g1-pl">${ph.map(([w, on]) => `<span class="${on ? "on" : ""}"><b>${w}</b> ${on ? "✓" : "<i>not yet</i>"}</span>`).join("")}</span>`
-    + `<span class="g1-rungs">${pc.strip.eliteRungs.map(r => { const [n, name] = String(r.label).split(" · "); return `<span class="${r.lit ? "lit" : ""}">${esc(n)} ${esc(name)}</span>`; }).join("")}</span>`;
+    + `<span class="g1-rungs">${(pc.strip.eliteRungs ?? []).map(r => { const [n, name] = String(r.label).split(" · "); return `<span class="${r.lit ? "lit" : ""}">${esc(n)} ${esc(name)}</span>`; }).join("")}</span>`;
   old.replaceWith(cell);
-  const n = pc.strip.esc.n, at = new Set(SM.ELITE_RUNGS.map(r => r.n));
+  const n = pc.strip.esc.n, at = new Set((SM.ELITE_RUNGS ?? []).map(r => r.n));
   marks.querySelector(".bane")?.remove();
   marks.insertAdjacentHTML("beforeend", `<span class="k">Esc.</span><span class="ps2-mrow"><span class="ps2-epips">${Array.from({ length: 6 }, (_, k) => `<a class="${k < n ? "on" : ""}${at.has(k + 1) ? " rg" : ""}" data-action="setEscalation" data-n="${k + 1}" role="button" aria-label="Elite Escalation ${k + 1}"></a>`).join("")}</span><b class="ps2-en">${n}</b></span>`);
   line.classList.add("g1-el");

@@ -4,12 +4,14 @@
 globalThis.foundry ??= { utils: {}, applications: { api: {} } }; globalThis.foundry.data ??= { fields: {} }; globalThis.foundry.data.fields ??= {}; globalThis.foundry.abstract ??= {}; globalThis.foundry.abstract.TypeDataModel ??= class {};   // stand-ins: the system's data.mjs declares its data models on load (the ruler reads only its pure NPC Modifier functions) globalThis.game ??= { settings: { get: () => true } }; globalThis.CONFIG ??= {}; globalThis.Hooks ??= { on() {} };
 export const C = await import(new URL("../../../foundry/twod12/module/calc.mjs", import.meta.url).href);
 export const CF = await import(new URL("../../../foundry/twod12/module/config.mjs", import.meta.url).href);
-export const TW = CF.TWOD12;
+// the cleanup audit (2026-11-26): the Bestiary's old tables are the SIM's own frozen copy (tables.mjs); the rest is the system's config
+export const FT = await import(new URL("./tables.mjs", import.meta.url).href);
+export const TW = FT.TW;
 export const RR = await import(new URL("../../../foundry/twod12/module/roundrules.mjs", import.meta.url).href);   // SIM-1: the rules of a round, the system's own (v0.0.365)
 export const GD = await import(new URL("../../../foundry/twod12/module/guard.mjs", import.meta.url).href);   // the catch-up: the unused AP's Guard by Stage (guardPerAP), the system's own
 export const DM = await import(new URL("../../../foundry/twod12/module/data.mjs", import.meta.url).href);   // the catch-up: the NPC Modifier ratings (npcModRatings, npcModValue), the system's own
 export const BT = await import(new URL("../bestiary-today.mjs", import.meta.url).href);   // pack R-bestiary: the pre-R tables (RULES.bestiary "today")
-export const bHm = (...a) => (RULES.bestiary === "r" ? CF.npcHm : BT.npcHm)(...a); export const bDmg = (...a) => (RULES.bestiary === "r" ? CF.npcDamage : BT.npcDamage)(...a);
+export const bHm = (...a) => (RULES.bestiary === "r" ? FT.npcHm : BT.npcHm)(...a); export const bDmg = (...a) => (RULES.bestiary === "r" ? FT.npcDamage : BT.npcDamage)(...a);   // "r": the frozen copy (tables.mjs) of config.mjs's
 export const MP = await import(new URL("../map.mjs", import.meta.url).href);   // the map model (pack E2)
 export const MAP = MP.MAP, MAPDIST = MP.dist, MAPCOND = MP.applyCondition, MAPFORCE = MP.force;
 /**
@@ -55,7 +57,7 @@ export const RULES_R = { ap: TW.apPerTurn, reactionAp: TW.reactionAp, escalation
  * `weapon` lines. **RULES_S0 adds the 1-to-6 Escalation ladder and Momentum 0 to 4** (momentum "ladder": a day's fights start at Escalation
  * 1 + Momentum, +1 per encounter overcome, -1 per PC that went Down; roundrules.mjs escalationStartAt, momentumAfter). It is not the default yet,
  * because the class cards still write their Passives at Escalation 1 / 2 / 3 and the Apex at 3: sim/stage0.mjs sets it, with the Passives moved to
- * 2 / 4 / 6 and the level lists of decisions-s1.md. When the class cards are on the new ladder (the card sessions), RULES becomes RULES_S0: one line.
+ * 2 / 4 / 6 and the level lists of archive/book-drafts/decisions-s1.md. When the class cards are on the new ladder (the card sessions), RULES becomes RULES_S0: one line.
  * weapons "r": a class file's `weapon` line is read with the weapon table of before Stage 0 (WEAPONS_R below), so the studies pinned to RULES_R
  * (maps.md, policies.md, areas.md, playtest-4-sim.md, reactions.md, rclasses.md, rbestiary.md) still come out as they were written.
  * RULES_R stays as pack R's rules (the Opportunity Attack for every creature, 2 Banes): the studies of that time can still set it.
@@ -63,7 +65,7 @@ export const RULES_R = { ap: TW.apPerTurn, reactionAp: TW.reactionAp, escalation
 /** The weapon table before Stage 0 (Chapter 15 until 2026-11-12), for the builds' weapons: read when RULES.weapons is "r". */
 export const WEAPONS_R = { Greatsword: "0 / 1d8 / 2d6", Crossbow: "0 / 1d4+2 / 1d10+2" };
 export const RULES_BOOK = { ...RULES_R, explode: "all", empDie: RR.EMPOWERED_DIE, weapons: "book", oaAll: RR.BASIC_OPPORTUNITY_ATTACK, npcOa: RR.BASIC_OPPORTUNITY_ATTACK, engagedRanged: RR.ENGAGED_RANGED_DOOMED ? "doomed" : "banes" };
-export const RULES_S0 = { ...RULES_BOOK, escMax: RR.ESC_LADDER_MAX, momentum: "ladder", eliteMax: RR.ESC_LADDER_MAX, eliteRungs: RR.ELITE_RUNGS_LADDER, minionSquad: RR.MINION_SQUAD };   // eliteMax / eliteRungs (Lucas, 2026-11-12): an Elite's Escalation follows the 1-to-6 ladder; its three abilities at 2, 4 and 6 until it gets its own
+export const RULES_S0 = { ...RULES_BOOK, escMax: RR.ESC_LADDER_MAX, momentum: "ladder", eliteMax: RR.ESC_LADDER_MAX, eliteRungs: FT.ELITE_RUNGS_LADDER, minionSquad: RR.MINION_SQUAD };   // eliteMax / eliteRungs (Lucas, 2026-11-12): an Elite's Escalation follows the 1-to-6 ladder; its three abilities at 2, 4 and 6 until it gets its own
 export const RULES = { ...RULES_BOOK };
 /** Guard per unused AP for a PC of this level (apGuard "stage": the book's 2 / 3 / 4 by Stage; a number: that much). */
 export const guardPerAp = lv => (RULES.apGuard === "stage" ? GD.guardPerAP(CF.stageOf(lv)) : Number(RULES.apGuard) || 0);
@@ -78,15 +80,16 @@ export const npcStrikeAvg = (npc, ad) => { const p = C.tierProbs(npc.mod, ad, 0,
 export function rng(seed = 2026) { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 export const die = (R, s) => 1 + Math.floor(R() * s);
 /**
- * One roll, die by die, with the system's own rules (calc.mjs: bbFive, mergeState, keepThree, tierOf): 2d12 + mod + Boons - Banes against a DC, each 12
+ * One roll, die by die, with the system's own rules (calc.mjs: bbResolve, keepThree, tierOf): 2d12 + mod + Boons - Banes against a DC, each 12
  * counted as 11 and rolled again; 3d12 when Favored or Doomed. Returns { tier, crit, total }. The fights pick a Tier from tierProbs (the same odds, faster);
- * `--check` rolls this against them, and SIM can roll it.
+ * `--check` rolls this against them, and SIM can roll it. The cleanup audit (2026-11-26): Boons and Banes resolve as tierProbs does (bbResolve, the core
+ * rework A3: a Favored or Doomed source counts as 5 before cancelling); it was bbFive + mergeState. Only `--check` calls it.
  */
 export function rollDice(R, mod, dc, boons = 0, banes = 0, state = "") {
   const one = () => { let f = die(R, 12), t = 0; const first = f; while (f === 12) { t += 11; f = die(R, 12); } return { f: first, t: t + f }; };
-  const five = C.bbFive(boons, banes), st = C.mergeState(state, five.five);
-  if (!st) { const a = one(), b = one(), total = a.t + b.t + mod + five.add; return { ...C.tierOf(total, dc, a.f === b.f), total }; }
-  const trio = [one(), one(), one()], k = C.keepThree(trio, st), total = trio[k.keep[0]].t + trio[k.keep[1]].t + mod + five.add;
+  const r5 = C.bbResolve(boons, banes, state === "favored", state === "doomed"), st = r5.state;
+  if (!st) { const a = one(), b = one(), total = a.t + b.t + mod + r5.add; return { ...C.tierOf(total, dc, a.f === b.f), total }; }
+  const trio = [one(), one(), one()], k = C.keepThree(trio, st), total = trio[k.keep[0]].t + trio[k.keep[1]].t + mod + r5.add;
   return { ...C.tierOf(total, dc, k.doubles, k.triple), total };
 }
 /** The map's rules against the book's examples (Chapter 3: Flanking, Cover; Chapter 1: Named Boons and Banes): [name, got, want]. */
@@ -194,7 +197,7 @@ export function npcOf(role, rating = "medium", level = 1, opts = {}) {
   // by default the lead one Medium and the other Low (a Standard's Medium too); a `power` NPC leads with Power. fights.txt: `wmod-high`, `pmod-low`.
   // `mod` is the Modifier of its Basic attack (Weapon; Power for a `power` NPC). Before: ceil(Body / 2 + 1), the same numbers at the defaults.
   const mr = DM.npcModRatings({ role, modLead: opts.power ? "power" : "weapon", ratings: { wmod: opts.wmod ?? "", pmod: opts.pmod ?? "" } });
-  const weaponMod = DM.npcModValue(role, mr.weapon), powerMod = DM.npcModValue(role, mr.power), mod = opts.power ? powerMod : weaponMod;
+  const weaponMod = FT.npcModValue(role, mr.weapon), powerMod = FT.npcModValue(role, mr.power), mod = opts.power ? powerMod : weaponMod;
   const kit = RULES.npcSpecials ? npcKit(role) : undefined;
   return { role, rating, name: opts.name ?? r.label, pool: hp(body) + hp(mind), ad: Math.max(TW.defenseBase, r.defense), wd: Math.max(TW.defenseBase, r.defense), mod, weaponMod, powerMod, modRatings: mr, ...(kit ? { kit } : {}),
     save: { body, mind, instinct: attr("medium"), appeal: attr("medium") }, t2: bDmg(role in TW.npcRoles ? role : "standard", opts.drating ?? rating, level)[0], t3: bDmg(role in TW.npcRoles ? role : "standard", opts.drating ?? rating, level)[1],

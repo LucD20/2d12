@@ -181,7 +181,8 @@ def report_cards(cards, placed, problems, parsed):
     """The checks of the card files: every card the book shows is placed once; no chapter still writes a card by hand that the files have; markers resolve."""
     out = list(problems)
     aside = set_aside()
-    for name in sorted(aside - set(cards)): out.append(f'cards/set-aside.txt: no card is named "{name}"')
+    aside_cards = CARDS.by_name(CARDS.load_set_aside())   # book/cards/set-aside/*.json: read only for this check
+    for name in sorted(aside - set(cards) - set(aside_cards)): out.append(f'cards/set-aside.txt: no card is named "{name}"')
     for name in sorted(aside & placed): out.append(f'cards/set-aside.txt: "{name}" is set aside but a chapter places it')
     for name, c in cards.items():
         if c.get('book') is False or name in aside: continue
@@ -194,5 +195,5 @@ def report_cards(cards, placed, problems, parsed):
     counts = {}
     for n in placed: counts[n] = counts.get(n, 0) + 1
     kind = 'ok  ' if not out else 'WARN'
-    print(f'  {kind} cards of book/cards/ ({len(cards)} cards, {len([n for n, c in cards.items() if c.get("book") is not False and n not in aside])} shown in the book, {len(aside)} set aside){"" if not out else ": " + str(len(out))}')
+    print(f'  {kind} cards of book/cards/ ({len(cards)} cards and {len(aside_cards)} in set-aside/, {len([n for n, c in cards.items() if c.get("book") is not False and n not in aside])} shown in the book, {len(aside)} set aside){"" if not out else ": " + str(len(out))}')
     for o in out: print(f'         {o}')

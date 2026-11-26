@@ -76,8 +76,6 @@ export function chooseLine(cells, { prefer = new Set(), legal = () => true } = {
   return out;
 }
 
-/** How many squares of a line are a tie (for the chat and the tests). */
-export const tieCount = cells => cells.filter(c => c.alt).length;
 
 /* ------------------------------------------------------------------ the canvas */
 const onSegment = (p, x0, y0, x1, y1, tol) => {

@@ -104,7 +104,6 @@ export function toggleLoE(token) {
   redrawRangeRings();
   return true;
 }
-export const loeOn = token => state?.tokenId === token?.id;
 export const loeShown = () => !!state;
 
 /** v0.0.215 (Lucas, playtest 2): the selected token of yours (the shortcuts), or a warning. */

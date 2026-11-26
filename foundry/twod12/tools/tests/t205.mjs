@@ -19,7 +19,7 @@ const b = E.grantBadges(g, null);
 console.log("badges short:", JSON.stringify(b.short), "| long:", JSON.stringify(b.long));
 console.log("a half line as the second:", E.grantBadges({ on: "", does: "text", text: "", on2: "t3", does2: "half" }, null).short.join("|"));
 const cards = f => JSON.parse(fs.readFileSync(ROOT + "../../book/cards/" + f, "utf8")).cards;
-const dm = CG.cardSystem(cards("archer.json").find(c => c.name === "Deathmark"), x => x), aim = CG.cardSystem(cards("talents.json").find(c => c.name === "Aim"), x => x);
+const dm = CG.cardSystem(cards("archer.json").find(c => c.name === "Deathmark"), x => x), aim = CG.cardSystem(cards("set-aside/talents.json").find(c => c.name === "Aim"), x => x);
 console.log("Deathmark: a step when the target goes Down (v0.0.360; was the Effect's mode \"down\"):", /^@Effect\[[^\]]*\|who:targets\|down:yes\]$/.test(dm.versions[0].after) && !dm.versions[0].fx.all.length, "| the Quarry link (a book link since v0.0.360):", dm.versions[0].effects.includes("@Book[Marked Quarry]{Marked Quarry}"), "| Aim's Cover link:", aim.versions[0].effects.includes("@Book[Cover]{Low cover}"));
 const dmg = src("module/damage.mjs"), dc = src("module/dmgcard.mjs"), ac = src("module/actions.mjs"), st = src("templates/parts/settings.hbs"), af = src("module/appliedflags.mjs");
 console.log("down effects come by themselves, the Effects button stays:", dmg.includes("async function applyDownEffects(f, actor, targetUuid)") && dmg.includes('const isConditional = x => x.mode === "conditional" || x.mode === "down"') && dc.includes('x.mode === "conditional" || x.mode === "down"'));

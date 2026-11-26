@@ -17,7 +17,7 @@ minion    level 1: low x0.75 1.5/3.5 | medium x1 2/4 | high x1.25 2.5/5
 minion    level 4: low x0.75 1.5/3.5 | medium x1 2/4 | high x1.25 2.5/5
 minion    level 5: low x0.75 1.5/3.5 | medium x1 2/4 | high x1.25 2.5/5
 minion    level 8: low x1 2/5 | medium x1.25 3/5.5 | high x1.5 3.5/7
-the NPC's Health uses the level: true | the Builder too: true
+the NPC's Health uses the level: true
 --- Light: only the target's light; a light of size N is an N Emanation
 a Check no longer reads the light where you stand: true
 radius from the token's center (squares): size 2, one square: 2.5 | size 2, a 2x2 token: 3 | size 0: 0

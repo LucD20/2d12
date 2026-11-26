@@ -62,17 +62,9 @@ const gob = { name: "Gob", uuid: "Actor.Gob", type: "npc", system: { dmgMods: "I
 const r1 = await D.dealDamageEx(gob, [{ pool: "B", sub: "Fi", total: 7, nl: false }]);
 console.log("Immunity Fire, 7 Fire:", JSON.stringify(r1), "(landed false: the Tier's effects don't happen)");
 
-console.log("--- the Elite ladder (passives.mjs)");
-const elite = (esc, ladder = true) => ({ name: "Ogre Chieftain", uuid: "Actor.Ogre", type: "npc", system: { useEscalation: true, eliteLadder: ladder, escalation: esc, role: "elite" }, statuses: new Set(), effects: coll([]), itemTypes: { feature: [], talent: [], weapon: [] }, items: [] });
-for (const n of [1, 2, 4, 6]) {   // v0.0.407: the Elite ladder at Escalation 2, 4 and 6
-  const a = elite(n), on = P.allEffects(a).filter(e => !effectOff(a, e)).map(e => e.id);
-  console.log(`Escalation ${n}: working ${on.join(", ")} | more uses ${JSON.stringify([...U.freqMoreOf(a)])}`);
-}
-console.log("Default ladder off:", P.allEffects(elite(3, false)).length, "sources | a Standard (no Escalation):", P.allEffects({ ...elite(3), system: { useEscalation: false, escalation: 3 } }).length);
-const ogre = elite(2);
-const attack = E.modifierList(ogre, new Set(["strike", "__attack", "__action"]), []), check = E.modifierList(ogre, new Set(["body", "__check"]), []);
-console.log("an attack:", attack.map(m => `${m.name} ${m.boons} Boon, match ${m.match}, once ${!!m.once}`).join("; "), "| a Check:", check.map(m => `match ${m.match}`).join("; "));
-console.log("it counts on the roll:", JSON.stringify(E.resolveModifiers(ogre, attack.filter(m => m.match).map(m => m.id)).boons));
+console.log("--- the Elite ladder (passives.mjs): removed by the cleanup audit (2026-11-26), and its checks here");
+const elite = esc => ({ name: "Ogre Chieftain", uuid: "Actor.Ogre", type: "npc", system: { useEscalation: true, escalation: esc, role: "elite" }, statuses: new Set(), effects: coll([]), itemTypes: { feature: [], talent: [], weapon: [] }, items: [] });
+console.log("an NPC with Escalation on has no ladder sources:", P.allEffects(elite(6)).length);
 console.log("uses allowed: Round Special with 'round'", U.usesAllowed("round", new Set(["round"]), true), "| a Basic Action", U.usesAllowed("round", new Set(["round"]), false), "| Encounter without 'encounter'", U.usesAllowed("encounter", new Set(["round"]), true), "| with", U.usesAllowed("encounter", new Set(["encounter"]), true));
 
 console.log("--- the uses in a combat (usage.mjs isFaded / markUsed)");

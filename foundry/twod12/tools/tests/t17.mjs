@@ -6,7 +6,7 @@ class F { constructor(o) { this.o = o; } }
 globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: F, NumberField: F, StringField: F, BooleanField: F, ArrayField: F, SetField: F, HTMLField: F } } };
 const { NpcData, npcBuild } = await import(ROOTURL + "module/data.mjs");
 const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
-const { npcBuilderContext, diceFor, ratingUpdate } = await import(ROOTURL + "module/npcbuilder.mjs");
+const { diceFor, ratingUpdate } = await import(ROOTURL + "module/npcbuilder.mjs");   // the cleanup audit (2026-11-26): npcBuilderContext (the old Builder model, rendered by nothing) removed, and its checks here
 const all = r => ({ body: r, mind: r, appeal: r, instinct: r, bodyHm: r, mindHm: r, ad: r, wd: r });
 console.log("--- every rating Medium, level 1 (the Bestiary, v0.0.181: 6 / 24 / 56 / 118 Health)");
 for (const role of Object.keys(TWOD12.npcRoles)) { const b = npcBuild({ role, ratings: all("medium") }); console.log(role.padEnd(9), `Health ${b.bdt + b.mdt} (${b.bdt} + ${b.mdt})  Attributes ${Object.values(b.attributes).join("/")}  AD ${b.armorDef} WD ${b.wardDef}  AP ${b.role.ap}`); }
@@ -28,23 +28,9 @@ for (const [label, sys] of [["Orc Warrior", { ...orc, powerAttribute: "instinct"
 }
 console.log("--- dice that come close (the Modifier taken out)");
 console.log([0, 0.4, 1, 2.5, 3, 4, 5.5, 7, 8, 10, 12.5].map(x => `${x}->${diceFor(x) || "[Mod]"}`).join("  "));
-console.log("--- the Builder tab (Orc Warrior)");
 const orcM = mk({ ...orc, powerAttribute: "instinct" });
-const ctx = npcBuilderContext({ system: orcM });
-for (const g of ctx.groups) console.log(`${g.title}: ` + g.rows.map(r => `${r.label} ${r.value} [${r.chips.filter(c => c.on).map(c => c.label).join("")}] (${r.how})`).join(" | "));
-console.log("chips of Body:", ctx.groups[0].rows[0].chips.map(c => `${c.label}${c.value ? " " + c.value : ""}`).join(", "));
-for (const a of ctx.attacks) console.log(`${a.label.padEnd(15)} ` + a.cells.map(c => `${c.label} ${c.avg} [${c.dice}]`).join(" | "));
-for (const c of ctx.check) console.log(`check: ${c.k}: ${c.v} (${c.s})`);
-console.log("roles:", ctx.roles.map(r => `${r.label} CV ${r.cv}${r.on ? " (on)" : ""}`).join(", "), "| CV:", ctx.cv, "| level note:", JSON.stringify(ctx.levelNote));
-console.log("a Minion's tab:", npcBuilderContext({ system: mk({ role: "minion", ratings: all("medium"), level: 3 }) }).attacks.map(a => a.label).join(", "), "|", npcBuilderContext({ system: mk({ role: "minion", ratings: all("medium"), level: 3 }) }).levelNote);
-console.log("--- v0.0.164: no Custom chip; clicking the selected chip clears it (Custom), any other chip selects it");
-console.log("Body chips (label -> what a click writes):", ctx.groups[0].rows[0].chips.map(c => `${c.label}->${c.click}`).join(", "));
-console.log("--- Custom numbers outside the tables: a warning, never prevented");
+console.log("--- Custom numbers outside the tables: never prevented");
 { const m = mk({ role: "standard", ratings: { ...all("medium"), ad: "custom", wd: "custom", appeal: "custom", bodyHm: "custom", speed: "custom" }, armorDef: 1, wardDef: 18, custom: { body: 0, mind: 0, appeal: 3, instinct: 0, bodyHealth: 80, mindHealth: 10 }, speed: 9 });
-  const c = npcBuilderContext({ system: m });
-  console.log(`AD ${m.armorDC} WD ${m.wardDC} Speed ${m.speed} moveSpeed ${m.moveSpeed}`); for (const w of c.warnings) console.log("warning:", w); }
-console.log("--- Speed: 3 to 7 (5 by default)");
-{ const c = npcBuilderContext({ system: mk({ role: "standard", ratings: { ...all("medium"), speed: "7" } }) }), r = c.groups[3].rows[0];
-  console.log(`Speed ${r.value}: ${r.chips.map(x => `${x.label}${x.on ? "*" : ""} (${x.value})`).join(", ")} | ${r.how}`); }
+  console.log(`AD ${m.armorDC} WD ${m.wardDC} Speed ${m.speed} moveSpeed ${m.moveSpeed}`); }
 console.log("--- switching a rating to Custom keeps the number it showed");
 console.log(JSON.stringify(ratingUpdate({ system: orcM }, "speed", "custom")), JSON.stringify(ratingUpdate({ system: orcM }, "appeal", "custom")), JSON.stringify(ratingUpdate({ system: orcM }, "bodyHm", "custom")), JSON.stringify(ratingUpdate({ system: orcM }, "wd", "custom")), JSON.stringify(ratingUpdate({ system: orcM }, "ad", "high")));

@@ -12,6 +12,22 @@
      "rev": 1
     },
     {
+     "id": "cl-escalation",
+     "v": "v0.0.520",
+     "title": "An NPC's Escalation switch without the default ladder",
+     "do": "Open the Ogre Chieftain's sheet, Builder tab: turn Escalation on (no \"Default ladder\" switch beside it any more). Start a combat with it and Aveline, and play two rounds.",
+     "expect": "The Ogre's Escalation rises each round as before; the chat line says \"Ogre Chieftain's Escalation rises to N.\" with no \"Now: Pressing...\" text; its combat line shows the Bloodied +1 and Strained +1 hooks and the Escalation marks, but no Pressing / Relentless / Second Wind rungs; its first attack each round gets no free Boon. The sheet opens without an error.",
+     "rev": 1
+    },
+    {
+     "id": "cl-ruler",
+     "v": "v0.0.520",
+     "title": "No Ruler line in Designer mode",
+     "do": "Turn on Designer mode, open Aveline's Smite card on her sheet, then use Smite against the Orc Warrior.",
+     "expect": "No \"Ruler\" line on the card or under the chat card (the Odds and the Automation lines stay in Designer mode).",
+     "rev": 1
+    },
+    {
      "id": "bst-sheets",
      "v": "v0.0.519",
      "title": "The four playtest creatures' sheets",

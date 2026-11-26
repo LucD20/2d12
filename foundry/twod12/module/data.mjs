@@ -302,8 +302,7 @@ export class NpcData extends CharacterData {
       ticks: int(MINION_TICKS, 0), tickBy: str(""),
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "medium"),   // its Armor type (for rules and Talents that ask); medium: a typical enemy
       armorDef: sint(13), wardDef: sint(13),   // its typed Armor Defense and Ward Defense, used when that rating is Custom (any number)
-      useEscalation: bool(false),   // an NPC can have Escalation too (an elite foe): off by default
-      eliteLadder: bool(false),   // the Bestiary's rebuild (2026-11-25): Elite Escalation is deprecated (off by default; no NPC has Escalation in the book). v0.0.320 (pack AU part 2): with Escalation on, the Bestiary's default Elite ladder works by itself (passives.mjs); off: its entry says otherwise (its own Features)
+      useEscalation: bool(false),   // an NPC can have Escalation too (an elite foe): off by default. The cleanup audit (2026-11-26): its default Elite ladder (eliteLadder) is gone; a world's saved eliteLadder is dropped on load
       reachBase: int(1, 1),   // the creature's Reach (most are 1; a big creature or a long-limbed one more)
       steadiness: int(0, 0)   // v0.0.169: resistance to being moved: 0 unless its description says otherwise (Builder tab: 0 to 4)
     };
@@ -422,7 +421,6 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       description: new HTMLField(), hover: str(), flavor: str(), actions: new ArrayField(str()),
-      worth: str(),   // v0.0.239: the ruler's worth of the card (book/ruler/worth.json), a tiny line on the card for the playtests
       // A choice: when the item is granted, the player picks "choiceCount" of these (Actions, Features or Talents).
       choiceLabel: str(), choiceCount: int(1, 1), choiceOptions: new ArrayField(str()),
       category: str(), level: int(1, 0),
@@ -493,7 +491,6 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       description: new HTMLField(),
       category: str(),
       level: int(0, 0),
-      worth: str(),   // v0.0.242: the ruler's worth of the card (book/ruler/worth.json): v0.0.239 put it on Features and Talents only, so an Action dropped it on load (Lucas: "still not showing")
       traits: traitsField(TWOD12.actionTraits),
       targets: str(),
       distance: str(),
@@ -632,7 +629,6 @@ export class TalentData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       description: new HTMLField(), hover: str(), flavor: str(), category: str(), level: int(1, 0), frequency: choice(TWOD12.frequencies),
-      worth: str(),   // v0.0.239: the ruler's worth of the card (book/ruler/worth.json), a tiny line on the card and the chat card for the playtests
       traits: traitsField(TWOD12.actionTraits), requirements: str(), actions: new ArrayField(str()),
       // A choice: when the item is granted, the player picks "choiceCount" of these (Actions, Features or Talents).
       choiceLabel: str(), choiceCount: int(1, 1), choiceOptions: new ArrayField(str()),

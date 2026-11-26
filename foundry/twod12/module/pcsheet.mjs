@@ -1,4 +1,4 @@
-// PACK SHEET (v0.0.289, Lucas's approved design: foundry/mockups/sheet-prototype.html): the data of the character sheet's new layout.
+// PACK SHEET (v0.0.289, Lucas's approved design: archive/mockups/sheet-prototype.html): the data of the character sheet's new layout.
 // pcModel(sheet, ctx) reads the actor and the context the sheet already built (_sheetModel: granted tickets, conditions, effects, gear) and returns
 // the template's `pc` object. The pure rules (sections, Defenses, Save DCs, Down state...) are in sheetmodel.mjs (tests t212).
 import { inventoryHtml, lootHtml } from "./inventory.mjs";   // v0.0.455 (group 4)
@@ -22,7 +22,7 @@ import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
   healthTags, toDown, downState, dominantPool, barSegments, barRemainingSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, ESC_APEX, slotless, nextLevels, plainEnrichers,
-  rowLines, senseChips, strikePips, ELITE_RUNGS, actionBar, escMarks, combatLists, basicAttackLine, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
+  rowLines, senseChips, strikePips, actionBar, escMarks, combatLists, basicAttackLine, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
 } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { creatureDamageLines } from "./ccdamage.mjs";
@@ -167,16 +167,16 @@ export async function pcModel(sheet, ctx) {
     esc: { n: escNow, pips: Array.from({ length: Math.max(1, Number(TWOD12.escalation?.max) || 6) }, (_, k) => k < escNow), rungs: escRungs(escNow, rungNames, apex, apexAt), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
       // v0.0.442 (Lucas on the fixes mockup, round 4): the hooks as a list (their own cell), the Escalation pips with the rungs ringed (the marks cell)
       hookList: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }),
-      marks: escMarks(escNow, Math.max(1, Number(TWOD12.escalation?.max) || 6), npc ? ELITE_RUNGS.map(r => r.n) : escRungs(escNow, rungNames, apex, apexAt).map(r => Number(r.n))),
+      marks: escMarks(escNow, Math.max(1, Number(TWOD12.escalation?.max) || 6), npc ? [] : escRungs(escNow, rungNames, apex, apexAt).map(r => Number(r.n))),
       momentum: Number(combat?.getFlag?.(F, "momentumStart")) || 0 },   // v0.0.407: the Momentum the encounter started with (0 to 4)
     strikes: strikesLine(strikesUsed(a)),
     // v0.0.291: the Senses cell (both sheets), the NPC's Strikes diamonds and next Bane, the Elite's ladder
     senses: senseChips(s.senses ?? {}), strikePips: strikePips(strikesUsed(a)), strikesLeft: Math.max(0, 3 - strikesUsed(a)),
     nextBane: basicAtk && combat?.started ? nextBanes(atWillUses(a, basicAtk)).replace(/^next: /, "Basic attack: next +") : "",
-    elite, eliteRungs: ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n, tip: `${r.tip}${s.eliteLadder !== false ? " Automated (the Builder's Default ladder)." : " By hand: the Builder's Default ladder is off (its entry says otherwise)."}` })),   // v0.0.320
+    elite,   // the cleanup audit (2026-11-26): an NPC with Escalation on shows its level; the default ladder's rungs (eliteRungs) are gone
     // v0.0.443 (group 1): the combat line's two lists (hooks, the ladder with its shields); none for a Standard NPC
     lists: combatLists({ npc, elite, hookNames, used: { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id },
-      rungs: npc ? ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n })) : escRungs(escNow, rungNames, apex, apexAt), bloodied: s.bloodied, strained: s.strained,
+      rungs: npc ? [] : escRungs(escNow, rungNames, apex, apexAt), bloodied: s.bloodied, strained: s.strained,
       info: (() => {   // v0.0.447: the cards a hook or a rung click shows
         const rungs = {};
         for (const p of passives) { const r = Number(passiveRung(p, cls)) || 0; if (r > 0) (rungs[r] ??= []).push(p.id); }
@@ -663,7 +663,7 @@ export function npcBuilderModel(a) {
     roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, on: (s.role || "standard") === k })),
     // v0.0.407 (the Bestiary, Roles): a role is a preset of ratings (clicked, it sets them; its name is kept on the NPC)
     presets: Object.entries(ROLE_PRESETS).map(([k, v]) => ({ key: k, label: v.label, tip: v.tip, on: s.npcRole === k })),
-    level: s.level, stage, cv: s.cv ?? role.cv[0], ap: rankAp(rank), elite: s.role === "elite", escOn: !!s.useEscalation, ladderOn: s.eliteLadder !== false, escAny: true,   // v0.0.303: any role can switch Escalation on (it was the Elite's only)
+    level: s.level, stage, cv: s.cv ?? role.cv[0], ap: rankAp(rank), elite: s.role === "elite", escOn: !!s.useEscalation, escAny: true,   // v0.0.303: any role can switch Escalation on (it was the Elite's only)
     summary: s0 ? [{ k: "Health", v: pool }, { k: "Turn budget", v: `${Math.round(budget)} (${Math.round(pointsPerAp(rank, dmgRating))} an AP)` }, { k: "Best turn", v: bestLine }, { k: "CV steps", v: `${(Number(s.cvSteps) || 0) >= 0 ? "+" : ""}${Number(s.cvSteps) || 0} (${TWOD12.npcCvStep[rank]} each)` }]
       : [{ k: "Health", v: pool }, { k: "Down in about", v: `${downIn(pool, pcDmg)} PC turns` }, { k: "Should deal", v: `about ${role.deals}` }, { k: "Ratings average", v: avg }],
     cols: [[{ title: "Attributes", rows: attrs, grow: 4 }, { title: "Movement", rows: [speed, steady], grow: 2 }, { title: "Weapon Mod", rows: [wmod], grow: 1 }],

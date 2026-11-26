@@ -1,4 +1,4 @@
-// 2026-11-12 (Lucas: "make sure if d8 is the real limit without unbalancing the game"): the weapon draft (book/weapons-flat.md) with bigger dice
+// 2026-11-12 (Lucas: "make sure if d8 is the real limit without unbalancing the game"): the weapon draft (archive/book-drafts/weapons-flat.md) with bigger dice
 // at the same averages. Prints a table; nothing is written.   node book/ruler/sim/weapondice.mjs
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";

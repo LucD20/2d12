@@ -1,14 +1,14 @@
 # The Bow remake: the record
 
-**APPLIED TO THE BOOK ON 2026-11-16 (the two Basic bows, Mastery, Hands, Light, Strung); the later unlocks and the later bows are still to design. Started 2026-11-16 (Lucas: "Run the Bow remake"), on branch `pack-bows` from main.** The same way as the two classes (`book/class-charter.md`, "Rules learned in the two redesigns"): his brief, the rules and `book/research/` first, then one decision at a time, each waiting for him. **Nothing goes into the book, the card files or Foundry until he says so.** **The reading page:** `book/cards/bows-desk/index.html`, the artifact "Bow Remake Desk" (updated with every decision). What is being remade: the six bows of `book/weapon-trees.md` (2026-10-31, "to confirm"), which stays as it is, as the old design.
+**APPLIED TO THE BOOK ON 2026-11-16 (the two Basic bows, Mastery, Hands, Light, Strung); the later unlocks and the later bows are still to design. Started 2026-11-16 (Lucas: "Run the Bow remake"), on branch `pack-bows` from main.** The same way as the two classes (`book/class-charter.md`, "Rules learned in the two redesigns"): his brief, the rules and `book/research/` first, then one decision at a time, each waiting for him. **Nothing goes into the book, the card files or Foundry until he says so.** **The reading page:** `book/cards/bows-desk/index.html`, the artifact "Bow Remake Desk" (updated with every decision). What is being remade: the six bows of `archive/book-drafts/weapon-trees.md` (2026-10-31, "to confirm"), which stays as it is, as the old design.
 
 `notes.txt` was empty at the start (only its legend): nothing to merge.
 
 ## The brief (Lucas, 2026-11-16)
 
-> The bows in weapon-trees.md were designed before the 4 + 1 AP round, Stage 0, the exploding weapon dice, the card Structure, the new Archer and the trait rename (Shot is now Projectile). Bring them up to today:
+> The bows in archive/book-drafts/weapon-trees.md were designed before the 4 + 1 AP round, Stage 0, the exploding weapon dice, the card Structure, the new Archer and the trait rename (Shot is now Projectile). Bring them up to today:
 >
-> 1. Start with a short list of what in weapon-trees.md no longer fits, and what you would keep. Wait for me.
+> 1. Start with a short list of what in archive/book-drafts/weapon-trees.md no longer fits, and what you would keep. Wait for me.
 > 2. Then one bow at a time, Basic first (Stage 0 needs only the two Basic bows and their first unlock): its table row, its Weapon Technique in the card Structure, its ladder. Check each against the new Archer: no multi-roll flurries, no unlock that copies a class card or its name, nothing that becomes the one best button.
 > 3. Write the Light property in full (which weapons have it, what it does beyond the Archer's Darting Blade).
 
@@ -41,7 +41,7 @@
 
 **6. Against the new Archer:**
 
-| In weapon-trees.md | The Archer card it runs into | Why |
+| In archive/book-drafts/weapon-trees.md | The Archer card it runs into | Why |
 |---|---|---|
 | Flurry of Arrows (Composite) and its three steps | Quick Shots | a chain of two or three rolls; the class does many hits on one roll (2[W] / 3[W]). The multi-roll flurry he found boring |
 | Parthian Shot, Turn and Loose (Recurve) | Slip Away, Snap Shot | "an enemy reaches you: step away and shoot" is both Hallmark Reactions in one card, for the same Reaction AP |
@@ -327,7 +327,7 @@ One gap to close when it goes into the book: "left your square" for a creature b
 
 Another weapon of the group is at least at a third of your highest Mastery in the group.
 
-**2. weapon-trees.md (2026-10-31, after its revisions R1 to R4): outdated.** An Advanced bow started at 6 Mastery and an Exotic one at 11 (your Group Mastery when the rung opened).
+**2. archive/book-drafts/weapon-trees.md (2026-10-31, after its revisions R1 to R4): outdated.** An Advanced bow started at 6 Mastery and an Exotic one at 11 (your Group Mastery when the rung opened).
 
 | Bow | Rung opens | Its unlocks | Today |
 |---|---|---|---|

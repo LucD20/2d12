@@ -1,6 +1,6 @@
 # Progression models: the numbers (pack LV)
 
-Written by `node book/ruler/progression.mjs` (the spec ruler, spec.mjs, with the map model). Don't edit this file: edit the script and run it again. The proposal that reads these numbers is `book/progression-lv.md`.
+Written by `node book/ruler/progression.mjs` (the spec ruler, spec.mjs, with the map model). Don't edit this file: edit the script and run it again. The proposal that reads these numbers is `archive/book-drafts/progression-lv.md`.
 
 Runs: 800 fights a measurement, 500 a calibration step. Half the fights start with Momentum. The party: 2 weapon users (melee, AD 14) + 2 casters (ranged, AD 13, the round-1 floor). NPCs: the Bestiary's level 1 Medium NPCs with Health and damage multiplied by the level's factors; their Defense and Modifier never change (decided).
 

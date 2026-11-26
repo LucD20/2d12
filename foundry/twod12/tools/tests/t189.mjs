@@ -28,7 +28,7 @@ const heal = I.parseInline("Heal", "3d6+pow|s2:4d6+pow|s3:6d6+pow|side:allies"),
 console.log("Heal:", heal.formula, JSON.stringify(heal.stages), heal.side, "| the Stage's formula:", I.stagedFormula(heal, 1), I.stagedFormula(heal, 2), I.stagedFormula(heal, 3), "| Rally extra:", rally.extra, "| Condition value and side:", cond.value, cond.side, "| rounds:eot:", tpl.expire);
 console.log("texts:", I.healText("3d6+pow"), "|", I.healText("rp*2"), "|", I.healText("rp*3"), "| with Pow 3:", I.withPow("1 Rally Point (+1d6+Pow)", 3), "|", I.withPow("Heal 3d6 + Pow", 2), "| none:", I.withPow("Heal 3d6 + Pow", null));
 console.log("--- the cards");
-const cards = G.loadCards(), byName = n => cards.find(c => c.name === n);
+const cards = G.loadCards(undefined, { setAside: true }), byName = n => cards.find(c => c.name === n);   // the set-aside cards too (Brawler, Aim)
 const loh = G.cardSystem(byName("Lay On Hands"));
 console.log("Lay On Hands:", loh.versions.map(v => `${v.ap} AP: ${v.effects}`).join(" | "), "| rank:", loh.automation);
 // v0.0.409 (pack F2): Hallowed Dawn and Miraculous Recovery left Foundry with pack R's Paladin; the redesigned cards' chains

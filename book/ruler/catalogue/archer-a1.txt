@@ -1,6 +1,6 @@
-# The Archer's A1 main build (pack A1, 2026-10-29; PROPOSED: book/archer-a1.md), for the price list: node book/ruler/econ.mjs
+# The Archer's A1 main build (pack A1, 2026-10-29; PROPOSED: archive/book-drafts/archer-a1.md), for the price list: node book/ruler/econ.mjs
 # Every default of the level 1 to 3 Picks, both Signatures, in the spec format (book/ruler/README.md, "The spec files").
-# The Features' passives (Sharpshooter's clear shot, Marked Quarry's floor) and Elusive are priced in the simulated days (archer-a1.md), not here.
+# The Features' passives (Sharpshooter's clear shot, Marked Quarry's floor) and Elusive are priced in the simulated days (archive/book-drafts/archer-a1.md), not here.
 class Archer (A1)
 level 1
 attributes body 1, mind 1, instinct 2

@@ -3,10 +3,10 @@
 // at 3.5 rounds and a third of the party's Health, what a Reaction AP buys (Opportunity Attack, Quick Draw, Shield of Faith as a block),
 // the Escalation ladder's timing and what each Passive is worth, Overcast as the caster's Passive ladder (LV's stand-ins), Bloodied and
 // Strained as hooks (when NPCs and PCs reach them), Slowed and Minions at 4 AP. Writes book/ruler/rework.md; the proposal that reads it
-// is book/rework-r.md. Nothing here changes report.md: the rules it moves are spec.mjs RULES, set per run and reset after.
+// is archive/book-drafts/rework-r.md. Nothing here changes report.md: the rules it moves are spec.mjs RULES, set per run and reset after.
 //   node book/ruler/rework.mjs           writes rework.md and prints it (about 5 minutes)
 //   node book/ruler/rework.mjs --quick   fewer runs (a draft in about 2 minutes)
-//   node book/ruler/rework.mjs --sheet   part 2, the decision sheet's numbers (book/rework-r.md section 14): writes rework-sheet.md (--sheet --quick: a draft)
+//   node book/ruler/rework.mjs --sheet   part 2, the decision sheet's numbers (archive/book-drafts/rework-r.md section 14): writes rework-sheet.md (--sheet --quick: a draft)
 import fs from "node:fs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -105,7 +105,7 @@ function solve(f, target, lo, hi, steps = 9) { for (let i = 0; i < steps; i++) {
 export function run() {
   const L = [];
   L.push("# The playtest 2 rework: the numbers (pack R prep)", "",
-    "Written by `node book/ruler/rework.mjs` (the spec ruler with the map model; `spec.mjs RULES` moves the rules per run). Don't edit this file: edit the script and run it again. The proposal that reads it is `book/rework-r.md`.", "",
+    "Written by `node book/ruler/rework.mjs` (the spec ruler with the map model; `spec.mjs RULES` moves the rules per run). Don't edit this file: edit the script and run it again. The proposal that reads it is `archive/book-drafts/rework-r.md`.", "",
     `Runs: ${RUNS} fights a measurement, ${CAL} a calibration step, ${PAIRS} pairs a price, ${DAYS} days${QUICK ? " (--quick: a draft)" : ""}. **The parties:** 2 P1 Smite Paladins + 2 A1 Archers (Double Shot; and Rolling Shot: each number is the mean of the two parties) at level 1, with the book's Health factor (Level + 17) / 16. **Today** = the book's rules (5 AP, Escalation spent, NPCs 5 AP) with the builds of \`classes/\`; **4 AP** = the rework (4 AP + 1 Reaction AP for PCs and NPCs, Escalation as a level) with the builds of \`rework/\` (the same cards, the turns cut to 4 AP, a Reaction each: the Paladin's Opportunity Attack, the Archer's Quick Draw as a stand-in for its Hallmark Reaction). Half the fights start with Momentum (1 Escalation); a Daily only in a hard fight. NPCs: the E3 Bestiary at level 1, Medium, exact averages; Elites have an Opportunity Attack.`, "");
 
   // 1. The AP cut: each build's turns at 5 and at 4 AP.
@@ -387,8 +387,8 @@ export function sheet() {
   const L = [], keys = ["r", "rRolling"];
   const at = (rules, start) => { setRules(rules); START = start; };
   L.push("# The playtest 2 rework, part 2: the decision sheet's numbers", "",
-    "Written by `node book/ruler/rework.mjs --sheet`; don't edit, run it again. Read by `book/rework-r.md` section 14. Part 1's numbers: `rework.md`.", "",
-    `Runs: ${RUNS} fights a measurement, ${CAL} a calibration step. **The party:** the 4 AP builds of \`rework/\` (2 Smite Paladins + 2 Archers, Double Shot and Rolling Shot, each number the mean of the two parties), level 1, Human. **The rework as decided** (rework-r.md section 12) = 4 + 1 AP for PCs and NPCs, Escalation as a level; **the Health line** (Paladin Vigor 23 / Resolve 12 = 35, Archer 19 / 10 = 29; Rally Points = Rally + Stage: 7 and 6; today's builds: 40 and 27); **Escalation from 1** (Momentum 2: half the fights) with **the hooks** (a Critical, about 1 in 12 Tier 3s: +1 once an encounter; the Paladin: an ally within 5 squares becomes Bloodied or goes Down; the Archer: its Marked Quarry goes Down; each once an encounter); **Guard from unspent AP** (2 per turn AP left at the end of the turn, until the start of the next; the Reaction AP never converts; the AP that become Guard no longer pay Reactions unless said); **the Specials** (each NPC spends every AP left after moving on attacks: the 3 AP Encounter Special once (Elites), the Round Special once a round (Minions and Grunts 1 AP × 1.4, Standards and Elites 2 AP × 2.2), then Basic attacks with the At-will Bane, 3 Strikes at most; a Special is modeled as a single-target Strike with the multiplied damage: its condition, area or Save are its damage's worth, as the Bestiary prices them).`, "");
+    "Written by `node book/ruler/rework.mjs --sheet`; don't edit, run it again. Read by `archive/book-drafts/rework-r.md` section 14. Part 1's numbers: `rework.md`.", "",
+    `Runs: ${RUNS} fights a measurement, ${CAL} a calibration step. **The party:** the 4 AP builds of \`rework/\` (2 Smite Paladins + 2 Archers, Double Shot and Rolling Shot, each number the mean of the two parties), level 1, Human. **The rework as decided** (archive/book-drafts/rework-r.md section 12) = 4 + 1 AP for PCs and NPCs, Escalation as a level; **the Health line** (Paladin Vigor 23 / Resolve 12 = 35, Archer 19 / 10 = 29; Rally Points = Rally + Stage: 7 and 6; today's builds: 40 and 27); **Escalation from 1** (Momentum 2: half the fights) with **the hooks** (a Critical, about 1 in 12 Tier 3s: +1 once an encounter; the Paladin: an ally within 5 squares becomes Bloodied or goes Down; the Archer: its Marked Quarry goes Down; each once an encounter); **Guard from unspent AP** (2 per turn AP left at the end of the turn, until the start of the next; the Reaction AP never converts; the AP that become Guard no longer pay Reactions unless said); **the Specials** (each NPC spends every AP left after moving on attacks: the 3 AP Encounter Special once (Elites), the Round Special once a round (Minions and Grunts 1 AP × 1.4, Standards and Elites 2 AP × 2.2), then Basic attacks with the At-will Bane, 3 Strikes at most; a Special is modeled as a single-target Strike with the multiplied damage: its condition, area or Save are its damage's worth, as the Bestiary prices them).`, "");
   const t1 = Date.now();
 
   // 1. An NPC's turn with its Specials (arithmetic).
@@ -481,7 +481,7 @@ export function sheet() {
   log("S5. by CV");
 
   // 6. The Hallmark Reaction's budget: Shield of Faith's size.
-  const DF = FIT["× 1 (the book)|0.25"];   // the sheet's default target (rework-r.md section 14)
+  const DF = FIT["× 1 (the book)|0.25"];   // the sheet's default target (archive/book-drafts/rework-r.md section 14)
   L.push("## 6. The Hallmark Reaction: Shield of Faith's size", "", `The 4 Standards fight at the default factors (a quarter of the Health: h ${f2(DF.h)}, d ${f2(DF.d)}), every piece on; both Paladins with the Reaction named (the Archers keep Quick Draw). A block takes its dice off one NPC hit on the Paladin or an ally within 5 squares, once per NPC turn. **Worth** = what the Reaction itself did (its damage, the damage its block took off, the damage its Guard absorbed) per Paladin turn, and in AP at 5.8 DE. (A fight to the death can't price it by the party's damage: the NPCs' Health caps it; a Reaction's damage ends the fight sooner.)`, "",
     "| Paladin's Reaction | rounds · lost · Down · won | Reactions a fight (a Paladin) | Blocked · its Guard used · its damage, a fight (a Paladin) | Worth a Paladin turn (DE · AP) |", "|---|---|---:|---|---|");
   let g0 = 0;

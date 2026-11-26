@@ -95,16 +95,7 @@ export function numberPin(n, { fs = 13, color = GOLD } = {}) {
   return box;
 }
 
-/** A Forced Movement's origin: a thin pale ring (where the push comes from or the pull goes to). */
-export function originRing(g, c, r) { g.lineStyle(2, INK, 0.7).drawCircle(c.x, c.y, r); return g; }
 
-/** A dashed rectangle edge (the Evade's squares). */
-export function dashRect(g, x, y, w, h, { dash = 8, gap = 6, color = INK, alpha = 0.85, width = 2 } = {}) {
-  g.lineStyle(width, color, alpha);
-  const seg = (ax, ay, bx, by) => { const len = Math.hypot(bx - ax, by - ay), n = Math.max(1, Math.floor(len / (dash + gap))); for (let k = 0; k < n; k++) { const s = (k * (dash + gap)) / len, e = Math.min(1, (k * (dash + gap) + dash) / len); g.moveTo(ax + (bx - ax) * s, ay + (by - ay) * s).lineTo(ax + (bx - ax) * e, ay + (by - ay) * e); } };
-  seg(x, y, x + w, y); seg(x + w, y, x + w, y + h); seg(x + w, y + h, x, y + h); seg(x, y + h, x, y);
-  return g;
-}
 
 /** A dashed line from a to b (the Evade's edge). */
 export function dashLine(g, a, b, { dash = 8, gap = 6, color = INK, alpha = 0.85, width = 2 } = {}) {

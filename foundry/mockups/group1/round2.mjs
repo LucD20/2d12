@@ -30,7 +30,7 @@ function model(a, st) {
       const rr = it.basicRating || "medium", rank = TWOD12.npcRoles[s.role] ? s.role : "standard", sug = NB.npcSuggest({ rank, rating: rr, basic: true });
       const est = (Number(s.stage) || 0) === 0 ? `${sug.t2} / ${sug.t3}` : SM.npcRow(TWOD12.npcRoles[rank], TWOD12.npcRatings, rr, s.stage).basic.join(" / ");
       const subs = [`Basic attack · ${TWOD12.npcRatings[rr]?.label ?? rr} · ~${est}`];
-      if (pc.strip.elite && escN >= SM.ELITE_RUNGS[0].n) subs.push("+1 Boon on its first attack this round");
+      if (pc.strip.elite && escN >= (SM.ELITE_RUNGS ?? [])[0]?.n) subs.push("+1 Boon on its first attack this round");
       r.sub = subs.join(" · ");
     }
   }
@@ -82,12 +82,12 @@ function line(host, pc, a) {
     return;
   }
   const hooks = elite ? [{ name: "Bloodied +1", used: !!a.system.bloodied }, { name: "Strained +1", used: !!a.system.strained }] : (x.hooks ?? []);
-  const ladder = elite ? pc.strip.eliteRungs.map(r => { const [k, name] = String(r.label).split(" · "); return { n: k, name, lit: r.lit }; }) : (x.ladder ?? []).map(([k, name]) => ({ n: k, name, lit: n >= k }));
+  const ladder = elite ? (pc.strip.eliteRungs ?? []).map(r => { const [k, name] = String(r.label).split(" · "); return { n: k, name, lit: r.lit }; }) : (x.ladder ?? []).map(([k, name]) => ({ n: k, name, lit: n >= k }));
   const marks = row.querySelector(".ps2-marks");
   if (!marks) { row.innerHTML = `${lists(hooks.map(h => ({ name: h.name })), ladder.map(r => ({ ...r, lit: false })), true)}<div class="ps2-cell r2-out"><span>Out of combat</span></div>`; return; }
   for (const c of [...row.children]) if (c !== marks) c.remove();
   marks.insertAdjacentHTML("beforebegin", lists(hooks, ladder, false));
-  const rungs = elite ? SM.ELITE_RUNGS.map(r => r.n) : [2, 4, 6], word = elite ? "Elite Escalation" : "Escalation";
+  const rungs = elite ? (SM.ELITE_RUNGS ?? []).map(r => r.n) : [2, 4, 6], word = elite ? "Elite Escalation" : "Escalation";
   const old = marks.querySelector(".ps2-epips")?.closest(".ps2-mrow");
   if (old) { const mom = old.querySelector(".ps2-q"); old.innerHTML = ticks(n, rungs, word); if (mom) old.append(" ", mom); }
   else { marks.querySelector(".bane")?.remove(); marks.insertAdjacentHTML("beforeend", `<span class="k">Esc.</span><span class="ps2-mrow">${ticks(n, rungs, word)}</span>`); }

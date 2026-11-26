@@ -60,7 +60,7 @@ export function sheetModel(a, st = {}) {
     guard: { total: (Number(s.guard) || 0) + (Number(s.apGuard) || 0) },
     esc: { n: escNow, rungs: SM.escRungs(escNow, rungNames, apex, apexAt), hooks: SM.hooksLeft(st.hooks ?? [], {}).join(" · "), momentum: 0 },
     senses: SM.senseChips(s.senses ?? {}), strikePips: SM.strikePips(strikes), strikesLeft: Math.max(0, 3 - strikes), nextBane: "",
-    elite, eliteRungs: SM.ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n })),
+    elite, eliteRungs: (SM.ELITE_RUNGS ?? []).map(r => ({ ...r, lit: escNow >= r.n })),
     phases: `Phases: Bloodied +1 ${s.bloodied ? "✓" : "not yet"} · Strained +1 ${s.strained ? "✓" : "not yet"}`
   };
   const hands = { tiles: PCS.handTiles(weapons, inCombat) };

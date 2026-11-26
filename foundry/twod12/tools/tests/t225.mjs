@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t225.mjs)
-// v0.0.327 PACK ZONE (Lucas's design: foundry/mockups/zone-prototype.html, option A; the brief's "Zone (placed on the map)" section): the shared
+// v0.0.327 PACK ZONE (Lucas's design: archive/mockups/zone-prototype.html, option A; the brief's "Zone (placed on the map)" section): the shared
 // "what it does inside" rows (Aura and Zone), the Zone's sentence and Ends, Who resolution, the old Zone and the old Aura migrated, the Hazard's
 // turn-cycle limit, the preview's footprints, the view, and Consecrated Ground (its real card) after the migration.
 const ROOTURL = new URL("../../", import.meta.url).href;

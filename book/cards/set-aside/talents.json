@@ -591,6 +591,38 @@
      }
     ]
    }
+  },
+  {
+   "name": "Opportunity Attack",
+   "category": "Basic Action",
+   "_note": "Pack R-core (Lucas, 2026-11-04, decision sheet item 6): the basic Reaction every creature has; it was a Combat Talent with a Critical that disrupted the triggering Action (out of your turn): that Critical goes to a Talent later.",
+   "flavor": "You punish anyone who moves carelessly near you.",
+   "frequency": "At-will",
+   "target": "The triggering creature",
+   "traits": [
+    "strike"
+   ],
+   "interrupt": "An enemy adjacent to you would leave a square during a Move Action or uses the Stand Action.",
+   "cost": "1R",
+   "text": "You can make a Basic Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead.",
+   "foundry": {
+    "basic": "opportunityAttack",
+    "img": "icons/svg/combat.svg",
+    "automation": "silver",
+    "sub": [
+     [
+      "Basic Attack (1A)",
+      "@Use[Basic Attack|label:Basic Attack (1A)]"
+     ]
+    ],
+    "moment": "enemyMoves",
+    "momentRange": 1,
+    "momentThreat": false,
+    "automationNote": "offered by itself in the Reactions message when an adjacent enemy moves (not an Evade or a Forced Movement) or stands up (v0.0.335, Lucas: adjacent, not the squares you threaten); the movement is not held (Foundry moves the token first), the Weapon Attack is the card's button."
+   },
+   "ruler": {
+    "line": "does Weapon Attack"
+   }
   }
  ]
 }

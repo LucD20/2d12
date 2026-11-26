@@ -19,4 +19,3 @@ Armor of Faith: not Judge's 0R: true
 a Reload Shot: its own 1d6!, Empowered not spent: true
 Opening Shot: once per turn-cycle: true
 Trade Places: different Sizes refused: true
-the default ladder at 6: Pressing (1 Boon on its first [Strike] Action each turn-cycle), Relentless (each of its Round Special Actions twice per turn-cycle), Second Wind (its Encounter Special Actions back, once)

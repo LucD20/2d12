@@ -1,5 +1,5 @@
 // 2026-11-12 (Lucas: "How big the gap with Table B + C2?"): ranged against melee at Stage 0 with his choices so far: the weapon table's column B
-// (book/weapons-flat.md), a [Ranged] Action while Engaged Doomed (C2), no basic Opportunity Attack. Prints a table.   node book/ruler/sim/gap.mjs
+// (archive/book-drafts/weapons-flat.md), a [Ranged] Action while Engaged Doomed (C2), no basic Opportunity Attack. Prints a table.   node book/ruler/sim/gap.mjs
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 const S = await import(new URL("../spec.mjs", import.meta.url).href);

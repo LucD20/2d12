@@ -8,7 +8,7 @@
 // Momentum (v0.0.407; book, Chapter 2, Momentum): the party's number from 0 to 4, a world setting: +1 for each encounter overcome (the GM says so when
 //   the encounter ends), -1 when a PC goes Down, -1 at each Sleep (once a night, whoever sleeps), 0 on a retreat and after a Rest; the GM can set it.
 import { TWOD12 } from "./config.mjs";
-import { escalationStartAt, escalationRaisedTo, momentumAfter, momentumValue, ELITE_RUNGS_LADDER, MOMENTUM_MAX } from "./roundrules.mjs";
+import { escalationStartAt, escalationRaisedTo, momentumAfter, momentumValue, MOMENTUM_MAX } from "./roundrules.mjs";
 import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const F = "twod12";
 export const ESC_MAX = TWOD12.escalation.max, ESC_MIN = TWOD12.escalation.min;
@@ -47,8 +47,6 @@ export function canPayEscalation(actor, cost) {
 
 /** The party's Momentum now, 0 to 4 (an old world's true / false switch reads 1 / 0). */
 export const momentumNow = () => { try { return momentumValue(game.settings.get(F, "momentum")); } catch (e) { return 0; } };
-/** v0.0.243's name, kept for old callers: does the party have any Momentum? */
-export const hasMomentum = () => momentumNow() > 0;
 /** Pure: the line a change of Momentum posts ("" when nothing changed). */
 export const momentumLineText = (from, to, why = "") => (from === to ? "" : `<b>Momentum</b> ${from} → <b>${to}</b>${why ? `: ${why}` : ""}. The next encounter starts at Escalation <b>${escalationStartAt(to)}</b>.`);
 /** Set the party's Momentum (the GM; kept within 0 to 4) and say so in the chat (a system line). Returns the new value. */
@@ -111,7 +109,7 @@ export async function gainForRound(combat) {
       if (a.type === "npc") try {
         const { sysLine } = await import("./sysmsg.mjs");
         const { esc } = await import("./util.mjs");
-        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-fire", `Round ${combat.round}: <b>${esc(c.name)}</b>'s Escalation rises to <b>${now + 1}</b>. Now: ${esc(eliteRung(now + 1))}.`, "escmsg") });
+        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-fire", `Round ${combat.round}: <b>${esc(c.name)}</b>'s Escalation rises to <b>${now + 1}</b>.`, "escmsg") });   // the cleanup audit: no default ladder's "Now: ..." 
       } catch (e) { console.warn("twod12 | Elite Escalation line", e); }
     }
   }
@@ -121,12 +119,6 @@ export async function gainForRound(combat) {
  * A raise outside the rounds: "crit" (a Critical on one of the creature's Actions) or "hook" (its class's hook), each once an encounter; "gm" (the
  * GM's valve) as often as the GM wants. At 3 nothing happens and the once isn't used up. Says so in the chat (sysmsg.mjs). Returns the new level, or null.
  */
-/** v0.0.314 (pack AU; book, Bestiary, Elite Escalation): what an Elite's Escalation does (unless its entry says otherwise); v0.0.407: at 2, 4 and 6. */
-const [ER1, ER2, ER3] = ELITE_RUNGS_LADDER;
-// v0.0.431 (Lucas, 2026-11-18, the book audit Q38): each Elite has its own steps; these are the default ladder's (Pressing, Relentless, Second Wind)
-export const ELITE_RUNGS = { [ER1]: "Pressing (1 Boon on its first [Strike] Action each turn-cycle)", [ER2]: "Pressing (1 Boon on its first [Strike] Action each turn-cycle), Relentless (each of its Round Special Actions twice per turn-cycle)", [ER3]: "Pressing (1 Boon on its first [Strike] Action each turn-cycle), Relentless (each of its Round Special Actions twice per turn-cycle), Second Wind (its Encounter Special Actions back, once)" };
-/** What an Elite's ladder gives at this level (everything up to it), or "nothing yet" below the first step. */
-export const eliteRung = n => { const l = Math.trunc(Number(n)) || 0, at = [...ELITE_RUNGS_LADDER].reverse().find(r => l >= r); return at ? ELITE_RUNGS[at] : `nothing yet (its ladder starts at Escalation ${ER1})`; };
 /** Pure: the Elite phases an Elite gains from these state words (["Bloodied", "Strained", "Down"]): "bloodied" and/or "strained". */
 export const elitePhases = words => ["Bloodied", "Strained"].filter(w => (words ?? []).includes(w)).map(w => w.toLowerCase());
 
@@ -148,8 +140,7 @@ export async function raiseEscalation(actor, why = "gm", { combat = globalThis.g
     const { sysLine } = await import("./sysmsg.mjs");
     const { esc } = await import("./util.mjs");
     const what = why === "crit" ? "A Critical" : why === "hook" ? (label || "The class hook") : (label || "The GM");
-    const rung = actor?.type === "npc" ? ` Now: ${esc(eliteRung(to))}.` : "";   // v0.0.314: an Elite's line says what its new level does
-    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-fire", `${esc(what)}: <b>${esc(actor.name)}</b>'s Escalation rises to <b>${to}</b>${once ? " (once an encounter)" : ""}.${rung}`, "escmsg") });
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-fire", `${esc(what)}: <b>${esc(actor.name)}</b>'s Escalation rises to <b>${to}</b>${once ? " (once an encounter)" : ""}.`, "escmsg") });
   } catch (e) { console.warn("twod12 | Escalation line", e); }
   return to;
 }

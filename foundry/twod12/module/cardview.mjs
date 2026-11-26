@@ -83,8 +83,6 @@ export const modText = (chip, mod) => {
   return `${String(chip ?? "").replace(/\s*Modifier$/i, "").trim() || "Modifier"} ${n >= 0 ? `+${n}` : `−${-n}`}`;
 };
 
-/** The ruler line ("Ruler: 1 AP 1.40× ..."), only in Designer mode; its text without the "Ruler:" word (the card writes it in bold). */
-export const rulerText = (worth, designer) => (designer && String(worth ?? "").trim() ? String(worth).trim().replace(/^Ruler:?\s*/i, "") : "");
 
 /**
  * The Effects block: one line per Version (its cost badge), written once when every Version has the same text; a Split Action's two modes at

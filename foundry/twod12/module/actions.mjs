@@ -1355,7 +1355,7 @@ export async function useAction(actor, item, opts = {}) {
       rows: rowsM, outcomes: mk.outcomes, effectsHtml: mk.effectsHtml, effectsFrom: 1, critHtml: version.critical ? await enrich(version.critical, item) : "", flavor: it.flavor ?? "",
       setupHtml: setupRow, hasDamage: !!btn, card: cardLines,
       shared: mres ? { d: multiRoll.dice.d.map(x => x.faces), mod: mod + (Number(data.mod) || 0) } : null,
-      designer: { odds: (mres ? mres.map(r => ({ name: r.label ?? r.name, text: oddsText(r.chk).text })) : [{ name: "", text: oddsText(chk).text }]), ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}${it.automationNote ? ` (by hand: ${it.automationNote})` : ""}` : "" },
+      designer: { odds: (mres ? mres.map(r => ({ name: r.label ?? r.name, text: oddsText(r.chk).text })) : [{ name: "", text: oddsText(chk).text }]), mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}${it.automationNote ? ` (by hand: ${it.automationNote})` : ""}` : "" },
       sources: bonuses.map(b => `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${b.sub}` : ""}` : ""}${b.text ? ` ${b.text}` : ""}`),
       // v0.0.347 (Lucas, playtest 4: "Killer's Focus applied but there is no way of seeing it"): what this roll's damage takes from effects, by name and link
       applied: [...new Map([...bonuses.map(b => [b.effect, { name: b.effect, uuid: b.srcUuid ?? "" }]), ...steadyApplied.map(x => [x.name, x])]).values()]
@@ -1393,7 +1393,7 @@ export async function useAction(actor, item, opts = {}) {
       steps, afterDone: from ? steps.filter(x => x.k === 0).map(x => `0|${x.side}`) : [],
       // used while a Strike's damage is held (the Reactions message): its "After the damage" step waits for that damage to land
       afterWait: halfCtx.held && NR.waitsForDamage(after) && first ? { actor: first.uuid, token: targets[0].uuid } : null,
-      flavor: it.flavor ?? "", designer: { ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}${it.automationNote ? ` (by hand: ${it.automationNote})` : ""}` : "" }
+      flavor: it.flavor ?? "", designer: { mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}${it.automationNote ? ` (by hand: ${it.automationNote})` : ""}` : "" }
     };
   }
   const html = ccModel ? CC.cardContent(ccModel) : `<div class="twod12 chat action" style="${cardVars(color)}">
@@ -1411,7 +1411,7 @@ export async function useAction(actor, item, opts = {}) {
     ${bonusRows}
     ${critHtml}${effectsHtml}
     ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${fxNames(fxn.all)}</div>` : ""}
-    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml(targetEntries(targets, selfToken?.document?.disposition ?? 1), { retarget: true })}${applyAfterHtml(version, targets, selfToken, it.moment ? 1 : 0)}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
+    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml(targetEntries(targets, selfToken?.document?.disposition ?? 1), { retarget: true })}${applyAfterHtml(version, targets, selfToken, it.moment ? 1 : 0)}</div>`;
   // v0.0.195 (Lucas): a movement-only Action (Advance, Evade, Crawl) in combat starts its movement with the banner (squares left, Done) and
   // posts one short line when it ends, instead of a card whose button then posted the movement (two messages for one step).
   const mvInner = pureMove(it, version, basicKey);
@@ -1536,7 +1536,7 @@ export async function useAction(actor, item, opts = {}) {
         const model = { name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
           tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)), area: "", names: targets.length ? [targets[0].name] : [] },
           triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", flavor: it.flavor ?? "", card: cardLines,
-          designer: { ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}` : "" } };
+          designer: { mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}` : "" } };
         await ccSaveOnCard(cmsg, cfg, targets, { model, point, chain: useChain ? { chips: useChain, attrVal: src.kind ? (Number(src.mod) || 0) : null, source: item.name, done: targets.map(t => t.uuid) } : null });
       } else await postSaveFor(cfg, targets, { point, source: item.name });
       const region = areaOutcome?.region;

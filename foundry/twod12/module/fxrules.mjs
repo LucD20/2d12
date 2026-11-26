@@ -602,7 +602,7 @@ export function endsSentence(eIn, ctx = {}) {
 
 /* ------------------------------------------------------------------ v0.0.327 PACK ZONE: what an area does inside (Aura and Zone share it) */
 // Four rows, each with its own Who (allies / enemies / everyone, judged from the origin's side: a neutral counts as an enemy) and "self" (the origin,
-// or the Aura's creature: never its own ally, only through this switch). foundry/mockups/zone-prototype.html, option A.
+// or the Aura's creature: never its own ally, only through this switch). archive/mockups/zone-prototype.html, option A.
 export const WHO = { allies: "Allies", enemies: "Enemies", all: "Everyone" };
 const whoOk = w => (["allies", "enemies", "all"].includes(w) ? w : "allies");
 export const insideDefault = (o = {}) => normInside(deepMerge({

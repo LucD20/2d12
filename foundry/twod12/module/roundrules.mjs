@@ -38,12 +38,8 @@ export const escalationStart = momentum => (momentum ? ESC_MOMENTUM_R : ESC_MIN)
 export const escalationRaised = (now, by = 1) => Math.max(0, Math.min(ESC_MAX_R, (Number(now) || 0) + (Number(by) || 0)));
 /** Pack R's Momentum: after an encounter harder than easy (more than CV 75 a PC) the next one started with it. */
 export const givesMomentum = cvPerPc => (Number(cvPerPc) || 0) > 75;
-/** An Elite's Escalation ladder (the Bestiary): its first [Strike] Action each turn-cycle has 1 Boon (Pressing), its Round Specials twice per turn-cycle, its Encounter Special back, once. */
-/** rungs: the Escalation each of the three starts at: [1, 2, 3] (pack R), or ELITE_RUNGS_LADDER on the 1-to-6 ladder (the book since Stage 0; the system since v0.0.407). */
-export const ELITE_RUNGS = [1, 2, 3], ELITE_RUNGS_LADDER = [2, 4, 6];
-export const eliteFirstAttackBoons = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[0] ? 1 : 0);
-export const eliteRoundSpecials = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[1] ? 2 : 1);
-export const eliteEncounterBack = (esc, rungs = ELITE_RUNGS) => (Number(esc) || 0) >= rungs[2];
+// The Elite Escalation ladder (ELITE_RUNGS, ELITE_RUNGS_LADDER, eliteFirstAttackBoons, eliteRoundSpecials, eliteEncounterBack): removed by the cleanup
+// audit (2026-11-26, Lucas: "Remove the Default ladder"); the SIM keeps its frozen copy (book/ruler/sim/tables.mjs).
 
 /* ---- Stage 0 in the book (2026-11-12, pack "Stage 0 into the book"; Ch. 2, Escalation and Momentum; Ch. 3, Ranged Combat While Engaged) ---- */
 // The book's rules since that pack; the system's callers use them since v0.0.407 (pack "Stage 0 in Foundry": escalation.mjs, actions.mjs, combat.mjs),
@@ -67,10 +63,6 @@ export const momentumAfter = (now, { overcome = 0, downs = 0, sleeps = 0, retrea
   (retreat || rest ? 0 : momentumOf((Number(now) || 0) + (Number(overcome) || 0) - (Number(downs) || 0) - (Number(sleeps) || 0)));
 /** The party's Momentum as a number from 0 to 4 (a stored value of any kind: an old true / false switch reads 1 / 0). */
 export const momentumValue = m => momentumOf(m === true ? 1 : m);
-/** A Critical or a hook at the top of the ladder does nothing and isn't used up (Ch. 2, "At most 6"): can the level rise? */
-export const canRaise = (now, max = ESC_LADDER_MAX) => (Number(now) || 0) < max;
-/** Swapping on a Rest (Ch. 5): the order of the Modifiers can be swapped only during Stage 0; the other level-list choices at every Stage. */
-export const canSwapModifierOrder = stage => (Math.trunc(Number(stage)) || 0) === 0;
 /** Ranged Combat While Engaged since Stage 0: a [Ranged] Action while you are Engaged is Doomed (it was 2 Banes: ENGAGED_RANGED_BANES below). */
 export const ENGAGED_RANGED_DOOMED = true;
 /** A Thrown weapon thrown deals this much less damage on Tiers 2 and 3 (Ch. 15, Thrown; Lucas, 2026-11-12): each instance of its [W]. */

@@ -13,7 +13,7 @@ for (const [n, f] of [["Rebuke", "x1"], ["Heartseeker", "x3"], ["Marksman's Shot
   console.log(`${n} ${f}: ${v(n)[f]} | its chain: ${v(n).after}`);
 const all = JSON.stringify(ALLDOCS.filter(d => d.type === "action").map(d => d.system.versions));
 console.log("no chain marker left:", !all.includes("chain:yes"), "| no state module:", !fs.existsSync(ROOT + "module/chainchips.mjs"));
-const cards = ["paladin", "archer", "gear"].map(f => fs.readFileSync(ROOT + `../../book/cards/${f}.json`, "utf8")).join("");
+const cards = ["paladin", "archer", "set-aside/gear"].map(f => fs.readFileSync(ROOT + `../../book/cards/${f}.json`, "utf8")).join("");
 console.log("the per-card text overrides left (only Lock & Loose's: its Hindered is an Effect by Tier, not a chain):", [...cards.matchAll(/"foundry": \{\s*"(x[123]|critical)": "([^"]{0,40})/g)].map(m => `${m[1]}: ${m[2]}`).join(" | "));
 const mo = fs.readFileSync(ROOT + "module/moment.mjs", "utf8"), sh = (fs.readFileSync(ROOT + "templates/item-sheet.hbs", "utf8") + fs.readFileSync(ROOT + "module/actionsheet.mjs", "utf8"));
 console.log("a Reaction an Aura brings reaches as far as the Aura:", mo.includes("const range = auraOf || Number(item.system.momentRange) || 0;"), "| 'only a creature you threaten' only while on:", sh.includes('s.momentThreat ? ["Old"'));

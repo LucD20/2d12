@@ -1,12 +1,12 @@
 # Step 6 of the Foundry style plan (style-book.md): the chat cards' size.
 # Builds index.html from the approved chat mockups' real cards (drawn by the system's own functions):
-#   the styles and cards of ../chat-cards-dark.html (round 2 colors, fonts swapped) and ../chat-older-dark.html,
+#   the styles and cards of archive/mockups/chat-cards-dark.html (round 2 colors, fonts swapped) and archive/mockups/chat-older-dark.html,
 #   passed in as two JSON dumps (chat1.json, chat2.json: the outerHTML of each card, in page order) and the round-2 page.
 # Usage: python3 build.py <round2 chat-cards page> <chat1.json> <chat2.json>
 import json, re, sys, os
 here = os.path.dirname(os.path.abspath(__file__))
 page, j1, j2 = sys.argv[1:4]
-older = os.path.join(here, '..', 'chat-older-dark.html')
+older = os.path.join(here, '..', '..', '..', 'archive', 'mockups', 'chat-older-dark.html')
 st = re.findall(r'<style[^>]*>(.*?)</style>', open(page).read(), re.S)
 st2 = re.findall(r'<style[^>]*>(.*?)</style>', open(older).read(), re.S)
 c1, c2 = json.load(open(j1)), json.load(open(j2))

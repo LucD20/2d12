@@ -2,7 +2,7 @@
 // v0.0.427 (Lucas, 2026-11-18): (1) Shake Off's Tier 2 "this turn" is the current turn, even an ally's: the half is dealt at the end of the turn in
 // progress, whoever's it is (conditions.mjs bleedAtTurnEnd onlyHalf); (2) "Distance: Weapon (Normal range)" on Volley's and Covering Fire's
 // Burst (cardgen.mjs areaOf: placed within the weapon's normal range); (3) the book audit: its links scroll by script in any viewer, and the
-// clear fixes (book/book-audit.md).
+// clear fixes (archive/book-drafts/book-audit.md).
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(ROOTURL), src = f => fs.readFileSync(ROOT + f, "utf8");
@@ -26,4 +26,4 @@ const core = book("core-rules.html");
 console.log("a link to a place in the same document scrolls by script (any viewer):", core.includes("document.addEventListener('click',e=>{") && core.includes("t.scrollIntoView({block:'start'})"));
 console.log("the weapon property's own headings:", book("gear.html").includes('id="light-property"') && book("gear.html").includes('id="reload-property"'), "| the glossary links them:", core.includes('href="gear.html#light-property"'));
 console.log("a Basic Action link goes to its card:", core.includes('href="#card-shake-off"'));
-console.log("the audit's record:", fs.existsSync(ROOT + "../../book/book-audit.md"));
+console.log("the audit's record:", fs.existsSync(ROOT + "../../archive/book-drafts/book-audit.md"));

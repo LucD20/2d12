@@ -1,4 +1,4 @@
-// v0.0.355 PACK ACTION-SHEET (Lucas's pick: mockup A2, foundry/mockups/action-sheet-A2.html; the audit: foundry/mockups/action-effects-audit.md).
+// v0.0.355 PACK ACTION-SHEET (Lucas's pick: mockup A2, archive/mockups/action-sheet-A2.html; the audit: foundry/mockups/action-effects-audit.md).
 // The pure model of a Version's "After the damage" chain as steps, and of the order of events. No Foundry here: the tests load it.
 //   - the chain is still the Version's `after` text (chips run one after the other once the damage is applied and lands): the steps read it and
 //     write it back, so nothing is migrated and the runtime (inline.mjs runChain) doesn't change. An option a step has no control for is kept.
@@ -169,12 +169,6 @@ export function stepSentence(st, isSave = false) {
 }
 
 /* ------------------------------------------------------------------ by Stage (the audit's D15, D23, D51) */
-/** The formulas a chip has by Stage: { 0: "", 1: "1d8+mod", ... } for the Stage numbers given (sN: on the chip; the chip's own formula is the lowest Stage's). */
-export function stageValues(st, stages) {
-  const out = {};
-  for (const n of stages) out[n] = optGet(st, `s${n}`);
-  return out;
-}
 export const hasStages = st => (st?.opts ?? []).some(([k]) => /^s\d+$/i.test(k));
 
 /* ------------------------------------------------------------------ fill from the Tier text */

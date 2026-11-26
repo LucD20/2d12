@@ -9,13 +9,12 @@ a lone slot still ends at its own end: end
 an NPC Down on more Nonlethal falls Unconscious; equal, the GM picks: true
 Avenge Kin offered by itself: strikeDamage 2
 the Elite rank no longer turns Escalation on: true
-the sheet's ladder: 2 · Pressing | 4 · Relentless | 6 · Second Wind
 the Builder at Stage 0: the old notes hidden, the best turn labelled: true
 --- v0.0.434: Lucas's answers to questions 4, 7, 10 and 12
 (10) an NPC has a level; no set list of Actions: true
 (4) a Reaction written with its Frequency: true
 (7) every other Basic Action is theirs: true | Foundry leaves out only: rally, basicWeaponAttack
-(12) Pressing on [Strike] (the archived chapter): true | Foundry: true
+(12) Pressing on [Strike] (the archived chapter): true
 --- v0.0.435: question 7 (Fists) and the defaults
 (13) Relentless: a Round Special twice 2 | a Round Reaction once 1 | Second Wind on an Encounter Reaction 2
 (19) an Elite's Extreme Modifier counts as High: true | a Standard's doesn't: true

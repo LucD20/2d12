@@ -4,7 +4,7 @@
 import json, re, sys, os
 here = os.path.dirname(os.path.abspath(__file__))
 page, j1, j2 = sys.argv[1:4]
-older = os.path.join(here, '..', 'chat-older-dark.html')
+older = os.path.join(here, '..', '..', '..', 'archive', 'mockups', 'chat-older-dark.html')
 st = re.findall(r'<style[^>]*>(.*?)</style>', open(page).read(), re.S)
 st2 = re.findall(r'<style[^>]*>(.*?)</style>', open(older).read(), re.S)
 c1, c2 = json.load(open(j1)), json.load(open(j2))

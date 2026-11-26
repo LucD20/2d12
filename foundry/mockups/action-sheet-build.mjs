@@ -1,5 +1,5 @@
 // PACK ACTION-SHEET (2026-11-11): builds the three mockups of the Action item sheet.
-//   node foundry/mockups/action-sheet-build.mjs      -> action-sheet-A.html, -B.html, -C.html (static, self-contained)
+//   node foundry/mockups/action-sheet-build.mjs      -> archive/mockups/action-sheet-A.html, -B.html, -C.html (static, self-contained)
 // Real pieces: the system's CSS (styles/system.css, inlined), the rules list of EFFECT-SHEET (fxsheet.mjs fxTabHtml, fed with Marked Quarry's
 // settings read as rules by fxrules.mjs migrate), the Action card (actioncard.mjs buildSoloCard) and the four cards from tools/content.mjs.
 // The new pieces (Tier rows, the "After the damage" rows, the Version tabs, the by-Stage row) are drawn with the fr- classes plus a small "as-" sheet.
@@ -28,7 +28,7 @@ const V = await import(U("module/fxsheet.mjs"));
 const { buildSoloCard } = await import(U("module/actioncard.mjs"));
 const { instanceText } = await import(U("module/actions.mjs"));
 
-/* ---------------------------------------------------------------- Stage 0 (book/decisions-s1.md): the mockups read the Stage list, never 1 / 2 / 3 */
+/* ---------------------------------------------------------------- Stage 0 (archive/book-drafts/decisions-s1.md): the mockups read the Stage list, never 1 / 2 / 3 */
 // config.mjs still has Stages 1-3 (levels 1-4, 5-7, 8-10); the mockups show the list Stage 0 brings. The sheet must read TWOD12.stages, whatever it holds.
 const STAGES = [{ n: 0, from: 1, to: 3 }, { n: 1, from: 4, to: 7 }, { n: 2, from: 8, to: 11 }, { n: 3, from: 12, to: 15 }];
 const ESC_MAX = 6;
@@ -195,7 +195,7 @@ function versionBody(v, vi, m) {
     <h4 class="as-h4">After the damage <small>${v.after.length} step${v.after.length === 1 ? "" : "s"}</small></h4>${afterBlock(v, m, vi)}`;
 }
 const autoSec = m => `<details class="fr-auto"${m.autoNote ? "" : ""}><summary><span class="fr-dia ${m.autoNote ? "half" : "full"}" aria-hidden="true"></span>${m.autoNote ? "Partly automated" : "Automated"} <span class="fr-m">· ${esc(TWOD12.automationRanks[m.auto] ?? "(not set)")}</span></summary>${grid([["Rank", sel(m.auto, Object.entries(TWOD12.automationRanks))], ["Players do", area(m.autoNote, "What the players do themselves", 3)]])}${help("The rank is the diamond chip the cards show. Players do: what Foundry doesn't do yet (the diamond's tooltip).")}</details>
-  <details class="fr-adv"><summary>Advanced</summary>${grid([["Ruler", `<span class="fr-m">worth</span> ${text(m.sys.worth ?? "", "from book/ruler/worth.json")}`], ["Old fields", `<span class="fr-m">shown only while a card still uses them: a Split Action's Weapon / Power mode, "only a creature you threaten"</span>`]])}</details>`;
+  <details class="fr-adv"><summary>Advanced</summary>${grid([["Old fields", `<span class="fr-m">shown only while a card still uses them: a Split Action's Weapon / Power mode, "only a creature you threaten"</span>`]])}</details>`;
 const rulesSec = (m, small = "what its owner has by itself") => (m.name === "Mark Quarry"
   ? sec("While you have this Action", `${MQ_RULES.length} rules`, `<div class="as-rules">${rulesTab(MQ_RULES)}</div>${help("The same rules list as an Effect, a Feature or a Talent. Mark Quarry holds the mark's Boon, its Tier 1 damage and its two reminders: the Foundry-only Marked Quarry Feature goes.")}`)
   : sec("While you have this Action", "0 rules", `<div class="as-empty"><select class="fr-sel fr-addsel"><option>+ Add rule</option></select><span class="fr-m">${small}: a Boon on some Actions, a value, a reminder (as on an Effect)</span></div>`));
@@ -594,7 +594,7 @@ for (const [k, L] of Object.entries(LAY)) {
 <div class="pg-notes"><h2>What this layout does</h2><ul>${L.notes.map(x => `<li>${x}</li>`).join("")}</ul>
 <h2 style="margin-top:12px">In all three</h2><ul><li><b>Stage 0 ready:</b> Escalation takes 1 to ${ESC_MAX} (a cost, or what an Apex needs); a by-Stage value has one field per Stage of the config's list (Stages ${STAGES[0].n} to ${STAGES.at(-1).n}); no Talent-only field (Prerequisites, "Modifies other Actions").</li><li><b>Built on the audit's defaults:</b> one "After the damage" list of steps (no chips to type, no second button in the Tier text), an Effect is applied on use (or with the Effects line, on a Tier 2 or 3) or is a step after the damage, the area's size and rounds on each Version, a Reaction's range = its Distance, rules on the Action (Mark Quarry), Automation at the bottom.</li></ul></div>
 <script>${JS}</script>`;
-  fs.writeFileSync(path.join(HERE, `action-sheet-${k}.html`), html);
+  fs.writeFileSync(path.join(HERE, "../../archive/mockups", `action-sheet-${k}.html`), html);
   console.log(`action-sheet-${k}.html`, Math.round(html.length / 1024), "KB");
 }
 

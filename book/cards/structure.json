@@ -50,30 +50,6 @@
   "after": [],
   "passive": false
  },
- "Aim": {
-  "name": "Aim",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "Patience turns a good shot into a sure one.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "ranged",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Effect",
-    "text": "Make a [Ranged] Weapon Attack (1A) with 1 Boon. It ignores [[Cover|Low cover]]."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
  "Armor of Faith": {
   "name": "Armor of Faith",
   "escalation": 2,
@@ -233,26 +209,6 @@
   "after": [],
   "passive": false
  },
- "Battering Charge": {
-  "name": "Battering Charge",
-  "escalation": null,
-  "frequency": null,
-  "flavor": "Nothing slows you down once you start running.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Passive",
-    "text": "When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is [[Empowered]]."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
- },
  "Beacon": {
   "name": "Beacon",
   "escalation": null,
@@ -394,84 +350,6 @@
   "after": [],
   "passive": false
  },
- "Bloodlust": {
-  "name": "Bloodlust",
-  "escalation": null,
-  "frequency": "Encounter",
-  "flavor": "The red haze settles, and you stop caring about pain.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [
-   "self"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Effect",
-    "text": "For 1 round, your [Melee, Weapon] Actions are [[Empowered]] and gain 2 Boons, and you take 1 Bane on Saves."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Bowl Over": {
-  "name": "Bowl Over",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "All the weight of the head, low and through.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Bl"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + 2 + [Mod] Bl"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d10 + 2 + [Mod] Bl; Prone."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Brawler": {
-  "name": "Brawler",
-  "escalation": null,
-  "frequency": null,
-  "flavor": "Your hands have won more fights than any blade.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Passive",
-    "text": "You gain the Pummel Action. Your [[Fists]] don't have the [[Non-threatening]] property: you can flank with them."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
- },
  "Break Free": {
   "name": "Break Free",
   "escalation": null,
@@ -570,26 +448,6 @@
   "blocks": [],
   "after": [],
   "passive": false
- },
- "Challenge": {
-  "name": "Challenge",
-  "escalation": null,
-  "frequency": null,
-  "flavor": "You call them out, and they cannot look away.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Passive",
-    "text": "Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: their [Strike] Actions against creatures other than you take 1 Bane (EoT)."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
  },
  "Charge": {
   "name": "Charge",
@@ -691,30 +549,6 @@
   "blocks": [],
   "after": [],
   "passive": false
- },
- "Class Expertise": {
-  "name": "Class Expertise",
-  "escalation": null,
-  "frequency": null,
-  "flavor": "You have studied your craft longer than most.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Prerequisite",
-    "text": "Level 5."
-   },
-   {
-    "label": "Passive",
-    "text": "Choose one Encounter or Daily Action from your class's Repertoire that you don't have. You gain it."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
  },
  "Clear Lines": {
   "name": "Clear Lines",
@@ -1143,50 +977,6 @@
    {
     "label": "Tier 3",
     "text": "[V] 2 + 1d6 Bl"
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Cut Through": {
-  "name": "Cut Through",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "You drive through the line without stopping, and strike as you pass.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "2 AP",
-  "body": [
-   {
-    "label": "Setup",
-    "text": "Evade 2. During this Evade you can move through the space of any creature (you can't end in one), and you ignore Difficult Terrain."
-   },
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod]"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1[W] + [Mod]"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1[W] + [Mod] + 2"
-   },
-   {
-    "label": "Critical",
-    "text": "Relocate (1A) the target, ignoring the Handle trait."
    }
   ],
   "blocks": [],
@@ -2003,78 +1793,6 @@
   "after": [],
   "passive": false
  },
- "Guarded Cut": {
-  "name": "Guarded Cut",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "The blade strikes and comes straight back to guard.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Sl"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d6 + [Mod] Sl"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d10 + [Mod] Sl; you gain +1 Armor Defense for 1 round."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Gut Punch": {
-  "name": "Gut Punch",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A fist with a blade in it, right under the ribs.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + [Mod] Pi; Hindered (EoT)."
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d6 + [Mod] Pi; Hindered (EoT)."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
  "Guttering Glance": {
   "name": "Guttering Glance",
   "escalation": null,
@@ -2177,33 +1895,6 @@
    {
     "label": "Tier 3",
     "text": "[V] 2 + 1d6! Sl; Hindered (EoT)."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Hand of Mercy": {
-  "name": "Hand of Mercy",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A single touch undoes what the enemy worked for.",
-  "distance": "5 sq.",
-  "area": null,
-  "target": "One ally",
-  "traits": [
-   "divine",
-   "focus"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Prerequisite",
-    "text": "A [Divine] Action."
-   },
-   {
-    "label": "Effect",
-    "text": "Choose one: the ally ends one effect on them that is EoT or has 1 round left; or, if the ally is Down, they can use 1 Rally Point."
    }
   ],
   "blocks": [],
@@ -2353,63 +2044,6 @@
    }
   ],
   "passive": false
- },
- "Heartseeker": {
-  "name": "Heartseeker",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A full draw, aimed where the armor gives.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "ranged",
-   "projectile",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + 1 + [Mod] Pi"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT)."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Heavy Blows": {
-  "name": "Heavy Blows",
-  "escalation": null,
-  "frequency": null,
-  "flavor": "Every swing carries the whole weight of the steel.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Passive",
-    "text": "When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals damage on a Tier 3, it deals 2 more."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
  },
  "Hide": {
   "name": "Hide",
@@ -2612,42 +2246,6 @@
   "after": [],
   "passive": false
  },
- "Hooking Chop": {
-  "name": "Hooking Chop",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "The beard of the axe catches, and you pull.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Sl"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + [Mod] Sl; Pulled 1."
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d8 + [Mod] Sl; Pulled 1."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
  "Hunter's Edge": {
   "name": "Hunter's Edge",
   "escalation": 2,
@@ -2833,66 +2431,6 @@
   ],
   "after": [],
   "passive": false
- },
- "Keep Them Off": {
-  "name": "Keep Them Off",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "The point stays between you and them, and it pushes.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d6 + [Mod] Pi; Pushed 1."
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d10 + [Mod] Pi; Pushed 2."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Kickboxer": {
-  "name": "Kickboxer",
-  "escalation": null,
-  "frequency": null,
-  "flavor": "Your legs hit as hard as your fists.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Prerequisite",
-    "text": "Brawler."
-   },
-   {
-    "label": "Passive",
-    "text": "You gain the Leg Sweep Action: a kick, so it needs no free hand. You can use it with your hands full."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
  },
  "Killer's Focus": {
   "name": "Killer's Focus",
@@ -3132,126 +2670,6 @@
   "after": [],
   "passive": true
  },
- "Leg Sweep": {
-  "name": "Leg Sweep",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A low kick takes their legs out from under them.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Special",
-    "text": "This Action uses your [[Fists]] even when you have no free hand."
-   },
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] 1d4 Bl"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + [Mod] Bl"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d6 + [Mod] Bl; Prone."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Lesser Blessing": {
-  "name": "Lesser Blessing",
-  "escalation": null,
-  "frequency": null,
-  "flavor": "A small gift from the god you follow.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [
-   "divine",
-   "power"
-  ],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Passive",
-    "text": "Pick one blessing from the list below, related to a god you follow. You gain its Action. (More blessings will be added.)"
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
- },
- "Lock & Loose": {
-  "name": "Lock & Loose",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A bolt to the knee, and they go nowhere.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "ranged",
-   "projectile",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4+2+[Mod] Pi; For 1 round, the creature is Hindered until they use a Move Action."
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d10 + [Mod] Pi; Immobilized"
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Long Draw": {
-  "name": "Long Draw",
-  "escalation": null,
-  "frequency": null,
-  "flavor": "You pull a little further, and the arrow flies a little truer.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Passive",
-    "text": "With a [[Projectile]] weapon, your far range has no Bane and your maximum range has 1 Bane instead of 2."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
- },
  "Low Blow": {
   "name": "Low Blow",
   "escalation": null,
@@ -3282,42 +2700,6 @@
    {
     "label": "Tier 3",
     "text": "[V] 8 + 1d6 Bl; Staggered (EoT)."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Lunge": {
-  "name": "Lunge",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A full extension that reaches farther than they thought.",
-  "distance": "Weapon + 1",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + [Mod] Pi"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d8 + [Mod] Pi; Hindered (EoT)."
    }
   ],
   "blocks": [],
@@ -3571,32 +2953,6 @@
   "after": [],
   "passive": true
  },
- "Opportunity Attack": {
-  "name": "Opportunity Attack",
-  "escalation": null,
-  "frequency": "At-will",
-  "flavor": "You punish anyone who moves carelessly near you.",
-  "distance": null,
-  "area": null,
-  "target": "The triggering creature",
-  "traits": [
-   "strike"
-  ],
-  "cost": "1R",
-  "body": [
-   {
-    "label": "Interrupt",
-    "text": "An enemy adjacent to you would leave a square during a Move Action or uses the Stand Action."
-   },
-   {
-    "label": "Effect",
-    "text": "You can make a Basic Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
  "Overhead Smash": {
   "name": "Overhead Smash",
   "escalation": null,
@@ -3727,47 +3083,6 @@
   "after": [],
   "passive": false
  },
- "Point Blank": {
-  "name": "Point Blank",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "Too close for a bow. Not too close for this.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "firearm",
-   "ranged",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + [Mod] Pi"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 2d6 + [Mod] Pi; Pushed 1."
-   },
-   {
-    "label": "Tier 2 or 3",
-    "text": "While you are Engaged, this attack takes 1 Bane for it instead of 2."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
  "Point Out": {
   "name": "Point Out",
   "escalation": null,
@@ -3801,46 +3116,6 @@
    {
     "label": "Tier 3",
     "text": "Every ally within 10 squares who can see or hear you perceives the target 1 step better: Unsensed becomes Hidden, whatever the reason; Hidden from Hide goes back to what its own senses give. Never better than you perceive it."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Pummel": {
-  "name": "Pummel",
-  "escalation": null,
-  "frequency": "At-will",
-  "flavor": "A flurry of blows until something gives.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Requirement",
-    "text": "You have a free hand."
-   },
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Bl"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + [Mod] Bl"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d6 + [Mod] Bl"
    }
   ],
   "blocks": [],
@@ -3964,42 +3239,6 @@
    {
     "label": "Effect",
     "text": "Allies within 5 squares gain 1 Support Boon on their next [Weapon] Action."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Reaping Sweep": {
-  "name": "Reaping Sweep",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A wide, heavy arc for anyone standing too close.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Sl"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d10 + [Mod] Sl; Cleave 1"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 2d6 + [Mod] Sl; Cleave 2"
    }
   ],
   "blocks": [],
@@ -4243,42 +3482,6 @@
   "after": [],
   "passive": false
  },
- "Rending Chop": {
-  "name": "Rending Chop",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A blow that splits armor and leaves the flesh open.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Sl"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d6 + [Mod] Sl"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 2d8 + [Mod] Sl; Vulnerable 1 (EoT)."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
  "Ricochet": {
   "name": "Ricochet",
   "escalation": null,
@@ -4397,66 +3600,6 @@
     }
    }
   ],
-  "after": [],
-  "passive": false
- },
- "Rimebrand (Cold)": {
-  "name": "Rimebrand (Cold)",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "Frost creeps along your weapon, a gift from a winter god.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [
-   "divine",
-   "power",
-   "self"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Effect",
-    "text": "Until the end of your turn, your [Weapon] Actions deal an extra [R] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target Hindered (EoT)."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Ringing Blow": {
-  "name": "Ringing Blow",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A crack on the helm, and their next swing goes wide.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Bl"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + 1 + [Mod] Bl"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d8 + 1 + [Mod] Bl; its next [Strike] Action takes 1 Pressure Bane (EoT)."
-   }
-  ],
-  "blocks": [],
   "after": [],
   "passive": false
  },
@@ -4594,48 +3737,6 @@
    }
   ],
   "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Sacred Weapon": {
-  "name": "Sacred Weapon",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "You lay a hand on the steel and bless it for what comes next.",
-  "distance": "Reach",
-  "area": null,
-  "target": "One / two creatures",
-  "traits": [
-   "divine",
-   "focus"
-  ],
-  "cost": "1 or 2 AP",
-  "body": [
-   {
-    "label": "Prerequisite",
-    "text": "Lesser Blessing, or a [Divine] Action."
-   }
-  ],
-  "blocks": [
-   {
-    "heading": "1 AP",
-    "body": [
-     {
-      "label": "Effect",
-      "text": "You touch a creature (yourself or an ally). They become Empowered for 1 round."
-     }
-    ]
-   },
-   {
-    "heading": "2 AP",
-    "body": [
-     {
-      "label": "Effect",
-      "text": "As 1 AP, but you can touch up to two creatures."
-     }
-    ]
-   }
-  ],
   "after": [],
   "passive": false
  },
@@ -4986,43 +4087,6 @@
   "after": [],
   "passive": false
  },
- "Skirmish Shot": {
-  "name": "Skirmish Shot",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "Loose, and be gone before the arrow lands.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "ranged",
-   "projectile",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d6 + [Mod] Pi"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d10 + [Mod] Pi; you can Evade 1."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
  "Slip Away": {
   "name": "Slip Away",
   "escalation": null,
@@ -5331,26 +4395,6 @@
   "after": [],
   "passive": true
  },
- "Steady Nerves": {
-  "name": "Steady Nerves",
-  "escalation": null,
-  "frequency": null,
-  "flavor": "They are in your face. You are still calm.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Passive",
-    "text": "Your [Ranged] Actions don't take the Banes for being Engaged."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
- },
  "Steel Yourself": {
   "name": "Steel Yourself",
   "escalation": null,
@@ -5390,79 +4434,6 @@
     "text": "You can't use this Action while Down (Desperate, Dying or Shattered) or Unconscious."
    }
   ],
-  "passive": false
- },
- "Stick and Slip": {
-  "name": "Stick and Slip",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "In, a quick cut, and out before they can answer.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "melee",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + [Mod] Pi; you can Evade 1."
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d8 + [Mod] Pi; you can Evade 1."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Sting": {
-  "name": "Sting",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "A small bolt in the leg: small, and enough.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "ranged",
-   "projectile",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + [Mod] Pi"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1d8 + [Mod] Pi; Hindered (EoT)."
-   }
-  ],
-  "blocks": [],
-  "after": [],
   "passive": false
  },
  "Strafe": {
@@ -5627,43 +4598,6 @@
   "blocks": [],
   "after": [],
   "passive": true
- },
- "Thunderclap": {
-  "name": "Thunderclap",
-  "escalation": null,
-  "frequency": "Round",
-  "flavor": "The shot and the smoke, and they are on the ground.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "firearm",
-   "ranged",
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod] Pi"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1d4 + [Mod] Pi"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 2d8 + [Mod] Pi; Prone."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
  },
  "Thwart Cut": {
   "name": "Thwart Cut",
@@ -6047,48 +4981,6 @@
   "blocks": [],
   "after": [],
   "passive": true
- },
- "Whirlwind": {
-  "name": "Whirlwind",
-  "escalation": null,
-  "frequency": "Encounter",
-  "flavor": "You spin, and everything within reach feels the blade.",
-  "distance": null,
-  "area": "1 Emanation",
-  "target": "All creatures in the Area",
-  "traits": [
-   "area",
-   "melee",
-   "self",
-   "strike",
-   "weapon"
-  ],
-  "cost": "2 AP",
-  "body": [
-   {
-    "label": "Prerequisite",
-    "text": "Heavy Blows."
-   },
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] 1[W] + [Mod]"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1[W] + [Mod] + 4"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1[W] + [Mod] + 6"
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
  },
  "Word of Radiance": {
   "name": "Word of Radiance",

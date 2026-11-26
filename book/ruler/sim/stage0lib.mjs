@@ -1,6 +1,6 @@
 // Stage 0 (levels 1 to 3; in the book since 2026-11-12): what stage0.mjs (the report) and stage0fit.mjs (the Bestiary's fit) share: the rules, the builds,
 // the Bestiary's Stage 0 table as a function of two factors, and the fights. The class cards are not on their Stage 0 lists yet (card sessions with Lucas):
-// until then the builds are the R builds of rework/*.txt cut down to book/decisions-s1.md's level lists, as the prototype did.
+// until then the builds are the R builds of rework/*.txt cut down to archive/book-drafts/decisions-s1.md's level lists, as the prototype did.
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 export const S = await import(new URL("../spec.mjs", import.meta.url).href);
@@ -12,7 +12,7 @@ export const setRules = (o = {}) => Object.assign(S.RULES, S.RULES_S0, o);
 setRules();
 
 /* ------------------------------------------------------------------ the builds: the R builds cut to Lucas's level lists */
-// decisions-s1.md item 5, with the first two Passives swapped (Lucas, 2026-11-12, to make level 1 less hard): level 1 the Hallmark Action and Reaction and
+// archive/book-drafts/decisions-s1.md item 5, with the first two Passives swapped (Lucas, 2026-11-12, to make level 1 less hard): level 1 the Hallmark Action and Reaction and
 // the Passive of the cards' rung 1 (at Escalation 2); level 2 the hook, an Encounter Pick and the Passive of the cards' rung 2 (at Escalation 4); level 3
 // the Passive of the cards' rung 3 (at Escalation 6). No Apex (level 4), no Talents, no Daily.
 const RUNG = { "Radiant Zeal": [2, 1], "Searing Blows": [4, 2], Reckoning: [6, 3], "Font of Mercy": [2, 1], "Mending Light": [4, 2], "Hallowed Stance": [6, 3], "Killer's Focus": [2, 1], "Hunter's Edge": [4, 2], Finisher: [6, 3] };   // [Escalation, level]

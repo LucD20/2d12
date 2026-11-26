@@ -27,7 +27,6 @@ grunt     its Stage 50 | one Stage below 40 | two below 30 | above the party 50
 standard  its Stage 100 | one Stage below 80 | two below 65 | above the party 100
 elite     its Stage 200 | one Stage below 160 | two below 130 | above the party 200
 tooltip: Combat Value: what it counts for in an encounter. A normal fight is CV 100 a PC (75 easy, 125 hard, 150 deadly). Against a party of its Stage: 100; one Stage above it: 80; two Stages above it: 65
-Builder at level 6: Stage 1 (levels 4-7) | CV 50 | basic: 2 / 3 | 2.5 / 3.5 | 3 / 4 | 4 / 5.5 | 4.5 / 6.5 | check: A Stage 1 PC deals about 23 | note: "Only Stage 0's tables are written: this Stage uses pack R's numbers until the book writes its own." | level 11: "Only Stage 0's tables are written: this Stage uses pack R's numbers until the book writes its own."
 sheet: CV tooltips from the role: 0 | the Stage under the Level: false
 --- PCs (pack R): the Health line by Stage (the book: a Human Paladin, high on Vigor: 23 / 12 = 35; Stage 2: 35 / 18 = 53); the Modifiers +1 at Stage 3 only
 level  1: BDT 23 MDT 12 Pool 35 | Weapon 2 Power 2 Signature 2 (weapon) | Stage 0

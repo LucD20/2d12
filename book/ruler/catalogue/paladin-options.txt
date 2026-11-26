@@ -1,4 +1,4 @@
-# The Paladin's options (pack OT, options and Talents, 2026-10-30; PROPOSED: book/options-talents.md), for the price list: node book/ruler/econ.mjs
+# The Paladin's options (pack OT, options and Talents, 2026-10-30; PROPOSED: archive/book-drafts/options-talents.md), for the price list: node book/ruler/econ.mjs
 # Every option of a level 1 to 3 Pick slot, written to sit next to the slot's default (catalogue/paladin-p1.txt). Notes as in catalogue/paladin.txt.
 class Paladin (options)
 level 1
@@ -19,5 +19,5 @@ action Hand of Mercy (rescue) | ap 1 | round | escalation 1 | traits divine focu
 
 turn Typical: Smite 2, Weapon Attack, Weapon Attack
 
-# Passive Escalation slot (defaults Hallowed Stance, Radiant Zeal): Mending Light is priced by hand (a passive heal: book/options-talents.md)
+# Passive Escalation slot (defaults Hallowed Stance, Radiant Zeal): Mending Light is priced by hand (a passive heal: archive/book-drafts/options-talents.md)
 passive Radiant Zeal
