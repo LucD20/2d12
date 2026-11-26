@@ -92,21 +92,6 @@ async function grantWeapon(actor, weapon) {
   ui.notifications.info(`${weapon.name} added with ${n} action(s).`);
 }
 
-/**
- * v0.0.412 (pack F3 part 2): a character's old weapon replaced by the compendium's new one (the weapons migration): the new weapon is added where
- * the old one was (in hand, on you, dropped; one or both hands as the new weapon needs), with its Weapon Technique; the old weapon and the Actions
- * it gave go. Returns the new weapon's name.
- */
-export async function replaceWeapon(actor, old, fresh) {
-  const d = copyData(fresh, { sourceUuid: fresh.uuid }), was = old.system ?? {};
-  for (const k of ["wielded", "dropped", "hand"]) if (k in was && d.system && k in d.system) d.system[k] = was[k];
-  const [copy] = await actor.createEmbeddedDocuments("Item", [d]);
-  await grantActions(actor, fresh.system.actions ?? [], "weaponId", copy.id);
-  const gone = actor.items.filter(i => i.type === "action" && i.getFlag(F, "weaponId") === old.id).map(i => i.id);
-  await actor.deleteEmbeddedDocuments("Item", [old.id, ...gone]);
-  return copy.name;
-}
-
 async function dropSpecies(actor, item) {
   // v0.0.244: the Species window (specieswindow.mjs), in the class window's format: the two Attributes, the side of the bigger Health bonus, what it grants.
   const { chooseSpecies } = await import("./specieswindow.mjs");

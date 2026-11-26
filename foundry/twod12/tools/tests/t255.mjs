@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t255.mjs)
 // v0.0.409 (pack F2, the Paladin in Foundry): the Structure cards read for Foundry (book/cards/load.mjs fromStructure), an Art's Modes (split.mjs),
 // Smite's dice and Profane (judge.mjs), the passives' hooks (hooks.mjs), Rebuke's "moves away" (moment.mjs), the new buttons (gen.mjs), Half-Blinded,
-// Consecrated Ground's Guard row, the Paladin migration's list, and the wiring in the code.
+// Consecrated Ground's Guard row, and the wiring in the code (the Paladin migration: gone in v0.0.527, F-033; Judge's reduction: gone in v0.0.527).
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(new URL("../../", import.meta.url));
@@ -52,19 +52,17 @@ console.log("--- the buttons (gen.mjs)");
 const G = await import(ROOTURL + "module/gen.mjs");
 for (const t of ["The target gains Guard equal to 2 + your Power Modifier.", "that creature gains Guard equal to your Power Modifier.", "That damage is reduced by 1 + your Power Modifier.", "@Book[Half-Blinded]{Half-Blinded} (EoT).", "Blinded (EoT).", "You Advance up to 5 squares in a straight line toward the target.", "You Advance."]) console.log(" ", G.convertEffects(t));
 
-console.log("--- Half-Blinded, the Zone's Guard, the migration");
+console.log("--- Half-Blinded, the Zone's Guard");
 const R = await import(ROOTURL + "module/fxrules.mjs");
 const z = R.normInside({ diff: { on: true, who: "enemies" }, guard: { on: true, who: "allies", self: true, formula: "@origin.pow" } });
 console.log("the Guard row:", JSON.stringify(z.guard), "| active:", R.insideActive(z), "| its sentence:", R.insideSentences(z, { originName: "the Paladin" }).join(" "));
-const MG = await import(ROOTURL + "module/migrater.mjs");
-console.log("the Paladin migration's list:", MG.paladinLeftovers([{ name: "Holy Wrath", type: "action" }, { name: "Reckoning", type: "feature" }, { name: "Reckoning", type: "action" }, { name: "Smite", type: "action" }, { name: "Radiant Zeal", type: "feature" }]).join(", "));
 
 console.log("--- the wiring");
 const ac = src("module/actions.mjs"), dm = src("module/damage.mjs"), se = src("module/senses.mjs"), tw = src("module/twod12.mjs"), cb = src("module/combat.mjs"), af = src("module/areafx.mjs"), tr = src("module/triggers.mjs"), inl = src("module/inline.mjs"), mo = src("module/moment.mjs"), eb = src("module/escblock.mjs");
 console.log("an Art asks its Mode in the pick window:", ac.includes("const modes = artModes(item);") && ac.includes('await import("./pickwindow.mjs")') && ac.includes("modeView(item, mode)"));
 console.log("Smite's dice at the roll, the chip and its Reaction AP:", ac.includes("ruledDice(inst.dice, ctx.diceRule") && src("module/rollinput.mjs").includes('special: "smite"') && ac.includes("C.setRAP(cb, C.getRAP(cb) - 1)"));
-console.log("Judge's mark kind, its reduction, Profane in the triggers:", ac.includes("it.markKind") && dm.includes("J.judgeReductions(actor, from)") && tr.includes('tags.add("profane")'));
+console.log("Judge's mark kind, no reduction (v0.0.527), Profane in the triggers:", ac.includes("it.markKind") && !dm.includes("judgeReductions") && tr.includes('tags.add("profane")'));
 console.log("the hooks: Roving Judgment's cost, Hallowed Stance's Setup, Armor of Faith's Guard, Tireless Vigil's Reaction AP:", ac.includes('activeHooks(actor, "apCost")') && ac.includes('activeHooks(actor, "setupAdvance")') && ac.includes('activeHooks(actor, "reactionGuard")') && cb.includes('activeHooks(c?.actor, "rapMore")'));
 console.log("Half-Blinded: the status and the Sight:", tw.includes('["half-blinded", CI("half-blinded")]') && se.includes('o?.statuses?.has?.("half-blinded")'));
 console.log("Consecrated Ground's Guard at the start of a turn:", af.includes("a.rows.guard?.on"), "| Shield of Faith's Taunted on the triggering creature:", inl.includes('cfg.to === "trigger" && f?.triggerUuid') && mo.includes("triggerUuid: data.sourceUuid"));
-console.log("Escalation abilities up to 6:", eb.includes("Math.min(6, rung)") && eb.includes("escalationRung"), "| the migration registered:", tw.includes("registerMigrationF2()"));
+console.log("Escalation abilities up to 6:", eb.includes("Math.min(6, rung)") && eb.includes("escalationRung"));

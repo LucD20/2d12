@@ -224,8 +224,8 @@ const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "ch
 const PAL_ENC = ["Bulwark of Faith", "Consecrated Ground", "Word of Radiance"];
 add("classes", "class", "Paladin", "icons/svg/angel.svg", {
   description: "<p>You stand in front so the others can stand back. A holy warrior who judges a foe before their god, shields the allies near them, and, when the fight has built long enough, brings all of it down in one blow.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
-  // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10; v0.0.408: the Stage steps 0 until the book writes them; Rally 6 (+ 1 / 2 / 3 / 4 by Stage).
-  choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
+  // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10; v0.0.527 (Lucas, 2026-11-26: "Health +½"): high 30 / low 15; v0.0.408: the Stage steps 0 until the book writes them; Rally 6 (+ 1 / 2 / 3 / 4 by Stage).
+  choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 30, healthLow: 15, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
   // core rework batch 3 (H1, book, Chapter 5): every class chooses its Modifier order (+2 / +1 either way).
   modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "heavy", features: [],
   // batch 5 (Lucas, 2026-11-25): the Arts and the Escalation abilities (Passives and Reckoning) left the class; level 3 keeps only its Skill Talent.
@@ -247,8 +247,8 @@ add("classes", "class", "Paladin", "icons/svg/angel.svg", {
 const ARC_ENC = ["Volley", "Hit and Run", "Covering Fire"];
 add("classes", "class", "Archer", "icons/svg/target.svg", {
   description: "<p>An Archer fights from a distance and never stands still: many small hits, a knife for the foe who gets close, and gone again.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
-  // Pack R (v0.0.243): high 16 / low 8; v0.0.408: the Stage steps 0 until the book writes them; Rally 5 (+ 1 / 2 / 3 / 4 by Stage).
-  choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 5,
+  // Pack R (v0.0.243): high 16 / low 8; v0.0.527 (Lucas, 2026-11-26: "Health +½"): high 24 / low 12; v0.0.408: the Stage steps 0 until the book writes them; Rally 5 (+ 1 / 2 / 3 / 4 by Stage).
+  choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 24, healthLow: 12, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 5,
   // core rework batch 3 (H1, book, Chapter 5): every class chooses its Modifier order (+2 / +1 either way). v0.0.411: Light Armor Training.
   modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "light", speedMod: 1, features: [],
   // batch 5 (Lucas, 2026-11-25): the Arts and the Escalation Passives left the class; level 3 keeps only its Skill Talent.
@@ -303,8 +303,8 @@ const TYPED = { body: "custom", mind: "custom", appeal: "custom", instinct: "cus
     extra: [club] });
 }
 // The Bestiary's rebuild (2026-11-25; book/bestiary-design.md, decisions 12 to 15; book/cards/orc-warrior-redesign.md): the Orc Warrior is the first
-// Default Standard, built from the ground up: its numbers are typed (Custom), not read from the old tables: Health 36 (Vigor 22, Resolve 14: the
-// default's 18 / 18 with 4 moved), Armor and Ward Defense 13, Body +2, Instinct +1, Appeal +1, Mind -1; Weapon and Power +2 (a Standard's Medium).
+// Default Standard, built from the ground up: its numbers are typed (Custom), not read from the old tables: Health 45 since v0.0.527 (Vigor 28,
+// Resolve 17; it was 36: 22 / 14, the default's 18 / 18 with 4 moved; Lucas, 2026-11-26: a quarter more staying power), Armor and Ward Defense 13, Body +2, Instinct +1, Appeal +1, Mind -1; Weapon and Power +2 (a Standard's Medium).
 // Its cards: book/cards/stage0/bestiary.json (two Basic attacks, a Special, a Reaction, a Feature). The old sheet's cards (Cleaver, Brutal Swing,
 // Avenge Kin) left Foundry: OLD_CLASS_DOCS keeps them for the tests of the machinery they exercised.
 {
@@ -312,25 +312,25 @@ const TYPED = { body: "custom", mind: "custom", appeal: "custom", instinct: "cus
   jav.system.wielded = false;   // on its back: the Barbed Javelin's Setup draws it
   npc({ name: n, img: "systems/twod12/art/npcs/orc-warrior.png", role: "standard", weaponAttribute: "body",
     ratings: TYPED,   // the Bestiary's rebuild: its Modifiers typed too (+2 / +2, every rank's)
-    custom: { body: 2, mind: -1, appeal: 1, instinct: 1, bodyHealth: 22, mindHealth: 14, weapon: 2, power: 2 }, armorDef: 13, wardDef: 13,
+    custom: { body: 2, mind: -1, appeal: 1, instinct: 1, bodyHealth: 28, mindHealth: 17, weapon: 2, power: 2 }, armorDef: 13, wardDef: 13,
     extra: [axe, jav] });
 }
-// The Bestiary's rebuild (2026-11-25; book/cards/grave-wisp-redesign.md): the Grave Wisp, the first Grunt: Health 18 (Vigor 6, Resolve 12), Armor
+// The Bestiary's rebuild (2026-11-25; book/cards/grave-wisp-redesign.md): the Grave Wisp, the first Grunt: Health 22 (Vigor 8, Resolve 14; 18: 6 / 12 before v0.0.527), Armor
 // Defense 12, Ward Defense 14, Weapon and Power +2, Mind +2, Instinct +1, Appeal 0, Body -1, Speed 6, Resistance Psychic 3, Weakness Holy 3,
 // Immunity Cold; 3 AP and the Reaction Point (its rank); no weapon (its Actions are Power Actions). Its portrait: art/npcs/grave-wisp.png (Lucas).
 {
   npc({ name: "Grave Wisp", img: "systems/twod12/art/npcs/grave-wisp.png", role: "grunt", weaponAttribute: "instinct", powerAttribute: "mind", modLead: "power", speed: 6, ratings: TYPED,
-    custom: { body: -1, mind: 2, appeal: 0, instinct: 1, bodyHealth: 6, mindHealth: 12, weapon: 2, power: 2 }, armorDef: 12, wardDef: 14,
+    custom: { body: -1, mind: 2, appeal: 0, instinct: 1, bodyHealth: 8, mindHealth: 14, weapon: 2, power: 2 }, armorDef: 12, wardDef: 14,
     sys: { dmgMods: "Resistance Psychic 3, Weakness Holy 3, Immunity Cold" } });
 }
-// The Bestiary's rebuild (2026-11-25; book/cards/ogre-chieftain-redesign.md): the Ogre Chieftain, the first Elite: Health 72 (Vigor 44, Resolve 28),
+// The Bestiary's rebuild (2026-11-25; book/cards/ogre-chieftain-redesign.md): the Ogre Chieftain, the first Elite: Health 90 (Vigor 55, Resolve 35; 72: 44 / 28 before v0.0.527),
 // Armor Defense 14, Ward Defense 12, Weapon and Power +2, Body +3, Instinct +1, Appeal +1, Mind -1, Large (4), Reach 2, Steadiness 1, Speed 5, Tag
 // Ogre; 4 AP and the Reaction Point; no Escalation (Elite Escalation is deprecated); its extra is its Encounter Action, Crack the Ground. A club in
 // one hand, the other free (Crushing Grip). Its old cards (Club, Overhead Smash, Ground Slam, Rally the Tribe) left Foundry.
 {
   const n = "Ogre Chieftain", club = npcWeapon(n, "club: melee, blunt, 0/1d4/1d6", "icons/svg/hammer.svg");
   npc({ name: n, img: "systems/twod12/art/npcs/ogre-chieftain.png", role: "elite", weaponAttribute: "body", speed: 5, size: 4, ratings: TYPED,
-    custom: { body: 3, mind: -1, appeal: 1, instinct: 1, bodyHealth: 44, mindHealth: 28, weapon: 2, power: 2 }, armorDef: 14, wardDef: 12,
+    custom: { body: 3, mind: -1, appeal: 1, instinct: 1, bodyHealth: 55, mindHealth: 35, weapon: 2, power: 2 }, armorDef: 14, wardDef: 12,
     sys: { reachBase: 2, steadiness: 1, tags: ["ogre"] }, extra: [club] });
 }
 actors.forEach(a => { a.system.level = 1; });

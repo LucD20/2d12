@@ -6,4 +6,4 @@ the GM's re-roll keeps the Empowered die: true
 Sleep's −1 Momentum: a Sleep after an encounter ended is another night's: true
 a split Advance logs the squares moved (the line is written before they are cleared): true
 the HUD and the sheet use the cost a passive lowers: true
-Update from the compendium waits for the weapons migration: true
+Update from the compendium waits for no migration (v0.0.527: the weapons migration is gone, F-033): true

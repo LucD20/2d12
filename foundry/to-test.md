@@ -19,6 +19,18 @@ differ):
 
 ## Characters and sheets
 
+### rt-pregens · v0.0.527 · The pregens' new Health and Rally Points
+Do: In a new world (or after importing them again from the PCs compendium), open Aveline, Durgan, Sylwen and Kaela (the level 1 ones) and look at their Health bars and the Rally Points line.
+Expect: Aveline: Vigor 33, Resolve 17, Health 50, each Rally Point heals 13. Durgan: Vigor 33, Resolve 17, Health 50, heals 13. Sylwen: Vigor 25, Resolve 16, Health 41, heals 11. Kaela: Vigor 27, Resolve 14, Health 41, heals 11. Their Rally Points count is unchanged (Paladins 7, Archers 6). The Paladin class item says high 30 / low 15, the Archer's high 24 / low 12.
+
+### rt-update · v0.0.527 · An existing world's characters get the new Health
+Do: In your playtest world, accept "Update from the compendium" when asked (or run it from the system settings), then open Durgan.
+Expect: His class item says high 30 / low 15 and his sheet shows Vigor 33, Resolve 17, Health 50 (a Rally Point heals 13); the damage he had is kept.
+
+### rt-creatures · v0.0.527 · The creatures' new Health and dice
+Do: Import the Orc Warrior and the Ogre Chieftain again from the NPCs compendium and open their sheets; with the Orc Warrior, roll Hamstringing Axe against Durgan until a Tier 2 and a Tier 3; with the Ogre Chieftain, roll Crushing Grip against Aveline.
+Expect: Orc Warrior: Vigor 28, Resolve 17, Health 45; Hamstringing Axe's card reads Tier 2 "[V] 2 + 1d10! Sl", Tier 3 "[V] 8 + 1d12! Sl; Hindered (EoT)", its Critical row still "[V] 1d10! Sl"; the damage card rolls those dice and explodes on a 10 (or a 12). Ogre Chieftain: Vigor 55, Resolve 35, Health 90; Crushing Grip "2 + 1d10! Bl" / "8 + 1d12! Bl; Grabbed"; Crack the Ground's Tier 1 "20 + 2d12 Bl", Tier 2 "11 + 1d12 Bl"; Backhand's button deals 2.
+
 ### ct-cards · v0.0.522 · The Paladin and Archer traits on the class cards
 Do: Open Aveline's sheet and look at Smite, Judge and Drawing Light (the Actions tab and each card's preview), and her Feature Sworn Blade; then Kaela's Strafe, Slip Away and Harrying Shot, and her Feature Shifting Aim. Use Kaela's Strafe once and look at its chat card.
 Expect: Smite's traits read "Signature · Weapon · Strike · Divine · Paladin · Unfailing", Judge's "Divine · Paladin", Drawing Light's end "Divine · Magical · Paladin"; Strafe's "Weapon · Projectile · Ranged · Strike · Archer", Harrying Shot's end "Strike · Archer"; Slip Away now has a traits line, "Archer". The class word is the Keywords' color, like Divine, with no fill; nothing wraps onto a second line that didn't before. Sworn Blade and Shifting Aim show no trait. The chat card's traits line ends "Archer".
@@ -47,9 +59,9 @@ Expect: The Ogre's Escalation rises each round as before; the chat line says "Og
 Do: Turn on Designer mode, open Aveline's Smite card on her sheet, then use Smite against the Orc Warrior.
 Expect: No "Ruler" line on the card or under the chat card (the Odds and the Automation lines stay in Designer mode).
 
-### bst-sheets · v0.0.519 · The four playtest creatures' sheets
+### bst-sheets · v0.0.519 · Rev 2 · The four playtest creatures' sheets
 Do: In a new world (or after importing them again from the NPCs compendium), open the Goblin Sneak, the Grave Wisp, the Orc Warrior and the Ogre Chieftain.
-Expect: Goblin Sneak: Minion, CV 30, 2 ticks (a "Ticks 2/2" bar, no Vigor or Resolve), AD 13, WD 12, Weapon and Power +2, Speed 6, Shiv, Jeer, Knife in the Back, Shriek and Scatter. Grave Wisp: Grunt, CV 50, Vigor 6, Resolve 12, AD 12, WD 14, Speed 6, its new portrait, the damage line "Immunity Cold · Resistance Psychic 3 · Weakness Holy 3", Drifting, Slipping Touch, Guttering Glance, Pass Through, Dying Flare. Orc Warrior: Standard, Vigor 22, Resolve 14, 13 / 13, Speed 5. Ogre Chieftain: Elite, CV 200, Vigor 44, Resolve 28, AD 14, WD 12, Large, Reach 2, Steadiness 1, Speed 5, no Escalation; Crushing Grip, Roar, Great Sweep, Hurled Goblin, Crack the Ground, Backhand. None of the old cards (Rusty Knife, Club, Rally the Tribe...).
+Expect: Goblin Sneak: Minion, CV 30, 2 ticks (a "Ticks 2/2" bar, no Vigor or Resolve), AD 13, WD 12, Weapon and Power +2, Speed 6, Shiv, Jeer, Knife in the Back, Shriek and Scatter. Grave Wisp: Grunt, CV 50, Vigor 8, Resolve 14 (Health 22), AD 12, WD 14, Speed 6, its new portrait, the damage line "Immunity Cold · Resistance Psychic 3 · Weakness Holy 3", Drifting, Slipping Touch, Guttering Glance, Pass Through, Dying Flare. Orc Warrior: Standard, Vigor 28, Resolve 17 (Health 45), 13 / 13, Speed 5. Ogre Chieftain: Elite, CV 200, Vigor 55, Resolve 35 (Health 90), AD 14, WD 12, Large, Reach 2, Steadiness 1, Speed 5, no Escalation; Crushing Grip, Roar, Great Sweep, Hurled Goblin, Crack the Ground, Backhand. None of the old cards (Rusty Knife, Club, Rally the Tribe...).
 
 ## Hiding
 
@@ -121,9 +133,9 @@ Expect: Each card shows its own Critical row ([V] 1d10! Pi, [V] 1d10! Sl, [R] 1d
 Do: With the Goblin Sneak, roll Shiv against Kaela until a Critical (or set the dice). Then, on the Goblin Sneak's sheet, make a new Action, give it a Tier 2 of [V] 1d4 Pi and tick "Basic attack" in its sheet.
 Expect: On the Critical the pick bar asks "Apply: [V] 1d10! Pi." / Don't apply; applied, the 1d10 explodes on a 10 (the face counts 9 and is rolled again) and deals Pierce to Kaela's Vigor. The new Action's Critical row stays empty when "Basic attack" is ticked: nothing fills it, and a Critical with it adds nothing.
 
-### mn-empowered · v0.0.523 · A Minor enemy's Empowered die explodes
+### mn-empowered · v0.0.523 · Rev 2 · A Minor enemy's Empowered die explodes
 Do: Outside a combat, give the Grave Wisp Empowered by hand from the Conditions, then roll its Slipping Touch against Sylwen until a Tier 2 or 3, and again until the Empowered die shows a 6 (or set the dice). Then the same with a Goblin Sneak (Empowered from the Conditions) and its Shiv against Kaela.
-Expect: The damage card has the Empowered die as 1d6! (Cold for the wisp, Pierce for the goblin); on a 6 it counts 5 and is rolled again, the exploded face shown, as it does for the Orc Warrior. The Tier's own 1d4 or 1d6 still never explodes (it writes no !).
+Expect: The damage card has the Empowered die as 1d6! (Cold for the wisp, Pierce for the goblin); on a 6 it counts 5 and is rolled again, the exploded face shown, as it does for the Orc Warrior. The Tier's own dice (1d10, 2 + 1d12 since v0.0.527) still never explode (they write no !).
 
 ### bst-ticks-damage · v0.0.519 · Damage removes a Minion's ticks by the Tier
 Do: With Sylwen, make a Basic Attack against a Goblin Sneak; apply the damage of a Tier 1 hit (roll again until you get one), then of a Tier 2 on another goblin.
@@ -133,8 +145,8 @@ Expect: Each goblin's own Save, turned over: a Tier 1 Save removes 3 (Down), a T
 
 ## Conditions and their Tiers
 
-### hq-lingering · v0.0.521 · Lingerings of different subtypes run together; Shake Off ends one
-Do: Give Durgan a Lingering 1d4 Pi (the Orc Warrior's Barbed Javelin, Tier 3), then a Lingering 1d6 Fi (by hand from the Conditions), then another Lingering 1d4 Pi. End his turn. Then use Shake Off on him.
+### hq-lingering · v0.0.521 · Rev 2 · Lingerings of different subtypes run together; Shake Off ends one
+Do: Give Durgan a Lingering 1d10 Pi (the Orc Warrior's Barbed Javelin, Tier 3, since v0.0.527), then a Lingering 1d6 Fi (by hand from the Conditions), then another Lingering 1d10 Pi. End his turn. Then use Shake Off on him.
 Expect: He keeps two Lingerings: the Piercing one (the second Piercing one, not higher, leaves the first) and the Fire one. At the end of his turn each deals its own damage card. Shake Off asks in the bottom bar which Lingering it ends (both listed by name); the Save uses that Lingering's Attributes and DC, and only that one ends (or is halved on a Tier 2).
 
 ## Movement
@@ -147,9 +159,9 @@ Expect: The dead goblin's square costs nothing extra and Durgan can stop in it (
 Do: Durgan (Arming Sword) Charges an Orc Warrior 5 squares away. Then Sylwen, with her Hunting Bow in hand, Charges an orc about 16 squares away; then with only her Dagger in hand.
 Expect: Durgan stops adjacent, as before. Sylwen with the bow stops on the first square from which the orc is within 12 squares (the bow's normal Range), the line and texts saying "in Range"; an orc already within 12 is "too close". With the Dagger, if it is a Thrown weapon the bottom bar first asks "Dagger (in hand)" or "Dagger (thrown)", and she stops where that Range reaches.
 
-### ox-onesquare · v0.0.525 · One square of Difficult Terrain always
-Do: Draw a Difficult Terrain region next to Kaela. Make her Prone and Crawl (1 square) into it. Then, standing, use Advance and move 2 squares in the open and try the next square into the region with 1 left.
-Expect: The Crawl's area shows the square in the region and she enters it; the Crawl is spent, no AP more. The Advance with 1 square left can't enter it for free (it costs 2: a further AP is spent, as before).
+### ox-onesquare · v0.0.525 · Rev 2 · One square of Difficult Terrain always, whatever was moved
+Do: Draw a Difficult Terrain region next to Kaela. Make her Prone and Crawl (1 square) into it. Then, standing outside the region, use Advance and move in the open until she has 1 square left of it, and drag her 1 square into the region.
+Expect: The Crawl's area shows the square in the region and she enters it; the Crawl is spent, no AP more. With 1 square of the Advance left, its area shows the squares of the region next to her and she enters one: the Advance ends there and no further AP is spent (v0.0.525 to v0.0.526 spent another AP).
 
 ### cu-inway · v0.0.520 · A creature Down but still fighting holds its space
 Do: Durgan is Dying and keeps fighting; as the GM, drag the Orc Warrior through Durgan's square. Then Durgan collapses (Unconscious) and you drag it again.
@@ -164,6 +176,14 @@ Do: In a combat, drag the Grave Wisp through Aveline's space and through another
 Expect: The movement passes through both spaces with no extra cost (no Difficult Terrain); ending in a creature's space is refused. An Orc Warrior can't pass through Aveline's space (it blocks).
 
 ## Reactions and Judge
+
+### rt-judge · v0.0.527 · Judge no longer reduces damage
+Do: At the start of an encounter, Aveline Judges the Orc Warrior; Durgan stands within 5 squares of her. The Orc Warrior hits Durgan with Hamstringing Axe (a Tier 2), then again in a later round.
+Expect: No question "Reduce that damage by 2?" and no "Judge: the damage to Durgan is reduced" line: Durgan takes the whole damage both times; the Encounter Log shows no "Judge (Aveline)" reduction. The orc still counts as Profane for Aveline (her Smite rolls d8s against it).
+
+### rt-feint · v0.0.527 · Feint: 1 Boon on a Tier 2, 2 Boons on a Tier 3
+Do: Durgan Feints the Orc Warrior until a Tier 2 (Designer mode: Force a Tier, or roll), then makes a Basic Attack against it; next turn, a Feint with a Tier 3, then a Basic Attack against it; then a Basic Attack against another creature after a Tier 3 Feint.
+Expect: Tier 2: the chat line says "+1 Boon on next [Strike] against Orc Warrior this turn" and the Basic Attack's roll dialog shows 1 Boon from Feint (Orc Warrior). Tier 3: "+2 Boons", the roll shows 2 Boons and is not Favored. The Effect is spent on that Strike; a Strike against another creature doesn't use it. Feint's card reads Tier 2 "You gain 1 Boon...", Tier 3 "You gain 2 Boons...".
 
 ### ox-shifting · v0.0.525 · Shifting Aim on another creature's turn
 Do: On the Orc Warrior's turn, push Sylwen 1 square (the GM's Alt-drag, or the orc's Shove), then use a [Ranged, Strike] of Sylwen's during that turn (Snap Shot if its Trigger fits, or her Basic Attack from the sheet). Then a second one in the same turn.
@@ -181,9 +201,9 @@ Expect: Kaela's hit: Blood for Blood is not offered (a note: Feinted); Sylwen's 
 Do: Make the Orc Warrior Bloodied with Sylwen's Basic Attack from 2 squares away, then hit it again with Vigor damage; then hit it with Resolve damage (Durgan's Drawing Light), and once from 4 squares away.
 Expect: The Vigor hit that Bloodies it (and the next) offers Blood for Blood (Use / Pass); Use: Advance up to 2, then the Basic attack button with 1 Bane takes the axe when Sylwen is in reach (the javelin when she isn't; both: a pick window). The Resolve hit and the hit from 4 squares offer nothing.
 
-### bst-rally · v0.0.519 · An NPC's Rally Point is a quarter of its Health
-Do: Deal 10 damage to a Grave Wisp and 20 to the Ogre Chieftain. With Durgan, use Lay On Hands on the wisp, then on the ogre.
-Expect: The wisp heals 5 (a quarter of 18, rounded up) and the ogre 18 (a quarter of 72); neither spends anything. An Orc Warrior would heal 9.
+### rt-npcrally · v0.0.527 · An NPC has no Rally Points
+Do: Deal 10 damage to a Grave Wisp (make it Durgan's ally for the test, or as the GM). With Durgan, use Lay On Hands at 2 AP on the wisp and click its Rally Point button.
+Expect: A warning "Grave Wisp has no Rally Points." (or "no Rally Point left"); the wisp heals nothing from it (the Guard of Lay On Hands still lands).
 
 ### bst-flare · v0.0.519 · Dying Flare when the Grave Wisp would go Down
 Do: Bring the Grave Wisp to 1 Health, put Aveline and an Orc Warrior next to it, and hit it with Kaela.
@@ -193,9 +213,9 @@ Expect: Before the damage lands, the Reactions message offers Dying Flare (an In
 Do: Three Goblin Sneaks within 6 squares of each other; end one goblin's turn with 1 AP kept. Take another goblin Down with Sylwen.
 Expect: The goblin with a kept AP is offered Shriek and Scatter (it has no Reaction Point: the AP pays); Use: Evade 1 and the Jeer button. A goblin with no AP left shows in the "No Reactions" line. A goblin farther than 6 squares isn't offered it.
 
-### bst-backhand · v0.0.519 · The Ogre's Backhand doesn't stop the mover
+### bst-backhand · v0.0.519 · Rev 2 · The Ogre's Backhand doesn't stop the mover
 Do: Move Durgan (Advance) into a square adjacent to the Ogre Chieftain, with movement to spare. Then Evade into an adjacent square with Aveline.
-Expect: Durgan's movement is offered Backhand (a Trigger, no Move back on the message); Use: the 1 Blunt damage button and Pushed 2. Durgan still has the rest of his movement. Aveline's Evade offers nothing.
+Expect: Durgan's movement is offered Backhand (a Trigger, no Move back on the message); Use: the 2 Blunt damage button (1 before v0.0.527) and Pushed 2. Durgan still has the rest of his movement. Aveline's Evade offers nothing.
 
 ## Areas, light and Cover
 

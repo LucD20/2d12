@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t305.mjs)
 // v0.0.498 (Pass 3 — Combat Automation & Tactile Map UX):
 // (1) Auto-Evade on Quick Shots / Darting Blade / Volley (autoEffectEvadeTag);
-// (2) Feint Gold automation: T2 (+2 Boons vs target), T3 (Favored vs target), target-scoped expireOnUse, Critical (noReactionsVs + moment.mjs blocking);
+// (2) Feint Gold automation: T2 (+1 Boon vs target since v0.0.527; +2 before), T3 (+2 Boons since v0.0.527; Favored before), target-scoped expireOnUse, Critical (noReactionsVs + moment.mjs blocking);
 // (3) Save Roll Dialog named modifier chips (saveExtraMods) + live Modifier Breakdown in checkRollHtml;
 // (4) "Modifiers before Setup" reminder (.rd-setup-note) in Roll Dialog (dialogHtml);
 // (5) Reaction "Move back" resets Foundry V14 movement ruler (revertRecordedMovement(movementId)) and clears Ctrl+Z moveUndoStack;
@@ -41,7 +41,7 @@ console.log("autoEffectEvadeTag:",
   "|", ACT.autoEffectEvadeTag({ noTiers: true, effects: "You @Move[evade|distance:2]." }) || "none",
   "|", ACT.autoEffectEvadeTag({ noTiers: false, effects: "You @Move[advance|distance:2]." }) || "none");
 
-// 2. Feint automation (T2 Boons, T3 Favored, target-scoped expiry, Critical noReactionsVs)
+// 2. Feint automation (T2 1 Boon, T3 2 Boons since v0.0.527, target-scoped expiry, Critical noReactionsVs)
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic-data.mjs");
 const feintCard = BASIC_ACTIONS.feint;
 console.log("Feint basic-data automation:", feintCard?.automation);
@@ -101,11 +101,11 @@ await BN.expireOnUse(syl, new Set(["strike"]), new Set(), { rolled: true, target
 const leftAfterA = syl.effects.length;
 console.log("Feint target-scoped expireOnUse (after Orc B / after Orc A):", leftAfterB, "/", leftAfterA);
 
-// Feint Tier 3 -> Favored on next Strike vs Orc A
+// Feint Tier 3 -> 2 Boons on next Strike vs Orc A (v0.0.527; Favored before)
 await FX.applyFeintEffect(syl, orcA, 3);
 const mT3 = FX.modifierList(syl, new Set(["strike"]), [orcA]);
 const rT3 = FX.resolveModifiers(syl, mT3.map(m => m.id));
-console.log("Feint T3 favored:", mT3[0]?.favored, "| resolveModifiers favored:", rT3.favored, "| favBy:", rT3.favBy.join(","));
+console.log("Feint T3 (v0.0.527: 2 Boons, not Favored):", `${mT3[0]?.name}:+${mT3[0]?.boons}`, "| favored:", !!mT3[0]?.favored, "| resolveModifiers favored:", rT3.favored);
 
 // Feint Critical -> Orc A can't use Reactions against Sylwen, CAN still use Reactions against other PC
 await FX.applyFeintNoReactions(orcA, syl);

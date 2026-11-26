@@ -5665,7 +5665,7 @@
   "id": "F-033",
   "section": "foundry",
   "group": "Dead code and dead files",
-  "do": "hold",
+  "do": "apply",
   "chosen": "Remove the migrations older than the last world Lucas plays (ask him)",
   "ask": "Which is the oldest world you still play (its system version)? The one-time migrations older than it can go.",
   "topic": "later",
@@ -5675,7 +5675,8 @@
    "foundry/twod12/module/settingsmigrate.mjs",
    "foundry/twod12/module/twod12.mjs:284-301 (worldPassV351, settingsV187, rallyV176, releaseV118 and others)"
   ],
-  "evidence": "About 15 hidden world flags each mark a migration already run once (from v0.0.118 to v0.0.507). They read and write their flag; none is dead code in a world made before them. Whether any of Lucas's worlds still needs the pre-v0.0.400 ones was not established."
+  "evidence": "About 15 hidden world flags each mark a migration already run once (from v0.0.118 to v0.0.507). They read and write their flag; none is dead code in a world made before them. Whether any of Lucas's worlds still needs the pre-v0.0.400 ones was not established.",
+  "answered": "2026-11-26: \"I dont run any old world\" (his world is on the released v0.0.519; Foundry v0.0.527 removed the one-time migrations before v0.0.519 and their settings; settingsmigrate.mjs, the in-memory readers of old item data, kept)"
  },
  {
   "id": "F-034",

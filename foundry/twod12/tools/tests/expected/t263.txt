@@ -1,6 +1,6 @@
 --- (1) Stacking and Judge
-Chapter 2: true | the card: true
-Foundry asks the judge's player (declined: the round's use is kept): true | each Paladin's own mark (two Judges): true
+Chapter 2: true | the card has no reduction (v0.0.527): true
+Foundry has no reduction to ask about (v0.0.527): true | each Paladin's own mark (two Judges): true
 --- (2) Cover against an area
 Chapter 3: true | every area's creatures give none: true | the Save card's Cover too: true
 --- (3) A Special about the roll above the Attack line

@@ -865,7 +865,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
         </tr>`;
       };
       const offTbl = `<div class="el-sec">
-        <div class="el-shd"><span>Offense, Mitigation &amp; Rolls</span><small>Prevented credits the protector (Shield of Faith, Judge)</small></div>
+        <div class="el-shd"><span>Offense, Mitigation &amp; Rolls</span><small>Prevented credits the protector (Shield of Faith)</small></div>
         <div class="el-tblwrap"><table class="el-tbl"><thead><tr>
           <th>Creature</th><th class="c">Dealt ([V]/[R])</th><th class="c">/Rd</th><th class="c">Allies</th><th class="c">Prevented</th>
           <th class="c">Heal Given</th><th class="c">T1/T2/T3/Crit</th><th class="c">Rx Used/Off</th><th class="c">AP Kept</th><th>States</th>

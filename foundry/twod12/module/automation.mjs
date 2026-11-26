@@ -9,7 +9,7 @@ import { allEffects } from "./passives.mjs";
 import { effectOff } from "./escalation.mjs";
 import { matches } from "./effects.mjs";
 import { turnCycleBlocked } from "./usage.mjs";
-import { unset, oneAtATime } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
+import { oneAtATime } from "./util.mjs";
 const F = "twod12";
 
 /* ------------------------------------------------------------------ once per round */
@@ -270,102 +270,3 @@ export async function postMessages(actor, when, opts = {}) {
   return list.length;
 }
 
-/* ------------------------------------------------------------------ v0.0.186, once per world */
-/**
- * The cards whose automation was code that tested their name (Font of Mercy, Radiant Zeal, Elusive, Killer's Focus, Long Draw, Steady Nerves,
- * Sharpshooter, Marked Quarry, Hunter's Focus) carry settings now. A copy with no settings (world items and the ones on creatures) gets the
- * compendium's settings, matched by the compendium it came from or by its name. Returns how many items were updated.
- */
-export async function giveSettingsV186(items, actors) {
-  const NAMES = ["Font of Mercy", "Radiant Zeal", "Elusive", "Killer's Focus", "Long Draw", "Steady Nerves", "Sharpshooter", "Marked Quarry", "Hunter's Focus"];
-  const src = new Map();
-  for (const key of ["twod12.features", "twod12.effects"]) {
-    const pack = globalThis.game?.packs?.get(key);
-    if (!pack) continue;
-    for (const d of await pack.getDocuments()) if (NAMES.includes(d.name) && (d.system?.settings ?? []).length) src.set(`${d.type}|${d.name}`, d.system.toObject?.().settings ?? foundry.utils.deepClone(d.system.settings));
-  }
-  let n = 0;
-  const fix = async it => {
-    const settings = src.get(`${it.type}|${it.name}`);
-    if (!settings || (it.system?.settings ?? []).length) return;
-    try { await it.update({ "system.settings": settings }); n++; } catch (e) { console.warn("twod12 | settings for", it.name, e); }
-  };
-  for (const it of items ?? []) await fix(it);
-  for (const a of actors ?? []) if (a.isOwner) for (const it of a.items) await fix(it);
-  return n;
-}
-
-/**
- * v0.0.187, once per world: Killer's Focus and Radiant Zeal give an Effect each turn instead of a once-per-round passive Bonus Damage
- * (a copy whose settings are none or only Bonus Damage gets the compendium's), and Font of Mercy is ticked as an Escalation Passive.
- */
-export async function giveSettingsV187(items, actors) {
-  const pack = globalThis.game?.packs?.get("twod12.features");
-  const src = new Map();
-  if (pack) for (const d of await pack.getDocuments()) if (["Killer's Focus", "Radiant Zeal"].includes(d.name) && d.type === "feature") src.set(d.name, d.system.toObject?.().settings ?? foundry.utils.deepClone(d.system.settings));
-  let n = 0;
-  const fix = async it => {
-    if (it.type !== "feature") return;
-    const upd = {};
-    const st = it.system?.settings ?? [];
-    if (src.has(it.name) && st.every(x => x.type === "bonusdamage")) upd["system.settings"] = src.get(it.name);
-    if (it.name === "Font of Mercy" && !it.system?.escalationPassive) upd["system.escalationPassive"] = true;
-    if (!Object.keys(upd).length) return;
-    try { await it.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.187 settings for", it.name, e); }
-  };
-  for (const it of items ?? []) await fix(it);
-  for (const a of actors ?? []) if (a.isOwner) for (const it of a.items) await fix(it);
-  return n;
-}
-
-/**
- * v0.0.207 (editability sweep), once per world: the last hidden card rules are settings and fields now. On world items and the items of creatures:
- *   a copy of Marked Quarry, Sharpshooter, Bow Mastery or Brawler gets the compendium's new settings it lacks (Chat message, Starting Mastery,
- *   Weapon property; matched by name, the settings it already has are kept);
- *   the old hidden flags become what the Details show: fistsOnly / kick on an Action -> its "Weapon used" (Pummel, Leg Sweep; the Fists Basic
- *   Action too), fistsThreaten / fistsWeapon on a Talent or Feature -> a "Weapon property" setting (Brawler); the flags are removed;
- *   a character's Bow Mastery choice (flag bowMastery) becomes the choice of its first Starting Mastery setting.
- * source: optional Map name -> settings (else read from the system compendium). Returns how many documents were updated.
- */
-export async function giveSettingsV207(items, actors, source = null) {
-  const NAMES = ["Marked Quarry", "Sharpshooter", "Bow Mastery", "Brawler"], NEW = ["message", "mastery", "weaponprop"];
-  let src = source;
-  if (!src) {
-    src = new Map();
-    const pack = globalThis.game?.packs?.get("twod12.features");
-    if (pack) for (const d of await pack.getDocuments()) if (NAMES.includes(d.name) && ["feature", "talent"].includes(d.type)) src.set(d.name, (d.system.toObject?.().settings ?? foundry.utils.deepClone(d.system.settings)).filter(x => NEW.includes(x.type)));
-  }
-  const PROP = { type: "weaponprop", wpWhich: "fists", wpProp: "nonthreatening" };
-  let n = 0;
-  const fix = async it => {
-    const upd = {}, fl = it.flags?.twod12 ?? {};
-    if (it.type === "action") {
-      const use = fl.fistsOnly || fl.basic === "fists" || it.name === "Pummel" ? "fists" : (fl.kick || it.name === "Leg Sweep" ? "kick" : "");
-      if (use && !it.system?.weaponUse) upd["system.weaponUse"] = use;
-      if ("fistsOnly" in fl) Object.assign(upd, unset("flags.twod12.fistsOnly"));
-      if ("kick" in fl) Object.assign(upd, unset("flags.twod12.kick"));
-    } else if (["feature", "talent"].includes(it.type)) {
-      const have = (it.system?.toObject?.().settings ?? foundry.utils.deepClone(it.system?.settings ?? []));
-      const add = (src.get(it.name) ?? []).filter(x => !have.some(h => h.type === x.type && (x.type !== "message" || h.msgWhen === x.msgWhen)));
-      if ((fl.fistsThreaten || fl.fistsWeapon) && !have.some(h => h.type === "weaponprop") && !add.some(x => x.type === "weaponprop")) add.push(PROP);
-      if (add.length) upd["system.settings"] = [...have, ...foundry.utils.deepClone(add)];
-      if ("fistsThreaten" in fl) Object.assign(upd, unset("flags.twod12.fistsThreaten"));
-      if ("fistsWeapon" in fl) Object.assign(upd, unset("flags.twod12.fistsWeapon"));
-    }
-    if (!Object.keys(upd).length) return;
-    try { await it.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.207 settings for", it.name, e); }
-  };
-  for (const it of items ?? []) await fix(it);
-  for (const a of actors ?? []) {
-    if (!a.isOwner) continue;
-    for (const it of a.items) await fix(it);
-    const bow = a.flags?.twod12?.bowMastery;
-    if (bow === undefined) continue;
-    const { startMasteryOf } = await import("./mastery.mjs");
-    const first = startMasteryOf(a)[0];
-    const upd = { ...unset("flags.twod12.bowMastery") };
-    if (first && bow && !first.chosen) upd[`flags.twod12.startMastery.${first.itemId}`] = bow;
-    try { await a.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.207 Bow Mastery of", a.name, e); }
-  }
-  return n;
-}

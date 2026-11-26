@@ -332,15 +332,15 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
 }
 
 /**
- * v0.0.525 (B2-016, one square of Difficult Terrain always): the movement a drag spends, unused or not: { budget, size }. A granted movement (an
- * Advance, a Crawl): what is left of it and its size; none: a new AP's Speed when nothing is left of the last one (moveLeft 0), else what is left.
- * An Evade is left out (it can't enter Difficult Terrain at all).
+ * v0.0.525 (B2-016, one square of Difficult Terrain always): what the movement a drag spends has left: { budget }. A granted movement (an Advance,
+ * a Crawl): what is left of it; none: what is left of the last AP's Speed, else a new AP's Speed (moveLeft 0). An Evade is left out (it can't enter
+ * Difficult Terrain at all). v0.0.527 (Lucas, 2026-11-26): any movement with at least 1 square left, used or not (the size it had is not read).
  */
 export function moveBudget(c) {
   const free = num(c?.getFlag?.(F, "freeMove")), left = num(c?.getFlag?.(F, "moveLeft")), walk = num(c?.actor?.system?.moveSpeed ?? c?.actor?.system?.speed);
-  if (num(c?.getFlag?.(F, "evadeMove")) > 0) return { budget: 0, size: -1 };
-  if (free > 0) return { budget: free, size: num(c?.getFlag?.(F, "freeSize")) };
-  return left > 1e-6 ? { budget: left, size: walk + 1 } : { budget: walk, size: walk };
+  if (num(c?.getFlag?.(F, "evadeMove")) > 0) return { budget: 0 };
+  if (free > 0) return { budget: free };
+  return { budget: left > 1e-6 ? left : walk };
 }
 
 /** The distance of a @Move button: a number, or an expression such as walk/2 (rounded up). */
@@ -2244,13 +2244,15 @@ export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterC
     for (const [a, b] of NEIGH) {
       const diag = a !== 0 && b !== 0, step = diag ? (cur.par === 0 ? 1 : 2) : 1;
       const nc = cur.cost + step;
-      if (nc > n) continue;
+      if (nc > n) continue;   // a step itself must fit (a second diagonal costs 2)
+      const oneMore = oneAlways && n - cur.cost >= 1 - 1e-6;   // v0.0.527: with 1 square left, one more square whatever its terrain costs
       const ni = cur.i + a, nj = cur.j + b;
       if (blocked({ i: cur.i, j: cur.j }, { i: ni, j: nj })) continue;
       // v0.0.224 (Lucas: the area ignored Darkness): entering a square can cost more (Difficult Terrain: +1) or be impossible (Infinity: an Evade).
       const more = enterCost({ i: ni, j: nj });
-      // v0.0.525 (B2-016): an unused movement of at least 1 square can always enter one square (its first), whatever it costs: it ends there
-      const tc = oneAlways && cur.cost === 0 && n >= 1 && Number.isFinite(more) ? Math.min(n, nc + more) : nc + (Number.isFinite(more) ? more : Infinity);
+      // v0.0.525 (B2-016); v0.0.527 (Lucas, 2026-11-26: "all difficult terrain applies regardless of how many has been moved"): with at least 1
+      // square of the movement left, one more square can always be entered, whatever it costs: the movement ends there
+      const tc = oneMore && Number.isFinite(more) && nc + more > n ? n : nc + (Number.isFinite(more) ? more : Infinity);
       if (tc > n) continue;
       const nk = `${key(ni, nj)}|${diag ? 1 - cur.par : cur.par}`;
       if (seen.has(nk) && seen.get(nk) <= tc) continue;
@@ -2303,8 +2305,8 @@ export function showRange(c, squares, dest = null, par = 0) {
     const enterCost = cell => (ignoring ? 0 : difficult(cell) ? (evading ? Infinity : 1) : (!own.has(`${cell.i},${cell.j}`) && whoAt(cell) === "dt" ? 1 : 0));
     const betweenTwo = (a, b) => a.i !== b.i && a.j !== b.j && whoAt({ i: a.i, j: b.j }) === "block" && whoAt({ i: b.i, j: a.j }) === "block";   // batch 4: two enemies corner to corner
     const blocked = (a, b) => wallBetween(pt(a), pt(b)) || (!own.has(`${b.i},${b.j}`) && (cantCell(b) || (!passing && (whoAt(b) === "block" || betweenTwo(a, b)))));
-    let fresh = false; try { const mb = moveBudget(c); fresh = !evading && !dest && Math.abs(mb.budget - squares) < 1e-6 && Math.abs(mb.budget - mb.size) < 1e-6; } catch (e) { fresh = false; }   // v0.0.525 (B2-016)
-    const area = reachableCells(cells, squares, blocked, par, enterCost, fresh);
+    const oneMore = !evading;   // v0.0.525 (B2-016); v0.0.527: one more square with at least 1 left, whatever was used (reachableCells)
+    const area = reachableCells(cells, squares, blocked, par, enterCost, oneMore);
     rangeGfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(rangeGfx);   // the movement area stays under the tokens (a large pale area)
     // v0.0.461 (the map notes' redesign, b and c): where it can stop in pale ink (blue had no meaning); an Evade's edge dashed (only an Evade is);

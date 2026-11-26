@@ -28,5 +28,3 @@ Shifting Aim's Starting Mastery: [["projectile",5]]
 Aveline carries: Longsword, Fists
 Sylwen carries: Dagger, Hunting Bow, Fists
 Kaela carries: Dagger, Recurve Bow, Fists
-old weapons: Shortbow -> Recurve Bow | Longbow -> Hunting Bow | Greatsword -> Longsword | Longsword -> Arming Sword | Longsword (2H) -> stays | Dagger -> stays
-asked in the pick window, after the Archer's: true | the new weapon in the old one's place, its Technique, the old one's gone: true | registered: true

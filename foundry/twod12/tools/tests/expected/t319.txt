@@ -8,7 +8,7 @@ Reach (1) / Reach (2) / Reach: reach reach reach
 Heal is Tend: Tend | its group on the sheet and the HUD: true true
 Relocate is no Strike: true | Advance's Move button: true | Shake Off keeps its Save button, no Vs.: true
 Advance still moves at once (a book link is no button): advance|distance:speed
-Drawing Light: engagedOk true | Slip Away: no Distance "" | War Howl's Tier 2: 1d4!+1 | Shriek and Scatter: 6 / One ally with the Goblin Tag
+Drawing Light: engagedOk true | Slip Away: no Distance "" | War Howl's Tier 2: 1d10!+4 | Shriek and Scatter: 6 / One ally with the Goblin Tag
 --- 3. rolls
 B2-046, the Attribute you choose: the higher first instinct | chosen body | a choice it doesn't have instinct
 rollSource with the choice: body | the dialog's buttons: true true

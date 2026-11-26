@@ -41,12 +41,7 @@ Ogre Chieftain: role elite, leads with weapon
 [signature, weapon]: signature +2 "Signature Modifier" attrKey "" | sees "body" (Body Rolls): false
 [body, strike]: attribute +2 "Body Check" attrKey "body" | sees "body" (Body Rolls): true
 a class copy from before still reads its Attribute: Weapon Modifier • Body | Body Rolls: true
---- the migration: the lead is the Modifier that was higher
-Body 2, Mind 1, Appeal 0: old copy weapon | already updated (no lists) weapon
-Body 0, Mind 1, Appeal 2 (Weapon kept Appeal): old copy weapon | already updated (no lists) weapon
-Body 0, Mind 2, Appeal 2: old copy weapon | already updated (no lists) weapon
-Body 1, Mind 3, Appeal 0: old copy power | already updated (no lists) power
---- wiring: the class window's picks true | under the Attribute increases (v0.0.306) true | refresh keeps modStage2 true | the migration registered true | the Builder's Weapon Mod / Power Mod rows true | the Archer's fixed row true | 12 + Attribute in defense.mjs true | no DialogV2 in the migration true
+--- wiring: the class window's picks true | under the Attribute increases (v0.0.306) true | refresh keeps modStage2 true | the Builder's Weapon Mod / Power Mod rows true | the Archer's fixed row true | 12 + Attribute in defense.mjs true
 --- v0.0.308: the Builder tab (Lucas)
 chips: [{"kind":"resist","sub":"Fi","label":"Resistance Fire 5"},{"kind":"weak","sub":"Ho","label":"Weakness Holy 2"}]
 Resist Fire 3 replaces 5, + Weak 4 Cold, + Immunity Psychic: Resistance Fire 3, Weakness Holy 2, Weakness Cold 4, Immunity Psychic

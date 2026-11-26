@@ -6,7 +6,7 @@ Level 2: Escalation Hook (items, granted): Kindled Wrath | Encounter Pick (items
 Level 3: Skill Talent (talent, pick 1)
 Level 4: Stage Talent (talent, pick 1)
 Repertoire: Bulwark of Faith, Consecrated Ground, Word of Radiance | Escalation:  / 
-pick Features gone: true | Health high 20 / low 10 (Stage 1 +0 / +0)
+pick Features gone: true | Health high 30 / low 15 (Stage 1 +0 / +0)
 --- the cards
 Judge: atwill 10 One enemy you can see | marks: true judge | 0 AP: The target is Judged by you (EoE). || 1 AP: The target is Judged by you (EoE). If another creature was Judged by you, it no longer is.
 Smite: divine,paladin,signature,strike,unfailing,weapon encounter | 2 AP 1d6! Ho / 1[W]++1d6! Ho / 1[W]++2d6! Ho (dice rule smite)

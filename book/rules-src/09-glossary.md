@@ -31,7 +31,7 @@
 | [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). Bloodied: Speed −2 (minimum 1) and Steadiness −1. Strained: you don't regain your Reaction Point. Actions and features use them too. |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
-| [[Buffs\|**Buff**]] | An effect that modifies another Action, such as the 2 Boons that Feint's Tier 2 gives your next [Strike] Action against its target. |
+| [[Buffs\|**Buff**]] | An effect that modifies another Action, such as the 2 Boons that Feint's Tier 3 gives your next [Strike] Action against its target. |
 | [[Areas\|**Burst**]] | An area centered on a corner, where four squares meet: a 2 Burst affects every square whose center is within 2 squares of that corner. |
 | [[Charge\|**Charge**]] | A Basic Action (2 AP, Round): Advance in a straight line at least 3 squares toward a creature, then make a Basic Attack against it. |
 | [[Checks\|**Check**]] | A roll of one Attribute Modifier against a DC (13 unless stated). |
@@ -63,7 +63,7 @@
 | [[Dying\|**Dying**]] | Down with Vigor as your Dominant Damage: Slowed 1, or your Slowed value + 1 (at most 3); the first time in an encounter, roll on the Dying Table, then collapse or keep fighting. |
 | [[Effect Timing\|**Effect**]] | A card's line that happens whenever the card is used, whatever the roll. |
 | [[Playing on the Grid\|**Elevation**]] | Squares up or down count like a diagonal: the larger count plus half the smaller one. A creature is as tall as it is wide. |
-| [[Elites\|**Elite**]] | An NPC rank with CV 200: a Standard with Health 72 and an Encounter Action of its own, worth about a turn. |
+| [[Elites\|**Elite**]] | An NPC rank with CV 200: a Standard with Health 90 and an Encounter Action of its own, worth about a turn. |
 | [[Areas\|**Emanation**]] | An area around its target, a creature or a square: a 2 Emanation reaches 2 squares from it (counted like any distance, every second diagonal as 2: 21 squares around a single square). |
 | [[Empowered\|**Empowered**]] | The first time you deal damage on each of your turns, add 1d6! to it. No value. |
 | [[Encounters\|**Encounter**]] | A fight or similar scene, from Initiative until the GM ends it. |
@@ -87,7 +87,7 @@
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no Reactions from movement, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free (a Check against the Action DC of the Action that grabbed you). |
-| [[Grunts\|**Grunt**]] | An NPC rank with CV 50: half a Standard (Health 18), 3 AP a turn. |
+| [[Grunts\|**Grunt**]] | An NPC rank with CV 50: half a Standard (Health 22), 3 AP a turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts until you regain AP again. |
 | [[Half-Blinded\|**Half-Blinded**]] | Your Sight perceives no creature better than Obscured. |
 | [[Hallmarks and Picks\|**Hallmark Action**]] | A choice of two of your class's Actions at level 1; you take one. |
@@ -196,7 +196,7 @@
 | [[Stages\|**Stage**]] | A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, Guard per unspent AP, Rally Points; never your Attributes). |
 | [[Stages\|**Stage Talent**]] | The Talent of levels 4, 8 and 12, the first level of Stages 1, 2 and 3. |
 | [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction Point waits. |
-| [[Standards\|**Standard**]] | An NPC rank with CV 100, the unit: one for each PC in a normal fight; Health 36 by default. |
+| [[Standards\|**Standard**]] | An NPC rank with CV 100, the unit: one for each PC in a normal fight; Health 45 by default. |
 | [[The Start of the Encounter\|**Start of the encounter**]] | After Initiative and before the first turn: abilities that happen then resolve one at a time, in turn order, which the GM can change. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Steel Yourself\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |

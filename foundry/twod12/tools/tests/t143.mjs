@@ -14,9 +14,6 @@ const data = src("module/data.mjs"), content = src("tools/content.mjs");
 console.log("the formula (Rally + 1 / 2 / 3 / 4 by Stage, v0.0.407):", data.includes("this.rallyMax = rallyPointsOf(csys?.rallyMod ?? 0, lv);"), "| Paladin 6:", content.includes("rallyMod: 6, speedMod: 0,"), "| Archer 5:", content.includes("bodyMult: 0, mindMult: 0, rallyMod: 5,"));
 for (const [label, rally, body, mind, lv] of [["Paladin, Body +2, Mind +1, level 1", 6, 2, 1, 1], ["Archer, Body +1, Mind +1, level 1", 5, 1, 1, 1], ["Paladin, Body +2, Mind +1, level 3", 6, 2, 1, 3]])
   console.log(label.padEnd(38), rally + Math.ceil((body + mind + lv) / 2));
-const cls = (name, rallyMod) => { const it = { type: "class", name, system: { rallyMod }, updated: null, async update(u) { this.updated = u; } }; return it; };
-const world = [cls("Paladin", 4), cls("Archer", 3), cls("Paladin", 7), cls("Fighter", 4)];
-console.log("old class items updated once:", await b.fixClassRally(world, []), world.map(i => `${i.name} ${i.updated?.["system.rallyMod"] ?? "kept " + i.system.rallyMod}`).join(", "));
 
 console.log("--- the Bestiary by Stage (v0.0.181, E3: the book's tables, levels 1-4, 5-7, 8-10)");
 for (const role of ["standard", "grunt", "minion"]) for (const lv of [1, 4, 5, 8]) {

@@ -98,13 +98,14 @@ export async function applyBoonEffect(actor, cfg, origin) {
 }
 
 /**
- * v0.0.498 (Pass 3): Feint Tier 2 / Tier 3 automation — grants 2 Boons (T2) or Favored (T3) on the caster's next [Strike] Action
- * against `targetActor` this turn (expires on that Strike or at EoT).
+ * v0.0.498 (Pass 3): Feint Tier 2 / Tier 3 automation: grants Boons on the caster's next [Strike] Action against `targetActor` this turn
+ * (expires on that Strike or at EoT). v0.0.527 (Lucas, 2026-11-26: "Likely make 2 Boons on Tier 3, not favored"): 1 Boon on a Tier 2, 2 Boons on a
+ * Tier 3 (it was 2 Boons and Favored).
  */
 export async function applyFeintEffect(actor, targetActor, tier, origin = null) {
   if (!actor || !targetActor || tier < 2) return false;
   if (!actor.isOwner) return false;
-  const fav = tier >= 3;
+  const boons = tier >= 3 ? 2 : 1;
   const own = combatantOf(actor);
   const o = origin ?? originInfo(actor.uuid);
   const name = `Feint (${targetActor.name})`;
@@ -115,9 +116,9 @@ export async function applyFeintEffect(actor, targetActor, tier, origin = null) 
       originSlot: o?.slot ?? null, originCombatantId: o?.combatantId ?? "",
       anchorSlot: o?.anchorSlot ?? own?.initiative ?? null, anchorCombatantId: o?.anchorCombatantId ?? own?.id ?? "",
       appliedRound: o?.round ?? null, appliedTurn: o?.turn ?? null,
-      description: fav ? `Your next [Strike] Action against ${targetActor.name} this turn is Favored.` : `You gain 2 Boons on your next [Strike] Action against ${targetActor.name} this turn.`,
+      description: `You gain ${boons === 1 ? "1 Boon" : `${boons} Boons`} on your next [Strike] Action against ${targetActor.name} this turn.`,
       notes: [], bonuses: [], grants: [],
-      modifiers: [{ against: false, boons: fav ? 0 : 2, banes: 0, ...(fav ? { favored: true } : {}), bb: "", empowered: 0, enfeebled: 0, all: ["strike"], any: [], none: [], from: [], targetUuid: targetActor.uuid }],
+      modifiers: [{ against: false, boons, banes: 0, bb: "", empowered: 0, enfeebled: 0, all: ["strike"], any: [], none: [], from: [], targetUuid: targetActor.uuid }],
       expireOn: ["strike"], expireAll: true, expireTargetUuid: targetActor.uuid
     } }
   }]);

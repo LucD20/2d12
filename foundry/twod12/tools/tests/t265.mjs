@@ -19,7 +19,7 @@ console.log("Reckoning: a chain chip that is also in a Tier waits for the Tier:"
 console.log("a no-damage Tier's conditions apply on use (Trip, Thwart Cut, Trick Shots):", act.includes("const tierConds = t => (ridesOn(t) ? [] : tierConditionChips(") && act.includes("else await giveConds(tier, isSelf ? [actor.uuid] : targets.map(t => t.uuid), chk?.crit);"));
 console.log("Immobilized from a Tier: the user's Modifier (its DC):", inl.includes("Number.isFinite(ctx.attrVal) ? { mod: ctx.attrVal }") && src("module/ccdamage.mjs").includes("attrVal: Number.isFinite(s.originMod) ? s.originMod : null"),
   "| formula options worked out (through handleInline):", inl.includes('return handleInline("Condition", parseInline("Condition", m[1]), ctx);'));
-console.log("Judge: dismissed or unanswered is \"Not now\":", src("module/judge.mjs").includes('[{ id: "no", label: "Not now" }, { id: "yes", label: `Reduce by ${by}` }]') && src("module/judge.mjs").includes('return pick === "yes";'),
+console.log("Judge asks nothing (v0.0.527: no reduction, so no question):", !src("module/judge.mjs").includes("askJudge"),
   "| Apply Effect checks the owner:", inl.includes("if (!user.isOwner) return ui.notifications.warn("));
 
 console.log("--- movement");

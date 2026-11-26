@@ -16,4 +16,4 @@ console.log("Sleep's −1 Momentum: a Sleep after an encounter ended is another 
 const C = src("module/combat.mjs");
 console.log("a split Advance logs the squares moved (the line is written before they are cleared):", C.indexOf("await closeMoveLine(c)") < C.indexOf("if (upd) await c.update(") && C.includes("const goesOn = !!upd?.advInteract"));
 console.log("the HUD and the sheet use the cost a passive lowers:", src("module/hooks.mjs").includes("export function effectiveAp(actor, item, v)") && src("module/hud.mjs").includes("vs.map(v => effectiveAp(actor, i, v))") && src("module/actor-sheets.mjs").includes("map(v => effectiveAp(a, i, v))"));
-console.log("Update from the compendium waits for the weapons migration:", src("module/refresh.mjs").includes("if (weaponsMigrationPending()) return;"));
+console.log("Update from the compendium waits for no migration (v0.0.527: the weapons migration is gone, F-033):", !src("module/refresh.mjs").includes("weaponsMigrationPending"));

@@ -77,17 +77,8 @@ export async function applyToActor(actor, a, opts = {}) {
   // v0.0.463 (Lucas, checklist v0.0.462, two-judges: the breakdown didn't show what took the damage): opts.report gets each reduction and the Guard
   const rep = opts.report ? (opts.report.mods ??= []) : null;
   if (red) { const byUuid = actor.getFlag?.("twod12", "reduceByUuid") ?? ""; const r = absorbGuard(red, a, 0); if (rep && r.taken) rep.push({ kind: "reduce", label: String(actor.system.reduceFrom || "Reduction"), v: red, ...(byUuid ? { byUuid } : {}) }); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; early["system.reduceNext"] = 0; early["system.reduceFrom"] = ""; early["flags.twod12.reduceByUuid"] = ""; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
-  // v0.0.409 (pack F2; book, the Paladin: Judge): the first time each round a Judged creature damages an ally within 5 squares of its judge, the
-  // damage is reduced by the judge's Power Modifier (before the Guard, as a reduction)
-  try {
-    const J = await import("./judge.mjs");
-    for (const r of await J.judgeReductions(actor, from)) {
-      const x = absorbGuard(r.by, a, 0); a.B = x.a.B; a.M = x.a.M; a.reduced = (Number(a.reduced) || 0) + x.taken;
-      const judgeShort = String(r.judge.name ?? "").replace(/\s*\([^()]*\)\s*$/, "").trim() || r.judge.name;
-      if (rep && x.taken) rep.push({ kind: "reduce", label: `Judge (${r.judge.name})`, v: r.by, byUuid: r.judge.uuid ?? "" });
-      if (x.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: r.judge }), content: sysLine("fa-scale-balanced", `<b>Judge</b>: the damage to <b>${esc(actor.name)}</b> is reduced by <b>${x.taken}</b> (${esc(judgeShort)}'s Power Modifier; the Judged creature's first damage this round to an ally within 5 squares).`, "guardmsg") });
-    }
-  } catch (e) { console.warn("twod12 | Judge", e); }
+  // v0.0.527 (Lucas, 2026-11-26: "I will remove the flat judged reduction"): Judge no longer reduces damage (v0.0.409 to v0.0.526 took the judge's
+  // Power Modifier off the Judged creature's first damage each round to an ally within 5 squares, here)
   const g = absorbGuard(actor.system.guard, a, actor.system.apGuard, opts.guardFirst === "M" ? "M" : "B");   // v0.0.283: the creature's choice of pool
   if (g.taken && rep) rep.push({ kind: "guard", label: "Guard", v: g.taken, ap: g.takenAp ?? 0 });   // v0.0.511: ap, the unspent AP's share (the rest is Guard a card gave: the Encounter Log)
   if (g.taken) { a.B = g.a.B; a.M = g.a.M; early["system.guard"] = g.guard; early["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
@@ -179,7 +170,6 @@ export function registerSocket() {
     if (data?.type === "applyGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.guard": Math.max(0, Number(data.value) || 0) }); return; }
     if (data?.type === "halfHint") { const a = await fromUuid(data.actorUuid); const actor = a?.documentName === "Actor" ? a : a?.actor; if (actor) await (data.info ? actor.setFlag("twod12", "halfHint", data.info) : actor.unsetFlag("twod12", "halfHint")); return; }   // v0.0.261 (Covering Shot)
     if (data?.type === "hurtBy") { const a = await fromUuid(data.actorUuid); const act = a?.documentName === "Actor" ? a : a?.actor; if (act) await noteHurtBy(act, data.by); return; }   // v0.0.411
-    if (data?.type === "setFlag" && data.key === "judgeRound") { const a = await fromUuid(data.actorUuid); const act = a?.documentName === "Actor" ? a : a?.actor; if (act) await act.setFlag("twod12", "judgeRound", String(data.value ?? "")); return; }   // v0.0.409 (Judge)
     if (data?.type === "applyApGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.apGuard": Math.max(0, Number(data.value) || 0) }); return; }   // v0.0.243: a kept AP paid a Reaction
     if (data?.type !== "applyDamage") return;
     const actor = await fromUuid(data.actorUuid);

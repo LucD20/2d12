@@ -6,13 +6,13 @@
    "name": "Judge",
    "category": "Paladin Feature",
    "level": 1,
-   "flavor": "You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.",
+   "flavor": "You pronounce a foe guilty before your god, and holy light marks it for your blows.",
    "frequency": "At-will",
    "cost": "0 or 1 AP",
    "body": [
     {
      "label": "Judged",
-     "text": "Judged is not a condition: it ends only when the creature goes Down, when you Judge another creature, or with the encounter. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier. Multiple Paladins can Judge the same creature: it is Judged by each of them."
+     "text": "Judged is not a condition: it ends only when the creature goes Down, when you Judge another creature, or with the encounter. A creature Judged by you counts as Profane for you. Multiple Paladins can Judge the same creature: it is Judged by each of them."
     }
    ],
    "traits": [
@@ -51,7 +51,7 @@
     "automation": "silver",
     "marksTarget": true,
     "markKind": "judge",
-    "automationNote": "the mark (the ring on the token), Profane for you (Smite's and Word of Radiance's d8s, your Profane rules), once each round, the Judged creature's damage to an ally within 5 squares of you reduced by your Power Modifier if you choose (you're asked when it lands), the reminders at the start of an encounter and when it goes Down (that one's button is the 0R, used as a Reaction: Staggered warns); the 0 AP use only at the start of an encounter: by hand.",
+    "automationNote": "the mark (the ring on the token), Profane for you (Smite's and Word of Radiance's d8s, your Profane rules), the reminders at the start of an encounter and when it goes Down (that one's button is the 0R, used as a Reaction: Staggered warns); the 0 AP use only at the start of an encounter: by hand.",
     "settings": [
      {
       "type": "message",

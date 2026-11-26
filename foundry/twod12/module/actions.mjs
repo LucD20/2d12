@@ -1719,7 +1719,7 @@ export async function useAction(actor, item, opts = {}) {
       }
     } catch (e) { console.warn("twod12 | Hide", e); }
   }
-  // v0.0.498 (Pass 3): Feint T2 (+2 Boons on next Strike vs target this turn) / T3 (next Strike vs target this turn is Favored)
+  // v0.0.498 (Pass 3): Feint T2 / T3: Boons on the next Strike vs the target this turn (v0.0.527: 1 Boon on a Tier 2, 2 Boons on a Tier 3; Favored before)
   if (basicKey === "feint" && !version.noTiers) {
     const hits = mres ? mres.filter(r => r.chk.tier >= 2).map(r => ({ uuid: r.uuid, name: r.name, tier: r.chk.tier })) : (tier >= 2 ? targets.map(t => ({ uuid: t.uuid, name: t.name, tier })) : []);
     for (const h of hits) {
@@ -1727,7 +1727,7 @@ export async function useAction(actor, item, opts = {}) {
         const d = await fromUuid(h.uuid), ta = d?.actor ?? (d?.documentName === "Actor" ? d : null);
         if (!ta) continue;
         await applyFeintEffect(actor, ta, h.tier, originInfo(actor.uuid));
-        const what = h.tier >= 3 ? `next <b>[Strike]</b> against <b>${esc(h.name)}</b> this turn is <b>Favored</b>` : `<b>+2 Boons</b> on next <b>[Strike]</b> against <b>${esc(h.name)}</b> this turn`;
+        const what = `<b>${h.tier >= 3 ? "+2 Boons" : "+1 Boon"}</b> on next <b>[Strike]</b> against <b>${esc(h.name)}</b> this turn`;
         await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-masks-theater", `<b>Feint</b> (Tier ${h.tier}): <b>${esc(actor.name)}</b> — ${what}.`, "fxm") });
       } catch (e) { console.warn("twod12 | Feint", e); }
     }

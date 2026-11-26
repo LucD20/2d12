@@ -16,10 +16,9 @@ a fresh turn: {"key":"k","moved":false,"left":false,"last":"","altUsed":false,"m
 moved, a ranged Strike: [{"name":"Shifting Aim","boons":1,"field":true,"why":"you have left your square since your last Strike this turn"}] | not moved: 0
 a melee Strike after a ranged one: [{"name":"Blade and Bow","boons":1,"field":false,"why":"a [Melee, Strike] after a [Ranged, Strike] this turn (once a turn)"}] | spent: 0 | the same kind: 0
 strikeKind: melee ranged ""
---- Slip Away and Snap Shot (moment.mjs), Spotter (senses.mjs), the migration
+--- Slip Away and Snap Shot (moment.mjs), Spotter (senses.mjs)
 the moment: {"who":"enemy","move":true,"adjacent":true} | it comes back to the square before the first adjacent one: [3]
 Called Out: hidden→obscured obscured→clear clear→clear unsensed→unsensed
-the Archer migration's list: Mark Quarry, Killer's Focus, Overwatch
 --- the wiring
 the roll dialog's chips, the Strike noted: true | One More Arrow: true | Fleet: true
 Clear Lines (Cover, the Engaged Bane): true | Opening Shot: true | Thrill of the Kill (who damaged it): true | Lean and Loose: true

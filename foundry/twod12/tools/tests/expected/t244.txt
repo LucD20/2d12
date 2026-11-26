@@ -22,4 +22,4 @@ a renamed item too: Keener Eye
 D27 sheets: one redraw each, none for a log: true | usage.mjs's copy gone: true | D40 createCombat asks the open windows: true
 D30 the strip: true | D31 one write per tick: true | D32 the panel only for its creature: true
 D34 limits kept per drag: true | refused moves read them fresh: true | D35 marks cached: true | D36 no old chat hooks: true
-D37 the load passes: true | D40 Zones on x / y: true | the Aura hover per frame: true | the light thresholds read once: true
+D37 the load passes (v0.0.527: the one-time ones gone, F-033): true | D40 Zones on x / y: true | the Aura hover per frame: true | the light thresholds read once: true

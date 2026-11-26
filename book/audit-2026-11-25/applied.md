@@ -162,7 +162,7 @@ Written by `node` from `applied-B1.json`, `applied-B2.json` and `applied-B3.json
 
 ## The held questions answered (2026-11-26, Lucas; applied to the book, Foundry v0.0.521)
 
-Sixteen of the held questions answered (`work-order.json`: `do: "apply"` and `answered`, his words). Still held: B3-033, B3-065 (and B3-069's section under its open box), B2-050, B3-011, B3-015, F-033; B2-008 and B2-080 stay reminders.
+Sixteen of the held questions answered (`work-order.json`: `do: "apply"` and `answered`, his words). Still held: B3-033, B3-065 (and B3-069's section under its open box), B2-050, B3-011, B3-015; B2-008 and B2-080 stay reminders. F-033 answered later the same day ("I dont run any old world"): Foundry v0.0.527 removed the migrations before v0.0.519.
 
 - **B1-003, B3-004, B3-052 (rule; "Yes"):** every Basic attack card writes its own Critical row (Basic Attack [V] 1d10!; Fists [V] 1d10! Bl; Drawing Light [R] 1d10! Ho; Harrying Shot [R] 1d10! Ps; the eight creature Basic attacks their own pool and subtype). Chapter 1 drops the general Basic-attack rule: an Action with a Critical row gets that row, any other a plain Tier 3; a Critical row whose damage writes no subtype deals one of the damage types the Action deals, pool and subtype, chosen before it is rolled. Chapter 14: a Minor enemy's damage dice explode only where its card writes ! (its Critical row); each Basic attack has a Critical row by default; the stat blocks print it. The Glossary's Basic Attack, Basic attack and Critical rows agree.
 - **B3-035 (rule):** the bands: Easy about 1 (up to 1¼); Normal about 1½ (above 1¼, up to 2); Hard about 2½ (above 2, up to 3); Deadly above 3.

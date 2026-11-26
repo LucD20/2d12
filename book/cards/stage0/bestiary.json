@@ -1,5 +1,5 @@
 {
- "_about": "The Bestiary's rebuilt creatures, written in the card Structure (book/cards/card-structure.md). The record: book/bestiary-design.md; each creature's own: book/cards/orc-warrior-redesign.md, grave-wisp-redesign.md, goblin-sneak-redesign.md, ogre-chieftain-redesign.md. Foundry reads these laid over ../bestiary.json (load.mjs FOUNDRY_OVERLAY): a rebuilt creature's old cards leave Foundry (they stay in ../bestiary.json as fixtures for the tests of the machinery they exercised). 'npc' names the creature the card belongs to; 'book': false: Chapter 14 writes the four creatures as stat blocks in its prose (drawing them as book cards is a later task). The numbers are the rank defaults' (bestiary-design.md, decisions 12 to 15 and the ranks); no number assumes a class.",
+ "_about": "The Bestiary's rebuilt creatures, written in the card Structure (book/cards/card-structure.md). The record: book/bestiary-design.md; each creature's own: book/cards/orc-warrior-redesign.md, grave-wisp-redesign.md, goblin-sneak-redesign.md, ogre-chieftain-redesign.md. Foundry reads these laid over ../bestiary.json (load.mjs FOUNDRY_OVERLAY): a rebuilt creature's old cards leave Foundry (they stay in ../bestiary.json as fixtures for the tests of the machinery they exercised). 'npc' names the creature the card belongs to; 'book': false: Chapter 14 writes the four creatures as stat blocks in its prose (drawing them as book cards is a later task). The numbers are the rank defaults' (bestiary-design.md, decisions 12 to 15 and the ranks; every damage number about 2.36 times its old average and every Health a quarter more since Lucas's decisions of 2026-11-26, after playtests 8 to 10); no number assumes a class.",
  "structure": 2,
  "cards": [
   {
@@ -25,11 +25,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[V] 1d4! Sl."
+     "text": "[V] 2 + 1d10! Sl."
     },
     {
      "label": "Tier 3",
-     "text": "[V] 2 + 1d6! Sl; Hindered (EoT)."
+     "text": "[V] 8 + 1d12! Sl; Hindered (EoT)."
     },
     {
      "label": "Critical",
@@ -70,11 +70,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[V] 1d4! Pi."
+     "text": "[V] 2 + 1d10! Pi."
     },
     {
      "label": "Tier 3",
-     "text": "[V] 1d4! Pi; [[Lingering]] 1d4 (Bo/In)."
+     "text": "[V] 2 + 1d10! Pi; [[Lingering]] 1d10 (Bo/In)."
     },
     {
      "label": "Critical",
@@ -85,7 +85,7 @@
     "img": "icons/svg/thrust.svg",
     "npcWeapon": "Javelin",
     "automation": "gold",
-    "automationNote": "a Basic attack (the exploding die, its Critical row's 1d10!; it shares the At-will count with the axe); Lingering 1d4 (Bo/In) when a Tier 3 lands. The Setup's draw is text: an NPC's items are flavor."
+    "automationNote": "a Basic attack (the exploding die, its Critical row's 1d10!; it shares the At-will count with the axe); Lingering 1d10 (Bo/In) when a Tier 3 lands. The Setup's draw is text: an NPC's items are flavor."
    }
   },
   {
@@ -112,11 +112,11 @@
     },
     {
      "label": "Tier 1",
-     "text": "[R] 1 + 1d6! Ps; Vulnerable 1 (EoT)."
+     "text": "[R] 5 + 1d12! Ps; Vulnerable 1 (EoT)."
     },
     {
      "label": "Tier 2",
-     "text": "[R] 1 + 1d4! Ps."
+     "text": "[R] 4 + 1d10! Ps."
     },
     {
      "label": "Tier 3",
@@ -232,11 +232,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[V] 1d4 Pi."
+     "text": "[V] 1d10 Pi."
     },
     {
      "label": "Tier 3",
-     "text": "[V] 1d6 Pi."
+     "text": "[V] 2 + 1d12 Pi."
     },
     {
      "label": "Critical",
@@ -273,11 +273,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[R] 1d4 Ps."
+     "text": "[R] 1d10 Ps."
     },
     {
      "label": "Tier 3",
-     "text": "[R] 1d4 Ps; Taunted by the goblin (1 round)."
+     "text": "[R] 1d10 Ps; Taunted by the goblin (1 round)."
     },
     {
      "label": "Critical",
@@ -325,11 +325,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[V] 2 + 1d6 Pi."
+     "text": "[V] 6 + 1d12 Pi."
     },
     {
      "label": "Tier 3",
-     "text": "[V] 4 + 1d8 Pi."
+     "text": "[V] 13 + 1d12 Pi."
     }
    ],
    "foundry": {
@@ -431,11 +431,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[R] 1d4 Co."
+     "text": "[R] 1d10 Co."
     },
     {
      "label": "Tier 3",
-     "text": "[R] 1d6 Co."
+     "text": "[R] 2 + 1d12 Co."
     },
     {
      "label": "Critical",
@@ -471,11 +471,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[R] 1d4 Ps."
+     "text": "[R] 1d10 Ps."
     },
     {
      "label": "Tier 3",
-     "text": "[R] 1d4 Ps; Half-Blinded (EoT)."
+     "text": "[R] 1d10 Ps; Half-Blinded (EoT)."
     },
     {
      "label": "Critical",
@@ -514,11 +514,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[R] 1d4 Co."
+     "text": "[R] 1d10 Co."
     },
     {
      "label": "Tier 3",
-     "text": "[R] 1 + 1d6 Co."
+     "text": "[R] 4 + 1d12 Co."
     }
    ],
    "foundry": {
@@ -555,11 +555,11 @@
     },
     {
      "label": "Tier 1",
-     "text": "[R] 1d4 Co; Hindered (EoT)."
+     "text": "[R] 1d10 Co; Hindered (EoT)."
     },
     {
      "label": "Tier 2",
-     "text": "[R] 1d4 Co."
+     "text": "[R] 1d10 Co."
     },
     {
      "label": "Tier 3",
@@ -604,11 +604,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[V] 1d4! Bl."
+     "text": "[V] 2 + 1d10! Bl."
     },
     {
      "label": "Tier 3",
-     "text": "[V] 2 + 1d6! Bl; Grabbed."
+     "text": "[V] 8 + 1d12! Bl; Grabbed."
     },
     {
      "label": "Critical",
@@ -650,11 +650,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[R] 1d4! Ps."
+     "text": "[R] 2 + 1d10! Ps."
     },
     {
      "label": "Tier 3",
-     "text": "[R] 1d4! Ps; Staggered (EoT)."
+     "text": "[R] 2 + 1d10! Ps; Staggered (EoT)."
     },
     {
      "label": "Critical",
@@ -690,11 +690,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[V] 2 + 1d6 Bl."
+     "text": "[V] 6 + 1d12 Bl."
     },
     {
      "label": "Tier 3",
-     "text": "[V] 4 + 1d8 Bl."
+     "text": "[V] 13 + 1d12 Bl."
     }
    ],
    "foundry": {
@@ -731,11 +731,11 @@
     },
     {
      "label": "Tier 2",
-     "text": "[V] 1d4! Bl."
+     "text": "[V] 2 + 1d10! Bl."
     },
     {
      "label": "Tier 3",
-     "text": "[V] 1 + 1d6! Bl."
+     "text": "[V] 5 + 1d12! Bl."
     },
     {
      "label": "Effect",
@@ -771,11 +771,11 @@
     },
     {
      "label": "Tier 1",
-     "text": "[V] 5 + 2d8 Bl."
+     "text": "[V] 20 + 2d12 Bl."
     },
     {
      "label": "Tier 2",
-     "text": "[V] 3 + 1d8 Bl."
+     "text": "[V] 11 + 1d12 Bl."
     },
     {
      "label": "Tier 3",
@@ -821,19 +821,19 @@
     },
     {
      "label": "Effect",
-     "text": "It takes [V] 1 Bl and is Pushed 2, with no roll. Its movement isn't disrupted: it goes on with the movement it has left."
+     "text": "It takes [V] 2 Bl and is Pushed 2, with no roll. Its movement isn't disrupted: it goes on with the movement it has left."
     }
    ],
    "foundry": {
     "img": "icons/svg/hand.svg",
     "moment": "enemyEnters",
     "automation": "gold",
-    "automationNote": "offered by itself when an enemy enters a square adjacent to the ogre (a Trigger: the mover isn't moved back and goes on with the movement it has left); Use: the 1 Blunt damage button and the Pushed 2 button.",
+    "automationNote": "offered by itself when an enemy enters a square adjacent to the ogre (a Trigger: the mover isn't moved back and goes on with the movement it has left); Use: the 2 Blunt damage button and the Pushed 2 button.",
     "version": {
      "sub": [
       [
-       "[V] 1 Bl",
-       "@Damage[1[body,blunt]]{[V] 1 Bl}"
+       "[V] 2 Bl",
+       "@Damage[2[body,blunt]]{[V] 2 Bl}"
       ]
      ]
     }

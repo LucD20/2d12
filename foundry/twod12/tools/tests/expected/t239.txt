@@ -4,7 +4,7 @@ Covering Fire's two settings: ["enemies","E.bane","allies","E.def"]
 its sentences: Enemies inside gain Covering Fire (1 Bane). Allies inside gain Covering Fire (+1 Defense).
 who carries what: ally: E.def | foe: E.bane
 the tooltip: Enemies: 1 Bane / Allies: +1 Defense
-the sheet's second row (Zones only): true | world copies fixed once: true
+the sheet's second row (Zones only): true
 a Cancel button: true | cancelled: Weapon Attack: cancelled
 the retarget moves the buttons: true | the bar's Cancel: true
 the preview while dragging with Alt: true

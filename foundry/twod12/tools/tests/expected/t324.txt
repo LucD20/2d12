@@ -1,0 +1,41 @@
+--- 1. PC Health +½ (the class items; the book's stat boxes and Chapter 4)
+Paladin: high 30 / low 15 | Rally 6
+Archer: high 24 / low 12 | Rally 5
+the book: true true true true
+--- 2. the creatures (book/cards/stage0/bestiary.json and the sheets)
+Goblin Sneak: 2 ticks
+   Shiv: - / [V] 1d10 Pi / [V] 1d12+2 Pi | Critical [V] 1d10! Pi.
+   Jeer: - / [R] 1d10 Ps / [R] 1d10 Ps | Critical [R] 1d10! Ps.
+   Knife in the Back: - / [V] 1d12+6 Pi / [V] 1d12+13 Pi
+   Shriek and Scatter: - / - / -
+Grave Wisp: Vigor 8 Resolve 14 (Health 22)
+   Slipping Touch: - / [R] 1d10 Co / [R] 1d12+2 Co | Critical [R] 1d10! Co.
+   Guttering Glance: - / [R] 1d10 Ps / [R] 1d10 Ps | Critical [R] 1d10! Ps.
+   Pass Through: - / [R] 1d10 Co / [R] 1d12+4 Co
+   Dying Flare: [R] 1d10 Co / [R] 1d10 Co / -
+Orc Warrior: Vigor 28 Resolve 17 (Health 45)
+   Hamstringing Axe: - / [V] 1d10!+2 Sl / [V] 1d12!+8 Sl | Critical [V] 1d10! Sl.
+   Barbed Javelin: - / [V] 1d10!+2 Pi / [V] 1d10!+2 Pi | Critical [V] 1d10! Pi. | Lingering 1d10
+   War Howl: [R] 1d12!+5 Ps / [R] 1d10!+4 Ps / -
+   Blood for Blood: - / - / -
+Ogre Chieftain: Vigor 55 Resolve 35 (Health 90)
+   Crushing Grip: - / [V] 1d10!+2 Bl / [V] 1d12!+8 Bl | Critical [V] 1d10! Bl.
+   Roar: - / [R] 1d10!+2 Ps / [R] 1d10!+2 Ps | Critical [R] 1d10! Ps.
+   Great Sweep: - / [V] 1d12+6 Bl / [V] 1d12+13 Bl
+   Hurled Goblin: - / [V] 1d10!+2 Bl / [V] 1d12!+5 Bl
+   Crack the Ground: [V] 2d12+20 Bl / [V] 1d12+11 Bl / -
+   Backhand: - / - / - | Effect 2[body,blunt]
+Chapter 14: the fight lasts 3 to 4 rounds: true | the ranks' Health: true | the Basic attacks: true | the Critical rows kept: 8
+--- 3. Judge: no reduction (Lucas: "I will remove the flat judged reduction")
+the card: Judged is not a condition: it ends only when the creature goes Down, when you Judge another creature, or with the encounter. A creature Judged by you counts as Profane for you. Multiple Paladins can Judge the same creature: it is Judged by each of them. | its Flavor: You pronounce a foe guilty before your god, and holy light marks it for your blows.
+Foundry: no reduction before the damage: true | Profane kept: true | Chapter 2 and 4 say nothing of it: true
+--- 4. Feint: 1 Boon on a Tier 2, 2 Boons on a Tier 3
+Tier 2: You gain 1 Boon on your next [Strike] Action against Orc Warrior this turn. | Boons 1 | Favored false
+Tier 3: You gain 2 Boons on your next [Strike] Action against Orc Warrior this turn. | Boons 2 | Favored false
+the card: You gain 1 Boon on your next [Strike] Action against the target this turn. | You gain 2 Boons on your next [Strike] Action against the target this turn.
+--- 5. an NPC has no Rally Points (Lucas: "Lets remove this rule")
+its Rally Point heal: true | refused: true | the book: true
+--- 6. the one-time migrations before v0.0.519 gone (F-033)
+files gone: migrater.mjs true, fxmigrate.mjs true, fixrules.mjs true
+settings left: none (of 20) | kept: the in-memory readers true | the new-world defaults: true
+the version: 0.0.527 | its changelog entry: true

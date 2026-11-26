@@ -52,6 +52,9 @@ const one = (cost, entered, budget, size) => RR.oneSquareCost({ cost, entered, b
 console.log("Crawl 1 into rubble (costs 2):", one(2, 1, 1, 1), "| Speed 1, Advance into rubble:", one(2, 1, 1, 1), "| Advance 3, 2 used, then rubble:", one(2, 1, 1, 3), "| two squares:", one(3, 2, 1, 1), "| no movement:", one(2, 1, 0, 0), "| Speed 5:", one(2, 1, 5, 5));
 const area = oneAlways => MV.reachableCells([{ i: 0, j: 0 }], 1, () => false, 0, () => 1, oneAlways).length;
 console.log("the movement area of a 1-square movement where every square costs 2: without the rule", area(false), "| with it", area(true));
+// v0.0.527 (Lucas, 2026-11-26: "all difficult terrain applies regardless of how many has been moved"): one more square with 1 left, after 2 used
+const area3 = oneAlways => MV.reachableCells([{ i: 0, j: 0 }], 3, () => false, 0, () => 1, oneAlways).length;
+console.log("a 3-square movement where every square costs 2: without the rule", area3(false), "| with it", area3(true), "| the book:", src("../../book/rules-src/03-movement.md").includes("Whenever you have at least 1 square of movement left, you can enter one more square, whatever it costs; that ends the movement."));
 console.log("Evade left out (an Evade can't enter Difficult Terrain):", JSON.stringify(MV.moveBudget({ getFlag: (s, k) => (k === "evadeMove" ? 2 : 0), actor: { system: { speed: 5 } } })), "| a granted movement:", JSON.stringify(MV.moveBudget({ getFlag: (s, k) => ({ freeMove: 1, freeSize: 1 })[k] ?? 0, actor: { system: { speed: 1 } } })), "| a new AP's Speed:", JSON.stringify(MV.moveBudget({ getFlag: () => 0, actor: { system: { speed: 1 } } })));
 
 console.log("--- 5. Point Out on any Unsensed creature (B2-030)");

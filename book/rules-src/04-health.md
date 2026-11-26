@@ -13,9 +13,9 @@ Your **Health Pool** is the sum of two thresholds, **Vigor** and **Resolve**:
 Your Attributes don't change your Health.
 
 > [!example]
-> A Human Paladin (high 20, low 10) puts the high value on Vigor: Vigor 20 + 3 = **23**, Resolve 10 + 2 = **12**, Health Pool **35**.
+> A Human Paladin (high 30, low 15) puts the high value on Vigor: Vigor 30 + 3 = **33**, Resolve 15 + 2 = **17**, Health Pool **50**.
 >
-> Steven, an Elf Archer (high 16, low 8), puts the high value on Resolve: Vigor 8 + 1 = 9, Resolve 16 + 4 = 20, Health Pool 29. A third of 29 is 10, so 1 point moves: Vigor **10**, Resolve **19**.
+> Steven, an Elf Archer (high 24, low 12), puts the high value on Resolve: Vigor 12 + 1 = 13, Resolve 24 + 4 = 28, Health Pool 41. A third of 41 is 14, so 1 point moves: Vigor **14**, Resolve **27**.
 
 Vigor and Resolve are not separate pools. All damage reduces the same Health Pool. The thresholds only decide which states you reach.
 
@@ -102,13 +102,13 @@ Nonlethal damage is removed like any other damage.
 
 Only a Rest restores Rally Points. Sleep does not. A new encounter does not.
 
-**NPCs.** NPCs have no Rally Points. When an Action lets an NPC use one (an ally's Lay On Hands on it) or measures something in its Rally Points (Guard equal to what one of their Rally Points heals), one of its Rally Points removes **⌈its Health Pool ÷ 4⌉** damage, as a PC's does, and it spends nothing. A [[Minions|Minion]] has no Health Pool: it restores 1 tick, as any heal does (see [[Ticks]]).
+**NPCs** have no Rally Points.
 
 ## Guard
 
 Some effects give you **Guard**, written with a value: **Guard 6**. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A [[Riders|rider]] on that damage still happens: a rider happens whatever damage is dealt.
 
-- Damage reduction (such as Shield of Faith) applies first; Guard takes what is left. Reductions from different effects add up (Judge's and Shield of Faith's), and each applies once to an Action's damage to that creature, after [[Resistance, Weakness and Immunity|Resistance]]. **Collision damage** from the same Action's Forced Movement is that Action's damage too, but a separate instance: a reduction applies to only one of the two, chosen when the Action's own damage would be dealt: reduce it now, or wait for the Collision, which may not come (the origin may not move the target). A Reaction that triggers when an Action "would damage" a creature can be used on either, the same way.
+- Damage reduction (such as Shield of Faith) applies first; Guard takes what is left. Reductions from different effects add up, and each applies once to an Action's damage to that creature, after [[Resistance, Weakness and Immunity|Resistance]]. **Collision damage** from the same Action's Forced Movement is that Action's damage too, but a separate instance: a reduction applies to only one of the two, chosen when the Action's own damage would be dealt: reduce it now, or wait for the Collision, which may not come (the origin may not move the target). A Reaction that triggers when an Action "would damage" a creature can be used on either, the same way.
 - Guard isn't Health: it can't be healed, and Rally Points don't restore it.
 - It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]). The exception is the Guard your [[Unspent AP]] give you: it adds to your other Guard, damage takes it first, and it lasts until you regain AP again.
 - It ends at the end of the encounter.

@@ -6,12 +6,12 @@ Rule of the order (Lucas, 2026-11-11): decide what changes the numbers before bu
 
 ## 1. Now
 
-1. **Playtest 8: played** (Lucas, 2026-11-26; `book/playtest-8.md`): over in round 2, no Down, 1.3 Rally Points a PC; no card or number changed. Next (Lucas, 2026-11-26): two more playtests, then the class margin and the retune. Waiting for his word: the sit-fixed mockup (`foundry/mockups/sit-fixed/`), then a Foundry version with it and the Encounter Log's fixes.
-2. **The cleanup audit** (`book/audit-2026-11-25/`): answered and applied (the book, Foundry v0.0.520 to v0.0.522); 6 questions still held for Lucas (`work-order.json`, `do: "hold"`).
+1. **The retune after playtests 8, 9 and 10: applied** (Lucas, 2026-11-26; the book and Foundry v0.0.527; `book/bestiary-design.md`, the last section): the fight lasts 3 to 4 rounds; PC Health +½; enemy damage about ×2.36 and Health a quarter more; no Judge reduction; Feint 1 / 2 Boons; no NPC Rally Points. **Next: a playtest of the same fight on the new numbers, then the class Actions' pass with Lucas** (Quick Shots, Strafe, then Demoralize; Hit and Run's automation; Smite after Feint's change). Waiting for his word: the sit-fixed mockup (`foundry/mockups/sit-fixed/`), then a Foundry version with it and the Encounter Log's fixes.
+2. **The cleanup audit** (`book/audit-2026-11-25/`): answered and applied (the book, Foundry v0.0.520 to v0.0.527); 5 questions still held for Lucas (`work-order.json`, `do: "hold"`).
 
-## 2. After playtest 8: the Bestiary (`book/bestiary-design.md`)
+## 2. The Bestiary (`book/bestiary-design.md`)
 
-1. The retune of the four ranks' numbers from the table (decision 16).
+1. The retune of the four ranks' numbers from the table (decision 16): the first step is in (v0.0.527); the next playtest says what is left. Then the small creatures' attacks ("after the new numbers are in") and an NPC losing its weapon with the loot sentence ("after I am happy with the current playtest").
 2. The Boss (parked; three proposals are in the record).
 3. The budget: the CV of an easy, a hard and a deadly fight, the caps, the party's size, the fights a day.
 4. Roles; whether the ratings (Terrible to Extreme) come back; a simple pricing of an NPC's Actions.

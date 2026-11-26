@@ -1,8 +1,8 @@
 autoEffectEvadeTag: evade|distance:2 | evade|distance:2|stow:drawn | none | none
 Feint basic-data automation: gold
-Feint T2 mods vs Orc A / vs Orc B: Feint (Orc A):+2:match=true | 0
+Feint T2 mods vs Orc A / vs Orc B: Feint (Orc A):+1:match=true | 0
 Feint target-scoped expireOnUse (after Orc B / after Orc A): 1 / 0
-Feint T3 favored: true | resolveModifiers favored: true | favBy: Feint (Orc A)
+Feint T3 (v0.0.527: 2 Boons, not Favored): Feint (Orc A):+2 | favored: false | resolveModifiers favored: false
 reactionsOffVs (vs Sylwen / vs Orc B): true / false
 collectReactions Feint Critical (vs Sylwen open/blocked | vs Kaela open/blocked): 0/1 (Feinted: no Reactions vs. Sylwen) | 1/0
 saveExtraMods: Nonlethal Save:1/0 | Caster's Banes:2/0 | Vulnerable 1:0/1 | Low cover:1/0

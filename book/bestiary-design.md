@@ -257,7 +257,7 @@ G9's targets (decided 2026-11-21) restated in decision 1's unit, each with its D
 ### Decision 3 (taken): the normal fight's shape
 
 - **CV 100 a PC, one Standard a PC, is the normal fight, and the party wins it.** It is not an even match: the two sides' numbers are never equal (finding 2).
-- **Length (revised by Lucas the same day, with decision 13): decided in round 2, over in round 3.** A Standard's Health is sized on **2 rounds** of the benchmark turn; dice and overkill carry the fight into round 3 (the count: it ends in round 2.8 on average). **Why two and not three:** a 2d12 turn has 4 AP and up to 3 Strikes, about two turns of the games whose target is "three rounds"; in landed hits it is the same fight. First taken as "decided in round 3, over in round 4": that gave the Standard 54 Health, which Lucas refused. **What it touches (flagged, batch 5):** Escalation reaches 2, or 3 when the fight runs on; the level 2 Escalation 3 ability and Smite's third die show mostly from Momentum 1 or in hard fights (F2 assumed 3 to 3½ rounds).
+- **Length (revised by Lucas the same day, with decision 13): decided in round 2, over in round 3.** *(Replaced 2026-11-26: "aiming for 3-4"; see "After playtests 8, 9 and 10" at the end.)* A Standard's Health is sized on **2 rounds** of the benchmark turn; dice and overkill carry the fight into round 3 (the count: it ends in round 2.8 on average). **Why two and not three:** a 2d12 turn has 4 AP and up to 3 Strikes, about two turns of the games whose target is "three rounds"; in landed hits it is the same fight. First taken as "decided in round 3, over in round 4": that gave the Standard 54 Health, which Lucas refused. **What it touches (flagged, batch 5):** Escalation reaches 2, or 3 when the fight runs on; the level 2 Escalation 3 ability and Smite's third die show mostly from Momentum 1 or in hard fights (F2 assumed 3 to 3½ rounds).
 - **Built for a fresh party at Momentum 0:** full Health, Rally Points in hand. **Momentum doesn't change the budget:** it is the party's reward (one line of advice: late in a good expedition a party can take a band more). Draw Steel does the opposite and had to recalculate it in testing.
 - **The enemies spread their attacks as far as their Actions make them** (G6: Specials that hit two creatures). All of them on one PC is the GM's dial, not the baseline (G7).
 
@@ -312,13 +312,13 @@ G8 (2026-11-21): one number for each stat, a "Default Standard"; the roles' vari
 - It leaves a role two points each way (11 to 15) inside a Tier 1 of 17 to 42%.
 - **No Defense or Modifier from rank** (P3): what makes an Elite or a Boss stronger is never the PCs' cards working less often. 4e took those bonuses off its elites and solos a year after release.
 
-**13. Health 36: Vigor 18, Resolve 18.** *Decided (Lucas, 2026-11-25).*
+**13. Health 36: Vigor 18, Resolve 18.** *Decided (Lucas, 2026-11-25). Replaced 2026-11-26: Health 45, a quarter more ("After playtests 8, 9 and 10" at the end).*
 
 - 2 rounds (decision 3) × the benchmark turn at the table (decision 4): 34 against the plain PC's 17, 36 against the pregens' 18; Lucas took 36. 1.1 times a PC's Health, as in 4e, 13th Age and Draw Steel; 3 to 4 landed Strikes (the pregens' landed Strike averages 10).
 - Even thresholds: a Default Standard is Bloodied at about half its Health under weapon damage, as 4e's bloodied is. Strained stays rare until Resolve damage is common (K3, accepted).
 - If the Encounter Log shows a plain turn worth more or less than 17 at the table, Health moves with it: 2 × the measured turn.
 
-**14. Damage: about 8 to a PC's Health in each Standard turn at the table (a quarter of a PC, one Rally Point); on paper about 9 in a turn that has to move, 12 in one that doesn't.** *Decided as "the damage that gives the normal fight its cost"; the number corrected by Claude from 10 to 8; the paper numbers lowered when Lucas put the benchmark on the core (decision 4).*
+**14. Damage: about 8 to a PC's Health in each Standard turn at the table (a quarter of a PC, one Rally Point); on paper about 9 in a turn that has to move, 12 in one that doesn't.** *(Replaced 2026-11-26: about ×2.36, about 19 a turn; "After playtests 8, 9 and 10" at the end.) Decided as "the damage that gives the normal fight its cost"; the number corrected by Claude from 10 to 8; the paper numbers lowered when Lucas put the benchmark on the core (decision 4).*
 
 - **The identity:** the normal fight costs 1½ Rally Points a PC, about 51 damage to four PCs' Health. Counted turn by turn in zipper order (`node book/ruler/fight-identity.mjs`: the PCs each dealing the benchmark turn to one enemy at a time, no map and no cards), four Standards of 36 Health get **about 6½ turns** before the last one falls (6.4 at 18 a PC turn, 6.7 at 17). 51 ÷ 6½ = 8.
 - **A correction (Claude, 2026-11-25).** The "about 10 a turn" Lucas was shown, and the 7 for the 54-Health draft, came from counting 5 and 7½ enemy turns: an enemy that falls after t rounds was given t turns, when in zipper order it has usually acted once more before it falls. **At 10 a turn the normal fight would cost about 1.9 Rally Points a PC,** between normal and hard. The decided thing is the cost (decision 2, his G9), so the number is 8; 10 is his to take back, with the cost it brings.
@@ -574,3 +574,78 @@ The first fight on the rebuilt numbers: the four pregens against the Ogre Chieft
 - **Decision 14 (about 8 to Health a Standard's turn): close.** 45 over 6 enemy turns worth 6.1 Standard turns: about 7. But 25 of the 50 raw was one Action, Crack the Ground.
 - **Decision 13 (decided in round 2, over in round 3): a round short.** Over at the end of round 2. The enemies had 130 Health in all and the party deals about 69 a round: the numbers themselves give 1.9 rounds when nothing is wasted, and almost nothing was. Three of the five enemies never had a second turn. Lucas: "It played much much much faster"; "easy until the ogre did his turn"; "almost brainless, doing attack after attack".
 - **To watch in the next playtests (no decision):** whether fights keep ending in round 2. If they do, "over in round 3" needs either more Health than 36 a PC or fewer enemies dying before a second turn; and a two-round fight leaves no room for control (Trip, Demoralize), which is what his notes on the maneuvers describe.
+
+## After playtests 8, 9 and 10: Lucas's decisions (2026-11-26; applied to the book and Foundry v0.0.527)
+
+Read after playtest 10's section 1 (`playtest-10.md`: the three fights cost 1.0 Rally Point a PC on average, no Down, about 2.3 rounds, class cards took a fifth of the raw damage). Each decision in his words; the rule changes, sentence by sentence, are in `rules-backlog.md` (the top entry).
+
+1. **The normal fight's length: "I think aiming for 3-4 might be best, so 3.5 aim."** The new aim replaces decision 3's "decided in round 2, over in round 3" (its text kept above). Chapter 14: "It lasts 3 to 4 rounds."
+2. **Judge loses its flat damage reduction:** "I felt it was not only strong but disruptive. I think I will remove the flat judged reduction"; then "Yes". Judged keeps every other thing (Profane for you, its ends, several Paladins).
+3. **Feint: "Likely make 2 Boons on Tier 3, not favored"; then "Yes".** Tier 2 gives 1 Boon, Tier 3 2 Boons. **The Tier 2's 1 Boon is Claude's assumption** (a Tier 3 must add something over a Tier 2).
+4. **PC Health: "Health +½".** The classes' high and low values ×1.5 (Paladin 30 / 15, Archer 24 / 12); no Stage steps are written. **The species bonuses don't change** (Claude's assumption: he said nothing on them). **The Rally Point: "Lets keep as is for now"** (a quarter of the Health Pool; the Rally values). **"None yet, lets not scale guard or protective. I will rebalance the classes actions":** Guard, Shield of Faith, Resistance, Lay On Hands, Tend and every class card keep their numbers.
+5. **Enemy damage: the Health factor and "a generous headroom": "Tier 2 avg at 5.8-6 is an interesting way forward".** Every damage number a creature deals about ×2.36 (5.9 ÷ 2.5), on each line's expected value (an exploding dN! averages (N + 1) ÷ 2 × N ÷ (N − 1)); "!" kept exactly where it was; the Critical rows stay 1d10!; each card's relations kept (its Tier 3 above its Tier 2 in about the same proportion). **Claude's choices:** a plain die, or a die and a flat number; the nearest average, the closer proportion on a tie. **A Minor enemy's Tier 2 is 1d10 (5.5), not 5.8 to 6:** no single die with a flat number averages 5.8 to 6 without "!" (every such line averages a whole number and a half); 1 + 1d10 (6.5) or 2d4 + 1 (6.0, two dice) are the other ways, his to choose. Crack the Ground keeps its two dice (20 + 2d12).
+6. **Enemy staying power: "Ok, lets try":** a quarter more Health; a Minion keeps 2 ticks; CV unchanged.
+7. **The NPC Rally Point: "Lets remove this rule, this is very specific and for now, not necessary".** Chapter 4 keeps one sentence: "NPCs have no Rally Points."
+
+**The ranks (Chapter 14's table and sections):**
+
+| | Old | New |
+|---|---|---|
+| Minion | 2 ticks; Basic attack 1d4 / 1d6; about 3½ to Health a turn | 2 ticks; 1d10 / 2 + 1d12; about 8 |
+| Grunt | Health 18 (9 / 9); 1d4 / 1d6; about 4; a 2 AP Round Action about 5½ / 8½, or 2½ / 4½ to each of two | Health 22 (11 / 11); 1d10 / 2 + 1d12; about 9½; about 13 / 20, or 6 / 10½ |
+| Standard | Health 36 (18 / 18); 1d4! / 2 + 1d6!; about 8 (a quarter of a PC, about one Rally Point); a 2 AP Round Action about 7 / 11, or 5 / 8 | Health 45 (23 / 22: Vigor takes the odd point, Claude's choice); 2 + 1d10! / 8 + 1d12!; about 19 (about two fifths of a PC's Health, about one and a half Rally Points); about 16½ / 26, or 12 / 19 |
+| Elite | Health 72 (36 / 36); as a Standard; its Encounter Action about 8 more | Health 90 (45 / 45); as a Standard; about 19 more |
+
+**The creatures' Health** (each one's own split kept as close as whole numbers allow, the floor of a third rounded up):
+
+| Creature | Old | New |
+|---|---|---|
+| Goblin Sneak (Minion) | 2 ticks | 2 ticks |
+| Grave Wisp (Grunt) | 18 (Vigor 6, Resolve 12) | 22 (Vigor 8, Resolve 14: 7.33 is under the floor of 8) |
+| Orc Warrior (Standard) | 36 (22 / 14) | 45 (28 / 17: 27.5 / 17.5, Vigor takes the half) |
+| Ogre Chieftain (Elite) | 72 (44 / 28) | 90 (55 / 35) |
+
+**The PCs** (the pregens, level 1): Aveline 35 (23 / 12) becomes 50 (33 / 17), a Rally Point 9 becomes 13; Durgan 35 becomes 50 (33 / 17), 9 becomes 13; Sylwen 29 (17 / 12) becomes 41 (25 / 16), 8 becomes 11; Kaela 29 (19 / 10) becomes 41 (27 / 14), 8 becomes 11. The party: Health 128 becomes 182 (×1.42, not ×1.5: the species bonuses stay), one Rally Point each 34 becomes 48.
+
+**Every creature damage line** (averages without the Critical row):
+
+| Creature | Card | Line | Old | Old average | ×2.36 | New | New average | New ÷ old |
+|---|---|---|---|---:|---:|---|---:|---:|
+| Goblin Sneak | Shiv | Tier 2 | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Goblin Sneak | Shiv | Tier 3 | 1d6 | 3.50 | 8.26 | 2 + 1d12 | 8.50 | 2.43 |
+| Goblin Sneak | Jeer | Tier 2 | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Goblin Sneak | Jeer | Tier 3 | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Goblin Sneak | Knife in the Back | Tier 2 | 2 + 1d6 | 5.50 | 12.98 | 6 + 1d12 | 12.50 | 2.27 |
+| Goblin Sneak | Knife in the Back | Tier 3 | 4 + 1d8 | 8.50 | 20.06 | 13 + 1d12 | 19.50 | 2.29 |
+| Grave Wisp | Slipping Touch | Tier 2 | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Grave Wisp | Slipping Touch | Tier 3 | 1d6 | 3.50 | 8.26 | 2 + 1d12 | 8.50 | 2.43 |
+| Grave Wisp | Guttering Glance | Tier 2 | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Grave Wisp | Guttering Glance | Tier 3 | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Grave Wisp | Pass Through | Tier 2 | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Grave Wisp | Pass Through | Tier 3 | 1 + 1d6 | 4.50 | 10.62 | 4 + 1d12 | 10.50 | 2.33 |
+| Grave Wisp | Dying Flare | Tier 1 | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Grave Wisp | Dying Flare | Tier 2 | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Orc Warrior | Hamstringing Axe | Tier 2 | 1d4! | 3.33 | 7.87 | 2 + 1d10! | 8.11 | 2.43 |
+| Orc Warrior | Hamstringing Axe | Tier 3 | 2 + 1d6! | 6.20 | 14.63 | 8 + 1d12! | 15.09 | 2.43 |
+| Orc Warrior | Barbed Javelin | Tier 2 | 1d4! | 3.33 | 7.87 | 2 + 1d10! | 8.11 | 2.43 |
+| Orc Warrior | Barbed Javelin | Tier 3 | 1d4! | 3.33 | 7.87 | 2 + 1d10! | 8.11 | 2.43 |
+| Orc Warrior | Barbed Javelin | its Lingering | 1d4 | 2.50 | 5.90 | 1d10 | 5.50 | 2.20 |
+| Orc Warrior | War Howl | Tier 1 | 1 + 1d6! | 5.20 | 12.27 | 5 + 1d12! | 12.09 | 2.33 |
+| Orc Warrior | War Howl | Tier 2 | 1 + 1d4! | 4.33 | 10.23 | 4 + 1d10! | 10.11 | 2.33 |
+| Ogre Chieftain | Crushing Grip | Tier 2 | 1d4! | 3.33 | 7.87 | 2 + 1d10! | 8.11 | 2.43 |
+| Ogre Chieftain | Crushing Grip | Tier 3 | 2 + 1d6! | 6.20 | 14.63 | 8 + 1d12! | 15.09 | 2.43 |
+| Ogre Chieftain | Roar | Tier 2 | 1d4! | 3.33 | 7.87 | 2 + 1d10! | 8.11 | 2.43 |
+| Ogre Chieftain | Roar | Tier 3 | 1d4! | 3.33 | 7.87 | 2 + 1d10! | 8.11 | 2.43 |
+| Ogre Chieftain | Great Sweep | Tier 2 | 2 + 1d6 | 5.50 | 12.98 | 6 + 1d12 | 12.50 | 2.27 |
+| Ogre Chieftain | Great Sweep | Tier 3 | 4 + 1d8 | 8.50 | 20.06 | 13 + 1d12 | 19.50 | 2.29 |
+| Ogre Chieftain | Hurled Goblin | Tier 2 | 1d4! | 3.33 | 7.87 | 2 + 1d10! | 8.11 | 2.43 |
+| Ogre Chieftain | Hurled Goblin | Tier 3 | 1 + 1d6! | 5.20 | 12.27 | 5 + 1d12! | 12.09 | 2.33 |
+| Ogre Chieftain | Crack the Ground | Tier 1 | 5 + 2d8 | 14.00 | 33.04 | 20 + 2d12 | 33.00 | 2.36 |
+| Ogre Chieftain | Crack the Ground | Tier 2 | 3 + 1d8 | 7.50 | 17.70 | 11 + 1d12 | 17.50 | 2.33 |
+| Ogre Chieftain | Backhand | Effect | 1 | 1.00 | 2.36 | 2 | 2.00 | 2.00 |
+
+**An estimate (Claude's arithmetic, not a decision; the next playtest checks it):** the three fights cost **1.0 Rally Point a PC** on average. Enemy damage ×2.36 against the pregens' Health ×1.42 (×1.5 for the class values, the species bonuses unchanged) is **×1.66 in share of Health** (×1.57 if Health had grown by the whole half); the lines as written land between ×2.2 (the Minor enemies' 1d10) and ×2.43 (the Standard's and the Elite's Basic attacks). **A quarter more enemy Health** gives the enemies about a quarter more turns (×1.25). **Judge's reduction took about a tenth to a fifth** of the raw damage; without it about ×1.1 to ×1.25 more lands. Multiplied: 1.0 × 1.66 × 1.25 ≈ 2.1 before Judge, **about 2.3 to 2.6 Rally Points a PC with it gone: the notes' Hard** (above 2, up to 3), not the Normal 1½ the plan was built on. A Down becomes likely where Crack the Ground lands (its Tier 1 averages 33 against an Archer's 41). If the playtest confirms it, the levers are the ones on the table: the class Actions' pass (his next), the dice back toward the 5.8 to 6 line, or fewer enemies.
+
+**Noted for later, not now (his words):** the class Actions' rebalance is his next pass with Claude (Quick Shots, Strafe, then Demoralize; Hit and Run's automation with it; Smite after seeing Feint's change); the small creatures' attacks (seven of ten Shivs missed) "to do after the new numbers are in"; the disarmed NPC and the loot sentence together, "after I am happy with the current playtest".
+
+**Next:** a playtest of the same fight on these numbers (the four pregens against the Ogre Chieftain, the Orc Warrior, the Grave Wisp and two Goblin Sneaks), then the class Actions' pass.

@@ -1,3 +1,3 @@
 Prone after the asks: true | the tab shows with Prone alone: true
 Consecrated Ground's hover: Enemies: Difficult Terrain | Allies and you: Guard equal to your Power Modifier at the start of their turns
-Guard to 0 with the kept AP's: true | Judge needs Line of Effect: true | a question docks in the HUD when it comes up: true | the breakdown gets the reductions and Guard: true | no Reactions message: no update: true | an unused d6 group goes: true | the area's name capitalized: true | no "Right-click pans the map": true | linked names as text in a chat line: true
+Guard to 0 with the kept AP's: true | Judge reduces nothing (v0.0.527): true | a question docks in the HUD when it comes up: true | the breakdown gets the reductions and Guard: true | no Reactions message: no update: true | an unused d6 group goes: true | the area's name capitalized: true | no "Right-click pans the map": true | linked names as text in a chat line: true

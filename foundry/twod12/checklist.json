@@ -4,6 +4,30 @@
    "name": "Characters and sheets",
    "items": [
     {
+     "id": "rt-pregens",
+     "v": "v0.0.527",
+     "title": "The pregens' new Health and Rally Points",
+     "do": "In a new world (or after importing them again from the PCs compendium), open Aveline, Durgan, Sylwen and Kaela (the level 1 ones) and look at their Health bars and the Rally Points line.",
+     "expect": "Aveline: Vigor 33, Resolve 17, Health 50, each Rally Point heals 13. Durgan: Vigor 33, Resolve 17, Health 50, heals 13. Sylwen: Vigor 25, Resolve 16, Health 41, heals 11. Kaela: Vigor 27, Resolve 14, Health 41, heals 11. Their Rally Points count is unchanged (Paladins 7, Archers 6). The Paladin class item says high 30 / low 15, the Archer's high 24 / low 12.",
+     "rev": 1
+    },
+    {
+     "id": "rt-update",
+     "v": "v0.0.527",
+     "title": "An existing world's characters get the new Health",
+     "do": "In your playtest world, accept \"Update from the compendium\" when asked (or run it from the system settings), then open Durgan.",
+     "expect": "His class item says high 30 / low 15 and his sheet shows Vigor 33, Resolve 17, Health 50 (a Rally Point heals 13); the damage he had is kept.",
+     "rev": 1
+    },
+    {
+     "id": "rt-creatures",
+     "v": "v0.0.527",
+     "title": "The creatures' new Health and dice",
+     "do": "Import the Orc Warrior and the Ogre Chieftain again from the NPCs compendium and open their sheets; with the Orc Warrior, roll Hamstringing Axe against Durgan until a Tier 2 and a Tier 3; with the Ogre Chieftain, roll Crushing Grip against Aveline.",
+     "expect": "Orc Warrior: Vigor 28, Resolve 17, Health 45; Hamstringing Axe's card reads Tier 2 \"[V] 2 + 1d10! Sl\", Tier 3 \"[V] 8 + 1d12! Sl; Hindered (EoT)\", its Critical row still \"[V] 1d10! Sl\"; the damage card rolls those dice and explodes on a 10 (or a 12). Ogre Chieftain: Vigor 55, Resolve 35, Health 90; Crushing Grip \"2 + 1d10! Bl\" / \"8 + 1d12! Bl; Grabbed\"; Crack the Ground's Tier 1 \"20 + 2d12 Bl\", Tier 2 \"11 + 1d12 Bl\"; Backhand's button deals 2.",
+     "rev": 1
+    },
+    {
      "id": "ct-cards",
      "v": "v0.0.522",
      "title": "The Paladin and Archer traits on the class cards",
@@ -62,9 +86,9 @@
     {
      "id": "bst-sheets",
      "v": "v0.0.519",
-     "title": "The four playtest creatures' sheets",
+     "title": "Rev 2 · The four playtest creatures' sheets",
      "do": "In a new world (or after importing them again from the NPCs compendium), open the Goblin Sneak, the Grave Wisp, the Orc Warrior and the Ogre Chieftain.",
-     "expect": "Goblin Sneak: Minion, CV 30, 2 ticks (a \"Ticks 2/2\" bar, no Vigor or Resolve), AD 13, WD 12, Weapon and Power +2, Speed 6, Shiv, Jeer, Knife in the Back, Shriek and Scatter. Grave Wisp: Grunt, CV 50, Vigor 6, Resolve 12, AD 12, WD 14, Speed 6, its new portrait, the damage line \"Immunity Cold · Resistance Psychic 3 · Weakness Holy 3\", Drifting, Slipping Touch, Guttering Glance, Pass Through, Dying Flare. Orc Warrior: Standard, Vigor 22, Resolve 14, 13 / 13, Speed 5. Ogre Chieftain: Elite, CV 200, Vigor 44, Resolve 28, AD 14, WD 12, Large, Reach 2, Steadiness 1, Speed 5, no Escalation; Crushing Grip, Roar, Great Sweep, Hurled Goblin, Crack the Ground, Backhand. None of the old cards (Rusty Knife, Club, Rally the Tribe...).",
+     "expect": "Goblin Sneak: Minion, CV 30, 2 ticks (a \"Ticks 2/2\" bar, no Vigor or Resolve), AD 13, WD 12, Weapon and Power +2, Speed 6, Shiv, Jeer, Knife in the Back, Shriek and Scatter. Grave Wisp: Grunt, CV 50, Vigor 8, Resolve 14 (Health 22), AD 12, WD 14, Speed 6, its new portrait, the damage line \"Immunity Cold · Resistance Psychic 3 · Weakness Holy 3\", Drifting, Slipping Touch, Guttering Glance, Pass Through, Dying Flare. Orc Warrior: Standard, Vigor 28, Resolve 17 (Health 45), 13 / 13, Speed 5. Ogre Chieftain: Elite, CV 200, Vigor 55, Resolve 35 (Health 90), AD 14, WD 12, Large, Reach 2, Steadiness 1, Speed 5, no Escalation; Crushing Grip, Roar, Great Sweep, Hurled Goblin, Crack the Ground, Backhand. None of the old cards (Rusty Knife, Club, Rally the Tribe...).",
      "rev": 1
     }
    ]
@@ -215,9 +239,9 @@
     {
      "id": "mn-empowered",
      "v": "v0.0.523",
-     "title": "A Minor enemy's Empowered die explodes",
+     "title": "Rev 2 · A Minor enemy's Empowered die explodes",
      "do": "Outside a combat, give the Grave Wisp Empowered by hand from the Conditions, then roll its Slipping Touch against Sylwen until a Tier 2 or 3, and again until the Empowered die shows a 6 (or set the dice). Then the same with a Goblin Sneak (Empowered from the Conditions) and its Shiv against Kaela.",
-     "expect": "The damage card has the Empowered die as 1d6! (Cold for the wisp, Pierce for the goblin); on a 6 it counts 5 and is rolled again, the exploded face shown, as it does for the Orc Warrior. The Tier's own 1d4 or 1d6 still never explodes (it writes no !).",
+     "expect": "The damage card has the Empowered die as 1d6! (Cold for the wisp, Pierce for the goblin); on a 6 it counts 5 and is rolled again, the exploded face shown, as it does for the Orc Warrior. The Tier's own dice (1d10, 2 + 1d12 since v0.0.527) still never explode (they write no !).",
      "rev": 1
     },
     {
@@ -236,8 +260,8 @@
     {
      "id": "hq-lingering",
      "v": "v0.0.521",
-     "title": "Lingerings of different subtypes run together; Shake Off ends one",
-     "do": "Give Durgan a Lingering 1d4 Pi (the Orc Warrior's Barbed Javelin, Tier 3), then a Lingering 1d6 Fi (by hand from the Conditions), then another Lingering 1d4 Pi. End his turn. Then use Shake Off on him.",
+     "title": "Rev 2 · Lingerings of different subtypes run together; Shake Off ends one",
+     "do": "Give Durgan a Lingering 1d10 Pi (the Orc Warrior's Barbed Javelin, Tier 3, since v0.0.527), then a Lingering 1d6 Fi (by hand from the Conditions), then another Lingering 1d10 Pi. End his turn. Then use Shake Off on him.",
      "expect": "He keeps two Lingerings: the Piercing one (the second Piercing one, not higher, leaves the first) and the Fire one. At the end of his turn each deals its own damage card. Shake Off asks in the bottom bar which Lingering it ends (both listed by name); the Save uses that Lingering's Attributes and DC, and only that one ends (or is halved on a Tier 2).",
      "rev": 1
     }
@@ -265,9 +289,9 @@
     {
      "id": "ox-onesquare",
      "v": "v0.0.525",
-     "title": "One square of Difficult Terrain always",
-     "do": "Draw a Difficult Terrain region next to Kaela. Make her Prone and Crawl (1 square) into it. Then, standing, use Advance and move 2 squares in the open and try the next square into the region with 1 left.",
-     "expect": "The Crawl's area shows the square in the region and she enters it; the Crawl is spent, no AP more. The Advance with 1 square left can't enter it for free (it costs 2: a further AP is spent, as before).",
+     "title": "Rev 2 · One square of Difficult Terrain always, whatever was moved",
+     "do": "Draw a Difficult Terrain region next to Kaela. Make her Prone and Crawl (1 square) into it. Then, standing outside the region, use Advance and move in the open until she has 1 square left of it, and drag her 1 square into the region.",
+     "expect": "The Crawl's area shows the square in the region and she enters it; the Crawl is spent, no AP more. With 1 square of the Advance left, its area shows the squares of the region next to her and she enters one: the Advance ends there and no further AP is spent (v0.0.525 to v0.0.526 spent another AP).",
      "rev": 1
     },
     {
@@ -299,6 +323,22 @@
   {
    "name": "Reactions and Judge",
    "items": [
+    {
+     "id": "rt-judge",
+     "v": "v0.0.527",
+     "title": "Judge no longer reduces damage",
+     "do": "At the start of an encounter, Aveline Judges the Orc Warrior; Durgan stands within 5 squares of her. The Orc Warrior hits Durgan with Hamstringing Axe (a Tier 2), then again in a later round.",
+     "expect": "No question \"Reduce that damage by 2?\" and no \"Judge: the damage to Durgan is reduced\" line: Durgan takes the whole damage both times; the Encounter Log shows no \"Judge (Aveline)\" reduction. The orc still counts as Profane for Aveline (her Smite rolls d8s against it).",
+     "rev": 1
+    },
+    {
+     "id": "rt-feint",
+     "v": "v0.0.527",
+     "title": "Feint: 1 Boon on a Tier 2, 2 Boons on a Tier 3",
+     "do": "Durgan Feints the Orc Warrior until a Tier 2 (Designer mode: Force a Tier, or roll), then makes a Basic Attack against it; next turn, a Feint with a Tier 3, then a Basic Attack against it; then a Basic Attack against another creature after a Tier 3 Feint.",
+     "expect": "Tier 2: the chat line says \"+1 Boon on next [Strike] against Orc Warrior this turn\" and the Basic Attack's roll dialog shows 1 Boon from Feint (Orc Warrior). Tier 3: \"+2 Boons\", the roll shows 2 Boons and is not Favored. The Effect is spent on that Strike; a Strike against another creature doesn't use it. Feint's card reads Tier 2 \"You gain 1 Boon...\", Tier 3 \"You gain 2 Boons...\".",
+     "rev": 1
+    },
     {
      "id": "ox-shifting",
      "v": "v0.0.525",
@@ -332,11 +372,11 @@
      "rev": 1
     },
     {
-     "id": "bst-rally",
-     "v": "v0.0.519",
-     "title": "An NPC's Rally Point is a quarter of its Health",
-     "do": "Deal 10 damage to a Grave Wisp and 20 to the Ogre Chieftain. With Durgan, use Lay On Hands on the wisp, then on the ogre.",
-     "expect": "The wisp heals 5 (a quarter of 18, rounded up) and the ogre 18 (a quarter of 72); neither spends anything. An Orc Warrior would heal 9.",
+     "id": "rt-npcrally",
+     "v": "v0.0.527",
+     "title": "An NPC has no Rally Points",
+     "do": "Deal 10 damage to a Grave Wisp (make it Durgan's ally for the test, or as the GM). With Durgan, use Lay On Hands at 2 AP on the wisp and click its Rally Point button.",
+     "expect": "A warning \"Grave Wisp has no Rally Points.\" (or \"no Rally Point left\"); the wisp heals nothing from it (the Guard of Lay On Hands still lands).",
      "rev": 1
     },
     {
@@ -358,9 +398,9 @@
     {
      "id": "bst-backhand",
      "v": "v0.0.519",
-     "title": "The Ogre's Backhand doesn't stop the mover",
+     "title": "Rev 2 · The Ogre's Backhand doesn't stop the mover",
      "do": "Move Durgan (Advance) into a square adjacent to the Ogre Chieftain, with movement to spare. Then Evade into an adjacent square with Aveline.",
-     "expect": "Durgan's movement is offered Backhand (a Trigger, no Move back on the message); Use: the 1 Blunt damage button and Pushed 2. Durgan still has the rest of his movement. Aveline's Evade offers nothing.",
+     "expect": "Durgan's movement is offered Backhand (a Trigger, no Move back on the message); Use: the 2 Blunt damage button (1 before v0.0.527) and Pushed 2. Durgan still has the rest of his movement. Aveline's Evade offers nothing.",
      "rev": 1
     }
    ]

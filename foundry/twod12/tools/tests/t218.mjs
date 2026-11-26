@@ -2,7 +2,7 @@
 // v0.0.305 PACK MOD (book, Chapter 5, Weapon, Power and Signature Modifiers; the Bestiary, Attributes and Modifiers): the Modifiers are class values.
 // The track (modifiers.mjs classTrack), the compendium's classes, a character's derived Modifiers and Ward Defense by Stage, a class copy from before
 // (the Attribute formula until it is updated), the NPC role values (npcMods, npcLead), the rolls without an Attribute (no "Body Rolls" on a Weapon
-// roll), and the migration's choice of the lead Modifier (migrater.mjs modLeadOf).
+// roll), and the migration's choice of the lead Modifier (migrater.mjs modLeadOf; v0.0.527: that migration is gone, F-033).
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(ROOTURL);
@@ -12,7 +12,6 @@ globalThis.Hooks = { on() {}, once() {} }; globalThis.CONFIG = {};
 const { classTrack, npcMods, classModifiers } = await import(ROOTURL + "module/modifiers.mjs");
 const { CharacterData, npcLead, npcModRatings, npcModValue } = await import(ROOTURL + "module/data.mjs");
 const { rollSource, rollTraits } = await import(ROOTURL + "module/rollsource.mjs");
-const { modLeadOf } = await import(ROOTURL + "module/migrater.mjs");
 const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
 const C = await import(ROOTURL + "tools/content.mjs");
 const cls = n => C.docs.find(d => d.type === "class" && d.name === n).system;
@@ -66,17 +65,13 @@ for (const tr of [["weapon", "strike"], ["magic"], ["signature", "weapon"], ["bo
 const srcOld = rollSource(old, { traits: new Set(["weapon"]) });
 console.log("a class copy from before still reads its Attribute:", srcOld.label, `| Body Rolls: ${rollTraits(new Set(["weapon"]), srcOld).has("body")}`);
 
-console.log("--- the migration: the lead is the Modifier that was higher");
-for (const [label, attrs, prio] of [["Body 2, Mind 1, Appeal 0", { body: 2, mind: 1, appeal: 0 }, "weapon"], ["Body 0, Mind 1, Appeal 2 (Weapon kept Appeal)", { body: 0, mind: 1, appeal: 2 }, "weapon"], ["Body 0, Mind 2, Appeal 2", { body: 0, mind: 2, appeal: 2 }, "weapon"], ["Body 1, Mind 3, Appeal 0", { body: 1, mind: 3, appeal: 0 }, "weapon"]]) {
-  console.log(`${label}: old copy ${modLeadOf(attrs, { weaponAttrs: new Set(["body", "appeal"]), magicAttrs: new Set(["mind", "appeal"]), modPriority: prio }, "Paladin", classModifiers)} | already updated (no lists) ${modLeadOf(attrs, { modPriority: prio }, "Paladin", classModifiers)}`);
-}
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("--- wiring: the class window's picks", src("module/classwindow.mjs").includes('segBtn("prio"') && src("module/classwindow.mjs").includes('segBtn("s2"') && src("module/classwindow.mjs").includes('upd["system.modStage2"]'),
   "| under the Attribute increases (v0.0.306)", src("module/classwindow.mjs").includes('if (x.kind === "attr" && !modPlaced) { modPlaced = true; return html + modSec; }'),
-  "| refresh keeps modStage2", src("module/refresh.mjs").includes('"modStage2"'), "| the migration registered", src("module/twod12.mjs").includes("registerMigrationMod()"),
+  "| refresh keeps modStage2", src("module/refresh.mjs").includes('"modStage2"'),
   "| the Builder's Weapon Mod / Power Mod rows", src("module/pcsheet.mjs").includes('{ title: "Weapon Mod", rows: [wmod]') && src("module/pcsheet.mjs").includes('{ title: "Power Mod", rows: [pmod]'),
   "| the Archer's fixed row", src("module/classwindow.mjs").includes("const fixedRow = level === 1"),
-  "| 12 + Attribute in defense.mjs", src("module/defense.mjs").includes("dc = vb + attr;"), "| no DialogV2 in the migration", !src("module/migrater.mjs").split("export async function migrateMod")[1].includes("DialogV2"));
+  "| 12 + Attribute in defense.mjs", src("module/defense.mjs").includes("dc = vb + attr;"));
 
 console.log("--- v0.0.308: the Builder tab (Lucas)");
 const SM = await import(ROOTURL + "module/sheetmodel.mjs");

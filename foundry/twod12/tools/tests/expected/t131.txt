@@ -1,5 +1,5 @@
 Projectile is a weapon property: Projectile | Shot and Save are Action traits: Projectile Save | Crossbow: projectile, ranged, reload, twohanded
-Archer: Health high 16 / low 8 (Stage 1 +0 / +0; Stage 2 +0 / +0; Stage 3 +0 / +0), Rally 5 + Stage, Speed +1, light armor | features: 
+Archer: Health high 24 / low 12 (Stage 1 +0 / +0; Stage 2 +0 / +0; Stage 3 +0 / +0), Rally 5 + Stage, Speed +1, light armor | features: 
 cards: all 18 | features: true | Talents: true | Field Training gone: true
 old cards' folder: true | current cards in it: none
   Double Shot: round | shot,strike | -
@@ -19,5 +19,5 @@ Level 2: Escalation Hook (items granted): Thrill of the Kill | Encounter Pick (i
 Level 3: Skill Talent (talent)
 Level 4: Stage Talent (talent)
 Repertoire: Volley, Hit and Run, Covering Fire | Escalation:  / 
-Shot needs a Projectile weapon: true | a Weapon Action with one is a Shot: true | old ranged weapons get Projectile once: true
+Shot needs a Projectile weapon: true | a Weapon Action with one is a Shot: true
 Mastery tab: no Techniques option (v0.0.213) true | Bow Mastery choice (Sharpshooter gives it) true | tab for every character false

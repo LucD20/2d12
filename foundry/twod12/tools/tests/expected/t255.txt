@@ -28,14 +28,13 @@ the squares a Reaction could come back to (range 3, from 0): [2,1,0] | closer, b
   @Condition[blinded|eot]{Blinded (EoT)}.
   You @Move[advance|distance:5]{Advance up to 5 squares} in a straight line toward the target.
   You @Move[advance|distance:speed]{Advance}.
---- Half-Blinded, the Zone's Guard, the migration
+--- Half-Blinded, the Zone's Guard
 the Guard row: {"on":true,"who":"allies","self":true,"formula":"@origin.pow"} | active: true | its sentence: Its squares are Difficult Terrain for enemies. Allies inside, and the Paladin, gain Guard equal to the origin's Power Modifier at the start of each of their turns.
-the Paladin migration's list: Holy Wrath, Reckoning, Radiant Zeal
 --- the wiring
 an Art asks its Mode in the pick window: true
 Smite's dice at the roll, the chip and its Reaction AP: true
-Judge's mark kind, its reduction, Profane in the triggers: true
+Judge's mark kind, no reduction (v0.0.527), Profane in the triggers: true
 the hooks: Roving Judgment's cost, Hallowed Stance's Setup, Armor of Faith's Guard, Tireless Vigil's Reaction AP: true
 Half-Blinded: the status and the Sight: true
 Consecrated Ground's Guard at the start of a turn: true | Shield of Faith's Taunted on the triggering creature: true
-Escalation abilities up to 6: true | the migration registered: true
+Escalation abilities up to 6: true

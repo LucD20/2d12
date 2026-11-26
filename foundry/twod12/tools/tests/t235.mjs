@@ -20,18 +20,11 @@ const missing = [...keys].filter(k => !new RegExp(`(^|[\\s,{])${k}:`).test(block
 console.log("setting fields used by the compendium:", keys.size, "| missing from the data model:", missing.join(", ") || "none");
 console.log("moveHow's choices:", /moveHow: choice\(\{ cant: "Not allowed", difficult: "Difficult Terrain" \}, "cant"\)/.test(block), "| dmgSub takes W:", block.includes('dmgSub: choice({ ...TWOD12.subtypes, W: "The weapon\'s" })'));
 
-// 2. The world pass for the copies saved before
-const FX = await import(ROOTURL + "module/fixrules.mjs");
-const fr = FX.fixedSystem("Frightened", { description: "<p>... and you can't willingly move closer to it (Forced Movement still can). Out of your Sight (a wall, Darkness), the Bane and the restriction stop until you see it again.</p>", settings: [{ type: "boonbane", banes: 1 }, { type: "move", text: "closer" }], rules: [{ kind: "move", dirm: "closer", how: "cant" }] });
-console.log("Frightened:", JSON.stringify(fr.settings[1]), fr.rules[0].how, /Difficult Terrain for you/.test(fr.description), "| again: nothing to do:", FX.fixedSystem("Frightened", fr) === null);
-const mq = FX.fixedSystem("Marked Quarry", { settings: [{ type: "bonusdamage", dmg: "[Mod]", dmgSub: "" }, { type: "bonusdamage", dmg: "1d6", dmgSub: "" }] });
-console.log("Marked Quarry:", mq.settings.map(x => `${x.dmg}:${x.dmgSub || "-"}`).join(" "), "| another item untouched:", FX.fixedSystem("Killer's Focus", { settings: [{ type: "bonusdamage", dmg: "[Mod]", dmgSub: "" }] }) === null);
-console.log("an applied Frightened:", JSON.stringify(FX.fixedLimits("Frightened (Aveline)", [{ dir: "closer", seen: true }])), "| Taunted untouched:", FX.fixedLimits("Taunted", [{ dir: "closer" }]));
+// 2. The world pass for the copies saved before: gone in v0.0.527 (F-033, Lucas: "I dont run any old world")
 const main = src("module/twod12.mjs");
-console.log("run once per world:", main.includes('game.settings.get("twod12", "worldPassV346")') && main.includes("fixRulesV346()"), "| a macro:", main.includes("fixRulesV346: () =>"));
 
 // 3. Bars always shown
-console.log("new tokens:", main.includes("doc.updateSource({ displayBars: globalThis.CONST?.TOKEN_DISPLAY_MODES?.ALWAYS ?? 50 })"), "| the compendium's actors:", (src("tools/build-packs.mjs").match(/displayBars: 50/g) ?? []).length === 2, "| the world's tokens once:", main.includes('sc.updateEmbeddedDocuments("Token", ups)'));
+console.log("new tokens:", main.includes("doc.updateSource({ displayBars: globalThis.CONST?.TOKEN_DISPLAY_MODES?.ALWAYS ?? 50 })"), "| the compendium's actors:", (src("tools/build-packs.mjs").match(/displayBars: 50/g) ?? []).length === 2);
 
 // 4. The stack card
 const S = await import(ROOTURL + "module/startstack.mjs");

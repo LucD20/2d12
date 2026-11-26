@@ -19,9 +19,10 @@ the Use still makes no roll: true | its Effect text kept for the older faces: tr
 Tier 2: The target takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends.
 the no-roll chat card draws the Tiers: true | and not its Effect text: true
 --- 4. one square of Difficult Terrain always (B2-016; Chapter 3's example: Mark)
-Crawl 1 into rubble (costs 2): 1 | Speed 1, Advance into rubble: 1 | Advance 3, 2 used, then rubble: 2 | two squares: 3 | no movement: 2 | Speed 5: 2
+Crawl 1 into rubble (costs 2): 1 | Speed 1, Advance into rubble: 1 | Advance 3, 2 used, then rubble: 1 | two squares: 3 | no movement: 2 | Speed 5: 2
 the movement area of a 1-square movement where every square costs 2: without the rule 1 | with it 9
-Evade left out (an Evade can't enter Difficult Terrain): {"budget":0,"size":-1} | a granted movement: {"budget":1,"size":1} | a new AP's Speed: {"budget":1,"size":1}
+a 3-square movement where every square costs 2: without the rule 9 | with it 21 | the book: true
+Evade left out (an Evade can't enter Difficult Terrain): {"budget":0} | a granted movement: {"budget":1} | a new AP's Speed: {"budget":1}
 --- 5. Point Out on any Unsensed creature (B2-030)
 Unsensed from Hide (its senses: Clear): {"hide":"hidden","floor":false,"changed":true}
 Unsensed in Darkness (no Hide): {"hide":"","floor":true,"changed":true}

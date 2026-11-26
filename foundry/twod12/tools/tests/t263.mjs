@@ -1,6 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t263.mjs)
 // v0.0.419 (playtest 5, Version 2: the rules; book/playtest-5.md section 3). (1) Chapter 2, Stacking: an effect tied to the creature that gave it
-// is a different effect for each (two Judges); Judge's reduction is the Paladin's choice ("you can reduce", asked). (2) Chapter 3: the creatures
+// is a different effect for each (two Judges); Judge's reduction was the Paladin's choice ("you can reduce", asked; v0.0.527: no reduction). (2) Chapter 3: the creatures
 // inside an area never give Cover against it. (3) The card Structure: a Special about the roll goes above the Attack line (Darting Blade, Hit and
 // Run). (4) The Bestiary: a Tier 2 or 3 rider written in Tiers 2 and 3 ("Pushed N"); an NPC's melee Distance "Reach (X)".
 import fs from "node:fs";
@@ -11,10 +11,9 @@ const book = f => fs.readFileSync(ROOT + "../../book/" + f, "utf8");
 
 console.log("--- (1) Stacking and Judge");
 // v0.0.422 (Lucas): the general per-giver rule became Judge's own line ("Two Paladins can Judge the same creature"); Chapter 2 says "A card can say otherwise".
-console.log("Chapter 2:", book("rules-src/02-turns.md").includes("**A card can say otherwise.** [[Judge]] does: multiple Paladins can Judge the same creature."), "| the card:", book("cards/stage0/paladin.json").includes("Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier."));
+console.log("Chapter 2:", book("rules-src/02-turns.md").includes("**A card can say otherwise.** [[Judge]] does: multiple Paladins can Judge the same creature."), "| the card has no reduction (v0.0.527):", !book("cards/stage0/paladin.json").includes("you can reduce that damage by your Power Modifier"));
 const J = src("module/judge.mjs");
-console.log("Foundry asks the judge's player (declined: the round's use is kept):", J.includes("if (!(await askJudge(j, src, actor, by))) continue;") && J.indexOf("askJudge(j, src, actor, by)") < J.indexOf('setFlag(F, "judgeRound", key)'),
-  "| each Paladin's own mark (two Judges):", J.includes("isJudgedBy(j, src)"));
+console.log("Foundry has no reduction to ask about (v0.0.527):", !J.includes("judgeReductions") && !J.includes("askJudge"), "| each Paladin's own mark (two Judges):", J.includes("export const isJudgedBy = (judge, target)"));
 
 console.log("--- (2) Cover against an area");
 console.log("Chapter 3:", book("rules-src/03-movement.md").includes("### Cover against an area"), "| every area's creatures give none:", src("module/template.mjs").includes("  placed.noCover = [origin?.id, ...tokensIn(placed.cells).map(t => t.id)].filter(Boolean);"),

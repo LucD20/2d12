@@ -1,22 +1,22 @@
 --- the compendium's numbers
-Paladin: high 20 / low 10, Stage 1 +0 / +0, Stage 2 +0 / +0, Stage 3 +0 / +0, Rally 6 | old multipliers 0 / 0
-Archer: high 16 / low 8, Stage 1 +0 / +0, Stage 2 +0 / +0, Stage 3 +0 / +0, Rally 5 | old multipliers 0 / 0
+Paladin: high 30 / low 15, Stage 1 +0 / +0, Stage 2 +0 / +0, Stage 3 +0 / +0, Rally 6 | old multipliers 0 / 0
+Archer: high 24 / low 12, Stage 1 +0 / +0, Stage 2 +0 / +0, Stage 3 +0 / +0, Rally 5 | old multipliers 0 / 0
 Human: Vigor +3, Resolve +2 (the player chooses the side)
 Dwarf: Vigor +4, Resolve +1
 Elf: Vigor +1, Resolve +4
 --- the book's examples
-a Human Paladin, high on Vigor: Vigor 23 / Resolve 12 = 35 | at Stage 1: Vigor 23 / Resolve 12 = 35 | Stage 2: Vigor 23 / Resolve 12 = 35 | Stage 3: Vigor 23 / Resolve 12 = 35
-Steven, an Elf Archer high on Resolve: Vigor 10 / Resolve 19 = 29 (floor 10: 1 moved) (9 / 20 before the floor)
-a Dwarf Archer high on Resolve: Vigor 12 / Resolve 17 = 29 | high on Vigor: Vigor 19 / Resolve 10 = 29 (floor 10: 1 moved)
-the Human's +3: with the high value: Vigor 10 / Resolve 19 = 29 | on Vigor by choice: Vigor 11 / Resolve 18 = 29
+a Human Paladin, high on Vigor: Vigor 33 / Resolve 17 = 50 | at Stage 1: Vigor 33 / Resolve 17 = 50 | Stage 2: Vigor 33 / Resolve 17 = 50 | Stage 3: Vigor 33 / Resolve 17 = 50
+Steven, an Elf Archer high on Resolve: Vigor 14 / Resolve 27 = 41 (floor 14: 1 moved) (13 / 28 before the floor)
+a Dwarf Archer high on Resolve: Vigor 16 / Resolve 25 = 41 | high on Vigor: Vigor 27 / Resolve 14 = 41 (floor 14: 1 moved)
+the Human's +3: with the high value: Vigor 14 / Resolve 27 = 41 | on Vigor by choice: Vigor 15 / Resolve 26 = 41
 no class yet: Vigor 3 / Resolve 2 = 5 | nothing: Vigor 0 / Resolve 0 = 0
 --- the character data (stubs)
-level 1 (Stage 0): Vigor 23 Resolve 12 Pool 35 | Rally Points 7 (6 + Stage), each heals 9 | Weapon Modifier 2 | AP a turn 4
-level 4 (Stage 1): Vigor 23 Resolve 12 Pool 35 | Rally Points 8 (6 + Stage), each heals 9 | Weapon Modifier 3 | AP a turn 4
-level 5 (Stage 1): Vigor 23 Resolve 12 Pool 35 | Rally Points 8 (6 + Stage), each heals 9 | Weapon Modifier 3 | AP a turn 4
-level 8 (Stage 2): Vigor 23 Resolve 12 Pool 35 | Rally Points 9 (6 + Stage), each heals 9 | Weapon Modifier 3 | AP a turn 4
-high on Resolve: Vigor 12 Resolve 23 | healthLine: {"highSide":"resolve","bonusHighSide":"resolve","moved":0}
-Exhausted 2 lowers Resolve by 8: Resolve 4 (Rally heal still 9)
+level 1 (Stage 0): Vigor 33 Resolve 17 Pool 50 | Rally Points 7 (6 + Stage), each heals 13 | Weapon Modifier 2 | AP a turn 4
+level 4 (Stage 1): Vigor 33 Resolve 17 Pool 50 | Rally Points 8 (6 + Stage), each heals 13 | Weapon Modifier 3 | AP a turn 4
+level 5 (Stage 1): Vigor 33 Resolve 17 Pool 50 | Rally Points 8 (6 + Stage), each heals 13 | Weapon Modifier 3 | AP a turn 4
+level 8 (Stage 2): Vigor 33 Resolve 17 Pool 50 | Rally Points 9 (6 + Stage), each heals 13 | Weapon Modifier 3 | AP a turn 4
+high on Resolve: Vigor 17 Resolve 33 | healthLine: {"highSide":"resolve","bonusHighSide":"resolve","moved":0}
+Exhausted 2 lowers Resolve by 8: Resolve 9 (Rally heal still 13)
 an old class (multipliers, no high value) keeps the old formula until updated: Vigor 22 Resolve 16 | flagged old: true
 --- wiring: no Health line on the sheet (Lucas, after v0.0.245: chosen in the class and Species windows): false | the class and species sheets: true | the class window: true
 the Stage step of the Modifiers: [0, 0, 1]: [0,0,0,1] | Attributes out of Health: true

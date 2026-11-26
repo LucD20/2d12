@@ -46,4 +46,4 @@ Done in Foundry v0.0.520's commit, from Lucas's answers to the Foundry and files
 
 ## The held questions answered (2026-11-26)
 
-Lucas answered 16 of the held questions (B1-003, B1-023, B2-004, B2-009, B2-066, B2-069, B3-004, B3-035, B3-037 to B3-040, B3-052, B3-053, B3-070, B3-074): applied to the book and to Foundry v0.0.521 (`applied.md`, "The held questions answered"; `organize.mjs` carries his words as `ANSWERED`). Six stay held (`do: "hold"`): B3-033 and B3-065 (an NPC's items), B2-050, B3-011, B3-015, F-033.
+Lucas answered 16 of the held questions (B1-003, B1-023, B2-004, B2-009, B2-066, B2-069, B3-004, B3-035, B3-037 to B3-040, B3-052, B3-053, B3-070, B3-074): applied to the book and to Foundry v0.0.521 (`applied.md`, "The held questions answered"; `organize.mjs` carries his words as `ANSWERED`). Five stay held (`do: "hold"`): B3-033 and B3-065 (an NPC's items), B2-050, B3-011, B3-015; F-033 was answered later the same day ("I dont run any old world": Foundry v0.0.527).

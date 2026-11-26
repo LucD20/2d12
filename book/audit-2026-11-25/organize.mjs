@@ -64,6 +64,7 @@ const ANSWERED = {
  "B3-053": "2026-11-26: \"A Standard is the unit: CV 100, one for each PC in a normal fight.\" (and the places that repeat it agree)",
  "B3-070": "2026-11-26: \"Yes\" (the defined term is dropped: \"its other Actions\")",
  "B3-074": "2026-11-26: \"Good\" (the ogre places the Minion in an empty square adjacent to the target, hit or miss; it takes no damage and triggers no Reactions)",
+ "F-033": "2026-11-26: \"I dont run any old world\" (his world is on the released v0.0.519; Foundry v0.0.527 removed the one-time migrations before v0.0.519 and their settings; settingsmigrate.mjs, the in-memory readers of old item data, kept)",
  "B2-009": "2026-11-26: \"Leave on Charge, remove from Lay on Hands. Charge is a special case.\""
 };
 const out = [];

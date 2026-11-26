@@ -29,6 +29,4 @@ heavy with heavy training: trained | Vs. Body is not affected: true
 applied: [{"kind":"all","bonus":2,"mode":"bonus","name":"","seen":false},{"kind":"ward","bonus":-1,"mode":"bonus","name":"","seen":false}]
 +2 to every Defense (Armor, Ward and every Vs. Attribute). | −1 to Ward Defense (WD). | In short: +2 Defense · −1 Ward Defense (WD) · +0 Armor Defense (AD).
 rebuilt from an applied effect: [["defense","armor",1]]
---- the Release fix
-fixed: 1 [[0]]
 --- data and sheets: true true false true | compendium Paladin heavy Archer light

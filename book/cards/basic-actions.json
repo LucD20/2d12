@@ -455,7 +455,7 @@
     {
       "name": "Feint",
       "category": "Basic Action",
-      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): Tier 2 gives 2 Boons on your next Strike against the target this turn, Tier 3 makes it Favored; the Critical stops its Reactions against you.",
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): Tier 2 gives 2 Boons on your next Strike against the target this turn, Tier 3 makes it Favored; the Critical stops its Reactions against you. 2026-11-26 (Lucas, after playtests 8 to 10: \"Likely make 2 Boons on Tier 3, not favored\"): Tier 2 gives 1 Boon, Tier 3 gives 2 Boons (the Tier 2's 1 Boon is Claude's split).",
       "flavor": "You show one blow and land another.",
       "traits": [
         "focus",
@@ -470,8 +470,8 @@
           "ap": 1,
           "tiers": [
             "No effect.",
-            "You gain 2 Boons on your next [Strike] Action against the target this turn.",
-            "Your next [Strike] Action against the target this turn is Favored."
+            "You gain 1 Boon on your next [Strike] Action against the target this turn.",
+            "You gain 2 Boons on your next [Strike] Action against the target this turn."
           ],
           "critical": "Until the end of your turn, the target can't use a Reaction for which you are the triggering creature."
         }
@@ -479,7 +479,7 @@
       "foundry": {
         "basic": "feint",
         "automation": "gold",
-        "automationNote": "applies 2 Boons (Tier 2) or Favored (Tier 3) on your next [Strike] Action against the target this turn, and blocks its Reactions against you until EoT on a Critical.",
+        "automationNote": "applies 1 Boon (Tier 2) or 2 Boons (Tier 3) on your next [Strike] Action against the target this turn, and blocks its Reactions against you until EoT on a Critical.",
         "img": "icons/svg/daze.svg"
       }
     },

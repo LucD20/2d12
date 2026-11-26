@@ -3,7 +3,6 @@ the formula (Rally + 1 / 2 / 3 / 4 by Stage, v0.0.407): true | Paladin 6: true |
 Paladin, Body +2, Mind +1, level 1     8
 Archer, Body +1, Mind +1, level 1      7
 Paladin, Body +2, Mind +1, level 3     9
-old class items updated once: 2 Paladin 6, Archer 5, Paladin kept 7, Fighter kept 4
 --- the Bestiary by Stage (v0.0.181, E3: the book's tables, levels 1-4, 5-7, 8-10)
 standard  level 1: low x5.75 3.5/6 | medium x7.75 4/7.5 | high x9.75 5.5/9 | extreme x11.5 6.5/11
 standard  level 4: low x5.75 3.5/6 | medium x7.75 4/7.5 | high x9.75 5.5/9 | extreme x11.5 6.5/11

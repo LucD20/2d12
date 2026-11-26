@@ -70,9 +70,3 @@ for (const n of ["Aveline", "Sylwen", "Kaela"]) {
   console.log(n, "carries:", (p?.items ?? []).filter(i => i.type === "weapon").map(i => i.name).join(", "));
 }
 
-// the weapons migration: the old weapons on characters become the book's (asked once; their Mastery moves with them)
-globalThis.foundry.applications.api.DialogV2 ??= {};
-const MG = await import(ROOTURL + "module/migrater.mjs");
-console.log("old weapons:", [["Shortbow"], ["Longbow"], ["Greatsword"], ["Longsword", []], ["Longsword", ["twohanded", "melee"]], ["Dagger"]].map(([n, t]) => `${n}${t?.includes("twohanded") ? " (2H)" : ""} -> ${MG.oldWeaponSwap(n, t) || "stays"}`).join(" | "));
-const mg = src("module/migrater.mjs"), gr = src("module/grants.mjs"), tw = src("module/twod12.mjs");
-console.log("asked in the pick window, after the Archer's:", mg.includes('confirm: "Replace"') && mg.includes("get(F, \"migratedF3\") !== DONE_F3) return; } catch (e) { return; }\n    await migrateWeapons()"), "| the new weapon in the old one's place, its Technique, the old one's gone:", gr.includes("export async function replaceWeapon") && gr.includes('await grantActions(actor, fresh.system.actions'), "| registered:", tw.includes("registerMigrationWeapons();") && tw.includes("migrateWeapons: ()"));

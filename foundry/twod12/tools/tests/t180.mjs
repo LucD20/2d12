@@ -18,7 +18,7 @@ for (const n of ["Paladin", "Archer"]) { const c = cls(n); console.log(`${n}: hi
 for (const n of ["Human", "Dwarf", "Elf"]) { const s = sp(n); console.log(`${n}: Vigor +${s.bodyMod}, Resolve +${s.mindMod}${s.pickHealth ? " (the player chooses the side)" : ""}`); }
 console.log("--- the book's examples");
 console.log("a Human Paladin, high on Vigor:", show(line(cls("Paladin"), sp("Human"))), "| at Stage 1:", show(line(cls("Paladin"), sp("Human"), { stage: 1 })), "| Stage 2:", show(line(cls("Paladin"), sp("Human"), { stage: 2 })), "| Stage 3:", show(line(cls("Paladin"), sp("Human"), { stage: 3 })));
-console.log("Steven, an Elf Archer high on Resolve:", show(line(cls("Archer"), sp("Elf"), { high: "resolve" })), "(9 / 20 before the floor)");
+console.log("Steven, an Elf Archer high on Resolve:", show(line(cls("Archer"), sp("Elf"), { high: "resolve" })), "(13 / 28 before the floor)");
 console.log("a Dwarf Archer high on Resolve:", show(line(cls("Archer"), sp("Dwarf"), { high: "resolve" })), "| high on Vigor:", show(line(cls("Archer"), sp("Dwarf"))));
 console.log("the Human's +3: with the high value:", show(line(cls("Archer"), sp("Human"), { high: "resolve" })), "| on Vigor by choice:", show(line(cls("Archer"), sp("Human"), { high: "resolve", side: "vigor" })));
 console.log("no class yet:", show(healthLine({ bonus: { v: 3, r: 2, pick: true } })), "| nothing:", show(healthLine({})));

@@ -215,7 +215,7 @@ Inside a Tier's line, the damage is written first and applied first; what follow
 
 ### Buffs
 
-A **Buff** is an effect that modifies another Action, such as the 2 Boons that Feint's Tier 2 gives your next [Strike] Action against its target. A Buff that harms the Action it modifies is a Debuff.
+A **Buff** is an effect that modifies another Action, such as the 2 Boons that Feint's Tier 3 gives your next [Strike] Action against its target. A Buff that harms the Action it modifies is a Debuff.
 
 - On an Action with several targets, a Buff or a Debuff is rolled once per Tier, not per creature (see [[Several Targets]]).
 
@@ -235,7 +235,7 @@ Five things do add up:
 
 For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus to Armor Defense: his Armor Defense rises by 2. A second +1 Support bonus changes nothing, and an unnamed +1 bonus doesn't add to them either: he keeps +2.
 
-**A card can say otherwise.** [[Judge]] does: multiple Paladins can Judge the same creature. For example, Chris and Krysta are Paladins and both Judge the same Orc. It is Judged by Chris and Judged by Krysta: it counts as Profane for each of them, and each of them can reduce its damage once each round.
+**A card can say otherwise.** [[Judge]] does: multiple Paladins can Judge the same creature. For example, Chris and Krysta are Paladins and both Judge the same Orc. It is Judged by Chris and Judged by Krysta: it counts as Profane for each of them.
 
 **Equipment is not a bonus.** Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.
 

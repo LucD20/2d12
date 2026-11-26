@@ -21,7 +21,7 @@ const all = [...(C.docs ?? []), ...[...(C.actors ?? []), ...(C.pcs ?? [])].flatM
 const judges = all.filter(d => d?.name === "Judge" && d.type === "action");
 console.log("copies of Judge in the compendium (the Action and the PCs'):", judges.length > 1,
   "| every one has the line:", judges.length > 0 && judges.every(d => JSON.stringify(d.system).includes(LINE)));
-console.log("Foundry keeps each Paladin's own Judged (unchanged):", src("module/judge.mjs").includes("isJudgedBy(j, src)"));
+console.log("Foundry keeps each Paladin's own Judged (unchanged):", src("module/judge.mjs").includes("export const isJudgedBy = (judge, target)"));
 
 console.log("--- (2) the area's hover card kept");
 console.log("zonetip.mjs registered:", src("module/twod12.mjs").includes('import { registerZoneTip } from "./zonetip.mjs"') && fs.existsSync(ROOT + "module/zonetip.mjs"));

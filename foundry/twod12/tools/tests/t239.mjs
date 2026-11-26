@@ -25,7 +25,7 @@ const plan = Z.zonePlan([{ id: "r1", zone }], [{ id: "ally", disposition: 1, cel
 console.log("who carries what:", [...plan].map(([t, m]) => `${t}: ${[...m.values()].map(v => v.rule.fxUuid).join(",")}`).join(" | "));
 const ZT = await import(ROOTURL + "module/zonetip.mjs");
 console.log("the tooltip:", ZT.zoneTipLines({ name: "Covering Fire", rows: lifted.zone.inside }, u => ({ "E.bane": { name: "Covering Fire (1 Bane)" }, "E.def": { name: "Covering Fire (+1 Defense)" } })[u]).join(" / "));
-console.log("the sheet's second row (Zones only):", src("module/fxsheet.mjs").includes('...(/zone/.test(p) ? [part(`${p}.carry2`, x.carry2.on, "Carries a second Effect"'), "| world copies fixed once:", src("module/twod12.mjs").includes('game.settings.get("twod12", "worldPassV351")') && src("module/fixrules.mjs").includes('await it.update({ "system.zone.inside.carry2": c2 });'));
+console.log("the sheet's second row (Zones only):", src("module/fxsheet.mjs").includes('...(/zone/.test(p) ? [part(`${p}.carry2`, x.carry2.on, "Carries a second Effect"'));
 
 // Granted uses: retarget, Cancel
 const FR = await import(ROOTURL + "module/freeuse.mjs");

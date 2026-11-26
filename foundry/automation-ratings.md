@@ -34,7 +34,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Haul | Gold | |
 | Aid | Silver | Quickened 1 on the target (its next turn's AP); the Check against Daunted: by hand. |
 | Demoralize | Gold |  |
-| Feint | Gold |  |
+| Feint | Gold | (v0.0.527: 1 Boon on a Tier 2, 2 Boons on a Tier 3, as an Effect on your next [Strike] against the target this turn) |
 | Tend (was Heal, v0.0.520) | Silver | the Check against DC 13 and the Rally Point button on the card; standing from Prone on Tier 3 by hand. |
 | Tumble | Silver | the movement (the Advance or the Evade) passes enemies' spaces and the diagonal between two of them (never ending in one); the card posts first: its Appeal and Instinct Checks roll against the targeted creatures' DC (v0.0.510). |
 | Hide | Silver | v0.0.513: the roll against each targeted creature's Instinct DC; Tier 2 or 3: Unsensed (it can't see you) or Hidden (your High Cover) to it, per creature; Tier 3's Bane on its Seek and Point Out: by hand. |
@@ -56,7 +56,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 
 | Card | Rating | What is by hand |
 |---|---|---|
-| Judge | Silver | the 0 AP use only at the start of an encounter (v0.0.525: the 0R when the Judged creature goes Down is its message's button, used as a Reaction: Staggered warns) |
+| Judge | Silver | the 0 AP use only at the start of an encounter (v0.0.525: the 0R when the Judged creature goes Down is its message's button, used as a Reaction: Staggered warns; v0.0.527: no damage reduction left to automate, Lucas 2026-11-26) |
 | Smite | Gold | |
 | Binding Light | Gold | |
 | Lay On Hands | Silver | the Setup's Advance in a straight line toward the target |
@@ -160,6 +160,6 @@ for the book).
 | Great Sweep | Gold | |
 | Hurled Goblin | Silver | its Requirement (a willing Minion ally within its Reach) and the landing (the GM moves the Minion to an empty square adjacent to the target) |
 | Crack the Ground | Gold | (the Line 3 and its Zone, Difficult Terrain for every creature until the encounter ends) |
-| Backhand | Gold | (offered by itself: the moment enemyEnters, no Move back; the 1 damage and the Push 2 are buttons) |
+| Backhand | Gold | (offered by itself: the moment enemyEnters, no Move back; the 2 damage (1 before v0.0.527) and the Push 2 are buttons) |
 
 **The four creatures (24 cards): 20 Gold, 4 Silver, 0 Bronze.**

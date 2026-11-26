@@ -25,8 +25,6 @@ import { chatChips } from "./chatchips.mjs";
 import { registerEscalationHooks, registerMomentumSetting, escalationAll } from "./escalation.mjs";
 import { registerExplodingDice } from "./explode.mjs";   // v0.0.407 (Stage 0 in Foundry): the book's exploding dice
 import { registerStateHooks } from "./states.mjs";
-import { registerMigrationR, registerMigrationMod, registerMigrationS0, registerMigrationF2, registerMigrationF3, registerMigrationMastery, registerMigrationWeapons, registerMigrationB5 } from "./migrater.mjs";
-import { registerMigrationFx } from "./fxmigrate.mjs";   // v0.0.323
 import { registerInitiativeSettings, registerInitiativeSocket } from "./initwindow.mjs";
 import { registerArmorHooks } from "./armor.mjs";
 import { registerFloatText } from "./floattext.mjs";
@@ -103,8 +101,7 @@ Hooks.once("init", () => {
   registerMomentumSetting();   // v0.0.243 (pack R)
   registerStateHooks();   // v0.0.243: Bloodied / Strained announced, the Escalation hooks
   registerInitiativeSettings();   // v0.0.310: Initiative opens for the players; NPCs in the players' window
-  registerMigrationMod(); registerMigrationFx(); registerMigrationS0(); registerMigrationF2(); registerMigrationF3(); registerMigrationMastery(); registerMigrationWeapons(); registerMigrationB5(); import("./hooks.mjs").then(m => m.registerStrikeState()).catch(e => console.warn("twod12 | strike state", e));   // v0.0.411: Shifting Aim   // v0.0.407: Stage 0 (after pack R); v0.0.409: the Paladin (after Stage 0)   // v0.0.305 (pack MOD): each character keeps the order of its Modifiers, once (before the R migration may refresh the classes)
-  registerMigrationR();   // v0.0.243: existing characters brought to pack R, once, by the GM
+  import("./hooks.mjs").then(m => m.registerStrikeState()).catch(e => console.warn("twod12 | strike state", e));   // v0.0.411: Shifting Aim
   registerAuraHooks();
   registerHazardHooks();
   registerDownHooks();
@@ -178,18 +175,8 @@ Hooks.once("init", () => {
     lightInfo, hearInfo,
     sliderInfo,
     refreshBasics: refreshAllBasics,
-    fixRulesV346: () => import("./fixrules.mjs").then(m => m.fixRulesV346()),
-    fixZonesV351: () => import("./fixrules.mjs").then(m => m.fixZonesV351()),   // v0.0.351   // v0.0.346: old copies of Frightened / Marked Quarry
     refreshFromCompendium: (opts = {}) => (Object.keys(opts).length ? refreshFromCompendium(opts) : askRefresh()),   // v0.0.190: a macro can call it
     escalation: (delta = 1, actors = null) => escalationAll(delta, actors),
-    migrateMod: () => import("./migrater.mjs").then(m => m.migrateMod()),
-    migrateEffects: (o = {}) => import("./fxmigrate.mjs").then(m => m.migrateEffects(o)),   // v0.0.323 (PACK EFFECT-SHEET): store the effects' rules (write: false only reports)   // v0.0.305: the pack MOD migration again
-    migrateS0: () => import("./migrater.mjs").then(m => m.migrateS0()),   // v0.0.407: the Stage 0 migration again
-    migrateF2: () => import("./migrater.mjs").then(m => m.migrateF2()),   // v0.0.409: the Paladin migration again
-    migrateF3: () => import("./migrater.mjs").then(m => m.migrateF3()),
-    migrateB5: () => import("./migrater.mjs").then(m => m.migrateB5()),   // v0.0.507: the Arts and the Escalation Passives removed
-    migrateWeapons: () => import("./migrater.mjs").then(m => m.migrateWeapons()),   // v0.0.412: the old bows and swords to the book's   // v0.0.411: the Archer migration again
-    migrateR: () => import("./migrater.mjs").then(m => m.migrateR()),   // v0.0.243: the pack R migration again (Health line, Escalation 1, the cards refreshed)   // v0.0.243: the GM's valve: every PC in the combat +1 Escalation (or the given creatures)
     shadowedEffects,
     rulerInfo,
     undoMove: () => undoLastMove(),
@@ -285,19 +272,8 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "defaultSceneMade", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.164: a new world gets one plain scene, once
   game.settings.register("twod12", "quickInsertOffered", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.164: Quick Insert switched on once per world
   game.settings.register("twod12", "diagonalsApplied", { scope: "world", config: false, type: Boolean, default: false });
-  game.settings.register("twod12", "weaponRoundApplied", { scope: "world", config: false, type: Boolean, default: false });
-  game.settings.register("twod12", "projectileApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "unlockPacks", { name: "Unlock the system compendiums", hint: "Keep the 2d12 compendiums unlocked, so their items can be opened and edited without unlocking them first (only the GM and Assistants can edit; a system update rebuilds them, so edits there are lost).", scope: "world", config: true, type: Boolean, default: true, onChange: () => import("./basic.mjs").then(m => m.unlockSystemPacks()) });   // v0.0.191
-  game.settings.register("twod12", "worldPassV351", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.351: Zones' second carried Effect
-  game.settings.register("twod12", "worldPassV346", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.346: bars, Frightened, Marked Quarry
-  game.settings.register("twod12", "worldPassDaunted", { scope: "world", config: false, type: Boolean, default: false });   // the core rework E1
-  game.settings.register("twod12", "hearingAllV319", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.318/319: Hearing on every creature's token, once
   game.settings.register("twod12", "tokenDefaultsV215", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.215: core token rotation off, once
-  game.settings.register("twod12", "settingsV207", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.207: the editability sweep's settings and fields (automation.mjs)
-  game.settings.register("twod12", "settingsV187", { scope: "world", config: false, type: Boolean, default: false });   // Killer's Focus and Radiant Zeal: an Effect each turn
-  game.settings.register("twod12", "settingsV186", { scope: "world", config: false, type: Boolean, default: false });   // the cards automated by name get their settings (automation.mjs)
-  game.settings.register("twod12", "rallyV176", { scope: "world", config: false, type: Boolean, default: false });   // the Paladin's and Archer's Rally values updated once
-  game.settings.register("twod12", "releaseV118", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.361 (PACK PERF, D37): Release at 0 AP, once per world
 
   // Initiative is an Attribute Check rolled by TwoD12Combat#rollInitiative; this formula is only a fallback.
   CONFIG.Combat.initiative = { formula: "1d12 + @attributes.instinct", decimals: 0 };
@@ -330,7 +306,7 @@ Hooks.once("init", () => {
     ["blinded", CI("blinded")],
     ["half-blinded", CI("half-blinded")],
     ["called-out", "icons/svg/eye.svg"],   // v0.0.411 (pack F3, Spotter): its enemies perceive it one step better; no custom icon needed
-    ["daunted", CI("daunted")],   // the core rework E1 (Lucas, 2026-11-21): Frightened is Daunted (fixrules.mjs migrates the world)
+    ["daunted", CI("daunted")],   // the core rework E1 (Lucas, 2026-11-21): Frightened is Daunted (v0.0.527: the one-time pass that renamed a world's applied Frightened is gone)
     ["dazed", CI("dazed")],
     ["pressed", CI("pressed")],   // v0.0.412 (Thwart Cut)
     ["grabbed", CI("grabbed")],
@@ -513,26 +489,6 @@ Hooks.once("ready", async () => {
   registerInlineSocket();
   try { (await import("./ccdamage.mjs")).registerCcSocket(); } catch (e) { console.warn("twod12 | chat cards socket", e); }
   // Default diagonal rule: alternating 1/2/1 (applied once, GM only).
-  // v0.0.146: the Weapon trait no longer means Round. Actions that had no Frequency and the Weapon trait (they were Round) are set to Round, once.
-  // v0.0.156: Shot Actions need a Projectile weapon. Once, every ranged weapon that isn't Thrown gets the property (the old rule: "ranged, not thrown").
-  if (game.user.isGM && !game.settings.get("twod12", "projectileApplied")) {
-    try {
-      const fix = items => items.filter(i => i.type === "weapon" && i.system.traits?.has?.("ranged") && !i.system.traits.has("thrown") && !i.system.traits.has("projectile")).map(i => ({ _id: i.id, "system.traits": [...i.system.traits, "projectile"] }));
-      const world = fix([...game.items]);
-      if (world.length) await Item.updateDocuments(world);
-      for (const a of game.actors) { const u = fix([...a.items]); if (u.length) await a.updateEmbeddedDocuments("Item", u); }
-      await game.settings.set("twod12", "projectileApplied", true);
-    } catch (e) { console.warn("twod12 | could not give ranged weapons the Projectile property", e); }
-  }
-  if (game.user.isGM && !game.settings.get("twod12", "weaponRoundApplied")) {
-    try {
-      const fix = items => items.filter(i => i.type === "action" && !i.system.frequency && i.system.traits?.has?.("weapon")).map(i => ({ _id: i.id, "system.frequency": "round" }));
-      const world = fix([...game.items]);
-      if (world.length) await Item.updateDocuments(world);
-      for (const a of game.actors) { const u = fix([...a.items]); if (u.length) await a.updateEmbeddedDocuments("Item", u); }
-      await game.settings.set("twod12", "weaponRoundApplied", true);
-    } catch (e) { console.warn("twod12 | could not set the Round Frequency of Weapon Actions", e); }
-  }
   if (game.user.isGM && !game.settings.get("twod12", "diagonalsApplied")) {
     try {
       if (game.settings.settings.has("core.gridDiagonals")) await game.settings.set("core", "gridDiagonals", CONST.GRID_DIAGONALS.ALTERNATING_1);
@@ -648,48 +604,9 @@ Hooks.on("preCreateToken", doc => {
     if (w.changed) doc.updateSource({ detectionModes: w.value });
   } catch (e) { console.warn("twod12 | Hearing on a new token", e); }
 });
-// v0.0.318 (Lucas: a Blinded NPC showed no ripples: its token had no Hearing): every creature and token gets it once per world
-Hooks.once("ready", async () => {
-  try {
-    if (!game.user.isActiveGM || game.settings.get("twod12", "hearingAllV319")) return;
-    await addHearing({ quiet: true });
-    await game.settings.set("twod12", "hearingAllV319", true);
-  } catch (e) { console.warn("twod12 | Hearing for every creature", e); }
-});
 
-// v0.0.346 (Lucas): once per world, every creature's prototype token and every placed token shows its bars always (the compendium's actors had
-// Foundry's default); and the world's copies of Frightened and Marked Quarry take the book's v0.0.345 rules (data.mjs-free: see fixRulesV346)
-Hooks.once("ready", async () => {
-  try {
-    if (!game.user.isActiveGM || game.settings.get("twod12", "worldPassV346")) return;
-    const ALWAYS = globalThis.CONST?.TOKEN_DISPLAY_MODES?.ALWAYS ?? 50;
-    for (const a of game.actors ?? []) if (["character", "npc"].includes(a.type) && a.prototypeToken?.displayBars !== ALWAYS) await a.update({ "prototypeToken.displayBars": ALWAYS });
-    for (const sc of game.scenes ?? []) {
-      const ups = sc.tokens.filter(t => t.displayBars !== ALWAYS).map(t => ({ _id: t.id, displayBars: ALWAYS }));
-      if (ups.length) await sc.updateEmbeddedDocuments("Token", ups);
-    }
-    await (await import("./fixrules.mjs")).fixRulesV346();
-    await game.settings.set("twod12", "worldPassV346", true);
-  } catch (e) { console.warn("twod12 | v0.0.346 world pass", e); }
-});
 
-// the core rework E1 (Lucas, 2026-11-21): once per world, every applied Frightened becomes Daunted (fixrules.mjs migrateDaunted)
-Hooks.once("ready", async () => {
-  try {
-    if (!game.user.isActiveGM || game.settings.get("twod12", "worldPassDaunted")) return;
-    await (await import("./fixrules.mjs")).migrateDaunted();
-    await game.settings.set("twod12", "worldPassDaunted", true);
-  } catch (e) { console.warn("twod12 | the Daunted world pass", e); }
-});
 
-// v0.0.351: once per world, Zone Effects (Covering Fire) get their second carried Effect from the compendium (fixrules.mjs fixZonesV351)
-Hooks.once("ready", async () => {
-  try {
-    if (!game.user.isActiveGM || game.settings.get("twod12", "worldPassV351")) return;
-    await (await import("./fixrules.mjs")).fixZonesV351();
-    await game.settings.set("twod12", "worldPassV351", true);
-  } catch (e) { console.warn("twod12 | v0.0.351 world pass", e); }
-});
 
 // v0.0.215 (Lucas, playtest 2): Foundry's own token auto-rotation is turned off once per world (the GM can turn it back on in Core settings).
 Hooks.once("ready", async () => {

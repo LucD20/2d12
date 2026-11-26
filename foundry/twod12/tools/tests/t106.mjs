@@ -2,7 +2,7 @@
 // v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
-// v0.0.118 (Rounds 11 and 12): Defenses (Armor and Ward = 11 + value, Vs. = 13 + half), Armor Training, the highest-bonus rule, Defense effects, the Release fix.
+// v0.0.118 (Rounds 11 and 12): Defenses (Armor and Ward = 11 + value, Vs. = 13 + half), Armor Training, the highest-bonus rule, Defense effects (v0.0.527: the one-time Release fix is gone, F-033).
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p, escapeHTML: s => s } };
 globalThis.Combat = class {}; globalThis.CONFIG = { statusEffects: [], time: {} }; globalThis.Hooks = { on() {}, once() {} };
 globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } };
@@ -41,10 +41,5 @@ const F = await import(ROOTURL + "module/fxdetails.mjs");
 console.log(sys.settings.slice(0, 2).map(x => F.settingSentence(x).replace(/<[^>]+>/g, "")).join(" | "), "| In short:", F.effectSummary(sys));
 const { sourceFromFlags } = await import(ROOTURL + "module/fxsync.mjs");
 console.log("rebuilt from an applied effect:", JSON.stringify(sourceFromFlags({ flags: { twod12: { defenses: [{ kind: "armor", bonus: 1 }] } }, statuses: S([]), getFlag: () => undefined }).settings.map(x => [x.type, x.defKind, x.defValue])));
-console.log("--- the Release fix");
-globalThis.game = { settings: { get: () => true }, user: { isActiveGM: true } };
-const B = await import(ROOTURL + "module/basic.mjs");
-const upd = []; const rel = ap => ({ type: "action", system: { versions: [{ ap, effects: "x" }] }, getFlag: (s, k) => (k === "basic" ? "release" : undefined), update: async u => upd.push(u["system.versions"].map(v => v.ap)) });
-console.log("fixed:", await B.fixReleaseCost([{ name: "Kai", items: [rel(1)] }, { name: "Nari", items: [rel(0)] }]), JSON.stringify(upd));
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("--- data and sheets:", src("module/data.mjs").includes('"unarmored"), ward: int(0, 0)'), src("module/data.mjs").includes('armorTraining: choice(TWOD12.armorTrainings, "light")'), src("templates/actor-sheet-pc.hbs").includes('name="system.armor"'), src("templates/item-sheet.hbs").includes('name="system.armorTraining"') || src("module/item-sheet.mjs").includes('armorField: "system.armorTraining"'), "| compendium Paladin", JSON.parse(src("packs/_source/classes/paladin.class.json")).system.armorTraining, "Archer", JSON.parse(src("packs/_source/classes/archer.class.json")).system.armorTraining);

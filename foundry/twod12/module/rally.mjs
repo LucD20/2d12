@@ -18,14 +18,12 @@ const shortName = a => String(a?.name ?? "").replace(/\s*\(.*$/, "").trim() || a
  */
 export async function useRally(actor, n, why = "", { extra = "", source = null, top = 0 } = {}) {
   const s = actor?.system;
-  // v0.0.340 (Lucas; book, Rally Points: NPCs): an NPC has no Rally Points; one an Action lets it use heals its Stage's amount and spends nothing
-  const npc = actor?.type === "npc";
-  if (!npc && !s?.rallyMax) { warn(`${actor?.name ?? "This creature"} has no Rally Points.`); return false; }
+  // v0.0.527 (Lucas, 2026-11-26; book, Rally Points: "NPCs have no Rally Points"): an NPC can't use one (v0.0.340 to v0.0.526 let an Action heal it
+  // a quarter of its Health Pool, spending nothing, and a Minion 1 tick)
+  if (actor?.type === "npc" || !s?.rallyMax) { warn(`${actor?.name ?? "This creature"} has no Rally Points.`); return false; }
   if (!actor.isOwner) { warn(`Only the owner of ${actor.name} can use its Rally Points.`); return false; }
-  if (!npc && s.rallyLeft < n) { warn(`${actor.name} has ${s.rallyLeft} Rally Point${s.rallyLeft === 1 ? "" : "s"} left and ${n} are needed.`); return false; }
+  if (s.rallyLeft < n) { warn(`${actor.name} has ${s.rallyLeft} Rally Point${s.rallyLeft === 1 ? "" : "s"} left and ${n} are needed.`); return false; }
   // v0.0.186: the "Rally Points" settings of the creature and of allies within their range (Font of Mercy: Power Modifier + 2, within 5); the highest counts.
-  // the Bestiary's rebuild (2026-11-25; book, Bestiary, Ticks): a Minion's heal restores 1 tick, whatever its size (no window, no split)
-  if (s?.isMinion) { const { applyHealing, minionHealPlan } = await import("./healwin.mjs"); await applyHealing(actor, minionHealPlan(s.damage), { why: why || "Rally" }); return true; }
   const fm = await rallyBonusFor(actor);
   // v0.0.250 (Lucas, Lay On Hands): an extra heal ("1d6+pow": the card's creature's Power Modifier) is rolled now and shown in the window and the line
   let extraRoll = null, extraName = "";
@@ -34,16 +32,16 @@ export async function useRally(actor, n, why = "", { extra = "", source = null, 
     try { extraRoll = await new Roll(f).evaluate(); extraName = why && !/^rally$/i.test(why) ? why : String(extra).replace(/\bpow\b/gi, "Pow"); } catch (e) { ui.notifications.warn(`Invalid formula: ${extra}`); }
   }
   const partsFor = k => [[s.rallyHeal * k, ""], ...(fm?.bonus ? [[fm.bonus * k, fm.name]] : []), ...(extraRoll ? [[extraRoll.total, extraName]] : [])];
-  const leftNow = npc ? Math.max(n, top || n) : s.rallyLeft;
+  const leftNow = s.rallyLeft;
   const res = await healWindowFull({ title: `Rally: ${shortName(actor)}`, name: shortName(actor), damage: s.damage, thresholds: thresholdsOf(actor), partsFor,
-    rally: npc ? null : { max: s.rallyMax, left: leftNow, top: Math.min(top || n, leftNow) }, n });
+    rally: { max: s.rallyMax, left: leftNow, top: Math.min(top || n, leftNow) }, n });
   if (!res) return false;
   const used = res.n, plan = res.plan;
-  const upd = npc ? {} : { "system.rallyUsed": s.rallyUsed + used };
+  const upd = { "system.rallyUsed": s.rallyUsed + used };
   for (const [k, v] of Object.entries(plan)) upd[`system.damage.${k}`] = s.damage[k] - v;
   await actor.update(upd);
   const leftN = s.rallyMax - s.rallyUsed - used;
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-heart-pulse", healLinesHtml(shortName(actor), plan, partsFor(used), { rally: { n: used, left: leftN }, npc }), "healmsg rallymsg"), rolls: extraRoll ? [extraRoll] : [] });
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-heart-pulse", healLinesHtml(shortName(actor), plan, partsFor(used), { rally: { n: used, left: leftN } }), "healmsg rallymsg"), rolls: extraRoll ? [extraRoll] : [] });
   return true;
 }
 
@@ -125,7 +123,7 @@ export async function handleRally(cfg, ctx = {}) {
 
   const max = Math.max(1, Number(cfg.n) || 1);
   // v0.0.454 (D1): "up to N": the count is the Rally window's first line (it was a window of its own); it starts at the most that can be used
-  const left = actor.type === "npc" ? max : Number(actor.system?.rallyLeft) || 0, n = cfg.upto ? Math.min(max, left) : max;
+  const left = Number(actor.system?.rallyLeft) || 0, n = cfg.upto ? Math.min(max, left) : max;
   if (!n) return warn(`${actor.name} has no Rally Point left.`);
   return promptRally(actor, n, srcItem?.name || "Rally", { extra: cfg.extra ?? "", source, top: cfg.upto ? n : 0 });
 }

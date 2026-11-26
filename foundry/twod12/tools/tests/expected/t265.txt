@@ -3,7 +3,7 @@ a Tier's conditions, not one written after a movement: [] | Snap Shot's: ["@Cond
 Reckoning: a chain chip that is also in a Tier waits for the Tier: true
 a no-damage Tier's conditions apply on use (Trip, Thwart Cut, Trick Shots): true
 Immobilized from a Tier: the user's Modifier (its DC): true | formula options worked out (through handleInline): true
-Judge: dismissed or unanswered is "Not now": true | Apply Effect checks the owner: true
+Judge asks nothing (v0.0.527: no reduction, so no question): true | Apply Effect checks the owner: true
 --- movement
 Steadiness: two neutral creatures aren't allies: false | asked on the moved creature's player's screen: true
 off its turn only a Reaction's squares of this turn: 2:3 true | the Setup's name never left set: true

@@ -1,11 +1,10 @@
 // The Paladin's Judge (pack F2, v0.0.409; book, the Paladin: Judge). Judge marks a creature (mark.mjs, the mark's kind "judge"): it is Judged by
 // the Paladin until the encounter ends or it goes Down. A creature Judged by you counts as Profane for you (Smite's d8s, Word of Radiance's
-// d8s, every "Profane" rule of yours); the first time each round it damages an ally within 5 squares of you, that damage is reduced by your
-// Power Modifier (damage.mjs applyToActor). Weight of Judgment (Escalation 4) takes 2 from its Speed (data.mjs, to a minimum of 1).
+// d8s, every "Profane" rule of yours). Weight of Judgment (Escalation 4) takes 2 from its Speed (data.mjs, to a minimum of 1). v0.0.527 (Lucas,
+// 2026-11-26): Judge no longer reduces the Judged creature's damage (the reduction and its question are gone; the Encounter Log reads old lines).
 import { markOf, isMarked } from "./automation.mjs";
 import { tagChoices } from "./config.mjs";
 import { turnCycleBlocked } from "./usage.mjs";
-const F = "twod12";
 const norm = s => String(s ?? "").trim().toLowerCase();
 const actorOf = d => (d?.documentName === "Actor" ? d : d?.actor ?? null);
 
@@ -49,47 +48,4 @@ export function usedThisCycle(combat, actor, seen) {
   if (t === undefined) return Number(r) === combat.round;   // a key written before v0.0.431 (the round only)
   const own = (combat.turns ?? []).findIndex(x => (x.actor && actor && (x.actor === actor || x.actor.uuid === actor.uuid)) || (actor?.isToken && x.tokenId === actor.token?.id));
   return turnCycleBlocked(combat.round, combat.turn, own, [Number(r), Number(t)]);
-}
-/** v0.0.419: asks the judge's player (the pick bar, on their client) whether to reduce this damage. The tests (no DOM): yes. */
-async function askJudge(judge, src, target, by) {
-  try {
-    const { askOwner } = await import("./ccdamage.mjs");
-    const name = s => String(s?.name ?? "").replace(/[<>&"]/g, "");
-    const pick = await askOwner(judge, `<b>Judge</b> (${name(judge)}): ${name(src)}, Judged by you, damages ${name(target)}. Reduce that damage by ${by} (once each round)?`,
-      [{ id: "no", label: "Not now" }, { id: "yes", label: `Reduce by ${by}` }]);   // v0.0.421 (the audit): dismissed or no answer: not reduced (the use is kept)
-    return pick === "yes";
-  } catch (e) { return true; }
-}
-/**
- * Before damage lands on `actor` (damage.mjs): the Paladins near it whose Judged creature is dealing it. The first time each round the Judged
- * creature damages an ally within 5 squares of its judge, the judge can reduce that damage by its Power Modifier (v0.0.419: asked). Returns [{ judge, by }].
- */
-export async function judgeReductions(actor, from) {
-  if (!from?.uuid || !globalThis.canvas?.tokens) return [];
-  let src = null;
-  try { src = actorOf(await fromUuid(from.uuid)); } catch (e) { src = null; }
-  if (!src) return [];
-  const me = actor.getActiveTokens?.()[0] ?? null;
-  if (!me) return [];
-  const { tokenDistance } = await import("./light.mjs");
-  const key = roundKey(game.combat), out = [];
-  for (const t of canvas.tokens.placeables) {
-    const j = t.actor;
-    if (!j || j.uuid === actor.uuid || !isJudgedBy(j, src)) continue;
-    if (Number(t.document.disposition) !== Number(me.document.disposition)) continue;   // the judge's ally
-    if (tokenDistance(t, me) > 5) continue;
-    // v0.0.463 (Lucas: "Judge damage reduction doesnt respect line of effect"; the book: Line of Effect for every effect): no line from the judge to
-    // the ally, no reduction (and no question)
-    try { const { coverBetween } = await import("./cover.mjs"); if (coverBetween(t, me)?.noLoE) continue; } catch (e) { /* no walls to read: as before */ }
-    const seen = j.getFlag?.(F, "judgeRound") ?? "";
-    if (key && usedThisCycle(game.combat, j, seen)) continue;   // the first time each round (per the judge's turn-cycle: v0.0.431)
-    const by = Math.max(0, Number(j.system?.powerMod) || 0);
-    if (!by) continue;
-    // v0.0.419 (Lucas, playtest 5: "allow the Paladins to decide if the attack is reduced or not"): the judge's player chooses; declined, the
-    // once-a-round is kept for a later damage this round
-    if (!(await askJudge(j, src, actor, by))) continue;
-    if (key) { try { if (j.isOwner) await j.setFlag(F, "judgeRound", key); else game.socket?.emit("system.twod12", { type: "setFlag", actorUuid: j.uuid, key: "judgeRound", value: key }); } catch (e) { /* not kept */ } }
-    out.push({ judge: j, by });
-  }
-  return out;
 }

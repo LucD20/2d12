@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t257.mjs)
 // v0.0.411 (pack F3 part 1, the Archer in Foundry): the redesigned Archer's cards and class from book/cards/stage0/archer.json, the turn's Strike
 // state (Shifting Aim, Blade and Bow, One More Arrow), Fleet, Clear Lines, Opening Shot, Thrill of the Kill, the moment "would enter a square
-// adjacent to you" (Slip Away, Snap Shot), Spotter's Call Out, the traits Projectile and Firearm, the migration's list.
+// adjacent to you" (Slip Away, Snap Shot), Spotter's Call Out, the traits Projectile and Firearm (the migration's list: gone in v0.0.527, F-033).
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(new URL("../../", import.meta.url));
@@ -34,14 +34,12 @@ console.log("moved, a ranged Strike:", JSON.stringify(H.strikeChips(moved, alt, 
 console.log("a melee Strike after a ranged one:", JSON.stringify(H.strikeChips([], alt, T("melee", "strike"), { last: "ranged", altUsed: false })), "| spent:", H.strikeChips([], alt, T("melee", "strike"), { last: "ranged", altUsed: true }).length, "| the same kind:", H.strikeChips([], alt, T("ranged", "strike"), { last: "ranged" }).length);
 console.log("strikeKind:", H.strikeKind(T("melee", "strike")), H.strikeKind(T("ranged", "strike")), JSON.stringify(H.strikeKind(T("ranged"))));
 
-console.log("--- Slip Away and Snap Shot (moment.mjs), Spotter (senses.mjs), the migration");
+console.log("--- Slip Away and Snap Shot (moment.mjs), Spotter (senses.mjs)");
 const M = await import(ROOTURL + "module/moment.mjs");
 const path = [{ x: 5 }, { x: 4 }, { x: 3 }, { x: 2 }, { x: 1 }], dist = (r, p) => p.x;
 console.log("the moment:", JSON.stringify(M.MOMENTS.enemyAdjacent), "| it comes back to the square before the first adjacent one:", JSON.stringify(M.backSquareIndices(path, [{ moment: "enemyAdjacent", range: 5 }], dist)));
 const SE = await import(ROOTURL + "module/senses.mjs");
 console.log("Called Out:", ["hidden", "obscured", "clear", "unsensed"].map(l => `${l}→${SE.calledOut([l, "x"])[0]}`).join(" "));
-const MG = await import(ROOTURL + "module/migrater.mjs");
-console.log("the Archer migration's list:", MG.archerLeftovers([{ name: "Mark Quarry", type: "action" }, { name: "Volley", type: "action" }, { name: "Killer's Focus", type: "feature" }, { name: "Overwatch", type: "action" }]).join(", "));
 
 console.log("--- the wiring");
 const ac = src("module/actions.mjs"), cv = src("module/cover.mjs"), mv = src("module/move.mjs"), mk = src("module/mark.mjs"), dm = src("module/damage.mjs"), ri = src("module/rollinput.mjs");
