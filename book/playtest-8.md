@@ -72,7 +72,7 @@ That is the target. So the design gives "end of round 2 to early round 3", and t
 
 | | The party dealt | The party took (to Health) | Enemies standing at its end |
 |---|---:|---:|---|
-| Round 1 | 61 (17 + 12 + 20 + 12) | 22 | ogre (37 of 72 left), orc (36 of 36) |
+| Round 1 | 61 (17 + 12 + 20 + 12) | 22 | ogre (35 of 72 left), orc (36 of 36) |
 | Round 2 | 86 (11 + 34 + 37 + 4) | 23 by the log, 25 with the Collisions | none |
 
 - **Round 1** removed three of the five enemies (110 of the 410 CV) for 22 damage spread over three PCs. The front line met the enemies
