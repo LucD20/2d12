@@ -1,11 +1,11 @@
 <!-- part: Part III: Reference -->
 # Chapter 8: Conditions
 
-These conditions are in alphabetical order. Unless a card says otherwise, a creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]]). **A condition with a source**, such as Daunted of a creature, Taunted by one or Grabbed by one, comes from one source at a time: if you gain it from a different source, the new one replaces the old one, with its own duration. **It ends when its source goes Down or is Unconscious** (an object that is a source: when it is destroyed). The effect that gives a condition says how long it lasts (EoT or a number of rounds: see [[Effect Timing]]); a condition written with no duration lasts until the encounter ends (EoE). **Ignoring a condition.** A creature that ignores a condition keeps it, but the condition does nothing to it; its duration still runs, and it works again when the creature stops ignoring it. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in [[Health States]].
+Some conditions are not on any card yet. Unless a card says otherwise, a creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]]). **A condition with a source**, such as Daunted of a creature, Taunted by one or Grabbed by one, comes from one source at a time: if you gain it from a different source, the new one replaces the old one, with its own duration. **It ends when its source goes Down or is Unconscious** (an object that is a source: when it is destroyed). The effect that gives a condition says how long it lasts (EoT or a number of rounds: see [[Rounds and Durations]]); a condition written with no duration lasts until the encounter ends (EoE), unless its entry says how it ends. **Ignoring a condition.** A creature that ignores a condition keeps it, but the condition does nothing to it; its duration still runs, and it works again when the creature stops ignoring it. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in [[Health States]].
 
 ### Blinded
 
-You can't see: for your Sight, everything is Darkness (see [[Senses]]). Creatures you only hear are Hidden to you, so your Actions against them are Doomed, and you can't target a creature you don't perceive. Any other Roll that needs sight is Doomed. Actions with the Area trait still affect the creatures in their area. Every square is [[Difficult Terrain]] for you, as Darkness is for a creature that can't see in it: you move by feel.
+Your Sight perceives nothing, and no Sight Sense helps: you perceive creatures only with your other senses (see [[Senses]]). Every square is [[Difficult Terrain]] for you. Any Roll that needs sight is Doomed.
 
 ### Daunted
 
@@ -18,7 +18,7 @@ Dazed always has a value, such as **Dazed 1**. When you become Dazed, you lose t
 
 ### Empowered
 
-The first time you deal damage on each of your turns, add **1d6!** to it (see [[Exploding Dice]]). The die deals the same kind of damage as the Action (its pool and its type). If the Action damages several creatures, you choose which one takes it. For a [[Save Actions|Save Action]], you choose it before the creatures roll their Saves; if that creature then takes no damage, the die is lost. Empowered has no value: you are Empowered or you aren't, and being Empowered twice changes nothing.
+The first time you deal damage on each of your turns, add **1d6!** to it (see [[Exploding Dice]]). The die deals one of the damages the Action deals, your choice before you roll it: its pool and its subtype. If the Action damages several creatures, you choose which one takes it. For a [[Save Actions|Save Action]], you choose it before the creatures roll their Saves; if that creature then takes no damage, the die is lost. Empowered has no value: you are Empowered or you aren't, and being Empowered twice changes nothing.
 
 > [!tbd]
 > The die grows at later Stages (with those Stages' numbers).
@@ -43,7 +43,7 @@ If your Resolve reaches 0, you must make a **Mind Save** (DC 13). Resolve cannot
 
 ### Grabbed
 
-A creature within its Reach holds you: you are [[Immobilized]], and only the holder can [[Forced Movement|Force Move]] or [[Reposition]] you (the holder's own Forced Movement or Reposition of you ignores your Immobilized). Grabbed ends when the holder lets go (no Action), when you are no longer within the holder's Reach, when the holder goes Down or is Unconscious, or when you end Immobilized with [[Break Free]] (1 AP [Move]: a Body or Instinct Check against the [[Action DC]] of the Action that grabbed you). The holder can't use the hand or limb that holds you for anything else.
+A creature within its Reach holds you: you are [[Immobilized]], and only the holder can [[Forced Movement|Force Move]] or [[Reposition]] you (the holder's own Forced Movement or Reposition of you ignores your Immobilized). Grabbed ends when the holder lets go (no Action), when you are no longer within the holder's Reach, or when you [[Break Free]]. The holder can't use the hand or limb that holds you for anything else.
 
 ### Half-Blinded
 
@@ -55,14 +55,14 @@ Your Speed is halved, rounded down. If you become Hindered while you are moving,
 
 ### Immobilized
 
-You can't use Move Actions or Evade. If you become Immobilized while you are moving, your movement ends. Unless otherwise specified, you can remove Immobilized with [[Break Free]] (1 AP [Move]: a Body or Instinct Check against the [[Action DC]] of the Action that Immobilized you): the one Move Action you can use while Immobilized.
+You can't use Move Actions or Evade. If you become Immobilized while you are moving, your movement ends. Unless otherwise specified, you can remove Immobilized with [[Break Free]], the one Move Action you can use while Immobilized.
 
-An Immobilized creature is also hard to move. An Action or effect that attempts to [[Forced Movement|Force Move]] or [[Reposition]] you and doesn't roll is automatically disrupted: you aren't moved.
+An Immobilized creature is also hard to move. A Forced Movement or a Reposition that comes with no roll doesn't move you; the rest of the Action or effect happens.
 
 > [!example]
 > Lana is Immobilized and her ally, Jared, has a feature that says "At the start of your turn, you can Reposition 3 an ally within Reach." If Jared attempts to use this on Lana, nothing happens and the effect is wasted.
 
-If the Action rolls, the movement also needs the roll to beat the [[Action DC]] of the Action that Immobilized you (11 + the Modifier that Action used; 13 with no Action behind it; the highest if there are several). A Save Action doesn't roll, but it always has a Modifier: the origin rolls 2d12 + that Modifier against that Action DC, once for all the Immobilized creatures it would move. If the result is below it, you aren't moved. The rest of the Action works as usual. Steadiness applies after this check.
+If the Action rolls, the movement also needs the roll to beat the [[Action DC]] of the Action that Immobilized you. A Save Action doesn't roll, but it always has a Modifier: the origin rolls 2d12 + that Modifier against that Action DC, once for all the Immobilized creatures it would move. If the result is below it, you aren't moved. The rest of the Action works as usual. Steadiness applies after this check.
 
 
 ### Imperiled
@@ -72,23 +72,25 @@ You barely avoided a [[Deadly Hazards|Deadly Hazard]]: you are hanging from a le
 - All your [[Rolls]] are Doomed.
 - You are Vulnerable 3.
 
-At the start of your turn you get back to safety, to a legal square next to the hazard, and stop being Imperiled. This takes no Action, but you are [[Slowed]] 1 that turn (or increase your Slowed value by 1), so no condition can keep you there. A creature can help you get to safety with the Interact Action (1 AP, Handle).
+At the start of your turn you get back to safety, to a legal square next to the hazard, and stop being Imperiled. This takes no Action, so nothing can stop it. On that turn you regain 1 AP less, as if Slowed 1 (it adds to a Slowed value you already have). A creature can help you get to safety with the Interact Action (1 AP, Handle).
 
 ### Lingering
 
 **Lingering X (Attributes)** is damage that keeps coming: at the end of each of your turns, you take X damage, a number or dice rolled each time. It is Vigor damage when the Attributes are **Bo/In** and Resolve damage when they are **Mi/Ap**, unless the Lingering writes its pool before the value: **Lingering [V] 1 (Ap)** is Vigor damage with an Appeal Save. A Lingering can have a subtype, written after the value: **Lingering [R] 1d6 Ho (Mi/Ap)**: a wound that bleeds, a fire that clings, holy light that keeps burning.
 
-You can end it with the [[Shake Off]] Action (1 AP), on yourself or on a Lingering creature within your Reach: the Lingering creature makes a Save with the better of the two Attributes against **DC 13**, or the DC the Lingering writes (**Lingering 1d6 (Bo/In; DC 15)**). **Tier 1:** no effect. **Tier 2:** you take half the Lingering at the end of the current turn (even when it is another creature's turn, such as an ally's who used Shake Off on you), then it ends. **Tier 3:** it ends. Healing doesn't end a Lingering; the end of the encounter does. If you would gain Lingering again, keep the one with the higher average (see [[Stacking]]).
+The [[Shake Off]] Action can end it; its Save is against DC 13, or the DC the Lingering writes (**Lingering 1d6 (Bo/In; DC 15)**). Healing doesn't end a Lingering; the end of the encounter does. If you would gain Lingering again, keep the one with the higher average (see [[Stacking]]).
 
 ### Pressed
 
-Pressed always has a value, such as **Pressed 1**. Your [Strike] Actions take that many **Pressure Banes** (see [[Named Boons and Banes]]: at most 2 count). If you would be Pressed twice, only the highest value applies.
+Pressed always has a value, such as **Pressed 1**. Your [Strike] Actions take that many **Pressure Banes** (see [[Named Boons and Banes]]: at most 2 count).
 
 ### Prone
 
 - Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane.
 - You can't [[Evade]].
 - The only [Move] Actions you can use are [[Crawl|Crawl]], [[Stand|Stand]] and [[Break Free]].
+- Prone lasts until you [[Stand]].
+- You give no cover to other creatures (see [[Cover]]).
 
 ### Quickened
 
@@ -114,4 +116,4 @@ Taunted is always **by** a creature. Your Actions against any creature other tha
 
 ### Vulnerable
 
-Vulnerable always has a value, such as **Vulnerable 3**. Actions against you gain a number of Boons equal to that value. If you would have Vulnerable twice, only the highest value applies.
+Vulnerable always has a value, such as **Vulnerable 3**. Actions against you gain a number of Boons equal to that value.

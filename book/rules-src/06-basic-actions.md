@@ -25,11 +25,6 @@ Every creature can use these Actions, except that an NPC has no Basic Attack car
 
 @@CARD:Haul@@
 
-@@CARD:Heal@@
-
-> [!tbd]
-> **Heal is a playtest version** (2026-11-21): it rolls Mind or Appeal against DC 13 until Skills exist; then it will need the Medicine skill. Its job is the ally who can't Steel Yourself: one who is Down.
-
 @@CARD:Hide@@
 
 @@CARD:Interact@@
@@ -57,6 +52,11 @@ Every creature can use these Actions, except that an NPC has no Basic Attack car
 @@CARD:Stand@@
 
 @@CARD:Steel Yourself@@
+
+@@CARD:Tend@@
+
+> [!tbd]
+> **Tend is a playtest version** (2026-11-21): it rolls Mind or Appeal against DC 13 until Skills exist; then it will need the Medicine skill. Its job is the ally who can't Steel Yourself: one who is Down.
 
 @@CARD:Trip@@
 

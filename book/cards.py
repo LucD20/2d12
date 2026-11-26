@@ -74,6 +74,7 @@ def _line(label, text): return {'label': label, 'text': text}
 def _version_lines(c, v):
     """An old Version's lines: the Tiers, the Critical, then the old Effects cell under the label that says when it happened."""
     T = v.get('tiers', [])
+    pre = [_line('Requirement', v['requirements'])] if v.get('requirements') else []   # a Version's own Requirement (the audit B2-015, Crawl's 2 AP)
     if v.get('orTiers') == '23' and len(T) == 3 and T[1] == T[2]: L = [_line('Tier 1', T[0]), _line('Tier 2 or 3', T[1])]   # Feint (2026-11-22)
     else: L = [_line('Tier %d' % (k + 1), t) for k, t in enumerate(T)]
     if v.get('critical'): L.append(_line('Critical', v['critical']))
@@ -81,7 +82,7 @@ def _version_lines(c, v):
         # general Effects happened on a Tier 2 or 3; on a Save Action the Tiers are the target's result, so on its Tier 1 or 2 (Chapter 1, Save Actions)
         label = 'Effect' if not v.get('tiers') else 'Tier 1 or 2' if 'save' in c.get('traits', []) else 'Tier 2 or 3'
         L.append(_line(label, v['effects']))
-    return L
+    return pre + L
 
 def structure(c):
     """The card in the Structure (card-structure.md, "THE STRUCTURE, WHOLE"): name, escalation, frequency, cost, flavor, traits, distance, area,
@@ -110,6 +111,8 @@ def structure(c):
         if c.get(key): B.append(_line(label, c[key]))
     versions = c.get('versions', [])
     if len(versions) == 1: B += _version_lines(c, versions[0])
+    # Versions whose lines are all the same are printed once (the audit B2-038, Seek: the bar says "1 or 2 AP", the Target line says what changes)
+    elif versions and all(_version_lines(c, v) == _version_lines(c, versions[0]) for v in versions): B += _version_lines(c, versions[0])
     else:
         for v in versions:
             heading = cap(v['mode']) if v.get('mode') else '%d%s' % (v['ap'], 'R' if reaction(c) else ' AP')

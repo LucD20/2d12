@@ -103,14 +103,14 @@ A **Roll** is anything you roll. There are six kinds, and every roll is exactly 
 
 | Kind | What it is |
 |---|---|
-| **Check** | One Attribute Modifier against a DC, outside an Action: a "Body Check" (see [[Checks]]). |
+| **Check** | One Attribute Modifier against a DC: a "Body Check". A card can call for one inside an Action (Break Free, Tumble, Aid): that roll is a Check, not an Attribute Action. |
 | **Save** | A roll to resist something: an "Appeal Save" (see [[Saves]]). |
 | **Weapon roll** | An Action with the Weapon trait, and not the Signature or Save trait. It rolls your [[Weapon, Power and Signature Modifiers\|Weapon Modifier]]. |
 | **Power roll** | An Action with the Power trait, and not the Signature or Save trait. It rolls your Power Modifier. |
 | **Signature roll** | An Action with the Signature trait. It rolls your Signature Modifier. |
 | **Attribute Action** | Any other Action that rolls: it rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait. |
 
-A Split Action is a Weapon roll or a Power roll, depending on the mode you choose when you use it. A [Save] Action doesn't roll: its targets roll Saves (see [[Save Actions]]). Damage dice and the [[Dying]] and [[Shattered]] Tables are **not Rolls**: nothing that changes a Roll (a Boon, Doomed, Unconscious) changes them.
+A [Save] Action doesn't roll: its targets roll Saves (see [[Save Actions]]). Damage dice and the [[Dying]] and [[Shattered]] Tables are **not Rolls**: nothing that changes a Roll (a Boon, Doomed, Unconscious) changes them.
 
 An effect on Actions names their **trait**: "1 Boon on [Weapon] Actions" helps every Action with the Weapon trait, whatever Modifier it rolls (a [Signature, Weapon] Action too). An effect that names a Check or a Save applies only to that kind. An effect that names an Attribute and "Rolls" applies to every kind that rolls that Attribute: its Checks, its Saves and its Attribute Actions. Weapon, Power and Signature rolls use no Attribute. "Your Rolls" means all of them.
 
@@ -134,7 +134,7 @@ When a rule asks you to beat what an Action did to you (to [[Break Free]] of it,
 
 ### Attribute DCs
 
-Every DC is **11 + the number that sets it**, and is named by it. A creature's **Body DC** is 11 + its Body, and so are its **Mind DC**, **Appeal DC** and **Instinct DC**. An Action that rolls an Attribute against a creature rolls against that creature's DC of the same Attribute: [[Shove]] is Body against the target's Body DC; an Action that lets you roll Body or Instinct rolls against the target's DC of the Attribute you rolled (see [[Defenses]]).
+Every DC is **11 + the number that sets it**, and is named by it. A creature's **Body DC** is 11 + its Body, and so are its **Mind DC**, **Appeal DC** and **Instinct DC**. Unless its card names another DC, an Action that rolls an Attribute against a creature rolls against that creature's DC of the same Attribute: [[Shove]] is Body against the target's Body DC; an Action that lets you roll Body or Instinct rolls against the target's DC of the Attribute you rolled (see [[Defenses]]).
 
 ## Saves
 
@@ -164,7 +164,7 @@ The damage of an Action is what its card says: it adds a Modifier or a weapon's 
 
 When an Action deals damage equal to your Modifier, it is written **[Mod]**. The Modifier is always the one you used to roll for that Action. You never add a Modifier to the same damage twice.
 
-When a Weapon Action adds your Modifier to its damage, the Modifier joins the **weapon's damage** and keeps its damage type and subtype: if the weapon deals Resolve damage, so does the Modifier. A Tier that writes [Mod] with no [W] deals it as the weapon's damage too, with the weapon's type and subtype.
+When a Weapon Action adds your Modifier to its damage, the Modifier joins the **weapon's damage** and keeps its damage type and subtype: if the weapon deals Resolve damage, so does the Modifier. A Tier of a Weapon Action that writes no [W] deals its damage as the weapon's damage too, with the weapon's type and subtype.
 
 ### Damage Types
 
@@ -211,7 +211,7 @@ When one Action affects several creatures (an Area, a Strike on "up to three cre
 
 For instance, if the Action deals 1d4 / 1d6 / 1d8, and two creatures get Tier 1 and one gets Tier 2, you roll 1d4 once and apply it to the two creatures on Tier 1.
 
-If the creature that makes the roll or causes the Save is Empowered, its 1d6! goes to one creature it damages (see [[Empowered]]).
+If the creature that makes the roll or causes the Save is Empowered, its 1d6! goes to the one creature it chose before the Saves (see [[Empowered]]).
 
 You roll every die that any of the targets needs, and each target uses only the ones that apply to it. If any target has Favored or Doomed, roll 3d12: a Favored target keeps the two highest and has Doubles if any two of the three dice match, a Doomed target keeps the two lowest, and any other target uses the first two d12 you rolled.
 

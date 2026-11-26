@@ -62,7 +62,7 @@ If you end your turn without spending all your AP, you keep the rest until your 
 
 When something gives or takes Action Points, it says whether it happens **now** or **when you regain AP**.
 
-- **Now.** "The target loses 1 AP" means they lose 1 AP they have right now; if they have none, it has no effect. "The target gains 1 AP" means they gain 1 AP right now. Unless otherwise stated, you can't have more than 4 AP, and losing or gaining AP never changes your Reaction Point.
+- **Now.** "The target loses 1 AP" means they lose 1 AP they have right now; if they have none, it has no effect. A card that wants the loss to carry over to the next turn writes [[Dazed]]. "The target gains 1 AP" means they gain 1 AP right now. Unless otherwise stated, you can't have more than 4 AP, and losing or gaining AP never changes your Reaction Point.
 - **When you regain AP.** Changes to the AP you regain at the start of your turn are the [[Slowed]] and [[Quickened]] conditions: Slowed 1 means you regain 1 AP less, Quickened 1 means you regain 1 AP more. Neither changes your Reaction Point.
 
 ## Reactions

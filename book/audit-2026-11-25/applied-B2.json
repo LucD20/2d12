@@ -1,0 +1,780 @@
+[
+ {
+  "id": "B2-001",
+  "done": true,
+  "files": [
+   "book/rules-src/05-characters.md"
+  ],
+  "what": "Building a Character's step 4 ends: \"Choose which hand is your main hand (see Hands).\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-002",
+  "done": true,
+  "files": [
+   "book/rules-src/05-characters.md"
+  ],
+  "what": "An open box after the building steps says starting gear and prices are not written yet: the GM and the player agree on a new character's weapons and armor.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-003",
+  "done": true,
+  "files": [
+   "book/rules-src/05-characters.md"
+  ],
+  "what": "The Hallmark Action line no longer says it doesn't need the Signature trait.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-005",
+  "done": true,
+  "files": [
+   "book/rules-src/05-characters.md"
+  ],
+  "what": "Distinct Choices now reads: each of your class's Attribute increases goes to a different Attribute; a species' and a class's increase can go to the same Attribute (the old example was replaced with the section).",
+  "ruleChange": true,
+  "foundry": "Character creation in Foundry (the class's Attribute choices) must refuse the same Attribute twice from the class and allow a species and a class increase on one Attribute."
+ },
+ {
+  "id": "B2-006",
+  "done": true,
+  "files": [
+   "book/rules-src/05-characters.md"
+  ],
+  "what": "The parenthesis about every class letting you strike first or pray first is cut.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-007",
+  "done": true,
+  "files": [
+   "book/rules-src/05-characters.md"
+  ],
+  "what": "The Signature Modifier is the higher of the two Modifiers, with no \"(if they are equal, choose one)\".",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-008",
+  "done": true,
+  "files": [
+   "book/rules-src/05-characters.md"
+  ],
+  "what": "Escalation Abilities is one line, \"Each class's Apex is chosen at level 4 (see Escalation).\", and keeps its open box.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-009",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "The Advance card reads \"You Advance your Speed. Once during it you can use Interact (see Advance).\"; Chapter 3 keeps the rule.",
+  "ruleChange": false,
+  "foundry": "The Advance card's text changed; its foundry sub (\"move up to your Speed\") no longer matches the text, so Foundry's Move button needs a new sub."
+ },
+ {
+  "id": "B2-010",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Chapter 1's Check row: one Attribute Modifier against a DC (a \"Body Check\"); a card can call for one inside an Action (Break Free, Tumble, Aid), and that roll is a Check, not an Attribute Action.",
+  "ruleChange": true,
+  "foundry": "A Check called inside an Action (Break Free, Tumble, Aid) is a Check for every effect that names Checks, not an Attribute Action."
+ },
+ {
+  "id": "B2-012",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Chapter 1: a Tier of a Weapon Action that writes no [W] deals its damage as the weapon's damage too, with the weapon's type and subtype.",
+  "ruleChange": true,
+  "foundry": "A Weapon Action's Tier with no [W] (Basic Attack's Tier 1 [V] 1d4!) deals the weapon's pool and subtype."
+ },
+ {
+  "id": "B2-013",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json",
+   "book/rules-src/07-traits.md",
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "The rule that a Weapon Action takes Melee or Ranged from the weapon is only in Chapter 3 (Weapon Actions and Your Weapon) and the Weapon trait; it was cut from Basic Attack's Special, the Melee, Ranged, Firearm and Projectile traits, and Gear's Properties (and the Firearm property's last clause).",
+  "ruleChange": false,
+  "foundry": "The Basic Attack card loses its Special line (its rules field, which Foundry shows as the card's description and Special line)."
+ },
+ {
+  "id": "B2-014",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Charge stops on the first square from which the target is within the normal Range of the weapon you attack with.",
+  "ruleChange": true,
+  "foundry": "Charge's movement must stop at the weapon's normal Range from the target, not at your Reach."
+ },
+ {
+  "id": "B2-015",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json",
+   "book/cards.py"
+  ],
+  "what": "Crawl's 2 AP Version has its own Requirement line (Your Speed is 5 or higher) and Shake Off has a Save line and three Tier lines.",
+  "ruleChange": false,
+  "foundry": "Crawl's 2 AP requirement is now a Version field (requirements) Foundry's cardgen and cardmodel don't read yet; Shake Off now has a vs (read as \"roll\" by vsKey) and tiers instead of effects, so its foundry sub \"makes a Save\" no longer matches and its automation must be redone."
+ },
+ {
+  "id": "B2-016",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Difficult Terrain: a movement of at least 1 square can always enter one square, whatever it costs, with an example (Mark Crawling into rubble while Prone, then Advancing with Speed 1).",
+  "ruleChange": true,
+  "foundry": "Foundry's movement must let a 1-square movement (Crawl 1, Speed 1) enter one Difficult Terrain square."
+ },
+ {
+  "id": "B2-017",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Demoralize's Special: after you use it on a creature, whatever the Tier, you can't use it on that creature again this encounter.",
+  "ruleChange": false,
+  "foundry": "Demoralize's Special text changed (Foundry's warning on an immune target already does this)."
+ },
+ {
+  "id": "B2-018",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Evade's two Versions read \"Evade 1.\" and \"Evade half your Speed (rounded down).\"",
+  "ruleChange": false,
+  "foundry": "The Evade card's text changed."
+ },
+ {
+  "id": "B2-019",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Feint's Critical: until the end of your turn, the target can't use a Reaction for which you are the triggering creature.",
+  "ruleChange": true,
+  "foundry": "Feint's Critical blocks only the target's Reactions triggered by you (Foundry blocks its Reactions against you)."
+ },
+ {
+  "id": "B2-020",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Gear: Fists are used with the Fists Basic Action, and with a Weapon Action that isn't the Basic Attack.",
+  "ruleChange": true,
+  "foundry": "The Basic Attack can't be made with Fists: Foundry's weapon choice for a Basic Attack must not offer Fists."
+ },
+ {
+  "id": "B2-021",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Haul and Relocate no longer say the target must remain within your Reach throughout the movement.",
+  "ruleChange": false,
+  "foundry": "Foundry's cardgen keeps a Reposition within Reach only when the requirements say \"remain within your Reach\": Relocate's Reposition is now no longer held within Reach in Foundry."
+ },
+ {
+  "id": "B2-022",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Haul has a Special line: you can't choose your own square as the destination.",
+  "ruleChange": true,
+  "foundry": "Haul's Pull can't end in the hauler's own square."
+ },
+ {
+  "id": "B2-023",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json",
+   "book/rules-src/06-basic-actions.md"
+  ],
+  "what": "The Heal Basic Action is named Tend (card, Chapter 6's list in its alphabetical place, its open box); the word heal for removing damage is unchanged.",
+  "ruleChange": false,
+  "foundry": "The Basic Action's name shown in Foundry becomes Tend (its key heal is unchanged)."
+ },
+ {
+  "id": "B2-024",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Hide has a Special line: Senses don't change this roll: you don't need to perceive the targets.",
+  "ruleChange": true,
+  "foundry": "Hide's roll ignores Senses modifiers."
+ },
+ {
+  "id": "B2-025",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Hide's Tiers 2 and 3: if the creature can't see you, you are Unsensed to it; otherwise you are Hidden to it.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-026",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Hide has no Requirement line.",
+  "ruleChange": false,
+  "foundry": "Hide's requirements field is gone."
+ },
+ {
+  "id": "B2-027",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json",
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "Interact's Special: while you are Hidden or Unsensed, a quiet use is Subtle if the GM agrees, and the GM can call for a Check; Chapter 7's Subtle says only \"Interact can be: see its card.\"",
+  "ruleChange": false,
+  "foundry": "Interact's Special text changed."
+ },
+ {
+  "id": "B2-028",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Lean: you count Line of Effect and Cover from one of your corners instead of the center of your square (Chapter 3's Leaning section is gone, B2-029).",
+  "ruleChange": false,
+  "foundry": "Leaning in Foundry must count Line of Effect, not only cover, from the chosen corner."
+ },
+ {
+  "id": "B2-029",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json",
+   "book/rules-src/03-movement.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "Chapter 3's Leaning section is removed; the Lean card holds the whole rule (the ending on any movement, the cover steps, Total cover becoming High); the Glossary's Leaning row links to the card.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-030",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Point Out's Tiers 2 and 3: the ally perceives the target 1 step better: Unsensed becomes Hidden, whatever the reason; Hidden from Hide goes back to what its own senses give; never better than you perceive it.",
+  "ruleChange": true,
+  "foundry": "Point Out improves Unsensed to Hidden whatever made the target Unsensed, not only Hide."
+ },
+ {
+  "id": "B2-031",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Point Out's Target: one creature you perceive (no Line of Effect needed).",
+  "ruleChange": true,
+  "foundry": "Point Out needs no Line of Effect to its target."
+ },
+ {
+  "id": "B2-032",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Chapter 1: unless its card names another DC, an Action that rolls an Attribute against a creature rolls against that creature's DC of the same Attribute.",
+  "ruleChange": true,
+  "foundry": ""
+ },
+ {
+  "id": "B2-033",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json",
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Regrip no longer says it doesn't have the Handle trait; Gear's Hands no longer has that parenthesis (the paragraph is now B2-076's pointer).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-034",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Release: you drop an object you hold, in your square, or take one hand off an object you hold with both hands (a Two-handed weapon is then held in one hand).",
+  "ruleChange": false,
+  "foundry": "Release's text changed (its foundry sub still matches \"drop an object\")."
+ },
+ {
+  "id": "B2-035",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Reload's Target: you, or one ally within Reach, holding a weapon that must be Reloaded; its Requirement line is cut.",
+  "ruleChange": false,
+  "foundry": "Reload's target text changed and its requirements field is gone."
+ },
+ {
+  "id": "B2-036",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Reload has a Special above its roll: with a ranged weapon Reload is a [Ranged] Action, so its roll is Doomed while you are Engaged.",
+  "ruleChange": true,
+  "foundry": "Reload with a ranged weapon is a [Ranged] Action: Doomed while Engaged."
+ },
+ {
+  "id": "B2-037",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Relocate no longer has the Strike trait (still At-will).",
+  "ruleChange": true,
+  "foundry": "Relocate's traits lose strike: it no longer counts toward the At-will Strike count or the 3 Strikes a turn."
+ },
+ {
+  "id": "B2-038",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json",
+   "book/cards.py"
+  ],
+  "what": "Seek's Tiers are printed once under a \"1 or 2 AP\" bar; the Target line keeps within 5 squares (1 AP) or 10 squares (2 AP).",
+  "ruleChange": false,
+  "foundry": "Foundry's cardmodel must print Versions with identical lines once, as the book's cards.py now does (test t260 compares them)."
+ },
+ {
+  "id": "B2-039",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Shove and Trip's Requirement: the target's SR is at most 1 higher than yours (as Haul and Relocate).",
+  "ruleChange": false,
+  "foundry": "Shove and Trip's requirements text changed."
+ },
+ {
+  "id": "B2-040",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Sneak's movement doesn't trigger Reactions from creatures to which you are Hidden from Hide.",
+  "ruleChange": true,
+  "foundry": "Sneak's no-Reaction rule applies only to creatures you are Hidden to from Hide."
+ },
+ {
+  "id": "B2-041",
+  "done": true,
+  "files": [
+   "book/cards/basic-actions.json"
+  ],
+  "what": "Tumble: an enemy's space you pass this way costs 1 square.",
+  "ruleChange": true,
+  "foundry": "Tumble's movement through enemies' spaces costs 1 square each (not Difficult Terrain)."
+ },
+ {
+  "id": "B2-042",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "Chapter 7 opens: an Action's traits are the words under its Flavor; each trait below has a rule of its own or is a word other rules and features refer to.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-043",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "Divine, Fear, Focus and Magical share one entry: these traits have no rules of their own, and other rules and features refer to them; the Glossary's Magical row links to it.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-044",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md",
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "Chapter 3's Areas says, after the Distance, that you need Line of Effect to the Point of Origin to place the area; the trait only points to Areas.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-045",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "The Area trait: these Actions have an Area: they affect every creature in it and ignore Senses (see Areas and Senses).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-046",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "An Action with more than one Attribute trait: you choose which of them to roll.",
+  "ruleChange": true,
+  "foundry": "An Action with two Attribute traits (Trip, Relocate, Break Free, Tumble...) lets the player choose which to roll, not the higher automatically."
+ },
+ {
+  "id": "B2-047",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "The sentence on a Vs. entry \"the one used to roll\" is cut from Chapter 7.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-048",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "Firearm and Projectile no longer say the trait and the property have one name; the two Glossary rows say \"A trait and a weapon property\".",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-049",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "The Ranged trait: these Actions target creatures from a distance (how a range is written: Weapon Range; shooting next to an enemy: Ranged Combat While Engaged); a [Ranged, Weapon] Action needs a ranged weapon, or a Thrown weapon used thrown.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-051",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md",
+   "book/rules-src/01-roll.md",
+   "book/rules-src/09-glossary.md",
+   "book/rules-src/set-aside/split-trait.md"
+  ],
+  "what": "The Split trait is set aside: its Chapter 7 entry, Chapter 1's sentence and the Glossary's row (and its mentions in the Power roll and Weapon roll rows) are out of the book, kept in rules-src/set-aside/split-trait.md.",
+  "ruleChange": false,
+  "foundry": "No card has Split; Foundry can keep or drop the trait key."
+ },
+ {
+  "id": "B2-052",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "Strike: a Strike is an Action with the Strike trait: an attack aimed at a creature.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-053",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "The Weapon trait no longer says a Weapon roll normally targets Armor or uses a DC when a rule calls for one.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-054",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Chapter 8 no longer says its conditions are in alphabetical order.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-055",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Chapter 8's opening points to Rounds and Durations for EoT or a number of rounds.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-057",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "A condition with no duration lasts until the encounter ends unless its entry says how it ends; Prone adds \"Prone lasts until you Stand\" and \"You give no cover to other creatures\".",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-058",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Blinded: your Sight perceives nothing and no Sight Sense helps; you perceive creatures only with your other senses; every square is Difficult Terrain for you; any Roll that needs sight is Doomed.",
+  "ruleChange": true,
+  "foundry": "Blinded in Foundry: Sight and Sight Senses perceive nothing (other senses still do), every square is Difficult Terrain, sight rolls Doomed."
+ },
+ {
+  "id": "B2-059",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Chapter 2's Losing and Gaining AP adds: a card that wants the loss to carry over to the next turn writes Dazed (Dazed keeps its own line).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-060",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Chapter 1: an Empowered creature's 1d6! goes to the one creature it chose before the Saves (Chapter 8's rule wins).",
+  "ruleChange": true,
+  "foundry": "Empowered on a Save Action: the die's target is chosen before the Saves and is lost if that creature takes no damage."
+ },
+ {
+  "id": "B2-061",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Empowered: the die deals one of the damages the Action deals, your choice before you roll it: its pool and its subtype.",
+  "ruleChange": true,
+  "foundry": "Empowered's die takes a pool and subtype chosen from the Action's damages before it is rolled."
+ },
+ {
+  "id": "B2-062",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Grabbed ends when the holder lets go, when you leave its Reach, or when you Break Free (the holder going Down is the general source rule); Immobilized points to Break Free, the one Move Action you can use while Immobilized.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-063",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Immobilized: a Forced Movement or a Reposition that comes with no roll doesn't move you; the rest of the Action or effect happens.",
+  "ruleChange": true,
+  "foundry": "Against an Immobilized creature, a rollless Forced Movement or Reposition fails but the rest of the Action still resolves (not disrupted)."
+ },
+ {
+  "id": "B2-064",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Immobilized's roll needs to beat the Action DC of what Immobilized you, with no parenthesis repeating how that DC is made.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-065",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Imperiled: getting to safety takes no Action, so nothing can stop it; that turn you regain 1 AP less, as if Slowed 1 (adding to a Slowed value you have).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-066",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Lingering: Shake Off can end it, its Save against DC 13 or the DC the Lingering writes; the Tier results are on the card only; the rule on gaining Lingering again is unchanged.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-067",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Chapter 8 opens: \"Some conditions are not on any card yet.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-068",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Vulnerable and Pressed no longer repeat that only the highest value applies (the chapter's opening says it).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-069",
+  "done": true,
+  "files": [
+   "book/rules-src/11-species.md"
+  ],
+  "what": "Human: both choices are made when you build the character and can't be changed later.",
+  "ruleChange": true,
+  "foundry": "Foundry's Human choices (Attributes, Health split) are locked after character creation."
+ },
+ {
+  "id": "B2-070",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Gear no longer says your class determines your Weapon Modifier.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-071",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md",
+   "book/rules-src/04-health.md",
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "\"Pool\" and \"subtype\" everywhere named: the weapon tables' column is Subtype; a weapon's damage has its own pool and subtype, written in its table; Chapter 4's instance has its own pool and subtype; Empowered says its pool and its subtype.",
+  "ruleChange": false,
+  "foundry": "The weapon tables' column header (shown in any Foundry weapon table or tooltip) is Subtype."
+ },
+ {
+  "id": "B2-072",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Gear no longer says later weapons may deal Resolve damage.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-073",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md",
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Every placeholder weapon's Rung reads \"Basic (placeholder)\"; Light, Long, Thrown, Reload and Firearm say \"(placeholder rule)\"; the examples use only the four designed weapons (2[W] with a Hunting Bow, Steven with two Arming Swords, the Pike and thrown Dagger examples cut in Gear and Chapter 3, Reach 2 with a Longsword).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-074",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "The paragraph on how weapon damage is balanced (melee more than ranged, the dice) is cut.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-075",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Two-handed: [Strike, Weapon] Actions with it held in one hand take 3 Banes, and the off-hand Banes too if that hand is your off hand.",
+  "ruleChange": true,
+  "foundry": "A Two-handed weapon held in the off hand alone takes 3 + 2 Banes."
+ },
+ {
+  "id": "B2-076",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Gear's Hands: Actions with the Handle trait need a free hand; Release and Regrip change what your hands hold.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-077",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Barehanded keeps its words, with an open box: how a creature is disarmed, or a weapon broken, is not written yet.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-079",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Mastery no longer says a deeper weapon has fewer unlocks.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-080",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Fists have no Weapon Technique (no mention of Unarmed Talents).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B2-081",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "An open box under Armor: Wards and their Ward values are not written yet; a character's Ward value is 0 for now.",
+  "ruleChange": true,
+  "foundry": "A character's Ward value is 0 until Wards are written."
+ }
+]

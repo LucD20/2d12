@@ -6,10 +6,13 @@
 1. **Attributes.** All four Attributes (Body, Mind, Appeal, Instinct) start at **0**.
 2. **Species.** Apply your species' Attribute changes (the species are in the [[Species]] document). It also gives you a **Vigor** and a **Resolve** bonus, a **Speed**, your **Reach** (1), your **Steadiness** and your **Size** (all current species are Medium (3)).
 3. **Class.** Apply your class' Attribute increases. It also gives you a **high** and a **low Health value** (and the steps they grow by at each Stage), a **Rally** value, a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**. Your Speed is your species' Speed plus your class' Speed Modifier.
-4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). Choose which of your class's two Modifier values is your Weapon Modifier and which your Power Modifier (see [[Weapon, Power and Signature Modifiers]]).
+4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). Choose which of your class's two Modifier values is your Weapon Modifier and which your Power Modifier (see [[Weapon, Power and Signature Modifiers]]). Choose which hand is your main hand (see [[Hands]]).
 5. **[[Health Pool]].** Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.
 6. **[[Rally Points]]** = your class' Rally value + 1 (it grows with your [[Stages|Stage]]).
 7. **Level 1.** Take what your class's level list gives at level 1: its Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each) (see [[Leveling Up]]). Weapons and armor are in the [[Gear]] document.
+
+> [!tbd]
+> Starting gear and prices are not written yet: for now the GM and the player agree on a new character's weapons and armor.
 
 ## Classes
 
@@ -23,7 +26,7 @@ Each class is written in its own document: [[Paladin]] and [[Archer]].
 
 Over its first levels, every class gives you the same kinds of things:
 
-- A **Hallmark Action**: a choice of two Actions that are the class's fantasy; you take one, and the other is not yours. A Hallmark Action doesn't need the [[Signature]] trait: that trait only sets the Modifier an Action rolls.
+- A **Hallmark Action**: a choice of two Actions that are the class's fantasy; you take one, and the other is not yours.
 - A **Hallmark Reaction**: a choice of two Reactions, the same way.
 - An **Encounter Pick**.
 - The **Apex**, at level 4 (see [[Escalation Abilities]]).
@@ -78,15 +81,15 @@ The levels are grouped in **Stages**: **Stage 0** is levels 1 to 3, **Stage 1** 
 
 ### Distinct Choices
 
-When your class gives you a choice between two Attributes, you can't pick an Attribute you already picked from another of its choices: each Attribute increase goes to a different Attribute. If a class offers "Body or Appeal +1" and "Appeal or Instinct +1" and you pick Appeal for the first, you must pick Instinct for the second.
+Each of your class's Attribute increases goes to a different Attribute. A species' increase and a class's increase can go to the same Attribute.
 
 ### Weapon, Power and Signature Modifiers
 
-Your class gives you two **Modifier values**: **+2 and +1** at level 1. One is your **Weapon Modifier**, which [[Weapon]] Actions roll; the other is your **Power Modifier**, which [[Power]] Actions roll and which sets your [[Defenses|Ward Defense]]. You choose which is which (every class lets you: a Paladin can strike first or pray first, an Archer shoot first or harry first). They don't come from your Attributes, and your Attributes don't change them.
+Your class gives you two **Modifier values**: **+2 and +1** at level 1. One is your **Weapon Modifier**, which [[Weapon]] Actions roll; the other is your **Power Modifier**, which [[Power]] Actions roll and which sets your [[Defenses|Ward Defense]]. You choose which is which. They don't come from your Attributes, and your Attributes don't change them.
 
 They grow with your [[Stages|Stage]]: at **Stage 1** (level 4) add +1 to the one you choose, at **Stage 3** (level 12) +1 to both. A Modifier is never above +4.
 
-Your **Signature Modifier** is the higher of your Weapon Modifier and your Power Modifier (if they are equal, choose one). Actions with the [[Signature]] trait roll it.
+Your **Signature Modifier** is the higher of your Weapon Modifier and your Power Modifier. Actions with the [[Signature]] trait roll it.
 
 Your **Attributes** set your Checks (Initiative is one), your Saves, your Defenses against an Attribute, your rolls on the Dying and Shattered Tables and the Attribute Actions, such as Shove and Trip (see [[Rolls]]).
 
@@ -95,7 +98,7 @@ Your **Attributes** set your Checks (Initiative is one), your Saves, your Defens
 
 ### Escalation Abilities
 
-An **Escalation ability** is an Action whose card says **Escalation N**: you can use it only while your Escalation is at least that number (see [[Escalation]]). Each class's **Apex** is its big Encounter Action that needs Escalation 6; you choose it at level 4.
+Each class's **Apex** is chosen at level 4 (see [[Escalation]]).
 
 > [!tbd]
 > No class has an Escalation ability at levels 1 to 3 now; the Escalation abilities of levels 2 and 4 are being redesigned.

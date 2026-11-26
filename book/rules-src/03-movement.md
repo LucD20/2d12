@@ -226,7 +226,10 @@ Some creatures are harder to move than others. Every creature has a **Steadiness
 
 ## Difficult Terrain
 
-Each square of difficult terrain counts double the squares it would normally count. The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. Creatures' spaces: see [[Movement|Creatures in your way]].
+Each square of difficult terrain counts double the squares it would normally count. A movement of at least 1 square can always enter one square, whatever it costs. The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. Creatures' spaces: see [[Movement|Creatures in your way]].
+
+> [!example]
+> Mark is Prone at the edge of a field of rubble (Difficult Terrain). He Crawls 1 square into the rubble: that square counts 2, but a movement of at least 1 square can always enter one square. Later, standing with a Speed of 1, he Advances into the next square of rubble the same way.
 
 @@DIAGRAM:difficult@@
 
@@ -269,9 +272,9 @@ You can't target a creature or an object beyond the distance of an Action (its R
 
 Every weapon has a **Range**, melee weapons included. An Action whose distance is **Weapon** uses the Range of the weapon you use for it. Weapon Actions have that distance unless they say otherwise.
 
-- **How it is written.** A Range is written like the ranges of ranged weapons: normal / far (1 Bane) / maximum (2 Banes). A single number is a normal range with no far or maximum range. Most melee weapons have Range 1; a Pike has Range 3.
-- **Reach above 1.** Your Reach above 1 adds to every number of the Range of your melee weapons: with Reach 2, a Pike attacks at Range 4. It doesn't change the Range of a ranged or thrown attack.
-- **Long.** A weapon with the [[Long]] property takes 1 Field Bane against adjacent creatures. A pike with Range 3 and Long is at its best 2 or 3 squares away.
+- **How it is written.** A Range is written like the ranges of ranged weapons: normal / far (1 Bane) / maximum (2 Banes). A single number is a normal range with no far or maximum range. Most melee weapons have Range 1.
+- **Reach above 1.** Your Reach above 1 adds to every number of the Range of your melee weapons: with Reach 2, a Longsword attacks at Range 2. It doesn't change the Range of a ranged or thrown attack.
+- **Long.** A weapon with the [[Long]] property takes 1 Field Bane against adjacent creatures.
 
 ### Weapon Actions and Your Weapon
 
@@ -353,13 +356,9 @@ A line that only touches the end of a wall isn't blocked.
 
 @@DIAGRAM:on-the-line@@
 
-### Leaning
-
-A creature behind a wall can lean out to attack. While you are **Leaning**, you calculate cover from one of **your corners** instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level (Total → High → Medium → Low → none). A creature leaning out of Total cover becomes High cover (still targetable). Leaning lasts until the end of your turn and ends early when you **leave your square** (any movement: an Advance, an Evade, a Forced Movement). You can stop Leaning at any time on your turn, at no cost. You start it with the [[Lean]] Basic Action.
-
 ## Areas
 
-Some Actions have an **Area**, written on its own line, for example **Area: 1 Emanation**. These Actions have the [[Area]] trait. An Area Action can also have a **Distance**, on the next line: how far from the creature using the Action its area can be placed, for example **Distance: 10 sq.** With no Distance, an Emanation is around the creature that uses the Action.
+Some Actions have an **Area**, written on its own line, for example **Area: 1 Emanation**. These Actions have the [[Area]] trait. An Area Action can also have a **Distance**, on the next line: how far from the creature using the Action its area can be placed, for example **Distance: 10 sq.** You need Line of Effect to the Point of Origin to place the area. With no Distance, an Emanation is around the creature that uses the Action.
 
 Every area spreads from a **Point of Origin**: for an Emanation, its target (a creature's space or a square); for a Line, your square; for other areas, the point the Action says they start from (for example, the tip of a cone). The Point of Origin is a place, not the creature that uses the Action, which is still called the origin.
 

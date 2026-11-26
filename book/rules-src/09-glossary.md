@@ -75,7 +75,7 @@
 | [[Exploding Dice\|**Exploding**]] | A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die written with ! (1d6!) counts its highest face as one less; every weapon's die is one. |
 | [[Favored and Doomed Rolls\|**Favored**]] | A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical. |
 | [[Named Boons and Banes\|**Field**]] | A named Boon or Bane from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2. |
-| [[Firearm\|**Firearm**]] | A trait and a weapon property with one name: the weapon shoots with powder (a pistol, a musket), and a Firearm Action needs one. It is not Projectile. |
+| [[Firearm\|**Firearm**]] | A trait and a weapon property: the weapon shoots with powder (a pistol, a musket), and a Firearm Action needs one. It is not Projectile. |
 | [[Fists (the weapon)\|**Fists**]] | The Barehanded weapon every creature has (Melee, Non-threatening). While you have a free hand, it counts as a weapon you wield. |
 | [[Flanking\|**Flanking**]] | Two creatures that threaten the same enemy from opposite sides of it (within 45° of the line through its center): each gets 1 Field Boon on [Melee] Actions against it, none if an ally of the enemy threatens it. |
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no Reactions from movement, ignores Difficult Terrain, each square counts 1. |
@@ -101,7 +101,7 @@
 | [[Instances of Damage\|**Instance of damage**]] | One part of an Action's damage with its own pool and damage type; each [W] and each extra damage from another effect is its own instance. |
 | [[Interact\|**Interact**]] | The Handle Action for objects and for helping others: draw, stow, swap, grab, open; help a creature stand up, get to safety or wake up. Once during an Advance Action, without ending it. Stowing or swapping needs no free hand ([[Handle]]). |
 | [[Reactions\|**Interrupt**]] | A Reaction that happens before the Action that triggers it. Every Interrupt resolves before any Trigger on the same Action. |
-| [[Leaning\|**Leaning**]] | Until the end of your turn, or until you leave your square: cover is calculated from one of your corners, and your own cover is reduced by 1 level. You start it with the Lean Basic Action. |
+| [[Lean\|**Leaning**]] | Until the end of your turn, or until you leave your square: cover is calculated from one of your corners, and your own cover is reduced by 1 level. You start it with the Lean Basic Action. |
 | [[Moving and Leaving Your Square\|**Left your square**]] | Any change of your position, Forced Movement and Reposition included. |
 | [[Lethal and Nonlethal\|**Lethal, Nonlethal**]] | The two kinds of damage. Damage is Lethal unless stated. |
 | [[Light (property)\|**Light**]] | A weapon property: a small one-handed melee weapon (a Dagger, a Handaxe); 1 Bane in your off hand instead of 2. |
@@ -110,7 +110,7 @@
 | [[Lingering\|**Lingering**]] | Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap); Shake Off (1 AP) and a Save against DC 13 end it; healing doesn't. Any damage type can linger. |
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Basic Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
-| [[Magical\|**Magical**]] | A trait: marks a magical Action or attack for other rules and features. |
+| [[Divine, Fear, Focus and Magical\|**Magical**]] | A trait: marks a magical Action or attack for other rules and features. |
 | [[Hands\|**Main hand, off hand**]] | Your two hands. [Strike, Weapon] Actions with a weapon in your off hand take 2 Banes (a Light weapon or your Fists: 1; a weapon held with both hands or a Strung weapon: none). |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 with one weapon when your side wins an encounter that was normal or harder. Never lower than half your best in its group. 10 unlocks its Weapon Technique; 20, 30, 45 and 60 its later unlocks. |
 | [[Minions\|**Minion**]] | An NPC rank with CV 30: 2 ticks instead of Health, 3 AP a turn and no Reaction Point (it pays a Reaction with an AP it kept); Minions act in squads of up to 2. |
@@ -130,10 +130,10 @@
 | [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
 | [[Point Out\|**Point Out**]] | A Basic Action (At-will, 1 AP): an ally (Tier 2) or every ally within 10 squares (Tier 3) perceives a creature you perceive 1 step better. |
 | [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Power Actions roll it; Ward Defense adds it. |
-| [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |
+| [[Rolls\|**Power roll**]] | An Action with the Power trait. |
 | [[Pressed\|**Pressed**]] | A condition with a value: your [Strike] Actions take that many Pressure Banes (at most 2 count). |
 | [[Named Boons and Banes\|**Pressure**]] | A named Bane an effect of another creature puts on you. Up to 2. |
-| [[Projectile\|**Projectile**]] | A trait and a weapon property with one name: the weapon shoots (a bow, a crossbow), and a Projectile Action needs one. |
+| [[Projectile\|**Projectile**]] | A trait and a weapon property: the weapon shoots (a bow, a crossbow), and a Projectile Action needs one. |
 | [[Prone\|**Prone**]] | A condition: Melee Actions against you gain 1 Field Boon and Ranged Actions against you take 1 Field Bane; you can't Evade, and your only [Move] Actions are Crawl, Stand and Break Free. |
 | [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Light, Long, Projectile, Firearm, Strung, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
 | [[Pulled\|**Pulled**]] | Forced Movement toward the origin, up to its value, inside a 45° cone. |
@@ -181,7 +181,6 @@
 | [[Special Actions\|**Special Action**]] | An NPC Action that is not a Basic attack: 2 AP and Round by default; it can hit up to two creatures. |
 | [[Rules Language\|**Specific beats general**]] | A card or feature that says something different from a general rule wins for that case. |
 | [[Building a Character\|**Speed**]] | How far a creature can move with an Advance: species Speed plus class Speed Modifier. |
-| [[Split\|**Split**]] | A trait: the Action has a Weapon mode and a Power mode, and you choose one each time you use it. |
 | [[Squads\|**Squad**]] | Up to 2 Minions that share one place in the turn order (one Initiative roll); each takes its own whole turn. |
 | [[Squeezing\|**Squeezing**]] | Moving through a gap one square narrower than you: Difficult Terrain, and Doomed and Vulnerable if you stop there. |
 | [[Size\|**SR**]] | Size Rank: a creature's Size as a number from 1 (Tiny) to 7 (Titanic). Medium is SR 3. |
@@ -222,7 +221,7 @@
 | [[Save Actions\|**Weapon DC, Power DC**]] | The DC of your [Save] Action: 11 + the Modifier its other traits name (Weapon, Power or Signature). |
 | [[Weapon Groups\|**Weapon Group**]] | Swords, Daggers, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is never lower than half your best in its group. |
 | [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Weapon Actions roll it. |
-| [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait (or a Split Action in Weapon mode). |
+| [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait. |
 | [[Weapons\|**Weapon Technique**]] | A weapon's own Action, unlocked with Mastery; used only with that weapon, while you wield it. |
 | [[Willing and Unwilling\|**Willing, Unwilling**]] | Willing: a creature that accepts the effect (an Unconscious creature counts as willing). Unwilling: one that doesn't. |
 | [[Wounds and the Tables\|**Wound**]] | A result of the Dying or Shattered Table (Body or Mind). |

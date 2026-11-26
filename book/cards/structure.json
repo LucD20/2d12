@@ -15,7 +15,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "You move up to your Speed in squares, in one piece: the movement you don't use is lost (you can't move part of it, use another Action and move the rest later). Once during this Advance, at any point of the movement, you can use the Interact Action (paying its 1 AP then) and go on moving."
+    "text": "You Advance your Speed. Once during it you can use Interact (see [[Advance]])."
    }
   ],
   "blocks": [],
@@ -212,10 +212,6 @@
   ],
   "cost": "1 AP",
   "body": [
-   {
-    "label": "Special",
-    "text": "You attack with the weapon you are wielding. Basic Attack takes the Melee or Ranged trait of that weapon, and its Range."
-   },
    {
     "label": "Attack",
     "text": "Weapon vs. Armor Defense"
@@ -615,7 +611,7 @@
    },
    {
     "label": "Effect",
-    "text": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes."
+    "text": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within the normal Range of the weapon you attack with. You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes."
    }
   ],
   "blocks": [],
@@ -1068,8 +1064,12 @@
     "heading": "2 AP",
     "body": [
      {
+      "label": "Requirement",
+      "text": "Your Speed is 5 or higher."
+     },
+     {
       "label": "Effect",
-      "text": "**Requirements:** Your Speed is 5 or higher. You move 3 squares."
+      "text": "You move 3 squares."
      }
     ]
    }
@@ -1358,7 +1358,7 @@
    },
    {
     "label": "Special",
-    "text": "The target is immune to your Demoralize until the end of the encounter (EoE)."
+    "text": "After you use Demoralize on a creature, whatever the Tier, you can't use it on that creature again this encounter."
    }
   ],
   "blocks": [],
@@ -1666,7 +1666,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "Evade 1: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost)."
+      "text": "Evade 1."
      }
     ]
    },
@@ -1675,7 +1675,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "Evade half your Speed (rounded down): a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost)."
+      "text": "Evade half your Speed (rounded down)."
      }
     ]
    }
@@ -1715,7 +1715,7 @@
    },
    {
     "label": "Critical",
-    "text": "The target can't use Reactions against you until the end of your turn."
+    "text": "Until the end of your turn, the target can't use a Reaction for which you are the triggering creature."
    }
   ],
   "blocks": [],
@@ -2282,7 +2282,7 @@
   "body": [
    {
     "label": "Requirement",
-    "text": "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement."
+    "text": "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away."
    },
    {
     "label": "Attack",
@@ -2342,43 +2342,12 @@
     ]
    }
   ],
-  "after": [],
-  "passive": false
- },
- "Heal": {
-  "name": "Heal",
-  "escalation": null,
-  "frequency": "At-will",
-  "flavor": "You press, bind and talk them back to their feet.",
-  "distance": "Reach",
-  "area": null,
-  "target": "One ally (a Down one too)",
-  "traits": [
-   "appeal",
-   "handle",
-   "mind"
-  ],
-  "cost": "2 AP",
-  "body": [
+  "after": [
    {
-    "label": "Attack",
-    "text": "Appeal or Mind vs. DC 13"
-   },
-   {
-    "label": "Tier 1",
-    "text": "The target can use 1 Rally Point."
-   },
-   {
-    "label": "Tier 2",
-    "text": "The target can use 2 Rally Points."
-   },
-   {
-    "label": "Tier 3",
-    "text": "The target can use 2 Rally Points, and if it is Prone it can Stand."
+    "label": "Special",
+    "text": "You can't choose your own square as the destination."
    }
   ],
-  "blocks": [],
-  "after": [],
   "passive": false
  },
  "Heartseeker": {
@@ -2453,8 +2422,8 @@
   "cost": "1 AP",
   "body": [
    {
-    "label": "Requirement",
-    "text": "At least one creature can't see you, or you have High Cover against it."
+    "label": "Special",
+    "text": "Senses don't change this roll: you don't need to perceive the targets."
    },
    {
     "label": "Attack",
@@ -2466,11 +2435,11 @@
    },
    {
     "label": "Tier 2",
-    "text": "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it (see [[Hiding]])."
+    "text": "If the creature can't see you, you are Unsensed to it; otherwise you are Hidden to it (see [[Hiding]])."
    },
    {
     "label": "Tier 3",
-    "text": "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it. It takes 1 Bane on Seek and Point Out against you (1 round)."
+    "text": "If the creature can't see you, you are Unsensed to it; otherwise you are Hidden to it. It takes 1 Bane on Seek and Point Out against you (1 round)."
    }
   ],
   "blocks": [],
@@ -2777,7 +2746,7 @@
    },
    {
     "label": "Special",
-    "text": "Interact isn't [Subtle]: while you are Hidden or Unsensed, a quiet use (taking an item you carry, opening a door slowly) can be, as the GM decides (see [[Subtle]])."
+    "text": "While you are Hidden or Unsensed, a quiet use (taking an item you carry, opening a door slowly) is Subtle if the GM agrees; the GM can call for a Check."
    }
   ],
   "blocks": [],
@@ -3132,7 +3101,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "Until the end of your turn, or until you leave your square, you are Leaning: you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost."
+    "text": "Until the end of your turn, or until you leave your square (any movement: an Advance, an Evade, a Forced Movement), you are Leaning: you count Line of Effect and Cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level (Total → High → Medium → Low → none). A creature leaning out of Total cover becomes High cover (still targetable). You can stop Leaning at any time on your turn, at no cost."
    }
   ],
   "blocks": [],
@@ -3802,7 +3771,7 @@
   "flavor": "A sharp shout and a pointed glance, and now everyone knows where they are.",
   "distance": null,
   "area": null,
-  "target": "One creature you perceive",
+  "target": "One creature you perceive (no Line of Effect needed)",
   "traits": [
    "appeal",
    "instinct"
@@ -3823,11 +3792,11 @@
    },
    {
     "label": "Tier 2",
-    "text": "One ally within 10 squares who can see or hear you perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow."
+    "text": "One ally within 10 squares who can see or hear you perceives the target 1 step better: Unsensed becomes Hidden, whatever the reason; Hidden from Hide goes back to what its own senses give. Never better than you perceive it."
    },
    {
     "label": "Tier 3",
-    "text": "Every ally within 10 squares who can see or hear you perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow."
+    "text": "Every ally within 10 squares who can see or hear you perceives the target 1 step better: Unsensed becomes Hidden, whatever the reason; Hidden from Hide goes back to what its own senses give. Never better than you perceive it."
    }
   ],
   "blocks": [],
@@ -4122,7 +4091,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the Handle trait: it doesn't need a free hand."
+    "text": "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands."
    }
   ],
   "blocks": [],
@@ -4144,7 +4113,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "You drop an object in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand)."
+    "text": "You drop an object you hold, in your square, or take one hand off an object you hold with both hands (a Two-handed weapon is then held in one hand)."
    }
   ],
   "blocks": [],
@@ -4158,7 +4127,7 @@
   "flavor": "You work the mechanism and seat a fresh bolt.",
   "distance": "Reach",
   "area": null,
-  "target": "One target",
+  "target": "You, or one ally within Reach, holding a weapon that must be Reloaded",
   "traits": [
    "weapon",
    "handle"
@@ -4166,8 +4135,8 @@
   "cost": "1 AP",
   "body": [
    {
-    "label": "Requirement",
-    "text": "You or an ally within Reach is wielding an unloaded weapon."
+    "label": "Special",
+    "text": "With a ranged weapon Reload is a [Ranged] Action: its roll is Doomed while you are Engaged."
    },
    {
     "label": "Attack",
@@ -4201,14 +4170,13 @@
   "traits": [
    "body",
    "handle",
-   "instinct",
-   "strike"
+   "instinct"
   ],
   "cost": "1, 2 or 3 AP",
   "body": [
    {
     "label": "Requirement",
-    "text": "The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement."
+    "text": "The target's SR is at most 1 higher than yours."
    },
    {
     "label": "Attack",
@@ -4709,44 +4677,21 @@
    {
     "label": "Attack",
     "text": "Instinct or Mind vs. Instinct DC"
-   }
-  ],
-  "blocks": [
-   {
-    "heading": "1 AP",
-    "body": [
-     {
-      "label": "Tier 1",
-      "text": "No effect."
-     },
-     {
-      "label": "Tier 2",
-      "text": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow."
-     },
-     {
-      "label": "Tier 3",
-      "text": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow, and you gain 1 Boon on Point Out against it (EoT)."
-     }
-    ]
    },
    {
-    "heading": "2 AP",
-    "body": [
-     {
-      "label": "Tier 1",
-      "text": "No effect."
-     },
-     {
-      "label": "Tier 2",
-      "text": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow."
-     },
-     {
-      "label": "Tier 3",
-      "text": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow, and you gain 1 Boon on Point Out against it (EoT)."
-     }
-    ]
+    "label": "Tier 1",
+    "text": "No effect."
+   },
+   {
+    "label": "Tier 2",
+    "text": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow."
+   },
+   {
+    "label": "Tier 3",
+    "text": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow, and you gain 1 Boon on Point Out against it (EoT)."
    }
   ],
+  "blocks": [],
   "after": [],
   "passive": false
  },
@@ -4804,8 +4749,20 @@
   "cost": "1 AP",
   "body": [
    {
-    "label": "Effect",
-    "text": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends. **Tier 3:** the Lingering ends."
+    "label": "Save",
+    "text": "The better of the [[Lingering]]'s two Attributes, against DC 13 or the DC the Lingering writes"
+   },
+   {
+    "label": "Tier 1",
+    "text": "No effect."
+   },
+   {
+    "label": "Tier 2",
+    "text": "The target takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends."
+   },
+   {
+    "label": "Tier 3",
+    "text": "The Lingering ends."
    }
   ],
   "blocks": [],
@@ -4947,7 +4904,7 @@
   "body": [
    {
     "label": "Requirement",
-    "text": "The target's Size is at most 1 larger than yours."
+    "text": "The target's SR is at most 1 higher than yours."
    },
    {
     "label": "Attack",
@@ -5230,7 +5187,7 @@
    },
    {
     "label": "Special",
-    "text": "This movement doesn't trigger Reactions from creatures to which you are Hidden. Against a creature to which you are Unsensed from Hide, you stay Unsensed only if it can't see you at any point of the movement; otherwise you are Hidden to it. Against a creature to which you are Hidden from Hide, you stay Hidden during the movement; if you end it without High Cover against that creature and it can see you, Hide ends against it at the end of your turn (or sooner, if something else ends it)."
+    "text": "This movement doesn't trigger Reactions from creatures to which you are Hidden from Hide. Against a creature to which you are Unsensed from Hide, you stay Unsensed only if it can't see you at any point of the movement; otherwise you are Hidden to it. Against a creature to which you are Hidden from Hide, you stay Hidden during the movement; if you end it without High Cover against that creature and it can see you, Hide ends against it at the end of your turn (or sooner, if something else ends it)."
    },
    {
     "label": "Effect",
@@ -5611,6 +5568,42 @@
   "after": [],
   "passive": false
  },
+ "Tend": {
+  "name": "Tend",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You press, bind and talk them back to their feet.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One ally (a Down one too)",
+  "traits": [
+   "appeal",
+   "handle",
+   "mind"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Appeal or Mind vs. DC 13"
+   },
+   {
+    "label": "Tier 1",
+    "text": "The target can use 1 Rally Point."
+   },
+   {
+    "label": "Tier 2",
+    "text": "The target can use 2 Rally Points."
+   },
+   {
+    "label": "Tier 3",
+    "text": "The target can use 2 Rally Points, and if it is Prone it can Stand."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Thrill of the Kill": {
   "name": "Thrill of the Kill",
   "escalation": null,
@@ -5802,7 +5795,7 @@
   "body": [
    {
     "label": "Requirement",
-    "text": "The target's Size is at most 1 larger than yours."
+    "text": "The target's SR is at most 1 higher than yours."
    },
    {
     "label": "Attack",
@@ -5877,7 +5870,7 @@
    },
    {
     "label": "Special",
-    "text": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass. Passing diagonally between two enemies corner to corner counts as crossing one creature: the higher of their DCs, no Bane for the second."
+    "text": "You can move through enemies' spaces (never ending in one). An enemy's space you pass this way costs 1 square. Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass. Passing diagonally between two enemies corner to corner counts as crossing one creature: the higher of their DCs, no Bane for the second."
    }
   ],
   "blocks": [

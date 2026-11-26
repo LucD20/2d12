@@ -12,6 +12,8 @@ Your species gives you Attribute changes, a **Vigor** and a **Resolve** bonus (a
 - **Steadiness:** 0
 - **Size:** Medium (3)
 
+Both choices are made when you build the character and can't be changed later.
+
 ## Dwarf
 
 - **Attributes:** Body +1, Mind +1, Appeal -1, Instinct +1.

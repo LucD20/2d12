@@ -8,7 +8,7 @@
       "traits": ["move", "self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "You move up to your Speed in squares, in one piece: the movement you don't use is lost (you can't move part of it, use another Action and move the rest later). Once during this Advance, at any point of the movement, you can use the Interact Action (paying its 1 AP then) and go on moving.",
+        { "ap": 1, "effects": "You Advance your Speed. Once during it you can use Interact (see [[Advance]]).",
           "foundry": { "sub": [["move up to your Speed", "@Move[advance|distance:speed]{move up to your Speed}"]] } }
       ],
       "foundry": { "basic": "advance", "automation": "gold", "img": "icons/svg/wing.svg" }
@@ -27,7 +27,7 @@
       "versions": [
         {
           "ap": 2,
-          "effects": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes.",
+          "effects": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within the normal Range of the weapon you attack with. You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes.",
           "foundry": {
             "sub": [
               ["Advance in a", "@Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge] in a"],
@@ -50,7 +50,7 @@
       "frequency": "At-will",
       "versions": [
         { "ap": 1, "effects": "You move 1 square.", "foundry": { "sub": [["move 1 square", "@Move[advance|distance:1|label:move 1 square]"]] } },
-        { "ap": 2, "effects": "**Requirements:** Your Speed is 5 or higher. You move 3 squares.", "foundry": { "sub": [["move 3 squares", "@Move[advance|distance:3|label:move 3 squares]"]] } }
+        { "ap": 2, "requirements": "Your Speed is 5 or higher.", "effects": "You move 3 squares.", "foundry": { "sub": [["move 3 squares", "@Move[advance|distance:3|label:move 3 squares]"]] } }
       ],
       "foundry": { "basic": "crawl", "automation": "silver", "img": "icons/svg/falling.svg" }
     },
@@ -61,8 +61,8 @@
       "traits": ["self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "Evade 1: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost)." },
-        { "ap": 2, "effects": "Evade half your Speed (rounded down): a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost)." }
+        { "ap": 1, "effects": "Evade 1." },
+        { "ap": 2, "effects": "Evade half your Speed (rounded down)." }
       ],
       "foundry": { "basic": "safeMovement", "automation": "gold", "img": "icons/svg/shield.svg" }
     },
@@ -109,7 +109,7 @@
       "target": "One creature",
       "distance": "Reach",
       "vs": "Body",
-      "requirements": "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement.",
+      "requirements": "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away.",
       "versions": [
         {
           "ap": 1,
@@ -136,6 +136,7 @@
           ]
         }
       ],
+      "notes": "You can't choose your own square as the destination.",
       "foundry": {
         "basic": "haul",
         "automation": "gold",
@@ -148,7 +149,7 @@
       "category": "Basic Action",
       "flavor": "You pull the lever, open the door, grab what you need.",
       "traits": ["handle"],
-      "notes": "Interact isn't [Subtle]: while you are Hidden or Unsensed, a quiet use (taking an item you carry, opening a door slowly) can be, as the GM decides (see [[Subtle]]).",
+      "notes": "While you are Hidden or Unsensed, a quiet use (taking an item you carry, opening a door slowly) is Subtle if the GM agrees; the GM can call for a Check.",
       "frequency": "At-will",
       "distance": "Reach",
       "versions": [
@@ -164,7 +165,7 @@
       "traits": ["self", "subtle"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "Until the end of your turn, or until you leave your square, you are Leaning: you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost.",
+        { "ap": 1, "effects": "Until the end of your turn, or until you leave your square (any movement: an Advance, an Evade, a Forced Movement), you are Leaning: you count Line of Effect and Cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level (Total → High → Medium → Low → none). A creature leaning out of Total cover becomes High cover (still targetable). You can stop Leaning at any time on your turn, at no cost.",
           "foundry": { "sub": [["you are Leaning", "you are @Condition[leaning|eot]{Leaning}"]] } }
       ],
       "foundry": { "basic": "leaning", "automation": "gold", "img": "icons/svg/eye.svg" }
@@ -190,7 +191,7 @@
       "traits": ["self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the Handle trait: it doesn't need a free hand.",
+        { "ap": 1, "effects": "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands.",
           "foundry": { "sub": [["Regrip", "@Regrip[weapon]"]] } }
       ],
       "foundry": { "basic": "regrip", "automation": "silver", "img": "icons/svg/sword.svg" }
@@ -202,7 +203,7 @@
       "traits": ["self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 0, "effects": "You drop an object in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand).",
+        { "ap": 0, "effects": "You drop an object you hold, in your square, or take one hand off an object you hold with both hands (a Two-handed weapon is then held in one hand).",
           "foundry": { "sub": [["drop an object", "@Release[weapon]{drop an object}"]] } }
       ],
       "foundry": { "basic": "release", "automation": "gold", "img": "icons/svg/downgrade.svg" }
@@ -213,10 +214,10 @@
       "flavor": "You work the mechanism and seat a fresh bolt.",
       "traits": ["weapon", "handle"],
       "frequency": "At-will",
-      "target": "One target",
+      "target": "You, or one ally within Reach, holding a weapon that must be Reloaded",
       "distance": "Reach",
       "vs": "DC 13",
-      "requirements": "You or an ally within Reach is wielding an unloaded weapon.",
+      "rules": "With a ranged weapon Reload is a [Ranged] Action: its roll is Doomed while you are Engaged.",
       "versions": [
         { "ap": 1,
           "tiers": ["Your next Reload attempt gains 2 Boons.", "You Reload the weapon. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can.", "You Reload the weapon and its wielder can Evade 1. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can."],
@@ -228,12 +229,12 @@
       "name": "Relocate",
       "category": "Basic Action",
       "flavor": "You take them by the arm and put them where you want them.",
-      "traits": ["body", "handle", "instinct", "strike"],
+      "traits": ["body", "handle", "instinct"],
       "frequency": "At-will",
       "target": "One creature",
       "distance": "Reach",
       "vs": "Body or Instinct (the one used to roll)",
-      "requirements": "The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.",
+      "requirements": "The target's SR is at most 1 higher than yours.",
       "versions": [
         { "ap": 1, "tiers": ["No effect.", "Reposition 1.", "Reposition 2."] },
         { "ap": 2, "tiers": ["No effect.", "Reposition 2.", "Reposition 4."] },
@@ -249,8 +250,9 @@
       "frequency": "At-will",
       "target": "You, or one Lingering creature within your Reach",
       "distance": "Reach",
+      "vs": "The better of the [[Lingering]]'s two Attributes, against DC 13 or the DC the Lingering writes Save",
       "versions": [
-        { "ap": 1, "effects": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends. **Tier 3:** the Lingering ends.",
+        { "ap": 1, "tiers": ["No effect.", "The target takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends.", "The Lingering ends."],
           "foundry": { "sub": [["makes a Save", "makes a @ShakeOff[save]{Save}"]] } }
       ],
       "foundry": { "basic": "shakeOff", "automation": "silver", "img": "icons/svg/regen.svg" }
@@ -267,7 +269,7 @@
       "target": "One creature",
       "distance": "Reach",
       "vs": "Body",
-      "requirements": "The target's Size is at most 1 larger than yours.",
+      "requirements": "The target's SR is at most 1 higher than yours.",
       "versions": [
         {
           "ap": 1,
@@ -332,7 +334,7 @@
       "target": "One creature",
       "distance": "Reach",
       "vs": "Body or Instinct (the one used to roll)",
-      "requirements": "The target's Size is at most 1 larger than yours.",
+      "requirements": "The target's SR is at most 1 higher than yours.",
       "versions": [
         {
           "ap": 1,
@@ -372,7 +374,6 @@
       "target": "One creature",
       "distance": "Weapon",
       "vs": "AD",
-      "rules": "You attack with the weapon you are wielding. Basic Attack takes the Melee or Ranged trait of that weapon, and its Range.",
       "versions": [
         {
           "ap": 1,
@@ -455,7 +456,7 @@
           ]
         }
       ],
-      "notes": "The target is immune to your Demoralize until the end of the encounter (EoE).",
+      "notes": "After you use Demoralize on a creature, whatever the Tier, you can't use it on that creature again this encounter.",
       "foundry": {
         "basic": "demoralize",
         "automation": "gold",
@@ -484,7 +485,7 @@
             "You gain 2 Boons on your next [Strike] Action against the target this turn.",
             "Your next [Strike] Action against the target this turn is Favored."
           ],
-          "critical": "The target can't use Reactions against you until the end of your turn."
+          "critical": "Until the end of your turn, the target can't use a Reaction for which you are the triggering creature."
         }
       ],
       "foundry": {
@@ -495,7 +496,7 @@
       }
     },
     {
-      "name": "Heal",
+      "name": "Tend",
       "category": "Basic Action",
       "_note": "2026-11-24 (Lucas, Playtest 8 Pass 1): 2 AP, Handle kept, Mind or Appeal vs DC 13; T1 1 RP, T2 2 RP, T3 2 RP + can Stand if Prone.",
       "flavor": "You press, bind and talk them back to their feet.",
@@ -537,7 +538,7 @@
       ],
       "frequency": "At-will",
       "requirements": "Your Speed is at least 4.",
-      "rules": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass. Passing diagonally between two enemies corner to corner counts as crossing one creature: the higher of their DCs, no Bane for the second.",
+      "rules": "You can move through enemies' spaces (never ending in one). An enemy's space you pass this way costs 1 square. Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass. Passing diagonally between two enemies corner to corner counts as crossing one creature: the higher of their DCs, no Bane for the second.",
       "versions": [
         {
           "ap": 1,
@@ -568,16 +569,16 @@
         "subtle"
       ],
       "frequency": "Turn",
-      "requirements": "At least one creature can't see you, or you have High Cover against it.",
       "target": "Each creature that can't see you, or against which you have High Cover (no Line of Effect needed)",
       "vs": "Instinct",
+      "rules": "Senses don't change this roll: you don't need to perceive the targets.",
       "versions": [
         {
           "ap": 1,
           "tiers": [
             "No effect against that creature.",
-            "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it (see [[Hiding]]).",
-            "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it. It takes 1 Bane on Seek and Point Out against you (1 round)."
+            "If the creature can't see you, you are Unsensed to it; otherwise you are Hidden to it (see [[Hiding]]).",
+            "If the creature can't see you, you are Unsensed to it; otherwise you are Hidden to it. It takes 1 Bane on Seek and Point Out against you (1 round)."
           ]
         }
       ],
@@ -599,15 +600,15 @@
       ],
       "frequency": "At-will",
       "requirements": "You perceive the target better than at least one ally does.",
-      "target": "One creature you perceive",
+      "target": "One creature you perceive (no Line of Effect needed)",
       "vs": "Instinct",
       "versions": [
         {
           "ap": 1,
           "tiers": [
             "No effect.",
-            "One ally within 10 squares who can see or hear you perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow.",
-            "Every ally within 10 squares who can see or hear you perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow."
+            "One ally within 10 squares who can see or hear you perceives the target 1 step better: Unsensed becomes Hidden, whatever the reason; Hidden from Hide goes back to what its own senses give. Never better than you perceive it.",
+            "Every ally within 10 squares who can see or hear you perceives the target 1 step better: Unsensed becomes Hidden, whatever the reason; Hidden from Hide goes back to what its own senses give. Never better than you perceive it."
           ]
         }
       ],
@@ -669,7 +670,7 @@
       ],
       "frequency": "Round",
       "requirements": "You are Hidden or Unsensed to at least one creature from Hide.",
-      "rules": "This movement doesn't trigger Reactions from creatures to which you are Hidden. Against a creature to which you are Unsensed from Hide, you stay Unsensed only if it can't see you at any point of the movement; otherwise you are Hidden to it. Against a creature to which you are Hidden from Hide, you stay Hidden during the movement; if you end it without High Cover against that creature and it can see you, Hide ends against it at the end of your turn (or sooner, if something else ends it).",
+      "rules": "This movement doesn't trigger Reactions from creatures to which you are Hidden from Hide. Against a creature to which you are Unsensed from Hide, you stay Unsensed only if it can't see you at any point of the movement; otherwise you are Hidden to it. Against a creature to which you are Hidden from Hide, you stay Hidden during the movement; if you end it without High Cover against that creature and it can see you, Hide ends against it at the end of your turn (or sooner, if something else ends it).",
       "versions": [
         {
           "ap": 1,
