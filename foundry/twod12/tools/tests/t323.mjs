@@ -63,8 +63,8 @@ console.log("Unsensed from Hide and in Darkness:", po({ hide: "unsensed", senses
 console.log("Hidden from Hide, you perceive it Clear:", po({ hide: "hidden", senses: "clear", mine: "clear" }), "| you perceive it Hidden:", po({ hide: "hidden", senses: "clear", mine: "hidden" }));
 console.log("Hidden by Hearing only:", po({ hide: "", senses: "hidden", mine: "clear" }));
 const SN = await import(ROOTURL + "module/senses.mjs");
-console.log("kept while it stays in its square:", SN.pointedOutHolds({ x: 100, y: 200 }, { x: 100, y: 200 }), "| it moved:", SN.pointedOutHolds({ x: 100, y: 200 }, { x: 200, y: 200 }), "| none:", SN.pointedOutHolds(undefined, { x: 0, y: 0 }));
-console.log("perceive reads it:", src("module/senses.mjs").includes('pointedOutHolds(t?.getFlag?.("twod12", "pointedOut")?.[observer.document.id], target.document)) best = ["hidden", "Point Out"];'), "| Point Out uses it:", src("module/actions.mjs").includes("await H.pointOut(r0.uuid, who, selfToken,"));
+console.log("kept until it Hides again (v0.0.526):", SN.pointedOutHolds({ x: 100, y: 200 }), "| none:", SN.pointedOutHolds(undefined), "| Hide clears it:", src("module/hide.mjs").includes('unsetFlag(F, "pointedOut")'));
+console.log("perceive reads it:", src("module/senses.mjs").includes('pointedOutHolds(t?.getFlag?.("twod12", "pointedOut")?.[observer.document.id])) best = ["hidden", "Point Out"];'), "| Point Out uses it:", src("module/actions.mjs").includes("await H.pointOut(r0.uuid, who, selfToken,"));
 
 console.log("--- 6. Empowered's pool and subtype chosen (B2-061)");
 const EX = await import(ROOTURL + "module/explode.mjs");

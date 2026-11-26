@@ -157,7 +157,8 @@ export function perceptionOf(actor) {
 
 const RANK = { unsensed: 0, hidden: 1, obscured: 2, clear: 3 };
 /** v0.0.525 (B2-030): a Point Out kept for one observer ({ x, y }: where the target was) holds while the target is still there (pure). */
-export const pointedOutHolds = (entry, doc) => !!entry && Number.isFinite(Number(entry.x)) && Number(entry.x) === Number(doc?.x) && Number(entry.y) === Number(doc?.y);
+// v0.0.526 (Lucas, 2026-11-26; book, Chapter 3, Hiding): what Point Out gives lasts until the target uses Hide again (hide.mjs applyHide clears it); it no longer ends when the target leaves its square
+export const pointedOutHolds = entry => !!entry;
 /**
  * v0.0.410 (pack F2; book, Senses: the two questions): what you gain from how the target perceives you ("boon": 1 Field Boon, "favored", or "").
  * Only when it perceives you worse than you perceive it, and never against a creature that is Hidden (or Unsensed) to you. seen: how you perceive
@@ -207,7 +208,7 @@ export function perceive(observer, target, { loe = true, noHide = false } = {}) 
   let best = options.reduce((a, c) => (!a || RANK[c[0]] > RANK[a[0]] ? c : a), null) ?? ["unsensed", "no sense reaches it"];
   // v0.0.525 (the cleanup audit, B2-030; book, Point Out: "Unsensed becomes Hidden, whatever the reason"): an ally's Point Out makes this observer
   // perceive the target as Hidden at least, while the target stays in the square it was pointed out in (hide.mjs pointOut)
-  if (observer?.document?.id && target?.document && RANK[best[0]] < RANK.hidden && pointedOutHolds(t?.getFlag?.("twod12", "pointedOut")?.[observer.document.id], target.document)) best = ["hidden", "Point Out"];
+  if (observer?.document?.id && target?.document && RANK[best[0]] < RANK.hidden && pointedOutHolds(t?.getFlag?.("twod12", "pointedOut")?.[observer.document.id])) best = ["hidden", "Point Out"];
   // v0.0.411 (pack F3, Spotter's Call Out): a Called Out creature is perceived one step better by its enemies (Hidden as Obscured, Obscured as Clear)
   // v0.0.426 (the audit; book, Spotter: "Your allies perceive the target one step better"; "You are never your own ally"): the caller's allies only,
   // the caller excluded (the effect's origin); with no origin kept, every enemy of the target as before

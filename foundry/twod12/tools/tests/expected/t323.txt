@@ -28,7 +28,7 @@ Unsensed in Darkness (no Hide): {"hide":"","floor":true,"changed":true}
 Unsensed from Hide and in Darkness: {"hide":"hidden","floor":true,"changed":true}
 Hidden from Hide, you perceive it Clear: {"hide":"","floor":false,"changed":true} | you perceive it Hidden: {"hide":"hidden","floor":false,"changed":false}
 Hidden by Hearing only: {"hide":"","floor":false,"changed":false}
-kept while it stays in its square: true | it moved: false | none: false
+kept until it Hides again (v0.0.526): true | none: false | Hide clears it: true
 perceive reads it: true | Point Out uses it: true
 --- 6. Empowered's pool and subtype chosen (B2-061)
 an Action dealing two kinds: Vigor, Slash / Resolve, Holy | one kind: Vigor, Slash | none: 0

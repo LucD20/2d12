@@ -70,6 +70,7 @@ const nameOfToken = id => canvas.tokens?.get?.(id)?.name ?? "a creature";
 /** Hide's results (actions.mjs): rows [{ uuid, name, tier }] against each targeted creature. */
 export async function applyHide(actor, rows) {
   const me = tokenOf(actor); if (!me) return;
+  if (me.document?.getFlag?.(F, "pointedOut")) await me.document.unsetFlag(F, "pointedOut").catch(() => {});   // v0.0.526: using Hide again ends what Point Out gave
   const map = hideMap(actor), out = [];
   for (const r of rows) {
     let tok = null; try { const d = await fromUuid(r.uuid); tok = d?.object ?? null; } catch (e) { tok = null; }
@@ -113,7 +114,7 @@ export async function improve(pairs, why) {
 /**
  * v0.0.525 (B2-030): Point Out's result: each ally (observer) perceives the target 1 step better, whatever made it Unsensed (Hide, Darkness, a wall),
  * never better than the creature that pointed it out perceives it (pointOutStep). An Unsensed for another reason is kept on the target as
- * twod12.pointedOut = { <observer token id>: { x, y } } (senses.mjs perceive: Hidden at least, while it stays in that square).
+ * twod12.pointedOut = { <observer token id>: { x, y } } (senses.mjs perceive: Hidden at least, until the target uses Hide again: v0.0.526).
  */
 export async function pointOut(hiderUuid, observers, pointerTok, why) {
   let hider = null, hiderTok = null; try { const d = await fromUuid(hiderUuid); hider = d?.actor ?? d ?? null; hiderTok = d?.object ?? tokenOf(hider); } catch (e) { hider = null; }

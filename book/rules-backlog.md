@@ -2,6 +2,11 @@
 
 The book is built from `rules-src/` with `build_rules.py` (assets in `rules-assets/`). How the files are written is in `rules-src/README.md`; `rules-src/INDEX.md` (generated) is a map of every chapter; `python3 build_rules.py --where Term` lists every mention of a term. The full earlier version of this list was in `archive/old-notes/rules-backlog-history.md` (not in this bundle).
 
+## POINT OUT LASTS UNTIL THE TARGET HIDES AGAIN (2026-11-26)
+
+- [x] **(v0.0.526: Foundry keeps it until the target uses Hide)** **Lucas:** "Point Out flat out changes the perception of someone, so it only ends when the target Hides again." Chapter 3, Hiding: "What Point Out gives an ally lasts until the target uses Hide again."
+- [ ] **Asked, not answered:** Lucas also wrote "Hide lasts for 1 round, meaning you have to hide every turn." The book has no such rule: Hide ends when the creature gains Sight of you without High Cover, when it finds you, or when you use an Action that isn't [Subtle]; only the Tier 3's Bane on Seek and Point Out lasts 1 round. Does he want Hide to end after 1 round?
+
 ## DEAD BODIES ARE NOT DIFFICULT TERRAIN (2026-11-26)
 
 - **Lucas:** "Are dead bodies counted as difficult terrain? ... I think it is realistic but clutters the map." Then: "Agreed on the difficult terrain." Chapter 3, Creatures in your way: an Unconscious creature is still Difficult Terrain, whichever side it is on; **a dead creature doesn't affect movement** (you can pass through its space and end in it). The Glossary's Difficult Terrain row follows. The research: `book/research/corpses-as-terrain.md`.

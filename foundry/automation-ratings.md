@@ -40,7 +40,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Hide | Silver | v0.0.513: the roll against each targeted creature's Instinct DC; Tier 2 or 3: Unsensed (it can't see you) or Hidden (your High Cover) to it, per creature; Tier 3's Bane on its Seek and Point Out: by hand. |
 | Sneak | Silver | v0.0.513: the Advance keeps Hide (Unsensed to Hidden when seen, Hidden kept during it, the end of turn check); no Reactions from those it is Hidden to. |
 | Seek | Silver | v0.0.513: targets by itself the creatures Hidden or Unsensed to you from Hide within 5 or 10 squares, no Senses on the roll, 1 step better on Tier 2 or 3; Tier 3's Boon on Point Out: by hand. |
-| Point Out | Silver | v0.0.513: Tier 2 one ally within 10 squares (picked), Tier 3 every ally: 1 step better against the target; v0.0.525: Unsensed becomes Hidden whatever the reason (kept while the target stays in its square), never better than you perceive it; whether each ally can see or hear you: by hand. |
+| Point Out | Silver | v0.0.513: Tier 2 one ally within 10 squares (picked), Tier 3 every ally: 1 step better against the target; v0.0.525: Unsensed becomes Hidden whatever the reason, never better than you perceive it; whether each ally can see or hear you: by hand. v0.0.526: it lasts until the target uses Hide again. |
 | Hide | Bronze | not written in the book yet (a placeholder) |
 
 ## Weapon Techniques (4)

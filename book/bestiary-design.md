@@ -491,6 +491,8 @@ Lucas: "We need to work more on it. Save it for when we are done running the aud
 
 **Claude's proposal (proposed, not decided):** a stat block names a weapon only when the creature can lose it; only the cards that use it write "Requirement: its axe in hand", and the rest still work; it always has the Fists Basic Action; it takes the weapon back with Interact (1 AP) when it is within its Reach; another weapon of the same kind meets the Requirement, another kind doesn't; the GM adjusts nothing mid-fight.
 
+**Lucas, later the same day (2026-11-26; a direction, not decided), after the research (`research/npc-items.md`):** on "the card names the weapon; without it that card is off": "My fear with it is that we will then either have a 'Unarmed Attack' for every NPC, which could cause disarm to be a meta way forward 'Lets disable the boss best abilities'. And if we make disarm too hard, then it is unusuable. Should we make for NPC as a condition like: 'While Disarmed, you take X penalty to damage until you pickup a weapon' or reduce die size or something like that? Or do per weapon group like mastery, so any Sword counts, but a Dagger would take this penalty." So his direction: a disarmed NPC keeps its Actions and deals less with them until it has a weapon of its group again. Open: the size and form of the penalty (a flat number, a die step, Banes), the cost to pick the weapon up, whether rank changes anything.
+
 ### Lucas's review of the chapter's wording (2026-11-26; applied to Chapter 14 and the Glossary, Foundry v0.0.523)
 
 His words:

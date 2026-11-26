@@ -53,9 +53,9 @@ Expect: Goblin Sneak: Minion, CV 30, 2 ticks (a "Ticks 2/2" bar, no Vigor or Res
 
 ## Hiding
 
-### ox-pointout · v0.0.525 · Point Out on a creature Unsensed for another reason than Hide
-Do: In a combat, give Kaela the Blinded status and put a Goblin Sneak more than 10 squares from her, in bright light where Sylwen sees it. Use Sylwen's Point Out on the goblin (Tier 2: pick Kaela). Then move the goblin one square.
-Expect: Before: Kaela's roll against the goblin skips it (Unsensed). After Point Out: a line "Kaela perceives Goblin Sneak as Hidden (was Unsensed)"; her Actions against it are Doomed (Hidden), not skipped. Once the goblin leaves that square, it is Unsensed to her again. A goblin Hidden from Hide that Sylwen herself perceives only as Hidden stays Hidden for Kaela (never better than Sylwen).
+### ox-pointout · v0.0.526 · Rev 2 · Point Out on a creature Unsensed for another reason than Hide
+Do: In a combat, give Kaela the Blinded status and put a Goblin Sneak more than 10 squares from her, in bright light where Sylwen sees it. Use Sylwen's Point Out on the goblin (Tier 2: pick Kaela). Move the goblin one square. Then use the Goblin Sneak's Hide.
+Expect: Before: Kaela's roll against the goblin skips it (Unsensed). After Point Out: a line "Kaela perceives Goblin Sneak as Hidden (was Unsensed)"; her Actions against it are Doomed (Hidden), not skipped. After the goblin moves, it is still Hidden to her. After the goblin uses Hide, it is Unsensed to her again. A goblin Hidden from Hide that Sylwen herself perceives only as Hidden stays Hidden for Kaela (never better than Sylwen).
 
 ### ox-thickwall · v0.0.525 · A thick wall blocks Hearing
 Do: In a combat, put the Orc Warrior behind a wall, within 10 squares of Kaela and out of her sight. Open that wall's settings (double-click it) and tick the new "Thick wall (2d12)" box under the Sound restriction, then untick it.

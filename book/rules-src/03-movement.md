@@ -473,7 +473,7 @@ So in Darkness you usually still hear a creature, and it is Hidden to you; an in
 The [[Hide]] Action makes you **Hidden** or **Unsensed** to some creatures **from Hide**. This is kept for each creature on its own: you can be Unsensed to one Goblin, Hidden to another and Clear to a third. Against a creature, you use whichever is worse for it: what Hide gave you, or what its senses give it.
 
 - **Moving while hidden:** an Advance, an Evade or any other movement isn't [Subtle]: once it is resolved, Hide ends against every creature. To move and stay hidden, use [[Sneak]].
-- **Finding a hidden creature:** [[Seek]] finds creatures that are Hidden or Unsensed to you from Hide; [[Point Out]] shows one you perceive to your allies.
+- **Finding a hidden creature:** [[Seek]] finds creatures that are Hidden or Unsensed to you from Hide; [[Point Out]] shows one you perceive to your allies. What Point Out gives an ally lasts until the target uses [[Hide]] again.
 - **Reactions:** a creature to which you are Hidden can still react to you, and one to which you are Unsensed can't (see [[Reactions]]).
 
 **Hide ends** against a creature when any of these happens:
