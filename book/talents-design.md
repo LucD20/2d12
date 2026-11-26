@@ -45,7 +45,7 @@ Fun, engaging, tactical, **the least ambiguity possible**; growth is **horizonta
 
 - A Talent has **a category** (Combat, Mobility, Magic, Skill), **a level** and sometimes **Prerequisites** (a Talent, a level, "an Action with a trait you have", an Attribute). Chains existed (Brawler, then Kickboxer).
 - **"Talents That Modify Actions":** a Talent names the Actions it changes by their traits (Heavy Blows: "[Melee, Strike, Weapon] Actions with a Two-handed weapon").
-- Twenty cards: twelve Combat, two Mobility, four Magic (all Divine), Class Expertise. Deprecated with the old classes; their prices and reasons are in `options-talents.md`.
+- Twenty cards: twelve Combat, two Mobility, four Magic (all Divine), Class Expertise. Deprecated with the old classes; their prices and reasons are in `../archive/book-drafts/options-talents.md`.
 
 ### In the class charter (`class-charter.md`)
 
@@ -103,7 +103,7 @@ Collected from every record on 2026-11-19. Nothing here is designed; each is a j
 |---|---|
 | A Reaction AP from the first moment of a fight | rules-backlog, an idea of 2026-11-12 |
 | Sudden Strike: an Appeal Check in a conversation to Surprise | `items-economy.md` Part 2, item 3 |
-| Sweep the Field, Blood Hound, Interrogator (the Parting Beat) | `expedition-loop.md`, item 20 |
+| Sweep the Field, Blood Hound, Interrogator (the Parting Beat) | `ideas/expedition-loop.md`, item 20 |
 | A Talent that carries a class's trait, to work with its cards | `class-charter.md`, rule 11 |
 | An unarmored Talent tree | Chapter 15's armor note |
 | The help Basic Action's improvements | magic record, 117 |
@@ -194,7 +194,7 @@ Steps 1 to 3 are the skeleton of Talents; steps 4 to 8 its structure; 9 to 12 it
 
 ## 8. Review after T6 (2026-11-19; Lucas: "Just to make sure all is going well: review what we have done so far, see if you are taking all into consideration, including the magic brainstorm")
 
-Claude reread T1 to T6 against the magic record, `magic-out-of-combat.md`, `roleplay-skills.md`, `items-economy.md`, `expedition-loop.md`, the class charter and Chapter 5. No independent reader this time. **Nothing below is decided.**
+Claude reread T1 to T6 against the magic record, `magic-out-of-combat.md`, `roleplay-skills.md`, `items-economy.md`, `ideas/expedition-loop.md`, the class charter and Chapter 5. No independent reader this time. **Nothing below is decided.**
 
 ### Holds up
 

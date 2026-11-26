@@ -142,7 +142,7 @@ From section 4, with the list and the numbers left out because no ritual text ci
 | # | Has it? | Where |
 |---|---|---|
 | 1 | **Yes, in the rulebook** | `rules-src/01-roll.md`: "Checks" (one Attribute Modifier against a DC, default 13); "Outcome Tiers"; the yes-or-no reading for improvised rolls |
-| 2 | Proposal only | `roleplay-skills.md` item 6 (Tier 1 "no, or yes at a real cost"); a ready price for loud magic in `expedition-loop.md` (Alert), a candidate |
+| 2 | Proposal only | `roleplay-skills.md` item 6 (Tier 1 "no, or yes at a real cost"); a ready price for loud magic in `book/ideas/expedition-loop.md` (Alert), a candidate |
 | 3 | Proposal only | `roleplay-skills.md` items 1 and 2 (a skill never grants permission; it makes you better). `rules-src/05-characters.md` has the empty Skill Talent slots at levels 1 and 3 |
 | 4 | Proposal only | `roleplay-skills.md` item 5, Routine; and item 2, "No certainty" |
 | 5 | **Yes, in the rulebook, for the currency** | `01-roll.md`: Boons and Banes, the named limits, Favored. The magic record's decision 18 (a rank is never a number) already bounds magic's side. Whether magic may give a Boon to a Check outside a fight is step 1 of `magic-out-of-combat.md` |

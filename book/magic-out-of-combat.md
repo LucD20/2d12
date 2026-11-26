@@ -55,7 +55,7 @@
 - Its rules for every out-of-combat ability: **anyone can attempt anything plausible**; **no certainty** ("it never auto-solves a scene"); separate budgets from combat picks; the idea sets the roll.
 - **MASTER-PLAN puts Skills (D3) before Magic (D4): "spells may use skills".** Magic was taken first. This piece is where that order bites: "magic helps a Check" needs to know what a Check outside combat is.
 
-### By the expedition loop (`expedition-loop.md`; a candidate, not in rules-src)
+### By the expedition loop (`ideas/expedition-loop.md`; a candidate, not in rules-src)
 
 - **Alert:** a site's number, 0 to 6; a loud event raises it by 1; a Sleep in the site is rolled against it. Loud or visible magic has a ready price here.
 - Prisoners, shortcuts and scouting pay in the preparation bonus or in Alert.

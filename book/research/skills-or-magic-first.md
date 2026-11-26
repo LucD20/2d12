@@ -25,7 +25,7 @@ The researcher went through ritual and utility-magic texts and listed what they 
 | # | The decision | 2d12 has it? |
 |---|---|---|
 | 1 | What a check outside a fight is, and how many outcomes it has | **Yes, in the rulebook:** a Check is one Attribute Modifier against a DC (default 13), with the three Tiers |
-| 2 | What a failure costs | Proposal only (`roleplay-skills.md` item 6); Alert is a ready price for loud magic (`expedition-loop.md`) |
+| 2 | What a failure costs | Proposal only (`roleplay-skills.md` item 6); Alert is a ready price for loud magic (`book/ideas/expedition-loop.md`) |
 | 3 | What "trained" means, in one sentence | Proposal only (items 1 and 2: a skill never grants permission, it makes you better) |
 | 4 | Whether anything succeeds without a roll, and for whom | Proposal only (Routine, item 5; "no certainty", item 2) |
 | 5 | What form help takes on someone else's check | **Yes, for the currency:** Boons and Banes with their named limits. Whether magic may give one outside a fight is the stance (step 1 of `magic-out-of-combat.md`) |

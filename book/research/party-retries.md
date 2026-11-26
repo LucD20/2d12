@@ -37,5 +37,5 @@
 - **Decision 117 already says who rolls** (the best suited), but not whether someone else may roll after a failure. That is the gap.
 - **Routine covers the no-stakes chest only when the best character's number already meets the DC.**
 - **Tier 1 "no, or yes at a real cost"** (116) is Fate's and Daggerheart's "every failure changes the situation", if the GM uses the "real cost" side.
-- **Alert** (`expedition-loop.md`) has no step that time alone raises, so time spent retrying costs nothing in a site today.
+- **Alert** (`book/ideas/expedition-loop.md`) has no step that time alone raises, so time spent retrying costs nothing in a site today.
 - **Lucas's "Tier 1 means failure and nobody can try again"** has its nearest printed relative in Draw Steel's negotiation (the same argument twice is a Tier 1) and Sly Flourish.

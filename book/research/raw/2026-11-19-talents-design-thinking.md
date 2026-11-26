@@ -6,7 +6,7 @@
 
 **Scope.** The arguments designers make about character options, across games. Not a catalogue of systems (three other reports cover the d20 feats, the free picks and the trees). **Nothing here designs 2d12's Talents.**
 
-**What was read first.** Chapter 5 (the level list, "Levels give options; Stages change the numbers", Swapping on a Rest); `rules-src/set-aside/16-talents.md`; rules-backlog.md, "TALENT STRUCTURE: PROPOSAL"; `roleplay-skills.md` (all); `class-charter.md` (all); `options-talents.md` (skimmed); `magic-design.md` decisions 113 to 118 and 121, sections 3.2 and 5l; `research/README.md`, `nova-burst.md`, `progression-feel.md`, `magic-vs-skills.md` (not repeated here).
+**What was read first.** Chapter 5 (the level list, "Levels give options; Stages change the numbers", Swapping on a Rest); `rules-src/set-aside/16-talents.md`; rules-backlog.md, "TALENT STRUCTURE: PROPOSAL"; `roleplay-skills.md` (all); `class-charter.md` (all); `archive/book-drafts/options-talents.md` (skimmed); `magic-design.md` decisions 113 to 118 and 121, sections 3.2 and 5l; `research/README.md`, `nova-burst.md`, `progression-feel.md`, `magic-vs-skills.md` (not repeated here).
 
 **How far to trust it.** Other people's opinions and other games' rules, never 2d12's.
 

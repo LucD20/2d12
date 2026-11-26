@@ -92,7 +92,7 @@ Also on record:
 ## 7. How it applies to 2d12 (observations)
 
 - **"The limit is printed in the spell" is 2d12's least-ambiguity rule seen from outside.** The research's fixes are all things a card can say: a count, a wait, "the target knows", "you must have seen it", loud, slow.
-- **Several fixes are already 2d12's decisions.** A casting is always noticed unless [Subtle] (97): the charm that is known, the truth zone the target is aware of. A hostile Action on an aware creature rolls Initiative (`items-economy.md` Part 2, item 1). Loud magic has a price ready: the site's Alert (`expedition-loop.md`). Magic never takes a whole turn and charm is "can't target it" (39).
+- **Several fixes are already 2d12's decisions.** A casting is always noticed unless [Subtle] (97): the charm that is known, the truth zone the target is aware of. A hostile Action on an aware creature rolls Initiative (`items-economy.md` Part 2, item 1). Loud magic has a price ready: the site's Alert (`book/ideas/expedition-loop.md`). Magic never takes a whole turn and charm is "can't target it" (39).
 - **Toolbox against solution is a test a card can be held to:** does its text name the obstacle it removes, or a thing it does?
 - **"No certainty" is already the project's proposal for every out-of-combat ability** (`roleplay-skills.md`): the research's "yes, but" and "clues more than answers" are the same stance.
 - **Decision 106 has printed relatives:** the chosen, free, visible mark (a sigil; the nimbus) and the rating that is also a temperament (RuneQuest). The warning: a mark that depends on the GM remembering it dies, and a penalty invites buying it off.

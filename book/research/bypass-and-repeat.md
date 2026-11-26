@@ -58,10 +58,10 @@ The games praised for keeping attrition alive make recovery spend something slow
 - **Wounds leave only at a Rest, one Check for each kind** (Chapter 4): one attempt a Rest.
 - **Conditions follow how they end; a timer is unchanged outside a fight; an Encounter Action used between fights stays spent; the bag of rats** (`items-economy.md` Part 2, items 5 to 12).
 - **"You can try again if you can pay again"** for magic (116); "not the same witness again before a Sleep" (128); repeating an approach in a Challenge takes 1 Bane (`roleplay-skills.md` item 9).
-- **Time costs something in a site:** Alert, a Sleep rolled against it (`expedition-loop.md`).
+- **Time costs something in a site:** Alert, a Sleep rolled against it (`book/ideas/expedition-loop.md`).
 - **Talents T1 and T2** (`talents-design.md`): this checklist is T2's test.
 
 **Three things the researcher flags in the project's own files:**
-1. **The rulebook still prints "Take a Breather"** (Chapter 4), deleted by decision 56 but not yet written out; `expedition-loop.md` items 11 and 13 still use it.
-2. **Chapter 4's hourly healing while Unconscious** ("every hour you remove damage equal to what one of your Rally Points removes") is a heal priced only in time, and Chapter 4 doesn't say whether a sleeping character is Unconscious; `expedition-loop.md` says "a Sleep heals nothing".
+1. **The rulebook still prints "Take a Breather"** (Chapter 4), deleted by decision 56 but not yet written out; `book/ideas/expedition-loop.md` items 11 and 13 still use it.
+2. **Chapter 4's hourly healing while Unconscious** ("every hour you remove damage equal to what one of your Rally Points removes") is a heal priced only in time, and Chapter 4 doesn't say whether a sleeping character is Unconscious; `book/ideas/expedition-loop.md` says "a Sleep heals nothing".
 3. **No general retry rule for a plain Check exists** in the rulebook: checklist line 1 is open for skills.
