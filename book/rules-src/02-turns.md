@@ -75,14 +75,18 @@ A **Reaction** is an Action you use in response to something another creature do
 - **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it. An Interrupt on a creature that **would damage** someone happens once the triggering Action's roll is made and its damage is known, before that damage is dealt: the Reaction can't change that roll.
 - **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
 - **Interrupts before Triggers:** When an Interrupt and a Trigger respond to the same Action, every Interrupt resolves before any Trigger.
+- **At its moment:** A Reaction happens at the moment it names, not at the end of the triggering Action. When that moment comes in the middle of an Action (its damage, with an Effect still to come), the Reaction is resolved there, whole, and everything the Action hasn't done yet waits for it: what follows the damage in the Tier's line, an Effect line written after the Tiers, a later target. Then the Action goes on with what it has left, if it still can.
 - **Once per triggering Action:** You can react only once to the same Action, but several creatures can react to it. Some Actions, mainly Move Actions, can happen throughout different squares. It is still a single Action, and you decide when you take the Reaction: for instance, you can wait for the creature to move into a more advantageous position before taking your Reaction, instead of taking it as soon as the creature moves.
 - **Multiple creatures reacting to the same trigger, at the same time:** You must decide to react before making the rolls: when a creature triggers a Reaction from several creatures, they all decide whether they will react before making any rolls. The creatures taking the Reactions decide the order; if they are opposed, the GM decides or asks for a simple Check to decide who goes first, similar to how Initiative is rolled. If the triggering creature becomes an invalid target after a creature reacts (such as being killed), the remaining creatures still lose the AP as if they had used the Reaction.
 - **On any turn:** A Reaction can happen during any turn, including your own: if another creature's Action moves them away from you during your turn, you can react to that.
 - You can't use an Action outside your turn unless it is a Reaction.
 
+> [!example]
+> Lonny, an Archer, stabs a wisp with Darting Blade, whose Effect line, written after its Tiers, says "You Evade 2". The damage would put the wisp Down, and the wisp has Dying Flare: "Interrupt: the wisp would go Down", a 1 Emanation around it. The Flare happens at that moment, before Lonny's Evade: he is still next to the wisp, so he is in the Area and makes the Save. Then the wisp goes Down, and only then does Lonny Evade 2.
+
 ### What a Reaction Responds To
 
-An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action; an enemy would enter a square adjacent to you or to an ally; an enemy moves closer to you (see [[Moving Closer]]); a creature would be moved by [[Forced Movement]], or would fall Prone; a creature moves away from you (see [[Moving Away]]); a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or enters a square from which it Flanks you. A card can name another moment, as long as the rules define when it happens: "ends a Move Action" is not one.
+An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action; an enemy would enter a square adjacent to you or to an ally (see [[Entering a Square]]); an enemy moves closer to you (see [[Moving Closer]]); a creature would be moved by [[Forced Movement]], or would fall Prone; a creature moves away from you (see [[Moving Away]]); a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or enters a square from which it Flanks you. A card can name another moment, as long as the rules define when it happens: "ends a Move Action" is not one.
 
 While the name "triggering" is similar to "Trigger", it isn't only for Trigger Reactions: it also applies to Interrupt Reactions. The **triggering creature** is the creature who caused the Reaction to happen; the **triggering Action** is the Action that caused the Reaction to happen, and so on.
 
@@ -117,6 +121,17 @@ An Interrupt disrupts the Action before it happens. For example, a Reaction with
 A Trigger that names a Move Action fires at any point during the Move Action (after the first square it moves), but it is a single trigger: you can use the Reaction only once per Move Action, even with AP to spare. If the Action does something before moving (Stand, then Advance), the Stand happens first; the Trigger fires during the Advance.
 
 When the disrupted Action is only a Linked Action, the Action stops only if that part is necessary for it. What already happened stays, and a disrupted movement ends in the square the creature was in. For example, a Charge disrupted before the creature has moved the 3 squares it needs is cancelled, and they make no Basic Attack. If it is disrupted after those 3 squares, the Charge ends there, and they make the Basic Attack if there is a valid target.
+
+### Entering a Square
+
+A creature **enters a square** when its own movement brings it into that square. A moment about movement is always about the creature it names: "an enemy enters a square adjacent to you" happens when that enemy moves into such a square, never when you move next to it. **When you are the one who moves, the other creature has entered nothing**, has not moved closer to you and has not moved away from you, and nothing that waits for one of those happens.
+
+- Only the creature's own Move Action counts: Evade, Forced Movement and Reposition don't trigger Reactions (see [[Moving Closer]]).
+- A creature already adjacent to you that moves to another square adjacent to you enters a square adjacent to you.
+- For a creature larger than one square, a square is adjacent to it when it is adjacent to any square of its space.
+
+> [!example]
+> An ogre has Backhand: "Trigger: an enemy enters a square adjacent to the ogre." Jared stands 3 squares from it. On its turn the ogre Advances and stops next to Jared: Jared entered no square, so the ogre can't use Backhand. On his own turn Jared Advances from one square beside the ogre to another square beside it: he entered a square adjacent to the ogre, and it can use Backhand.
 
 ### Moving Closer
 

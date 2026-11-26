@@ -69,6 +69,7 @@
 | [[Engaged\|**Engaged**]] | You are adjacent to an enemy and both of you can be Engaged, whatever you perceive. Other rules use it. |
 | [[End of Encounter\|**EoE**]] | Until the encounter ends. |
 | [[End of Turn\|**EoT**]] | Until the end of the turn of the affected creature. |
+| [[Entering a Square\|**Enters a square**]] | A creature's own movement brings it into the square. When you move next to a creature, it has entered nothing. |
 | [[Escalation\|**Escalation**]] | A PC's adrenaline, a level from 1 to 6, never spent: 1 + the party's Momentum at the start of an encounter, +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough. |
 | [[Escalation\|**Escalation hook**]] | Your class's event that, once an encounter, raises your Escalation by 1 (the Paladin: an ally becomes Bloodied or goes Down; the Archer: an enemy you damaged goes Down). |
 | [[Evade\|**Evade**]] | Movement that doesn't trigger reactions, in one piece; not into Difficult Terrain, except across an ally's space. |

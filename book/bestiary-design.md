@@ -477,3 +477,13 @@ Lucas, on the Elite's open rule (K6): "Ok, lets settle it and start." **Proposed
 - **Playtest 8** (decision 16; the fights suggested in the same brief).
 - **After it:** the retune, then the Boss, the roles as offsets, the budget's bands, the pricing.
 - **What is left of the Bestiary, besides the Boss and the numbers (2026-11-25):** more creatures (four exist, one a rank); the budget (the CV of the easy, hard and deadly bands, the caps, the party's size, the fights a day); the roles; whether the ratings (Terrible to Extreme) come back at all; a simple pricing for an NPC's Actions (ready lines by rank and AP cost); how a level 2 or 3 creature is written (options, never numbers); the later Stages; the list of Tags (Chapter 7's open box; Goblin and Ogre are in use); in Foundry, the NPC Builder tab (still on the old tables) and the SIM (frozen on the old Bestiary).
+
+## Playtest 8 against the decisions (2026-11-26; `book/playtest-8.md`; one fight: nothing here changes a number)
+
+The first fight on the rebuilt numbers: the four pregens against the Ogre Chieftain, the Orc Warrior, the Grave Wisp and two Goblin Sneaks (CV 410, 102 a PC), measured by the Encounter Log.
+
+- **Decisions 1 and 2 (the cost, the bands): on target.** 45 damage reached Health; one Rally Point of each PC removes 34 together: **1.3 Rally Points a PC, no Down** (normal is 1¼ to 1¾).
+- **Decision 4 (the benchmark turn): close.** The party dealt 147 in two rounds, 18.4 a turn against the table estimate of 17. Its dice were a little above average (6 Tier 3s in 20 rolls, about 3½ expected).
+- **Decision 14 (about 8 to Health a Standard's turn): close.** 45 over 6 enemy turns worth 6.1 Standard turns: about 7. But 25 of the 50 raw was one Action, Crack the Ground.
+- **Decision 13 (decided in round 2, over in round 3): a round short.** Over at the end of round 2. The enemies had 130 Health in all and the party deals about 69 a round: the numbers themselves give 1.9 rounds when nothing is wasted, and almost nothing was. Three of the five enemies never had a second turn. Lucas: "It played much much much faster"; "easy until the ogre did his turn"; "almost brainless, doing attack after attack".
+- **To watch in the next playtests (no decision):** whether fights keep ending in round 2. If they do, "over in round 3" needs either more Health than 36 a PC or fewer enemies dying before a second turn; and a two-round fight leaves no room for control (Trip, Demoralize), which is what his notes on the maneuvers describe.
