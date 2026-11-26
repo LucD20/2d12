@@ -70,7 +70,7 @@ const log = [
 const st = EL.computeEncounterStats(log, creatures);
 const av = st.rows.find(x => x.id === "t_av"), du = st.rows.find(x => x.id === "t_du");
 console.log("2. Health Pressure %:", `Av raw=${av.rawTaken} red=${av.reducedTaken} net=${av.netTaken}/${av.maxHp} taken=${Math.round(av.takenPct)}% att=${Math.round(av.attemptedPct)}%`,
-  "| Du prevented:", du.prevented, "| Party:", `${Math.round(st.party.takenPct)}% taken / ${Math.round(st.party.attemptedPct)}% att (${st.g9.label})`);
+  "| Du prevented:", du.prevented, "| Party:", `${Math.round(st.party.takenPct)}% taken / ${Math.round(st.party.attemptedPct)}% att (${st.difficulty.text})`);
 console.log("3. Section R watchlist:", `crits=${st.sectionR.crits.length} states=${st.sectionR.states.length} rxCol=${st.sectionR.rxCollision.length} push0=${st.sectionR.pushZero.length}`);
 
 // 3. voidLast regression check (!x.off, no TDZ crash)

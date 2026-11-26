@@ -16,7 +16,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.9 | 34 |
 | 12-paladin.md | Paladin | paladin |  | 3.6 | 94 |
 | 13-archer.md | Archer | archer |  | 4.0 | 97 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 20.5 | 226 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 19.4 | 206 |
 | 15-gear.md | Gear | gear |  | 13.2 | 201 |
 
 ## 01-roll.md: Chapter 1: The Roll
@@ -287,36 +287,33 @@ Open (to be decided) boxes: 19: "Levels 1 to 3 are written. Level 4 (the Apex an
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 
-- 6: ## Measuring a fight
-- 8:   ### The cost of a fight
-- 15:   ### Difficulty
-- 29:   ### The normal fight
-- 37: ## Building an encounter
-- 46: ## The ranks
-- 60:   ### Minions
-- 64:   ### Ticks
-- 81:   ### Squads
-- 85:   ### Grunts
-- 91:   ### Minor enemies
-- 95:   ### Standards
-- 104:   ### Elites
-- 110:   ### The Boss
-- 115: ## An NPC's numbers
-- 127:   ### Speed, Size and Steadiness
-- 131:   ### NPCs and Health
-- 135: ## An NPC's Actions
-- 143:   ### What an Action attacks, rolls and damages
-- 157:   ### Basic attacks
-- 163:   ### Losing its weapon
-- 170:   ### Its other Actions
-- 174:   ### NPC Reactions
-- 181: ## The playtest creatures (Stage 0, level 1)
-- 185:   ### Goblin Sneak
-- 194:   ### Grave Wisp
-- 206:   ### Orc Warrior
-- 216:   ### Ogre Chieftain
+- 6: ## Building an encounter
+- 18:   ### The normal fight
+- 26: ## The ranks
+- 40:   ### Minions
+- 44:   ### Ticks
+- 61:   ### Squads
+- 65:   ### Grunts
+- 71:   ### Minor enemies
+- 75:   ### Standards
+- 84:   ### Elites
+- 90:   ### The Boss
+- 95: ## An NPC's numbers
+- 107:   ### Speed, Size and Steadiness
+- 111:   ### NPCs and Health
+- 115: ## An NPC's Actions
+- 123:   ### What an Action attacks, rolls and damages
+- 137:   ### Basic attacks
+- 143:   ### Losing its weapon
+- 150:   ### Its other Actions
+- 154:   ### NPC Reactions
+- 161: ## The playtest creatures (Stage 0, level 1)
+- 165:   ### Goblin Sneak
+- 174:   ### Grave Wisp
+- 186:   ### Orc Warrior
+- 196:   ### Ogre Chieftain
 
-Open (to be decided) boxes: 26: "How many fights a day between Rests holds: the old guide (two easy, tw"; 43: "Not rebuilt yet: the CV of the easy, hard and deadly difficulties; the"; 112: "The Boss (a rank for a fight against a single creature, or one with on"; 124: "Not rebuilt yet: the ratings (Terrible, Low, Medium, High, Extreme) an"; 165: "Disarming and breaking weapons are not written yet."; 178: "Pricing an NPC's Actions is not rebuilt yet: the old points engine, th"
+Open (to be decided) boxes: 12: "Not rebuilt yet: the CV of an easy, a hard and a deadly fight; the cap"; 15: "How many fights a day between Rests holds: the old guide is two easy, "; 92: "The Boss (a rank for a fight against a single creature, or one with on"; 104: "Not rebuilt yet: the ratings (Terrible, Low, Medium, High, Extreme) an"; 145: "Disarming and breaking weapons are not written yet."; 158: "Pricing an NPC's Actions is not rebuilt yet: the old points engine, th"
 
 ## 15-gear.md: Gear
 

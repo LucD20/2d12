@@ -239,6 +239,8 @@ Lucas's question: what comes first, numbers, roles and ranks, what we compare th
 
 ### Decision 2 (taken): each band in a sentence, and the day
 
+> **The current measure (2026-11-26):** the cost and the difficulty table with their final edges are in "The designers' measure of a fight, out of the book (Lucas, 2026-11-26)" below; the table here is kept as it was.
+
 G9's targets (decided 2026-11-21) restated in decision 1's unit, each with its Down line. The Down lines are words until play gives their rates.
 
 | Band | Cost (Rally Points a PC) | G9 | Its sentence |
@@ -262,6 +264,8 @@ G9's targets (decided 2026-11-21) restated in decision 1's unit, each with its D
 ### Decision 4 (revised by Lucas, 2026-11-25): the benchmark is the plain PC
 
 > **Corrected by Lucas, 2026-11-26 (OPEN):** the benchmark is not "no class at all"; a **margin** for the power a class adds is to be left. See "Lucas's review of the chapter's wording (2026-11-26)" below. The text of this decision is kept as it was.
+>
+> **The margin's size (Lucas, 2026-11-26): "Margin: I will roll two more playtests and then we adjust from there."** No value is set: two more playtests first, then the numbers are adjusted from there (with the retune, decision 16).
 
 **Lucas:** "we should compare to the core [...] We dont want people to be forced to play certain roles." The first version of this decision used the four pregens (two Paladins, two Archers) and let their cards into the monster's numbers (Judge, Shield of Faith, Lay On Hands' Guard). **A monster is built against the core alone.**
 
@@ -513,7 +517,39 @@ His words:
 - In playtest 8 (`playtest-8.md`) the party dealt 18.4 a turn against the table estimate of 17; class cards took 5 of the 50 raw damage the enemies dealt (all of it from the ogre's hits).
 - The fight ended in round 2, against decision 3's "decided in round 2, over in round 3".
 
-**Still open with it:** which cost separates Hard from Deadly (2¾ or 3 Rally Points a PC: the book says 3, the Encounter Log's line about 2.7, its 68%); the other "by default" sentences of Chapter 14, listed for Lucas (every NPC has two Basic attacks; no NPC has a Reaction; 2 ticks; the ranks' table of defaults; a creature changes its rank's default inside the totals; and the rest in the report of 2026-11-26).
+**Still open with it:** which cost separates Hard from Deadly (2¾ or 3 Rally Points a PC: the book says 3, the Encounter Log's line about 2.7, its 68%); the other "by default" sentences of Chapter 14, listed for Lucas (every NPC has two Basic attacks; no NPC has a Reaction; 2 ticks; the ranks' table of defaults; a creature changes its rank's default inside the totals; and the rest in the report of 2026-11-26). *Answered the same day: see the next entry.*
+
+### The designers' measure of a fight, out of the book (Lucas, 2026-11-26; Chapter 14, Foundry v0.0.524)
+
+His words:
+
+- "Band: this shouldn't be in the book, the people reading the book don't need to know this part of the mechanics. It is a designers thing only. But for our notes, it should be 3 for deadly."
+- "Margin: I will roll two more playtests and then we adjust from there."
+- "All rest are good." (the seven other "by default" sentences of Chapter 14 listed for him.)
+
+**What it decides:**
+
+- **The measure of a fight is not in the rulebook, by Lucas's decision.** Chapter 14's section "Measuring a fight" ("The cost of a fight" and "Difficulty", with the table and the sentence "The difficulties are wide on purpose: dice swing, and a fight often costs more or less than its difficulty says.") left the book. It is a designers' tool: this record and the Encounter Log (Foundry v0.0.524 names a fight by it) keep it. "The normal fight" (CV 100 a PC) stays in the book, now under "Building an encounter", with the open box on the fights a day (its Rally Point clause dropped). The words easy, normal, hard and deadly stay in the book as plain words for a fight's CV. No rule of play changed.
+- **Hard ends at 3; Deadly is above 3** (the question "2¾ or 3" is answered: 3).
+- **The margin (decision 4's correction): no value.** Two more playtests, then the numbers are adjusted from there.
+- **The seven "by default" sentences of Chapter 14 stay as they are**; the changes of v0.0.523 stand.
+
+**The designers' measure, as it now stands** (decision 1's text as the chapter had it; the table with its final edges):
+
+A fight is measured by two things, always together:
+
+1. **Its cost, in Rally Points a PC.** Add all the damage that reached the PCs' Health during the fight, healed in it or not (what Guard or a reduction took never reached Health, so it doesn't count). Divide it by what one Rally Point of each PC removes, added together. A cost of 1 means: every PC spends one Rally Point and the party is whole again.
+2. **Its Downs:** how many PCs went Down.
+
+| Difficulty | Cost (Rally Points a PC) | What it promises |
+|---|---|---|
+| **Easy** | about 1 (up to 1¼) | The party spends a little and nobody should go Down. |
+| **Normal** | about 1½ (above 1¼, up to 2) | A real fight: the party spends, a PC goes Down now and then, the party doesn't lose. |
+| **Hard** | about 2½ (above 2, up to 3) | Expect a PC Down; the party wins if it plays well. |
+| **Deadly** | above 3 | Several PCs Down; the party can lose. |
+
+The difficulties are wide on purpose: dice swing, and a fight often costs more or less than its difficulty says.
+
 
 ### What comes next
 

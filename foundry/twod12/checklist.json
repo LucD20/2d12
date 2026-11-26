@@ -321,6 +321,19 @@
      "rev": 1
     }
    ]
+  },
+  {
+   "name": "The Encounter Log",
+   "items": [
+    {
+     "id": "dm-log-cost",
+     "v": "v0.0.524",
+     "title": "The Encounter Log names a fight by its cost in Rally Points a PC",
+     "do": "Start a combat with the four pregens, Aveline, Durgan, Sylwen and Kaela, against two Orc Warriors. Let the orcs deal damage to the PCs' Health (some to each), heal one PC with a Rally Point, then open the Encounter Log; afterwards apply damage by hand until the party has taken about 50, then about 85, then about 110 in all (count a healed point too).",
+     "expect": "The top line reads \"Party: N% HP · X.X RP a PC · Easy\" (one decimal; X.X is the damage that reached Health, healed or not, divided by 34, which is 9 + 9 + 8 + 8 for the four pregens' Rally Points). The name follows the cost: up to 1.25 Easy, above it up to 2 Normal (about 50 taken: 1.5), above 2 up to 3 Hard (about 85: 2.5), above 3 Deadly (about 110: 3.2); no \"Trivial\". The Health table's legend reads \"Difficulty by cost in Rally Points a PC: Easy up to 1¼ · Normal up to 2 · Hard up to 3 · Deadly above 3\". Copy for Analysis: its \"Party Health Cost\" line ends with the same \"X.X RP a PC · name\". The look is as before (the same label, colored by the name).",
+     "rev": 1
+    }
+   ]
   }
  ]
 }

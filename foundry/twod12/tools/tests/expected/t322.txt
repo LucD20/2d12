@@ -1,0 +1,6 @@
+1. edges: 0: 0.0 RP a PC · Easy (good) | 1: 1.0 RP a PC · Easy (good) | 1.25: 1.3 RP a PC · Easy (good) | 1.26: 1.3 RP a PC · Normal (gold) | 2: 2.0 RP a PC · Normal (gold) | 2.01: 2.0 RP a PC · Hard (warn) | 3: 3.0 RP a PC · Hard (warn) | 3.01: 3.0 RP a PC · Deadly (bad) | 4.5: 4.5 RP a PC · Deadly (bad)
+2. playtest 8: net 45, one Rally Point each 34, cost 1.32 | 1.3 RP a PC · Normal | healed damage still counts: true
+3. fallback: 34 1.3 RP a PC · Normal
+4. report line: **Party Health Cost:** 45/128 HP (**35%** taken vs **35%** attempted · 0 prevented · **1.3 RP a PC · Normal**)
+   json: Normal 1.3 | no g9 key: true
+   legend: Difficulty by cost in Rally Points a PC: Easy up to 1¼ · Normal up to 2 · Hard up to 3 · Deadly above 3 | old cuts gone: true

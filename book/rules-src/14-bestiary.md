@@ -3,28 +3,17 @@
 
 An NPC is built from its **rank**'s defaults: how much it counts for in a fight. **An NPC's items are flavor and loot:** its Health, Defenses and damage never come from its weapons or armor. **An NPC's Actions are its own:** written for it, never copies of a PC's cards.
 
-## Measuring a fight
+## Building an encounter
 
-### The cost of a fight
+Add up the **Combat Value (CV)** of the enemies: Minion 30, Grunt 50, Standard 100, Elite 200 (see [[The ranks]]). **CV 100 a PC is a normal fight.**
 
-A fight is measured by two things, always together:
-
-1. **Its cost, in Rally Points a PC.** Add all the damage that reached the PCs' Health during the fight, healed in it or not (what Guard or a reduction took never reached Health, so it doesn't count). Divide it by what one Rally Point of each PC removes, added together. A cost of 1 means: every PC spends one Rally Point and the party is whole again.
-2. **Its Downs:** how many PCs went Down.
-
-### Difficulty
-
-| Difficulty | Cost (Rally Points a PC) | What it promises |
-|---|---|---|
-| **Easy** | about 1 (up to 1¼) | The party spends a little and nobody should go Down. |
-| **Normal** | about 1½ (above 1¼, up to 2) | A real fight: the party spends, a PC goes Down now and then, the party doesn't lose. |
-| **Hard** | about 2½ (above 2, up to 3) | Expect a PC Down; the party wins if it plays well. |
-| **Deadly** | above 3 | Several PCs Down; the party can lose. |
-
-The difficulties are wide on purpose: dice swing, and a fight often costs more or less than its difficulty says.
+- A Minion's CV of 30 is for Minions mixed with other enemies; about three of them count for one PC. A fight of Minions alone is not a straight line: the last ones standing act the most, so eight against four PCs are less than an easy fight and sixteen a hard one.
 
 > [!tbd]
-> How many fights a day between Rests holds: the old guide (two easy, two normal and one hard fight) spends the whole Rally Point pool; to confirm at the table.
+> Not rebuilt yet: the CV of an easy, a hard and a deadly fight; the caps (Minions a PC, a Boss); the party's size; what an NPC of an earlier Stage counts for. Until then, the GM reads how hard a fight is from its CV against CV 100 a PC.
+
+> [!tbd]
+> How many fights a day between Rests holds: the old guide is two easy, two normal and one hard fight; to confirm at the table.
 
 ### The normal fight
 
@@ -33,15 +22,6 @@ The difficulties are wide on purpose: dice swing, and a fight often costs more o
 - **It is decided in round 2 and over in round 3.**
 - **It is built for a fresh party at Momentum 0:** full Health, Rally Points in hand. **Momentum doesn't change the budget:** it is the party's reward.
 - **The enemies spread their attacks** as far as their Actions make them. Every enemy striking the same PC is the GM's choice, and it makes the fight harder than its CV says.
-
-## Building an encounter
-
-Add up the **Combat Value (CV)** of the enemies: Minion 30, Grunt 50, Standard 100, Elite 200 (see [[The ranks]]). **CV 100 a PC is a normal fight.**
-
-- A Minion's CV of 30 is for Minions mixed with other enemies; about three of them count for one PC. A fight of Minions alone is not a straight line: the last ones standing act the most, so eight against four PCs are less than an easy fight and sixteen a hard one.
-
-> [!tbd]
-> Not rebuilt yet: the CV of the easy, hard and deadly difficulties; the caps (Minions a PC, a Boss); the party's size; what an NPC of an earlier Stage counts for. Until then, the difficulty of a fight is the GM's reading of its CV against CV 100 a PC.
 
 ## The ranks
 

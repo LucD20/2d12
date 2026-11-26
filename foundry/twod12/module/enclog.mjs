@@ -77,6 +77,7 @@ export function unifiedCreatures(combat, overrides = null) {
       maxHp,
       vigMax: Number(s.vigMax ?? sys.bdt) || 0,
       resMax: Number(s.resMax ?? sys.mdt) || 0,
+      rallyHeal: Number(s.rallyHeal ?? sys.rallyHeal) || Math.ceil(maxHp / 4),
       startHp,
       liveHp: Math.max(0, maxHp - dmgNow)
     });
@@ -174,12 +175,16 @@ export function exportText(log, { abbr = {}, short = true, details = false, full
 }
 
 /* ------------------------------------------------------------------ pure: v0.0.488 analytics (Health Pressure %, Offense, Matrix, Section R) */
-export function g9DifficultyBand(pct) {
-  if (pct < 20) return { label: "Trivial (<20%)", cls: "muted" };
-  if (pct < 32) return { label: "Easy (~25%)", cls: "good" };
-  if (pct <= 48) return { label: "Normal (35–45%)", cls: "gold" };
-  if (pct <= 68) return { label: "Hard (55–65%)", cls: "warn" };
-  return { label: "Deadly (>65%)", cls: "bad" };
+/** v0.0.524: a fight's difficulty by its cost in Rally Points a PC (book/bestiary-design.md, "The designers' measure of a fight":
+ *  Easy up to 1¼, Normal above 1¼ up to 2, Hard above 2 up to 3, Deadly above 3). The cost: all the damage that reached the
+ *  PCs' Health, healed or not, divided by what one Rally Point of each PC removes (ceil(Health Pool / 4) each), added together. */
+export const DIFFICULTY_LEGEND = "Difficulty by cost in Rally Points a PC: Easy up to 1¼ · Normal up to 2 · Hard up to 3 · Deadly above 3";
+export function fightDifficulty(cost) {
+  const c = Number(cost) || 0, txt = `${c.toFixed(1)} RP a PC`;
+  if (c <= 1.25) return { label: "Easy", cost: c, text: `${txt} · Easy`, cls: "good" };
+  if (c <= 2) return { label: "Normal", cost: c, text: `${txt} · Normal`, cls: "gold" };
+  if (c <= 3) return { label: "Hard", cost: c, text: `${txt} · Hard`, cls: "warn" };
+  return { label: "Deadly", cost: c, text: `${txt} · Deadly`, cls: "bad" };
 }
 
 /** Pure: compute full encounter telemetry from log entries and unified creature metadata. */
@@ -189,7 +194,7 @@ export function computeEncounterStats(log, creatures = []) {
   const byId = new Map(), byUuid = new Map(), byName = new Map();
   const makeRow = c => ({
     id: c.id, actorUuid: c.actorUuid ?? "", name: c.fullName ?? c.name ?? "?", abbr: c.abbr ?? c.name ?? "?",
-    side: c.side ?? "npc", maxHp: Number(c.maxHp) || 0, startHp: Number.isFinite(c.startHp) ? c.startHp : (Number(c.maxHp) || 0),
+    side: c.side ?? "npc", maxHp: Number(c.maxHp) || 0, rallyHeal: Number(c.rallyHeal) || Math.ceil((Number(c.maxHp) || 0) / 4), startHp: Number.isFinite(c.startHp) ? c.startHp : (Number(c.maxHp) || 0),
     liveHp: Number.isFinite(c.liveHp) ? c.liveHp : null,
     rawTaken: 0, reducedTaken: 0, reducedNotes: [], selfAllyTaken: 0, adjust: 0, cardsTaken: 0,
     rawDealt: 0, removedOff: 0, cardsOff: 0,   // v0.0.511: its own damage, before reductions, and what reductions (and cards among them) took off it
@@ -336,15 +341,16 @@ export function computeEncounterStats(log, creatures = []) {
     const nv = grp.reduce((a, x) => a + x.takenV, 0), nr = grp.reduce((a, x) => a + x.takenR, 0), net = grp.reduce((a, x) => a + x.netTaken, 0);
     const maxHp = grp.reduce((a, x) => a + x.maxHp, 0), heal = grp.reduce((a, x) => a + x.healTaken, 0);
     const rp = grp.reduce((a, x) => a + x.rpSpent, 0), currentHp = grp.reduce((a, x) => a + x.currentHp, 0);
-    const dealt = grp.reduce((a, x) => a + x.dealtV + x.dealtR, 0);
+    const dealt = grp.reduce((a, x) => a + x.dealtV + x.dealtR, 0), rallyOne = grp.reduce((a, x) => a + x.rallyHeal, 0);
     return {
-      raw, red, sa, adj, nv, nr, net, maxHp, heal, rp, currentHp, dealt,
+      raw, red, sa, adj, nv, nr, net, maxHp, heal, rp, currentHp, dealt, rallyOne,
+      rpCost: rallyOne > 0 ? net / rallyOne : 0,
       takenPct: maxHp > 0 ? (net / maxHp) * 100 : 0,
       attemptedPct: maxHp > 0 ? (raw / maxHp) * 100 : 0
     };
   };
   const party = sumGroup(pcs), enemies = sumGroup(npcs);
-  return { rounds, rows, pcs, npcs, party, enemies, g9: g9DifficultyBand(party.takenPct), sectionR };
+  return { rounds, rows, pcs, npcs, party, enemies, difficulty: fightDifficulty(party.rpCost), sectionR };
 }
 
 /** Pure: Markdown Analysis Bundle (default Copy for Analysis). */
@@ -354,7 +360,7 @@ export function exportAnalysis(log, creatures = [], { title = "Encounter", outco
   const nm = r => byId[r?.id]?.abbr ?? byId[r?.id]?.fullName ?? r?.name ?? "?";
   const lines = [];
   lines.push(`# 2d12 Encounter Report — ${title} (${st.rounds} ${st.rounds === 1 ? "round" : "rounds"}${outcome ? ` · ${outcome}` : ""})`);
-  lines.push(`**Party Health Cost:** ${st.party.net}/${st.party.maxHp} HP (**${Math.round(st.party.takenPct)}%** taken vs **${Math.round(st.party.attemptedPct)}%** attempted · ${st.party.red} prevented · ${st.g9.label})`);
+  lines.push(`**Party Health Cost:** ${st.party.net}/${st.party.maxHp} HP (**${Math.round(st.party.takenPct)}%** taken vs **${Math.round(st.party.attemptedPct)}%** attempted · ${st.party.red} prevented · **${st.difficulty.text}**)`);
 
   lines.push("", "## Incoming Damage & Health Pressure (% of Max HP)");
   lines.push("| Creature | Raw | Reduced | Self/Ally | Adjust | Net ([V]/[R]) | Max HP | Heal (RP) | Current | Taken % | Attempted % |");
@@ -440,7 +446,7 @@ export function exportJson(log, creatures = [], { title = "Encounter", outcome =
   return JSON.stringify({
     version: game?.system?.version ?? "0.0.488",
     title, outcome, rounds: st.rounds,
-    party: st.party, enemies: st.enemies, g9: st.g9.label,
+    party: st.party, enemies: st.enemies, difficulty: st.difficulty.label, rpCost: Math.round(st.difficulty.cost * 10) / 10,
     creatures: st.rows,
     sectionR: st.sectionR,
     log: (log ?? []).filter(e => !e.off)
@@ -608,6 +614,7 @@ export async function snapshotCombat(combat) {
       actorUuid: a?.uuid ?? "",
       side: a?.type === "character" || disp === 1 ? "pc" : "npc",
       maxHp, vigMax: Number(sys.bdt) || 0, resMax: Number(sys.mdt) || 0,
+      rallyHeal: Number(sys.rallyHeal) || Math.ceil(maxHp / 4),
       startHp: Math.max(0, maxHp - dmg)
     };
     changed = true;
@@ -771,7 +778,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
     const topBar = `<div class="el-top">
       <div class="el-top-l">
         <select class="el-sel" data-el-src aria-label="Select encounter">${srcOpts}</select>
-        <span class="el-g9 is-${st.g9.cls}">Party: ${Math.round(st.party.takenPct)}% HP · ${esc(st.g9.label)}</span>
+        <span class="el-g9 is-${st.difficulty.cls}">Party: ${Math.round(st.party.takenPct)}% HP · ${esc(st.difficulty.text)}</span>
       </div>
       <div class="el-top-r">
         <button type="button" class="el-btn primary" data-el="copy-analysis"><i class="fa-solid fa-copy" aria-hidden="true"></i> Copy for Analysis</button>
@@ -825,7 +832,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
       </tr>`;
 
       const healthTbl = `<div class="el-sec">
-        <div class="el-shd"><span>Incoming Damage &amp; Health Pressure (% of Max HP)</span><small>G9 targets: Easy ~25% · Normal 35–45% · Hard 55–65%</small></div>
+        <div class="el-shd"><span>Incoming Damage &amp; Health Pressure (% of Max HP)</span><small>${esc(DIFFICULTY_LEGEND)}</small></div>
         <div class="el-tblwrap"><table class="el-tbl"><thead><tr>
           <th>Creature</th><th class="c">Raw</th><th class="c">Reduced</th><th class="c">Self/Ally</th><th class="c">Adjust</th>
           <th class="c">Net ([V]/[R])</th><th class="c">Max HP</th><th class="c">Heal (RP)</th><th class="c">Current</th>
