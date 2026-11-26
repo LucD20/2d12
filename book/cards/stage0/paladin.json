@@ -12,7 +12,7 @@
    "body": [
     {
      "label": "Judged",
-     "text": "A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier. Multiple Paladins can Judge the same creature: it is Judged by each of them."
+     "text": "Judged is not a condition: it ends only when the creature goes Down, when you Judge another creature, or with the encounter. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier. Multiple Paladins can Judge the same creature: it is Judged by each of them."
     }
    ],
    "traits": [
@@ -26,7 +26,7 @@
      "body": [
       {
        "label": "Special",
-       "text": "You can use this only at the start of an encounter, or as a 0R when the creature you Judged goes Down."
+       "text": "You can use this only at the start of an encounter, or as a Reaction (0R; Trigger: the creature you Judged goes Down)."
       },
       {
        "label": "Effect",
@@ -101,7 +101,7 @@
     },
     {
      "label": "Special",
-     "text": "When you use Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4."
+     "text": "Before you roll Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4."
     }
    ],
    "traits": [
@@ -138,7 +138,7 @@
    "body": [
     {
      "label": "Passive",
-     "text": "Your [[Basic Attack]] gains: **Strained:** You can Slide the target 1."
+     "text": "Your [[Basic Attack]] gains, after its Tiers: **Strained:** You can Slide the target 1."
     }
    ],
    "foundry": {
@@ -182,6 +182,10 @@
     {
      "label": "Bloodied",
      "text": "You can Slide the target that distance instead of pulling it."
+    },
+    {
+     "label": "Special",
+     "text": "This Action isn't Doomed for being Engaged."
     }
    ],
    "traits": [

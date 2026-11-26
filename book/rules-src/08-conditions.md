@@ -60,7 +60,7 @@ You can't use Move Actions or Evade. If you become Immobilized while you are mov
 An Immobilized creature is also hard to move. A Forced Movement or a Reposition that comes with no roll doesn't move you; the rest of the Action or effect happens.
 
 > [!example]
-> Lana is Immobilized and her ally, Jared, has a feature that says "At the start of your turn, you can Reposition 3 an ally within Reach." If Jared attempts to use this on Lana, nothing happens and the effect is wasted.
+> Lana is Immobilized and her ally, Jared, has a feature that says "At the start of your turn, you can Reposition 3 an ally within Reach." If Jared attempts to use this on Lana, she isn't moved.
 
 If the Action rolls, the movement also needs the roll to beat the [[Action DC]] of the Action that Immobilized you. A Save Action doesn't roll, but it always has a Modifier: the origin rolls 2d12 + that Modifier against that Action DC, once for all the Immobilized creatures it would move. If the result is below it, you aren't moved. The rest of the Action works as usual. Steadiness applies after this check.
 

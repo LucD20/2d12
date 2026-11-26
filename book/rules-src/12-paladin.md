@@ -23,7 +23,7 @@
 | Level | You gain | You choose |
 |---|---|---|
 | 1 | Judge, Smite, Sworn Blade, Drawing Light | a Hallmark Action, a Hallmark Reaction, a Skill Talent |
-| 2 | Kindled Wrath, your Escalation hook | an Encounter Pick, a Talent |
+| 2 | Kindled Wrath (your Escalation hook) | an Encounter Pick, a Talent |
 | 3 | | a Skill Talent |
 
 Level 4 brings the Apex and the numbers of Stage 1 (see [[Stages]]); it is not written yet.
@@ -38,7 +38,7 @@ Every Paladin has these four. **Judge** names the foe your god's attention is on
 
 @@CARD:Smite@@
 
-**Your Basic attacks.** Every character has the [[Basic Attack]]; your **Sworn Blade** adds a line to it, and **Drawing Light** is your own Power Basic attack: a cord of light that hauls a foe to you. A Weapon Basic attack (Vigor damage) pays off against a Strained foe, a Power one (Resolve damage) against a Bloodied foe, so the two feed each other.
+**Your Basic attacks.** Every character has the [[Basic Attack]]; your **Sworn Blade** adds a line to it, and **Drawing Light** is your own Power Basic attack: a cord of light that hauls a foe to you.
 
 @@CARD:Sworn Blade@@
 
@@ -57,10 +57,10 @@ Every Paladin has these four. **Judge** names the foe your god's attention is on
 
 ### Level 1: Hallmark Reaction
 
-**Choose one.** *Quick build: Shield of Faith.* Both are paid with your Reaction Point or with AP you kept from your turn (see [[Reactions]]).
+**Choose one.** *Quick build: Shield of Faith.*
 
-- **Shield of Faith** (Turn, 1R): when a foe would damage an ally, you take some of it off and draw the foe to you.
-- **Rebuke** (Turn, 1R): when a foe moves away from you, it slows and may stop.
+- **Shield of Faith** (Turn, 1R): when a foe would damage an ally, you take some of it off and the foe is Taunted by you.
+- **Rebuke** (Turn, 1R): when a foe moves away from you, it is Hindered and may be stopped.
 
 @@CARD:Shield of Faith@@
 
@@ -78,9 +78,9 @@ You gain Kindled Wrath: it raises your Escalation when an ally becomes Bloodied 
 
 **Choose one.** *Quick build: Bulwark of Faith.*
 
-- **Bulwark of Faith** (1R): you step into a blow meant for an ally.
-- **Consecrated Ground** (2 AP): holy ground that slows foes and steadies allies, for 3 rounds.
-- **Word of Radiance** (2 AP): a burst of light that burns and throws back the foes around you.
+- **Bulwark of Faith** (1R): when a blow is about to land on an ally, they gain a large Guard first, and you slide them 1 square after.
+- **Consecrated Ground** (2 AP): holy ground that is Difficult Terrain for foes and gives your side Guard, for 3 rounds.
+- **Word of Radiance** (2 AP): light around you that burns the foes near you and pushes them back.
 
 @@CARD:Bulwark of Faith@@
 

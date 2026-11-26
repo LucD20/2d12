@@ -11,7 +11,7 @@
    "body": [
     {
      "label": "Passive",
-     "text": "Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn since your last [Strike] Action (or since your turn began)."
+     "text": "Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn and have made no [Strike] Action since."
     }
    ],
    "foundry": {
@@ -108,7 +108,7 @@
    "body": [
     {
      "label": "Passive",
-     "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** Against a Strained target, a Tier 3 deals 1[D] more. **Special:** Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target."
+     "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** On a Tier 3, this Action deals 1[D] more. **Special:** Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target, as the weapon's damage (its pool and subtype)."
     }
    ],
    "foundry": {
@@ -280,7 +280,6 @@
      "text": "You Evade 1, then Advance 2."
     }
    ],
-   "distance": "5 sq.",
    "target": "One enemy",
    "foundry": {
     "img": "icons/svg/wing.svg",
@@ -674,7 +673,7 @@
    "body": [
     {
      "label": "Effect",
-     "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light (property)|Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
+     "text": "You Advance. Before the first square and after each square of this Advance, each enemy adjacent to you becomes a target of your [[Light (property)|Light]] weapon, once each. Once, at any point of the Advance, one creature within your bow's Range becomes a target of your bow; it can be a target of the Light weapon too. You draw and stow the two weapons freely during this Action."
     },
     {
      "label": "Special",
@@ -682,7 +681,7 @@
     },
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll."
+     "text": "Weapon vs. Armor Defense. Roll 3d12 once, when the first creature is hit: every hit of this Action uses those dice, each worked out on its own as for [[Several Targets]] (the first two dice, unless that hit is Favored or Doomed)."
     },
     {
      "label": "Tier 1",

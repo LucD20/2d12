@@ -56,7 +56,7 @@ If you end your turn without spending all your AP, you keep the rest until your 
 - An NPC gains no Guard from unspent AP (see [[NPC Reactions]]).
 
 > [!example]
-> Drak (Stage 0) has Guard 5 from a card and ends his turn with 1 AP left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 for 1 round, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.
+> Drak (Stage 0) has Guard 5 from a card and ends his turn with 1 AP left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 until he regains AP again, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.
 
 ### Losing and Gaining Action Points
 
@@ -109,7 +109,7 @@ A feature that says "when..." waits for a moment: you must perceive the creature
 
 ### Disrupting Actions
 
-When an Action is **disrupted**, it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical.
+When an Action is **disrupted**, what is left of it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical.
 
 A Reaction disrupts an Action only when its card says so. When an Interrupt does, the Action never starts and nothing of it happens. When a Trigger does, the Action stops where it is (see below).
 
@@ -160,7 +160,7 @@ Some Actions target a **willing** creature, and some rules change for an **unwil
 
 ### Requirements
 
-Some Actions have a **Requirement** line, the first of the card's labeled lines. To use the Action, you must meet them; otherwise you can't use it at all. They are checked when you start to use the Action, before you pay its cost and before any Setup. Charge requires at least Speed 3: with Speed 2, you can't Charge, and a Speed bonus that the Charge itself gives doesn't count toward it.
+Some Actions have a **Requirement** line, the first of the card's labeled lines. To use the Action, you must meet it; otherwise you can't use it at all. It is checked when you start to use the Action, before you pay its cost and before any Setup. Charge requires at least Speed 3: with Speed 2, you can't Charge, and a Speed bonus that the Charge itself gives doesn't count toward it.
 
 ### 0 AP Actions
 

@@ -378,12 +378,12 @@
   "cost": "1R",
   "body": [
    {
-    "label": "Trigger",
-    "text": "The target deals Vigor damage to the orc (the blow that makes it Bloodied counts)."
-   },
-   {
     "label": "Requirement",
     "text": "The orc is Bloodied."
+   },
+   {
+    "label": "Trigger",
+    "text": "The target deals Vigor damage to the orc (the blow that makes it Bloodied counts)."
    },
    {
     "label": "Effect",
@@ -1082,7 +1082,7 @@
   "escalation": null,
   "frequency": "At-will",
   "flavor": "A hand closes round you like a door shutting.",
-  "distance": "Reach",
+  "distance": "Reach (2)",
   "area": null,
   "target": "One creature",
   "traits": [
@@ -1540,6 +1540,10 @@
    {
     "label": "Bloodied",
     "text": "You can Slide the target that distance instead of pulling it."
+   },
+   {
+    "label": "Special",
+    "text": "This Action isn't Doomed for being Engaged."
    }
   ],
   "blocks": [],
@@ -1936,7 +1940,7 @@
   "escalation": null,
   "frequency": "Round",
   "flavor": "The club goes round at chest height.",
-  "distance": "Reach",
+  "distance": "Reach (2)",
   "area": null,
   "target": "Up to two creatures",
   "traits": [
@@ -2152,7 +2156,7 @@
   "escalation": null,
   "frequency": "At-will",
   "flavor": "The orc cuts low, at the leg that would carry you away.",
-  "distance": "Reach",
+  "distance": "Reach (1)",
   "area": null,
   "target": "One creature",
   "traits": [
@@ -2464,7 +2468,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light (property)|Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
+    "text": "You Advance. Before the first square and after each square of this Advance, each enemy adjacent to you becomes a target of your [[Light (property)|Light]] weapon, once each. Once, at any point of the Advance, one creature within your bow's Range becomes a target of your bow; it can be a target of the Light weapon too. You draw and stow the two weapons freely during this Action."
    },
    {
     "label": "Special",
@@ -2472,7 +2476,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll."
+    "text": "Weapon vs. Armor Defense. Roll 3d12 once, when the first creature is hit: every hit of this Action uses those dice, each worked out on its own as for [[Several Targets]] (the first two dice, unless that hit is Favored or Doomed)."
    },
    {
     "label": "Tier 1",
@@ -2800,7 +2804,7 @@
   "body": [
    {
     "label": "Judged",
-    "text": "A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier. Multiple Paladins can Judge the same creature: it is Judged by each of them."
+    "text": "Judged is not a condition: it ends only when the creature goes Down, when you Judge another creature, or with the encounter. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier. Multiple Paladins can Judge the same creature: it is Judged by each of them."
    }
   ],
   "blocks": [
@@ -2809,7 +2813,7 @@
     "body": [
      {
       "label": "Special",
-      "text": "You can use this only at the start of an encounter, or as a 0R when the creature you Judged goes Down."
+      "text": "You can use this only at the start of an encounter, or as a Reaction (0R; Trigger: the creature you Judged goes Down)."
      },
      {
       "label": "Effect",
@@ -2935,7 +2939,7 @@
   "escalation": null,
   "frequency": "Round",
   "flavor": "You were looking at the other one.",
-  "distance": "Reach",
+  "distance": "Reach (1)",
   "area": null,
   "target": "One creature",
   "traits": [
@@ -4849,7 +4853,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn since your last [Strike] Action (or since your turn began)."
+    "text": "Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn and have made no [Strike] Action since."
    }
   ],
   "blocks": [],
@@ -4861,7 +4865,7 @@
   "escalation": null,
   "frequency": "At-will",
   "flavor": "A short, ugly blade, and it knows where the armor ends.",
-  "distance": "Reach",
+  "distance": "Reach (1)",
   "area": null,
   "target": "One creature",
   "traits": [
@@ -4963,15 +4967,15 @@
   "escalation": null,
   "frequency": "Encounter",
   "flavor": "One of them drops, and the rest remember how much they hate you.",
-  "distance": null,
+  "distance": "6 sq.",
   "area": null,
-  "target": null,
+  "target": "One ally with the Goblin Tag",
   "traits": [],
   "cost": "1R",
   "body": [
    {
     "label": "Trigger",
-    "text": "An ally with the Goblin Tag within 6 squares goes Down."
+    "text": "The target goes Down."
    },
    {
     "label": "Effect",
@@ -5024,7 +5028,7 @@
   "escalation": null,
   "frequency": "Turn",
   "flavor": "The moment a foe commits to reaching you, you are already somewhere else.",
-  "distance": "5 sq.",
+  "distance": null,
   "area": null,
   "target": "One enemy",
   "traits": [],
@@ -5048,7 +5052,7 @@
   "escalation": null,
   "frequency": "At-will",
   "flavor": "It reaches for you and is already somewhere else.",
-  "distance": "Reach",
+  "distance": "Reach (1)",
   "area": null,
   "target": "One creature",
   "traits": [
@@ -5118,7 +5122,7 @@
    },
    {
     "label": "Special",
-    "text": "When you use Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4."
+    "text": "Before you roll Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4."
    }
   ],
   "blocks": [],
@@ -5320,7 +5324,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** Against a Strained target, a Tier 3 deals 1[D] more. **Special:** Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target."
+    "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** On a Tier 3, this Action deals 1[D] more. **Special:** Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target, as the weapon's damage (its pool and subtype)."
    }
   ],
   "blocks": [],
@@ -5535,7 +5539,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "Your [[Basic Attack]] gains: **Strained:** You can Slide the target 1."
+    "text": "Your [[Basic Attack]] gains, after its Tiers: **Strained:** You can Slide the target 1."
    }
   ],
   "blocks": [],
@@ -6013,7 +6017,7 @@
    },
    {
     "label": "Tier 2",
-    "text": "[R] 1 + 1d4 Ps."
+    "text": "[R] 1 + 1d4! Ps."
    },
    {
     "label": "Tier 3",

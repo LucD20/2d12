@@ -525,7 +525,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p>The damage of an Action is what its card says: it adds a Modifier or a weapon's damage only when the card writes [Mod] or [W].</p>
 <h3 id="modifier-damage-mod">Modifier Damage [Mod]</h3>
 <p>When an Action deals damage equal to your Modifier, it is written <strong>[Mod]</strong>. The Modifier is always the one you used to roll for that Action. You never add a Modifier to the same damage twice.</p>
-<p>When a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action adds your Modifier to its damage, the Modifier joins the <strong>weapon's damage</strong> and keeps its damage type and subtype: if the weapon deals Resolve damage, so does the Modifier. A Tier of a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action that writes no [W] deals its damage as the weapon's damage too, with the weapon's type and subtype.</p>
+<p>When a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action adds your Modifier to its damage, the Modifier joins the <strong>weapon's damage</strong> and keeps its pool and subtype: if the weapon deals Resolve damage, so does the Modifier. A Tier of a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action that writes no [W] deals its damage as the weapon's damage too, with the weapon's pool and subtype.</p>
 <h3 id="damage-types">Damage Types</h3>
 <p>All damage a creature takes is either <strong>Vigor damage</strong> (wounds, bruises, broken bones) or <strong>Resolve damage</strong> (fear, pain, despair), named after the two thresholds of the <a class="xref" href="#health-pool">Health Pool</a>; each of those has different subtypes. Damage is written this way:</p>
 <ul>
@@ -601,7 +601,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <li><strong>Damage is rolled per Tier:</strong> once the Action is rolled and you see which creatures landed on which Tier, roll that Tier's damage once and apply it to every creature on that Tier.</li>
 </ul>
 <p>For instance, if the Action deals 1d4 / 1d6 / 1d8, and two creatures get Tier 1 and one gets Tier 2, you roll 1d4 once and apply it to the two creatures on Tier 1.</p>
-<p>If the creature that makes the roll or causes the Save is <span class="kw-pos">Empowered</span>, its 1d6! goes to the one creature it chose before the Saves (see <a class="xref" href="#empowered"><span class="kw-pos">Empowered</span></a>).</p>
+<p>If the creature that makes the roll or causes the Save is <span class="kw-pos">Empowered</span>, its 1d6! goes to the one creature it chooses, for a <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action before the Saves (see <a class="xref" href="#empowered"><span class="kw-pos">Empowered</span></a>).</p>
 <p>You roll every die that any of the targets needs, and each target uses only the ones that apply to it. If any target has <span class="kw-pos">Favored</span> or <span class="kw-neg">Doomed</span>, roll 3d12: a <span class="kw-pos">Favored</span> target keeps the two highest and has Doubles if any two of the three dice match, a <span class="kw-neg">Doomed</span> target keeps the two lowest, and any other target uses the first two d12 you rolled.</p>
 <div class="callout example"><div class="ctitle">Example</div><p>You attack Peter and Will with one Action. You have <span class="kw-boon">1 Boon</span> against Will but not against Peter. You roll 2d12 once: Will's total gets +1 and Peter's doesn't.</p></div>
 <div class="callout example"><div class="ctitle">Example</div><p>You attack one <span class="kw-pos">Favored</span> target and one non-<span class="kw-pos">Favored</span> target with the same Action. You roll 3d12. For the <span class="kw-pos">Favored</span> target you keep the two highest, and any pair among the three dice is Doubles. For the other target you use the first two d12 in the order rolled, and only those two can be Doubles.</p></div>
@@ -670,7 +670,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p>The lines are written in the order they happen.</p>
 <p><strong>Versions and Modes.</strong> Some cards have parts under a heading of their own. A <strong>Version</strong> is the same Action at another cost: its heading is the cost ("<span class="kw-ap">1 AP</span>", "<span class="kw-ap">2 AP</span>"), and you pay the cost of the Version you use. A <strong>Mode</strong> is one of several things the card can do at the same cost: its heading is the Mode's name, followed by the traits only that Mode has, and each time you use the card you choose one Mode. A part has its own lines, and its own Distance and Target when they differ. Lines written above the parts belong to all of them. The card's Frequency counts every use of the card, whichever Version or Mode.</p>
 <p>The numbers on the two cards below are the numbers of the list. The first card needs no Escalation and has no Area, so neither is printed; the second has two Versions, and <strong>10</strong> marks the heading of one.</p>
-<div class="sample"><div class="acard" style="--fq:#A32D2D;--fqt:#FCEBEB"><div class="ahead"><b>Smite<sup class="mk">1</sup></b><span class="ameta">Encounter &middot; 2 AP<sup class="mk">2</sup></span></div><div class="abody"><div class="flavor"><span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span> light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.<sup class="mk">3</sup></div><div class="traits"><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Signature</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Weapon</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-kind)" title="Kind">Strike</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Divine</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Unfailing</span><sup class="mk">4</sup></div><div class="cgrid"><span><b>Distance:</b> Weapon<sup class="mk">5</sup></span><span class="tgt"><b>Target:</b> One creature<sup class="mk">6</sup></span></div><div class="cl"><b>Smite dice</b><span><span class="pool-m">[R] 1d6!</span> <span class="dcode" style="--dc:#8a5a08;--dcd:#e0a83a">Ho</span> for each Escalation you have, up to 4 dice. Against a Profane creature they are 1d8!s.</span></div><div class="cl"><b>Attack<sup class="mk">7</sup></b><span>Signature vs. Armor Defense</span></div><div class="cl"><b>Tier 1<sup class="mk">8</sup></b><span>Your Smite dice.</span></div><div class="cl"><b>Tier 2</b><span><span class="pool-b">[V] 1[W] + [Mod]</span> + your Smite dice.</span></div><div class="cl"><b>Tier 3</b><span><span class="pool-b">[V] 1[W] + [Mod]</span> + your Smite dice + 1 more Smite die.</span></div><div class="cl"><b>Special<sup class="mk">9</sup></b><span>When you use Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4.</span></div></div></div><div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Lay On Hands</b><span class="ameta">Round &middot; 1 or 2 AP</span></div><div class="abody"><div class="flavor">You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.</div><div class="traits"><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Divine</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Focus</span></div><div class="cgrid"><span><b>Distance:</b> Reach</span><span class="tgt"><b>Target:</b> One willing ally</span></div><div class="cl"><b>Setup</b><span>You Advance up to 5 squares in a straight line toward the target.</span></div><div class="cblock"><div class="cbh"><b><span class="kw-ap">1 AP</span></b><sup class="mk">10</sup></div><div class="cl"><b>Effect</b><span>The target gains <span class="kw-guard">Guard</span> equal to 2 + your <span class="mod-power">Power Modifier</span>.</span></div></div><div class="cblock"><div class="cbh"><b><span class="kw-ap">2 AP</span></b></div><div class="cl"><b>Effect</b><span>The target gains <span class="kw-guard">Guard</span> equal to 2 + your <span class="mod-power">Power Modifier</span> and can use <span class="kw-rally">1 Rally Point</span>.</span></div></div></div></div></div>
+<div class="sample"><div class="acard" style="--fq:#A32D2D;--fqt:#FCEBEB"><div class="ahead"><b>Smite<sup class="mk">1</sup></b><span class="ameta">Encounter &middot; 2 AP<sup class="mk">2</sup></span></div><div class="abody"><div class="flavor"><span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span> light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.<sup class="mk">3</sup></div><div class="traits"><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Signature</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Weapon</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-kind)" title="Kind">Strike</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Divine</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Unfailing</span><sup class="mk">4</sup></div><div class="cgrid"><span><b>Distance:</b> Weapon<sup class="mk">5</sup></span><span class="tgt"><b>Target:</b> One creature<sup class="mk">6</sup></span></div><div class="cl"><b>Smite dice</b><span><span class="pool-m">[R] 1d6!</span> <span class="dcode" style="--dc:#8a5a08;--dcd:#e0a83a">Ho</span> for each Escalation you have, up to 4 dice. Against a Profane creature they are 1d8!s.</span></div><div class="cl"><b>Attack<sup class="mk">7</sup></b><span>Signature vs. Armor Defense</span></div><div class="cl"><b>Tier 1<sup class="mk">8</sup></b><span>Your Smite dice.</span></div><div class="cl"><b>Tier 2</b><span><span class="pool-b">[V] 1[W] + [Mod]</span> + your Smite dice.</span></div><div class="cl"><b>Tier 3</b><span><span class="pool-b">[V] 1[W] + [Mod]</span> + your Smite dice + 1 more Smite die.</span></div><div class="cl"><b>Special<sup class="mk">9</sup></b><span>Before you roll Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4.</span></div></div></div><div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Lay On Hands</b><span class="ameta">Round &middot; 1 or 2 AP</span></div><div class="abody"><div class="flavor">You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.</div><div class="traits"><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Divine</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Focus</span></div><div class="cgrid"><span><b>Distance:</b> Reach</span><span class="tgt"><b>Target:</b> One willing ally</span></div><div class="cl"><b>Setup</b><span>You Advance up to 5 squares in a straight line toward the target.</span></div><div class="cblock"><div class="cbh"><b><span class="kw-ap">1 AP</span></b><sup class="mk">10</sup></div><div class="cl"><b>Effect</b><span>The target gains <span class="kw-guard">Guard</span> equal to 2 + your <span class="mod-power">Power Modifier</span>.</span></div></div><div class="cblock"><div class="cbh"><b><span class="kw-ap">2 AP</span></b></div><div class="cl"><b>Effect</b><span>The target gains <span class="kw-guard">Guard</span> equal to 2 + your <span class="mod-power">Power Modifier</span> and can use <span class="kw-rally">1 Rally Point</span>.</span></div></div></div></div></div>
 <p>Target counts are spelled out in words; distances, areas and other mechanical values use numerals. A distance in squares is written with "sq." (<strong>Distance: 5 sq.</strong>).</p>
 <h3 id="notation">Notation</h3>
 <div class="tablewrap"><table>
@@ -780,7 +780,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <li>Separate brackets joined by "and" mean <strong>either</strong>: "[<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] and [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions" are Actions with the <span class="trhl" style="--tc:var(--g-kind)">Strike</span> trait, the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> trait, or both. Alternatives can also be written with "or" inside the brackets: [<span class="trhl" style="--tc:var(--g-requires)">Melee</span> or <span class="trhl" style="--tc:var(--g-requires)">Ranged</span>].</li>
 <li>A <strong><span class="at-body">Body</span> Action</strong> is an Action with the <span class="at-body">Body</span> trait, and so on; an Action can be more than one (Trip is both a <span class="at-body">Body</span> and an <span class="at-instinct">Instinct</span> Action).</li>
 </ul>
-<p><strong>Weapons by property.</strong> When a rule names a weapon <a class="xref" href="gear.html#properties">property</a> before the word "weapon," it means a weapon with that property. A <strong>Two-handed weapon</strong> is a weapon with the Two-handed property, and a <strong>Projectile weapon</strong> is a weapon with the Projectile property, such as a bow or a crossbow.</p>
+<p><strong>Weapons by property.</strong> When a rule names a weapon <a class="xref" href="gear.html#properties">property</a> before the word "weapon," it means a weapon with that property. A <strong>Two-handed weapon</strong> is a weapon with the Two-handed property, and a <strong>Projectile weapon</strong> is a weapon with the Projectile property, such as a bow.</p>
 <h2 id="summary">Summary</h2>
 <ol>
 <li>Roll <strong>2d12</strong> and add the relevant Modifier.</li>
@@ -819,7 +819,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <li>Your Reaction Point never becomes <span class="kw-guard">Guard</span>.</li>
 <li>An NPC gains no <span class="kw-guard">Guard</span> from unspent AP (see <a class="xref" href="bestiary.html#npc-reactions">NPC Reactions</a>).</li>
 </ul>
-<div class="callout example"><div class="ctitle">Example</div><p>Drak (Stage 0) has <span class="kw-guard">Guard 5</span> from a card and ends his turn with <span class="kw-ap">1 AP</span> left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains <span class="kw-guard">Guard 2</span> for 1 round, on top of his <span class="kw-guard">Guard 5</span>: <span class="kw-guard">Guard 7</span>. A goblin then hits him for 3: his <span class="kw-guard">Guard</span> from AP takes 2 and his other <span class="kw-guard">Guard 1</span>, so he has <span class="kw-guard">Guard 4</span> left.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p>Drak (Stage 0) has <span class="kw-guard">Guard 5</span> from a card and ends his turn with <span class="kw-ap">1 AP</span> left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains <span class="kw-guard">Guard 2</span> until he regains AP again, on top of his <span class="kw-guard">Guard 5</span>: <span class="kw-guard">Guard 7</span>. A goblin then hits him for 3: his <span class="kw-guard">Guard</span> from AP takes 2 and his other <span class="kw-guard">Guard 1</span>, so he has <span class="kw-guard">Guard 4</span> left.</p></div>
 <h3 id="losing-and-gaining-action-points">Losing and Gaining Action Points</h3>
 <p>When something gives or takes Action Points, it says whether it happens <strong>now</strong> or <strong>when you regain AP</strong>.</p>
 <ul>
@@ -852,7 +852,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <div class="callout example"><div class="ctitle">Example</div><p>Zack has Rebuke: "Target: One enemy. Trigger: The target moves away from you." A goblin 2 squares from him, on the other side of a wall, runs off. Zack hears it, but Rebuke targets the goblin and he has no Line of Effect to it: he can't use Rebuke.</p></div>
 <div class="callout example"><div class="ctitle">Example</div><p>Zack has Kindled Wrath: "when an ally becomes Bloodied or goes <span class="kw-neg">Down</span>, your Escalation increases by 1". Nari becomes Bloodied behind a wall, 6 squares from Zack. Zack hears him (within 10 squares), and Kindled Wrath does nothing to Nari, so it needs no Line of Effect: his Escalation increases. At 12 squares behind that wall, out of sight and hearing, it wouldn't.</p></div>
 <h3 id="disrupting-actions">Disrupting Actions</h3>
-<p>When an Action is <strong>disrupted</strong>, it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical.</p>
+<p>When an Action is <strong>disrupted</strong>, what is left of it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical.</p>
 <p>A Reaction disrupts an Action only when its card says so. When an Interrupt does, the Action never starts and nothing of it happens. When a Trigger does, the Action stops where it is (see below).</p>
 <p>A Trigger that names a Move Action fires at any point during the Move Action (after the first square it moves), but it is a single trigger: you can use the Reaction only once per Move Action, even with AP to spare.</p>
 <p>When the disrupted Action is only a Linked Action, the Action stops only if that part is necessary for it. What already happened stays, and a disrupted movement ends in the square the creature was in. For example, a Charge disrupted before the creature has moved the 3 squares it needs is cancelled, and they make no Basic Attack. If it is disrupted after those 3 squares, the Charge ends there, and they make the Basic Attack if there is a valid target.</p>
@@ -886,7 +886,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <h3 id="willing-and-unwilling">Willing and Unwilling</h3>
 <p>Some Actions target a <strong>willing</strong> creature, and some rules change for an <strong>unwilling</strong> one (passing through its square, for example). A creature is <strong>willing</strong> when it accepts the effect: you choose for yourself, and each creature chooses for itself when the effect would happen. An <strong>Unconscious</strong> creature counts as willing. Any other creature that doesn't accept is <strong>unwilling</strong>. A creature doesn't have to know what the effect does to accept it.</p>
 <h3 id="requirements">Requirements</h3>
-<p>Some Actions have a <strong>Requirement</strong> line, the first of the card's labeled lines. To use the Action, you must meet them; otherwise you can't use it at all. They are checked when you start to use the Action, before you pay its cost and before any Setup. Charge requires at least Speed 3: with Speed 2, you can't Charge, and a Speed bonus that the Charge itself gives doesn't count toward it.</p>
+<p>Some Actions have a <strong>Requirement</strong> line, the first of the card's labeled lines. To use the Action, you must meet it; otherwise you can't use it at all. It is checked when you start to use the Action, before you pay its cost and before any Setup. Charge requires at least Speed 3: with Speed 2, you can't Charge, and a Speed bonus that the Charge itself gives doesn't count toward it.</p>
 <h3 id="0-ap-actions">0 AP Actions</h3>
 <p>A <strong><span class="kw-ap">0 AP</span></strong> Action costs no AP, but it is still an Action: you can use it only on your turn, and its Frequency still limits it. An Action that costs no AP and is used in response to something is a Reaction, written <strong><span class="kw-ap">0R</span></strong> (see <a class="xref" href="#reactions">Reactions</a>). <a class="xref" href="#linked-actions">Linked Actions</a> cost no AP either, because they are part of another Action.</p>
 <h3 id="linked-actions">Linked Actions</h3>
@@ -1542,7 +1542,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p>Damage is <strong>Lethal</strong> unless an Action or effect says it is Nonlethal. Lethal and Nonlethal damage both count toward the thresholds and toward your total damage. They never cancel or convert each other. Damage keeps accumulating after you are <span class="kw-neg">Down</span>.</p>
 <p>When you have Vigor damage <strong>equal to or more than</strong> your Vigor, you are <strong><a class="xref" href="#bloodied">Bloodied</a></strong>. When you have Resolve damage <strong>equal to or more than</strong> your Resolve, you are <strong><a class="xref" href="#strained">Strained</a></strong>.</p>
 <h3 id="instances-of-damage">Instances of Damage</h3>
-<p>An Action's damage can come in several <strong>instances</strong>: each part with its own pool and subtype is one instance. "<span class="pool-b">[V] 1[W] + [Mod]</span> + <span class="pool-m">[R] 2d8</span> <span class="dcode" style="--dc:#8a5a08;--dcd:#e0a83a">Ho</span>" deals two: the weapon's damage with your Modifier (Vigor, the weapon's type), and 2d8 <span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span> (Resolve). Each [W] is its own instance (2[W] is two, see the <a class="xref" href="gear.html#gear">Gear</a> document), and extra damage from another effect is its own instance. Each target takes its own instances.</p>
+<p>An Action's damage can come in several <strong>instances</strong>: each part with its own pool and subtype is one instance. "<span class="pool-b">[V] 1[W] + [Mod]</span> + <span class="pool-m">[R] 2d8</span> <span class="dcode" style="--dc:#8a5a08;--dcd:#e0a83a">Ho</span>" deals two: the weapon's damage with your Modifier (Vigor, the weapon's subtype), and 2d8 <span class="dmgword" style="--dc:#8a5a08;--dcd:#e0a83a">Holy</span> (Resolve). Each [W] is its own instance (2[W] is two, see the <a class="xref" href="gear.html#gear">Gear</a> document), and extra damage from another effect is its own instance. Each target takes its own instances.</p>
 <h3 id="lethal-and-nonlethal">Lethal and Nonlethal</h3>
 <p>A <span class="trhl" style="--tc:var(--g-damage)">Nonlethal</span> Action can deal Lethal damage by taking a <span class="kw-bane">Bane</span>, and any other Action can deal Nonlethal damage by taking a <span class="kw-bane">Bane</span> as well. A <a class="xref" href="#save-actions">Save Action</a> doesn't roll, so it switches the other way: every creature that makes its Save gains <strong><span class="kw-boon">1 Boon</span></strong> on it.</p>
 <h2 id="going-down">Going Down</h2>
@@ -1788,7 +1788,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p>Your class gives you Attribute increases, a <strong>high</strong> and a <strong>low Health value</strong> with their Stage steps (used for your Health Pool), a <strong>Rally</strong> value (used for <span class="kw-rally">Rally Points</span>), a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>, and an <strong><a class="xref" href="gear.html#armor-training">Armor Training</a></strong>.</p>
 <p>When you pick your class, you choose its Attribute increases when they say "or", and the order of its Modifiers. The Attribute choices can't be changed later; the rest can, for a while (see <a class="xref" href="#swapping-on-a-rest">Swapping on a Rest</a>).</p>
 <p>Each class is written in its own document: <a class="xref" href="paladin.html#paladin">Paladin</a> and <a class="xref" href="archer.html#archer">Archer</a>.</p>
-<h3 id="class-actions-picks-and-the-repertoire">Class Actions, Picks and the Repertoire</h3>
+<h3 id="class-actions-and-picks">Class Actions and Picks</h3>
 <p>Over its first levels, every class gives you the same kinds of things:</p>
 <ul>
 <li>A <strong>Hallmark Action</strong>: a choice of two Actions that are the class's fantasy; you take one, and the other is not yours.</li>
@@ -1797,7 +1797,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <li>The <strong>Apex</strong>, at level 4 (see <a class="xref" href="#escalation-abilities">Escalation Abilities</a>).</li>
 <li>Its <strong>Features</strong>.</li>
 </ul>
-<p>A class's <strong>Class Actions</strong> are the Actions it gives you at level 1, the Hallmark Action and the Hallmark Reaction among them. Its <strong>Repertoire</strong> is everything else it offers, listed by <a class="xref" href="#frequency">Frequency</a>: <strong>Passive</strong> (it works on its own), <strong>Turn</strong>, <strong>Round</strong>, <strong>Encounter</strong> and <strong>Daily</strong>. A <strong>Pick</strong> is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Two classes' lists don't need to match: each offers what fits it.</p>
+<p>A class's <strong>Class Actions</strong> are the Actions it gives you at level 1, the Hallmark Action and the Hallmark Reaction among them. A <strong>Pick</strong> is one choice from the other Actions it offers: the level list says how many Picks you take at each level and of which kind (an Encounter Pick is one of its Encounter Actions). Two classes' Picks don't need to match: each offers what fits it.</p>
 <h3 id="leveling-up">Leveling Up</h3>
 <p>Each class has a <strong>level list</strong>: what you gain at each level (Features, Class Actions and Picks). When you reach a new level, you take what its entry gives you. <strong>Levels give options; Stages change the numbers</strong> (below).</p>
 <p>The first three levels have the same shape for every class:</p>
@@ -1835,7 +1835,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p>During Stage 0 you can also swap the order of your Modifiers on a Rest. From Stage 1 on, that order and the Modifier you raise at Stage 1 are permanent.</p>
 <p><strong>Optional rule.</strong> If the GM allows it, on a Rest you can also change your class's Attribute choices and which of its two Health values is your Vigor.</p>
 <h3 id="stages">Stages</h3>
-<p>The levels are grouped in <strong>Stages</strong>: <strong>Stage 0</strong> is levels 1 to 3, <strong>Stage 1</strong> levels 4 to 7, <strong>Stage 2</strong> levels 8 to 11 and <strong>Stage 3</strong> levels 12 to 15. Your numbers change only when you reach a new Stage, and the NPCs of the <a class="xref" href="bestiary.html#bestiary-building-npcs">Bestiary</a> follow them (their tables are written by Stage).</p>
+<p>The levels are grouped in <strong>Stages</strong>: <strong>Stage 0</strong> is levels 1 to 3, <strong>Stage 1</strong> levels 4 to 7, <strong>Stage 2</strong> levels 8 to 11 and <strong>Stage 3</strong> levels 12 to 15. Your numbers change only when you reach a new Stage, and the NPCs of the <a class="xref" href="bestiary.html#bestiary-building-npcs">Bestiary</a> follow them.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -1899,7 +1899,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <div class="callout tbd"><div class="ctitle">To be decided</div><p>No class has an Escalation ability at levels 1 to 3 now; the Escalation abilities of levels 2 and 4 are being redesigned.</p></div></div></details></section>
 <div class="part">Part III: Reference</div>
 <section class="chapter"><details open><summary><h1 id="chapter-6-basic-actions">Chapter 6: Basic Actions</h1></summary><div class="cbody">
-<p>Every creature can use these Actions, except that an NPC has no Basic Attack card (its own Basic attacks take its place; it uses Fists only without a weapon that fits them) and no Steel Yourself (it has no <span class="kw-rally">Rally Points</span>): see <a class="xref" href="bestiary.html#basic-attacks">Basic attacks</a>.</p>
+<p>Every creature can use these Actions, except that an NPC has no Basic Attack card (its own Basic attacks take its place) and no Steel Yourself (it has no <span class="kw-rally">Rally Points</span>): see <a class="xref" href="bestiary.html#basic-attacks">Basic attacks</a>.</p>
 <div class="acard" id="card-advance" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Advance</b><span class="ameta">At-will &middot; 1 AP</span></div><div class="abody"><div class="flavor">You press forward, one deliberate step at a time.</div><div class="traits"><span class="tchip" style="--tg:var(--g-kind)" title="Kind">Move</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-kind)" title="Kind">Self</span></div><div class="cl"><b>Effect</b><span>You Advance your Speed. Once during it you can use Interact (see <a class="xref" href="#advance">Advance</a>).</span></div></div></div>
 <div class="acard" id="card-aid" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Aid</b><span class="ameta">Round &middot; 1 AP</span></div><div class="abody"><div class="flavor">You call the opening, and a friend takes it.</div><div class="traits"><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Appeal</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Instinct</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-keywords)" title="Keywords">Focus</span></div><div class="cgrid"><span><b>Distance:</b> 5 sq.</span><span class="tgt"><b>Target:</b> One ally that can hear you</span></div><div class="cl"><b>Effect</b><span>The target is Quickened 1 on its next turn.</span></div><div class="cl"><b>Special</b><span>If the target is Daunted, you also make an <span class="at-appeal">Appeal</span> or <span class="at-instinct">Instinct</span> Check against the Action DC of the Action that Daunted it: on a Tier 2 or 3, the target is no longer Daunted.</span></div></div></div>
 <div class="acard" id="card-basic-attack" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Basic Attack</b><span class="ameta">At-will &middot; 1 AP</span></div><div class="abody"><div class="flavor">You strike with the weapon in your hands.</div><div class="traits"><span class="tchip" style="--tg:var(--g-roll)" title="Roll">Weapon</span><i class="dot">&middot;</i><span class="tchip" style="--tg:var(--g-kind)" title="Kind">Strike</span></div><div class="cgrid"><span><b>Distance:</b> Weapon</span><span class="tgt"><b>Target:</b> One creature</span></div><div class="cl"><b>Attack</b><span>Weapon vs. Armor Defense</span></div><div class="cl"><b>Tier 1</b><span><span class="pool-b">[V] 1d4!</span></span></div><div class="cl"><b>Tier 2</b><span><span class="pool-b">[V] 1[W] + [Mod]</span></span></div><div class="cl"><b>Tier 3</b><span><span class="pool-b">[V] 1[W] + 1</span>[D] + [Mod]</span></div></div></div>
@@ -1939,7 +1939,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <h3 id="divine-fear-focus-and-magical">Divine, Fear, Focus and Magical</h3>
 <p>These traits have no rules of their own. Other rules and features refer to them.</p>
 <h3 id="firearm">Firearm</h3>
-<p>Firearm Actions need a weapon with the Firearm property (see <a class="xref" href="gear.html#properties">Properties</a>), such as a pistol or a musket, and use its Range as their Distance. A Firearm is not a Projectile weapon: Projectile Actions can't use it.</p>
+<p>Firearm Actions need a weapon with the Firearm property (see <a class="xref" href="gear.html#properties">Properties</a>) and use its Range as their Distance. A Firearm is not a Projectile weapon: Projectile Actions can't use it.</p>
 <h3 id="handle">Handle</h3>
 <p>To use an Action with the <span class="trhl" style="--tc:var(--g-requires)">Handle</span> trait, you must be able to use your hands (or similar appendages). You also need a <strong>hand free</strong> to make any Action with this trait. Releasing an object costs no AP (Release). <strong>One exception:</strong> stowing an object you hold, or swapping it for another you carry (Interact), needs no free hand: the hand that holds the object does it. With both hands full you can stow one weapon, or swap it for another.</p>
 <h3 id="melee">Melee</h3>
@@ -1953,7 +1953,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <h3 id="power">Power</h3>
 <p>These Actions roll your <strong><span class="mod-power">Power Modifier</span></strong>.</p>
 <h3 id="projectile">Projectile</h3>
-<p>Projectile Actions need a weapon with the Projectile property (see <a class="xref" href="gear.html#properties">Properties</a>), such as a bow or a crossbow, and use its Range as their Distance.</p>
+<p>Projectile Actions need a weapon with the Projectile property (see <a class="xref" href="gear.html#properties">Properties</a>), such as a bow, and use its Range as their Distance.</p>
 <h3 id="ranged">Ranged</h3>
 <p>These Actions target creatures from a distance (how a range is written: <a class="xref" href="#weapon-range">Weapon Range</a>; shooting next to an enemy: <a class="xref" href="#ranged-combat-while-engaged">Ranged Combat While Engaged</a>). A [<span class="trhl" style="--tc:var(--g-requires)">Ranged</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action needs a ranged weapon, or a weapon with the Thrown property used thrown.</p>
 <h3 id="save">Save</h3>
@@ -2026,7 +2026,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <h3 id="immobilized">Immobilized</h3>
 <p>You can't use Move Actions or Evade. If you become Immobilized while you are moving, your movement ends. Unless otherwise specified, you can remove Immobilized with <a class="xref" href="#card-break-free">Break Free</a>, the one Move Action you can use while Immobilized.</p>
 <p>An Immobilized creature is also hard to move. A Forced Movement or a Reposition that comes with no roll doesn't move you; the rest of the Action or effect happens.</p>
-<div class="callout example"><div class="ctitle">Example</div><p>Lana is Immobilized and her ally, Jared, has a feature that says "At the start of your turn, you can <span class="kw-mv">Reposition 3</span> an ally within Reach." If Jared attempts to use this on Lana, nothing happens and the effect is wasted.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p>Lana is Immobilized and her ally, Jared, has a feature that says "At the start of your turn, you can <span class="kw-mv">Reposition 3</span> an ally within Reach." If Jared attempts to use this on Lana, she isn't moved.</p></div>
 <p>If the Action rolls, the movement also needs the roll to beat the <a class="xref" href="#action-dc">Action DC</a> of the Action that Immobilized you. A <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action doesn't roll, but it always has a Modifier: the origin rolls 2d12 + that Modifier against that Action DC, once for all the Immobilized creatures it would move. If the result is below it, you aren't moved. The rest of the Action works as usual. Steadiness applies after this check.</p>
 <h3 id="imperiled">Imperiled</h3>
 <p>You barely avoided a <a class="xref" href="#deadly-hazards">Deadly Hazard</a>: you are hanging from a ledge, balancing on the lip of a lava pit, or pinned at the edge of a crushing trap. While you are Imperiled:</p>
@@ -2076,7 +2076,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#weapon-damage-w"><strong>[W]</strong></a></td>
-<td>The damage of your weapon, with the weapon's damage type.</td>
+<td>The damage of your weapon, with the weapon's pool and subtype.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#weapon-damage-w"><strong>[D]</strong></a></td>
@@ -2124,7 +2124,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#defenses"><strong>Armor</strong></a></td>
-<td>Armor Defense (AD) — 11 + Armor value + other items + bonuses − penalties. The Defense against <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Actions.</td>
+<td>Armor Defense (AD) — 11 + Armor value + other items + bonuses − penalties. The Defense a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action usually attacks.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#armor-training"><strong>Armor Training</strong></a></td>
@@ -2195,8 +2195,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>A roll of one Attribute Modifier against a DC (13 unless stated).</td>
 </tr>
 <tr>
-<td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Class Actions</strong></a></td>
-<td>The Actions your class gives you at level 1 (or a Hallmark Action: a choice of two).</td>
+<td><a class="xref" href="#class-actions-and-picks"><strong>Class Actions</strong></a></td>
+<td>The Actions your class gives you at level 1, the Hallmark Action and the Hallmark Reaction among them.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#senses"><strong>Clear</strong></a></td>
@@ -2251,6 +2251,10 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>A hazard that kills Minor enemies at once and leaves anyone else Imperiled.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#buffs"><strong>Debuff</strong></a></td>
+<td>A Buff that harms the Action it modifies.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#defenses"><strong>Defense</strong></a></td>
 <td>Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + <span class="mod-power">Power Modifier</span> + Ward value + items + bonuses − penalties), or an Attribute DC (11 + the Attribute). "+1 Defense" raises all of them.</td>
 </tr>
@@ -2268,11 +2272,15 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#disrupting-actions"><strong>Disrupted</strong></a></td>
-<td>A disrupted Action doesn't happen, and its AP and resources are wasted.</td>
+<td>What is left of a disrupted Action doesn't happen, and its AP and resources are wasted.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#distinct-choices"><strong>Distinct Choices</strong></a></td>
 <td>A class's Attribute increases go to different Attributes.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#divine-fear-focus-and-magical"><strong>Divine</strong></a></td>
+<td>A trait with no rules of its own: other rules and features refer to it.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#dominant-damage"><strong>Dominant Damage</strong></a></td>
@@ -2308,7 +2316,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#areas"><strong>Emanation</strong></a></td>
-<td>An area around its target, a creature or a square: a 2 Emanation reaches 2 squares from it (the 1-2-1 shape; 21 squares).</td>
+<td>An area around its target, a creature or a square: a 2 Emanation reaches 2 squares from it (counted like any distance, every second diagonal as 2: 21 squares around a single square).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#empowered"><strong><span class="kw-pos">Empowered</span></strong></a></td>
@@ -2317,6 +2325,10 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <tr>
 <td><a class="xref" href="#encounters"><strong>Encounter</strong></a></td>
 <td>A fight or similar scene, from Initiative until the GM ends it.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#encounter"><strong>Encounter</strong></a></td>
+<td>A Frequency: once during a whole encounter.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#engaged"><strong>Engaged</strong></a></td>
@@ -2332,7 +2344,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#escalation"><strong>Escalation</strong></a></td>
-<td>A PC's adrenaline, a level from 1 to 6, never spent: 1 + the party's Momentum at the start of an encounter, +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough.</td>
+<td>A PC's adrenaline, a level from 1 to 6: 1 + the party's Momentum at the start of an encounter, +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. A card that says Escalation N (the Apex: 6) can be used only while it is at least N, and your Escalation die (dE) grows with it.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#escalation"><strong>Escalation hook</strong></a></td>
@@ -2355,12 +2367,16 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#divine-fear-focus-and-magical"><strong>Fear</strong></a></td>
+<td>A trait with no rules of its own: other rules and features refer to it.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#named-boons-and-banes"><strong>Field</strong></a></td>
 <td>A named <span class="kw-boon">Boon</span> or <span class="kw-bane">Bane</span> from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#firearm"><strong>Firearm</strong></a></td>
-<td>A trait and a weapon property: the weapon shoots with powder (a pistol, a musket), and a Firearm Action needs one. It is not Projectile.</td>
+<td>A trait and a weapon property: the weapon shoots with powder, and a Firearm Action needs one. It is not Projectile.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#fists-the-weapon"><strong>Fists</strong></a></td>
@@ -2369,6 +2385,10 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <tr>
 <td><a class="xref" href="#flanking"><strong>Flanking</strong></a></td>
 <td>Two creatures that threaten the same enemy from opposite sides of it (within 45° of the line through its center): each gets 1 Field <span class="kw-boon">Boon</span> on [<span class="trhl" style="--tc:var(--g-requires)">Melee</span>] Actions against it, none if an ally of the enemy threatens it.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#divine-fear-focus-and-magical"><strong>Focus</strong></a></td>
+<td>A trait with no rules of its own: other rules and features refer to it.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#forced-movement"><strong>Forced Movement</strong></a></td>
@@ -2388,18 +2408,18 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#guard"><strong><span class="kw-guard">Guard</span></strong></a></td>
-<td>A buffer written <span class="kw-guard">Guard</span> N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The <span class="kw-guard">Guard</span> of unspent AP adds to it and lasts 1 round.</td>
+<td>A buffer written <span class="kw-guard">Guard</span> N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The <span class="kw-guard">Guard</span> of unspent AP adds to it and lasts until you regain AP again.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#half-blinded"><strong>Half-Blinded</strong></a></td>
 <td>Your Sight perceives no creature better than Obscured.</td>
 </tr>
 <tr>
-<td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Hallmark Action</strong></a></td>
+<td><a class="xref" href="#class-actions-and-picks"><strong>Hallmark Action</strong></a></td>
 <td>A choice of two class Actions at level 1; you take one.</td>
 </tr>
 <tr>
-<td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Hallmark Reaction</strong></a></td>
+<td><a class="xref" href="#class-actions-and-picks"><strong>Hallmark Reaction</strong></a></td>
 <td>A choice of two class Reactions at level 1; you take one.</td>
 </tr>
 <tr>
@@ -2415,8 +2435,12 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>To remove damage. The creature chooses which damage.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#health-pool"><strong>Health Pool</strong></a></td>
+<td>The sum of your two thresholds, Vigor and Resolve: all damage reduces it, and you are <span class="kw-neg">Down</span> when your total damage equals or goes above it.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#senses"><strong>Hearing</strong></a></td>
-<td>A sense every creature has: you perceive creatures that make noise within 10 squares as Hidden, even through walls.</td>
+<td>A sense every creature has: you perceive creatures that make noise within 10 squares as Hidden, around corners and through walls, unless a thick wall is between you.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#senses"><strong>Hidden</strong></a></td>
@@ -2447,7 +2471,11 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>Barely avoided a Deadly Hazard: all your Rolls are <span class="kw-neg">Doomed</span>, <span class="kw-neg">Vulnerable 3</span>, safe again at the start of your turn.</td>
 </tr>
 <tr>
-<td><a class="xref" href="#end-of-turn"><strong>Initiative slot</strong></a></td>
+<td><a class="xref" href="#initiative"><strong>Initiative</strong></a></td>
+<td>A Check every creature rolls when an encounter starts (normally <span class="at-instinct">Instinct</span>): it sets the turn order, the groups taking turns one creature at a time.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#rounds-and-durations"><strong>Initiative slot</strong></a></td>
 <td>A position in the turn order.</td>
 </tr>
 <tr>
@@ -2460,11 +2488,11 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#reactions"><strong>Interrupt</strong></a></td>
-<td>A Reaction that happens before the Action that triggers it. Every Interrupt resolves before any Trigger on the same Action.</td>
+<td>A Reaction that happens before the moment it names. Every Interrupt resolves before any Trigger on the same Action.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#card-lean"><strong>Leaning</strong></a></td>
-<td>Until the end of your turn, or until you leave your square: cover is calculated from one of your corners, and your own cover is reduced by 1 level. You start it with the Lean Basic Action.</td>
+<td>Until the end of your turn, or until you leave your square: you count Line of Effect and Cover from one of your corners, and your own cover is reduced by 1 level. You start it with the Lean Basic Action.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#moving-and-leaving-your-square"><strong>Left your square</strong></a></td>
@@ -2476,7 +2504,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#light-property"><strong>Light</strong></a></td>
-<td>A weapon property: a small one-handed melee weapon (a Dagger, a Handaxe); <span class="kw-bane">1 Bane</span> in your off hand instead of 2.</td>
+<td>A weapon property: a small one-handed melee weapon; <span class="kw-bane">1 Bane</span> in your off hand instead of 2.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#line"><strong>Line</strong></a></td>
@@ -2516,7 +2544,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#minor-enemies"><strong>Minor enemies</strong></a></td>
-<td>The Minion and Grunt ranks: <span class="kw-ap">3 AP</span> a turn, and their damage dice never explode.</td>
+<td>The Minion and Grunt ranks: <span class="kw-ap">3 AP</span> a turn, and their damage dice never explode. A Forced Movement into a <a class="xref" href="#deadly-hazards">Deadly Hazard</a> kills a Minor enemy.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#reading-an-action"><strong>Mode</strong></a></td>
@@ -2536,11 +2564,11 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#moving-closer"><strong>Moves closer</strong></a></td>
-<td>The distance between you is smaller after the movement; an Interrupt checks it square by square.</td>
+<td>It enters a square nearer to you than the square it came from.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#moving-away"><strong>Moving away</strong></a></td>
-<td>The distance between you is larger after the movement than before.</td>
+<td>It enters a square farther from you than the square it came from.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#named-boons-and-banes"><strong>Named <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span></strong></a></td>
@@ -2563,8 +2591,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>The creature that uses an Action, or the Point of Origin of an Area.</td>
 </tr>
 <tr>
-<td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Pick</strong></a></td>
-<td>One choice from a class's Repertoire; the level list says how many you take and from which list.</td>
+<td><a class="xref" href="#class-actions-and-picks"><strong>Pick</strong></a></td>
+<td>One choice from the other Actions a class offers; the level list says how many you take and of which kind.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#areas"><strong>Point of Origin</strong></a></td>
@@ -2592,7 +2620,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#projectile"><strong>Projectile</strong></a></td>
-<td>A trait and a weapon property: the weapon shoots (a bow, a crossbow), and a Projectile Action needs one.</td>
+<td>A trait and a weapon property: the weapon shoots (a bow), and a Projectile Action needs one.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#prone"><strong>Prone</strong></a></td>
@@ -2648,11 +2676,11 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#card-regrip"><strong>Regrip</strong></a></td>
-<td>The Basic Action (<span class="kw-ap">1 AP</span>, no Handle) to hold a weapon with both hands again, move it to the other hand or swap the weapons in your hands.</td>
+<td>The Basic Action (<span class="kw-ap">1 AP</span>) to hold a weapon with both hands again, move it to the other hand or swap the weapons in your hands.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#card-release"><strong>Release</strong></a></td>
-<td><span class="kw-ap">0 AP</span>: drop an object, or let go of it with one hand.</td>
+<td><span class="kw-ap">0 AP</span>: drop an object you hold, in your square, or take one hand off an object you hold with both hands.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#reload-property"><strong>Reload</strong></a></td>
@@ -2661,10 +2689,6 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <tr>
 <td><a class="xref" href="gear.html#reload-property"><strong>Reload Shot</strong></a></td>
 <td>A <span class="kw-pos">Favored</span> and <span class="kw-pos">Empowered</span> shot with a Reload weapon.</td>
-</tr>
-<tr>
-<td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Repertoire</strong></a></td>
-<td>Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#reposition"><strong>Reposition</strong></a></td>
@@ -2691,16 +2715,16 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>What follows the damage on a Tier line ("; Prone"): it happens on that Tier whatever damage is dealt (a Resistance, an Immunity, a reduction or <span class="kw-guard">Guard</span> don't stop it).</td>
 </tr>
 <tr>
-<td><a class="xref" href="bestiary.html#an-npcs-numbers"><strong>Role</strong></a></td>
-<td>What an NPC does in a fight: a ready set of numbers and a way to play it, with no rules of its own (not rebuilt yet).</td>
-</tr>
-<tr>
 <td><a class="xref" href="#rolls"><strong>Roll</strong></a></td>
 <td>Anything you roll: a Check, a Save, a Weapon, Power or Signature roll, or an Attribute Action.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rounds"><strong>Round</strong></a></td>
 <td>One full cycle of turns.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#round"><strong>Round</strong></a></td>
+<td>A Frequency: once per turn-cycle, not once per round number.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#saves"><strong>Save</strong></a></td>
@@ -2751,6 +2775,10 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>A creature's rank from 1 to 7, and how many squares it occupies.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#talents"><strong>Skill Talent</strong></a></td>
+<td>A Talent slot for skills, out of combat; they come with the Skills rules.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#sleep"><strong>Sleep</strong></a></td>
 <td>8 hours of non-strenuous activity, at most once every 16 hours; it renews Daily Actions.</td>
 </tr>
@@ -2772,7 +2800,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#special-actions"><strong>Special Action</strong></a></td>
-<td>An NPC Action that is not a Basic attack: <span class="kw-ap">2 AP</span> and Round by default; it can hit up to two creatures.</td>
+<td>An NPC Action that is not a Basic attack: <span class="kw-ap">2 AP</span> and Round by default. By default a Special hits one creature, or two for less damage each; a creature's own Special can do otherwise (an area, for example).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rules-language"><strong>Specific beats general</strong></a></td>
@@ -2800,7 +2828,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#stages"><strong>Stage</strong></a></td>
-<td>A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, <span class="kw-guard">Guard</span> per unspent AP, <span class="kw-rally">Rally Points</span>; never your Attributes), and it sets the Bestiary's tables.</td>
+<td>A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, <span class="kw-guard">Guard</span> per unspent AP, <span class="kw-rally">Rally Points</span>; never your Attributes).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#stages"><strong>Stage Talent</strong></a></td>
@@ -2855,6 +2883,10 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <td>A word on a creature (not an Action) that other rules refer to, such as Profane.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#talents"><strong>Talent</strong></a></td>
+<td>A feature any character can take, apart from their class, in the Talent slots of the level list. None is written yet.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#taunted"><strong>Taunted</strong></a></td>
 <td>By a creature: <span class="kw-bane">1 Bane</span> on your Actions against anyone else.</td>
 </tr>
@@ -2880,7 +2912,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#reactions"><strong>Trigger</strong></a></td>
-<td>A Reaction that happens after the Action that triggers it.</td>
+<td>A Reaction that happens after the moment it names, which can be in the middle of an Action.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#a-reactions-target"><strong>Triggering creature</strong></a></td>
@@ -2924,7 +2956,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#defenses"><strong>Ward</strong></a></td>
-<td>Ward Defense (WD) — 11 + <span class="mod-power">Power Modifier</span> + Ward value + other items + bonuses − penalties. The Defense against <span class="trhl" style="--tc:var(--g-roll)">Power</span> Actions.</td>
+<td>Ward Defense (WD) — 11 + <span class="mod-power">Power Modifier</span> + Ward value + other items + bonuses − penalties. The Defense a <span class="trhl" style="--tc:var(--g-roll)">Power</span> Action usually attacks.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#resistance-weakness-and-immunity"><strong>Weakness</strong></a></td>

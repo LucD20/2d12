@@ -16,7 +16,7 @@
     "melee",
     "strike"
    ],
-   "distance": "Reach",
+   "distance": "Reach (1)",
    "target": "One creature",
    "body": [
     {
@@ -108,7 +108,7 @@
     },
     {
      "label": "Tier 2",
-     "text": "[R] 1 + 1d4 Ps."
+     "text": "[R] 1 + 1d4! Ps."
     },
     {
      "label": "Tier 3",
@@ -139,12 +139,12 @@
    "target": "The triggering creature",
    "body": [
     {
-     "label": "Trigger",
-     "text": "The target deals Vigor damage to the orc (the blow that makes it Bloodied counts)."
-    },
-    {
      "label": "Requirement",
      "text": "The orc is Bloodied."
+    },
+    {
+     "label": "Trigger",
+     "text": "The target deals Vigor damage to the orc (the blow that makes it Bloodied counts)."
     },
     {
      "label": "Effect",
@@ -215,7 +215,7 @@
     "melee",
     "strike"
    ],
-   "distance": "Reach",
+   "distance": "Reach (1)",
    "target": "One creature",
    "body": [
     {
@@ -296,7 +296,7 @@
     "melee",
     "strike"
    ],
-   "distance": "Reach",
+   "distance": "Reach (1)",
    "target": "One creature",
    "body": [
     {
@@ -334,10 +334,12 @@
    "frequency": "Encounter",
    "cost": "1R",
    "traits": [],
+   "distance": "6 sq.",
+   "target": "One ally with the Goblin Tag",
    "body": [
     {
      "label": "Trigger",
-     "text": "An ally with the Goblin Tag within 6 squares goes Down."
+     "text": "The target goes Down."
     },
     {
      "label": "Effect",
@@ -400,7 +402,7 @@
     "melee",
     "strike"
    ],
-   "distance": "Reach",
+   "distance": "Reach (1)",
    "target": "One creature",
    "body": [
     {
@@ -569,7 +571,7 @@
     "melee",
     "strike"
    ],
-   "distance": "Reach",
+   "distance": "Reach (2)",
    "target": "One creature",
    "body": [
     {
@@ -647,7 +649,7 @@
     "melee",
     "strike"
    ],
-   "distance": "Reach",
+   "distance": "Reach (2)",
    "target": "Up to two creatures",
    "body": [
     {

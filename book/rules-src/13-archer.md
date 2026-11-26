@@ -17,14 +17,14 @@
 </div>
 
 > [!tbd]
-> **Levels 1 to 3 are written.** Level 4 (the Apex and the numbers of Stage 1) and the Talents are not written yet: every Talent slot is empty for now. The Archer's cards need a bow or a crossbow and, for some, a [[Light (property)|Light]] weapon such as a Dagger: the Hunting Bow and the Recurve Bow are written (see [[Weapons]]); the other weapons are placeholders.
+> **Levels 1 to 3 are written.** Level 4 (the Apex and the numbers of Stage 1) and the Talents are not written yet: every Talent slot is empty for now. The Archer's cards need a bow or a crossbow and, for some, a [[Light (property)|Light]] weapon: the Hunting Bow and the Recurve Bow are written (see [[Weapons]]); the other weapons are placeholders.
 
 ## The Archer by Level
 
 | Level | You gain | You choose |
 |---|---|---|
 | 1 | Shifting Aim, Darting Blade, Steady Draw, Harrying Shot | a Hallmark Action, a Hallmark Reaction, a Skill Talent |
-| 2 | Thrill of the Kill, your Escalation hook | an Encounter Pick, a Talent |
+| 2 | Thrill of the Kill (your Escalation hook) | an Encounter Pick, a Talent |
 | 3 | | a Skill Talent |
 
 Level 4 brings the Apex and the numbers of Stage 1 (see [[Stages]]); it is not written yet.
@@ -41,7 +41,7 @@ Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's
 
 @@CARD:Darting Blade@@
 
-**Your Basic attacks.** Every character has the [[Basic Attack]]; your **Steady Draw** adds a line to it, and **Harrying Shot** is your own Power Basic attack: a shot meant to rattle. A Weapon Basic attack (Vigor damage) pays off against a Strained foe, a Power one (Resolve damage) against a Bloodied foe, so the two feed each other.
+**Your Basic attacks.** Every character has the [[Basic Attack]]; your **Steady Draw** adds a line to it, and **Harrying Shot** is your own Power Basic attack: a shot meant to rattle.
 
 @@CARD:Steady Draw@@
 
@@ -60,10 +60,10 @@ Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's
 
 ### Level 1: Hallmark Reaction
 
-**Choose one.** *Quick build: Snap Shot.* Both answer a foe that is about to reach you, and both are paid with your Reaction Point or with AP you kept from your turn (see [[Reactions]]).
+**Choose one.** *Quick build: Snap Shot.* Both answer a foe that is about to reach you.
 
 - **Slip Away** (Turn, 1R): you are gone before the foe arrives.
-- **Snap Shot** (Turn, 1R): you shoot the foe as it comes, and slow or stop it.
+- **Snap Shot** (Turn, 1R): you shoot the foe as it comes; it is Hindered or Immobilized.
 
 @@CARD:Slip Away@@
 

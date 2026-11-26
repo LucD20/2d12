@@ -22,7 +22,7 @@ When you pick your class, you choose its Attribute increases when they say "or",
 
 Each class is written in its own document: [[Paladin]] and [[Archer]].
 
-### Class Actions, Picks and the Repertoire
+### Class Actions and Picks
 
 Over its first levels, every class gives you the same kinds of things:
 
@@ -32,7 +32,7 @@ Over its first levels, every class gives you the same kinds of things:
 - The **Apex**, at level 4 (see [[Escalation Abilities]]).
 - Its **Features**.
 
-A class's **Class Actions** are the Actions it gives you at level 1, the Hallmark Action and the Hallmark Reaction among them. Its **Repertoire** is everything else it offers, listed by [[Frequency]]: **Passive** (it works on its own), **Turn**, **Round**, **Encounter** and **Daily**. A **Pick** is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Two classes' lists don't need to match: each offers what fits it.
+A class's **Class Actions** are the Actions it gives you at level 1, the Hallmark Action and the Hallmark Reaction among them. A **Pick** is one choice from the other Actions it offers: the level list says how many Picks you take at each level and of which kind (an Encounter Pick is one of its Encounter Actions). Two classes' Picks don't need to match: each offers what fits it.
 
 ### Leveling Up
 
@@ -64,7 +64,7 @@ During Stage 0 you can also swap the order of your Modifiers on a Rest. From Sta
 
 ### Stages
 
-The levels are grouped in **Stages**: **Stage 0** is levels 1 to 3, **Stage 1** levels 4 to 7, **Stage 2** levels 8 to 11 and **Stage 3** levels 12 to 15. Your numbers change only when you reach a new Stage, and the NPCs of the [[Bestiary]] follow them (their tables are written by Stage).
+The levels are grouped in **Stages**: **Stage 0** is levels 1 to 3, **Stage 1** levels 4 to 7, **Stage 2** levels 8 to 11 and **Stage 3** levels 12 to 15. Your numbers change only when you reach a new Stage, and the NPCs of the [[Bestiary]] follow them.
 
 | | Stage 0 (levels 1-3) | Stage 1 (levels 4-7) | Stage 2 (levels 8-11) | Stage 3 (levels 12-15) |
 |---|---|---|---|---|

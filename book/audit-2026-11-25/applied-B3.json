@@ -1,0 +1,803 @@
+[
+ {
+  "id": "B3-001",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Glossary has new rows, each linked to its section: Debuff, Divine, Encounter (the Frequency), Fear, Focus, Health Pool, Initiative, Round (the Frequency), Skill Talent and Talent.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-002",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Armor and Ward rows end \"The Defense a Weapon Action usually attacks.\" and \"The Defense a Power Action usually attacks.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-006",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Class Actions row reads \"The Actions your class gives you at level 1, the Hallmark Action and the Hallmark Reaction among them.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-008",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Emanation row's parenthesis reads \"(counted like any distance, every second diagonal as 2: 21 squares around a single square)\".",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-009",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Escalation row ends \"A card that says Escalation N (the Apex: 6) can be used only while it is at least N, and your Escalation die (dE) grows with it.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-077",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Hearing row says you perceive noisy creatures within 10 squares as Hidden, around corners and through walls, unless a thick wall is between you.",
+  "ruleChange": true,
+  "foundry": "If Foundry's perception treats Hearing as passing every wall, a thick wall now blocks it."
+ },
+ {
+  "id": "B3-012",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md",
+   "book/rules-src/05-characters.md",
+   "book/rules-src/README.md"
+  ],
+  "what": "The Repertoire row is gone; Chapter 5's section is now \"Class Actions and Picks\" (the Glossary's links repaired) and defines a Pick as one choice from the other Actions a class offers, of the kind the level list names.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-013",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Role row is gone (Chapter 14's open box still names the roles).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-014",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md",
+   "book/rules-src/05-characters.md"
+  ],
+  "what": "The Stage row no longer says it sets the Bestiary's tables, and Chapter 5's Stages no longer says the NPCs' tables are written by Stage.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-016",
+  "done": true,
+  "files": [
+   "book/rules-src/12-paladin.md",
+   "book/rules-src/13-archer.md"
+  ],
+  "what": "The level tables write \"Kindled Wrath (your Escalation hook)\" and \"Thrill of the Kill (your Escalation hook)\".",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-017",
+  "done": true,
+  "files": [
+   "book/rules-src/12-paladin.md",
+   "book/rules-src/13-archer.md"
+  ],
+  "what": "The sentence on the two Basic attacks feeding each other is gone from both class documents.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-018",
+  "done": true,
+  "files": [
+   "book/rules-src/12-paladin.md",
+   "book/rules-src/13-archer.md"
+  ],
+  "what": "Neither class's Hallmark Reaction section restates how a Reaction is paid; the Archer's keeps \"Both answer a foe that is about to reach you.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-019",
+  "done": true,
+  "files": [
+   "book/rules-src/12-paladin.md",
+   "book/rules-src/13-archer.md"
+  ],
+  "what": "The five summary lines use the cards' words: Shield of Faith Taunts, Rebuke Hinders and may stop, Consecrated Ground is Difficult Terrain and gives Guard, Word of Radiance is light around you that pushes, Snap Shot Hinders or Immobilizes.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-020",
+  "done": true,
+  "files": [
+   "book/rules-src/12-paladin.md"
+  ],
+  "what": "Bulwark of Faith's summary: when a blow is about to land on an ally, they gain a large Guard first, and you slide them 1 square after.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-032",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The Bestiary's opening note is gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-034",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The sentence on why the Downs are counted beside the cost is gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-036",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The normal fight's first bullet is only \"It is decided in round 2 and over in round 3.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-041",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The \"on paper\" damage numbers (9 and 12) are gone; the ranks give only the damage at the table.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-042",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The ranks' bullet \"A Basic attack's Tier 1 deals nothing\" is gone (An NPC's Actions keeps the rule).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-043",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "\"A Minion is fodder: it hits like a Grunt and dies like a Minion.\" is gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-044",
+  "done": "partly",
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The Minion's, the Grunt's and the Standard's \"Its default\" sentences are cut: the Grunt keeps only its default Special (2 AP and Round, about 5½ / 8½ on one creature or 2½ / 4½ on each of two), the Standard its bullets; the Elite's sentence (\"a Standard with Health 72 ...\") was left whole apart from B3-054, and the Standard's Basic attack bullet stays (B3-068 keeps it).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-045",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The bullet \"A Minion threatens and flanks like any creature\" is gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-046",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The bullet \"A Minion's Reaction\" and the Goblin Sneak's \"It pays with an AP it kept.\" are gone; the rank table and NPC Reactions keep the rule.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-047",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The \"There is no overflow\" sentence is gone from Ticks.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-048",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "Ticks rule 4: damage with no Tier removes 1 tick each time it lands (a Lingering, a hazard, a zone, a Collision from an Action that dealt no damage); an Action removes ticks only once, so its own Forced Movement's Collision removes no more if its Tier did.",
+  "ruleChange": true,
+  "foundry": "Foundry's tick removal for damage with no Tier must count every Lingering tick, hazard or zone again each time it lands, and skip the Collision of an Action whose Tier already removed ticks."
+ },
+ {
+  "id": "B3-049",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The two sentences on why Grunts and Minions differ are gone; the GM's guidance (Grunts are for mixing in) stays.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-050",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Minor enemies section and its Glossary row add \"A Forced Movement into a Deadly Hazard kills a Minor enemy.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-051",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "Minor enemies' \"their damage dice never explode\", and the Goblin Sneak's and Grave Wisp's stat blocks say \"Its damage dice never explode.\"",
+  "ruleChange": true,
+  "foundry": "A Minor enemy's 2d12 still explode on a 12; only its damage dice don't (Foundry's NPC roll must not suppress the d12s' explosion)."
+ },
+ {
+  "id": "B3-054",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "\"Default Standard\" and \"Default Elite\" are no longer named.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-055",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "An Elite's Encounter Action is worth about 8 more damage to Health at the table, or the like in effect.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-056",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The Elite's Encounter Action is \"written on its card\", without \"where the players can read it\".",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-057",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "\"An Elite uses it on its own turn.\" is gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-058",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "\"Nothing else on its sheet moves with its rank.\" is gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-059",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The \"as for anyone\" sentence and parenthesis are cut, and NPCs and Health reads only \"What differs for an NPC's Health: see Rally Points and NPCs Going Down.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-060",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "An NPC's level \"says which PCs it is built for\"; a higher level gives options, never a number on a roll, a Defense or a DC.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-061",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "An NPC's numbers adds the one exception to the totals: a fast creature can give up a Defense point or some Health, and a slow one can gain Health (see Speed, Size and Steadiness); the Goblin Sneak is unchanged.",
+  "ruleChange": true,
+  "foundry": "Any Foundry check that an NPC's Defenses and Health stay at its rank's totals must allow a fast creature less and a slow one more Health."
+ },
+ {
+  "id": "B3-062",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md",
+   "book/rules-src/06-basic-actions.md"
+  ],
+  "what": "An NPC can always use Fists: Chapter 14 and Chapter 6 no longer say it uses Fists only without a fitting weapon.",
+  "ruleChange": true,
+  "foundry": "Foundry should offer Fists to an NPC even when it has a weapon (a free hand is still needed)."
+ },
+ {
+  "id": "B3-063",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The flat-number bullet is building advice: \"Give every damage line a die: a flat number alone is rare.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-064",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The bullet \"Its damage is written whole\" under An NPC's Actions is gone (Its Modifiers keeps the rule).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-078",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The sentence on creatures that deal only [R] making PCs Strained is gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-066",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The parenthesis on two melee Basic attacks and \"no hard limit\" is gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-067",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md",
+   "book/cards/stage0/bestiary.json"
+  ],
+  "what": "Basic attacks adds \"The dice of its other Actions explode only where the card writes !\", and War Howl's Tier 2 is [R] 1 + 1d4! Ps in the chapter and on the card.",
+  "ruleChange": true,
+  "foundry": "Foundry's War Howl Tier 2 die explodes, and a Standard's or Elite's non-Basic dice explode only where the card writes !."
+ },
+ {
+  "id": "B3-068",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The bullet on the Critical's 1d10! and \"and the Critical's 1d10!\" on the Standard's Basic attack are gone; Chapter 1 and Minor enemies keep it.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-069",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "Losing its weapon opens with an open box \"Disarming and breaking weapons are not written yet.\", its rules kept under it.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-071",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "Special Actions and the Glossary: by default a Special hits one creature, or two for less damage each; a creature's own Special can do otherwise (an area, for example).",
+  "ruleChange": true,
+  "foundry": ""
+ },
+ {
+  "id": "B3-072",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "The playtest creatures' lead-in says only \"The Flavor line of each card is in italics.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-073",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md",
+   "book/cards/stage0/bestiary.json"
+  ],
+  "what": "Shriek and Scatter has a Distance of 6 sq., a Target of one ally with the Goblin Tag and \"Trigger: the target goes Down.\" (chapter and card); Backhand's stat block names its target, the triggering creature.",
+  "ruleChange": true,
+  "foundry": "Foundry's Shriek and Scatter card gets the new distance, target and trigger fields (the overlay reads them from the card)."
+ },
+ {
+  "id": "B3-075",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md",
+   "book/cards/stage0/bestiary.json"
+  ],
+  "what": "The six melee cards write Distance \"Reach (1)\" or \"Reach (2)\", Blood for Blood's Requirement comes before its Trigger on the card, and Crack the Ground's stat block no longer says \"from any square of the ogre's edge\".",
+  "ruleChange": false,
+  "foundry": "Foundry reads these cards' distance field: it was \"Reach\" and is now \"Reach (1)\" / \"Reach (2)\"; anything that parses it must accept the new form."
+ },
+ {
+  "id": "B3-076",
+  "done": true,
+  "files": [
+   "book/rules-src/14-bestiary.md"
+  ],
+  "what": "\"(The flat 1 is this card's own exception.)\" is gone from Backhand.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-026",
+  "done": true,
+  "files": [
+   "book/cards/stage0/archer.json"
+  ],
+  "what": "Shifting Aim: \"Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn and have made no [Strike] Action since.\"",
+  "ruleChange": true,
+  "foundry": "Foundry's Shifting Aim check counts only a move made during the turn in progress (on another creature's turn, only a move during that turn), not one since the Archer's own turn began."
+ },
+ {
+  "id": "B3-027",
+  "done": true,
+  "files": [
+   "book/cards/stage0/archer.json"
+  ],
+  "what": "Steady Draw's line: \"Strained: On a Tier 3, this Action deals 1[D] more.\"",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B3-028",
+  "done": true,
+  "files": [
+   "book/cards/stage0/archer.json"
+  ],
+  "what": "Steady Draw's 2dE is dealt \"as the weapon's damage (its pool and subtype)\".",
+  "ruleChange": true,
+  "foundry": "Foundry's Steady Draw 2dE uses the weapon's pool and subtype (so Resistance and Weakness apply)."
+ },
+ {
+  "id": "B3-029",
+  "done": true,
+  "files": [
+   "book/cards/stage0/archer.json"
+  ],
+  "what": "Slip Away has no Distance line.",
+  "ruleChange": false,
+  "foundry": "Foundry's Slip Away card loses its 5-square distance (the card's distance field is gone)."
+ },
+ {
+  "id": "B3-030",
+  "done": true,
+  "files": [
+   "book/cards/stage0/archer.json"
+  ],
+  "what": "Hit and Run's Effect: before the first square and after each square of the Advance, each adjacent enemy becomes a target of the Light weapon once; once, one creature within the bow's Range becomes a target of the bow, and it can be a Light weapon target too.",
+  "ruleChange": true,
+  "foundry": "Foundry's Hit and Run targets enemies adjacent before the first square too, once each per weapon, and lets the bow's target also take the knife."
+ },
+ {
+  "id": "B3-031",
+  "done": true,
+  "files": [
+   "book/cards/stage0/archer.json"
+  ],
+  "what": "Hit and Run's Attack line: roll 3d12 once at the first hit; every hit uses those dice, each worked out on its own as for Several Targets (the first two dice unless that hit is Favored or Doomed).",
+  "ruleChange": true,
+  "foundry": "Foundry rolls 3d12 once for Hit and Run and resolves each hit on its own from those dice."
+ },
+ {
+  "id": "B3-021",
+  "done": true,
+  "files": [
+   "book/cards/stage0/paladin.json"
+  ],
+  "what": "Judge's Judged line opens \"Judged is not a condition: it ends only when the creature goes Down, when you Judge another creature, or with the encounter.\"",
+  "ruleChange": true,
+  "foundry": "Foundry's Judged must not end when the Paladin goes Down or is Unconscious."
+ },
+ {
+  "id": "B3-022",
+  "done": true,
+  "files": [
+   "book/cards/stage0/paladin.json"
+  ],
+  "what": "Judge's 0 AP Special: \"You can use this only at the start of an encounter, or as a Reaction (0R; Trigger: the creature you Judged goes Down).\"",
+  "ruleChange": true,
+  "foundry": "Foundry treats the free re-Judge as a Reaction (Staggered stops it)."
+ },
+ {
+  "id": "B3-023",
+  "done": true,
+  "files": [
+   "book/cards/stage0/paladin.json"
+  ],
+  "what": "Smite's Special: \"Before you roll Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4.\"",
+  "ruleChange": true,
+  "foundry": "Foundry asks for the Reaction Point before Smite's roll, not after the Tier is seen."
+ },
+ {
+  "id": "B3-024",
+  "done": true,
+  "files": [
+   "book/cards/stage0/paladin.json"
+  ],
+  "what": "Sworn Blade: \"Your Basic Attack gains, after its Tiers: Strained: You can Slide the target 1.\"",
+  "ruleChange": true,
+  "foundry": "Foundry offers Sworn Blade's Slide after the Basic Attack's damage, against a target Strained by then."
+ },
+ {
+  "id": "B3-025",
+  "done": true,
+  "files": [
+   "book/cards/stage0/paladin.json"
+  ],
+  "what": "Drawing Light has a Special line: \"This Action isn't Doomed for being Engaged.\"",
+  "ruleChange": true,
+  "foundry": "Foundry must not Doom Drawing Light for the Paladin being Engaged."
+ },
+ {
+  "id": "F-010",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md",
+   "book/rules-src/README.md"
+  ],
+  "what": "The Glossary's Escalation row no longer names the Escalation Passives, and the README's class-document line no longer lists Art and Escalation N Ability headings (the redesign line is marked as replaced, the Arts and Passives gone).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-01",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Unspent AP's example: Drak gains Guard 2 until he regains AP again (B1-030).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-02",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Guard row: the Guard of unspent AP lasts until you regain AP again (B1-030).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-03",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Interrupt and Trigger rows happen before / after the moment they name (B1-033).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-04",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "Moves closer and Moving away: it enters a square nearer to / farther from you than the square it came from (B1-038).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-05",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "Disrupting Actions and the Disrupted row: what is left of a disrupted Action doesn't happen (B1-037, B1-044).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-06",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Requirements is singular: \"you must meet it ... It is checked\" (B1-042).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-07",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Escalation row no longer says \"never spent\" (B1-059; Chapter 2 keeps it once).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-08",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Glossary has a Debuff row linked to Buffs (B1-049).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-09",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Initiative slot row links to Rounds and Durations (B1-056).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-10",
+  "done": true,
+  "files": [
+   "book/rules-src/README.md"
+  ],
+  "what": "The README's Core structure line no longer says Roll Effects holds Cleave (B1-015).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-11",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md",
+   "book/rules-src/04-health.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "Chapter 1's weapon damage keeps \"its pool and subtype\" (both sentences), Chapter 4's example says \"(Vigor, the weapon's subtype)\", the [W] row \"with the weapon's pool and subtype\" (B2-071, B2-012).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-12",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "Release: drop an object you hold, in your square, or take one hand off one held with both; Regrip \"(1 AP)\"; Leaning counts Line of Effect and Cover from a corner (B2-034, B2-033, B2-028).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-13",
+  "done": true,
+  "files": [
+   "book/rules-src/15-gear.md"
+  ],
+  "what": "Gear's Fists no longer say \"a Weapon Action can use them\"; the later sentence (the Fists Basic Action, a Weapon Action that isn't the Basic Attack) stands alone (B2-020).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-14",
+  "done": true,
+  "files": [
+   "book/rules-src/08-conditions.md"
+  ],
+  "what": "Immobilized's example: if Jared uses his Reposition on Lana, she isn't moved (B2-063).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-15",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Several Targets: an Empowered origin's 1d6! goes to the one creature it chooses, for a Save Action before the Saves (B2-060).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-16",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md",
+   "book/rules-src/01-roll.md",
+   "book/rules-src/15-gear.md",
+   "book/rules-src/09-glossary.md",
+   "book/rules-src/13-archer.md"
+  ],
+  "what": "The placeholder weapons left the examples: Firearm names none, Projectile \"such as a bow\", Light no Dagger or Handaxe (Gear and the Glossary), the Archer's open box no Dagger (B2-073).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "C-17",
+  "done": true,
+  "files": [
+   "book/rules-src/README.md"
+  ],
+  "what": "The README's trait groups: Split is set aside, and Divine, Fear, Focus and Magical are one entry in Chapter 7 (B2-051, B2-043).",
+  "ruleChange": false,
+  "foundry": ""
+ }
+]

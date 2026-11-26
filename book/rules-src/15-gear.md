@@ -108,7 +108,7 @@ A **Firearm** (placeholder rule) shoots with powder, such as a pistol or a muske
 
 #### Light (property)
 
-A **Light** weapon (placeholder rule) is a small melee weapon you hold in one hand, such as a Dagger or a Handaxe. In your off hand, a Light weapon takes **1 Bane** instead of 2 (see [[Hands]]). Some Actions need a Light weapon, such as the Archer's Darting Blade.
+A **Light** weapon (placeholder rule) is a small melee weapon you hold in one hand. In your off hand, a Light weapon takes **1 Bane** instead of 2 (see [[Hands]]). Some Actions need a Light weapon, such as the Archer's Darting Blade.
 
 #### Long
 
@@ -167,7 +167,7 @@ Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (
 
 ### Fists (the weapon)
 
-Every creature counts as having **Fists**. They are a weapon like any other, with the properties Barehanded, Melee and Non-threatening, in the Unarmed group. While you have a free hand, your Fists count as a weapon you are wielding, alongside any other weapon you hold: a Weapon Action can use them. Fists have no Weapon Technique.
+Every creature counts as having **Fists**. They are a weapon like any other, with the properties Barehanded, Melee and Non-threatening, in the Unarmed group. While you have a free hand, your Fists count as a weapon you are wielding, alongside any other weapon you hold. Fists have no Weapon Technique.
 
 | Name | Group | Properties | Subtype | Range | Damage | Rung |
 |---|---|---|---|---|---|---|

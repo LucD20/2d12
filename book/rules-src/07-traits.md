@@ -19,7 +19,7 @@ These traits have no rules of their own. Other rules and features refer to them.
 
 ### Firearm
 
-Firearm Actions need a weapon with the Firearm property (see [[Properties]]), such as a pistol or a musket, and use its Range as their Distance. A Firearm is not a Projectile weapon: Projectile Actions can't use it.
+Firearm Actions need a weapon with the Firearm property (see [[Properties]]) and use its Range as their Distance. A Firearm is not a Projectile weapon: Projectile Actions can't use it.
 
 ### Handle
 
@@ -47,7 +47,7 @@ These Actions roll your **Power Modifier**.
 
 ### Projectile
 
-Projectile Actions need a weapon with the Projectile property (see [[Properties]]), such as a bow or a crossbow, and use its Range as their Distance.
+Projectile Actions need a weapon with the Projectile property (see [[Properties]]), such as a bow, and use its Range as their Distance.
 
 ### Ranged
 

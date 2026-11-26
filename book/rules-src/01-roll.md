@@ -164,7 +164,7 @@ The damage of an Action is what its card says: it adds a Modifier or a weapon's 
 
 When an Action deals damage equal to your Modifier, it is written **[Mod]**. The Modifier is always the one you used to roll for that Action. You never add a Modifier to the same damage twice.
 
-When a Weapon Action adds your Modifier to its damage, the Modifier joins the **weapon's damage** and keeps its damage type and subtype: if the weapon deals Resolve damage, so does the Modifier. A Tier of a Weapon Action that writes no [W] deals its damage as the weapon's damage too, with the weapon's type and subtype.
+When a Weapon Action adds your Modifier to its damage, the Modifier joins the **weapon's damage** and keeps its pool and subtype: if the weapon deals Resolve damage, so does the Modifier. A Tier of a Weapon Action that writes no [W] deals its damage as the weapon's damage too, with the weapon's pool and subtype.
 
 ### Damage Types
 
@@ -211,7 +211,7 @@ When one Action affects several creatures (an Area, a Strike on "up to three cre
 
 For instance, if the Action deals 1d4 / 1d6 / 1d8, and two creatures get Tier 1 and one gets Tier 2, you roll 1d4 once and apply it to the two creatures on Tier 1.
 
-If the creature that makes the roll or causes the Save is Empowered, its 1d6! goes to the one creature it chose before the Saves (see [[Empowered]]).
+If the creature that makes the roll or causes the Save is Empowered, its 1d6! goes to the one creature it chooses, for a Save Action before the Saves (see [[Empowered]]).
 
 You roll every die that any of the targets needs, and each target uses only the ones that apply to it. If any target has Favored or Doomed, roll 3d12: a Favored target keeps the two highest and has Doubles if any two of the three dice match, a Doomed target keeps the two lowest, and any other target uses the first two d12 you rolled.
 
@@ -309,7 +309,7 @@ When a rule names a trait before the word "Action," it means an Action with that
 - Separate brackets joined by "and" mean **either**: "[Strike] and [Weapon] Actions" are Actions with the Strike trait, the Weapon trait, or both. Alternatives can also be written with "or" inside the brackets: [Melee or Ranged].
 - A **Body Action** is an Action with the Body trait, and so on; an Action can be more than one (Trip is both a Body and an Instinct Action).
 
-**Weapons by property.** When a rule names a weapon [[Properties|property]] before the word "weapon," it means a weapon with that property. A **Two-handed weapon** is a weapon with the Two-handed property, and a **Projectile weapon** is a weapon with the Projectile property, such as a bow or a crossbow.
+**Weapons by property.** When a rule names a weapon [[Properties|property]] before the word "weapon," it means a weapon with that property. A **Two-handed weapon** is a weapon with the Two-handed property, and a **Projectile weapon** is a weapon with the Projectile property, such as a bow.
 
 ## Summary
 

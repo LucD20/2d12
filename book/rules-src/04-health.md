@@ -32,7 +32,7 @@ When you have Vigor damage **equal to or more than** your Vigor, you are **[[Blo
 
 ### Instances of Damage
 
-An Action's damage can come in several **instances**: each part with its own pool and subtype is one instance. "[V] 1[W] + [Mod] + [R] 2d8 Ho" deals two: the weapon's damage with your Modifier (Vigor, the weapon's type), and 2d8 Holy (Resolve). Each [W] is its own instance (2[W] is two, see the [[Gear]] document), and extra damage from another effect is its own instance. Each target takes its own instances.
+An Action's damage can come in several **instances**: each part with its own pool and subtype is one instance. "[V] 1[W] + [Mod] + [R] 2d8 Ho" deals two: the weapon's damage with your Modifier (Vigor, the weapon's subtype), and 2d8 Holy (Resolve). Each [W] is its own instance (2[W] is two, see the [[Gear]] document), and extra damage from another effect is its own instance. Each target takes its own instances.
 
 ### Lethal and Nonlethal
 

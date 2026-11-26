@@ -30,3 +30,9 @@ Places the passes saw that an applied answer now contradicts, which no answer na
 ## For Foundry (from pass B2; the cards' `foundry` blocks were not touched)
 - `book/cards.py` gained two things `cardmodel.mjs` must mirror (t260): a Version's own Requirement line (Crawl's 2 AP), and Versions whose lines are all equal printed once (Seek).
 - Advance's `sub` "move up to your Speed" no longer matches its text (no Move button); Shake Off's `sub` "makes a Save" no longer matches and its new `vs` reads as a roll; Relocate's Reposition was kept within Reach by a requirement text now cut (B2-021); Break Free rolls "the higher" Attribute against B2-046 (you choose); `module/basic-data.mjs` is stale (t177); Heal is now Tend.
+
+## After pass B3 (the classes, the Bestiary, the Glossary; the lines above were brought into line as C-01 to C-17)
+- `book/cards/talents.json` (a set-aside Talent) still says "your class's Repertoire" (B3-012).
+- Glossary, Minion: still "(it pays a Reaction with an AP it kept)"; the chapter keeps the rule in the table and under NPC Reactions (B3-046).
+- Hit and Run still says "hit" in its Specials and Target line (B3-030 reworded the Effect and the Attack line only).
+- Chapter 14, Minions: the section is now one bullet (B3-043, B3-044); "no Rally Points, no Steel Yourself" is still in Chapters 4, 6 and 14 (B3-059 reduced one section only). Both wait for the Bestiary's questions.
