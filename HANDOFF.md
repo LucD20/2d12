@@ -16,7 +16,7 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. **Re
 ## What is happening now
 
 1. **Playtest 8** (Lucas): level 1 pregens against the new creatures. The fights Claude suggests are in `foundry/foundry-backlog.md`, "Playtest 8, the fights Claude suggests".
-2. **The cleanup audit** (`book/audit-2026-11-25/`): three passes (the book against itself and its wording; these records; Foundry and the tools against the book). Its findings are questions on an answer page; **nothing is applied until Lucas answers.**
+2. **The cleanup audit** (`book/audit-2026-11-25/`): three passes (the book against itself and its wording; these records; Foundry and the tools against the book). Its 282 findings are questions on an answer page (the artifact "2d12 Cleanup Audit", https://claude.ai/artifact/4G7jW9VNCei8tLDPUxTNyf; the same page is `book/audit-2026-11-25/index.html`); his answers save with the page (its database, collection `answers`) and he can also copy them into the chat. **Nothing is applied until Lucas answers.**
 
 ## Waiting on Lucas
 

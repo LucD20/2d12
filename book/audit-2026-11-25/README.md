@@ -30,4 +30,6 @@ Four independent readers, one pass each; Claude read every finding, checked ever
 
 Pass 2 (these records) was applied directly: `HANDOFF.md` and `MASTER-PLAN.md` rewritten as the current state, the old files in `archive/old-notes/`.
 
+The answer page is published as the artifact "2d12 Cleanup Audit" (https://claude.ai/artifact/4G7jW9VNCei8tLDPUxTNyf); Lucas's answers save in its database (collection `answers`, one document a finding: `choice` is the option's index from 0, `note` his own words) and its Copy my answers button gives them as text.
+
 **Nothing in the rulebook or in Foundry was changed.** When Lucas sends his answers, one pack applies them: the book first (rules-src, logged in `rules-backlog.md`), then Foundry.
