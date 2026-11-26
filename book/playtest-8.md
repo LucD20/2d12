@@ -28,48 +28,184 @@ number (Lucas on Trip: "Keep as is, we need more playtests"). The HUD's fixed bu
   is in a certain position, I try to hover over Cancel and it moves since it is also moving on the map. Lets make all buttons of the
   situational tab be fixed. Lets do a mockup of each and make sure it is always fixed.
 
-## 2. What the log says (Claude's reading; the report itself is section 5)
+## 2. The full report (Claude, 2026-11-26)
 
-Every number here is counted from the report. One fight is one sample: none of this is a reason to change a number yet.
+Everything here is counted from the Encounter Log's report (section 5) and the cards as they are in `cards/stage0/` and `cards/basic-actions.json`.
+**One fight is one sample: nothing here is a reason to change a number yet.** Where the log doesn't say something (an Escalation, which Boons
+and Banes a roll had, a Save's Tier), it is marked as not known, not guessed.
+
+### 2.1 The verdict against the targets
 
 | Measure | The target (Chapter 14, `bestiary-design.md`) | Playtest 8 |
 |---|---|---|
-| Cost in Rally Points a PC | Normal: about 1½ (1¼ to 1¾) | **1.3** (45 damage reached Health; one Rally Point of each PC removes 8 + 9 + 9 + 8 = 34) |
-| Downs | "a PC goes Down now and then" | **0** |
-| Length | decided in round 2, over in round 3 (decision 13) | **over at the end of round 2** (the last enemy died on the party's last turn of the round) |
-| The party's damage a round | about 69 at the table (17 a turn), 92 on paper (decision 4) | **73.5** (147 in two rounds: 18.4 a turn) |
+| Cost in Rally Points a PC | Normal: about 1½ (1¼ to 1¾) | **1.3 to 1.4** (45 by the log, 47 with two Collision damage it missed, see 2.9; one Rally Point of each PC removes 8 + 9 + 9 + 8 = 34) |
+| Downs | "a PC goes Down now and then" | **0**; the lowest PC was Aveline at 15 of 35 |
+| Length | decided in round 2, over in round 3 (decision 13) | **over at the end of round 2**: 14 turns in all (8 of the party's, 6 of the enemies') |
+| The party's damage | about 17 a turn at the table, 23 on paper (decision 4) | **18.4 a turn** (147 in 8 turns) |
 | An enemy turn's damage to Health | about 8 a Standard's turn (decision 14) | **about 7** (45 over 6 enemy turns worth 6.1 Standard turns: the ogre's two count double) |
+| Rally Points used, Guard kept | (none assumed) | **0 and 0**: nobody healed, nobody kept an AP |
 
-**Luck or intended? Mostly intended, a little luck.**
-- **The enemies' Health was 130 in all** (72 + 36 + 18 + 2 ticks + 2 ticks). A party that deals about 69 a round empties 130 in 1.9 rounds.
-  The targets "17 a turn" and "36 Health a PC" already say a normal fight ends around the turn of rounds 2 and 3: "over in round 3" only holds
-  if about a round of damage is wasted (overkill, movement, missed turns). This time almost none was: 147 dealt against 130 Health.
-- **The dice were a little kind to the party:** 20 rolls gave 6 Tier 1, 8 Tier 2, 6 Tier 3; the same rolls give on average about 7 / 9½ / 3½.
-  Two or so extra Tier 3s, and they fell on the big cards (Durgan's Smite, then his Basic Attack on a Doubles). The enemies rolled average
-  (4 / 5 / 3 against about 4 / 6 / 2).
-- **The two Smites were 59 of the party's 147** (Durgan's 23 on a Tier 3; Aveline's 36 on a Favored Tier 2, which finished the ogre from 36
-  left). An Encounter card deciding the fight is what it is for; that both landed in round 2 is why it ended there.
+The cost and both damage rates are on target. The length is one round short, and the cost arrived in one blow instead of over the fight.
 
-**"Easy until the ogre's turn": the numbers agree.** The party took 50 before reductions; **25 of it was Crack the Ground** (11 on Aveline, 14 on
-Sylwen), one Action. The rest of the enemy side dealt 25 in five turns: the goblins 4 (both dead before their second turn), the wisp 5, the
-Orc Warrior 9 (it had one turn: it died before its second), the ogre's round 1 only 7 raw with a Tier 2 and a Tier 3. So the cost was normal
-(1.3), but it arrived in one moment instead of over the fight. That is the shape an Elite's Encounter Action is meant to have; what made the
-rest feel easy is that **three of the five enemies never had a second turn**.
+### 2.2 Why it was fast
 
-**"Attack after attack": what the party did.** Of the party's 20 rolls: 9 Basic Attacks, 8 class cards (Quick Shots 2, Smite 2, Binding Light,
-Drawing Light, Strafe, Darting Blade), 3 maneuvers (Feint 2, Demoralize 1). No Trip, no Shove, no Steel Yourself, no Rally Point, one Reaction
-each from the Paladins. In a fight this short that is the right play: nothing lived long enough for control to pay, and nobody was hurt enough to
-need to defend until the fight was already decided. Claude's opinion (not a decision): this is the cost of a two-round fight more than a fault of
-the Actions, and it is the thing to watch in the next playtests. If the next ones also end in round 2 with mostly Basic Attacks, the lever is the
-fight's length (decision 13's Health, or how many enemies get a second turn), not the maneuvers.
+In order of weight:
 
-**Feint.** Used twice, both times before a Smite (1 AP for a Favored roll on an Encounter card). Durgan's failed and his Smite rolled a Tier 3
-anyway; Aveline's worked and her Favored Smite was a Tier 2. Lucas: "almost a necessary use" with an Encounter ability. On watch: the charter's
-"no one best button" (a 1 AP step that is always right before the big card is a tax, not a choice). No change; more playtests.
+1. **The enemies had 130 Health in all** (ogre 72, orc 36, wisp 18, two goblins of 2 ticks). Playtest 6's line-up, the last one recorded with
+   its numbers, had 220 (130 + 60 + 3 × 10) and took 4 rounds. At about 69 a round the new 130 lasts 1.9 rounds when nothing is wasted. The
+   target "over in round 3" needs about a round of waste, and the party wasted almost nothing: **17 of overkill** (ogre 12, orc 3, wisp 2),
+   2 AP unspent (Kaela's, with nothing left to shoot), 3 AP on movement.
+2. **The turn order.** Round 1: Sylwen, Goblin 1, Goblin 2, Durgan, ogre, Aveline, wisp, Kaela, orc. Both goblins and the wisp died in round 1
+   after one turn each. The orc acted last, so in round 2 it was dead before its turn. **The enemies took 6 of the 10 turns two rounds
+   would give them**; the party took all 8 of its own.
+3. **The dice, a little.** The party's 20 rolls gave 6 Tier 1, 8 Tier 2, 6 Tier 3; the same rolls give about 7 / 9½ / 3½ on average (a count
+   without exploding 12s, so a little low on Tier 3). The two or so extra Tier 3s fell where they counted: Durgan's round 2 was a Tier 3 Smite
+   and a Tier 3 Basic Attack on a Doubles, 34 damage, and it left the orc at 2. Two damage dice also exploded on big hits (Aveline's Longsword
+   for 14, the orc's axe for 9). The enemies' 12 attack rolls were average (4 / 5 / 3 against about 4 / 6 / 2).
+4. **Two Encounter cards landing in the same round.** The two Smites dealt 59 of the 147 (40%).
 
-**Demoralize.** Used once (Sylwen on the ogre, round 2, Tier 1). No evidence either way.
+**At average dice (an estimate of one swing, not a simulation):** had Durgan's two round 2 rolls been Tier 2s, he deals about 27 instead of
+34, the orc ends the round on about 4 Health instead of dead, takes its second turn, and the fight ends on the party's first turns of round 3.
+That is the target. So the design gives "end of round 2 to early round 3", and this fight sat at the fast edge of it.
 
-**Trip.** Not used. Lucas: it may have lost its spark beside Feint and Demoralize; keep as is.
+### 2.3 Round by round
+
+| | The party dealt | The party took (to Health) | Enemies standing at its end |
+|---|---:|---:|---|
+| Round 1 | 61 (17 + 12 + 20 + 12) | 22 | ogre (37 of 72 left), orc (36 of 36) |
+| Round 2 | 86 (11 + 34 + 37 + 4) | 23 by the log, 25 with the Collisions | none |
+
+- **Round 1** removed three of the five enemies (110 of the 410 CV) for 22 damage spread over three PCs. The front line met the enemies
+  where they came; neither Archer was reached.
+- **Round 2** was three blows: Durgan's 34 on the orc, the ogre's Crack the Ground (25 on two PCs), Aveline's 36 on the ogre.
+- **The fight was decided when round 1 ended**: two enemies left against four PCs who had lost 22 of 128.
+
+### 2.4 Each PC
+
+| PC | Round 1 | Round 2 | Dealt | Took | Reactions |
+|---|---|---|---:|---:|---|
+| **Sylwen** | Basic Attack T3 9; Quick Shots T1 2; Basic Attack T2 6 | Advance; Demoralize T1; Quick Shots T2 11 | 28 | 12 | none offered |
+| **Durgan** | Basic Attack on each goblin (both killed); Charge, Basic Attack T3 8 on the wisp | Feint T1; Smite T3 23; Basic Attack T3 11 | 46 | 13 | Shield of Faith: passed once (on 1 damage), used once (−3) |
+| **Aveline** | Binding Light T1 5; Basic Attack T2 14; Basic Attack T1 1 | Feint T3; Smite T2 Favored 36; Drawing Light T1 1 | 57 | 19 (20 with the Collision) | Rebuke on the orc (Hindered; its move went on) |
+| **Kaela** | Strafe T3 6; Darting Blade T2 6 (the wisp killed) | Advance; Basic Attack T2 4 (the orc killed) | 16 | 1 (2 with the Collision) | none offered |
+
+- **Durgan had the best fight:** three kills' worth in round 1 (two Minions and half the wisp for 4 AP), then the orc almost alone.
+- **Aveline dealt the most and paid the most:** every blow of the ogre was on her (Taunted or not), 19 of the party's 45.
+- **The Archers dealt 44 of the 147 (30%) with half the party's AP.** Sylwen's two Quick Shots were 13 for 4 AP; Kaela's whole round 1 was
+  12 for 4 AP, at −4 Boons and Banes on the Strafe (the log doesn't say which Banes). It agrees with what `core-rework.md` H6 already
+  watches: ranged damage is low. **Neither Archer used Steady Draw's Special** (once an encounter, the Reaction Point for 2dE more on a
+  Basic Attack's Tier 2 or 3): Sylwen had two such Basic Attacks in round 1, Kaela one in round 2, and both ended the fight with their
+  Reaction Point unspent.
+
+### 2.5 What the party's AP bought
+
+30 of the party's 32 AP were spent:
+
+| Spent on | AP | Damage | Damage an AP |
+|---|---:|---:|---:|
+| Basic Attacks (9 rolls) | 9 | 57 | **6.3** |
+| Smite (2) | 4 | 59 | **14.8** |
+| The other class cards (Quick Shots 2, Binding Light, Strafe, Darting Blade, Drawing Light) | 11 | 31 | **2.8** |
+| Maneuvers (Feint 2, Demoralize 1) | 3 | 0 | one Favored roll |
+| Movement (two Advances, the Charge's move) | 3 | — | — |
+
+**This is the number behind "attack after attack": apart from Smite, the Basic Attack was the party's best button, at more than twice the
+damage an AP of the Round cards.** Two things make the gap bigger than it is: the Round cards rolled badly (Quick Shots and Binding Light a
+Tier 1 each), and their riders had no time to matter (Binding Light's Immobilized never landed; Quick Shots' and Darting Blade's Evade and
+Strafe's Push moved someone but changed no outcome the log shows). The Basic Attack's At-will Banes (−1 on the second, −2 on the third of a
+turn) were paid five times and did not stop it: the nine Basic Attacks were five firsts, three seconds and one third.
+
+So the play Lucas felt is the play the numbers reward in a fight of this length: open with the Round card because it is there, then Basic
+Attacks, and Smite when the target is worth it.
+
+### 2.6 Each enemy
+
+| Enemy (CV) | Turns | What it did | Dealt (raw) | Its Reaction | Died to |
+|---|---:|---|---:|---|---|
+| **Goblin Sneak 1** (30) | 1 | Advance; Shiv T1; Shiv T1 | 0 | none (no AP kept) | one Basic Attack |
+| **Goblin Sneak 2** (30) | 1 | Charge; Shiv T2 1; Shiv T3 3 | 4 | none (no AP kept) | one Basic Attack |
+| **Grave Wisp** (50) | 1 | Slipping Touch T3 4; Pass Through T1 | 5 with the Flare | Dying Flare: 1 on Kaela | Durgan's Charge 8, Strafe 6, Darting Blade 6 |
+| **Orc Warrior** (100) | 1 | Advance, Rebuked (Hindered), Advance, Advance; Hamstringing Axe T2 9 | 9 | Blood for Blood: Tier 1, nothing | Smite 23, Basic Attack 11, Drawing Light 1, Basic Attack 4 |
+| **Ogre Chieftain** (200) | 2 | R1: Advance; Crushing Grip T2 1; Great Sweep T3 6 on one target. R2: Shove T2; Advance; Crack the Ground 11 + 14 | 32 | Backhand: never offered | 48 over round 1 and Sylwen's round 2, then Smite 36 |
+
+- **The Minions did what Chapter 14 says a Minion is for** (fodder): 4 damage and two of Durgan's AP. A Minion's Reaction needs a kept AP
+  and both spent all 3, so Shriek and Scatter never happened; and both were dead before the ogre's turn, so **Hurled Goblin was never possible**.
+- **The wisp** died in round 1 to 4 AP of two PCs. Its Dying Flare (the reason for the first clarification) dealt 1.
+- **The orc spent 3 of its 4 AP walking**, because Rebuke Hindered it on the way: one Reaction of Aveline's cost it about one attack. It made
+  two attack rolls in the whole fight. Its 9 was a 1d4! that exploded twice (the average is about 3); **Barbed Javelin and Cornered were never seen.**
+- **The ogre rolled low in round 1** (a Tier 2 Crushing Grip for 1, a Tier 3 Great Sweep for 6 where 4 + 1d8 averages 8½, on one target of
+  its two) and Shield of Faith took 3 of it: 4 damage to Health from an Elite's first turn. Its round 2 was the opposite: 25 from one Action.
+  Over two turns it landed 27, 13.5 a turn against the 16 an Elite's two Standards would give: in line. **It never Grabbed anyone**
+  (Crushing Grip needs a Tier 3) **and Backhand was never offered** (nobody walked up to it: it came to Aveline).
+- **So of the enemies' special pieces, the party saw two**: Crack the Ground and Dying Flare. Blood for Blood fired and missed. Backhand,
+  Hurled Goblin, the Grab, Shriek and Scatter, the Javelin, Cornered and Pass Through's damage were not seen. The creatures have not been
+  tested yet; their turn-one basics have.
+
+### 2.7 What nobody used
+
+- **Rally Points and Steel Yourself:** none. Nobody was low enough, early enough, to give up an attack.
+- **Guard from kept AP:** none; every PC spent everything (Kaela's 2 were left only because the fight ended).
+- **Trip, Shove (by a PC), Lay On Hands, Harrying Shot, Slip Away, Snap Shot:** none. The two Archer Reactions were never offered: no enemy
+  came next to an Archer on its own movement.
+- **Reactions:** the party was offered 3 and used 2 (Shield of Faith, Rebuke). The enemies used 2 of the 3 Reaction Points that could pay
+  for one (the wisp's and the orc's; the ogre's went unused).
+- **Escalation:** the log doesn't say what anyone's was. Aveline's Smite dealt 20 Resolve, so it was not 1.
+
+### 2.8 Lucas's five notes
+
+1. **"Much much much faster. Luck or intended?"** Mostly intended: 2.2. The Bestiary's own numbers put the end between the last turns of
+   round 2 and the first of round 3; this fight got the fast edge through the turn order and two or so Tier 3s. **"Easy until the ogre's
+   turn":** yes: before Crack the Ground the party had taken 22 in nine enemy attack rolls; that one Action then dealt 25. An Elite's
+   Encounter Action is meant to be the fight's moment, and it was the only one the enemies got.
+2. **"Feint is almost a necessary use with an encounter ability."** Twice, both before a Smite. Durgan's failed (Tier 1) and the Smite rolled
+   a Tier 3 anyway; Aveline's was a Tier 3 (Favored) and her Smite a Tier 2, and the log doesn't show whether the third die changed the
+   Tier. So this fight shows the habit, not the payoff. The reasoning behind the habit is sound: 1 AP is worth about 6 damage as a Basic
+   Attack (2.5), and Smite's step from Tier 1 to Tier 2 is 16 Vigor, from Tier 2 to Tier 3 another die. Feint also asks nothing else of the
+   turn (it uses Reach, and the Paladin is already there). **On watch:** the charter's "no one best button": a 1 AP step that is always
+   right before the big card is a tax, not a choice.
+3. **"Demoralize didn't have a chance of shining."** One use: Sylwen on the ogre, Tier 1, nothing. Even on a Tier 2 its Vulnerable 1 (EoT)
+   would have had one more attack of hers to work on. In a two-round fight a rider that pays over several hits has little room.
+4. **"Trip might have lost its spark."** Not used. In this fight nothing asked for it: no enemy was worth an AP to put Prone, because each
+   was dead within a round of being reached. Not evidence against Trip; evidence that the fight gave control nothing to do.
+5. **"Almost brainless, attack after attack."** 2.5: outside Smite the Basic Attack was the best damage an AP, the fight was decided in round
+   1, and nothing forced a choice between attacking and something else (no PC in danger, no enemy escaping, no terrain used). **Claude's
+   opinion, not a decision:** this is what a two-round fight looks like more than a fault of the Actions. Choices come from pressure and
+   from time, and this fight had neither until its last enemy turn.
+
+### 2.9 What the log got wrong or leaves out (for Foundry)
+
+Wrong:
+- **Collision damage is missing from the tables.** Aveline was Pushed into Kaela; Aveline's Current is 15 where 35 − 19 is 16, Kaela's 27
+  where 29 − 1 is 28, and the party's 81 where 128 − 45 is 83. The 2 damage is in no column, so the Party Health Cost reads 45 where it was 47.
+- The title lists "Goblin Sneak, Ogre Chieftain, Grave Wisp": the Orc Warrior fought and is missing.
+- The watchlist's States line holds a card's text: "R2 Orc Warrior → Bloodied · Drawing Light: You can Slide the target that distance instead
+  of pulling it." (and the Orc Warrior had already become Bloodied that round).
+- Kaela's round 2 turn has no "[AP 4/4]".
+- Order inside a turn: "Aveline Pushed 1 (hits Kaela)" is written before the Shove that pushed her; "OC: Taunted (Durgan)" before the Shield
+  of Faith that Taunted it.
+- "Aveline: Crack the Ground" is written as if it were a state of hers (it is the Zone's effect).
+
+What this report could not count because the log doesn't hold it (suggestions, not asked for):
+- **Which Boons and Banes** a roll had (only their sum: Kaela's "−4 B/B").
+- **Each PC's Escalation** when it changed, and Smite's dice.
+- **A Save's Tier** (Rebuke, Dying Flare, Crack the Ground show the damage only).
+- **A Favored roll's third die**, to see whether Favored changed the Tier.
+- **The squares between creatures** (who was Engaged, who Flanked, how far the Archers stood).
+- **AP spent a turn** by kind, and the cost in Rally Points a PC itself (the log gives a percentage of Health; Chapter 14 measures in Rally Points).
+
+### 2.10 What one fight can't tell, and what the next ones should show
+
+Not known after this fight: whether the fights are a round short on average or this one was the fast edge; what the Bestiary's Reactions
+and special Actions do to a party (most never happened); what a fight does when the party doesn't act first; what Demoralize and Trip are
+worth; whether Feint's Favored pays for its AP.
+
+For the next playtests (Claude's suggestions; none is a decision):
+- **The same line-up again, unchanged**, at least twice more: three samples of one fight say what the dice and the turn order were.
+- **One fight where the enemies are met later or act first** (a start farther apart, or the ogre and the orc ahead of the party): it shows
+  Backhand, Hurled Goblin, Blood for Blood and the Archers' Reactions, which need enemies alive and moving.
+- **Watch three counts:** the turn the last enemy dies on; how many enemies get a second turn; the damage an AP of Basic Attacks against the
+  Round cards (2.5's table). If the fights keep ending in round 2 with the Basic Attack ahead, the lever is the fight's length (decision
+  13's 36 Health a PC), and the maneuvers' and Round cards' riders are judged after that, not before.
 
 ## 3. The two clarifications (applied to the book, 2026-11-26)
 
@@ -89,15 +225,9 @@ anyway; Aveline's worked and her Favored Smite was a Tier 2. Lucas: "almost a ne
 - **"Everything the Action hasn't done yet waits"** includes what follows the damage inside the same Tier's line: a Reaction to the damage
   comes before the "; Prone" of that line. He ruled only on an Effect line after the Tiers; this extends his ruling by the same logic.
 
-## 4. What the log itself got wrong (for Foundry; `foundry/foundry-backlog.md`, "PLAYTEST 8")
+## 4. The Encounter Log's mistakes
 
-- The title lists "Goblin Sneak, Ogre Chieftain, Grave Wisp": the Orc Warrior fought and is missing.
-- The watchlist's States line holds a card's text: "R2 Orc Warrior → Bloodied · Drawing Light: You can Slide the target that distance instead of
-  pulling it." (and the Orc Warrior had already become Bloodied that round).
-- Kaela's round 2 turn has no "[AP 4/4]".
-- Order inside a turn: "Aveline Pushed 1 (hits Kaela)" is written before the Shove that pushed her; "OC: Taunted (Durgan)" before the Shield of
-  Faith that Taunted it.
-- "Aveline: Crack the Ground" is written as if it were a state of hers (it is the Zone's effect).
+Section 2.9 (the list is also in `foundry/foundry-backlog.md`, "PLAYTEST 8 PLAYED").
 
 ## 5. The report (as pasted)
 
