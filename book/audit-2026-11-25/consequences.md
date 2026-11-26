@@ -24,7 +24,7 @@ Places the passes saw that an applied answer now contradicts, which no answer na
 - Chapter 1, Empowered: "the one creature it chose before the Saves" also stands for rolls that aren't Saves (B2-060).
 - Examples still on placeholder weapons (B2-073): Light's "such as a Dagger or a Handaxe", "a pistol, a musket", "a bow, a crossbow" in the traits and the Glossary, the Glossary's Light row, the Archer document's "such as a Dagger". (The Knuckle Dagger sentence stays: B2-077.)
 - rules-src/README.md: still lists Split in the Roll trait group and Divine, Fear, Focus, Magical as separate entries (B2-051, B2-043).
-- B1-069 against B2-073: B1-069 put "a Pike has Range 3" into Chapter 3; B2-073 (only the four designed weapons in examples) took the Pike out again. The Long bullet's rule sentence was restored by Claude after the pass cut the whole bullet.
+- B1-069 against B2-073: B1-069 put "a Pike has Range 3" into Chapter 3; B2-073 (only the four designed weapons in examples) took the Pike out again. The Long bullet keeps its rule sentence, without the pike.
 - "Up to" before a movement's distance, elsewhere (B2-009's list, a question for Lucas): Charge ("at least 3 squares and up to your Speed"), Lay On Hands ("You Advance up to 5 squares").
 
 ## For Foundry (from pass B2; the cards' `foundry` blocks were not touched)
