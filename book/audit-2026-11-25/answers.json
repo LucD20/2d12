@@ -1,0 +1,1130 @@
+{
+ "B1-001": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-002": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-003": {
+  "choice": null,
+  "note": "Should we just add the \"Critical\" row for each Basic Attack? Then we can fine tune each? This would remove the basic attack entry."
+ },
+ "B1-004": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-005": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-006": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-007": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-008": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-009": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-010": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-011": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-012": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-013": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-014": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-015": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-016": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-017": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-018": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-019": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-020": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-021": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-022": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-023": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-024": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-025": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-026": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-027": {
+  "choice": 1,
+  "note": ""
+ },
+ "B1-028": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-029": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-030": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-031": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-032": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-033": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-034": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-035": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-036": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-037": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-038": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-039": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-040": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-041": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-042": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-043": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-044": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-045": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-046": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-047": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-048": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-049": {
+  "choice": 1,
+  "note": ""
+ },
+ "B1-050": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-051": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-052": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-053": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-054": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-055": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-056": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-058": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-059": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-060": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-061": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-062": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-063": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-064": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-065": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-066": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-067": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-068": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-069": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-070": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-071": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-072": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-073": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-074": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-075": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-076": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-077": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-078": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-079": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-080": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-081": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-082": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-083": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-084": {
+  "choice": 1,
+  "note": "Taking a breather will be changed."
+ },
+ "B1-085": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-086": {
+  "choice": 1,
+  "note": ""
+ },
+ "B1-087": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-088": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-089": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-090": {
+  "choice": 0,
+  "note": ""
+ },
+ "B1-091": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-001": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-002": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-003": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-004": {
+  "choice": 2,
+  "note": "I think we shouldnt define class actions, is this term used anywhere?"
+ },
+ "B2-005": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-006": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-007": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-008": {
+  "choice": 0,
+  "note": "Should we gatelock all APex to level 4? Or maybe some classes will get first?"
+ },
+ "B2-023": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-042": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-043": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-044": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-045": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-046": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-047": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-048": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-049": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-050": {
+  "choice": null,
+  "note": "Remind me about this one later"
+ },
+ "B2-051": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-052": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-053": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-054": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-055": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-056": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-057": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-058": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-059": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-060": {
+  "choice": 0,
+  "note": "need to keep an eye out for empowered build up since its reliable damage"
+ },
+ "B2-061": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-062": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-063": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-064": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-065": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-066": {
+  "choice": 0,
+  "note": "\"If you gain lingering of the same type\", because multiple lingering damages can stack i think. Or should we limit? If allowed, should we write rules for cold on fire damage, etc?"
+ },
+ "B2-067": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-068": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-001": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-002": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-004": {
+  "choice": null,
+  "note": "see above, about changing to add to each card"
+ },
+ "B3-006": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-008": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-009": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-077": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-011": {
+  "choice": null,
+  "note": "Maybe Reload can increase the weapon's [D] instead."
+ },
+ "B3-012": {
+  "choice": 1,
+  "note": ""
+ },
+ "B3-013": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-014": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-015": {
+  "choice": null,
+  "note": "Tag for review later, this is a big question"
+ },
+ "B2-069": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-016": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-017": {
+  "choice": 1,
+  "note": ""
+ },
+ "B3-018": {
+  "choice": 1,
+  "note": ""
+ },
+ "B3-019": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-020": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-032": {
+  "choice": 1,
+  "note": ""
+ },
+ "B3-033": {
+  "choice": null,
+  "note": "Neither are very good, first one stops disarm builds, second is finnicky, we will need to work on it."
+ },
+ "B3-034": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-035": {
+  "choice": null,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-036": {
+  "choice": 0,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-037": {
+  "choice": null,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-038": {
+  "choice": null,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-039": {
+  "choice": null,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-040": {
+  "choice": null,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-041": {
+  "choice": 0,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-042": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-043": {
+  "choice": 1,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-044": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-045": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-046": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-047": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-048": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-049": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-050": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-051": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-052": {
+  "choice": null,
+  "note": "see above about critical in basic attacks"
+ },
+ "B3-053": {
+  "choice": null,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-054": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-055": {
+  "choice": 0,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-056": {
+  "choice": 1,
+  "note": "bestiary is being rebuilt"
+ },
+ "B3-057": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-058": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-059": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-060": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-061": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-062": {
+  "choice": 1,
+  "note": ""
+ },
+ "B3-063": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-064": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-078": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-065": {
+  "choice": null,
+  "note": "See above, on a similar question about items for npcs"
+ },
+ "B3-066": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-067": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-068": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-069": {
+  "choice": 1,
+  "note": "see above"
+ },
+ "B3-070": {
+  "choice": 1,
+  "note": "likely can just say \"its other Actions, more thematic and complex than the NPCs basic attacks...\""
+ },
+ "B3-071": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-072": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-073": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-074": {
+  "choice": 0,
+  "note": "Isnt it easier to jsut say \"the ogre places it... This is a forced movement effect, causing no collision.\""
+ },
+ "B3-075": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-076": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-070": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-071": {
+  "choice": 0,
+  "note": "But maybe some weapons would deal two types in the future, what then?"
+ },
+ "B2-072": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-073": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-074": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-075": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-076": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-077": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-079": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-080": {
+  "choice": 0,
+  "note": "Maybe it should have though? We can give it their own progression as well, like any weapon."
+ },
+ "B2-081": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-009": {
+  "choice": 0,
+  "note": "Should we remove \"up to\" here? I think so, since this is a rule elsewhere"
+ },
+ "B2-014": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-016": {
+  "choice": 1,
+  "note": "add examples as well"
+ },
+ "B2-015": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-018": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-020": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-021": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-022": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-027": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-028": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-029": {
+  "choice": null,
+  "note": "I think it should lose the Chapter 3 section and be just the action."
+ },
+ "B2-033": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-034": {
+  "choice": 0,
+  "note": "of course, you can let go once to drop something you are holding with both hands"
+ },
+ "B2-036": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-035": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-037": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-039": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-013": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-012": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-010": {
+  "choice": 0,
+  "note": "is attribute action something that actually exists?"
+ },
+ "B2-017": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-019": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-041": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-026": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-024": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-025": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-031": {
+  "choice": 0,
+  "note": "and it applies Doomed and banes normally"
+ },
+ "B2-032": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-030": {
+  "choice": 1,
+  "note": ""
+ },
+ "B2-038": {
+  "choice": 0,
+  "note": ""
+ },
+ "B2-040": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-026": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-027": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-028": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-029": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-030": {
+  "choice": 0,
+  "note": "Wasnt this changed?"
+ },
+ "B3-031": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-021": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-022": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-023": {
+  "choice": 0,
+  "note": ""
+ },
+ "B3-024": {
+  "choice": 0,
+  "note": "should it be \"You Slide 1 the target'?"
+ },
+ "B3-025": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-001": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-002": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-003": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-004": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-005": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-006": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-007": {
+  "choice": null,
+  "note": "They will be used again."
+ },
+ "F-008": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-009": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-010": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-011": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-012": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-013": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-014": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-015": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-016": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-017": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-018": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-019": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-020": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-021": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-022": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-023": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-024": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-025": {
+  "choice": 0,
+  "note": "confirmed, can remove"
+ },
+ "F-026": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-027": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-028": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-029": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-030": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-031": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-032": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-033": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-034": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-035": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-036": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-037": {
+  "choice": 0,
+  "note": ""
+ },
+ "F-038": {
+  "choice": 1,
+  "note": ""
+ },
+ "F-039": {
+  "choice": 0,
+  "note": ""
+ }
+}
