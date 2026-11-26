@@ -1,0 +1,47 @@
+--- 1. a dead creature is not Difficult Terrain (Chapter 3, Creatures in your way)
+creatureWay: dead none | dead, for a drifting mover none | Unconscious dt | an enemy block
+a dead PC ally: none | dead true | Unconscious false
+an Unconscious PC enemy: dt | dead false | Unconscious true
+an NPC at 0, no status: none | dead true | Unconscious false
+an NPC at 0, Unconscious: dt | dead false | Unconscious true
+an NPC at 0, Dead: none | dead true | Unconscious false
+a Dying PC enemy, fighting: block | dead false | Unconscious false
+its space: no creature's on a path (ends there, passes): true | not in a Charge's way: true | not a blocker on a diagonal: true
+--- 2. Charge stops at the weapon's normal Range (B2-014)
+a sword: Arming Sword 1 | ask: false
+a bow: Hunting Bow 12 | a Long weapon: Spear 2 | Reach 2 with the sword: Arming Sword 2
+a Thrown axe: Hand Axe (in hand) 1, Hand Axe (thrown) 5 | ask: true | a sword and a bow, ask: true
+an NPC's Basic attacks (first, its weapons left out): Hamstringing Axe 1, Barbed Javelin 6 | nothing in hand: 0
+the picker stops there: true | asked with the pick bar: true
+--- 3. Shake Off's face (B2-015): the book's Save line and three Tiers
+its lines: Save | Tier 1 | Tier 2 | Tier 3 | the Save line ends in its button: true | drawn rich: rich
+the Use still makes no roll: true | its Effect text kept for the older faces: true | the short card keeps the Save line: true
+Tier 2: The target takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends.
+the no-roll chat card draws the Tiers: true | and not its Effect text: true
+--- 4. one square of Difficult Terrain always (B2-016; Chapter 3's example: Mark)
+Crawl 1 into rubble (costs 2): 1 | Speed 1, Advance into rubble: 1 | Advance 3, 2 used, then rubble: 2 | two squares: 3 | no movement: 2 | Speed 5: 2
+the movement area of a 1-square movement where every square costs 2: without the rule 1 | with it 9
+Evade left out (an Evade can't enter Difficult Terrain): {"budget":0,"size":-1} | a granted movement: {"budget":1,"size":1} | a new AP's Speed: {"budget":1,"size":1}
+--- 5. Point Out on any Unsensed creature (B2-030)
+Unsensed from Hide (its senses: Clear): {"hide":"hidden","floor":false,"changed":true}
+Unsensed in Darkness (no Hide): {"hide":"","floor":true,"changed":true}
+Unsensed from Hide and in Darkness: {"hide":"hidden","floor":true,"changed":true}
+Hidden from Hide, you perceive it Clear: {"hide":"","floor":false,"changed":true} | you perceive it Hidden: {"hide":"hidden","floor":false,"changed":false}
+Hidden by Hearing only: {"hide":"","floor":false,"changed":false}
+kept while it stays in its square: true | it moved: false | none: false
+perceive reads it: true | Point Out uses it: true
+--- 6. Empowered's pool and subtype chosen (B2-061)
+an Action dealing two kinds: Vigor, Slash / Resolve, Holy | one kind: Vigor, Slash | none: 0
+one kind takes no pick: Slash | the roll, a Save Action's damage and several creatures choose: 2 1
+--- 7. a thick wall blocks Hearing (B3-077)
+crossing: true | not: false | touching at an end: true
+a thick wall between: true | a thin one only: false | the flag: true false
+Hearing and Tremorsense read it: true true | the Wall settings' checkbox: true
+--- 8. Shifting Aim off the Archer's turn (B3-026)
+the turn in progress: C:2:3 | no combat: null | moved this turn: true | on an earlier turn: false | a Strike since: false
+its chip off its turn: true | a Strike spends it on any turn: true | a move marks it on any turn: true
+--- 9. Judge's free re-Judge is a Reaction (B3-022)
+@Use[...|asreaction:yes]: true | without: false
+the message's button: <b>Aveline</b>: <b>Orc Warrior</b> went Down. @Use[Judge|ap:0|source:Judge|asreaction:yes|label:Judge (0R)]
+Judge's markDown message is a Reaction: true | its encounter one is not: false
+Staggered warns for it: true | its card says 0R: true | the use passes it: true

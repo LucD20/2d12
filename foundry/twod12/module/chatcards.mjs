@@ -440,8 +440,11 @@ function nextHtml(m, view) {
 export function nonRollCardHtml(m, view = FULL_VIEW) {
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  const effect = m.effectHtml ? `${m.triggerHtml ? "" : divider(1)}<div class="cc-effect full">${m.effectHtml}</div>` : "";
-  return `<div class="cc-card cc-noroll">${headHtml(m)}${metaLineHtml(m)}${m.card ? cardLinesHtml(m.card.top) + cardLinesHtml(m.card.before) : triggerLineHtml(m)}${effect}${nextHtml(m, view)}${flavor}${footHtml(m, view, { hasDamage: false })}${des}</div>`;
+  // v0.0.525 (B2-015, Shake Off): a card whose roll a button makes writes its Tiers as lines (cardmodel.mjs chipTiers), after its Save line, and
+  // not its Effect text too (the same words)
+  const chipTiers = m.card ? cardLinesHtml((m.card.after ?? []).filter(l => /^Tier [123]$/.test(l.label))) : "";
+  const effect = m.effectHtml && !chipTiers ? `${m.triggerHtml ? "" : divider(1)}<div class="cc-effect full">${m.effectHtml}</div>` : "";
+  return `<div class="cc-card cc-noroll">${headHtml(m)}${metaLineHtml(m)}${m.card ? cardLinesHtml(m.card.top) + cardLinesHtml(m.card.before) + chipTiers : triggerLineHtml(m)}${effect}${nextHtml(m, view)}${flavor}${footHtml(m, view, { hasDamage: false })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the damage arithmetic */

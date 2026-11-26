@@ -251,7 +251,8 @@ const escHtml = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<
 export function messageHtml(actor, m, { mark = "", withActor = false } = {}) {   // withActor (v0.0.345): the @Use names its creature
   const text = escHtml(m.text).replace(/\{name\}/g, `<b>${escHtml(actor?.name)}</b>`).replace(/\{mark\}/g, `<b>${escHtml(mark || "?")}</b>`);
   const clean = s => String(s).replace(/[[\]|]/g, " ").trim();
-  const btn = m.action ? ` @Use[${clean(m.action)}|ap:${m.ap}|source:${clean(m.source)}${withActor && actor?.uuid ? `|actor:${actor.uuid}` : ""}|label:${clean(m.action)} (${m.ap} AP)]` : "";
+  // v0.0.525 (B3-022): a message whose use is a Reaction (Judge's 0R when its Judged creature goes Down): asreaction, and its cost in R
+  const btn = m.action ? ` @Use[${clean(m.action)}|ap:${m.ap}|source:${clean(m.source)}${m.reaction ? "|asreaction:yes" : ""}${withActor && actor?.uuid ? `|actor:${actor.uuid}` : ""}|label:${clean(m.action)} (${m.ap}${m.reaction ? "R" : " AP"})]` : "";
   return `<b>${escHtml(actor?.name)}</b>: ${text}${btn}`;
 }
 /** Post a creature's messages for this moment (the active GM calls it): the system line (sysmsg.mjs), whispered to its owners unless "everyone". */

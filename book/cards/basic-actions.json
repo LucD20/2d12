@@ -240,7 +240,7 @@
       "vs": "The better of the [[Lingering]]'s two Attributes, against DC 13 or the DC the Lingering writes Save",
       "versions": [
         { "ap": 1, "tiers": ["No effect.", "The target takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends.", "The Lingering ends."],
-          "foundry": { "byChip": true, "text": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends. **Tier 3:** the Lingering ends.", "sub": [["makes a Save", "makes a @ShakeOff[save]{Save}"]] } }
+          "foundry": { "byChip": true, "chip": "@ShakeOff[save]{The target's Save}", "text": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends. **Tier 3:** the Lingering ends.", "sub": [["makes a Save", "makes a @ShakeOff[save]{Save}"]] } }
       ],
       "foundry": { "basic": "shakeOff", "vs": "", "automation": "silver", "img": "icons/svg/regen.svg" }
     },
@@ -603,7 +603,7 @@
       "foundry": {
         "basic": "pointOut",
         "automation": "silver",
-        "automationNote": "the roll against the target's Instinct DC; Tier 2: pick one ally within 10 squares, Tier 3: every ally within 10 squares: its Hide state against the target improves 1 step (senses.mjs); whether the ally can see or hear you: by hand.",
+        "automationNote": "the roll against the target's Instinct DC; Tier 2: pick one ally within 10 squares, Tier 3: every ally within 10 squares: it perceives the target 1 step better, Unsensed becoming Hidden whatever the reason (Hide, Darkness, a wall: kept while the target stays in its square), never better than you perceive it (hide.mjs pointOut); whether the ally can see or hear you: by hand.",
         "img": "icons/svg/eye.svg"
       }
     },

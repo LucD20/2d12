@@ -66,6 +66,31 @@ export async function markEmpoweredUsed(actor) {
   if (!key) return;
   try { if (actor?.isOwner) await actor.setFlag(F, "empoweredUsed", key); } catch (e) { /* not ours */ }
 }
+/**
+ * v0.0.525 (the cleanup audit, B2-061; book, Chapter 8, Empowered: "The die deals one of the damages the Action deals, your choice before you roll
+ * it: its pool and its subtype"). Pure: the different damages (pool and subtype) among an Action's damage parts, the first of each kept.
+ */
+export function empoweredKinds(comps = []) {
+  const out = new Map();
+  for (const c of comps ?? []) {
+    if (!c || !(c.kind === "W" || c.kind === "D") || c.crit) continue;
+    const k = `${c.pool || "B"}|${String(c.sub ?? "").toLowerCase()}`;
+    if (!out.has(k)) out.set(k, c);
+  }
+  return [...out.values()];
+}
+/** Pure: a damage's name for the choice ("Vigor, Slash"). */
+export const empoweredKindLabel = c => [({ B: "Vigor", M: "Resolve" })[c?.pool || "B"] ?? c?.pool, c?.sub || ""].filter(Boolean).join(", ");
+/** Foundry: the damage the Empowered die deals: the only one, or the one the creature picks (the pick bar) when the Action deals two or more. */
+export async function chooseEmpowered(comps = []) {
+  const kinds = empoweredKinds(comps);
+  if (kinds.length <= 1) return kinds[0] ?? null;
+  try {
+    const { pickBar } = await import("./pickbar.mjs");
+    const id = await pickBar({ icon: "fa-burst", cancel: false, text: "<b>Empowered</b>: the 1d6! deals one of this Action's damages (Chapter 8). Which one?", options: kinds.map((c, i) => ({ id: String(i), label: empoweredKindLabel(c) })) });
+    return kinds[Number(id)] ?? kinds[0];
+  } catch (e) { console.warn("twod12 | Empowered's damage", e); return kinds[0]; }
+}
 /** Foundry: roll the Empowered die (1d6!) and return a damage component of the pool and type of the first one given (or null). v0.0.523 (Lucas,
  *  2026-11-26): it explodes for every creature (v0.0.435's exception for a Minor enemy, a Minion or a Grunt, is gone: a die explodes where it writes !). */
 export async function empoweredComponent(first, rolls = []) {

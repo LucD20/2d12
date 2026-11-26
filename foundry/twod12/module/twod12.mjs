@@ -397,6 +397,8 @@ Hooks.once("setup", () => { try { registerLightRadius(); } catch (e) { console.w
 registerRegionSnap();   // v0.0.178: a Region drawn by hand is snapped to whole squares when it is created (a circle becomes the area of its size)
 // Corners (v0.0.170): a "Solid" checkbox in the Tile settings (a solid Tile blocks the corners it covers).
 Hooks.on("renderTileConfig", (app, html) => { try { tileConfigSolid(app, html); } catch (e) { console.warn("twod12 | Tile settings", e); } });
+// v0.0.525 (B3-077): a "Thick wall" checkbox in the Wall settings (a thick wall blocks Hearing and Tremorsense)
+Hooks.on("renderWallConfig", (app, html) => { import("./senses.mjs").then(m => m.wallConfigThick(app, html)).catch(e => console.warn("twod12 | Wall settings", e)); });
 Hooks.on("renderChatMessageHTML", updateUseButtons);
 Hooks.on("renderChatMessageHTML", markHalfHint);
 Hooks.on("renderChatMessageHTML", frameMessage);   // v0.0.372 (Lucas: B): no Foundry box; the name, time and trash in the card (last, after the cards are drawn)

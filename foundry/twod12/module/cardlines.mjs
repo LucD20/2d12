@@ -29,7 +29,7 @@ export async function versionCardLines(item, version, { actor = null, weapon = n
   const top = [];
   let roll = null;
   for (const l of M.top) {
-    if (["Attack", "Save", "Check"].includes(l.label) && l === M.top.at(-1)) { roll = { label: l.label, text: l.text }; continue; }
+    if (["Attack", "Save", "Check"].includes(l.label) && l.fmt === "esc" && l === M.top.at(-1)) { roll = { label: l.label, text: l.text }; continue; }   // v0.0.525: a roll line a button makes (rich) stays a card line
     top.push({ label: l.label, html: l.label === "Setup" && setupHtml != null ? setupHtml : await lineHtml(l, item, enrich) });
   }
   // v0.0.426 (the audit: Hallowed Stance's "Setup: You Advance 3" vanished from a [Divine] card that has no Setup of its own, since v0.0.417): a

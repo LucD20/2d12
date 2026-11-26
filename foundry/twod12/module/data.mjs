@@ -557,6 +557,9 @@ export class ActionData extends foundry.abstract.TypeDataModel {
           requirements: str(),   // v0.0.520 (the cleanup audit, B2-015): a Version's own Requirement line (Crawl's 2 AP: "Your Speed is 5 or higher.")
           diceRule: str(),   // v0.0.409: "smite" (Smite's dice by Escalation, d8s against a Profane creature) or "profane" (d6s become d8s against one)
           noTiers: bool(),
+          // v0.0.525 (B2-015, Shake Off's face): a Version whose roll a button makes (another creature rolls it): the card's roll line (ending in the
+          // button) and its three Tier texts, drawn by the card model; the Version itself makes no roll (noTiers)
+          chipRoll: str(), chipTiers: new ArrayField(str()),
           orTiers: str(),
           tiersWritten: str(), effectFirst: bool(),   // v0.0.429 (CARD-ONE step 6): the Tiers the card writes; its Effect above the roll   // v0.0.426: "23" / "12" when the card writes "Tier 2 or 3" / "Tier 1 or 2" (one line on the card)
           areaSize: int(0, 0),   // v0.0.215: this version's Area size (0: the Action's); Word of Radiance is "2 / 3 Emanation"
@@ -704,6 +707,7 @@ const settingsField = () => new ArrayField(new SchemaField({
         //   weaponprop: this creature's Fists (or weapons) don't have the property wpProp (Brawler: Non-threatening);
         //   mastery: choose one weapon with the trait mstTrait, it starts at mstValue Mastery (Sharpshooter, Bow Mastery).
         msgWhen: choice(TWOD12.messageWhen, "encounter"), msgTo: choice(TWOD12.messageTo, "owners"), msgAction: str(), msgAp: int(0, 0),
+        msgReaction: bool(),   // v0.0.525 (B3-022, Judge's 0R): the button's use is a Reaction (Staggered stops it; its card says "0R")
         wpWhich: choice(TWOD12.propWeapons, "fists"), wpProp: choice(TWOD12.removableProps, "nonthreatening"),
         mstTrait: choice(TWOD12.weaponTraits, "projectile"), mstValue: int(3, 0),
         // v0.0.243 (pack R): eschook: the class's Escalation hook: once an encounter, when hookWhen happens (an ally within hookRange squares becomes

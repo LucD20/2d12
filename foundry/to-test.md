@@ -53,6 +53,14 @@ Expect: Goblin Sneak: Minion, CV 30, 2 ticks (a "Ticks 2/2" bar, no Vigor or Res
 
 ## Hiding
 
+### ox-pointout · v0.0.525 · Point Out on a creature Unsensed for another reason than Hide
+Do: In a combat, give Kaela the Blinded status and put a Goblin Sneak more than 10 squares from her, in bright light where Sylwen sees it. Use Sylwen's Point Out on the goblin (Tier 2: pick Kaela). Then move the goblin one square.
+Expect: Before: Kaela's roll against the goblin skips it (Unsensed). After Point Out: a line "Kaela perceives Goblin Sneak as Hidden (was Unsensed)"; her Actions against it are Doomed (Hidden), not skipped. Once the goblin leaves that square, it is Unsensed to her again. A goblin Hidden from Hide that Sylwen herself perceives only as Hidden stays Hidden for Kaela (never better than Sylwen).
+
+### ox-thickwall · v0.0.525 · A thick wall blocks Hearing
+Do: In a combat, put the Orc Warrior behind a wall, within 10 squares of Kaela and out of her sight. Open that wall's settings (double-click it) and tick the new "Thick wall (2d12)" box under the Sound restriction, then untick it.
+Expect: Ticked: the orc's sound ripple goes from Kaela's view and her Actions skip it (Unsensed); the box shows ticked when the settings are opened again. Unticked: the ripple is back (Hidden through a thin wall).
+
 ## The HUD
 
 ### bst-ticks-show · v0.0.519 · A Minion's ticks, for the GM and the players
@@ -93,6 +101,14 @@ Expect: Flanking: no warning, the flanking Field Boon in the dialog. Alone: the 
 
 ## Chat cards
 
+### ox-shakeoff · v0.0.525 · Shake Off's card: the book's Save line and three Tiers
+Do: Look at Shake Off on Durgan's sheet, its hover card and the HUD's card. Give Durgan a Lingering (the Orc Warrior's Barbed Javelin, Tier 3) and use Shake Off on him; click the card's "The target's Save" button.
+Expect: Every card reads Save (the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes) with the button at its end, then Tier 1, Tier 2, Tier 3 as three lines; no paragraph repeating them. The button rolls Durgan's Save against the Lingering, as before.
+
+### ox-empowered · v0.0.525 · Empowered's die deals the damage you choose
+Do: Make Aveline Empowered (the Conditions) and use Binding Light on the Orc Warrior until a Tier 2 or 3; roll its damage. Then, next turn, Empowered again, use her Basic Attack.
+Expect: Binding Light deals two kinds (Vigor from the Longsword, Resolve Holy): the bottom bar asks which one the 1d6! deals, and the die joins that one. The Basic Attack deals one kind: no question, the die joins it.
+
 ### hq-crit-basic · v0.0.521 · The Basic Attack's Critical row
 Do: With Aveline, make Basic Attacks against the Orc Warrior until one is a Critical (or set the dice), first with nothing else, then with Smite's Holy damage on the same attack.
 Expect: The card shows "Critical: [V] 1d10!" under Tier 3. On the Critical, the pick bar asks "Its 1d10!: choose the damage type, or don't apply it": one option, her sword's Slash ([V] 1d10! Sl), then Don't apply; with Smite, a second option [R] 1d10! Ho. The die is rolled with the chosen type and explodes; the damage card shows the Critical line; the Encounter Log counts the Critical as before.
@@ -123,6 +139,18 @@ Expect: He keeps two Lingerings: the Piercing one (the second Piercing one, not 
 
 ## Movement
 
+### ox-dead · v0.0.525 · A dead creature doesn't get in the way
+Do: In a combat, take a Goblin Sneak to 0 with Aveline (no Unconscious status on it). Advance Durgan through its square, then end a movement in it. Then give another goblin at 0 the Unconscious status and move Durgan through it.
+Expect: The dead goblin's square costs nothing extra and Durgan can stop in it (the movement area includes it). The Unconscious goblin's square costs double and Durgan can't end there.
+
+### ox-charge · v0.0.525 · Charge stops at the weapon's normal Range
+Do: Durgan (Arming Sword) Charges an Orc Warrior 5 squares away. Then Sylwen, with her Hunting Bow in hand, Charges an orc about 16 squares away; then with only her Dagger in hand.
+Expect: Durgan stops adjacent, as before. Sylwen with the bow stops on the first square from which the orc is within 12 squares (the bow's normal Range), the line and texts saying "in Range"; an orc already within 12 is "too close". With the Dagger, if it is a Thrown weapon the bottom bar first asks "Dagger (in hand)" or "Dagger (thrown)", and she stops where that Range reaches.
+
+### ox-onesquare · v0.0.525 · One square of Difficult Terrain always
+Do: Draw a Difficult Terrain region next to Kaela. Make her Prone and Crawl (1 square) into it. Then, standing, use Advance and move 2 squares in the open and try the next square into the region with 1 left.
+Expect: The Crawl's area shows the square in the region and she enters it; the Crawl is spent, no AP more. The Advance with 1 square left can't enter it for free (it costs 2: a further AP is spent, as before).
+
 ### cu-inway · v0.0.520 · A creature Down but still fighting holds its space
 Do: Durgan is Dying and keeps fighting; as the GM, drag the Orc Warrior through Durgan's square. Then Durgan collapses (Unconscious) and you drag it again.
 Expect: first, the move is refused (his space blocks, like any standing creature); after he collapses, the orc can pass through his square as Difficult Terrain (never ending there).
@@ -136,6 +164,14 @@ Do: In a combat, drag the Grave Wisp through Aveline's space and through another
 Expect: The movement passes through both spaces with no extra cost (no Difficult Terrain); ending in a creature's space is refused. An Orc Warrior can't pass through Aveline's space (it blocks).
 
 ## Reactions and Judge
+
+### ox-shifting · v0.0.525 · Shifting Aim on another creature's turn
+Do: On the Orc Warrior's turn, push Sylwen 1 square (the GM's Alt-drag, or the orc's Shove), then use a [Ranged, Strike] of Sylwen's during that turn (Snap Shot if its Trigger fits, or her Basic Attack from the sheet). Then a second one in the same turn.
+Expect: The first roll dialog shows Shifting Aim's Field Boon (on); the second doesn't (a Strike since). With no move during that turn, no Boon.
+
+### ox-judge · v0.0.525 · Judge's re-Judge when the Judged creature goes Down is a Reaction
+Do: Aveline Judges an Orc Warrior; take it Down. Click the message's Judge button with another orc targeted. Then do it again with Aveline Staggered.
+Expect: The message's button reads "Judge (0R)"; the card it posts says 0R and the orc is Judged. Staggered: the dialog warns "Aveline is Staggered: no Reactions until it ends. Used anyway." The start-of-encounter message's button still reads "Judge (0 AP)".
 
 ### cu-feint · v0.0.520 · Feint's Critical blocks only the Reactions you trigger
 Do: Kaela Feints the Bloodied Orc Warrior with a Critical (Designer mode: Force a Tier, or roll until one), then hits it; then Sylwen hits it.

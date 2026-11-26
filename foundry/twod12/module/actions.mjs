@@ -28,7 +28,7 @@ import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches, demoralizedTarget, markDemoralized } from "./usage.mjs";   // (markAtWill: imported where used)
 import { tierProbs, topStep, bbCount, bbResolve } from "./calc.mjs";
 import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS, escalationDie } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged; v0.0.510: escalationDie (Steady Draw's dE)
-import { weaponDiceFormula, weaponDieOnlyFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die; core rework batch 3: [D]
+import { weaponDiceFormula, weaponDieOnlyFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, chooseEmpowered } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die; core rework batch 3: [D]
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
@@ -519,7 +519,8 @@ export async function useAction(actor, item, opts = {}) {
   const earlyWarns = opts._earlyWarns ?? [];
   const warnOnly = msg => { earlyWarns.push(`${msg} Used anyway.`); return false; };
   // v0.0.314 (pack AU; book, Ch. 8): a Staggered creature can't use Reactions (its Reaction Point waits until Staggered ends)
-  if (item.system?.reaction && reactionsOff(actor) && warnOnly(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
+  // v0.0.525 (B3-022): a use made as a Reaction (opts.asReaction: Judge's 0R from its "went Down" message) too
+  if ((item.system?.reaction || opts.asReaction) && reactionsOff(actor) && warnOnly(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
   // v0.0.412 (book, Wounding Shot): "You haven't left your square this turn": its Requirement, checked on its turn in a combat (hooks.mjs leftThisTurn)
   const H0 = await import("./hooks.mjs");
   if (H0.needsStayed(item.system?.requirements)) { const H = H0; if ((await H.leftThisTurn(actor)) === true && warnOnly(`${item.name}: ${actor.name} has left its square this turn (its Requirement).`)) return; }
@@ -1350,7 +1351,7 @@ export async function useAction(actor, item, opts = {}) {
     else if (tier) mk.outcomes[tier] = mk.outcomeFor(tier, bonuses);
     const steadyApplied = rowsM.some(r => r.tier === 3 && preStrained.includes(r.uuid)) ? basicLineHooks.filter(h => Number(h.hook?.strainedBeforeD) > 0).map(h => ({ name: h.item.name, uuid: h.item.uuid ?? "" })) : [];
     ccModel = {
-      v: 1, kind: "attack", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
+      v: 1, kind: "attack", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction || opts.asReaction ? `${version.ap}R` : `${version.ap} AP`,   /* v0.0.525: asReaction */ traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
       tline: { targets: it.targets ?? "", dist: mk.dist, area: mk.areaHtml, names: targets.map(t => t.name) },
       rows: rowsM, outcomes: mk.outcomes, effectsHtml: mk.effectsHtml, effectsFrom: 1, critHtml: version.critical ? await enrich(version.critical, item) : "", flavor: it.flavor ?? "",
       setupHtml: setupRow, hasDamage: !!btn, card: cardLines,
@@ -1371,7 +1372,9 @@ export async function useAction(actor, item, opts = {}) {
   if (!ccModel && version.noTiers && !saveAct) {
     const NR = await import("./noroll.mjs"), { halfCtx } = await import("./halfhint.mjs");
     // v0.0.411: a Structure block's Special (Judge's 0 AP); Pack CARD-ONE step 3: it is a card line now (cardLines.before), drawn in its place
-    const vText = [version.special && !cardLines ? `<b>Special:</b> ${version.special}` : "", version.effects ?? ""].filter(Boolean).join(" ");
+    // v0.0.525 (B2-015, Shake Off): a Version whose roll a button makes shows the card's Save line (its button) and its Tiers (cardLines), not its Effect text
+    const chipCard = !!cardLines && (version.chipTiers ?? []).length === 3 && !!String(version.chipRoll ?? "").trim();
+    const vText = [version.special && !cardLines ? `<b>Special:</b> ${version.special}` : "", chipCard ? "" : version.effects ?? ""].filter(Boolean).join(" ");
     const use = NR.splitUse(vText ? await enrich(vText, item) : "");
     const tActor = u => { try { const d = fromUuidSync(u); return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { return null; } };
     const first = targets[0] ? tActor(targets[0].uuid) : null;
@@ -1386,7 +1389,7 @@ export async function useAction(actor, item, opts = {}) {
       if (tok && tok !== selfToken) useOff = NR.reachProblem(reaches, squaresBetween(selfToken, tok), tok.name);
     }
     ccModel = {
-      v: 1, kind: "noroll", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
+      v: 1, kind: "noroll", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction || opts.asReaction ? `${version.ap}R` : `${version.ap} AP`,   /* v0.0.525: asReaction */ traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
       tline: { distTip: distanceNote(it, weapon ?? previewWeapon ?? null), targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)) || (it.reaction && Number(it.momentRange) > 0 ? `${Number(it.momentRange)} sq.` : ""), area: "", names: targets.map(t => t.name) },
       triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger",
       effectHtml: use.html, useHtml: use.anchor, useName, useOff, card: cardLines,
@@ -1712,7 +1715,7 @@ export async function useAction(actor, item, opts = {}) {
           const id = allies.length === 1 ? allies[0].id : await pickBar({ icon: "fa-eye", text: `<b>Point Out</b>: which ally perceives <b>${esc(r0.name)}</b> better? (click here or the token)`, options: allies.map(t => ({ id: t.id, label: t.name, token: t })), cancel: "" });   // v0.0.516 (Lucas: "allow clicking on the token, blinking")
           who = allies.filter(t => t.id === id);
         }
-        if (r0 && who.length) await H.improve(who.map(t => ({ hiderUuid: r0.uuid, observerId: t.id })), `${actor.name}'s Point Out`);
+        if (r0 && who.length) await H.pointOut(r0.uuid, who, selfToken, `${actor.name}'s Point Out`);   // v0.0.525 (B2-030): any Unsensed, never better than you perceive it
       }
     } catch (e) { console.warn("twod12 | Hide", e); }
   }
@@ -1958,7 +1961,7 @@ export async function rollDamage(message, { again = false } = {}) {
       chip = `<div class="chips"><span class="chip">${esc(f.attrLabel || "Modifier")} +${f.attrVal}</span></div>`;
     }
     // v0.0.407 (Stage 0 in Foundry; book, Chapter 8, Empowered): the first damage the creature deals on each of its turns adds 1d6! of the Action's pool and type
-    if (empOn && (!again || hadEmp) && !empLater && !empUsed) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls) : null; if (ec) { comps.push(ec); empUsed = true; } }
+    if (empOn && (!again || hadEmp) && !empLater && !empUsed) { const first = await chooseEmpowered(comps); const ec = first ? await empoweredComponent(first, rolls) : null;   /* v0.0.525 (B2-061): its damage chosen */ if (ec) { comps.push(ec); empUsed = true; } }
     // the core rework batch 2 (book, Chapter 1, Critical; critical.mjs): the card's own Critical row (its dice rolled here, a die with no subtype
     // of a type the Action deals; its conditions applied with the Tier's); always optional: the pick bar asks before the die is rolled
     let critConds = [], critApplied = false;
@@ -2034,7 +2037,7 @@ export async function rollDamage(message, { again = false } = {}) {
             if (pick !== null && pick !== undefined && can.includes(Number(pick))) k = Number(pick);
           } catch (e) { console.warn("twod12 | Empowered pick", e); }
         }
-        const g0 = k >= 0 ? groups[gOf[k]] : null, ec = g0 ? await empoweredComponent(g0.comps.find(c => c.kind === "W" || c.kind === "D"), all) : null;
+        const g0 = k >= 0 ? groups[gOf[k]] : null, ec = g0 ? await empoweredComponent(await chooseEmpowered(g0.comps), all) : null;   // v0.0.525 (B2-061): its damage chosen
         if (ec) {
           if (rows.filter(r => r.tier === rows[k].tier).length === 1) g0.comps = [...g0.comps, ec];
           else { const at = gOf[k] + 1; groups.splice(at, 0, { ...g0, comps: [...g0.comps, ec] }); for (let j = 0; j < gOf.length; j++) gOf[j] = j === k ? at : gOf[j] >= at ? gOf[j] + 1 : gOf[j]; }

@@ -70,6 +70,27 @@
    ]
   },
   {
+   "name": "Hiding",
+   "items": [
+    {
+     "id": "ox-pointout",
+     "v": "v0.0.525",
+     "title": "Point Out on a creature Unsensed for another reason than Hide",
+     "do": "In a combat, give Kaela the Blinded status and put a Goblin Sneak more than 10 squares from her, in bright light where Sylwen sees it. Use Sylwen's Point Out on the goblin (Tier 2: pick Kaela). Then move the goblin one square.",
+     "expect": "Before: Kaela's roll against the goblin skips it (Unsensed). After Point Out: a line \"Kaela perceives Goblin Sneak as Hidden (was Unsensed)\"; her Actions against it are Doomed (Hidden), not skipped. Once the goblin leaves that square, it is Unsensed to her again. A goblin Hidden from Hide that Sylwen herself perceives only as Hidden stays Hidden for Kaela (never better than Sylwen).",
+     "rev": 1
+    },
+    {
+     "id": "ox-thickwall",
+     "v": "v0.0.525",
+     "title": "A thick wall blocks Hearing",
+     "do": "In a combat, put the Orc Warrior behind a wall, within 10 squares of Kaela and out of her sight. Open that wall's settings (double-click it) and tick the new \"Thick wall (2d12)\" box under the Sound restriction, then untick it.",
+     "expect": "Ticked: the orc's sound ripple goes from Kaela's view and her Actions skip it (Unsensed); the box shows ticked when the settings are opened again. Unticked: the ripple is back (Hidden through a thin wall).",
+     "rev": 1
+    }
+   ]
+  },
+  {
    "name": "The HUD",
    "items": [
     {
@@ -152,6 +173,22 @@
    "name": "Chat cards",
    "items": [
     {
+     "id": "ox-shakeoff",
+     "v": "v0.0.525",
+     "title": "Shake Off's card: the book's Save line and three Tiers",
+     "do": "Look at Shake Off on Durgan's sheet, its hover card and the HUD's card. Give Durgan a Lingering (the Orc Warrior's Barbed Javelin, Tier 3) and use Shake Off on him; click the card's \"The target's Save\" button.",
+     "expect": "Every card reads Save (the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes) with the button at its end, then Tier 1, Tier 2, Tier 3 as three lines; no paragraph repeating them. The button rolls Durgan's Save against the Lingering, as before.",
+     "rev": 1
+    },
+    {
+     "id": "ox-empowered",
+     "v": "v0.0.525",
+     "title": "Empowered's die deals the damage you choose",
+     "do": "Make Aveline Empowered (the Conditions) and use Binding Light on the Orc Warrior until a Tier 2 or 3; roll its damage. Then, next turn, Empowered again, use her Basic Attack.",
+     "expect": "Binding Light deals two kinds (Vigor from the Longsword, Resolve Holy): the bottom bar asks which one the 1d6! deals, and the die joins that one. The Basic Attack deals one kind: no question, the die joins it.",
+     "rev": 1
+    },
+    {
      "id": "hq-crit-basic",
      "v": "v0.0.521",
      "title": "The Basic Attack's Critical row",
@@ -210,6 +247,30 @@
    "name": "Movement",
    "items": [
     {
+     "id": "ox-dead",
+     "v": "v0.0.525",
+     "title": "A dead creature doesn't get in the way",
+     "do": "In a combat, take a Goblin Sneak to 0 with Aveline (no Unconscious status on it). Advance Durgan through its square, then end a movement in it. Then give another goblin at 0 the Unconscious status and move Durgan through it.",
+     "expect": "The dead goblin's square costs nothing extra and Durgan can stop in it (the movement area includes it). The Unconscious goblin's square costs double and Durgan can't end there.",
+     "rev": 1
+    },
+    {
+     "id": "ox-charge",
+     "v": "v0.0.525",
+     "title": "Charge stops at the weapon's normal Range",
+     "do": "Durgan (Arming Sword) Charges an Orc Warrior 5 squares away. Then Sylwen, with her Hunting Bow in hand, Charges an orc about 16 squares away; then with only her Dagger in hand.",
+     "expect": "Durgan stops adjacent, as before. Sylwen with the bow stops on the first square from which the orc is within 12 squares (the bow's normal Range), the line and texts saying \"in Range\"; an orc already within 12 is \"too close\". With the Dagger, if it is a Thrown weapon the bottom bar first asks \"Dagger (in hand)\" or \"Dagger (thrown)\", and she stops where that Range reaches.",
+     "rev": 1
+    },
+    {
+     "id": "ox-onesquare",
+     "v": "v0.0.525",
+     "title": "One square of Difficult Terrain always",
+     "do": "Draw a Difficult Terrain region next to Kaela. Make her Prone and Crawl (1 square) into it. Then, standing, use Advance and move 2 squares in the open and try the next square into the region with 1 left.",
+     "expect": "The Crawl's area shows the square in the region and she enters it; the Crawl is spent, no AP more. The Advance with 1 square left can't enter it for free (it costs 2: a further AP is spent, as before).",
+     "rev": 1
+    },
+    {
      "id": "cu-inway",
      "v": "v0.0.520",
      "title": "A creature Down but still fighting holds its space",
@@ -238,6 +299,22 @@
   {
    "name": "Reactions and Judge",
    "items": [
+    {
+     "id": "ox-shifting",
+     "v": "v0.0.525",
+     "title": "Shifting Aim on another creature's turn",
+     "do": "On the Orc Warrior's turn, push Sylwen 1 square (the GM's Alt-drag, or the orc's Shove), then use a [Ranged, Strike] of Sylwen's during that turn (Snap Shot if its Trigger fits, or her Basic Attack from the sheet). Then a second one in the same turn.",
+     "expect": "The first roll dialog shows Shifting Aim's Field Boon (on); the second doesn't (a Strike since). With no move during that turn, no Boon.",
+     "rev": 1
+    },
+    {
+     "id": "ox-judge",
+     "v": "v0.0.525",
+     "title": "Judge's re-Judge when the Judged creature goes Down is a Reaction",
+     "do": "Aveline Judges an Orc Warrior; take it Down. Click the message's Judge button with another orc targeted. Then do it again with Aveline Staggered.",
+     "expect": "The message's button reads \"Judge (0R)\"; the card it posts says 0R and the orc is Judged. Staggered: the dialog warns \"Aveline is Staggered: no Reactions until it ends. Used anyway.\" The start-of-encounter message's button still reads \"Judge (0 AP)\".",
+     "rev": 1
+    },
     {
      "id": "cu-feint",
      "v": "v0.0.520",

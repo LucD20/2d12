@@ -52,13 +52,22 @@ export function strikeChips(moved, alternate, traits, st) {
   return out;
 }
 async function turnOf(actor) { try { const { turnKey } = await import("./explode.mjs"); return turnKey(game.combat, actor); } catch (e) { return null; } }
+/**
+ * v0.0.525 (the cleanup audit, B3-026; book, Shifting Aim: "if you have left your square this turn and have made no [Strike] Action since"): "this
+ * turn" is the turn in progress, whoever's it is (a Reaction's shot on another creature's turn counts a move made during that turn). Pure: the key
+ * of the turn in progress (null: no started combat), and whether the creature moved during it with no [Strike] since (its flag moveState).
+ */
+export const turnNowKey = combat => (combat?.started ? `${combat.id}:${combat.round}:${combat.turn}` : null);
+export const movedThisTurn = (ms, key) => !!key && ms?.key === key && !!ms.moved;
 /** The roll dialog's chips of these hooks for this creature and these traits (rollinput.mjs). */
 export async function strikeHookChipsFor(actor, traits) {
   const moved = activeHooks(actor, "movedBoon"), alt = activeHooks(actor, "alternateBoon");
   if (!moved.length && !alt.length) return [];
-  const key = await turnOf(actor);
-  if (!key) return [];   // outside its turn in a started combat (or no combat): nothing to read
-  return strikeChips(moved, alt, traits, stateNow(actor.getFlag?.(F, "strikeState"), key));
+  const key = await turnOf(actor), now = turnNowKey(globalThis.game?.combat);
+  // v0.0.525 (B3-026): Shifting Aim reads the turn in progress (moveState); Blade and Bow stays on the creature's own turn
+  const movedChips = now && movedThisTurn(actor.getFlag?.(F, "moveState"), now) ? strikeChips(moved, [], traits, { moved: true }) : [];
+  if (!key) return movedChips;   // outside its turn in a started combat (or no combat): only Shifting Aim's
+  return [...movedChips, ...strikeChips([], alt, traits, stateNow(actor.getFlag?.(F, "strikeState"), key))];
 }
 /**
  * The Bestiary's rebuild (2026-11-25; the Orc Warrior's Cornered: "While the orc is Bloodied, its Shove gains 1 Boon"): stateBoon, a Boon on one
@@ -76,6 +85,8 @@ export function stateBoonChips(actor, item) {
 export async function noteStrike(actor, traits) {
   try {
     const kind = strikeKind(traits); if (!kind && !(traits?.has?.("strike"))) return;
+    const now = turnNowKey(globalThis.game?.combat);   // v0.0.525 (B3-026): a Strike on any turn: Shifting Aim's move is spent
+    if (now && actor?.isOwner && movedThisTurn(actor.getFlag(F, "moveState"), now)) await actor.setFlag(F, "moveState", { key: now, moved: false });
     const key = await turnOf(actor); if (!key || !actor?.isOwner) return;
     const st = stateNow(actor.getFlag(F, "strikeState"), key), alt = activeHooks(actor, "alternateBoon").length && kind && st.last && st.last !== kind;
     await actor.setFlag(F, "strikeState", { ...st, moved: false, last: kind || st.last, altUsed: st.altUsed || !!alt });
@@ -125,6 +136,9 @@ export function registerStrikeState() {
       if (actor.getFlag(F, "stillMove")) return;
       await endLeaveEffects(actor);
       if (actor.type !== "character") return;   // v0.0.412: every character (Wounding Shot's Requirement reads it too)
+      // v0.0.525 (B3-026): Shifting Aim: it moved during the turn in progress, whoever's it is
+      const now = turnNowKey(game.combat);
+      if (now && !movedThisTurn(actor.getFlag(F, "moveState"), now)) await actor.setFlag(F, "moveState", { key: now, moved: true });
       const key = await turnOf(actor); if (!key) return;
       const st = stateNow(actor.getFlag(F, "strikeState"), key);
       if (!st.moved || !st.left) await actor.setFlag(F, "strikeState", { ...st, moved: true, left: true });

@@ -10,7 +10,7 @@ an ally: dt
 a neutral: block
 a Dying enemy: block
 an Unconscious enemy: dt
-a dead enemy: dt
+a dead enemy: none
 an enemy at 0: block
 a Prone enemy: block
 refused: an enemy's space and the diagonal between two: true true

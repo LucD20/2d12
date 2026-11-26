@@ -51,7 +51,7 @@
     "automation": "silver",
     "marksTarget": true,
     "markKind": "judge",
-    "automationNote": "the mark (the ring on the token), Profane for you (Smite's and Word of Radiance's d8s, your Profane rules), once each round, the Judged creature's damage to an ally within 5 squares of you reduced by your Power Modifier if you choose (you're asked when it lands), the reminders at the start of an encounter and when it goes Down; the 0 AP use only at the start of an encounter or as a 0R: by hand.",
+    "automationNote": "the mark (the ring on the token), Profane for you (Smite's and Word of Radiance's d8s, your Profane rules), once each round, the Judged creature's damage to an ally within 5 squares of you reduced by your Power Modifier if you choose (you're asked when it lands), the reminders at the start of an encounter and when it goes Down (that one's button is the 0R, used as a Reaction: Staggered warns); the 0 AP use only at the start of an encounter: by hand.",
     "settings": [
      {
       "type": "message",
@@ -67,6 +67,7 @@
       "text": "{mark}, the creature you Judged, went Down. Judge another (0R): target it and use Judge:",
       "msgAction": "Judge",
       "msgAp": 0,
+      "msgReaction": true,
       "msgTo": "owners"
      }
     ]

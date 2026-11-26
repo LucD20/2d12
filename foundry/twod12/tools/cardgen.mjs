@@ -85,6 +85,9 @@ const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; i
 export function versionData(c, v, resolve = s => s) {
   // v0.0.520 (the cleanup audit, B2-015): a Version whose roll a button in its Foundry text makes (foundry.byChip: Shake Off's Save, rolled by the
   // Lingering creature with its Lingering's Attributes) is one Effect in Foundry, written in full (foundry.text); the book's Tiers are that button's
+  // v0.0.525 (B2-015, Shake Off's face): the book's Save line and three Tiers are kept for the faces (chipRoll, chipTiers: the card model draws them,
+  // the Save line ending in the button, foundry.chip); the Use still makes no roll (its Effect text, for the older faces, stays)
+  const chip = v.foundry?.byChip && v.tiers?.length === 3 ? { tiers: v.tiers, vs: String(c.vs ?? "").replace(/\s*Save$/, ""), btn: v.foundry.chip ?? "" } : null;
   if (v.foundry?.byChip) v = { ...v, tiers: undefined, critical: undefined };
   // v0.0.426 (the audit: Smite lost its Signature Modifier, Trick Shots' "[V] [Mod]" dealt nothing, Seizing Cut's Tier 2 got one the book doesn't
   // write): a Structure card's [Mod] stays where it is written (Chapter 1: a Modifier is added only where the card writes [Mod]); rollsource.mjs adds
@@ -96,6 +99,7 @@ export function versionData(c, v, resolve = s => s) {
   // v0.0.246 (Lucas): a Version's `foundry.text` is its Foundry text written in full ("As 1 AP, but..." is the book's; Foundry says it all); `foundry.after` the chips that run after the damage.
   const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"))), fx };
   if (v.foundry?.after) out.after = resolve(v.foundry.after);
+  if (chip) { out.chipRoll = resolve([fxText(chip.vs), chip.btn].filter(Boolean).join(" ")); out.chipTiers = chip.tiers.map(t => resolve(fxText(t))); }
   if (v.requirements) out.requirements = stripLinks(v.requirements);   // v0.0.520 (the cleanup audit, B2-015): a Version's own Requirement (Crawl's 2 AP)
   // v0.0.409 (pack F2, Shield of Faith): replacements in the converted text (a button the book's words can't say: Taunted on the triggering creature)
   for (const [a, b] of v.foundry?.sub ?? []) out.effects = out.effects.split(a).join(b);

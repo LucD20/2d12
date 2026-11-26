@@ -27,7 +27,7 @@ for (const [label, t] of [["an enemy", tk(-1)], ["an ally", tk(1)], ["a neutral"
 const mv = src("module/move.mjs");
 console.log("refused: an enemy's space and the diagonal between two:", mv.includes("'s space blocks your movement (an unwilling creature's space). Tumble to pass through, or go around."), mv.includes("You can't slip diagonally between"));
 console.log("an Evade crosses an ally (its extra cost left out):", mv.includes("cost - (way.allyExtra ?? 0) > dist + 1e-6"), "| the range preview blocks enemies, the diagonal too:", mv.includes('whoAt(b) === "block" || betweenTwo(a, b)'));
-console.log("Charge: an ally's space stops it, an enemy's blocks it:", mv.includes("(an ally's or a Down creature's space is Difficult Terrain)"), mv.includes("(an unwilling creature's space blocks movement)"));
+console.log("Charge: an ally's space stops it, an enemy's blocks it:", mv.includes("(an ally's or an Unconscious creature's space is Difficult Terrain)"), mv.includes("(an unwilling creature's space blocks movement)"));
 
 console.log("--- Tumble passes them");
 console.log(JSON.stringify(IN.parseInline("Move", "advance|distance:floor(speed/2)|pass:enemies")).includes('"passEnemies":true'), "|", B.tumble.versions.map(v => v.effects).join(" || "), "|", B.tumble.automation);

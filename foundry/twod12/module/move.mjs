@@ -1,4 +1,4 @@
-import { creatureWay } from "./roundrules.mjs";   // the Bestiary's rebuild: Drifting
+import { creatureWay, oneSquareCost } from "./roundrules.mjs";   // the Bestiary's rebuild: Drifting; v0.0.525: one square always
 import { homePos, leanOf } from "./lean.mjs";
 import { tokenDistance, lightAt, seenLight, sightSenses, regionHasPoint, verticalSquares, withHeight } from "./light.mjs";
 // Movement: AP tracking for the creature whose turn it is (v0.0.414: an Advance is one piece, combat.mjs advanceAfterAction; free movement from @Move[walk]),
@@ -331,6 +331,18 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
   if (spent && ap < spent) warn(`${c.name} did not have enough AP for that movement.`);
 }
 
+/**
+ * v0.0.525 (B2-016, one square of Difficult Terrain always): the movement a drag spends, unused or not: { budget, size }. A granted movement (an
+ * Advance, a Crawl): what is left of it and its size; none: a new AP's Speed when nothing is left of the last one (moveLeft 0), else what is left.
+ * An Evade is left out (it can't enter Difficult Terrain at all).
+ */
+export function moveBudget(c) {
+  const free = num(c?.getFlag?.(F, "freeMove")), left = num(c?.getFlag?.(F, "moveLeft")), walk = num(c?.actor?.system?.moveSpeed ?? c?.actor?.system?.speed);
+  if (num(c?.getFlag?.(F, "evadeMove")) > 0) return { budget: 0, size: -1 };
+  if (free > 0) return { budget: free, size: num(c?.getFlag?.(F, "freeSize")) };
+  return left > 1e-6 ? { budget: left, size: walk + 1 } : { budget: walk, size: walk };
+}
+
 /** The distance of a @Move button: a number, or an expression such as walk/2 (rounded up). */
 export function moveDistance(cfg, actor) {
   const raw = cfg.distanceExpr ? evalExpr(cfg.distanceExpr, actor) : (num(cfg.distance) || 1);
@@ -547,15 +559,18 @@ const unwillingIn = (cell, doc) => { const t = creatureIn(cell, [doc.id]); retur
 // v0.0.520 (the cleanup audit, B1-063; book, Chapter 3, Creatures in your way): only an Unconscious or a dead creature is Difficult Terrain; one that
 // is Down and still fighting (Desperate, Dying or Shattered and awake) holds its space like any other. An NPC at 0 is out of the fight (dead or
 // Unconscious by Chapter 4's NPCs Going Down, which the GM decides).
-export const downTok = t => { const a = t?.actor; return !!(["dead", "unconscious"].some(s => a?.statuses?.has?.(s)) || (a?.type === "npc" && a?.system?.atZero)); };
+// v0.0.525 (book, Chapter 3: an Unconscious creature is Difficult Terrain, a dead one doesn't affect movement): deadTok, a creature with the Dead status,
+// or an NPC at 0 with no Unconscious status (Lucas: an NPC at 0 that isn't Unconscious counts as dead); downTok, an Unconscious one that isn't dead.
+export const deadTok = t => { const a = t?.actor; return !!(a?.statuses?.has?.("dead") || (a?.type === "npc" && a?.system?.atZero && !a?.statuses?.has?.("unconscious"))); };
+export const downTok = t => !deadTok(t) && !!t?.actor?.statuses?.has?.("unconscious");
 /**
  * The Bestiary's rebuild (2026-11-25; the Grave Wisp's Drifting: "its own movement can pass through creatures' spaces (it can't end in one), and a
  * creature's space is never Difficult Terrain for it"): a Feature hook on the creature, { kind: "drift" } (a setting anyone can remove).
  */
 export const isDrifting = actor => { try { return [...(actor?.items ?? [])].some(i => (i.system?.hooks ?? []).some(h => h?.kind === "drift")); } catch (e) { return false; } };
-export const wayKind = (t, doc) => creatureWay({ drifting: isDrifting(doc?.actor), unwilling: (t?.document?.disposition ?? 0) !== (doc?.disposition ?? 0), down: downTok(t) });
+export const wayKind = (t, doc) => creatureWay({ drifting: isDrifting(doc?.actor), unwilling: (t?.document?.disposition ?? 0) !== (doc?.disposition ?? 0), down: downTok(t), dead: deadTok(t) });
 /** An enemy that blocks (unwilling and not Down) in a square, for the diagonal between two of them (book: blocked); none for a drifting mover. */
-const blockerIn = (cell, doc) => { if (isDrifting(doc?.actor)) return null; const t = unwillingIn(cell, doc); return t && !downTok(t) ? t : null; };
+const blockerIn = (cell, doc) => { if (isDrifting(doc?.actor)) return null; const t = unwillingIn(cell, doc); return t && !downTok(t) && !deadTok(t) ? t : null; };
 
 /** The system setting that lets the movement buttons work when there is no combat. */
 export const movesOutsideCombat = () => { try { return !!game.settings.get(F, "moveOutsideCombat"); } catch (e) { return false; } };
@@ -589,6 +604,24 @@ async function promptStowAfter(c) {
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: c.actor }), content: sysLine("fa-hand", `<b>${esc(c.actor.name)}</b> stows ${esc(w.name)}.`) });
 }
 
+/**
+ * v0.0.525 (B2-014): the normal Range a Charge stops at, and the weapon (or NPC Basic attack) it is for: { normal, label }. The creature's Reach when
+ * nothing is in hand; the pick bar when its ways differ (Cancel or Escape: the first way).
+ */
+async function chargeStopRange(actor) {
+  const reach = Math.max(1, num(actor?.system?.reach) || 1);
+  try {
+    const { chargeAttacks, chargeNeedsPick } = await import("./weaponrange.mjs"), { weaponsFor } = await import("./fists.mjs");
+    const ba = { getFlag: (s, k) => (k === "basic" ? "basicWeaponAttack" : undefined), system: {} };
+    const list = chargeAttacks({ weapons: weaponsFor(actor, ba), npcAttacks: [...(actor?.items ?? [])].filter(i => i.system?.basicAttack), reach });
+    if (!list.length) return { normal: reach, label: "" };
+    if (!chargeNeedsPick(list)) return list[0];
+    const { pickBar } = await import("./pickbar.mjs");
+    const id = await pickBar({ icon: "fa-person-running-fast", text: `<b>Charge: which weapon do you attack with?</b> The Charge stops where the target is within its normal Range.`, options: list.map(x => ({ id: x.key, label: `${x.label} (Range ${x.normal})` })) });
+    return list.find(x => x.key === id) ?? list[0];
+  } catch (e) { console.warn("twod12 | the Charge's weapon", e); return { normal: reach, label: "" }; }
+}
+
 async function grantFreeMove(cfg, ctx, kind = "walk") {
   const token = moverToken(ctx, cfg);
   const actor = token?.actor ?? contextActor(ctx), combat = game.combat;
@@ -608,6 +641,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   const key = kind === "evade" ? "evadeMove" : "freeMove";
   if (kind !== "evade") newMoveAction(c.id);   // v0.0.274: a Move Action's movement (Advance, Charge, Crawl): a new one for the Reactions
   await c.setFlag(F, key, num(c.getFlag(F, key)) + n);
+  if (kind !== "evade") await c.setFlag(F, "freeSize", num(c.getFlag(F, "freeMove")));   // v0.0.525 (B2-016): the movement's size, for "one square always"
   if (combat?.combatant?.id !== c.id) await c.setFlag(F, "offTurnAt", turnStamp(combat));   // v0.0.421: granted off its turn (a Reaction): tracked during this turn only
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
@@ -632,7 +666,10 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
     const f = fAct;
     // v0.0.224 (Lucas, playtest 3): a Charge targets a creature (the card's target, else the one targeted now): its line goes toward it.
     const tUuid = f?.targets?.[0]?.uuid ?? "", targetId = String(tUuid).split(".").pop() || ([...game.user.targets].find(t => t.id !== token?.id)?.id ?? "");
-    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "", targetId, messageId: ctx?.message?.id ?? "" });   // v0.0.343: its card (deleted when given up)
+    // v0.0.525 (the cleanup audit, B2-014; book, Charge): it stops where the target is within the normal Range of the weapon it attacks with; the
+    // pick bar asks which when its ways differ (a sword and a bow, a Thrown weapon in hand or thrown, an NPC's two Basic attacks)
+    const stop = await chargeStopRange(actor);
+    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "", targetId, messageId: ctx?.message?.id ?? "", stopRange: stop.normal, stopWith: stop.label });   // v0.0.343: its card (deleted when given up)
   }
   const sq = `${n} square${n === 1 ? "" : "s"}`;
   if (cfg.quiet && kind !== "charge") { showRange(c, n); return true; }   // v0.0.224: a Setup's movement (its bar says it), no chat line
@@ -1582,7 +1619,8 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
         else if (st.kind === "creatures" && !ignoring) { out.cornerBlock++; for (const t of st.creatures ?? []) if (!out.cornerBy.includes(t.name)) out.cornerBy.push(t.name); }   // batch 4: blocked
       }
     }
-    const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor && !t.document?.hidden);
+    // v0.0.525: a dead creature's space is no creature's space for movement (pass through it, end in it)
+    const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor && !t.document?.hidden && wayKind(t, doc) !== "none");
     const occ = others.map(t => ({ t, cells: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
     const endT = occ.find(o => [...end].some(k => o.cells.has(k)));
     if (endT) out.endIn = endT.t.name;
@@ -1639,8 +1677,8 @@ export function chargeLine(doc, from, to, via = []) {
 function chargeSquareProblem(doc, a, b, w = 1, h = 1) {
   const foot = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) foot.push({ i: b.i + di, j: b.j + dj });
   // the core rework batch 4 (book, Chapter 3): an enemy's space blocks; an ally's or a Down creature's is Difficult Terrain, which a Charge can't cross either
-  const other = foot.map(c => creatureIn(c, [doc.id])).find(Boolean);
-  if (other) return wayKind(other, doc) === "block" ? `the straight line passes through ${other.name} (an unwilling creature's space blocks movement)` : `the straight line passes through ${other.name} (an ally's or a Down creature's space is Difficult Terrain)`;
+  const other = foot.map(c => creatureIn(c, [doc.id])).find(t => t && wayKind(t, doc) !== "none");   // v0.0.525: a dead creature isn't in the way
+  if (other) return wayKind(other, doc) === "block" ? `the straight line passes through ${other.name} (an unwilling creature's space blocks movement)` : `the straight line passes through ${other.name} (an ally's or an Unconscious creature's space is Difficult Terrain)`;
   const corner = a ? stepCorners(a, b, { w, h, solidAt: ownSolid(), creatureAt: c => blockerIn(c, doc) }) : { kind: "" };
   if (corner.kind === "solid") return "the straight line cuts a solid corner";
   if (corner.kind === "creatures") return `the straight line passes diagonally between ${corner.creatures.map(t => t.name).join(" and ")} (two enemies corner to corner block it)`;
@@ -2138,6 +2176,8 @@ export function registerMovement() {
       }
       // An Advance through an unwilling creature's squares pays for Difficult Terrain (unless Foundry already counted it).
       if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);   // v0.0.468: a Large token's too, through Foundry's cost (hardStep reads how its steps come)
+      // v0.0.525 (the cleanup audit, B2-016; book, Chapter 3): a movement of at least 1 square can always enter one square, whatever it costs
+      if (!ch && !evading) squares = oneSquareCost({ cost: squares, entered: dist > 0 ? dist / gridUnit() : 0, ...moveBudget(c) });
       // v0.0.418 (G6): off its turn a creature moves only the squares a Reaction gave it (no AP spent for more)
       if (game.combat?.combatant?.id !== c.id && squares > offTurnFree(c) + 1e-6) { warn(`${c.name} has ${offTurnFree(c)} free square${offTurnFree(c) === 1 ? "" : "s"} left (it isn't its turn). Choose a shorter path, or use End movement.`); return false; }
       mark(keyOf(doc, to.x, to.y));
@@ -2190,7 +2230,7 @@ export function diagonalsOn(points, offsetOf = p => canvas.grid.getOffset(p)) {
 }
 
 /** Squares within N of the token (every second diagonal costs 2), not through walls. */
-export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterCost = () => 0) {
+export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterCost = () => 0, oneAlways = false) {   // v0.0.525: oneAlways (B2-016)
   const best = new Map(), key = (i, j) => `${i},${j}`;
   const queue = [];
   for (const c of cells) { best.set(`${key(c.i, c.j)}|${par0}`, 0); queue.push({ i: c.i, j: c.j, cost: 0, par: par0 ? 1 : 0 }); }   // par0 1: the next diagonal costs 2 (v0.0.183)
@@ -2208,7 +2248,9 @@ export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterC
       const ni = cur.i + a, nj = cur.j + b;
       if (blocked({ i: cur.i, j: cur.j }, { i: ni, j: nj })) continue;
       // v0.0.224 (Lucas: the area ignored Darkness): entering a square can cost more (Difficult Terrain: +1) or be impossible (Infinity: an Evade).
-      const more = enterCost({ i: ni, j: nj }), tc = nc + (Number.isFinite(more) ? more : Infinity);
+      const more = enterCost({ i: ni, j: nj });
+      // v0.0.525 (B2-016): an unused movement of at least 1 square can always enter one square (its first), whatever it costs: it ends there
+      const tc = oneAlways && cur.cost === 0 && n >= 1 && Number.isFinite(more) ? Math.min(n, nc + more) : nc + (Number.isFinite(more) ? more : Infinity);
       if (tc > n) continue;
       const nk = `${key(ni, nj)}|${diag ? 1 - cur.par : cur.par}`;
       if (seen.has(nk) && seen.get(nk) <= tc) continue;
@@ -2261,7 +2303,8 @@ export function showRange(c, squares, dest = null, par = 0) {
     const enterCost = cell => (ignoring ? 0 : difficult(cell) ? (evading ? Infinity : 1) : (!own.has(`${cell.i},${cell.j}`) && whoAt(cell) === "dt" ? 1 : 0));
     const betweenTwo = (a, b) => a.i !== b.i && a.j !== b.j && whoAt({ i: a.i, j: b.j }) === "block" && whoAt({ i: b.i, j: a.j }) === "block";   // batch 4: two enemies corner to corner
     const blocked = (a, b) => wallBetween(pt(a), pt(b)) || (!own.has(`${b.i},${b.j}`) && (cantCell(b) || (!passing && (whoAt(b) === "block" || betweenTwo(a, b)))));
-    const area = reachableCells(cells, squares, blocked, par, enterCost);
+    let fresh = false; try { const mb = moveBudget(c); fresh = !evading && !dest && Math.abs(mb.budget - squares) < 1e-6 && Math.abs(mb.budget - mb.size) < 1e-6; } catch (e) { fresh = false; }   // v0.0.525 (B2-016)
+    const area = reachableCells(cells, squares, blocked, par, enterCost, fresh);
     rangeGfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(rangeGfx);   // the movement area stays under the tokens (a large pale area)
     // v0.0.461 (the map notes' redesign, b and c): where it can stop in pale ink (blue had no meaning); an Evade's edge dashed (only an Evade is);
@@ -2347,7 +2390,9 @@ export function openChargePicker(c, token) {
   // v0.0.516 (Lucas on v0.0.515: "targeting is the only thing that causes the charge to target, and click is now free to work normally"): the
   // tokens stay clickable (selecting as usual); the Charge's enemy is the creature you target (T, or Foundry's targeting), or one picked in the bar
   const a = cellAt({ x: homePos(doc).x + 2, y: homePos(doc).y + 2 });
-  const reach = Math.max(1, num(c.actor?.system?.reach) || 1);
+  // v0.0.525 (B2-014): the Charge stops at the normal Range of the weapon it attacks with (chargeStopRange, kept on its flag); none kept: its Reach
+  const reach = Math.max(1, num(ch.stopRange) || num(c.actor?.system?.reach) || 1);
+  const RW = num(ch.stopRange) > Math.max(1, num(c.actor?.system?.reach) || 1) ? "Range" : "Reach";   // the word its texts use
   // v0.0.219 (Lucas): the limit is outlined (every square within its maximum, counted from your space), so nobody has to guess how far it goes.
   const limit = emanationCells(tokenCells(doc), Math.max(0, Math.floor(num(ch.max))));
   let side = "left", cur = null;
@@ -2380,10 +2425,10 @@ export function openChargePicker(c, token) {
     if (!target) return `<b>Target the enemy to Charge</b> (on the map, or pick it here). You run straight at it (at least ${ch.min}, up to ${ch.max} squares), then make a Basic Attack (1A).${cands.filter(x => !x.ok).length ? ` <span class="lb-tag">${cands.filter(x => !x.ok).map(x => `${esc(x.t.name)}: ${esc(x.why)}`).join(" \u00b7 ")}</span>` : ""}`;
     const r = cur?.path; if (!r) return "";
     const who = cur.inReach.some(t => t.id === target.id);
-    if (cur.tooFar) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">too far</span> A Charge goes up to ${ch.max} squares: you stop after ${cur.stopSq}, out of Reach, and the Charge is disrupted.`;
-    if (r.bad < 0 && r.sq + 1e-6 < ch.min) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">too close</span> A Charge moves at least ${ch.min} squares (in Reach after ${r.sq}). Pick another enemy, or give up.`;
-    if (r.bad >= 0) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">blocked</span> <span class="lb-warn">${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}.</span> You stop after ${cur.stopSq} squares${who ? `, ${esc(target.name)} in Reach` : `, out of Reach: the Charge is disrupted (its AP stay spent)`}.`;
-    return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">${r.sq} squares</span> In Reach at the end. Then: Basic Attack (1A). Another enemy: click it.`;
+    if (cur.tooFar) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">too far</span> A Charge goes up to ${ch.max} squares: you stop after ${cur.stopSq}, out of ${RW}, and the Charge is disrupted.`;
+    if (r.bad < 0 && r.sq + 1e-6 < ch.min) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">too close</span> A Charge moves at least ${ch.min} squares (in ${RW} after ${r.sq}). Pick another enemy, or give up.`;
+    if (r.bad >= 0) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">blocked</span> <span class="lb-warn">${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}.</span> You stop after ${cur.stopSq} squares${who ? `, ${esc(target.name)} in ${RW}` : `, out of ${RW}: the Charge is disrupted (its AP stay spent)`}.`;
+    return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">${r.sq} squares</span> In ${RW} at the end. Then: Basic Attack (1A). Another enemy: click it.`;
   };
   // v0.0.224 (Lucas, playtest 3): with a target, the line goes toward it (to the square of its space nearest to you) and stops on the first
   // square from which it is within Reach; the mouse only confirms. A blocked line stops earlier (a second click confirms it).
@@ -2472,7 +2517,7 @@ export function openChargePicker(c, token) {
     if (cur.stop && !short) { const t = r.tl(cur.stop); gfx.lineStyle(3, MK.GOLD, 1); gfx.drawRect(t.x + 2, t.y + 2, Math.max(1, Math.round(doc.width)) * gs - 4, Math.max(1, Math.round(doc.height)) * gs - 4); }   // v0.0.466: where it stops, outlined in gold
     if (cur.stop) {
       const p = ctr(cur.stop), who = cur.inReach.some(t => t.id === target.id);
-      const lines = short ? ["Too close", `a Charge moves at least ${ch.min}`] : blocked ? [`Stops after ${cur.stopSq}`, who ? `${target.name} in Reach` : `${target.name} not in Reach: disrupted`] : [`${r.sq} squares \u00b7 in Reach`, `then Basic Attack (1A) on ${target.name}`];
+      const lines = short ? ["Too close", `a Charge moves at least ${ch.min}`] : blocked ? [`Stops after ${cur.stopSq}`, who ? `${target.name} in ${RW}` : `${target.name} not in ${RW}: disrupted`] : [`${r.sq} squares \u00b7 in ${RW}`, `then Basic Attack (1A) on ${target.name}`];
       const pl = MK.plate(lines, { fs, warn: blocked || short }); pl.position.set(p.x, p.y - (Math.max(1, Math.round(doc.height)) * gs) / 2 - 4); marks.addChild(pl);
     }
     go.hidden = short; go.textContent = blocked ? "Charge anyway" : "Charge";

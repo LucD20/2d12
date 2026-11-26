@@ -92,6 +92,8 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
   // v0.0.509 (Steady Draw, Lucas 2026-11-25): a class line written as a Special on Basic Attack (its once-an-encounter 2dE button)
   if (actor && (item.getFlag?.("twod12", "basic") ?? item.flags?.twod12?.basic) === "basicWeaponAttack") for (const h of activeHooks(actor, "basicLine")) if (String(h.hook.specialLine ?? "").trim()) top.push(L("Special", h.hook.specialLine, "rich"));
   if (rl && !modes) top.push(L(rl.label, rl.text, "esc"));
+  // v0.0.525 (B2-015, Shake Off): a Version whose roll a button makes writes the book's roll line, the button at its end (rich: it is enriched)
+  else if (!rl && !modes) { const bc = versions.find(v => String(v.chipRoll ?? "").trim() && (v.chipTiers ?? []).length === 3); if (bc) top.push(L("Save", bc.chipRoll, "rich")); }
   const versionModel = v => {
     const lines = [];
     // v0.0.520 (the cleanup audit, B2-015; book/cards.py _version_lines): a Version's own Requirement first (Crawl's 2 AP)
@@ -102,7 +104,9 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
       for (const [label] of tierLines([1, 2, 3].map(n => rawCell(it, v, n)), save, noDmg, v.orTiers ?? "", v.tiersWritten ?? "")) lines.push({ label, tier: tierOfLabel(label), kind: "tier" });
       if (v.critical) lines.push(L("Critical", v.critical, "rich"));
     }
-    if (String(v.effects ?? "").trim()) lines.push(L(it.structure || v.noTiers ? "Effect" : save ? "Tier 1 or 2" : "Tier 2 or 3", v.effects, "rich"));
+    const chipT = (v.chipTiers ?? []).length === 3 && String(v.chipRoll ?? "").trim() ? v.chipTiers : null;   // v0.0.525 (B2-015): its three Tiers, as written
+    if (chipT) chipT.forEach((t, n) => lines.push(L(`Tier ${n + 1}`, t, "rich")));
+    else if (String(v.effects ?? "").trim()) lines.push(L(it.structure || v.noTiers ? "Effect" : save ? "Tier 1 or 2" : "Tier 2 or 3", v.effects, "rich"));
     // the core rework batch 2: a Bloodied / Strained line after the Tiers (this Action's damage counts); on the last Version's block when there are several
     if (v === versions[versions.length - 1]) for (const [k, label] of [["bloodied", "Bloodied"], ["strained", "Strained"]]) if (String(SL[k] ?? "").trim()) lines.push(L(label, SL[k], "rich"));
     return {

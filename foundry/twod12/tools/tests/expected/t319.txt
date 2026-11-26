@@ -19,7 +19,7 @@ B3-025, engagedOk skips the Engaged Doomed: true
 B1-026, a Table rolled before the encounter counts: true | not the other Table: false | not out of combat: false | an encounter's own: false
 B1-089, stabilizing rolls nothing: true | B1-091, damage while Unconscious and Down rolls the Table: true
 --- 5. movement and Reactions
-B1-063, in your way: a Dying enemy fighting block | a Desperate one block | an Unconscious one dt | a dead one dt | an NPC at 0 dt
+B1-063, in your way: a Dying enemy fighting block | a Desperate one block | an Unconscious one dt | a dead one none | an NPC at 0 none
 B1-038, closer square by square: 0,1,2 true | 9,8 (nearer than the square before) true | 2,1,0 (away) false | still false
 B2-019, Feint's Critical: the triggering creature only: true
 --- 6. the Fists

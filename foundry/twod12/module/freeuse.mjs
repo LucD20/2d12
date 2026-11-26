@@ -80,6 +80,7 @@ export async function handleUse(cfg, ctx = {}) {
     empowered: cfg.empowered ? (["yes", "true"].includes(cfg.empowered) ? 1 : Math.max(0, Math.trunc(evalExpr(cfg.empowered, actor) ?? 0))) : 0,   // Empowered N: yes is 1, or an expression
     excludeTargets: cfg.distinct ? (used[key] ?? []) : [],
     countAtWill: !!cfg.countAtWill,
+    asReaction: !!cfg.asReaction,   // v0.0.525 (B3-022)
     onUsed: ({ targets }) => { used[key] = [...(used[key] ?? []), ...targets.map(t => t.uuid)]; }
   });
   if (!ok) return;

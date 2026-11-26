@@ -16,7 +16,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Basic Attack | Gold | (the Weapon Attack until v0.0.480) |
 | Advance | Gold | |
 | Evade | Gold | |
-| Charge | Gold | |
+| Charge | Gold | v0.0.525: it stops where the target is within the normal Range of the weapon it attacks with (the pick bar asks when its weapons differ) |
 | Crawl | Silver | the 2 AP Version's "Your Speed is 5 or higher" isn't checked |
 | Reload | Silver | the Tier 1 "next Reload attempt gains 2 Boons" isn't carried to the next roll |
 | Interact | Bronze | drawing, stowing and swapping are done on the hands buttons, not by the card; only waking a creature is offered |
@@ -29,7 +29,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Fists | Gold | |
 | Relocate | Gold | |
 | Trip | Gold | |
-| Shake Off | Silver | "within your Reach" isn't checked (v0.0.414); with several Lingerings the pick bar asks which one it ends (v0.0.521) |
+| Shake Off | Silver | "within your Reach" isn't checked (v0.0.414); with several Lingerings the pick bar asks which one it ends (v0.0.521); v0.0.525: its card writes the book's Save line (its button) and three Tiers |
 | Shove | Gold | |
 | Haul | Gold | |
 | Aid | Silver | Quickened 1 on the target (its next turn's AP); the Check against Daunted: by hand. |
@@ -40,7 +40,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Hide | Silver | v0.0.513: the roll against each targeted creature's Instinct DC; Tier 2 or 3: Unsensed (it can't see you) or Hidden (your High Cover) to it, per creature; Tier 3's Bane on its Seek and Point Out: by hand. |
 | Sneak | Silver | v0.0.513: the Advance keeps Hide (Unsensed to Hidden when seen, Hidden kept during it, the end of turn check); no Reactions from those it is Hidden to. |
 | Seek | Silver | v0.0.513: targets by itself the creatures Hidden or Unsensed to you from Hide within 5 or 10 squares, no Senses on the roll, 1 step better on Tier 2 or 3; Tier 3's Boon on Point Out: by hand. |
-| Point Out | Silver | v0.0.513: Tier 2 one ally within 10 squares (picked), Tier 3 every ally: 1 step better against the target; whether each ally can see or hear you: by hand. |
+| Point Out | Silver | v0.0.513: Tier 2 one ally within 10 squares (picked), Tier 3 every ally: 1 step better against the target; v0.0.525: Unsensed becomes Hidden whatever the reason (kept while the target stays in its square), never better than you perceive it; whether each ally can see or hear you: by hand. |
 | Hide | Bronze | not written in the book yet (a placeholder) |
 
 ## Weapon Techniques (4)
@@ -56,7 +56,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 
 | Card | Rating | What is by hand |
 |---|---|---|
-| Judge | Silver | the 0 AP use only at the start of an encounter or as a 0R |
+| Judge | Silver | the 0 AP use only at the start of an encounter (v0.0.525: the 0R when the Judged creature goes Down is its message's button, used as a Reaction: Staggered warns) |
 | Smite | Gold | |
 | Binding Light | Gold | |
 | Lay On Hands | Silver | the Setup's Advance in a straight line toward the target |
@@ -90,7 +90,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Volley | Gold | |
 | Hit and Run | Bronze | one 3d12 roll for many targets (v0.0.520, the book: each other hit worked out by hand from the same dice, as for Several Targets; the targets before the first square too), the free draws and the bow shot |
 | Covering Fire | Gold | |
-| Shifting Aim (Feature) | Gold | |
+| Shifting Aim (Feature) | Gold | v0.0.525: on another creature's turn too (a move made during that turn counts) |
 | Lean and Loose (Feature) | Gold | |
 | Blade and Bow (Feature) | Gold | |
 | Thrill of the Kill (Feature) | Gold | |

@@ -121,7 +121,7 @@ function settingSentenceOnly(x) {
       return `At the start of each of its turns, the creature gains <b>${esc(fxNameOf(x.fxUuid)) || "(drop an Effect)"}</b>.`;
     case "message": {
       const when = TWOD12.messageWhen[x.msgWhen] ?? TWOD12.messageWhen.encounter;
-      const btn = String(x.msgAction ?? "").trim() ? `, with a button for <b>${esc(x.msgAction)}</b> (${Math.max(0, Number(x.msgAp) || 0)} AP)` : "";
+      const btn = String(x.msgAction ?? "").trim() ? `, with a button for <b>${esc(x.msgAction)}</b> (${Math.max(0, Number(x.msgAp) || 0)}${x.msgReaction ? "R, a Reaction" : " AP"})` : "";   // v0.0.525 (B3-022)
       return `${esc(when)}, posts ${x.msgTo === "all" ? "" : "to its owners "}"${esc(x.text || "(no text)")}"${btn}.`;
     }
     case "weaponprop":

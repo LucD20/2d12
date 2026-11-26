@@ -27,11 +27,48 @@ export function makesNoise(token) {
   } catch (e) { return false; }
 }
 
-/** Does the observer hear the target: it makes noise and is within the observer's Hearing range. Walls don't matter. Without two tokens there is nothing to measure: it is heard unless it is Hiding. */
+/** Does the observer hear the target: it makes noise and is within the observer's Hearing range. Walls don't matter, but a thick wall does (v0.0.525). Without two tokens there is nothing to measure: it is heard unless it is Hiding. */
 export function hears(observer, target) {
   if (target?.actor?.statuses?.has?.("unsensed")) return false;
   if (!observer || !target) return true;
-  return makesNoise(target) && tokenDistance(observer, target) <= hearingRange(observer.actor);
+  return makesNoise(target) && tokenDistance(observer, target) <= hearingRange(observer.actor) && !thickWallBetween(observer, target);
+}
+
+/* ---- v0.0.525 (the cleanup audit, B3-077; book, Chapter 3, Senses: "A thick wall is a wall at least 1 square thick. A thick wall usually blocks
+   Hearing and Tremorsense; the GM can rule otherwise"). A wall drawn in Foundry has no thickness, so the GM marks a thick one: the Wall settings'
+   "Thick wall (2d12)" checkbox (the flag twod12.thick, as a Tile's "Solid (2d12)"). Foundry's own Sound restriction is not used: every new wall
+   blocks sound by default, and the book's Hearing goes through walls. */
+/** Pure: do the segments p1-p2 and q1-q2 cross (a touch at an end counts)? Points { x, y }. */
+export function segmentsCross(p1, p2, q1, q2) {
+  const o = (a, b, c) => Math.sign((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x));
+  const on = (a, b, c) => Math.min(a.x, b.x) <= c.x && c.x <= Math.max(a.x, b.x) && Math.min(a.y, b.y) <= c.y && c.y <= Math.max(a.y, b.y);
+  const d1 = o(q1, q2, p1), d2 = o(q1, q2, p2), d3 = o(p1, p2, q1), d4 = o(p1, p2, q2);
+  if (d1 !== d2 && d3 !== d4) return true;
+  return (d1 === 0 && on(q1, q2, p1)) || (d2 === 0 && on(q1, q2, p2)) || (d3 === 0 && on(p1, p2, q1)) || (d4 === 0 && on(p1, p2, q2));
+}
+/** Pure: is a thick wall between two points? walls: [{ c: [x1, y1, x2, y2], thick }] (a wall document's coordinates and its flag). */
+export const thickBetween = (a, b, walls = []) => (walls ?? []).some(w => w?.thick && Array.isArray(w.c) && w.c.length >= 4 && segmentsCross(a, b, { x: w.c[0], y: w.c[1] }, { x: w.c[2], y: w.c[3] }));
+/** A wall document marked thick by the GM (Wall settings). */
+export const isThickWall = doc => !!(doc?.getFlag?.("twod12", "thick") ?? doc?.flags?.twod12?.thick);
+const centerOf = t => { if (t?.center && Number.isFinite(t.center.x)) return t.center; const d = t?.document ?? t, g = globalThis.canvas?.grid?.size ?? 100; return { x: (d?.x ?? 0) + ((d?.width ?? 1) * g) / 2, y: (d?.y ?? 0) + ((d?.height ?? 1) * g) / 2 }; };
+/** Foundry: a thick wall between two tokens (their centers)? No canvas or no walls: none. */
+export function thickWallBetween(a, b) {
+  try {
+    const walls = (globalThis.canvas?.walls?.placeables ?? []).map(w => w.document ?? w).filter(isThickWall).map(d => ({ c: d.c, thick: true }));
+    return walls.length ? thickBetween(centerOf(a), centerOf(b), walls) : false;
+  } catch (e) { return false; }
+}
+/** The Wall settings' checkbox (the Tile's "Solid" way, corners.mjs tileConfigSolid). */
+export function wallConfigThick(app, html) {
+  const root = html instanceof HTMLElement ? html : html?.[0];
+  const doc = app?.document;
+  if (!root || !doc || root.querySelector("[name='flags.twod12.thick']")) return;
+  const anchor = root.querySelector("[name='sound']")?.closest(".form-group") ?? root.querySelector(".form-group");
+  if (!anchor) return;
+  const g = document.createElement("div");
+  g.className = "form-group";
+  g.innerHTML = `<label>Thick wall (2d12)</label><div class="form-fields"><input type="checkbox" name="flags.twod12.thick" ${isThickWall(doc) ? "checked" : ""}></div><p class="hint">At least 1 square thick: it blocks Hearing and Tremorsense (Chapter 3, Senses). Leave it off for a wall that carries sound.</p>`;
+  anchor.after(g);
 }
 
 export function registerSenses() {
@@ -119,6 +156,8 @@ export function perceptionOf(actor) {
 }
 
 const RANK = { unsensed: 0, hidden: 1, obscured: 2, clear: 3 };
+/** v0.0.525 (B2-030): a Point Out kept for one observer ({ x, y }: where the target was) holds while the target is still there (pure). */
+export const pointedOutHolds = (entry, doc) => !!entry && Number.isFinite(Number(entry.x)) && Number(entry.x) === Number(doc?.x) && Number(entry.y) === Number(doc?.y);
 /**
  * v0.0.410 (pack F2; book, Senses: the two questions): what you gain from how the target perceives you ("boon": 1 Field Boon, "favored", or "").
  * Only when it perceives you worse than you perceive it, and never against a creature that is Hidden (or Unsensed) to you. seen: how you perceive
@@ -161,10 +200,14 @@ export function perceive(observer, target, { loe = true, noHide = false } = {}) 
       if (!s?.name || !RANK[s.gives] || dist > (Number(s.range) || 0)) continue;
       if (s.needs === "heat" && t?.system?.senses?.noHeat) continue;
       if (s.needs === "ground" && (observer.document?.elevation ?? 0) !== (target.document?.elevation ?? 0)) continue;
+      if (s.needs === "ground" && thickWallBetween(observer, target)) continue;   // v0.0.525 (B3-077): Tremorsense, no thick wall between
       options.push([s.gives, `${s.name} (${s.range} sq.)`]);
     }
   }
   let best = options.reduce((a, c) => (!a || RANK[c[0]] > RANK[a[0]] ? c : a), null) ?? ["unsensed", "no sense reaches it"];
+  // v0.0.525 (the cleanup audit, B2-030; book, Point Out: "Unsensed becomes Hidden, whatever the reason"): an ally's Point Out makes this observer
+  // perceive the target as Hidden at least, while the target stays in the square it was pointed out in (hide.mjs pointOut)
+  if (observer?.document?.id && target?.document && RANK[best[0]] < RANK.hidden && pointedOutHolds(t?.getFlag?.("twod12", "pointedOut")?.[observer.document.id], target.document)) best = ["hidden", "Point Out"];
   // v0.0.411 (pack F3, Spotter's Call Out): a Called Out creature is perceived one step better by its enemies (Hidden as Obscured, Obscured as Clear)
   // v0.0.426 (the audit; book, Spotter: "Your allies perceive the target one step better"; "You are never your own ally"): the caller's allies only,
   // the caller excluded (the effect's origin); with no origin kept, every enemy of the target as before

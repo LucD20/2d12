@@ -259,7 +259,7 @@ export function migrate(sys, host = "effect") {
       case "turnstart": add("grant", { ...base, item: x.fxUuid || "", itemType: "effect", when: "turn" }); break;
       case "encstart": add("grant", { ...base, item: x.fxUuid || "", itemType: "effect", when: "enc" }); break;
       case "move": add("move", { ...base, dirm: x.text === "away" ? "away" : "closer", how: x.moveHow === "difficult" ? "difficult" : "cant", sees: !!x.seen || seen }); break;
-      case "message": add("grant", { ...base, item: "", itemName: x.msgAction || "", itemType: x.msgAction ? "action" : "", when: x.msgWhen === "turn" ? "turn" : x.msgWhen === "markDown" ? "markDown" : "enc", amode: "uses", uses: 1, ap: x.msgAp || 0, msg: { on: true, to: x.msgTo || "owners", text: x.text || "" } }); break;
+      case "message": add("grant", { ...base, item: "", itemName: x.msgAction || "", itemType: x.msgAction ? "action" : "", when: x.msgWhen === "turn" ? "turn" : x.msgWhen === "markDown" ? "markDown" : "enc", amode: "uses", uses: 1, ap: x.msgAp || 0, ...(x.msgReaction ? { asR: true } : {}), msg: { on: true, to: x.msgTo || "owners", text: x.text || "" } }); break;
       case "weaponprop": add("weap", { ...base, mode: "prop", weapon: x.wpWhich || "fists", gl: "loses", prop: x.wpProp || "nonthreatening" }); break;
       case "mastery": add("weap", { ...base, mode: "mastery", mprop: x.mstTrait || "projectile", mval: x.mstValue ?? 3 }); break;
       case "eschook": add("esc", { ...base, trig: x.hookWhen || "allyState", n: x.hookRange ?? 5 }); break;
@@ -350,7 +350,7 @@ export function compile(rulesIn, endsIn, host = "effect") {
             const [a, b] = r.riders;
             S(r, "grant", { grantAction: spec, grantCount: r.uses, grantAp: r.ap, boons: r.bbk === "boons" ? r.bbn : 0, banes: r.bbk === "banes" ? r.bbn : 0, grantDistinct: r.distinct,
               grantOn: a ? RIDER_ON(a) : "", grantDo: a?.does ?? "half", grantText: a?.text ?? "", grantOn2: b ? RIDER_ON(b) : "", grantDo2: b?.does ?? "text", grantText2: b?.text ?? "" });
-          } else S(r, "message", { msgWhen: r.when === "turn" ? "turn" : r.when === "markDown" ? "markDown" : "encounter", msgTo: r.msg.to, text: r.msg.on ? r.msg.text : "", msgAction: spec, msgAp: r.ap });
+          } else S(r, "message", { msgWhen: r.when === "turn" ? "turn" : r.when === "markDown" ? "markDown" : "encounter", msgTo: r.msg.to, text: r.msg.on ? r.msg.text : "", msgAction: spec, msgAp: r.ap, ...(r.asR ? { msgReaction: true } : {}) });
         }
         break;
       }

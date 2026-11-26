@@ -13,6 +13,20 @@ const F = "twod12";
 export const hideStateOf = (map, observerId) => { const v = map?.[observerId]; return v === "unsensed" || v === "hidden" ? v : ""; };
 /** One step better for the observer (Seek, Point Out): Unsensed to Hidden, Hidden to nothing (its own senses again). */
 export const stepBetter = state => (state === "unsensed" ? "hidden" : "");
+const RANK = { unsensed: 0, hidden: 1, obscured: 2, clear: 3 };
+/**
+ * v0.0.525 (the cleanup audit, B2-030; book, Point Out: "perceives the target 1 step better: Unsensed becomes Hidden, whatever the reason; Hidden from
+ * Hide goes back to what its own senses give. Never better than you perceive it"). Pure: hide, the ally's Hide state against the target; senses,
+ * how its own senses perceive it (without Hide); mine, how you perceive it. Returns { hide (its new Hide state), floor (it perceives the target
+ * as Hidden at least: Unsensed for another reason), changed }.
+ */
+export function pointOutStep({ hide = "", senses = "unsensed", mine = "clear" } = {}) {
+  if (hide === "unsensed") return { hide: "hidden", floor: senses === "unsensed", changed: true };
+  if (senses === "unsensed") return { hide, floor: true, changed: true };
+  // Hidden from Hide: its own senses again, never better than you perceive it (you perceive it as Hidden: it stays Hidden)
+  if (hide === "hidden" && (RANK[mine] ?? 3) > RANK.hidden) return { hide: "", floor: false, changed: true };
+  return { hide, floor: false, changed: false };
+}
 /** Hide's result against one creature on a Tier: "unsensed" (it can't see you), "hidden" (your High Cover against it), "" (Tier 1, or neither). */
 export function hideResult(tier, { seesYou = true, highCover = false } = {}) {
   if (!(Number(tier) >= 2)) return "";
@@ -94,6 +108,31 @@ export async function improve(pairs, why) {
     lines.push(`<b>${esc(nameOfToken(p.observerId))}</b> perceives <b>${esc(hider.name)}</b> ${map[p.observerId] ? "as Hidden (was Unsensed)" : "with its own senses again"}`);
   }
   if (lines.length) await ChatMessage.create({ content: sysLine("fa-eye", `<b>${esc(why)}</b>: ${lines.join("; ")}.`, "fxm") });
+  return lines.length;
+}
+/**
+ * v0.0.525 (B2-030): Point Out's result: each ally (observer) perceives the target 1 step better, whatever made it Unsensed (Hide, Darkness, a wall),
+ * never better than the creature that pointed it out perceives it (pointOutStep). An Unsensed for another reason is kept on the target as
+ * twod12.pointedOut = { <observer token id>: { x, y } } (senses.mjs perceive: Hidden at least, while it stays in that square).
+ */
+export async function pointOut(hiderUuid, observers, pointerTok, why) {
+  let hider = null, hiderTok = null; try { const d = await fromUuid(hiderUuid); hider = d?.actor ?? d ?? null; hiderTok = d?.object ?? tokenOf(hider); } catch (e) { hider = null; }
+  if (!hider?.getFlag || !hiderTok) return 0;
+  const { perceive } = await import("./senses.mjs"), { coverBetween } = await import("./cover.mjs");
+  const loe = (a, b) => !coverBetween(a, b)?.noLoE;
+  const mine = pointerTok ? perceive(pointerTok, hiderTok, { loe: loe(pointerTok, hiderTok) }).level : "clear";
+  const map = hideMap(hider), floors = foundry.utils.deepClone(hider.getFlag(F, "pointedOut") ?? {}), lines = [];
+  for (const o of observers) {
+    const r = pointOutStep({ hide: hideStateOf(map, o.id), senses: perceive(o, hiderTok, { loe: loe(o, hiderTok), noHide: true }).level, mine });
+    if (!r.changed) continue;
+    map[o.id] = r.hide;
+    if (r.floor) floors[o.id] = { x: hiderTok.document?.x, y: hiderTok.document?.y };
+    lines.push(`<b>${esc(o.name)}</b> perceives <b>${esc(hider.name)}</b> ${r.floor || r.hide ? "as Hidden (was Unsensed)" : "with its own senses again"}`);
+  }
+  if (!lines.length) return 0;
+  await setHide(hider, map);
+  await hider.setFlag(F, "pointedOut", floors);
+  await ChatMessage.create({ content: sysLine("fa-eye", `<b>${esc(why)}</b>: ${lines.join("; ")}.`, "fxm") });
   return lines.length;
 }
 /** After an Action that isn't [Subtle]: Hide ends against every creature. */

@@ -47,3 +47,26 @@ export function weaponUse(weapon, actionTraits, reach = 1, squares = null) {
   if (r.melee && r.ranged) return Number.isFinite(squares) && squares > rangeEnds(r.melee).max ? ranged : melee;
   return { mode: "", range: "", thrown: false, long: false };
 }
+
+/**
+ * v0.0.525 (the cleanup audit, B2-014; book, Charge: "stop on the first square from which the target is within the normal Range of the weapon you
+ * attack with"): the ways a Charge's Basic Attack (1A) can be made, each with the normal Range the Charge stops at (pure). weapons: the creature's
+ * weapons for the Basic Attack (a Thrown one twice: in hand and thrown); npcAttacks: an NPC's Basic attacks, whose distance is "reach" or a number
+ * (they come first: an NPC attacks with them). Returns [{ key, label, normal }]; none: [] (the caller falls back on the creature's Reach).
+ */
+export function chargeAttacks({ weapons = [], npcAttacks = [], reach = 1 } = {}) {
+  const R = Math.max(1, Number(reach) || 1), out = [];
+  for (const a of npcAttacks ?? []) {
+    const d = String(a?.system?.distance ?? a?.distance ?? "").trim(), n = /^(reach|weapon)?$/i.test(d) ? R : (nums(d)[0] ?? R);
+    out.push({ key: `a:${a?.id ?? out.length}`, label: a?.name ?? "Basic attack", normal: n });
+  }
+  if (out.length) return out;
+  for (const w of weapons ?? []) {
+    const r = weaponRanges(w, R);
+    if (r.melee) out.push({ key: `m:${w?.id ?? out.length}`, label: r.thrown ? `${w.name} (in hand)` : w.name, normal: rangeEnds(r.melee).normal });
+    if (r.ranged) out.push({ key: `r:${w?.id ?? out.length}`, label: r.thrown ? `${w.name} (thrown)` : w.name, normal: rangeEnds(r.ranged).normal });
+  }
+  return out.filter(x => x.normal > 0);
+}
+/** v0.0.525 (B2-014): a choice is asked only when the ways differ in their normal Range (pure). */
+export const chargeNeedsPick = list => new Set((list ?? []).map(x => x.normal)).size > 1;
