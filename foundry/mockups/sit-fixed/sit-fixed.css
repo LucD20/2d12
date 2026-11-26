@@ -1,0 +1,147 @@
+/* the faces: the web link above, or the repository's own files when the page is opened from a checkout */
+@font-face { font-family: "Source Sans 3"; font-weight: 200 900; font-style: normal; src: url("../../../book/rules-assets/source-sans-3.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 200 900; font-style: normal; src: url("../../../book/rules-assets/source-serif-4.woff2") format("woff2"); }
+/* the colors: copied from style-tokens.css (dark is the default, the HUD's "table look"; .twod12-light is the light theme) */
+:root { --s-pg: #1f1c18; --s-pg-2: #28241d; --s-band: #332c22; --s-rule: #7a683f; --s-hair: #4a4132; --s-ink: #ece3cf; --s-mute: #b3a68e; --s-faint: #8a7f6b; --s-gold: #d4a548; --s-bane: #f3a79e; --page: #14120f;
+  --hud-bg: var(--s-pg); --hud-line: var(--s-rule); --hud-hair: var(--s-hair); --hud-ink: var(--s-ink); --hud-mute: var(--s-mute); }
+.twod12-light { --s-pg: #f4ede0; --s-pg-2: #eae0c8; --s-band: #dfd2b6; --s-rule: #8a6d3b; --s-hair: #cdb88a; --s-ink: #2a241d; --s-mute: #5d5446; --s-faint: #8f8774; --s-gold: #96670f; --s-bane: #a8261c; --page: #e6dcc6; }
+* { box-sizing: border-box; }
+html { font-size: 16px; }
+body { margin: 0; background: var(--page); color: var(--s-ink); font: 400 15px/1.45 "Source Sans 3", sans-serif; }
+main { max-width: 1040px; margin: 0 auto; padding: 28px 16px 60px; }
+h1 { font: 600 28px/1.2 "Source Serif 4", serif; margin: 0 0 6px; }
+h2 { font: 700 19px/1.3 "Source Sans 3", sans-serif; margin: 44px 0 4px; padding-top: 10px; border-top: 1px solid var(--s-hair); }
+h3 { font: 700 15px/1.3 "Source Sans 3", sans-serif; margin: 0 0 2px; }
+p { margin: 0 0 10px; max-width: 76ch; } .mute { color: var(--s-mute); }
+code { font: 400 13px/1 ui-monospace, Menlo, Consolas, monospace; color: var(--s-mute); }
+ul { margin: 0 0 10px; padding-left: 20px; max-width: 76ch; } li { margin-bottom: 4px; }
+.rec { border-left: 2px solid var(--s-gold); padding: 2px 0 2px 12px; margin: 14px 0 0; } .rec p:last-child { margin: 0; }
+.reset { all: unset; cursor: pointer; color: var(--s-mute); border-bottom: 1px solid var(--s-hair); font-size: 14px; } .reset:hover { color: var(--s-ink); }
+.reset:focus-visible { outline: 2px solid var(--s-ink); outline-offset: 2px; }
+.group { margin-top: 22px; }
+.row { display: flex; flex-wrap: wrap; gap: 14px 22px; margin-top: 8px; }
+.state { margin: 0; width: 314px; display: flex; flex-direction: column; }
+.state figcaption { font-size: 13.5px; line-height: 1.3; color: var(--s-mute); margin-bottom: 5px; min-height: 35px; display: flex; align-items: flex-end; gap: 4px; }
+.state figcaption b { color: var(--s-ink); flex: none; align-self: flex-end; }
+.state.ov figcaption { display: block; padding-top: 0; } .state.ov figcaption b { display: inline; }
+.ghost { position: absolute; border: 1px dashed color-mix(in srgb, var(--s-ink) 42%, transparent); pointer-events: none; z-index: 3; }
+
+/* ---- the HUD slice: copied from system.css (.twod12-hud.is-bar: 150 px; .h3-side: 312 px; .h3-rtabs, .h3-rt, .h3-rcnt, .h3-sit, .h3-si, .hb-btn) ---- */
+.slice { position: relative; width: 314px; height: 150px; border: 1px solid var(--hud-line); background: var(--hud-bg); color: var(--hud-ink); font: 400 13px/1.25 "Source Sans 3", sans-serif; overflow: hidden; }
+.slice.tall { height: auto; min-height: 150px; }
+.slice.tall .h3-side { height: auto; min-height: 148px; } .slice.tall .h3-sit { container-type: normal; overflow: visible; scrollbar-gutter: auto; padding-right: 12px; }
+.slice.tall .sf-ask { height: var(--ask-h, 118px); }
+.slice.tall .fold { position: absolute; left: 0; right: 0; top: 148px; border-top: 1px dashed var(--s-faint); pointer-events: none; }
+.h3-side { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); min-width: 0; font-size: .81rem; }
+.h3-rtabs { display: flex; border-bottom: 1px solid var(--hud-hair); }
+.h3-rt { box-sizing: border-box; flex: 1 1 0; text-align: center; padding: 3px 6px 4px; font: 600 .78rem/1.3 "Source Sans 3", sans-serif; color: var(--hud-mute); border-bottom: 2px solid transparent; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+.h3-rt[aria-selected="true"] { color: var(--hud-ink); border-bottom-color: var(--s-gold); }
+.has-urg .h3-rt-sit { color: var(--s-gold); }
+.h3-rcnt { display: inline-flex; align-items: center; justify-content: center; min-width: 15px; height: 15px; padding: 0 4px; font-size: .68rem; font-weight: 700; line-height: 1; border: 1px solid var(--hud-line); color: var(--hud-mute); }
+.has-urg .h3-rcnt { background: var(--s-gold); border-color: var(--s-gold); color: var(--hud-bg); }
+.h3-sit { padding: 4px 9px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 5px; min-height: 0; }
+.h3-sit.urg { box-shadow: inset 0 2px 0 var(--s-gold); background: color-mix(in srgb, var(--s-gold) 9%, transparent); }
+.h3-sit-urg, .h3-sit-avail, .hb-ask { display: flex; flex-direction: column; gap: 5px; flex: none; }
+:is(.hb-ask, .h3-sit-urg) + .h3-sit-avail { border-top: 1px solid var(--hud-hair); padding-top: 5px; }
+.h3-si .h { display: flex; align-items: baseline; gap: 7px; } .h3-si .h b { font-size: .88rem; } .h3-si .tg { color: var(--hud-mute); font-size: .75rem; }
+.h3-si .t { line-height: 1.25; margin: 1px 0 4px; color: var(--hud-ink); }
+.h3-si.pulse { background: color-mix(in srgb, var(--s-gold) 28%, transparent); }
+.bt { font: 600 .78rem/1.55 "Source Sans 3", sans-serif; color: var(--hud-ink); background: none; border: 1px solid var(--s-gold); border-radius: 0; padding: 0 9px; margin: 0; cursor: pointer; width: auto; height: auto; flex: none; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+.bt:hover, .bt.on, .bt.fill { background: var(--s-gold); border-color: var(--s-gold); color: var(--hud-bg); }
+.bt.q { border-color: var(--hud-line); color: var(--hud-mute); }
+.bt.q:hover { background: var(--s-gold); border-color: var(--s-gold); color: var(--hud-bg); }
+.bt:focus-visible, .sq:focus-visible, .h3-hd-x:focus-visible, .hb-st:focus-visible { outline: 2px solid var(--s-ink); outline-offset: 1px; }
+.h3-rxjump { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 3px 6px; border: 1px solid color-mix(in srgb, var(--s-gold) 55%, var(--hud-hair)); background: color-mix(in srgb, var(--s-gold) 12%, var(--hud-bg)); font-size: .76rem; line-height: 1.25; }
+.h3-rxjump .rj-txt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--hud-ink); } .h3-rxjump .rj-txt b { color: var(--s-gold); font-weight: 700; }
+.h3-rxjump .bt { padding: 0 7px; font-size: .72rem; line-height: 1.45; }
+.hb-ln { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; border-bottom: 1px solid color-mix(in srgb, var(--s-gold) 30%, transparent); padding: 2px 2px 2px 0; }
+.hb-ln > b { font-size: .81rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hb-sts { display: inline-flex; gap: 3px; align-self: center; }
+.hb-st { border: 1px solid var(--s-gold); border-radius: 0; background: none; color: var(--hud-ink); padding: 0 4px; font: 600 .69rem/15px "Source Sans 3", sans-serif; cursor: pointer; white-space: nowrap; }
+.hb-st:hover { background: var(--s-gold); color: var(--hud-bg); }
+kbd { display: inline-block; padding: 0 4px; margin-right: 1px; border: 1px solid var(--hud-hair); border-radius: 2px; font: 600 10.5px/1.5 "Source Sans 3", sans-serif; color: var(--hud-ink); background: none; }
+
+/* ---- 0. TODAY (copied from system.css, .h3-sit .twod12-linebar.in-hud): a wrapping row, the text first ---- */
+.twod12-linebar.old { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; padding: 3px 0 0; font-size: .81rem; color: var(--hud-ink); }
+.twod12-linebar.old .lb-text { flex: 1 1 100%; white-space: normal; line-height: 1.25; margin: 0 0 3px; } .twod12-linebar.old .lb-text > b:first-child { font-size: .88rem; }
+.twod12-linebar.old button { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; padding: 0 9px; border: 1px solid var(--s-gold); font: 600 .78rem/1.55 "Source Sans 3", sans-serif; color: var(--hud-ink); cursor: pointer; }
+.twod12-linebar.old button.on { background: var(--s-gold); color: var(--hud-bg); }
+.twod12-linebar.old .lb-give { color: var(--hud-mute); border-color: var(--hud-line); }
+.twod12-linebar.old .lb-side { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; } .twod12-linebar.old .lb-lbl { color: var(--hud-mute); font-size: .75rem; }
+.twod12-linebar.old .lb-keys { flex: 1 1 100%; display: block; margin-top: 2px; font-size: 11.5px; line-height: 1.4; color: var(--hud-mute); }
+.twod12-linebar.old .lb-warn { color: var(--s-bane); } .twod12-linebar.old .lb-tag { margin-left: 4px; color: var(--hud-mute); }
+
+/* ================= NEW: the fixed frame (everything this mockup proposes) ================= */
+/* the tab: its scrollbar's place is always kept (a bar that appears would move every button to the left), and the tab is a size container,
+   so a question can take exactly its height */
+.h3-sit { scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: var(--hud-hair) transparent; container-type: size; padding-right: 3px; }
+.h3-sit:has(.sf-ask) { padding-top: 2px; padding-bottom: 2px; }
+
+/* A QUESTION: head 17 px | text (what is left, a whole number of lines) | status | options | keys | buttons 22 px, the last row */
+.sf-ask { flex: none; height: 100cqh; display: flex; flex-direction: column; gap: 2px; min-width: 0; font-size: .78rem; line-height: 15px; color: var(--hud-ink); }
+.sf-h { flex: none; height: 17px; line-height: 17px; display: flex; align-items: baseline; gap: 7px; white-space: nowrap; overflow: hidden; }
+.sf-h b { font-size: .88rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; } .sf-h .pl { font-weight: 400; font-size: .81rem; }
+.sf-h .tg { flex: none; color: var(--hud-mute); font-size: .75rem; }
+.sf-t { flex: 0 1 auto; height: calc(var(--n, 2) * 15px); min-height: 0; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--n, 2); }
+.sf-t small { font-size: .72rem; color: var(--hud-mute); } .sf-t .tgm { color: var(--hud-mute); } .warn, .sf-st.warn { color: var(--s-bane); }
+.sf-st { flex: none; height: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--hud-mute); }
+.sf-st.two { height: 30px; white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.sf-st.res { color: var(--hud-ink); font-weight: 700; height: 26px; line-height: 13px; white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.sf-st.cnt { height: 20px; line-height: 20px; color: var(--hud-ink); } .sf-st.cnt b { font-size: 17px; font-weight: 700; margin-right: 2px; }
+.sf-o { flex: none; height: 27px; display: flex; align-items: center; gap: 4px; overflow: hidden; }
+.sf-o .bt { margin-right: 2px; }
+.sf-k { flex: none; height: 15px; line-height: 15px; font-size: 11.5px; color: var(--hud-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sf-b, .h3-si .bs { flex: none; height: 22px; display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; overflow: hidden; }
+.sf-ask:not(.b) > :is(.sf-t, .sf-st) + :is(.sf-o, .sf-k, .sf-b) { margin-top: auto; }
+.sp { flex: 1 1 0; min-width: 0; }
+/* a button that cannot be used now: in its place, off */
+.bt[disabled], .bt[disabled]:hover, .hb-st[disabled] { background: none; border-color: var(--hud-hair); color: var(--s-faint); cursor: default; }
+.ties { flex: none; display: inline-flex; align-items: center; gap: 6px; } .ties .lbl { color: var(--hud-mute); font-size: .75rem; }
+.ties .bt { padding: 0 7px; }
+/* one slot, one width, for a button with two wordings */
+.bt.w-swap { width: 100px; } .bt.w-go { width: 96px; }
+.sf-ask .bt { padding: 0 7px; }
+/* a creature's picture, 27 px in the HUD */
+.sq { all: unset; box-sizing: border-box; position: relative; flex: none; width: 27px; height: 27px; border: 1px solid var(--s-gold); background: var(--s-band); color: var(--hud-mute); font: 600 13px/25px "Source Sans 3", sans-serif; text-align: center; cursor: pointer; }
+.sq .num { position: absolute; right: -1px; bottom: -1px; min-width: 12px; height: 12px; padding: 0 2px; background: var(--s-gold); color: var(--hud-bg); font: 700 9.5px/12px "Source Sans 3", sans-serif; text-align: center; }
+.sq:hover, .sq.hover { outline: 2px solid var(--s-ink); outline-offset: -1px; }
+.sq.on { background: color-mix(in srgb, var(--s-gold) 45%, var(--hud-bg)); color: var(--hud-ink); box-shadow: inset 0 0 0 1px var(--s-gold); }
+.sq[disabled], .sq.done { border-color: var(--hud-hair); color: var(--s-faint); opacity: .5; cursor: default; outline: 0; } .sq.done .num { background: var(--hud-hair); color: var(--hud-mute); }
+
+/* A LIST ENTRY (a Reaction, Prone, ...): one title line, the text's lines kept, one row of buttons */
+.h3-si { flex: none; min-width: 0; }
+.h3-si .h { height: 17px; line-height: 17px; white-space: nowrap; overflow: hidden; }
+.h3-si .h b { min-width: 0; overflow: hidden; text-overflow: ellipsis; } .h3-si .h .tg { flex: none; }
+.h3-si .t { height: calc(var(--n, 2) * 15px); line-height: 15px; margin: 1px 0 3px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--n, 2); font-size: .78rem; }
+.h3-si .bs { margin-top: 2px; }
+.h3-si.pulse { margin: 0 -9px 0 -9px; padding: 0 9px 2px; }
+/* Granted: one line a source, Cancel at its right end */
+.hb-gr { flex: none; } .hb-gr + .hb-gr { margin-top: 0; }
+.hb-grh { display: flex; align-items: center; gap: 6px; height: 22px; font-weight: 700; font-size: .75rem; color: var(--s-gold); }
+.hb-grh .src { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Hiding: the Add line first (always two lines), then the creatures */
+.h3-hd .h3-hd-fold { all: unset; box-sizing: border-box; display: flex; align-items: baseline; gap: 6px; width: 100%; height: 17px; line-height: 17px; cursor: pointer; }
+.h3-hd .h3-hd-fold b { font-size: .88rem; } .h3-hd .chev { margin-left: auto; font-style: normal; font-size: 12px; color: var(--hud-mute); width: 12px; text-align: center; }
+.h3-hd-add { padding-bottom: 4px; } .h3-hd-add .t1 { height: 16px; line-height: 16px; font-size: .78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--hud-mute); } .h3-hd-add .t1 b { color: var(--hud-ink); }
+.h3-hd-add .bs { margin-top: 1px; } .h3-hd-add .bt { width: 96px; }
+.hm { width: 14px; height: 14px; flex: none; }
+.h3-hd-r { display: grid; grid-template-columns: 14px minmax(0, 1fr) 78px 18px; align-items: center; gap: 6px; height: 25px; border-top: 1px solid var(--hud-hair); }
+.h3-hd-r .nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.h3-hd-r .bt { width: 78px; padding: 0; color: var(--hud-ink); }
+.h3-hd-x { all: unset; box-sizing: border-box; width: 18px; height: 18px; text-align: center; font: 600 13px/18px "Source Sans 3", sans-serif; color: var(--hud-mute); cursor: pointer; } .h3-hd-x:hover { color: var(--hud-ink); }
+
+/* the overlay: every state of a kind drawn on the same spot */
+.slice .layer { position: absolute; inset: 0; } .slice .layer .h3-sit.urg { background: none; }
+.slice .layer:first-child .h3-sit.urg { background: color-mix(in srgb, var(--s-gold) 9%, transparent); }
+
+/* ---- B: the buttons in a column of a fixed width at the right ---- */
+.sf-ask.b { display: grid; grid-template-columns: minmax(0, 1fr) 128px; grid-template-rows: 17px minmax(0, 1fr); column-gap: 10px; row-gap: 2px; }
+.sf-ask.b .sf-h { grid-column: 1 / -1; }
+.sf-ask.b .b-l { min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+.sf-ask.b .b-l .sf-t { flex: 0 1 auto; max-height: none; } .sf-ask.b .b-st { height: auto; white-space: normal; flex: none; }
+.sf-ask.b .b-l .sf-o { margin-top: auto; } .sf-ask.b .b-l .sf-k { margin-top: auto; } .sf-ask.b .b-l .sf-o + .sf-k { margin-top: 0; }
+.sf-ask.b .b-r { display: flex; flex-direction: column; gap: 4px; min-height: 0; }
+.sf-ask.b .b-slot { flex: none; height: 22px; display: flex; align-items: center; } .sf-ask.b .b-slot.last { margin-top: auto; }
+.sf-ask.b .b-slot > .bt { width: 100%; } .sf-ask.b .ties { width: 100%; } .sf-ask.b .ties .bt { flex: 1 1 0; }
+.sf-k kbd { line-height: 11px; vertical-align: 1px; }
+.h3-si .bs .bt { padding: 0 7px; }

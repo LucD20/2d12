@@ -11,16 +11,17 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. **Re
 - **The core rework** (`book/core-rework.md`, section P is its order): batches 1 to 4 built. Batch 5 (Escalation): the first step is built (no Arts, no Escalation Passives, the Escalation Die dE, Steady Draw's 2dE); the rest waits (Lucas: no extra levels until level 1 feels good). Batches 6 and 7 are the Bestiary.
 - **The Bestiary** (`book/bestiary-design.md`): rebuilt from the ground up. Decided and in the book as playtest rules: the measure of a fight (Rally Points a PC, and Downs), the bands, the normal fight (CV 100 a PC), the four ranks' defaults (Minion with ticks, Grunt, Standard, Elite), and four creatures, one a rank (Goblin Sneak, Grave Wisp, Orc Warrior, Ogre Chieftain). **The Boss is parked until after playtest 8. Every number is a playtest value.**
 - **The Hide package** (Hide, Sneak, Seek, Point Out; v0.0.513 to v0.0.518): in the book and in Foundry, tested by Lucas.
-- **The Encounter Log** records what playtest 8 needs (built in v0.0.488 and v0.0.511).
+- **Playtest 8 is played** (Lucas, solo, on v0.0.519; the record and Claude's report: `book/playtest-8.md`): the four pregens against the four new creatures (CV 410), over in round 2, no Down, 1.3 Rally Points a PC (normal). No card and no number changed (on watch: `rules-backlog.md`, "PLAYTEST 8: ON WATCH"; `bestiary-design.md`, its last section). Its two clarifications are in Chapter 2 ("At its moment", "Entering a Square"). Found: the Situational tab's moving buttons (the mockup `foundry/mockups/sit-fixed/`, not built) and the Encounter Log's mistakes (`foundry-backlog.md`, "PLAYTEST 8 PLAYED").
 
 ## What is happening now
 
-1. **Playtest 8** (Lucas): level 1 pregens against the new creatures. The fights Claude suggests are in `foundry/foundry-backlog.md`, "Playtest 8, the fights Claude suggests".
+1. **After playtest 8** (Lucas): its report (`book/playtest-8.md`, section 2.10) suggests the same fight at least twice more and one where the enemies act first, before any retune (the five fights suggested earlier: `foundry/foundry-backlog.md`, "Playtest 8, the fights Claude suggests"); his call.
 2. **The cleanup audit** (`book/audit-2026-11-25/`): Lucas answered its 282 questions; they are applied to the book (`applied.md`; the held questions he answered on 2026-11-26 in its last section), 6 are still held (`work-order.json`, `do: "hold"`), and Foundry follows the book in v0.0.520 and v0.0.521 (`foundry-needs.md`; the open items in `foundry/foundry-backlog.md`). The approved removals and moves are done too (old drafts, card builders and mockups in `archive/`; the sync scripts, the Elite ladder, the Ruler line and 21 unused functions gone).
 
 ## Waiting on Lucas
 
-- His checklist on v0.0.519 to v0.0.522, and playtest 8's report.
+- His checklist on v0.0.519 to v0.0.522.
+- His answers on the sit-fixed mockup (`foundry/mockups/sit-fixed/README.md`: rule A or B, the narrower windows, two questions at once, the order under a question); then a Foundry version builds it with the Encounter Log's fixes.
 - The cleanup audit's 6 held questions (`work-order.json`, `do: "hold"`: an NPC's items and losing its weapon, B3-033 / B3-065; the reminders B2-050, B3-011, B3-015, F-033; B2-008 and B2-080 stay reminders too).
 - An NPC losing its weapon (B3-033, B3-065, B3-069): "We need to work more on it. Save it for when we are done running the audit." Open, with Claude's proposal (not decided) in `book/bestiary-design.md`, "An NPC losing its weapon".
 - His review of the Bestiary wording changes of 2026-11-26 (the bands' edges and five sentences; `book/bestiary-design.md`, "Lucas's answers to the cleanup audit's Bestiary questions"): pending ("I will read it later").
@@ -46,8 +47,8 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. **Re
 | Weapons | `book/cards/bows-redesign.md`, `book/cards/swords-redesign.md` | every other weapon is a placeholder |
 | Magic, play outside a fight | `book/decided.md` (the map), `book/magic-design.md`, `book/magic-out-of-combat.md` | guarded: `bash book/tools/guard.sh check` |
 | Talents | `book/talents-design.md` | the current cards: `book/cards/talents-playtest.md` |
-| The look | `foundry/mockups/style-book.md`, `foundry/mockups/style-audit.md` | |
-| Playtests | `book/playtest-2.md` to `playtest-6.md` | |
+| The look | `foundry/mockups/style-book.md`, `foundry/mockups/style-audit.md` | the Situational tab's fixed buttons: `foundry/mockups/sit-fixed/` |
+| Playtests | `book/playtest-2.md` to `playtest-6.md`, `playtest-8.md` | playtest 7 has no file of its own: its notes are `foundry/foundry-backlog.md`, "PLAYTEST 7" |
 | Research outside the project | `book/research/README.md` (the index) | |
 | The numbers | `book/ruler/README.md` | `book/ruler/benchmark.mjs`, `fight-identity.mjs` (the Bestiary's counts) |
 

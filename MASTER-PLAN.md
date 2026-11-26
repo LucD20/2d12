@@ -6,7 +6,7 @@ Rule of the order (Lucas, 2026-11-11): decide what changes the numbers before bu
 
 ## 1. Now
 
-1. **Playtest 8** (Lucas): the level 1 pregens against the Bestiary's four new creatures, measured by the Encounter Log.
+1. **Playtest 8: played** (Lucas, 2026-11-26; `book/playtest-8.md`): over in round 2, no Down, 1.3 Rally Points a PC; no card or number changed. What comes next (more playtests first, as its report suggests, or the retune) is Lucas's call. Waiting for his word: the sit-fixed mockup (`foundry/mockups/sit-fixed/`), then a Foundry version with it and the Encounter Log's fixes.
 2. **The cleanup audit** (`book/audit-2026-11-25/`): answered and applied (the book, Foundry v0.0.520 to v0.0.522); 6 questions still held for Lucas (`work-order.json`, `do: "hold"`).
 
 ## 2. After playtest 8: the Bestiary (`book/bestiary-design.md`)
