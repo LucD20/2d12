@@ -2,6 +2,11 @@
 
 The book is built from `rules-src/` with `build_rules.py` (assets in `rules-assets/`). How the files are written is in `rules-src/README.md`; `rules-src/INDEX.md` (generated) is a map of every chapter; `python3 build_rules.py --where Term` lists every mention of a term. The full earlier version of this list was in `archive/old-notes/rules-backlog-history.md` (not in this bundle).
 
+## DEAD BODIES ARE NOT DIFFICULT TERRAIN (2026-11-26)
+
+- **Lucas:** "Are dead bodies counted as difficult terrain? ... I think it is realistic but clutters the map." Then: "Agreed on the difficult terrain." Chapter 3, Creatures in your way: an Unconscious creature is still Difficult Terrain, whichever side it is on; **a dead creature doesn't affect movement** (you can pass through its space and end in it). The Glossary's Difficult Terrain row follows. The research: `book/research/corpses-as-terrain.md`.
+- [ ] Foundry still counts a dead creature's space as Difficult Terrain (`move.mjs downTok`): on `foundry/foundry-backlog.md`.
+
 ## Open for the book
 - [x] **(v0.0.524: the Encounter Log names a fight by its cost in Rally Points a PC, at the record's edges) THE DESIGNERS' MEASURE OF A FIGHT LEAVES THE BOOK (Lucas, 2026-11-26; the record: `book/bestiary-design.md`, "The designers' measure of a fight, out of the book").** His words: "Band: this shouldn't be in the book, the people reading the book don't need to know this part of the mechanics. It is a designers thing only. But for our notes, it should be 3 for deadly."; "Margin: I will roll two more playtests and then we adjust from there."; "All rest are good." **No rule of play changed.**
   - **Left Chapter 14:** the section "Measuring a fight" with "The cost of a fight" (the cost in Rally Points a PC, and the Downs) and "Difficulty" (the table Easy / Normal / Hard / Deadly with its costs and promises, and "The difficulties are wide on purpose: dice swing, and a fight often costs more or less than its difficulty says."). The record keeps them in full, Hard up to 3 and Deadly above 3.

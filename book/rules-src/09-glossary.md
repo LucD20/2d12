@@ -51,7 +51,7 @@
 | [[Buffs\|**Debuff**]] | A Buff that harms the Action it modifies. |
 | [[Defenses\|**Defense**]] | Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + Power Modifier + Ward value + items + bonuses − penalties), or an Attribute DC (11 + the Attribute). "+1 Defense" raises all of them. |
 | [[Desperate\|**Desperate**]] | You are Down and still fighting (some Nonlethal damage, and a Nonlethal blow took you Down): Slowed 1, or your Slowed value + 1 (at most 3). |
-| [[Difficult Terrain\|**Difficult Terrain**]] | Each square counts double. An ally's space and a Down or dead creature's are Difficult Terrain; an enemy's space blocks your movement. |
+| [[Difficult Terrain\|**Difficult Terrain**]] | Each square counts double. An ally's space and an Unconscious creature's are Difficult Terrain; an enemy's space blocks your movement; a dead creature's doesn't affect it. |
 | [[Sight Senses\|**Dim-light Sight**]] | A Sight Sense: Dim light counts as Bright for you. |
 | [[Disrupting Actions\|**Disrupted**]] | What is left of a disrupted Action doesn't happen, and its AP and resources are wasted. |
 | [[Distinct Choices\|**Distinct Choices**]] | A class's Attribute increases go to different Attributes. |
