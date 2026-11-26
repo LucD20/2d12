@@ -1,0 +1,882 @@
+[
+ {
+  "id": "B1-001",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Doubles and the Summary's step 4 name Tier 1 / 2 / 3 instead of Failure / Marginal / Full Success.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-002",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Improvised rolls: you don't always need three results; for a yes or no, Tier 1 fails and Tier 2 or 3 succeeds.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-004",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Favored and Doomed Rolls: the numbered list now stands under \"Step by step:\" above the two examples; the 'roll three dice' sentence is gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-005",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "The Rolls paragraph about Trip being both a Body and an Instinct Action is removed (Rules Language and Chapter 7 keep it).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-006",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Saves: a Save Action's DC is 11 + the Modifier or Attribute its traits name; any other Save uses the DC its effect writes, or 13 if none.",
+  "ruleChange": true,
+  "foundry": "A Save whose effect writes no DC uses DC 13 (a fixed default, not 'usually')."
+ },
+ {
+  "id": "B1-007",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Save Actions: Tier 1 is the worst for the target, and a line for two Tiers is written Tier 1 or 2 (the [Mod]-on-Tier-1-and-2 sentence is gone).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-008",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Damage on a Card keeps only 'it adds a Modifier or weapon damage only when the card writes [Mod] or [W]'; the Weapon/Power Action sentence and the Power Actions paragraph are removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-009",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Damage Types no longer says Blunt damage is almost always Vigor.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-010",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "[C] is removed from the Damage Types list, the Subtypes sentence, the Notation row and the Glossary row.",
+  "ruleChange": false,
+  "foundry": "If Foundry shows or parses a [C] (origin chooses) damage pool, it no longer exists in the book."
+ },
+ {
+  "id": "B1-011",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The 'Vigor and Resolve are not the Body and Mind Attributes' warning is removed from Damage Types and from the Glossary's [V], [R] row.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-012",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "The two-damage example is now \"[V] 3 + 1d6 Sl + [R] 1d8 Ps\".",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-013",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Damage Subtypes: shortened to two letters, with no mention of [V], [R], [C].",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-014",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "Riders say 'On a Tier line' and 'A Save Action's Tier lines'; the Glossary's Rider row says 'on a Tier line'.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-015",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Cleave section and its Glossary row are removed.",
+  "ruleChange": false,
+  "foundry": "If Foundry implements or lists Cleave, it is no longer a book rule until a card uses it."
+ },
+ {
+  "id": "B1-016",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Several Targets: the 'rolled per die' paragraph is now one sentence: an Empowered roller's or Save-causer's 1d6! goes to one creature it damages.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-017",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "The card-label table has a Bloodied, Strained row pointing to Effect Timing.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-018",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "The \"As X AP\" paragraph and its three bullets are removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-019",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Basic Attack example under the sample cards is removed; the Glossary's Basic Attack row reads [V] 1d4! / 1[W] + [Mod] / 1[W] + 1[D] + [Mod].",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-020",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "The slashes paragraph keeps only: target counts in words, other values in numerals, distances with 'sq.'.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-021",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md",
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "The (T2/T3) Notation row and Chapter 2's 'Some cards mark an effect for some Tiers only' paragraph are removed.",
+  "ruleChange": false,
+  "foundry": "Foundry should not rely on a (T2/T3) / (T3) tier marker in card text."
+ },
+ {
+  "id": "B1-022",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "The Notation row for Critical names all three causes, including three matching dice on a Favored roll.",
+  "ruleChange": true,
+  "foundry": "A Favored roll with three matching dice is a Critical (already in the Critical section)."
+ },
+ {
+  "id": "B1-023",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Up to: a maximum you can go below, even to none, except targets: 'up to three creatures' is one, two or three.",
+  "ruleChange": true,
+  "foundry": "An 'up to N targets' Action needs at least one target."
+ },
+ {
+  "id": "B1-024",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md"
+  ],
+  "what": "Bracketed traits: a [Melee] Basic Attack (1A) is a Basic Attack at 1 AP with the Melee trait, whatever else it has; a rule about it doesn't apply to a [Ranged] one.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-025",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "An encounter can't end while a creature is Dying or Shattered until each stabilizes, gets its damage below its Health Pool, or dies; the tip says an ally can easily get them back up.",
+  "ruleChange": true,
+  "foundry": ""
+ },
+ {
+  "id": "B1-026",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "A creature that becomes Dying or Shattered outside an encounter rolls on its Table, and that is its roll for the encounter that follows.",
+  "ruleChange": true,
+  "foundry": "That out-of-combat Table roll counts as the encounter's first-time roll (no second roll when the encounter starts)."
+ },
+ {
+  "id": "B1-027",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "The three-way initiative example says Mark and the Kobold Mage tie at 13 and the PC goes first.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-028",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Swapping Initiative: the AP you had left are frozen and pay for nothing, not even a Reaction (your Reaction Point still can); on your new turn you carry on with them and none becomes Guard.",
+  "ruleChange": true,
+  "foundry": "After a swap, kept AP can't pay Reactions until your new turn, and they give no Guard at that turn's start."
+ },
+ {
+  "id": "B1-029",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md",
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Reaction Point pays for Reactions and for the few cards that say you spend it (Smite, Steady Draw); the Glossary row says the same.",
+  "ruleChange": true,
+  "foundry": "Smite's and Steady Draw's Reaction Point spend is legal and outside a Reaction."
+ },
+ {
+  "id": "B1-030",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md",
+   "book/rules-src/04-health.md"
+  ],
+  "what": "The Guard from unspent AP lasts until you regain AP at the start of your next turn; Chapter 4 says it lasts until you regain AP again; Rounds says nothing else lasts until the start of your next turn.",
+  "ruleChange": true,
+  "foundry": "Unspent-AP Guard ends when the creature next regains AP (start of its next turn), not at the end of a round."
+ },
+ {
+  "id": "B1-031",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Unspent AP: the bullet about a kept AP spent on a Reaction is removed, and the next bullet reads only 'Your Reaction Point never becomes Guard.'",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-032",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Paying: the sentence about a feature giving a second Reaction Point is removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-033",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "An Interrupt happens before the moment it names (example: entering a square adjacent to you); a Trigger after the moment it names, which can be mid-Action (after the first farther square while still moving).",
+  "ruleChange": true,
+  "foundry": "Reactions fire on the named moment, not before/after the whole triggering Action: a movement Trigger fires mid-move."
+ },
+ {
+  "id": "B1-034",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "What a Reaction Responds To keeps only its first sentence; the list of moments and the 'ends a Move Action' sentence are gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-035",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "One sentence: 'Triggering' is used for both kinds of Reaction; an Interrupt has a triggering creature and Action too.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-036",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "The movement tip now stands under the Reactions list, reworded: make the full movement, the reacting creature says where the Reaction happens, move the token back if it is disrupted.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-037",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Disrupting Actions: a Reaction disrupts only when its card says so; an Interrupt's disruption means the Action never starts, a Trigger's stops it where it is. Both Stand-then-Advance examples are removed.",
+  "ruleChange": true,
+  "foundry": "An Interrupt does not cancel the Action unless its card says it disrupts."
+ },
+ {
+  "id": "B1-038",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Moving closer / away is judged square by square: entering a square nearer (farther) than the one it came from; the repeated sentence is cut.",
+  "ruleChange": true,
+  "foundry": "A creature running past you moves closer at its first nearer square and away at its first farther square."
+ },
+ {
+  "id": "B1-039",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Moving Closer ends: Evade, Forced Movement and Reposition don't trigger Reactions from movement, so they are never moving closer or moving away; the bullet in Moving Away is removed.",
+  "ruleChange": true,
+  "foundry": "A Reaction keyed to the Forced Movement itself can still trigger; only movement-based (closer/away) Reactions ignore it."
+ },
+ {
+  "id": "B1-040",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "An Action is something a creature does in a fight; most cost AP; every Action is a card.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-041",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "The paragraph saying an Action's traits appear next to it in the rules is removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-042",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Requirements: some Actions have a Requirement line, the first of the card's labeled lines.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-043",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "Chapter 7, Strike, adds: a Strike made as a Linked Action counts toward neither the 3 Strikes nor the shared At-will count, unless its Action says otherwise.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-044",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Linked Actions: a required one you can't make stops the Action there (what happened stays, cost paid); an optional one is skipped. The separate 'no valid target' sentence is removed.",
+  "ruleChange": true,
+  "foundry": "A required Linked Action that fails stops the rest of the Action without refunding or undoing; an optional one is skipped and the Action continues."
+ },
+ {
+  "id": "B1-045",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Example: a card lets you make a Basic Attack (1A); using Basic Attack on its own the same turn is your first use, no At-will Bane.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-046",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Targets of Effects: the 'Remember...' sentence is removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-047",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Effect Timing opens 'Every line of a card says when it happens (see Reading an Action). Two cases need more:' and keeps only the Bloodied/Strained bullet and the semicolon paragraph.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-048",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Buffs: the three bullets about single, per-Tier and 0-on-Tier-1 values are removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-049",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Buffs' first paragraph adds: a Buff that harms the Action it modifies is a Debuff.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-050",
+  "done": "partly",
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "The Slowed bullet is removed from Stacking; the lead-in still says 'Five things do add up:' because B1-083 adds a damage-reduction bullet (five again).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-051",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "At-will: each At-will Action has its own count, except At-will [Strike] Actions, which share one.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-052",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Frequency: every Action has a Frequency in its card's title bar; an At-will Action with no roll has no Bane to take.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-053",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Round: once per turn-cycle; a Round Reaction used late in one round can't be used early in the next before your own turn starts.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-054",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Defenses: one of its three Defenses; some Actions roll against a set DC instead.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-055",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "EoT: one gained on your own turn ends at its end; one gained on another creature's turn lasts until the end of your next turn.",
+  "ruleChange": true,
+  "foundry": "An EoT effect gained out of turn lasts until the end of the affected creature's next turn."
+ },
+ {
+  "id": "B1-056",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "The initiative slot definition opens Rounds and Durations (with the swap case for EoT); it is gone from End of Encounter, with its repeat of Rounds' parenthesis.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-058",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Momentum gaining: +1 after each encounter overcome; until non-fight scenes have rules the GM says which count.",
+  "ruleChange": true,
+  "foundry": ""
+ },
+ {
+  "id": "B1-059",
+  "done": true,
+  "files": [
+   "book/rules-src/01-roll.md",
+   "book/rules-src/02-turns.md",
+   "book/rules-src/05-characters.md"
+  ],
+  "what": "'Never spent' is said once, in Escalation's first paragraph; cut from Chapter 1's Notation row, the Escalation N paragraph, the GM's valve tip and Chapter 5.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-060",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Size: the horse sentence is removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-061",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Squeezing: while a creature stands where it doesn't fit and is not mid-movement, its Rolls are Doomed and it is Vulnerable half its level.",
+  "ruleChange": true,
+  "foundry": "The squeeze penalty applies while stopped in a too-small space (to act or end the turn), not while passing through."
+ },
+ {
+  "id": "B1-062",
+  "done": true,
+  "files": [
+   "book/rules-src/07-traits.md"
+  ],
+  "what": "Chapter 7, Move: you can't end in another creature's space nor enter an unwilling creature's space; a willing creature's space is Difficult Terrain.",
+  "ruleChange": true,
+  "foundry": "Enemy spaces block movement entirely (not Difficult Terrain)."
+ },
+ {
+  "id": "B1-063",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Creatures in your way: an Unconscious creature and a dead one are Difficult Terrain; a creature that is Down and still fighting holds its space like any other.",
+  "ruleChange": true,
+  "foundry": "A Desperate, or Dying/Shattered-and-fighting, creature blocks like a standing one; only Unconscious or dead creatures are passable Difficult Terrain."
+ },
+ {
+  "id": "B1-064",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "The Tumble sentence drops '(Footwork's Weave)'.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-065",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Pulled: the cone is measured from the square the creature starts in; every path square lies less than 45° off the line from that square to the origin.",
+  "ruleChange": true,
+  "foundry": "Pull path validation uses a fixed cone from the starting square, not one recomputed each step."
+ },
+ {
+  "id": "B1-066",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "The Reposition example says 'Your Reach is 2.'",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-067",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "The creatures'-space rule stays in Movement; Difficult Terrain points to it; Evade says an ally's space is the one exception (see Movement).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-068",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Hazardous Terrain: the 'notation, not a trait' sentence is gone; the paragraph starts 'The effect declares its pattern(s) after a colon'.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-069",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Weapon Range example: a Pike has Range 3; with Reach 2 it attacks at Range 4.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-070",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Leaning lasts until the end of your turn and ends early when you leave your square.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-071",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "The Emanation example is a creature that slams the ground around itself (no Ground Slam).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-072",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "The Line example ends 'a different shape, the same number of squares'.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-073",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Light: the Lantern of Faith sentence is removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-074",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Senses table, last column: Obscured '1 Field Boon, if you are Clear to it'; Hidden and Unsensed 'Favored, if you are Clear or Obscured to it'.",
+  "ruleChange": true,
+  "foundry": "A creature Hidden or Unsensed to you is Favored against you only if you perceive it no better (you are Clear or Obscured to it)."
+ },
+ {
+  "id": "B1-075",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Hearing: creatures in combat make noise, even when they don't move.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-076",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "Hiding: after a non-Subtle Action, Hide ends and each creature perceives you with its own senses again.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-077",
+  "done": true,
+  "files": [
+   "book/rules-src/03-movement.md"
+  ],
+  "what": "The Snake example: its Favored is 5 Boons, less its 1 Field Bane: it rolls normally and adds 4.",
+  "ruleChange": true,
+  "foundry": ""
+ },
+ {
+  "id": "B1-078",
+  "done": true,
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "Instances of Damage: 'Rules that count instances count them this way' is removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-079",
+  "done": true,
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "Lethal and Nonlethal opens: a Nonlethal Action can deal Lethal damage by taking a Bane, and any other Action can deal Nonlethal by taking a Bane.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-080",
+  "done": true,
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "The pointer paragraph to Roll Effects and Conditions is removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-081",
+  "done": true,
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "Dominant Damage keeps only 'You know which Dominant Damage a creature has if you perceive them (Hidden is enough).'",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-082",
+  "done": "partly",
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "Rally Points: 'While Down or Unconscious, you can't use Steel Yourself'; the Unconscious bullet 'You can't wake up while Dying...' is removed. The Chapter 3 text was not written: B1-063's text for the same sentence was applied instead.",
+  "ruleChange": true,
+  "foundry": "Down is any creature whose damage reaches its Health Pool; Steel Yourself is blocked for all of them and for Unconscious ones."
+ },
+ {
+  "id": "B1-083",
+  "done": true,
+  "files": [
+   "book/rules-src/02-turns.md"
+  ],
+  "what": "Stacking lists Damage reductions from different effects among the things that add up.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-085",
+  "done": true,
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "Rest: a safe place is one where you are sure you can rest safely, such as a town; the wilderness is not; the GM decides.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-087",
+  "done": true,
+  "files": [
+   "book/rules-src/09-glossary.md"
+  ],
+  "what": "The Glossary's Bloodied, Strained row gives their effects (Speed −2 min 1 and Steadiness −1; no Reaction Point regained).",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-088",
+  "done": true,
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "The Strained tip about where a Bloodied line is written is removed.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-089",
+  "done": true,
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "The Dying Table's Tier 3: 'You stabilize: you are no longer Dying, but you stay Unconscious.' (no roll); Shattered now uses Dying's tables (B1-090).",
+  "ruleChange": true,
+  "foundry": "Stabilizing on a Tier 3 rolls no Wound."
+ },
+ {
+  "id": "B1-090",
+  "done": true,
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "Shattered is one sentence: it works as Dying, with the Shattered Table, a Mind Check at the end of each turn, and 'giving up' for collapsing; its three tables are gone.",
+  "ruleChange": false,
+  "foundry": ""
+ },
+ {
+  "id": "B1-091",
+  "done": true,
+  "files": [
+   "book/rules-src/04-health.md"
+  ],
+  "what": "Unconscious: damage while both Unconscious and Down makes you roll on the Dying or Shattered Table (becoming one first if needed); an NPC doesn't roll, NPCs Going Down decides again.",
+  "ruleChange": true,
+  "foundry": "A Desperate (awake) creature taking damage does not roll on a Table by this bullet; an NPC hit while Unconscious and Down re-runs NPCs Going Down (dies on more Lethal damage)."
+ }
+]

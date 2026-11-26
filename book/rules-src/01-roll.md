@@ -19,7 +19,7 @@ Your **Attribute Modifier** for an Attribute equals its value: with Body 2, your
 
 A Tier 2 or Tier 3 result is a **success**; rules that care about it say "when you get a Tier 2 or 3 result." The names of the tiers are flavor: the rules use Tier 1, 2 and 3.
 
-For improvised rolls, such as during roleplay, you don't always need three results: coming up with them every time can take a toll on the GM. When you just want a yes or no, Tier 1 is a failure and Tier 2 or 3 is a success.
+For improvised rolls, such as during roleplay, you don't always need three results. When you just want a yes or no, Tier 1 is a failure and Tier 2 or 3 is a success.
 
 ## Exploding Dice
 
@@ -32,7 +32,7 @@ When a d12 shows a **12**, it **explodes**: count that die as **11**, then roll 
 
 ## Doubles
 
-If both d12s show the **same number** (before explosions), the result moves **up one tier**: Failure becomes Marginal Success, and Marginal Success becomes Full Success. Full Success can't go higher: it becomes a **Critical** instead (see below).
+If both d12s show the **same number** (before explosions), the result moves **up one tier**: Tier 1 becomes Tier 2, and Tier 2 becomes Tier 3. Tier 3 can't go higher: it becomes a **Critical** instead (see below).
 
 A **Doomed** roll can't produce Doubles. On a **Favored** roll, any two of the three dice that match are Doubles (see [[Favored and Doomed Rolls]]).
 
@@ -84,18 +84,18 @@ When a roll is **Doomed**, you roll **3d12** and keep the **two lowest**. A Doom
 
 A roll that is both Favored and Doomed is a normal roll, and nothing is added to it: the 5 Boons and the 5 Banes cancel (see [[Five Boons or Banes]]).
 
-Roll three dice, then see if there are any explosions, calculated per die.
+Step by step:
+
+1. Roll 3d12.
+2. Each die explodes on its own (a 12 counts as 11 and is rolled again; further 12s explode again). After all explosions, each die has its own total.
+3. Keep the two highest totals (Favored) or the two lowest totals (Doomed).
+4. Favored only: if any two of the three dice showed the same face before exploding, you have Doubles; if all three did, a Critical.
 
 > [!example]
 > You are Doomed and roll three different-colored dice: 10 (blue), 12 (green) and 12 (red). You reroll the two 12s and get 10 (green) and 5 (red): green is 11 + 10 = 21 and red is 11 + 5 = 16. You keep the two lowest, blue and red, so your result is **26** (10 + 16), with no Doubles.
 
 > [!example]
 > You are Favored and roll 1 (blue), 1 (green) and 5 (red). You keep the two highest, a 1 and the 5 (**6**), and the two 1s are Doubles: the result moves up one tier.
-
-1. Roll 3d12.
-2. Each die explodes on its own (a 12 counts as 11 and is rolled again; further 12s explode again). After all explosions, each die has its own total.
-3. Keep the two highest totals (Favored) or the two lowest totals (Doomed).
-4. Favored only: if any two of the three dice showed the same face before exploding, you have Doubles; if all three did, a Critical.
 
 ## Rolls
 
@@ -109,8 +109,6 @@ A **Roll** is anything you roll. There are six kinds, and every roll is exactly 
 | **Power roll** | An Action with the Power trait, and not the Signature or Save trait. It rolls your Power Modifier. |
 | **Signature roll** | An Action with the Signature trait. It rolls your Signature Modifier. |
 | **Attribute Action** | Any other Action that rolls: it rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait. |
-
-If an Action has multiple traits that reference the type of roll, such as the Trip Basic Action that has both Body and Instinct traits, it is both a Body and Instinct Action, even though you only use one Attribute.
 
 A Split Action is a Weapon roll or a Power roll, depending on the mode you choose when you use it. A [Save] Action doesn't roll: its targets roll Saves (see [[Save Actions]]). Damage dice and the [[Dying]] and [[Shattered]] Tables are **not Rolls**: nothing that changes a Roll (a Boon, Doomed, Unconscious) changes them.
 
@@ -142,7 +140,7 @@ Every DC is **11 + the number that sets it**, and is named by it. A creature's *
 
 Some effects make a creature roll a **Save**, written like "Appeal Save: [R] 1d6 / 1d4 / 0 Ho". The creature that must save rolls the named Attribute Modifier against the DC of the effect.
 
-The DC is usually 11 + the Weapon, Power or Signature Modifier that sets it, or 11 + the Attribute for a Save set by an Attribute (its [[Attribute DCs|Attribute DC]]); if no DC is listed, it is usually 13.
+A Save Action's DC is 11 + the Modifier or the Attribute its traits name (see [[Save Actions]]). Any other Save rolls against the DC its effect writes; if it writes none, the DC is 13.
 
 The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1d6 Holy Resolve damage on a Tier 1, 1d4 on a Tier 2 and nothing on a Tier 3. Boons, Banes, Doubles, Favored and Doomed work on Saves like on any roll.
 
@@ -150,7 +148,7 @@ The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1
 
 An Action with the **Save** trait doesn't roll: each target rolls the Save the card names (its roll line says, for example, **Save: Instinct**). The DC comes from the Action's other traits: **11 + your Weapon Modifier** for a [Save, Weapon] Action, **11 + your Power Modifier** for a [Power, Save] Action, **11 + your Signature Modifier** for a [Save, Signature] Action, and for a Save Action that rolls an Attribute (such as [Body, Save]), **11 + that Attribute**. These are your **Power DC**, your **Weapon DC**, your **Signature DC** and the DC of an Attribute (your **Body DC**): a rule or a card can name one ("an Appeal Save against your Power DC").
 
-The tiers are the target's result: **Tier 1 is the worst for them**. So everything that follows your result on an attack follows theirs here, reversed: a [Save, Weapon] Action deals its [Mod] on **Tier 1 and 2**, and a line for two Tiers is written **Tier 1 or 2**.
+The tiers are the target's result: **Tier 1 is the worst for them**. A line for two Tiers is written **Tier 1 or 2**.
 
 A Save Action has no Critical. Your own Boons don't apply to it, but **your own Banes do, turned around**: after cancelling your Boons and Banes as for a roll, each Bane you have left gives every target **1 Boon** on its Save (no name; if you would be Doomed, that is 5 Boons: their Saves are Favored). Effects on the target's Saves apply as well. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target (from your square when the Action has no area). Your [[Senses]] don't change a Save Action: the target rolls, so a target that is Obscured or Hidden to you adds no Bane to its Save.
 
@@ -160,7 +158,7 @@ Each Tier of a roll says what happens: damage, a condition, a movement, healing.
 
 ### Damage on a Card
 
-The damage of an Action is what its card says: it adds a Modifier or a weapon's damage only when the card writes [Mod] or [W]. A Weapon Action writes the weapon's damage and its Modifier on the card; a Power Action writes its dice.
+The damage of an Action is what its card says: it adds a Modifier or a weapon's damage only when the card writes [Mod] or [W].
 
 ### Modifier Damage [Mod]
 
@@ -168,23 +166,18 @@ When an Action deals damage equal to your Modifier, it is written **[Mod]**. The
 
 When a Weapon Action adds your Modifier to its damage, the Modifier joins the **weapon's damage** and keeps its damage type and subtype: if the weapon deals Resolve damage, so does the Modifier. A Tier that writes [Mod] with no [W] deals it as the weapon's damage too, with the weapon's type and subtype.
 
-**Power Actions** don't add their Modifier to damage on any Tier: their damage is the dice on the card.
-
 ### Damage Types
 
-All damage a creature takes is either **Vigor damage** (wounds, bruises, broken bones) or **Resolve damage** (fear, pain, despair), named after the two thresholds of the [[Health Pool]]; each of those has different subtypes. Blunt damage will almost always be Vigor damage, but not always. Damage is written this way:
+All damage a creature takes is either **Vigor damage** (wounds, bruises, broken bones) or **Resolve damage** (fear, pain, despair), named after the two thresholds of the [[Health Pool]]; each of those has different subtypes. Damage is written this way:
 
 - **[V]:** Vigor damage.
 - **[R]:** Resolve damage.
-- **[C]:** the origin chooses which type (Vigor or Resolve) the damage deals.
 
-Vigor and Resolve are not the Body and Mind Attributes: an Action of any Attribute can deal either.
-
-Some Actions include two types of damage. For example, "[V] 1d4+1d6+3 Sl + [R] 1d8 Ps" deals 1d4+1d6+3 Slash Vigor damage and 1d8 Psychic Resolve damage.
+Some Actions include two types of damage. For example, "[V] 3 + 1d6 Sl + [R] 1d8 Ps" deals 3 + 1d6 Slash Vigor damage and 1d8 Psychic Resolve damage.
 
 ### Damage Subtypes
 
-Subtypes don't have rules by themselves, but other rules use them, such as Resistance and Weakness. They are shortened to **two letters**, so they never look like the damage types [V], [R] and [C]:
+Subtypes don't have rules by themselves, but other rules use them, such as Resistance and Weakness. They are shortened to **two letters**:
 
 | Subtype | Short | Subtype | Short | Subtype | Short |
 |---|---|---|---|---|---|
@@ -205,11 +198,7 @@ Some creatures take less, or more, damage of a subtype. It is written on the cre
 
 ### Riders
 
-In a tier cell, what follows the damage is a **rider**: "[V] 2d8 Pi; Prone" knocks the target Prone on that Tier. **A rider happens whatever damage is dealt:** a Resistance, an Immunity, a damage reduction or [[Guard]] can take the damage to 0 (all of it, or one of several damages), and the rider still happens. A Save Action's cells read the same way, each on its own result.
-
-### Cleave
-
-When you **Cleave** N, you deal the Modifier used as damage (with the same damage type and subtype as your weapon) to up to N creatures that are adjacent to the original target.
+On a Tier line, what follows the damage is a **rider**: "[V] 2d8 Pi; Prone" knocks the target Prone on that Tier. **A rider happens whatever damage is dealt:** a Resistance, an Immunity, a damage reduction or [[Guard]] can take the damage to 0 (all of it, or one of several damages), and the rider still happens. A Save Action's Tier lines read the same way, each on its own result.
 
 ## Several Targets
 
@@ -222,7 +211,7 @@ When one Action affects several creatures (an Area, a Strike on "up to three cre
 
 For instance, if the Action deals 1d4 / 1d6 / 1d8, and two creatures get Tier 1 and one gets Tier 2, you roll 1d4 once and apply it to the two creatures on Tier 1.
 
-All damage is rolled per die. If the Tier 2 damage of a Save is [V] 1d8 Co + [R] 1d6 Ho, the creature causing the Save rolls both 1d8 and 1d6 and deals that damage to all creatures who got a Tier 2. If the creature causing the Save is Empowered, its 1d6! goes to one creature it damages (see [[Empowered]]).
+If the creature that makes the roll or causes the Save is Empowered, its 1d6! goes to one creature it damages (see [[Empowered]]).
 
 You roll every die that any of the targets needs, and each target uses only the ones that apply to it. If any target has Favored or Doomed, roll 3d12: a Favored target keeps the two highest and has Doubles if any two of the three dice match, a Doomed target keeps the two lowest, and any other target uses the first two d12 you rolled.
 
@@ -259,6 +248,7 @@ Actions are written as cards. Every card has the same structure, from top to bot
 | **Setup** | What happens before the rest of the Action (see [[Setup]]). |
 | A word in bold (**Smite dice**, **Judged**) | A word the card defines for its own text. |
 | **Effect** | What happens when the card is used, whatever the roll. Before the roll's line, it happens before the roll; after the Tiers, after them. |
+| **Bloodied**, **Strained** | What happens only against a target that is Bloodied or Strained (see [[Effect Timing]]). |
 | **Critical** | An extra result on a [[Critical]], under Tier 3. |
 | **Special** | A rule about the card itself: a limit, an exception, an extra cost. |
 | **Passive** | What a card with no cost does. It works on its own. |
@@ -271,29 +261,13 @@ The numbers on the two cards below are the numbers of the list. The first card n
 
 @@SAMPLE_CARD@@
 
-**"As X AP".** Some results refer to another cell of the tier table:
-
-- **"As X AP"** means the result in the X AP column on the same Tier. So a Tier 2 effect that says "As 2 AP" uses the same effect as the Tier 2 effect of the 2 AP Version.
-- **"As X AP, TY"** means the result in the X AP column on Tier Y. So a Tier 2 effect that says "As 2 AP, T3" uses the same effect as the Tier 3 effect of the 2 AP Version.
-- **"As Tier N"** means the result in the same column on Tier N. So a Tier 2 effect that says "As Tier 1" uses the same effect as the Tier 1 effect of this exact Version.
-
-> [!example]
-> **Basic Attack** | At-will · 1 AP  
-> *You strike with the weapon in your hands.*  
-> *Weapon · Strike*  
-> **Distance: Weapon ✦ Target: One creature**  
-> **Attack:** Weapon vs. Armor Defense  
-> **Tier 1:** [V] [Mod]  
-> **Tier 2:** [V] 1[W] + [Mod]  
-> **Tier 3:** [V] 1[W] + 1[D] + [Mod]
-
-**Values written with slashes.** Some cards write an entry under the traits once for all their Versions, with one value per Version, in the order of the costs, separated by slashes: **One / one / two creatures**, **5 / 10 sq.**, **Aura 2 / 3 / 3**. Target counts are spelled out in words; distances, areas and other mechanical values use numerals. A distance in squares is written with "sq." (**Distance: 5 sq.**).
+Target counts are spelled out in words; distances, areas and other mechanical values use numerals. A distance in squares is written with "sq." (**Distance: 5 sq.**).
 
 ### Notation
 
 | Written | Means |
 |---|---|
-| [[Damage Types\|**[V]**, **[R]**, **[C]**]] | Vigor damage, Resolve damage, or the one the origin chooses. On cards in Foundry, a heart {{pool:V}} stands for Vigor and a brain {{pool:R}} for Resolve. |
+| [[Damage Types\|**[V]**, **[R]**]] | Vigor damage or Resolve damage. On cards in Foundry, a heart {{pool:V}} stands for Vigor and a brain {{pool:R}} for Resolve. |
 | [[Weapon Damage\|**[W]**]] | The damage of your weapon. |
 | [[Weapon Damage\|**[D]**]] | Your weapon's die on that Tier, rolled once more. |
 | [[Rules Language\|**[Trait]**]] | An Action with that trait: "a [Strike] Action", "[Melee] Actions". Several traits in one pair of brackets mean an Action with all of them: "[Ranged, Weapon] Actions". |
@@ -303,8 +277,7 @@ The numbers on the two cards below are the numbers of the list. The first card n
 | [[Areas\|**Area: 1 Emanation**]] | The area an Action affects, on its own line. A **Distance** line says how far away it can be placed. |
 | [[Weapon Range\|**Distance: Weapon**]] | The Range of the weapon you use for the Action. **Distance: Reach** is your Reach. |
 | [[End of Turn\|**EoT**]] | Until the end of the turn of the affected creature. |
-| [[Effect Timing\|**(T2/T3)**]] | The effect only happens on those tiers. |
-| [[Critical\|**Critical**]] | An extra effect on Doubles with a result that is already Tier 3, or a total 20 or more above the DC. |
+| [[Critical\|**Critical**]] | What a Critical adds (see [[Critical]]): Doubles on a result that is already Tier 3, a total 20 or more above the DC, or three matching dice on a Favored roll. |
 | [[Evade\|**Evade 2**]], [[Advance\|**Advance 2**]], [[Pushed\|**Pushed 2**]], [[Pulled\|**Pulled 2**]], [[Slid\|**Slid 2**]], [[Reposition\|**Reposition 2**]] | Movement of up to that many squares. |
 | [[Rounds\|**for 2 rounds**]] | How long an effect lasts. |
 | [[Versus\|**Attack: Body vs. Body DC**]] | The Modifier you roll, and the Defense of the target (here its [[Attribute DCs\|Body DC]]). |
@@ -313,7 +286,7 @@ The numbers on the two cards below are the numbers of the list. The first card n
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP. You can use it only on your turn. |
 | [[Linked Actions\|**Basic Attack (1A)**, **(1A/2A)**]] | A Linked Action and the Version you use (or a choice of two). |
 | [[Reactions\|**1R**, **0R**]] | A Reaction that uses 1 AP, or none (which AP can pay: see [[Reactions]]). |
-| [[Escalation\|**Escalation 4**]] | The Escalation an Action needs: you can use it only while your Escalation is at least that number. Nothing is spent. |
+| [[Escalation\|**Escalation 4**]] | The Escalation an Action needs: you can use it only while your Escalation is at least that number. |
 | [[Escalation die\|**2dE**]] | Your Escalation die, rolled that many times: twice your Escalation's sides, at least a d4; it never explodes. |
 
 ### Rules Language
@@ -326,13 +299,13 @@ A single creature is referred to as **they**: "the creature is Hindered until th
 
 **Since your last turn, this turn.** A feature that says "since your last turn" counts from the end of your last turn. "This turn" is the turn in progress, whoever's it is: on your turn, it counts from the start of your turn; on another creature's turn (a Reaction), from the start of that turn.
 
-**Up to.** A number of things you can use, gain or move is a maximum: you can use fewer, or none, unless the rule says you **must**. "The target can use 2 Rally Points" lets them use 0, 1 or 2.
+**Up to.** A number of things you can use, gain or move is a maximum: you can use fewer, or none, unless the rule says you **must**. Targets are the exception: "up to three creatures" is one, two or three (see [[Targets]]).
 
 **Specific beats general.** When a card or a feature says something different from a general rule, the card or feature wins for that case. The Evade Action, for example, doesn't trigger Reactions although movement normally does.
 
 When a rule names a trait before the word "Action," it means an Action with that trait. For example, a **Divine Action** is an Action with the Divine trait. The same goes for a Weapon Action, a Power Action or a Nonlethal Action.
 
-- Traits inside one pair of square brackets, such as **[Ranged, Strike, Weapon] Action**, mean an Action with **all** of those traits: [Trait A, Trait B] is Trait A **and** Trait B. It doesn't mean *only*, it just must include the trait: a [Melee] Basic Attack (1A) is the Basic Attack Action that uses 1 AP and has the Melee trait, so it doesn't apply to a [Ranged] Basic Attack (1A).
+- Traits inside one pair of square brackets, such as **[Ranged, Strike, Weapon] Action**, mean an Action with **all** of those traits: [Trait A, Trait B] is Trait A **and** Trait B. The Action can have other traits too: a [Melee] Basic Attack (1A) is a Basic Attack at 1 AP that has the Melee trait, whatever else it has. A rule about it doesn't apply to a [Ranged] Basic Attack (1A), which lacks that trait.
 - Separate brackets joined by "and" mean **either**: "[Strike] and [Weapon] Actions" are Actions with the Strike trait, the Weapon trait, or both. Alternatives can also be written with "or" inside the brackets: [Melee or Ranged].
 - A **Body Action** is an Action with the Body trait, and so on; an Action can be more than one (Trip is both a Body and an Instinct Action).
 
@@ -343,6 +316,6 @@ When a rule names a trait before the word "Action," it means an Action with that
 1. Roll **2d12** and add the relevant Modifier.
 2. Any **12** counts as 11 and is rolled again, adding the result.
 3. Add **1 for each Boon** and subtract **1 for each Bane**. Named ones (Field, Pressure, Support) count up to 2 of each name; an effect that makes the roll Favored or Doomed counts as 5 Boons or 5 Banes. If 5 or more Boons are left after cancelling, the roll is Favored instead; 5 or more Banes, Doomed.
-4. Compare to the **DC**: below it is a Failure, from the DC up to DC + 6 is a Marginal Success, and DC + 7 or more is a Full Success.
+4. Compare to the **DC**: below it is Tier 1, from the DC up to DC + 6 is Tier 2, and DC + 7 or more is Tier 3.
 5. If both d12s match, move the result **up one tier**.
 6. A **Favored** roll is 3d12: keep the two highest, and any pair among the three is Doubles. A **Doomed** roll is 3d12: keep the two lowest, with no Doubles.

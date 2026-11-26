@@ -3,10 +3,10 @@
 
 ## Encounters
 
-An **encounter** is a fight or a similar scene: it starts when Initiative is rolled and ends when the GM says it's over. It can't end while a creature is Dying or Shattered: every creature must be unharmed, stabilized or dead. If a creature becomes Dying or Shattered outside of an encounter, it rolls on the Dying or Shattered Table, then Initiative is rolled and that creature goes last.
+An **encounter** is a fight or a similar scene: it starts when Initiative is rolled and ends when the GM says it's over. It can't end while a creature is Dying or Shattered: each one must first stabilize, have its damage brought back below its Health Pool, or die. If a creature becomes Dying or Shattered outside of an encounter, it rolls on the Dying or Shattered Table (this is its roll for the encounter that follows), then Initiative is rolled and that creature goes last.
 
 > [!tip]
-> Sometimes, rolling Initiative when a single creature becomes Dying or Shattered and there is no obvious danger around, and an ally can stabilize them easily, is just going to slow down the game. In these non-threatening situations, feel free to roll on the Dying or Shattered Table once, and then the creature stabilizes.
+> Sometimes, rolling Initiative when a single creature becomes Dying or Shattered and there is no obvious danger around, and an ally can easily get them back up, is just going to slow down the game. In these non-threatening situations, feel free to roll on the Dying or Shattered Table once, and then the creature stabilizes.
 
 ## Initiative
 
@@ -17,7 +17,7 @@ Initiative is a **zipper**. The creatures are split into however many different 
 > [!example]
 > Victor rolls 14, Paul 13, Wes 10, Goblin Warrior 12 and Goblin Scoundrel 10. The PCs' highest result is 14 and the enemies' is 12, so the order is: Victor, Goblin Warrior, Paul, Goblin Scoundrel, Wes.
 >
-> In a three-way fight, Mark rolls 13 and Nick 9, the enemies Goblin Warrior 12 and Goblin Scoundrel 8, and a third group Kobold Mage 13 and Kobold Shaman 5. The order is Mark, Kobold Mage, Goblin Warrior, Nick, Kobold Shaman, Goblin Scoundrel.
+> In a three-way fight, Mark rolls 13 and Nick 9, the enemies Goblin Warrior 12 and Goblin Scoundrel 8, and a third group Kobold Mage 13 and Kobold Shaman 5. Mark and the Kobold Mage tie at 13 and the PC goes first (see Ties, below): the order is Mark, Kobold Mage, Goblin Warrior, Nick, Kobold Shaman, Goblin Scoundrel.
 
 **Ties** are broken by the higher Attribute Modifier used for the Initiative roll. If they are still tied, the Friendly creature (a PC or an ally of the PCs) goes first.
 
@@ -32,7 +32,7 @@ Some abilities happen **at the start of an encounter**, such as the Paladin's [[
 
 On your turn, if you haven't taken any Actions yet and aren't Down, you can spend **1 AP** to swap places in the turn order with an ally who hasn't had a turn this round. The ally takes the turn now, at your place in the order, and gains its AP as normal.
 
-You act at the ally's old place. Until then, your remaining Actions are **frozen**: you can't use them. When your new turn arrives, you carry on with the AP you had left instead of gaining new AP. You can't swap again that round.
+You act at the ally's old place. Until then, the AP you had left are **frozen**: they pay for nothing, not even a Reaction (your Reaction Point still can). When your new turn arrives, you carry on with those AP instead of gaining new AP, and none of them becomes Guard. You can't swap again that round.
 
 > [!example]
 > PC1 (first in the order) swaps with PC3 and keeps 3 AP. The order becomes PC3, NPC1, PC2, NPC2, PC1. When PC1's turn comes, PC1 has 3 AP.
@@ -45,15 +45,14 @@ A **turn-cycle** is the period from the start of a creature's turn to the start 
 
 ## Action Points
 
-At the start of your turn in combat, you **regain AP**: you lose any AP you didn't use and gain **4 Action Points (AP)** and **1 Reaction Point (RP)**. You spend AP to do things on your turn. The Reaction Point pays only for [[Reactions]], on your turn or another creature's.
+At the start of your turn in combat, you **regain AP**: you lose any AP you didn't use and gain **4 Action Points (AP)** and **1 Reaction Point (RP)**. You spend AP to do things on your turn. The Reaction Point pays for [[Reactions]], on your turn or another creature's, and for the few cards that say you spend it (the Paladin's Smite, the Archer's Steady Draw).
 
 ### Unspent AP
 
-If you end your turn without spending all your AP, you keep the rest until your next turn starts: nothing else happens then, and those AP can still pay for [[Reactions]]. When you regain AP at the start of your next turn, each AP you still had unused gives you **[[Guard]]** for 1 round: **2** per AP at Stages 0 and 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
+If you end your turn without spending all your AP, you keep the rest until your next turn starts: nothing else happens then, and those AP can still pay for [[Reactions]]. When you regain AP at the start of your next turn, each AP you still had unused gives you **[[Guard]]** until you regain AP at the start of your next turn: **2** per AP at Stages 0 and 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
 
-- This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends 1 round later, when you regain AP again. Damage takes it before your other Guard.
-- A kept AP you spend on a Reaction is one AP less when your turn starts, so it gives no Guard.
-- Your Reaction Point never becomes Guard, and your first turn of an encounter has no unused AP.
+- This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends when you regain AP again. Damage takes it before your other Guard.
+- Your Reaction Point never becomes Guard.
 - An NPC gains no Guard from unspent AP (see [[NPC Reactions]]).
 
 > [!example]
@@ -70,24 +69,24 @@ When something gives or takes Action Points, it says whether it happens **now** 
 
 A **Reaction** is an Action you use in response to something another creature does. Its card has an **Interrupt** or a **Trigger** line that says what it responds to, and which of the two it is decides when it happens. Its cost is written with an R, such as **1R**: it uses that many Action Points, but only as a response. A **0R** Reaction uses no AP; its Frequency still limits it.
 
-- **Paying:** A Reaction is paid with your **Reaction Point**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction Point and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction Point lasts until you regain AP at the start of your next turn. A feature can give you a second Reaction Point: it follows the same rules, and the feature says what it can pay for.
+- **Paying:** A Reaction is paid with your **Reaction Point**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction Point and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction Point lasts until you regain AP at the start of your next turn.
 - **No Reaction by default:** No creature has a Reaction of its own: every Reaction comes from a class, an item or a creature's entry. Moving away from an enemy doesn't let it attack you, unless it has a Reaction that says so.
-- **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it. An Interrupt on a creature that **would damage** someone happens once the triggering Action's roll is made and its damage is known, before that damage is dealt: the Reaction can't change that roll.
-- **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
+- **Interrupt:** An Interrupt happens **before** the moment it names: "Interrupt: The target would enter a square adjacent to you" happens before the creature enters that square. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it. An Interrupt on a creature that **would damage** someone happens once the triggering Action's roll is made and its damage is known, before that damage is dealt: the Reaction can't change that roll.
+- **Trigger:** A Trigger happens **after** the moment it names, which can be in the middle of an Action: "Trigger: The target moves away from you" happens after the first square that takes it farther, while it is still moving; "Trigger: A creature deals damage to you" happens after you take that damage.
 - **Interrupts before Triggers:** When an Interrupt and a Trigger respond to the same Action, every Interrupt resolves before any Trigger.
 - **Once per triggering Action:** You can react only once to the same Action, but several creatures can react to it. Some Actions, mainly Move Actions, can happen throughout different squares. It is still a single Action, and you decide when you take the Reaction: for instance, you can wait for the creature to move into a more advantageous position before taking your Reaction, instead of taking it as soon as the creature moves.
 - **Multiple creatures reacting to the same trigger, at the same time:** You must decide to react before making the rolls: when a creature triggers a Reaction from several creatures, they all decide whether they will react before making any rolls. The creatures taking the Reactions decide the order; if they are opposed, the GM decides or asks for a simple Check to decide who goes first, similar to how Initiative is rolled. If the triggering creature becomes an invalid target after a creature reacts (such as being killed), the remaining creatures still lose the AP as if they had used the Reaction.
 - **On any turn:** A Reaction can happen during any turn, including your own: if another creature's Action moves them away from you during your turn, you can react to that.
 - You can't use an Action outside your turn unless it is a Reaction.
 
+> [!tip]
+> You don't need to move one square at a time: make the full movement and let the reacting creature say where along it the Reaction happens. If the Reaction disrupts the movement, move the token back to that square.
+
 ### What a Reaction Responds To
 
-An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action; an enemy would enter a square adjacent to you or to an ally; an enemy moves closer to you (see [[Moving Closer]]); a creature would be moved by [[Forced Movement]], or would fall Prone; a creature moves away from you (see [[Moving Away]]); a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or enters a square from which it Flanks you. A card can name another moment, as long as the rules define when it happens: "ends a Move Action" is not one.
+An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action.
 
-While the name "triggering" is similar to "Trigger", it isn't only for Trigger Reactions: it also applies to Interrupt Reactions. The **triggering creature** is the creature who caused the Reaction to happen; the **triggering Action** is the Action that caused the Reaction to happen, and so on.
-
-> [!tip]
-> The clarification above might make you think you need to move one square at a time during a game, but this slows the game down a lot. You can just make the full movement and let the creature reacting decide when it happens during the movement. You might need to move the token back to where the Reaction happened if the movement is disrupted (see below), but that doesn't happen often. Doing it this way removes the suspense of "When will this creature start moving? Should I use my Reaction now, or wait and see if it moves into a more favorable position, with the chance that it stops moving before I react?" The table should decide how to run it.
+"Triggering" is used for both kinds of Reaction: an Interrupt has a triggering creature and a triggering Action too.
 
 ### A Reaction's Target
 
@@ -112,19 +111,19 @@ A feature that says "when..." waits for a moment: you must perceive the creature
 
 When an Action is **disrupted**, it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical.
 
-An Interrupt disrupts the Action before it happens. For example, a Reaction with "Interrupt: A creature uses a Move Action" triggers when a creature uses an Action that Stands and then Advances (1 AP): the creature doesn't Stand, and the whole Action is disrupted (because you can't Advance while Prone).
+A Reaction disrupts an Action only when its card says so. When an Interrupt does, the Action never starts and nothing of it happens. When a Trigger does, the Action stops where it is (see below).
 
-A Trigger that names a Move Action fires at any point during the Move Action (after the first square it moves), but it is a single trigger: you can use the Reaction only once per Move Action, even with AP to spare. If the Action does something before moving (Stand, then Advance), the Stand happens first; the Trigger fires during the Advance.
+A Trigger that names a Move Action fires at any point during the Move Action (after the first square it moves), but it is a single trigger: you can use the Reaction only once per Move Action, even with AP to spare.
 
 When the disrupted Action is only a Linked Action, the Action stops only if that part is necessary for it. What already happened stays, and a disrupted movement ends in the square the creature was in. For example, a Charge disrupted before the creature has moved the 3 squares it needs is cancelled, and they make no Basic Attack. If it is disrupted after those 3 squares, the Charge ends there, and they make the Basic Attack if there is a valid target.
 
 ### Moving Closer
 
-A creature **moves closer to you** when the distance between you, counted in squares (every second diagonal counts as 2, as always), is smaller after their movement than before. An Interrupt checks this before the creature enters the square; a Trigger checks it if the creature entered any square nearer to you during the movement. The creature moves closer when it would enter a square that is nearer to you than the square it came from. A step to the side that leaves the distance the same is not closer. Evade, Forced Movement and Reposition don't trigger Reactions, so a Reaction to a creature moving closer can't react to any of them.
+A creature **moves closer to you** when it enters a square that is nearer to you than the square it came from, counted in squares (every second diagonal counts as 2, as always). An Interrupt checks this before the creature enters the square; a Trigger checks it if the creature entered any square nearer to you during the movement. A step to the side that leaves the distance the same is not closer. Evade, Forced Movement and Reposition don't trigger Reactions from movement, so they are never moving closer or moving away.
 
 ### Moving Away
 
-A creature **moves away from you** when the distance between you, counted the same way, is larger after their movement than before. Everything else mirrors [[Moving Closer]]:
+A creature **moves away from you** when it enters a square that is farther from you than the square it came from, counted in squares (every second diagonal counts as 2, as always). Everything else mirrors [[Moving Closer]]:
 
 - An Interrupt checks before the creature enters the farther square; a Trigger checks whether it entered any square farther from you during the movement.
 - A step that leaves the distance the same is neither closer nor away.
@@ -132,17 +131,14 @@ A creature **moves away from you** when the distance between you, counted the sa
 - For a creature larger than one square, count from its nearest square to your nearest square.
 - "Within 3 squares of you" on such a Reaction is checked in the square the creature is in when you take the Reaction.
 - If the movement is disrupted, it ends in the square the creature was in when the Reaction was taken.
-- Evade, Forced Movement and Reposition don't trigger Reactions, so they are never "moving away".
 
 @@DIAGRAM:movingaway@@
 
 ## Actions
 
-An Action is something you spend AP on. Every Action is written as a card; see [[Reading an Action]].
+An Action is something a creature does in a fight. Most cost AP. Every Action is written as a card; see [[Reading an Action]].
 
 Actions that roll have three tiers.
-
-Whenever an Action is mentioned in the rules, its **traits** appear next to it. For example, in "You must use 1 AP [Move] to get up from Prone," Move is a [[Chapter 7: Traits|trait]].
 
 ### Setup
 
@@ -164,7 +160,7 @@ Some Actions target a **willing** creature, and some rules change for an **unwil
 
 ### Requirements
 
-Some Actions have **Requirements**, written under the Frequency line (and above the Interrupt or Trigger of a Reaction). To use the Action, you must meet them; otherwise you can't use it at all. They are checked when you start to use the Action, before you pay its cost and before any Setup. Charge requires at least Speed 3: with Speed 2, you can't Charge, and a Speed bonus that the Charge itself gives doesn't count toward it.
+Some Actions have a **Requirement** line, the first of the card's labeled lines. To use the Action, you must meet them; otherwise you can't use it at all. They are checked when you start to use the Action, before you pay its cost and before any Setup. Charge requires at least Speed 3: with Speed 2, you can't Charge, and a Speed bonus that the Charge itself gives doesn't count toward it.
 
 ### 0 AP Actions
 
@@ -178,17 +174,17 @@ An Action that another Action lets you use as part of it is a **Linked Action**.
 - It keeps its traits and requirements, unless the Action says otherwise: you must still be able to use it. If an Action lets you Evade (a Linked Action) while you are Immobilized, you can't.
 - It affects the target of the original Action, unless it says otherwise. If the original Action doesn't list a target, you can choose the target per Linked Action.
 - It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or At-will Banes, unless the Action says otherwise (a Charge's Basic Attack counts toward At-will Banes).
-- If it isn't optional and you can't make it, the whole Action is **[[Disrupting Actions|disrupted]]**, except for a movement (below). A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Basic Attack (1A) and Advance 5 again").
+- If it is required and you can't make it (no valid target, a requirement you don't meet), the Action stops there: that Linked Action and everything after it don't happen, what already happened stays, and the cost is still paid. An optional one you can't make is skipped, and the Action goes on. A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Basic Attack (1A) and Advance 5 again").
 - **A movement you can't make.** When an Action has you move ("You Evade 2") and you can't (you are Immobilized or Prone, or no square is open to you), you move 0 squares and the rest of the Action happens. If the Action says you **must** move ("you must Evade 2 first"), the movement is necessary: the whole Action is disrupted.
 
-If a Linked Action has no valid target, the rest of the Action is disrupted (that Linked Action and anything after it don't happen); what already happened stays. By default, you can't change the target of a Linked Action. For example, if a player asks to change the target from a creature to an object so they can continue the Action, the GM should probably accept it only if it makes sense, such as attacking a door on the way, and not "attacking the ground".
+By default, you can't change the target of a Linked Action. For example, if a player asks to change the target from a creature to an object so they can continue the Action, the GM should probably accept it only if it makes sense, such as attacking a door on the way, and not "attacking the ground".
 
 > [!example]
-> A card lets an ally make a Basic Attack (1A) as part of it. On that ally's own turn they can still use Basic Attack as its own Action, and that first use has no At-will Bane.
+> A card lets you make a Basic Attack (1A) as part of it. If you then use Basic Attack as its own Action in the same turn, that is your first use: no At-will Bane.
 
 ### Targets of Effects
 
-Unless something says otherwise, the effects of an Action, and the Actions it lets you use (Linked Actions), affect the **target of the Action**. Remember, if the Action doesn't have a target, you choose who to target on each individual Linked Action. If you use Shove on an enemy, the enemy is the one who is Pushed.
+Unless something says otherwise, the effects of an Action, and the Actions it lets you use (Linked Actions), affect the **target of the Action**. If you use Shove on an enemy, the enemy is the one who is Pushed.
 
 **Line of Effect, always.** Whatever a card or a feature does to a creature (damages it, moves it, heals it, gives it a condition, Guard, a Boon or a Bane, or lets it act), you need [[Line of Effect]] to that creature at that moment, whether the creature is on the Target line or named in the text. In an Area, the line is from the Point of Origin. A creature you have no Line of Effect to isn't affected; the rest of the card still happens. A card that works without it says so: "(no Line of Effect needed)".
 
@@ -196,25 +192,16 @@ An effect on one creature that others gain or lose from (Vulnerable, Taunted, a 
 
 ### Effect Timing
 
-Every line of a card says when it happens (see [[Reading an Action]]):
+Every line of a card says when it happens (see [[Reading an Action]]). Two cases need more:
 
-- A **Tier** line happens only on that Tier. A line for two Tiers says so: "Tier 1 or 2". A Tier that isn't written does nothing.
-- An **Effect** line happens whenever the card is used, whatever the roll. Before the roll's line, it happens before the roll; after the Tiers, after them.
-- Actions with no roll have no Tiers: their Effect simply happens.
 - A **Bloodied** or **Strained** line happens only against a target that is [[Bloodied]] or [[Strained]]. **Where it is written decides when it counts:** above the Tiers, the target must already be Bloodied (Strained) when the Action is used; after the Tiers, it counts too if this Action's damage makes the target Bloodied (Strained). Like an Effect line, it happens whatever the roll unless it names the Tiers it needs ("on a Tier 2 or 3, ...").
-- A **Critical** line happens on a [[Critical]] (written under Tier 3).
 
 Inside a Tier's line, the damage is written first and applied first; what follows the semicolon happens after the damage is applied ("[V] 1[W] + [Mod]; Prone").
 
-Some cards mark an effect for some Tiers only, with the Tiers in parentheses: "Immobilized (T3)" is only Immobilized on a Tier 3 result, and "(T2/T3)" is Tier 2 or Tier 3.
-
 ### Buffs
 
-A **Buff** is an effect that modifies another Action, such as the 2 Boons that Feint's Tier 2 gives your next [Strike] Action against its target.
+A **Buff** is an effect that modifies another Action, such as the 2 Boons that Feint's Tier 2 gives your next [Strike] Action against its target. A Buff that harms the Action it modifies is a Debuff.
 
-- A Buff that gives a single value ("+[R] 1d6 Co") applies on every Tier, Tier 1 included.
-- A Buff that gives a value per Tier ("+[R] 1d4/1d6/1d8 Co") applies its Tier 1 value on a Tier 1, its Tier 2 value on a Tier 2 and its Tier 3 value on a Tier 3.
-- A Buff that only applies from Tier 2 onward is written with a 0 on Tier 1: "+[R] 0/1d6/1d8 Co".
 - On an Action with several targets, a Buff or a Debuff is rolled once per Tier, not per creature (see [[Several Targets]]).
 
 **Raising Defenses.** "+1 Defense" raises **every** Defense of the creature: Armor Defense, Ward Defense and every Attribute DC. "+1 AD", "+1 WD" or "+1 Body DC" raises only that one. A feature can narrow it further, such as "+1 Defense vs Actions that Push". These bonuses don't add up with each other (see [[Stacking]]).
@@ -228,8 +215,8 @@ Five things do add up:
 - An effect that says it **increases** a value: "increase your Slowed value by 1" adds to the Slowed you have.
 - **Boons and Banes**, up to the limit of their name (see [[Named Boons and Banes]]).
 - **Named bonuses.** A bonus to a value such as a Defense or a Speed can have a name, as Boons and Banes do: Field, Pressure or Support. Bonuses with different names add up; with the same name, only the highest counts. An unnamed bonus never adds to another bonus: it counts only when it is higher than the named ones together.
-- An effect that **increases** your [[Slowed]] value (being Desperate, Dying or Shattered).
 - The **Guard** your [[Unspent AP]] give you: it adds to the Guard you have.
+- **Damage reductions** from different effects (see [[Guard]]).
 
 For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus to Armor Defense: his Armor Defense rises by 2. A second +1 Support bonus changes nothing, and an unnamed +1 bonus doesn't add to them either: he keeps +2.
 
@@ -242,7 +229,7 @@ For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus 
 
 ### Frequency
 
-Some Actions have a **Frequency**, written in the title bar of the card, such as **At-will**, **Turn** (once per turn), **Round** (once per round), **Encounter** (once per encounter) or **Daily** (once per [[Sleep]]). Actions with no Frequency can be used as often as you have AP.
+Every Action has a **Frequency**, written in the title bar of its card, such as **At-will**, **Turn** (once per turn), **Round** (once per round), **Encounter** (once per encounter) or **Daily** (once per [[Sleep]]).
 
 Some traits can change the Frequency or expand the Frequency rules, such as the Strike trait, which limits you to a maximum of three Strikes per turn (see [[Strike|Chapter 7]]).
 
@@ -250,9 +237,9 @@ Some traits can change the Frequency or expand the Frequency rules, such as the 
 
 An **At-will** Action can be used any number of times, but each use after the first in a turn adds **1 Bane** to the roll. For example, if you use Basic Attack three times in one turn, the first roll is normal, the second has 1 Bane, and the third has 2 Banes. This doesn't apply to Linked Actions.
 
-Each use after the first in a turn adds 1 Bane per specific At-will Action. Different At-will Actions each have their own first-use count, except At-will [Strike] Actions, which share one count (see [[Strike]]).
+Each At-will Action has its own count, except At-will [Strike] Actions, which share one (see [[Strike]]).
 
-On an Action with no roll, At-will has no mechanical effect: it is a stylistic default for Actions that can be used freely on your turn.
+An At-will Action with no roll has no Bane to take: use it as often as you can pay for it.
 
 #### Turn
 
@@ -260,7 +247,7 @@ A **Turn** Action can be used once per turn: once on your turn, and once on each
 
 #### Round
 
-A **Round** Action can be used once per turn-cycle, not once per round number: if you are at the end of the Initiative order, use a Round Action, end your turn and a new round begins, you still can't use it again until your whole turn-cycle completes. A card that says **"once a round"** or **"once each round"** means the same: once per turn-cycle.
+A **Round** Action can be used once per turn-cycle, not once per round number: a Round Reaction you use late in one round can't be used again early in the next, before your own turn has started. A card that says **"once a round"** or **"once each round"** means the same: once per turn-cycle.
 
 #### Encounter
 
@@ -276,7 +263,7 @@ An Action that rolls uses a **Modifier** and, if it targets a creature, rolls ag
 
 ### Defenses
 
-An Action against a creature rolls against one of its **Defenses**. A creature has three kinds:
+An Action against a creature rolls against one of its three **Defenses**; some Actions roll against a set DC instead:
 
 | Defense | DC |
 |---|---|
@@ -290,6 +277,8 @@ An Action against a creature rolls against one of its **Defenses**. A creature h
 
 
 ## Rounds and Durations
+
+Each position in the turn order is an **initiative slot**. Effects end at the end of an initiative slot, not of a creature: if a creature swaps initiative, an EoT effect still ends at the end of the slot the creature was in when the effect was applied.
 
 ### Until
 
@@ -305,7 +294,7 @@ When an effect gives **another creature** its next roll or its next Action ("its
 
 A **round** is one full cycle of turns. It starts with the first creature's turn and ends when the last creature ends their turn.
 
-An effect that lasts a number of rounds counts down by 1 at the end of the initiative slot in which it was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn), starting with that slot's next turn: the end of the turn in which it was applied doesn't count. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". A duration is one of these: [[End of Turn|EoT]]; a number of rounds; [[End of Encounter|EoE]] (until the encounter ends); or a condition's own end (Prone lasts until you Stand). Nothing lasts "until the start of your next turn".
+An effect that lasts a number of rounds counts down by 1 at the end of the initiative slot in which it was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn), starting with that slot's next turn: the end of the turn in which it was applied doesn't count. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". A duration is one of these: [[End of Turn|EoT]]; a number of rounds; [[End of Encounter|EoE]] (until the encounter ends); or a condition's own end (Prone lasts until you Stand). Nothing else lasts until the start of your next turn.
 
 > [!example]
 > On the first round of combat, Victor (the first creature in the turn order) causes an effect on Wes that lasts 2 rounds. The effect ends at the end of Victor's turn on the third round.
@@ -314,13 +303,11 @@ An effect that lasts a number of rounds counts down by 1 at the end of the initi
 
 When an effect lasts until the end of the turn of the affected creature, it is marked **EoT**.
 
-An EoT effect on yourself still ends at the end of the current turn. A duration in rounds is different: it does not count down at the end of the turn in which the effect was created, because it has to last a whole round.
+An EoT effect you gain on your own turn ends at the end of that turn; one you gain on another creature's turn lasts until the end of your next turn. A duration in rounds is different: it does not count down at the end of the turn in which the effect was created, because it has to last a whole round.
 
 ### End of Encounter
 
 When an effect lasts until the encounter ends, it is marked **EoE**.
-
-Each position in the turn order is an **initiative slot**. Effects end at the end of an initiative slot, not of a creature. If a creature swaps initiative, an EoT effect still ends at the end of the slot the creature was in when the effect was applied, and a duration in rounds counts down at the end of the slot in which the effect was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn).
 
 ## Escalation
 
@@ -333,7 +320,7 @@ Each position in the turn order is an **initiative slot**. Effects end at the en
 - **At most 6:** you can't have more than 6 Escalation, unless a feature says so. A Critical or a hook that happens while your Escalation is already 6 does nothing, and it isn't used up for the encounter.
 - **The end:** when the encounter ends, your Escalation goes back to 1, and the Actions that need it can't be used.
 
-An Action whose card says **Escalation N** can be used only while your Escalation is at least N; it spends nothing. Your class's **Apex** is an Encounter Action that needs **Escalation 6**; it comes at level 4, the first level of Stage 1 (see [[Escalation Abilities]]). Your Escalation also feeds your cards that grow with it, such as the Paladin's Smite.
+An Action whose card says **Escalation N** can be used only while your Escalation is at least N. Your class's **Apex** is an Encounter Action that needs **Escalation 6**; it comes at level 4, the first level of Stage 1 (see [[Escalation Abilities]]). Your Escalation also feeds your cards that grow with it, such as the Paladin's Smite.
 
 > [!example]
 > Nari's party has Momentum 1, so he starts a fight at Escalation 2. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.
@@ -346,7 +333,7 @@ An Action whose card says **Escalation N** can be used only while your Escalatio
 
 **Momentum** is the edge your party builds over an expedition: a number from **0 to 4** that the whole party shares. Each of you starts an encounter at Escalation 1 + Momentum, so at 5 at most.
 
-- **Gaining:** +1 after each encounter the party overcomes: a fight, a negotiation, a sneak, a Challenge.
+- **Gaining:** +1 after each encounter the party overcomes. Until scenes outside a fight have rules, the GM says which of them count (a negotiation, a sneak past a guard post).
 - **Losing:** -1 each time a PC goes Down, and -1 at each [[Sleep]]. If the party retreats from an encounter, it loses all of it.
 - **A [[Rest]]** clears it: you leave a Rest with Momentum 0.
 - It is never under 0 or above 4.
@@ -355,4 +342,4 @@ An Action whose card says **Escalation N** can be used only while your Escalatio
 > Jacob's party has Momentum 2 after two fights, so the third starts at Escalation 3. In it Jacob goes Down: Momentum 1. They win: Momentum 2 again. They sleep in the ruins: 1 in the morning.
 
 > [!tip]
-> The GM's valve: after a bad turn of the dice for the whole table, the GM can give every PC +1 Escalation. It is the only raise outside the rules above, and nothing spends Escalation.
+> The GM's valve: after a bad turn of the dice for the whole table, the GM can give every PC +1 Escalation. It is the only raise outside the rules above.

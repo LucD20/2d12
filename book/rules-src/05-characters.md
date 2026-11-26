@@ -95,7 +95,7 @@ Your **Attributes** set your Checks (Initiative is one), your Saves, your Defens
 
 ### Escalation Abilities
 
-An **Escalation ability** is an Action whose card says **Escalation N**: you can use it only while your Escalation is at least that number, and it spends nothing (see [[Escalation]]). Each class's **Apex** is its big Encounter Action that needs Escalation 6; you choose it at level 4.
+An **Escalation ability** is an Action whose card says **Escalation N**: you can use it only while your Escalation is at least that number (see [[Escalation]]). Each class's **Apex** is its big Encounter Action that needs Escalation 6; you choose it at level 4.
 
 > [!tbd]
 > No class has an Escalation ability at levels 1 to 3 now; the Escalation abilities of levels 2 and 4 are being redesigned.

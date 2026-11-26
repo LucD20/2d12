@@ -29,13 +29,13 @@ Every creature has a **Size**: a rank from 1 to 7, its **SR** (Size Rank), writt
 
 The side of the area a creature occupies is its rank minus 2, and at least 1. An Action can compare SR: "The target's SR is at most 1 higher than yours" means the target's rank is no more than one above yours. Any smaller creature qualifies.
 
-A creature is as tall as it is wide: one that occupies more than one square also occupies more squares height-wise, so imagine it as a cube. A Large creature (2 × 2) is 2 squares tall, and a Gargantuan one (4 × 4) is 4 squares tall. This might feel odd for some creatures, such as a horse, but the simplification is necessary for the game to work.
+A creature is as tall as it is wide: one that occupies more than one square also occupies more squares height-wise, so imagine it as a cube. A Large creature (2 × 2) is 2 squares tall, and a Gargantuan one (4 × 4) is 4 squares tall.
 
 Size doesn't change Reach by itself: a Large creature still has Reach 1. Anything that makes a creature bigger says whether its Reach changes too.
 
 ### Squeezing
 
-Creatures can normally squeeze to reach places smaller than themselves, but not to the point that wouldn't make sense. A creature can squeeze through a space one rank below theirs (a Large creature, 2 × 2, can squeeze through a gap 1 square wide), and each square they move this way counts as Difficult Terrain. If a creature stops moving while squeezing to do another Action, meaning they don't fit completely in the space they are in, all their Rolls are Doomed and they are Vulnerable equal to half their level (rounded up) until they move to a space where they fit completely. Some creatures have features that change this, like a Gargantuan (4 × 4) snake with "The snake can squeeze through 1 square", but this doesn't mean the creature can safely end its turn while squeezing: unless otherwise noted, the Doomed penalty and the Vulnerable condition above still apply.
+Creatures can normally squeeze to reach places smaller than themselves, but not to the point that wouldn't make sense. A creature can squeeze through a space one rank below theirs (a Large creature, 2 × 2, can squeeze through a gap 1 square wide), and each square they move this way counts as Difficult Terrain. While a creature stands in a space where it doesn't fit completely and is not in the middle of a movement (it stopped there to act, or ended its turn there), all its Rolls are Doomed and it is Vulnerable equal to half its level (rounded up). Some creatures have features that change this, like a Gargantuan (4 × 4) snake with "The snake can squeeze through 1 square", but this doesn't mean the creature can safely end its turn while squeezing: unless otherwise noted, the Doomed penalty and the Vulnerable condition above still apply.
 
 Forced Movement and Reposition never squeeze a creature: they stop in the last square where it fits completely (see [[Collision]]).
 
@@ -49,7 +49,7 @@ An Action that lets you move gives a distance, written "Advance 5" or "Evade 2".
 
 **No movement ends in another creature's square:** an Advance, an Evade, a Forced Movement or a Reposition.
 
-**Creatures in your way.** Your own movement (an Advance, an Evade, a Charge, a Crawl) **can't enter or pass through an unwilling creature's space**: an enemy holds its ground. **An ally's space** (any willing creature's) is [[Difficult Terrain]]: you can pass through it, never end in it, and it is the one Difficult Terrain an Evade can cross (at its double cost). **A Down creature** (Dying, Shattered, Unconscious or Desperate) **and a dead one** are Difficult Terrain too, whichever side they are on. Size doesn't change this. The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise (Footwork's Weave). Forced Movement and Reposition keep their own rules (see [[Collision]]).
+**Creatures in your way.** Your own movement (an Advance, an Evade, a Charge, a Crawl) **can't enter or pass through an unwilling creature's space**: an enemy holds its ground. **An ally's space** (any willing creature's) is [[Difficult Terrain]]: you can pass through it, never end in it, and it is the one Difficult Terrain an Evade can cross (at its double cost). **An Unconscious creature and a dead one** are Difficult Terrain too, whichever side they are on; a creature that is Down and still fighting holds its space like any other. Size doesn't change this. The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise. Forced Movement and Reposition keep their own rules (see [[Collision]]).
 
 **Changes to your Speed.** Apply every other change first, then halve it: with Speed 6, a −2 to your Speed and Hindered, your Speed is (6 − 2) halved = 2. Halving rounds down.
 
@@ -65,7 +65,7 @@ A Reaction that triggers on your movement can fire only once for an Advance, at 
 
 ### Evade
 
-Evade is a type of movement that doesn't trigger reactions. You can't Evade into or pass through Difficult Terrain, except an ally's space, which an Evade can cross at its double cost (it can't end there). What an Evade costs is decided by the Action that lets you Evade, such as the [[Evade|Evade Action]]. The Evade Action doesn't have the Move trait.
+Evade is a type of movement that doesn't trigger reactions. You can't Evade into or pass through Difficult Terrain (an ally's space is the one exception: see [[Movement|Creatures in your way]]). What an Evade costs is decided by the Action that lets you Evade, such as the [[Evade|Evade Action]]. The Evade Action doesn't have the Move trait.
 
 An Evade is one piece too, and nothing fits inside it: if an Action lets you Evade 3 and you Evade 1 square, the other 2 squares are lost.
 
@@ -145,7 +145,7 @@ If something blocks the way to the destination the origin chose, Collision appli
 
 Being **Pulled** is a Forced Movement, the opposite of Pushed. Pulled has a value: up to that many squares you are moved. The origin chooses the destination. Each square you are pulled into must be closer to the origin than the previous one (measured in a straight line between the centers of the squares), and the path must stay inside a cone that has its apex on you and points toward the origin.
 
-That cone is every direction less than 45° from the straight line from you to the origin: the 45° edge is not part of it. Each square counts as 1 toward the value, even when it is diagonal. A creature that is next to the origin can't be pulled any closer, so it stops there.
+That cone is measured from the square the creature starts in: every square of the path must lie less than 45° off the straight line from that square to the origin (the 45° edge is not part of it). Each square counts as 1 toward the value, even when it is diagonal. A creature that is next to the origin can't be pulled any closer, so it stops there.
 
 You can't be pulled into the origin's square. The origin can end the movement next to it, or choose its own square as the destination: then Collision applies, with the origin as the creature in the way, and both take damage for the unused squares.
 
@@ -194,7 +194,7 @@ Reposition moves a creature of your choice along a path, but it isn't Forced Mov
 - It can't pass through creatures or objects: it stops in the last legal square before one, without Collision damage. It can never make a creature end its movement inside another creature or an object.
 
 > [!example]
-> You hold a weapon with Reach 2. Dave stands next to you and a goblin next to him, in a line. Reposition 2 can't move the goblin through Dave's square, but the path can go around him, staying within your Reach: 1 square diagonally over Dave, then 1 square to the side, into the square next to you.
+> Your Reach is 2. Dave stands next to you and a goblin next to him, in a line. Reposition 2 can't move the goblin through Dave's square, but the path can go around him, staying within your Reach: 1 square diagonally over Dave, then 1 square to the side, into the square next to you.
 
 @@DIAGRAM:reposition@@
 
@@ -226,7 +226,7 @@ Some creatures are harder to move than others. Every creature has a **Steadiness
 
 ## Difficult Terrain
 
-Each square of difficult terrain counts double the squares it would normally count. The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. An ally's space, and a Down or dead creature's, is Difficult Terrain too; an unwilling creature's space blocks your movement (see [[Movement|Creatures in your way]]).
+Each square of difficult terrain counts double the squares it would normally count. The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. Creatures' spaces: see [[Movement|Creatures in your way]].
 
 @@DIAGRAM:difficult@@
 
@@ -234,7 +234,7 @@ Each square of difficult terrain counts double the squares it would normally cou
 
 **Hazardous Terrain** is any terrain that deals damage or inflicts a harmful condition on the creatures in it. The effect that creates it is marked **[HT]** in its text and declares one or more trigger patterns.
 
-**[HT]** is notation, like [W] and [Mod]: it is written in the text of the effect that creates the area, not among the Action's traits (a Basic Attack whose Tier 2 leaves caltrops is not a hazard itself). It declares its pattern(s) after a colon, such as **[HT: Entering]** or **[HT: Entering, Turn]**: "The area lasts 2 rounds [HT: Entering, Turn]." The three patterns are:
+The effect declares its pattern(s) after a colon, such as **[HT: Entering]** or **[HT: Entering, Turn]**: "The area lasts 2 rounds [HT: Entering, Turn]." The three patterns are:
 
 - **Entering:** "When a creature enters this area." A creature in the area when it appears is treated as entering it.
 - **Turn:** "When a creature ends its turn in this area."
@@ -269,8 +269,8 @@ You can't target a creature or an object beyond the distance of an Action (its R
 
 Every weapon has a **Range**, melee weapons included. An Action whose distance is **Weapon** uses the Range of the weapon you use for it. Weapon Actions have that distance unless they say otherwise.
 
-- **How it is written.** A Range is written like the ranges of ranged weapons: normal / far (1 Bane) / maximum (2 Banes). A single number is a normal range with no far or maximum range. Most melee weapons have Range 1; a lance has Range 1 / 2.
-- **Reach above 1.** Your Reach above 1 adds to every number of the Range of your melee weapons: with Reach 2, a lance attacks at 2 / 3. It doesn't change the Range of a ranged or thrown attack.
+- **How it is written.** A Range is written like the ranges of ranged weapons: normal / far (1 Bane) / maximum (2 Banes). A single number is a normal range with no far or maximum range. Most melee weapons have Range 1; a Pike has Range 3.
+- **Reach above 1.** Your Reach above 1 adds to every number of the Range of your melee weapons: with Reach 2, a Pike attacks at Range 4. It doesn't change the Range of a ranged or thrown attack.
 - **Long.** A weapon with the [[Long]] property takes 1 Field Bane against adjacent creatures. A pike with Range 3 and Long is at its best 2 or 3 squares away.
 
 ### Weapon Actions and Your Weapon
@@ -355,7 +355,7 @@ A line that only touches the end of a wall isn't blocked.
 
 ### Leaning
 
-A creature behind a wall can lean out to attack. While you are **Leaning**, you calculate cover from one of **your corners** instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level (Total → High → Medium → Low → none). A creature leaning out of Total cover becomes High cover (still targetable). Leaning lasts until the end of your turn, so Reactions can use it, and ends early when you **leave your square** (any movement: an Advance, an Evade, a Forced Movement). You can stop Leaning at any time on your turn, at no cost. You start it with the [[Lean]] Basic Action.
+A creature behind a wall can lean out to attack. While you are **Leaning**, you calculate cover from one of **your corners** instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level (Total → High → Medium → Low → none). A creature leaning out of Total cover becomes High cover (still targetable). Leaning lasts until the end of your turn and ends early when you **leave your square** (any movement: an Advance, an Evade, a Forced Movement). You can stop Leaning at any time on your turn, at no cost. You start it with the [[Lean]] Basic Action.
 
 ## Areas
 
@@ -369,7 +369,7 @@ Every area spreads from a **Point of Origin**: for an Emanation, its target (a c
 
 ### Emanation
 
-An Emanation, written with a value like **1 Emanation**, extends a number of squares around its **target**: a creature or a square. It affects every creature in its area unless the Action says otherwise. If its target is a creature, the origin decides whether that creature is affected too. For example, a creature using Ground Slam (an Emanation around itself) decides whether it is affected.
+An Emanation, written with a value like **1 Emanation**, extends a number of squares around its **target**: a creature or a square. It affects every creature in its area unless the Action says otherwise. If its target is a creature, the origin decides whether that creature is affected too. For example, a creature that slams the ground in an Emanation around itself decides whether it is affected.
 
 An Emanation around a creature extends that many squares from every square the creature occupies, so it follows the creature's Size. A 1 Emanation around a Medium (3) creature covers 3 × 3 squares (its square and the 8 around it); around a Huge (5) creature, which occupies 3 × 3, it covers 5 × 5. A **Distance** of 10 sq. means the Emanation is placed up to 10 squares from the creature using the Action; with no Distance, it is around that creature.
 
@@ -399,7 +399,7 @@ A **Line**, written with a value like **Line 10**, is a row of squares that alwa
 - **No range Banes.** The Line's value is its reach, so a weapon's far or maximum range adds no Banes inside it. Other Banes still apply: Engaged for a [Ranged] Action, Cover from walls.
 
 > [!example]
-> You use a Line 6 and aim at the square 2 squares east and 1 south of you. The segment passes exactly between two squares at the first, third and fifth steps. You choose left: the Line takes the square directly east of you, then goes 1 south for every 2 squares east, 5 squares in all (the 6th would be 7 squares away). Had you chosen right, it would start with the square diagonally southeast of you: a different shape, the same 5 squares.
+> You use a Line 6 and aim at the square 2 squares east and 1 south of you. The segment passes exactly between two squares at the first, third and fifth steps. You choose left: the Line takes the square directly east of you, then goes 1 south for every 2 squares east, 5 squares in all (the 6th would be 7 squares away). Had you chosen right, it would start with the square diagonally southeast of you: a different shape, the same number of squares.
 
 @@DIAGRAM:line1@@
 
@@ -418,7 +418,7 @@ Other areas (cones) also affect every creature in them unless the Action says ot
 
 Light affects **Sight** (see [[Senses]]): the light **where a creature is** decides how well you see it.
 
-A light source sheds **Bright light** in an Emanation of its size, and **Dim light** for the same number of squares beyond that. A torch with Bright light 4 gives Bright light in a 4 Emanation and Dim light from 5 to 8 squares away (an 8 Emanation). Lantern of Faith's Bright light 3 gives Bright light in a 3 Emanation and Dim light from 4 to 6. Beyond that, the light of the scene applies (daylight, night, a dark cave...).
+A light source sheds **Bright light** in an Emanation of its size, and **Dim light** for the same number of squares beyond that. A torch with Bright light 4 gives Bright light in a 4 Emanation and Dim light from 5 to 8 squares away (an 8 Emanation). Beyond that, the light of the scene applies (daylight, night, a dark cave...).
 
 A light has the same shape as an area: around a creature or an object it is an [[Areas|Emanation]], counted from every square it occupies, and a light placed on a corner is a [[Areas|Burst]]. So a Bright light 2 reaches the same squares as a 2 Emanation, and its Dim light works the same way with its own size.
 
@@ -445,9 +445,9 @@ You perceive creatures through your **senses**. Each sense lets you perceive som
 | Perception | Your Actions against it | Its Actions against you |
 |---|---|---|
 | **Clear** | Normal. | Normal. |
-| **Obscured** | 1 Field Bane. | 1 Field Boon, if it is Clear to you. |
-| **Hidden** | **Doomed**. | **[[Favored and Doomed Rolls\|Favored]]**. |
-| **Unsensed** | You can't target it. | **[[Favored and Doomed Rolls\|Favored]]**. |
+| **Obscured** | 1 Field Bane. | 1 Field Boon, if you are Clear to it. |
+| **Hidden** | **Doomed**. | **[[Favored and Doomed Rolls\|Favored]]**, if you are Clear or Obscured to it. |
+| **Unsensed** | You can't target it. | **[[Favored and Doomed Rolls\|Favored]]**, if you are Clear or Obscured to it. |
 
 Actions with the [[Area]] trait ignore Senses: they target the creatures in their area however well you perceive them.
 
@@ -463,7 +463,7 @@ So two creatures that are each Obscured to the other each take 1 Field Bane and 
 Every creature has **Sight** and **Hearing**:
 
 - **Sight:** You perceive creatures in Bright light as Clear and creatures in Dim light as Obscured. You can't see creatures in Darkness, or creatures you have no [[Line of Effect]] to.
-- **Hearing:** You perceive creatures that make noise within **10 squares** as Hidden, around corners and through walls, unless a **thick wall** is between you. Creatures in combat make noise, even standing in the same square on their turn. A creature can [[Hide]] to stop making noise.
+- **Hearing:** You perceive creatures that make noise within **10 squares** as Hidden, around corners and through walls, unless a **thick wall** is between you. Creatures in combat make noise, even when they don't move. A creature can [[Hide]] to stop making noise.
 
 A **thick wall** is a wall at least **1 square** thick. A thick wall usually blocks Hearing and Tremorsense; the GM can rule otherwise for a wall that carries sound (a hollow wooden wall, a pipe through stone).
 
@@ -481,7 +481,7 @@ The [[Hide]] Action makes you **Hidden** or **Unsensed** to some creatures **fro
 
 1. **It gains Sight of you without High Cover:** Hide ends against it. If you were Unsensed to it and you still have High Cover against it, you are Hidden to it instead.
 2. **It finds you:** its [[Seek]], or an ally's [[Point Out]], improves how it perceives you.
-3. **You use an Action that isn't [Subtle]:** once that Action is resolved, Hide ends against every creature, and your Senses are back to normal. Attacking from Darkness leaves you Hidden by Hearing to the creature you attacked, not Clear: its senses still decide how it perceives you.
+3. **You use an Action that isn't [Subtle]:** once that Action is resolved, Hide ends against every creature, and each perceives you with its own senses again. Attacking from Darkness leaves you Hidden by Hearing to the creature you attacked, not Clear: its senses still decide how it perceives you.
 
 > [!example]
 > Drak crouches behind a crate (High Cover) in a dark storeroom while two Goblins search for him. He uses Hide: against the first Goblin, which can't see him, he gets a Tier 2 and is Unsensed to it; against the second, which has Dark Sight and sees him over the crate, he gets a Tier 2 and is Hidden to it. He uses Sneak to reach the door. The first Goblin never sees him, so he stays Unsensed to it. The second one does: he stays Hidden to it during the movement, but at the door he has no High Cover against it, so Hide ends against it at the end of his turn. On his next turn he strikes the first Goblin with his Basic Attack: the Action isn't [Subtle], so after it Hide ends, and the Goblin perceives him with its own senses again (Hidden, by Hearing, in the dark).
@@ -504,7 +504,7 @@ Other senses work in any light, but only within their range and conditions, and 
 > [!example]
 > A Goblin with Dark Sight stands in Darkness, and Krysta, who has only Sight and Hearing, stands in Bright torchlight. Krysta can only hear the Goblin, so it is Hidden to her: her Actions against it are Doomed, and its Actions against her are Favored. The Goblin sees Krysta Clearly.
 >
-> A Snake with Lesser Heatsight attacks Krysta in the same Darkness. Krysta is warm, so the Snake perceives her as Obscured (1 Bane on its Actions), while she only hears the Snake (Hidden: Doomed against it, and the Snake is Favored against her). In Dim light, the Snake's heatsight would give it nothing more than its Sight.
+> A Snake with Lesser Heatsight attacks Krysta in the same Darkness. Krysta is warm, so the Snake perceives her as Obscured (1 Bane on its Actions), while she only hears the Snake (Hidden: Doomed against it). The Snake gains Favored against her, which is 5 Boons: less its 1 Field Bane, it rolls normally and adds 4 (see [[Five Boons or Banes]]). In Dim light, the Snake's heatsight would give it nothing more than its Sight.
 >
 > A Cave Worm with Tremorsense loses Krysta when she climbs a rope. If she is also quiet (she Hides) and it is dark, she is Unsensed: the Worm can't target her.
 >

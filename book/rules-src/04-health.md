@@ -32,13 +32,11 @@ When you have Vigor damage **equal to or more than** your Vigor, you are **[[Blo
 
 ### Instances of Damage
 
-An Action's damage can come in several **instances**: each part with its own pool and damage type is one instance. "[V] 1[W] + [Mod] + [R] 2d8 Ho" deals two: the weapon's damage with your Modifier (Vigor, the weapon's type), and 2d8 Holy (Resolve). Each [W] is its own instance (2[W] is two, see the [[Gear]] document), and extra damage from another effect is its own instance. Each target takes its own instances. Rules that count instances count them this way.
+An Action's damage can come in several **instances**: each part with its own pool and damage type is one instance. "[V] 1[W] + [Mod] + [R] 2d8 Ho" deals two: the weapon's damage with your Modifier (Vigor, the weapon's type), and 2d8 Holy (Resolve). Each [W] is its own instance (2[W] is two, see the [[Gear]] document), and extra damage from another effect is its own instance. Each target takes its own instances.
 
 ### Lethal and Nonlethal
 
-Actions deal **Lethal** damage by default. Actions with the **Nonlethal** trait deal **Nonlethal** damage by default. A Nonlethal Action can deal Lethal damage by taking a Bane, and a Lethal Action can deal Nonlethal damage by taking a Bane as well. A [[Save Actions|Save Action]] doesn't roll, so it switches the other way: every creature that makes its Save gains **1 Boon** on it.
-
-How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is in [[Roll Effects]]. Empowered, which adds a die to your damage, is in [[Chapter 8: Conditions|Conditions]].
+A Nonlethal Action can deal Lethal damage by taking a Bane, and any other Action can deal Nonlethal damage by taking a Bane as well. A [[Save Actions|Save Action]] doesn't roll, so it switches the other way: every creature that makes its Save gains **1 Boon** on it.
 
 ## Going Down
 
@@ -60,7 +58,7 @@ When an NPC goes Down, they **die** if they have more Lethal damage, or fall **U
 
 Compare your total Vigor damage to your total Resolve damage. The higher one is your **Dominant Damage**. On a tie, the creature that goes Down chooses.
 
-Dominant Damage doesn't do anything by itself, but it determines the condition you gain when you go Down. Some abilities might also make use of it. You know which Dominant Damage a creature has if you perceive them (Hidden is enough).
+You know which Dominant Damage a creature has if you perceive them (Hidden is enough).
 
 - **Vigor** is dominant: you become **Dying**.
 - **Resolve** is dominant: you become **Shattered**.
@@ -98,7 +96,7 @@ When a Rally Point is used, normally with Steel Yourself, the target removes **�
 
 If you are [[Exhausted]], use your Health Pool as if you weren't: Exhausted doesn't lower your Rally Points or the damage each one removes.
 
-While **Down** (Desperate, Dying or Shattered) or **Unconscious**, you can't use Steel Yourself. Other Actions can still let you use Rally Points, such as Lay On Hands.
+While **Down** or **Unconscious**, you can't use Steel Yourself. Other Actions can still let you use Rally Points, such as Lay On Hands.
 
 Nonlethal damage is removed like any other damage.
 
@@ -112,7 +110,7 @@ Some effects give you **Guard**, written with a value: **Guard 6**. When you tak
 
 - Damage reduction (such as Shield of Faith) applies first; Guard takes what is left. Reductions from different effects add up (Judge's and Shield of Faith's), and each applies once to an Action's damage to that creature, after [[Resistance, Weakness and Immunity|Resistance]]. **Collision damage** from the same Action's Forced Movement is that Action's damage too, but a separate instance: a reduction applies to only one of the two, chosen when the Action's own damage would be dealt: reduce it now, or wait for the Collision, which may not come (the origin may not move the target). A Reaction that triggers when an Action "would damage" a creature can be used on either, the same way.
 - Guard isn't Health: it can't be healed, and Rally Points don't restore it.
-- It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]). The exception is the Guard your [[Unspent AP]] give you: it adds to your other Guard, damage takes it first, and it lasts 1 round (from the start of your turn until you regain AP again).
+- It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]). The exception is the Guard your [[Unspent AP]] give you: it adds to your other Guard, damage takes it first, and it lasts until you regain AP again.
 - It ends at the end of the encounter.
 
 > [!example]
@@ -139,7 +137,7 @@ Completing a Sleep reduces your Exhausted value by 2.
 
 To complete a **Rest**, a character spends a day (24 hours) resting in a safe place. A Rest includes a [[Sleep]].
 
-A **safe place** is a place where you are sure you can rest safely, such as a town. The GM decides what is a safe place. Towns are almost always safe. Someone might still try to attack you while you rest and sleep, but it isn't the same as sleeping in the wilderness, where a beast could show up at any moment. A town with a lot of unrest might not be safe. The GM has the final say.
+A **safe place** is a place where you are sure you can rest safely, such as a town; the wilderness, where a beast could show up at any moment, is not one. The GM decides.
 
 When you complete a Rest, you remove all the damage you took and you regain all your Rally Points. If you have Wounds, roll a Body Check for your Body Wounds and a Mind Check for your Mind Wounds. Each check removes Wounds of its own type only (Body Check → Body Wounds; Mind Check → Mind Wounds).
 
@@ -166,9 +164,6 @@ Bloodied and Strained end as soon as healing brings that damage below the thresh
 
 Every creature knows whether a creature it perceives is Bloodied or Strained: the GM says so when an NPC becomes either.
 
-> [!tip]
-> A card's Bloodied line written **after** the Tiers rewards the blow that bloodies: the Action's own damage counts. Written **above** them, it rewards finding a target already hurt.
-
 ### Desperate
 
 You are **Down** and still fighting. You are [[Slowed]] 1, or increase your Slowed value by 1 (to a maximum of 3), while Desperate.
@@ -190,7 +185,7 @@ When you become Dying for the first time in an encounter, roll on the Dying Tabl
 |---|---|
 | **Tier 1** | Roll on the Dying Table. |
 | **Tier 2** | No effect. |
-| **Tier 3** | You stabilize: roll on the Dying Table. You are no longer Dying, but you stay Unconscious. |
+| **Tier 3** | You stabilize: you are no longer Dying, but you stay Unconscious. |
 
 **If you keep fighting,** at the end of each of your turns, make a Body Check:
 
@@ -214,37 +209,7 @@ After the check, you may choose to collapse and fall Unconscious.
 
 ### Shattered
 
-You are [[Slowed]] 1, or increase your Slowed value by 1 (to a maximum of 3), while Shattered.
-
-When you become Shattered for the first time in an encounter, roll on the Shattered Table. Then choose to **give up** or **keep fighting**. If you become Shattered again in the same encounter, don't roll: choose to give up or keep fighting.
-
-**If you give up,** you are **Unconscious**. At the end of each of your turns, make a Mind Check:
-
-| Roll | Result |
-|---|---|
-| **Tier 1** | Roll on the Shattered Table. |
-| **Tier 2** | No effect. |
-| **Tier 3** | You stabilize: roll on the Shattered Table. You are no longer Shattered, but you stay Unconscious. |
-
-**If you keep fighting,** at the end of each of your turns, make a Mind Check:
-
-| Roll | Result |
-|---|---|
-| **Tier 1** | Roll on the Shattered Table. |
-| **Tier 2** | No effect. |
-| **Tier 3** | No effect. |
-
-After this check, you may choose to stop fighting and fall Unconscious.
-
-If you take damage while you keep fighting, make a Body Check if it was Vigor damage, or a Mind Check if it was Resolve damage:
-
-| Roll | Result |
-|---|---|
-| **Tier 1** | Roll on the Shattered Table. |
-| **Tier 2** | Roll on the Shattered Table. |
-| **Tier 3** | No effect. |
-
-After the check, you may choose to give up and fall Unconscious.
+Shattered works as [[Dying]], with three changes: you roll on the Shattered Table, the Check at the end of each of your turns is a Mind Check, and collapsing is called giving up.
 
 ### Unconscious
 
@@ -253,8 +218,7 @@ After the check, you may choose to give up and fall Unconscious.
 - While Unconscious, every creature is [[Senses|Unsensed]] to you.
 - All your [[Rolls]] are **Doomed**, whatever the Attribute. The only exceptions are the Checks you roll each turn while Dying (Body) or Shattered (Mind); those are not Doomed.
 - Unless you are Down, a creature can wake you with the Interact Action (1A).
-- You can't wake up while Dying or Shattered, or while your damage is equal to or more than your Health Pool.
 - While Unconscious and not Dying nor Shattered, every hour you remove damage equal to what one of your Rally Points removes.
-- If you take damage while Down, you roll on the Dying or Shattered Table. If you weren't Dying or Shattered yet, check your Dominant Damage first and become one of them.
+- If you take damage while you are both Unconscious and Down, you roll on the Dying or Shattered Table. If you weren't Dying or Shattered yet, check your Dominant Damage first and become one of them. An NPC doesn't roll: [[NPCs Going Down]] decides again.
 
 An Unconscious creature isn't a threat, so creatures normally don't attack them, even mindless ones (some very cruel creatures might). A creature that keeps fighting while Dying or Shattered is still a threat, and is attacked like anyone else.

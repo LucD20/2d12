@@ -6,7 +6,7 @@
 | [[Modifier Damage\|**[Mod]**]] | Damage equal to the Modifier used on the roll: your Weapon Modifier on a Weapon roll, your Power Modifier on a Power roll, your Signature Modifier on a Signature roll, or your Attribute Modifier on an Attribute Action. |
 | [[Weapon Damage\|**[W]**]] | The damage of your weapon, with the weapon's damage type. |
 | [[Weapon Damage\|**[D]**]] | Your weapon's die on that Tier, rolled once more ("1[W] + 1[D]"). |
-| [[Damage Types\|**[V], [R], [C]**]] | Vigor damage, Resolve damage, or the one the origin chooses. Vigor and Resolve are the thresholds of your Health Pool, not the Body and Mind Attributes. |
+| [[Damage Types\|**[V], [R]**]] | Vigor damage or Resolve damage. |
 | [[Rules Language\|**[Trait]**]] | An Action with that trait: "a [Strike] Action". Several traits mean all of them: "[Ranged, Weapon] Actions". |
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP and can be used only on your turn. |
 | [[Reactions\|**0R**]] | A Reaction that costs no AP. |
@@ -23,11 +23,11 @@
 | [[Attribute DCs\|**Attribute DC**]] | 11 + an Attribute, named by it: Body DC, Mind DC, Appeal DC, Instinct DC. What an Attribute Action rolls against, and the DC of a Save set by an Attribute. |
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
 | [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead. |
-| [[Basic Attack\|**Basic Attack**]] | The Basic Action every PC has: a Strike with the weapon you wield ([V] [Mod] / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]). Your class adds a line to it and gives you a Power Basic attack; an NPC has its own Basic attack. A Basic attack's Critical deals 1d10! more. |
+| [[Basic Attack\|**Basic Attack**]] | The Basic Action every PC has: a Strike with the weapon you wield ([V] 1d4! / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]). Your class adds a line to it and gives you a Power Basic attack; an NPC has its own Basic attack. A Basic attack's Critical deals 1d10! more. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
 | [[Basic attacks\|**Basic attack**]] | An NPC's own attack: 1 AP, At-will. Every NPC has two by default (a melee and a ranged one, or one against each Defense), sharing one At-will count; its Tier 1 deals nothing unless its card says so. |
 | [[Blinded\|**Blinded**]] | You can't see: heard creatures are Hidden to you (Doomed against them), sight Rolls are Doomed. |
-| [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). No effect by itself: Actions and features use them. |
+| [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). Bloodied: Speed −2 (minimum 1) and Steadiness −1. Strained: you don't regain your Reaction Point. Actions and features use them too. |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
 | [[Buffs\|**Buff**]] | An effect that modifies another Action, such as the 2 Boons that Feint's Tier 2 gives your next [Strike] Action against its target. |
@@ -36,7 +36,6 @@
 | [[Checks\|**Check**]] | A roll of one Attribute Modifier against a DC (13 unless stated). |
 | [[Class Actions, Picks and the Repertoire\|**Class Actions**]] | The Actions your class gives you at level 1 (or a Hallmark Action: a choice of two). |
 | [[Senses\|**Clear**]] | You perceive the creature well: no penalty either way. |
-| [[Cleave\|**Cleave**]] | Deal the Modifier used as damage to creatures next to the target. |
 | [[Collision\|**Collision**]] | Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt. |
 | [[Building an encounter\|**Combat Value (CV)**]] | What an NPC counts for in an encounter: Minion 30, Grunt 50, Standard 100, Elite 200. CV 100 a PC is a normal fight. |
 | [[Corners\|**Corners**]] | You can't cut a solid corner: anything solid, such as a wall, a pillar or an object that fills a square, that reaches the corner point where four squares meet. |
@@ -146,7 +145,7 @@
 | [[The ranks\|**Rank**]] | How much an NPC counts for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and default numbers; it never moves its Defenses or Modifiers. |
 | [[Reach\|**Reach**]] | How far your body reaches: 1 square for every Species. Weapons have a Range instead. |
 | [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R (0R costs no AP). No creature has one by default. |
-| [[Action Points\|**Reaction Point (RP)**]] | The 1 point you gain at the start of your turn that pays only for Reactions (alone, or with AP you kept). It never becomes Guard. While Strained you don't regain it. |
+| [[Action Points\|**Reaction Point (RP)**]] | The 1 point you gain at the start of your turn that pays for Reactions (alone, or with AP you kept) and for the few cards that say you spend it. It never becomes Guard. While Strained you don't regain it. |
 | [[Recovery\|**Recovery**]] | The three ways to recover: a Breather, a Sleep and a Rest. |
 | [[Regrip\|**Regrip**]] | The Basic Action (1 AP, no Handle) to hold a weapon with both hands again, move it to the other hand or swap the weapons in your hands. |
 | [[Release\|**Release**]] | 0 AP: drop an object, or let go of it with one hand. |
@@ -158,7 +157,7 @@
 | [[Resistance, Weakness and Immunity\|**Resistance**]] | Resistance (subtype) N: each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0). |
 | [[Health Pool\|**Resolve, Vigor**]] | The two thresholds of your Health Pool: your class's high and low Health values (you choose which is which), your species' bonuses, and the Stage steps. |
 | [[Rest\|**Rest**]] | A day in a safe place. It includes a Sleep. |
-| [[Riders\|**Rider**]] | What follows the damage in a tier cell ("; Prone"): it happens on that Tier whatever damage is dealt (a Resistance, an Immunity, a reduction or Guard don't stop it). |
+| [[Riders\|**Rider**]] | What follows the damage on a Tier line ("; Prone"): it happens on that Tier whatever damage is dealt (a Resistance, an Immunity, a reduction or Guard don't stop it). |
 | [[An NPC's numbers\|**Role**]] | What an NPC does in a fight: a ready set of numbers and a way to play it, with no rules of its own (not rebuilt yet). |
 | [[Rolls\|**Roll**]] | Anything you roll: a Check, a Save, a Weapon, Power or Signature roll, or an Attribute Action. |
 | [[Rounds\|**Round**]] | One full cycle of turns. |

@@ -43,7 +43,7 @@ A **Move** is an Action with the Move trait.
 
 To use an Action with the Move trait, you must have a Speed of at least 1.
 
-You can't end your movement in a square with another creature (no movement can: see [[Movement]]). A creature can allow you to pass through their squares. Otherwise, passing through the squares of an unwilling creature is Difficult Terrain.
+You can't end your movement in another creature's space, and you can't enter an unwilling creature's space at all; a willing creature's space is Difficult Terrain (see [[Movement]]).
 
 ### Nonlethal
 
@@ -79,7 +79,7 @@ A Split Action has two modes, **Weapon** and **Power**, and you choose one each 
 
 ### Strike
 
-Strike is any Action that tries to hit a creature, such as an attack with a weapon or a spell. You can make at most 3 Strikes per turn. All At-will [Strike] Actions share one At-will count: your second At-will [Strike] in a turn takes 1 Bane, and your third takes 2 Banes, even if they are different Actions.
+Strike is any Action that tries to hit a creature, such as an attack with a weapon or a spell. You can make at most 3 Strikes per turn. All At-will [Strike] Actions share one At-will count: your second At-will [Strike] in a turn takes 1 Bane, and your third takes 2 Banes, even if they are different Actions. A Strike made as a Linked Action counts toward neither, unless its Action says otherwise (see [[Linked Actions]]).
 
 ### Subtle
 
