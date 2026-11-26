@@ -29,6 +29,8 @@ const DROP = {
   "B3-005": "the same finding as B1-087 (the Glossary's Bloodied, Strained row against Chapter 4)",
   "B3-007": "the same finding as B1-003 (the Glossary's Critical row against Chapter 1)",
   "B3-010": "the same finding as B1-029 (the Reaction Point pays only for Reactions; Smite and Steady Draw)",
+  "B2-011": "the same finding as B1-019 (the Basic Attack's old Tier 1 in Chapter 1's example and the Glossary)",
+  "B2-078": "the same finding as B3-015 (a thrown weapon: Gear says it leaves your hand, the Glossary and the 2026-11-19 decision say it stays)",
 };
 /** An answer another reader proposed for the same finding, added to its options. */
 const MORE = { "B1-019": ["Keep the example and write its Tier 1 as [V] 1d4!; correct the Glossary's Basic Attack row too"] };

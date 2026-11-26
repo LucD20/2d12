@@ -177,7 +177,7 @@ blockquote .src { display: block; color: var(--faint); font-size: .85rem; font-f
       var l = el("label", "opt" + (a.choice === i ? " on" : "")), r = el("input");
       r.type = "radio"; r.name = "o-" + f.id; r.id = "o-" + f.id + "-" + i; r.checked = a.choice === i;
       r.addEventListener("click", function () { setAnswer(f.id, { choice: (answers[f.id] || {}).choice === i ? null : i }); });
-      var s = el("span", "", text);
+      var s = el("span", "", plain(text));
       if (i === f.pick) { s.appendChild(document.createTextNode(" ")); s.appendChild(el("span", "pick", "(Claude's pick)")); }
       l.appendChild(r); l.appendChild(s); fs.appendChild(l);
     });

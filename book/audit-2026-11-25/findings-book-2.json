@@ -1,0 +1,2236 @@
+[
+ {
+  "id": "B2-001",
+  "file": "book/rules-src/05-characters.md",
+  "line": 4,
+  "where": "Chapter 5, Building a Character",
+  "kind": "stated-once",
+  "quote": "## Building a Character",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 83,
+    "quote": "You choose which is which when you make your character."
+   },
+   {
+    "file": "book/rules-src/13-archer.md",
+    "line": 15,
+    "quote": "5 with one Projectile weapon of your choice"
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 190,
+    "quote": "Each class has an **Armor Training**: Light, Medium or Heavy."
+   }
+  ],
+  "problem": "The seven steps leave out choices that other documents say are made when you build the character: your main hand and off hand (Gear, Hands) and, for an Archer, the weapon of the starting Mastery. Armor is reached only through a link at the end of step 7.",
+  "options": [
+   "Add a step 8: \"**Hands and gear.** Choose your main hand (see [[Hands]]), put on an armor your [[Armor Training]] allows and take your weapons (see the [[Gear]] document); a class with a starting Mastery chooses its weapon.\"",
+   "Add only the main hand, to step 4: \"Choose which hand is your main hand (see [[Hands]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-002",
+  "file": "book/rules-src/05-characters.md",
+  "line": 12,
+  "where": "Chapter 5, Building a Character, step 7",
+  "kind": "ambiguity",
+  "quote": "Weapons and armor are in the [[Gear]] document.",
+  "other": [],
+  "problem": "Nothing in the book says what a new character owns: how many weapons, which armor, whether anything has a price. One table would hand a level 1 Paladin Heavy armor and every weapon he likes; another would ask what he can afford.",
+  "options": [
+   "Add a rule: \"A new character starts with one armor their Armor Training allows and the Basic weapons they choose to carry; the GM can limit how many.\"",
+   "Add an open box: \"Starting gear and prices are not written yet: for now the GM and the player agree on a new character's weapons and armor.\"",
+   "Keep it as it is"
+  ],
+  "pick": 1,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-003",
+  "file": "book/rules-src/05-characters.md",
+  "line": 26,
+  "where": "Chapter 5, Class Actions, Picks and the Repertoire",
+  "kind": "wording-instruction",
+  "quote": "A Hallmark Action doesn't need the [[Signature]] trait: that trait only sets the Modifier an Action rolls.",
+  "other": [],
+  "problem": "The sentence guards against a misreading (that a Hallmark Action must have the Signature trait) that only someone who remembers an older name for these Actions would make. A player loses nothing without it.",
+  "options": [
+   "Cut the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-004",
+  "file": "book/rules-src/05-characters.md",
+  "line": 32,
+  "where": "Chapter 5, Class Actions, Picks and the Repertoire",
+  "kind": "stale",
+  "quote": "Its **Repertoire** is everything else it offers, listed by [[Frequency]]: **Passive** (it works on its own), **Turn**, **Round**, **Encounter** and **Daily**.",
+  "other": [
+   {
+    "file": "book/rules-src/05-characters.md",
+    "line": 32,
+    "quote": "Two classes' lists don't need to match: each offers what fits it."
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 155,
+    "quote": "Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily."
+   },
+   {
+    "file": "book/rules-src/12-paladin.md",
+    "line": 77,
+    "quote": "### Level 2: Encounter Pick"
+   }
+  ],
+  "problem": "The two class documents no longer have a Repertoire: each has one list of three Encounter Actions at level 2 and no Passive, Turn, Round or Daily list, so a Pick \"from any list\" can't happen. The paragraph's last sentence is a note about how classes are written, not a rule.",
+  "options": [
+   "Reword the paragraph: \"A class's **Class Actions** are the Actions it gives you at level 1, the Hallmark Action and the Hallmark Reaction among them. A **Pick** is one choice from a list your class gives at a level: at level 2, an Encounter Pick, one of your class's Encounter Actions.\" (the heading and the Glossary lose the word Repertoire)",
+   "Keep the word for later levels and say what exists: add \"Only the Encounter list is written so far.\" and cut the last sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-005",
+  "file": "book/rules-src/05-characters.md",
+  "line": 81,
+  "where": "Chapter 5, Distinct Choices",
+  "kind": "other",
+  "quote": "you can't pick an Attribute you already picked from another of its choices",
+  "other": [
+   {
+    "file": "book/rules-src/12-paladin.md",
+    "line": 9,
+    "quote": "Body or Appeal +1, Mind or Instinct +1"
+   },
+   {
+    "file": "book/rules-src/13-archer.md",
+    "line": 9,
+    "quote": "Body or Instinct +1, Mind or Appeal +1"
+   },
+   {
+    "file": "book/rules-src/11-species.md",
+    "line": 8,
+    "quote": "choose two different Attributes to gain +1"
+   }
+  ],
+  "problem": "Neither class offers the same Attribute in two of its choices, so this rule (with its heading, its Glossary entry and a sentence in step 4) can't come up today. The case a table will meet is not answered: can a species' +1 and a class's +1 go to the same Attribute (a Human Paladin with Body +2)?",
+  "options": [
+   "Reword the section: \"Each of your class's Attribute increases goes to a different Attribute. A species' increase and a class's increase can go to the same Attribute.\"",
+   "Cut the section, its Glossary entry and step 4's sentence until a class needs them, and add to step 4: \"A species' increase and a class's increase can go to the same Attribute.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-006",
+  "file": "book/rules-src/05-characters.md",
+  "line": 85,
+  "where": "Chapter 5, Weapon, Power and Signature Modifiers",
+  "kind": "wording-rationale",
+  "quote": "(every class lets you: a Paladin can strike first or pray first, an Archer shoot first or harry first)",
+  "other": [],
+  "problem": "The parenthesis explains and sells the choice; the rule (\"You choose which is which\") is complete without it.",
+  "options": [
+   "Cut the parenthesis",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-007",
+  "file": "book/rules-src/05-characters.md",
+  "line": 89,
+  "where": "Chapter 5, Weapon, Power and Signature Modifiers",
+  "kind": "wording-instruction",
+  "quote": "(if they are equal, choose one)",
+  "other": [],
+  "problem": "When the two Modifiers are equal the Signature Modifier is the same number either way, and a Signature Action keeps its own traits, so the choice changes nothing. Written as a choice, it makes a player look for what it changes.",
+  "options": [
+   "Cut the parenthesis",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-008",
+  "file": "book/rules-src/05-characters.md",
+  "line": 98,
+  "where": "Chapter 5, Escalation Abilities",
+  "kind": "wording-repeat",
+  "quote": "An **Escalation ability** is an Action whose card says **Escalation N**: you can use it only while your Escalation is at least that number, and it spends nothing (see [[Escalation]]).",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 336,
+    "quote": "An Action whose card says **Escalation N** can be used only while your Escalation is at least N; it spends nothing."
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 336,
+    "quote": "Your class's **Apex** is an Encounter Action that needs **Escalation 6**; it comes at level 4"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 316,
+    "quote": "you can use it only while your Escalation is at least that number. Nothing is spent."
+   }
+  ],
+  "problem": "What a card that says Escalation N means, and what the Apex is, are written in full in Chapter 2 and again here (and in Chapter 1's Notation). Since the Escalation Passives left, this section adds only \"you choose it at level 4\", which the level table above it already shows.",
+  "options": [
+   "Reword the section to one line: \"Each class's **Apex** is chosen at level 4 (see [[Escalation]]).\" and keep its open box",
+   "Cut the section, move its open box under Escalation in Chapter 2, and drop Chapter 2's \"(see [[Escalation Abilities]])\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-009",
+  "file": "book/cards/basic-actions.json",
+  "line": 11,
+  "where": "Chapter 6, the Advance card",
+  "kind": "wording-repeat",
+  "quote": "in one piece: the movement you don't use is lost (you can't move part of it, use another Action and move the rest later)",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 60,
+    "quote": "**An Advance is one piece.** You move once, up to the distance, and stop: the movement you don't use is lost."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 62,
+    "quote": "During the Advance Action, at any one point of the movement, you can use the [[Interact|Interact Action]]"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 155,
+    "quote": "You can use it once during an Advance Action without ending the Advance (see [[Advance]])."
+   }
+  ],
+  "problem": "The Advance card states in full two rules that Chapter 3's Advance section also states in full (an Advance is one piece; one Interact fits inside it). The Interact card and the Glossary say the second one again.",
+  "options": [
+   "Shorten the card: \"You Advance up to your Speed. Once during it you can use Interact (see [[Advance]]).\"; Chapter 3 keeps the rule",
+   "Keep the card whole and cut from Chapter 3 what the card says, leaving the example and the list of where the Interact is not allowed",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-010",
+  "file": "book/cards/basic-actions.json",
+  "line": 428,
+  "where": "Chapter 6, the Aid card (also Tumble and Break Free)",
+  "kind": "contradiction",
+  "quote": "you also make an Appeal or Instinct Check against the Action DC of the Action that Daunted it",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 106,
+    "quote": "One Attribute Modifier against a DC, outside an Action"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 102,
+    "quote": "every roll is exactly one of them"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 402,
+    "quote": "\"rollLabel\": \"Check\""
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 540,
+    "quote": "make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses"
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 58,
+    "quote": "a Body or Instinct Check against the [[Action DC]] of the Action that Immobilized you"
+   }
+  ],
+  "problem": "Chapter 1 says a Check is rolled outside an Action and that every roll is exactly one kind. Aid, Tumble and Break Free are Actions whose cards call their roll a Check, so a table can't tell whether \"1 Boon on Instinct Checks\" or \"1 Boon on Instinct Actions\" helps a Break Free.",
+  "options": [
+   "The cards win. Reword Chapter 1's row: \"**Check**: one Attribute Modifier against a DC: a \"Body Check\". A card can call for one inside an Action (Break Free, Tumble, Aid): that roll is a Check, not an Attribute Action.\"",
+   "Chapter 1 wins: these rolls are Attribute Actions. Break Free's line reads \"Attack: Body or Instinct vs. Action DC\", and Aid and Tumble say \"roll Appeal or Instinct\" in place of \"make a Check\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-011",
+  "file": "book/cards/basic-actions.json",
+  "line": 380,
+  "where": "Chapter 6, the Basic Attack card, Tier 1",
+  "kind": "contradiction",
+  "quote": "[V] 1d4!",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 286,
+    "quote": "**Tier 1:** [V] [Mod]"
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 26,
+    "quote": "([V] [Mod] / 1[W] + [Mod] / 1[W] + 1[D] + [Mod])"
+   }
+  ],
+  "problem": "The Basic Attack card's Tier 1 deals [V] 1d4!, but Chapter 1's printed example of the same card and the Glossary's Basic Attack entry both still give Tier 1 as [V] [Mod] (its value before 2026-11-22).",
+  "options": [
+   "The card wins (Tier 1: [V] 1d4!): correct Chapter 1's example and the Glossary entry",
+   "Chapter 1 and the Glossary win: the card's Tier 1 goes back to [V] [Mod]",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-012",
+  "file": "book/cards/basic-actions.json",
+  "line": 380,
+  "where": "Chapter 6, the Basic Attack card, Tier 1",
+  "kind": "ambiguity",
+  "quote": "[V] 1d4!",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 169,
+    "quote": "A Tier that writes [Mod] with no [W] deals it as the weapon's damage too, with the weapon's type and subtype."
+   }
+  ],
+  "problem": "The Basic Attack's Tier 1 is a die with no [W], no [Mod] and no subtype written. Chapter 1 gives the weapon's subtype only to a Tier that writes [Mod], so one reader makes this die Slash with a sword and another gives it no subtype. It matters against Resistance and Weakness.",
+  "options": [
+   "Reword Chapter 1: \"A Tier of a Weapon Action that writes no [W] deals its damage as the weapon's damage too, with the weapon's type and subtype.\"",
+   "Say it on the card: \"Tier 1: [V] 1d4! (your weapon's subtype)\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-013",
+  "file": "book/cards/basic-actions.json",
+  "line": 375,
+  "where": "Chapter 6, the Basic Attack card, its Special line",
+  "kind": "wording-repeat",
+  "quote": "You attack with the weapon you are wielding. Basic Attack takes the Melee or Ranged trait of that weapon, and its Range.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 278,
+    "quote": "A Weapon Action takes its distance and its Melee or Ranged nature from the weapon you use for it, and from how you use it."
+   },
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 38,
+    "quote": "A Weapon Action without this trait gets it when you use a melee weapon in hand"
+   },
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 62,
+    "quote": "A Weapon Action without this trait gets it when you use a ranged weapon or throw a Thrown weapon."
+   },
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 98,
+    "quote": "A Weapon Action without them gets the one that matches the weapon you use."
+   },
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 22,
+    "quote": "A Weapon Action without this trait gets it when you use such a weapon (so a Basic Attack with a musket is a Firearm Action)."
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 98,
+    "quote": "A Weapon Action without them takes [[Weapon Actions and Your Weapon|the property of the weapon you use]]."
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 106,
+    "quote": "Firearm Actions need a Firearm, and a Weapon Action with a Firearm is a Firearm Action."
+   }
+  ],
+  "problem": "One rule (a Weapon Action takes Melee or Ranged, and its Range, from the weapon you use) is written out in eight places: Chapter 3, five trait entries of Chapter 7, twice under Properties in Gear, and as a Special line on the Basic Attack card.",
+  "options": [
+   "Keep it whole in Chapter 3 (Weapon Actions and Your Weapon) and in the Weapon trait; cut the Basic Attack's Special line and the sentence from Melee, Ranged, Firearm, Projectile and from Gear's Properties",
+   "Cut only the Basic Attack's Special line and the two sentences in Gear's Properties",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-014",
+  "file": "book/cards/basic-actions.json",
+  "line": 30,
+  "where": "Chapter 6, the Charge card",
+  "kind": "ambiguity",
+  "quote": "and stop on the first square from which the target is within your Reach",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 262,
+    "quote": "Weapons don't change your Reach: they have a [[Weapon Range|Range]] of their own"
+   }
+  ],
+  "problem": "Charge stops you where the target is within your Reach (1 square for every species), but its Basic Attack uses the weapon's Range. With a Pike (Range 3, 1 Bane against adjacent creatures) or a bow, one reader stops next to the target as written; another stops as soon as the weapon can reach.",
+  "options": [
+   "Reword: \"...and stop on the first square from which the target is within the normal Range of the weapon you attack with.\"",
+   "Reword: \"...and stop on the first square adjacent to the target.\" and add \"The Basic Attack is made with a melee weapon.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-015",
+  "file": "book/cards/basic-actions.json",
+  "line": 53,
+  "where": "Chapter 6, the Crawl card (2 AP) and the Shake Off card",
+  "kind": "other",
+  "quote": "**Requirements:** Your Speed is 5 or higher. You move 3 squares.",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 253,
+    "quote": "**Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends. **Tier 3:** the Lingering ends."
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 257,
+    "quote": "| **Requirement** | What must be true to use the card (see [[Requirements]]). |"
+   }
+  ],
+  "problem": "Two Basic Action cards don't follow the card structure Chapter 1 teaches: Crawl's 2 AP Version prints a Requirement inside its Effect line, and Shake Off prints a Save and its three Tiers inside one Effect line.",
+  "options": [
+   "Rewrite both in the structure: Crawl's 2 AP Version gets its own line \"Requirement: Your Speed is 5 or higher.\"; Shake Off gets a Save line and three Tier lines",
+   "Fix Crawl only",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-016",
+  "file": "book/cards/basic-actions.json",
+  "line": 52,
+  "where": "Chapter 6, the Crawl card (1 AP)",
+  "kind": "ambiguity",
+  "quote": "You move 1 square.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 229,
+    "quote": "Each square of difficult terrain counts double the squares it would normally count."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 439,
+    "quote": "Squares in darkness are Difficult Terrain for you."
+   }
+  ],
+  "problem": "A square of Difficult Terrain costs 2, and the 1 AP Crawl moves 1 square. Read strictly, a Prone creature can't Crawl into rubble, into Darkness or past a fallen ally at all; another table would let a creature always move its 1 square. The same question comes up for any creature whose Speed is down to 1.",
+  "options": [
+   "Add to Difficult Terrain (Chapter 3): \"A movement too short to pay for a square of Difficult Terrain can't enter it.\"",
+   "Add to Difficult Terrain (Chapter 3): \"A movement of at least 1 square can always enter one square, whatever it costs.\"",
+   "Keep it as it is"
+  ],
+  "pick": 1,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-017",
+  "file": "book/cards/basic-actions.json",
+  "line": 458,
+  "where": "Chapter 6, the Demoralize card, its Special line",
+  "kind": "ambiguity",
+  "quote": "The target is immune to your Demoralize until the end of the encounter (EoE).",
+  "other": [],
+  "problem": "The line doesn't say when the immunity starts. One reader: once you have used Demoralize on a creature, whatever the Tier, you can't try it on that creature again this encounter (this is what Foundry does). Another: only a creature it worked on (Tier 2 or 3) becomes immune.",
+  "options": [
+   "Reword: \"Special: After you use Demoralize on a creature, whatever the Tier, you can't use it on that creature again this encounter.\"",
+   "Reword: \"Special: A creature that became Vulnerable from your Demoralize can't be its target again this encounter.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-018",
+  "file": "book/cards/basic-actions.json",
+  "line": 64,
+  "where": "Chapter 6, the Evade card (both Versions)",
+  "kind": "wording-repeat",
+  "quote": ": a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost).",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 65,
+    "quote": ": a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain (an ally's space you can cross, at double cost)."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 68,
+    "quote": "Evade is a type of movement that doesn't trigger reactions."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 70,
+    "quote": "An Evade is one piece too, and nothing fits inside it"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 549,
+    "quote": "Evade 2."
+   }
+  ],
+  "problem": "Each of the Evade card's two Versions repeats, word for word, the whole rule of Evade that Chapter 3 already gives. Other cards just write the movement (Tumble: \"Evade 2.\").",
+  "options": [
+   "Cut it from both Versions: \"Evade 1.\" and \"Evade half your Speed (rounded down).\"",
+   "Say it once, above the two Versions, as a pointer: \"Special: what an Evade can't do is in [[Evade]].\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-019",
+  "file": "book/cards/basic-actions.json",
+  "line": 487,
+  "where": "Chapter 6, the Feint card, its Critical",
+  "kind": "ambiguity",
+  "quote": "The target can't use Reactions against you until the end of your turn.",
+  "other": [],
+  "problem": "\"Reactions against you\" isn't a term of the rules: a Reaction has a target and a triggering creature. One reader stops only the Reactions that target you; another stops every Reaction you set off, including one that protects the target's ally from your Strike.",
+  "options": [
+   "Reword: \"Critical: Until the end of your turn, the target can't use a Reaction for which you are the triggering creature.\"",
+   "Reword: \"Critical: The target is [[Staggered]] until the end of your turn.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-020",
+  "file": "book/cards/basic-actions.json",
+  "line": 88,
+  "where": "Chapter 6, the Fists card",
+  "kind": "other",
+  "quote": "[V] 1d6! + [Mod] Bl",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 175,
+    "quote": "Fists are used with the [[Chapter 6: Basic Actions|Fists Basic Action]], or with any Weapon Action."
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 169,
+    "quote": "your Fists count as a weapon you are wielding, alongside any other weapon you hold: a Weapon Action can use them"
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 173,
+    "quote": "[V] 0 / 2 / 1d6!"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 382,
+    "quote": "[V] 1[W] + 1[D] + [Mod]"
+   }
+  ],
+  "problem": "Gear says any Weapon Action can use your Fists, and the Basic Attack is one. With the Fists' table ([V] 0 / 2 / 1d6!) a Basic Attack deals 1d4! / 2 + [Mod] / 2d6! + [Mod]: better on Tier 1 and Tier 3 than the Fists card (1 / 2 + [Mod] / 1d6! + [Mod]) at the same cost, so the Fists card is never the right choice.",
+  "options": [
+   "The Fists card is the only way to punch. Reword Gear: \"Fists are used with the Fists Basic Action, and with a Weapon Action that isn't the Basic Attack.\"",
+   "Drop the Fists card: a punch is a Basic Attack made with the Fists (their table sets the damage)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-021",
+  "file": "book/cards/basic-actions.json",
+  "line": 112,
+  "where": "Chapter 6, the Haul and Relocate cards, their Requirement",
+  "kind": "wording-instruction",
+  "quote": "The target must remain within your Reach throughout the whole movement.",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 236,
+    "quote": "The target must remain within your Reach throughout the whole movement."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 188,
+    "quote": "**You move the creature yourself, so it stays within your Reach the whole way:**"
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 148,
+    "quote": "A creature that is next to the origin can't be pulled any closer, so it stops there."
+   }
+  ],
+  "problem": "On Haul the sentence can never matter: a creature Pulled toward you can't leave your Reach. On Relocate it repeats what a Reposition always does. On both it sits in the Requirement line, which is checked before the Action starts, not during the movement.",
+  "options": [
+   "Cut the sentence from both cards",
+   "Cut it from Haul; on Relocate move it out of the Requirement into a Special line",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-022",
+  "file": "book/cards/basic-actions.json",
+  "line": 135,
+  "where": "Chapter 6, the Haul card, its Tiers",
+  "kind": "other",
+  "quote": "Pulled 5.",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 112,
+    "quote": "Your Reach is 2 or more."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 150,
+    "quote": "then Collision applies, with the origin as the creature in the way, and both take damage for the unused squares"
+   }
+  ],
+  "problem": "Haul's target must be within your Reach, and a Pull stops when the creature is next to you. With Reach 2 (the Ogre Chieftain; no PC has more than 1) every result moves the target exactly 1 square. The larger values (up to Pulled 5) then only serve to deal Collision damage to both of you, by aiming the Pull at your own square (up to 4 each).",
+  "options": [
+   "Add a line: \"Special: You can't choose your own square as the destination.\" (the large values then only serve a very long Reach)",
+   "Say the Collision is meant: \"Special: You can pull the target into yourself: Collision applies to both of you.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-023",
+  "file": "book/rules-src/06-basic-actions.md",
+  "line": 28,
+  "where": "Chapter 6, the Heal card (its name)",
+  "kind": "ambiguity",
+  "quote": "@@CARD:Heal@@",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 97,
+    "quote": "**Heal.** When a feature says a creature **heals** a number, it removes that much damage."
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 92,
+    "quote": "To remove damage. The creature chooses which damage."
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 159,
+    "quote": "Heal and Rally Points in [[Rally Points]]"
+   }
+  ],
+  "problem": "\"Heal\" names two things: the rule word (to heal a number is to remove that much damage) and a Basic Action that heals no number but lets an ally use Rally Points. The Glossary has only the first, so a player who looks up the Action finds the other.",
+  "options": [
+   "Keep both; write the rule word in lower case everywhere (\"heal\") and add the Basic Action to the Glossary as \"Heal (Basic Action)\"",
+   "Rename the Basic Action (for example Tend)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-024",
+  "file": "book/cards/basic-actions.json",
+  "line": 572,
+  "where": "Chapter 6, the Hide card",
+  "kind": "ambiguity",
+  "quote": "Each creature that can't see you, or against which you have High Cover (no Line of Effect needed)",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 634,
+    "quote": "Senses don't change this roll: you don't need to perceive the targets, and the roll isn't Doomed against a Hidden one."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 456,
+    "quote": "Doomed if it is Hidden. If it is Unsensed, you can't target it."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 487,
+    "quote": "against the first Goblin, which can't see him, he gets a Tier 2 and is Unsensed to it"
+   }
+  ],
+  "problem": "Seek says Senses don't change its roll; Hide says nothing. In the dark, the creatures that can't see you are usually ones you only hear (Hidden to you), so by Chapter 3 your Hide roll against them is Doomed, and you can't hide at all from one you don't sense. Chapter 3's own example rolls Hide in a dark room with no penalty.",
+  "options": [
+   "Add to Hide the line Seek has: \"Special: Senses don't change this roll: you don't need to perceive the targets.\"",
+   "Senses apply to Hide. Add: \"Special: Your Senses apply: the roll is Doomed against a creature Hidden to you, and a creature Unsensed to you isn't a target.\" and correct Chapter 3's example",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-025",
+  "file": "book/cards/basic-actions.json",
+  "line": 579,
+  "where": "Chapter 6, the Hide card, Tiers 2 and 3",
+  "kind": "ambiguity",
+  "quote": "If the creature can't see you, you are Unsensed to it; if you have High Cover against it, you are Hidden to it",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 487,
+    "quote": "Drak crouches behind a crate (High Cover) in a dark storeroom"
+   }
+  ],
+  "problem": "Both halves can be true at once (behind a crate, in the dark), and the card doesn't say which result you get. Chapter 3's example gives Unsensed.",
+  "options": [
+   "Reword Tiers 2 and 3: \"If the creature can't see you, you are Unsensed to it; otherwise you are Hidden to it.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-026",
+  "file": "book/cards/basic-actions.json",
+  "line": 571,
+  "where": "Chapter 6, the Hide card, its Requirement",
+  "kind": "wording-repeat",
+  "quote": "At least one creature can't see you, or you have High Cover against it.",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 572,
+    "quote": "Each creature that can't see you, or against which you have High Cover"
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 159,
+    "quote": "An Action with no valid target can't be used."
+   }
+  ],
+  "problem": "The Requirement says again what the Target line already demands: Chapter 2 forbids using an Action that has no valid target.",
+  "options": [
+   "Cut the Requirement line",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-027",
+  "file": "book/cards/basic-actions.json",
+  "line": 151,
+  "where": "Chapter 6, the Interact card, its Special line",
+  "kind": "wording-repeat",
+  "quote": "Interact isn't [Subtle]: while you are Hidden or Unsensed, a quiet use (taking an item you carry, opening a door slowly) can be, as the GM decides (see [[Subtle]]).",
+  "other": [
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 86,
+    "quote": "[[Interact]] is not, but a quiet use while you are Hidden or Unsensed (taking an item you carry, opening a door slowly) can be Subtle: the GM decides, and can call for a Check."
+   }
+  ],
+  "problem": "The same exception is written in full on the Interact card and in the Subtle trait, with a small difference: only Chapter 7 lets the GM call for a Check.",
+  "options": [
+   "Keep it on the card, complete: \"Special: While you are Hidden or Unsensed, a quiet use (taking an item you carry, opening a door slowly) is Subtle if the GM agrees; the GM can call for a Check.\"; Chapter 7 says only \"[[Interact]] can be: see its card.\"",
+   "Keep it in Chapter 7 and cut the card's Special line",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-028",
+  "file": "book/cards/basic-actions.json",
+  "line": 167,
+  "where": "Chapter 6, the Lean card",
+  "kind": "ambiguity",
+  "quote": "you calculate cover from one of your corners instead of the center of your square",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 326,
+    "quote": "a straight line from the center of your square to **any corner of the target's space** that nothing blocks"
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 347,
+    "quote": "| 4 | Total | No Line of Effect: you can't target them |"
+   }
+  ],
+  "problem": "Leaning moves where Cover is counted from, but Line of Effect is defined from the center of your square. Standing fully behind a wall, one reader says you still have no Line of Effect, so Leaning does nothing; another says leaning out is exactly what gives you the line.",
+  "options": [
+   "Reword (on the card and in Chapter 3): \"you count Line of Effect and Cover from one of your corners instead of the center of your square\"",
+   "Reword: \"you calculate cover from one of your corners instead of the center of your square; this never gives you a Line of Effect you don't have from the center\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-029",
+  "file": "book/cards/basic-actions.json",
+  "line": 167,
+  "where": "Chapter 6, the Lean card",
+  "kind": "wording-repeat",
+  "quote": "You can stop Leaning at any time on your turn, at no cost.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 358,
+    "quote": "You can stop Leaning at any time on your turn, at no cost. You start it with the [[Lean]] Basic Action."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 358,
+    "quote": "you calculate cover from one of **your corners** instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level"
+   }
+  ],
+  "problem": "The Lean card and Chapter 3's Leaning section give the same rule in full, sentence for sentence (and the Glossary a third time).",
+  "options": [
+   "The rule stays in Chapter 3; the card says: \"You are [[Leaning]] until the end of your turn, or until you leave your square.\"",
+   "The rule stays on the card; Chapter 3 keeps only what the card lacks (the ladder Total, High, Medium, Low, none) and points to the card",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-030",
+  "file": "book/cards/basic-actions.json",
+  "line": 609,
+  "where": "Chapter 6, the Point Out card, Tiers 2 and 3",
+  "kind": "ambiguity",
+  "quote": "perceives the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to its own senses), up to what its senses and yours allow",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 601,
+    "quote": "You perceive the target better than at least one ally does."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 477,
+    "quote": "[[Point Out]] shows one you perceive to your allies"
+   }
+  ],
+  "problem": "It is unclear whether Point Out helps an ally who can't perceive the target for a reason other than Hide (too far to hear, in Darkness). One reader: no, the ally's own senses \"allow\" nothing better. Another: yes, Unsensed becomes Hidden because you showed where it is, and the Requirement is written for that case.",
+  "options": [
+   "Only against Hide. Reword: \"One ally within 10 squares who can see or hear you, and to whom the target is Hidden or Unsensed from Hide, perceives it 1 step better (Unsensed to Hidden, or Hidden back to what its own senses give).\"; the Requirement becomes \"The target is Hidden or Unsensed from Hide to at least one ally.\"",
+   "Against anything. Reword: \"One ally within 10 squares who can see or hear you perceives the target 1 step better: Unsensed becomes Hidden, whatever the reason; Hidden from Hide goes back to what its own senses give. Never better than you perceive it.\"",
+   "Keep it as it is"
+  ],
+  "pick": 1,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-031",
+  "file": "book/cards/basic-actions.json",
+  "line": 602,
+  "where": "Chapter 6, the Point Out card, its Target",
+  "kind": "other",
+  "quote": "One creature you perceive",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 572,
+    "quote": "(no Line of Effect needed)"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 632,
+    "quote": "(no Line of Effect needed)"
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 193,
+    "quote": "you need [[Line of Effect]] to that creature at that moment"
+   }
+  ],
+  "problem": "Hide and Seek say \"(no Line of Effect needed)\"; Point Out, the third Action of the same package, doesn't. By Chapter 2 you then can't point out a creature you hear behind a wall, which may not be meant.",
+  "options": [
+   "Add \"(no Line of Effect needed)\" to Point Out's Target line",
+   "Say it is meant: \"Target: One creature you perceive and have Line of Effect to\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-032",
+  "file": "book/cards/basic-actions.json",
+  "line": 603,
+  "where": "Chapter 6, the Point Out and Seek cards (their roll line prints \"vs. Instinct DC\")",
+  "kind": "contradiction",
+  "quote": "\"vs\": \"Instinct\"",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 139,
+    "quote": "An Action that rolls an Attribute against a creature rolls against that creature's DC of the same Attribute"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 633,
+    "quote": "\"vs\": \"Instinct\""
+   }
+  ],
+  "problem": "Chapter 1 says an Action that rolls an Attribute rolls against the target's DC of the same Attribute. Point Out rolls Appeal or Instinct, and Seek Instinct or Mind, always against the target's Instinct DC.",
+  "options": [
+   "The cards win. Reword Chapter 1: \"Unless its card names another DC, an Action that rolls an Attribute against a creature rolls against that creature's DC of the same Attribute.\"",
+   "Chapter 1 wins: Point Out and Seek roll \"vs. the same Attribute's DC\", as Trip does",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-033",
+  "file": "book/cards/basic-actions.json",
+  "line": 193,
+  "where": "Chapter 6, the Regrip card",
+  "kind": "wording-instruction",
+  "quote": "Regrip doesn't have the Handle trait: it doesn't need a free hand.",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 193,
+    "quote": "(your other hand must be free)"
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 92,
+    "quote": "(Regrip doesn't need a free hand)"
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 151,
+    "quote": "(1 AP, no Handle)"
+   }
+  ],
+  "problem": "The sentence says what the card is not (its trait line already shows no Handle), and it clashes with the card's own first option, which needs your other hand free.",
+  "options": [
+   "Cut the sentence, and the same parenthesis in Gear's Hands",
+   "Reword: \"Swapping the weapons in your two hands needs no free hand.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-034",
+  "file": "book/cards/basic-actions.json",
+  "line": 205,
+  "where": "Chapter 6, the Release card",
+  "kind": "ambiguity",
+  "quote": "let go of an object you hold with one hand (a two-handed weapon is then held with one hand)",
+  "other": [],
+  "problem": "\"An object you hold with one hand\" reads as an object held in one hand, which would just be dropping it. The parenthesis shows the meaning is the other one: taking one hand off an object held in both.",
+  "options": [
+   "Reword: \"You drop an object in your square, or take one hand off an object you hold with both hands (a Two-handed weapon is then held in one hand).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-035",
+  "file": "book/cards/basic-actions.json",
+  "line": 216,
+  "where": "Chapter 6, the Reload card, its Target",
+  "kind": "other",
+  "quote": "One target",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 219,
+    "quote": "You or an ally within Reach is wielding an unloaded weapon."
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 136,
+    "quote": "After the shot, you must Reload before you can use that weapon again."
+   }
+  ],
+  "problem": "The Reload card's Target line says only \"One target\"; who or what that is has to be guessed from the Requirement. \"Unloaded\" is used there without being defined (Gear only says that a Reload Shot must be followed by a Reload).",
+  "options": [
+   "Reword: \"Target: You, or one ally within Reach, holding a weapon that must be Reloaded\" and cut the Requirement line",
+   "Reword the Target only: \"Target: You or one ally\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-036",
+  "file": "book/cards/basic-actions.json",
+  "line": 214,
+  "where": "Chapter 6, the Reload card, its traits (Weapon, Handle)",
+  "kind": "ambiguity",
+  "quote": "\"traits\": [\"weapon\", \"handle\"]",
+  "other": [
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 98,
+    "quote": "A Weapon Action without them gets the one that matches the weapon you use."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 292,
+    "quote": "Using a [Ranged] Action while you are [[Engaged]] is very hard"
+   }
+  ],
+  "problem": "Reload has the Weapon trait and it rolls. A Weapon Action takes Ranged from a ranged weapon, and a [Ranged] Action's roll is Doomed while you are Engaged. So one reader says reloading a crossbow next to an enemy is Doomed; another says that rule is for shots and Reload only borrows the Weapon Modifier.",
+  "options": [
+   "Add: \"Special: Reload never takes the Melee or Ranged trait of the weapon.\"",
+   "Add: \"Special: With a ranged weapon Reload is a [Ranged] Action: its roll is Doomed while you are Engaged.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-037",
+  "file": "book/cards/basic-actions.json",
+  "line": 231,
+  "where": "Chapter 6, the Relocate card, its traits and Frequency",
+  "kind": "other",
+  "quote": "\"traits\": [\"body\", \"handle\", \"instinct\", \"strike\"]",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 232,
+    "quote": "\"frequency\": \"At-will\""
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 266,
+    "quote": "\"frequency\": \"Round\""
+   }
+  ],
+  "problem": "Shove, Trip and Haul lost the Strike trait on 2026-11-22 and are Round Actions. Relocate, the fourth Action of that kind, still has Strike and is At-will: it alone uses one of your 3 Strikes, shares the Basic Attack's At-will Banes and takes Cover Banes.",
+  "options": [
+   "Relocate follows the other three: no Strike trait, and Round",
+   "Remove only the Strike trait (it stays At-will, with its own Banes)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-038",
+  "file": "book/cards/basic-actions.json",
+  "line": 648,
+  "where": "Chapter 6, the Seek card (its two Versions)",
+  "kind": "wording-repeat",
+  "quote": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow.",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 640,
+    "quote": "You perceive the target 1 step better (Unsensed to Hidden, or Hidden from Hide back to your own senses), up to what your senses allow."
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 632,
+    "quote": "within 5 squares (1 AP) or 10 squares (2 AP)"
+   }
+  ],
+  "problem": "Seek's two Versions print the same three Tier lines twice: the only difference between 1 AP and 2 AP is the distance, which the Target line already gives.",
+  "options": [
+   "Print the Tiers once: the cost reads \"1 or 2 AP\" and the Target line keeps \"within 5 squares (1 AP) or 10 squares (2 AP)\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-039",
+  "file": "book/cards/basic-actions.json",
+  "line": 270,
+  "where": "Chapter 6, the Shove, Trip, Haul and Relocate cards, their Requirement",
+  "kind": "other",
+  "quote": "The target's Size is at most 1 larger than yours.",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 335,
+    "quote": "The target's Size is at most 1 larger than yours."
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 112,
+    "quote": "The target's SR is at most 1 higher than yours"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 236,
+    "quote": "The target's SR is at most 1 higher than yours."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 30,
+    "quote": "An Action can compare SR: \"The target's SR is at most 1 higher than yours\""
+   }
+  ],
+  "problem": "The same limit is written two ways on four cards: \"Size is at most 1 larger\" (Shove, Trip) and \"SR is at most 1 higher\" (Haul, Relocate, and Chapter 3's own wording).",
+  "options": [
+   "Use Chapter 3's wording on all four: \"The target's SR is at most 1 higher than yours.\"",
+   "Use \"The target's Size is at most 1 larger than yours.\" on all four and in Chapter 3",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-040",
+  "file": "book/cards/basic-actions.json",
+  "line": 672,
+  "where": "Chapter 6, the Sneak card, its Special line",
+  "kind": "ambiguity",
+  "quote": "This movement doesn't trigger Reactions from creatures to which you are Hidden.",
+  "other": [],
+  "problem": "The next two sentences say \"Hidden from Hide\"; this one says only \"Hidden\". One reader applies it only to creatures you hid from; another also to a creature that merely hears you in the dark.",
+  "options": [
+   "Reword: \"This movement doesn't trigger Reactions from creatures to which you are Hidden from Hide.\"",
+   "Reword: \"This movement doesn't trigger Reactions from creatures to which you are Hidden, from Hide or not.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-041",
+  "file": "book/cards/basic-actions.json",
+  "line": 540,
+  "where": "Chapter 6, the Tumble card",
+  "kind": "ambiguity",
+  "quote": "You can move through enemies' spaces (never ending in one).",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 52,
+    "quote": "**An ally's space** (any willing creature's) is [[Difficult Terrain]]"
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 68,
+    "quote": "You can't Evade into or pass through Difficult Terrain, except an ally's space"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 549,
+    "quote": "Evade 2."
+   }
+  ],
+  "problem": "The card doesn't say what an enemy's square costs. If it counts double like an ally's, the 2 AP Version (Evade 2) can never get past anyone: the enemy's square alone uses both squares. If it costs 1, an enemy is easier to cross than an ally.",
+  "options": [
+   "Add: \"An enemy's space you pass this way costs 1 square.\"",
+   "Add: \"An enemy's space is Difficult Terrain for this movement, and this Evade can cross it.\" and make the 2 AP Version \"Evade 3\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-042",
+  "file": "book/rules-src/07-traits.md",
+  "line": 4,
+  "where": "Chapter 7, opening",
+  "kind": "wording-instruction",
+  "quote": "All Actions have traits. Traits have their own rule interactions.",
+  "other": [
+   {
+    "file": "book/rules-src/13-archer.md",
+    "line": 68,
+    "quote": "@@CARD:Slip Away@@"
+   }
+  ],
+  "problem": "The first sentence isn't true (the Archer's Slip Away has no trait), and the second says nothing a player can use.",
+  "options": [
+   "Reword the opening: \"An Action's traits are the words under its Flavor. Each trait below has a rule of its own, or is a word other rules and features refer to.\"",
+   "Cut the two sentences",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-043",
+  "file": "book/rules-src/07-traits.md",
+  "line": 4,
+  "where": "Chapter 7, opening (the Divine trait has no entry)",
+  "kind": "undefined-word",
+  "quote": "Traits with no rule of their own (such as Divine) are used by other rules and features.",
+  "other": [
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 18,
+    "quote": "The Fear trait has no rules of its own. Other rules, Talents and Tags refer to it."
+   },
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 26,
+    "quote": "some features affect your ability to concentrate"
+   },
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 34,
+    "quote": "The Magical trait has no rules of its own yet; other rules, spells and features refer to it."
+   }
+  ],
+  "problem": "Divine is on ten Paladin cards and is the one keyword trait with no entry in this chapter. The three keywords that have one (Fear, Focus, Magical) each point to things the book doesn't have: Talents and Tags that refer to Fear, features that affect concentration, spells.",
+  "options": [
+   "One entry for the four: \"### Divine, Fear, Focus and Magical\" with the text \"These traits have no rules of their own. Other rules and features refer to them.\"",
+   "Add a Divine entry like the others and leave the three as they are",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-044",
+  "file": "book/rules-src/07-traits.md",
+  "line": 8,
+  "where": "Chapter 7, Area",
+  "kind": "stated-once",
+  "quote": "You need Line of Effect to the Point of Origin to place the area",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 362,
+    "quote": "how far from the creature using the Action its area can be placed"
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 328,
+    "quote": "An area effect checks Line of Effect from its **[[Areas|Point of Origin]]** to each creature in the area"
+   }
+  ],
+  "problem": "That you need Line of Effect to the spot where you place an area is said only in this trait entry. Chapter 3's Areas and Line of Effect sections, where a player looks for how to place an area, don't have it.",
+  "options": [
+   "Move the sentence to Chapter 3, Areas (after the Distance), and leave the trait a pointer",
+   "Copy it into Chapter 3 and keep it here too",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-045",
+  "file": "book/rules-src/07-traits.md",
+  "line": 8,
+  "where": "Chapter 7, Area",
+  "kind": "wording-repeat",
+  "quote": "they ignore Senses: they target creatures you perceive as Obscured, Hidden or Unsensed, with no penalty for it, and light doesn't change their roll",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 452,
+    "quote": "Actions with the [[Area]] trait ignore Senses: they target the creatures in their area however well you perceive them."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 368,
+    "quote": "[[Line of Effect]] and [[Cover]] are checked from the area's Point of Origin to each creature in it."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 390,
+    "quote": "It has no Distance: its value is how far it reaches."
+   }
+  ],
+  "problem": "Apart from one sentence (the Line of Effect you need to place the area), the Area trait's entry restates Chapter 3: an area can have a Distance, it ignores Senses, Line of Effect and Cover are checked from the Point of Origin, a Line has no Distance.",
+  "options": [
+   "Reword the entry: \"These Actions have an Area: they affect every creature in it and ignore Senses (see [[Areas]] and [[Senses]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-046",
+  "file": "book/rules-src/07-traits.md",
+  "line": 14,
+  "where": "Chapter 7, Body, Mind, Appeal and Instinct",
+  "kind": "contradiction",
+  "quote": "you roll the one with the **highest** value",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 139,
+    "quote": "an Action that lets you roll Body or Instinct rolls against the target's DC of the Attribute you rolled"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 235,
+    "quote": "\"vs\": \"Body or Instinct (the one used to roll)\""
+   }
+  ],
+  "problem": "Chapter 7 makes you roll your highest of the Attributes on the card; the cards print \"Body or Instinct\" and Chapter 1 speaks of \"the Attribute you rolled\", as if you chose. It matters: with Body +2 and Instinct +1 against a target with Body DC 14 and Instinct DC 11, the lower Attribute is the better roll.",
+  "options": [
+   "You choose. Reword: \"When an Action has more than one of these traits, you choose which of them to roll.\"",
+   "You always roll the higher. Keep Chapter 7 and reword Chapter 1: \"...rolls against the target's DC of the Attribute it rolls (your highest)\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-047",
+  "file": "book/rules-src/07-traits.md",
+  "line": 14,
+  "where": "Chapter 7, Body, Mind, Appeal and Instinct",
+  "kind": "stale",
+  "quote": "If the Action has a Vs. entry that says \"the one used to roll,\" that Attribute is also the Defense: if you roll Body, you roll against Body.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 139,
+    "quote": "[[Shove]] is Body against the target's Body DC"
+   }
+  ],
+  "problem": "No card has a \"Vs. entry\" or prints \"the one used to roll\" any more: the cards print \"vs. the same Attribute's DC\", and the Defense is called a Body DC. Chapter 1 (Attribute DCs) already gives the rule.",
+  "options": [
+   "Cut the sentence",
+   "Reword: \"A card that says \"vs. the same Attribute's DC\" rolls against the target's DC of the Attribute you rolled.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-048",
+  "file": "book/rules-src/07-traits.md",
+  "line": 22,
+  "where": "Chapter 7, Firearm and Projectile",
+  "kind": "wording-instruction",
+  "quote": "The trait and the property have one name, as Melee and Ranged do.",
+  "other": [
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 58,
+    "quote": "The trait and the property have one name, as Melee and Ranged do."
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 79,
+    "quote": "A trait and a weapon property with one name"
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 137,
+    "quote": "A trait and a weapon property with one name"
+   }
+  ],
+  "problem": "A note left from renaming these two traits: it tells how the words were chosen, not a rule. It is in both entries and in two Glossary rows.",
+  "options": [
+   "Cut it from Firearm and Projectile, and \"with one name\" from the two Glossary rows",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-049",
+  "file": "book/rules-src/07-traits.md",
+  "line": 62,
+  "where": "Chapter 7, Ranged",
+  "kind": "wording-repeat",
+  "quote": "The Action's Distance can be written like a ranged weapon's Range: normal / far / maximum, with 1 Bane at far range and 2 at maximum. A single number is a normal range only.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 272,
+    "quote": "A Range is written like the ranges of ranged weapons: normal / far (1 Bane) / maximum (2 Banes)."
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 22,
+    "quote": "the first number is the normal range, the second the far range (1 Bane) and the third the maximum range (2 Banes)"
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 292,
+    "quote": "Using a [Ranged] Action while you are [[Engaged]] is very hard"
+   }
+  ],
+  "problem": "How a range is written is explained three times (Chapter 3, this trait, Gear), while the entry leaves out what the Ranged trait is mostly looked up for: the roll is Doomed while you are Engaged.",
+  "options": [
+   "Reword the entry: \"These Actions target creatures from a distance (how a range is written: [[Weapon Range]]; shooting next to an enemy: [[Ranged Combat While Engaged]]). A [Ranged, Weapon] Action needs a ranged weapon, or a weapon with the Thrown property used thrown.\"",
+   "Cut only the two sentences on how a range is written",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-050",
+  "file": "book/rules-src/07-traits.md",
+  "line": 70,
+  "where": "Chapter 7, Self",
+  "kind": "other",
+  "quote": "An Action with the Self trait always targets you, the origin of the Action.",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 302,
+    "quote": "\"traits\": [\"move\", \"self\"]"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 398,
+    "quote": "\"traits\": [\"body\", \"instinct\", \"move\"]"
+   }
+  ],
+  "problem": "Nine Basic Actions that affect only you carry the Self trait (Advance, Stand, Lean and others), but Break Free and Tumble, which also affect only you, don't. Nothing in the rules depends on the trait unless the Action also has an Area.",
+  "options": [
+   "Keep Self only where a rule needs it (an [Area] Action centered on you) and remove it from the Basic Actions",
+   "Add Self to Break Free and Tumble",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-051",
+  "file": "book/rules-src/07-traits.md",
+  "line": 78,
+  "where": "Chapter 7, Split",
+  "kind": "stale",
+  "quote": "The card shows the two modes side by side; everything else (Frequency, target, trigger, Critical) is shared.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 268,
+    "quote": "its heading is the Mode's name, followed by the traits only that Mode has"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 115,
+    "quote": "A Split Action is a Weapon roll or a Power roll, depending on the mode you choose when you use it."
+   }
+  ],
+  "problem": "No card in the book has the Split trait any more, and the entry's last sentence describes a card layout (two modes side by side) that was replaced by Modes under their own headings.",
+  "options": [
+   "Keep the trait and reword the last sentence: \"The card writes the two as Modes (see [[Reading an Action]]); everything above them is shared.\"",
+   "Set the Split trait aside until a card uses it (this entry, Chapter 1's mentions and the Glossary's)",
+   "Keep it as it is"
+  ],
+  "pick": 1,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-052",
+  "file": "book/rules-src/07-traits.md",
+  "line": 82,
+  "where": "Chapter 7, Strike",
+  "kind": "ambiguity",
+  "quote": "Strike is any Action that tries to hit a creature, such as an attack with a weapon or a spell.",
+  "other": [],
+  "problem": "Written as a description, it invites a table to argue that a Shove or a burst of holy light \"tries to hit a creature\" and so counts toward the 3 Strikes. Only the trait on the card decides. The book also has no spells.",
+  "options": [
+   "Reword: \"A Strike is an Action with the Strike trait: an attack aimed at a creature.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-053",
+  "file": "book/rules-src/07-traits.md",
+  "line": 96,
+  "where": "Chapter 7, Weapon",
+  "kind": "wording-instruction",
+  "quote": "A Weapon roll normally targets Armor. When a rule calls for a Weapon roll against a DC, use the DC instead.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 275,
+    "quote": "Every Action that rolls says so on its **Attack** line, which names the Modifier and the Defense"
+   }
+  ],
+  "problem": "Every card writes what its roll is against on its Attack line (Chapter 2, Versus), so these two sentences never decide anything.",
+  "options": [
+   "Cut the two sentences",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-054",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 4,
+  "where": "Chapter 8, opening",
+  "kind": "wording-instruction",
+  "quote": "These conditions are in alphabetical order.",
+  "other": [],
+  "problem": "It tells how the chapter is arranged; a player loses nothing without it.",
+  "options": [
+   "Cut the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-055",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 4,
+  "where": "Chapter 8, opening",
+  "kind": "other",
+  "quote": "(EoT or a number of rounds: see [[Effect Timing]])",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 308,
+    "quote": "A duration is one of these: [[End of Turn|EoT]]; a number of rounds; [[End of Encounter|EoE]] (until the encounter ends); or a condition's own end (Prone lasts until you Stand)."
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 197,
+    "quote": "### Effect Timing"
+   }
+  ],
+  "problem": "The link sends the reader to Effect Timing, which is about when the lines of a card happen. Durations (EoT, rounds, EoE) are in Chapter 2's Rounds and Durations.",
+  "options": [
+   "Reword: \"(EoT or a number of rounds: see [[Rounds and Durations]])\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-056",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 4,
+  "where": "Chapter 8, opening, Ignoring a condition",
+  "kind": "stale",
+  "quote": "**Ignoring a condition.** A creature that ignores a condition keeps it, but the condition does nothing to it; its duration still runs, and it works again when the creature stops ignoring it.",
+  "other": [],
+  "problem": "No card, feature or creature in the book lets anyone ignore a condition. The rule was written for Courage, a Mode of the Paladin's Commandment, one of the Arts removed on 2026-11-25.",
+  "options": [
+   "Cut it until a card needs it",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-057",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 4,
+  "where": "Chapter 8, opening and Prone",
+  "kind": "stated-once",
+  "quote": "a condition written with no duration lasts until the encounter ends (EoE)",
+  "other": [
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 91,
+    "quote": "- The only [Move] Actions you can use are [[Crawl|Crawl]], [[Stand|Stand]] and [[Break Free]]."
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 308,
+    "quote": "or a condition's own end (Prone lasts until you Stand)"
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 349,
+    "quote": "**A Prone or dead creature gives no cover**"
+   }
+  ],
+  "problem": "Chapter 8's Prone entry doesn't say how Prone ends (only Chapter 2 and the Stand card do), so by this sentence a Prone with no duration reads as lasting the whole encounter. The entry also leaves out that a Prone creature gives no cover, which is only in Chapter 3's Cover.",
+  "options": [
+   "Reword here: \"a condition written with no duration lasts until the encounter ends (EoE), unless its entry says how it ends\", and add to Prone: \"- Prone lasts until you [[Stand]].\" and \"- You give no cover to other creatures (see [[Cover]]).\"",
+   "Add only \"- Prone lasts until you [[Stand]].\" to Prone",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-058",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 8,
+  "where": "Chapter 8, Blinded",
+  "kind": "ambiguity",
+  "quote": "You can't see: for your Sight, everything is Darkness (see [[Senses]]).",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 494,
+    "quote": "- **Dark Sight:** For your Sight, Dim light and Darkness count as Bright."
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 8,
+    "quote": "Every square is [[Difficult Terrain]] for you, as Darkness is for a creature that can't see in it: you move by feel."
+   }
+  ],
+  "problem": "Blinded is defined as \"everything is Darkness\", then four sentences repeat what Darkness already does. The definition also has a hole: for a creature with Dark Sight, Darkness counts as Bright, so one reader says Blinded does nothing to it.",
+  "options": [
+   "Reword the entry: \"Your Sight perceives nothing, and no Sight Sense helps: you perceive creatures only with your other senses (see [[Senses]]). Every square is [[Difficult Terrain]] for you. Any Roll that needs sight is Doomed.\"",
+   "Add only: \"A Sight Sense doesn't help a Blinded creature.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-059",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 16,
+  "where": "Chapter 8, Dazed",
+  "kind": "other",
+  "quote": "Dazed is the condition that takes AP now; [[Slowed]] takes them on your next turn.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 66,
+    "quote": "if they have none, it has no effect"
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 67,
+    "quote": "Changes to the AP you regain at the start of your turn are the [[Slowed]] and [[Quickened]] conditions"
+   }
+  ],
+  "problem": "The book has two ways to take AP at once, and they differ: Chapter 2's \"the target loses 1 AP\" does nothing to a creature with no AP, while Dazed 1 takes the missing AP from its next turn. Chapter 2 never mentions Dazed, and no card gives it.",
+  "options": [
+   "Keep both and name both in Chapter 2: add \"A card that wants the loss to carry over to the next turn writes [[Dazed]].\"",
+   "One way only: cut Dazed; cards write \"loses N AP\"",
+   "One way only: cut \"loses N AP\" from Chapter 2; cards write Dazed N",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-060",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 21,
+  "where": "Chapter 8, Empowered",
+  "kind": "contradiction",
+  "quote": "you choose it before the creatures roll their Saves; if that creature then takes no damage, the die is lost",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 225,
+    "quote": "its 1d6! goes to one creature it damages (see [[Empowered]])"
+   }
+  ],
+  "problem": "For a Save Action, Chapter 8 makes you name the creature before the Saves, and the die is lost if that creature takes no damage. Chapter 1 says the die goes to one creature the Action damages, which reads as chosen afterwards and never lost.",
+  "options": [
+   "Chapter 8 wins. Reword Chapter 1: \"its 1d6! goes to the one creature it chose before the Saves (see [[Empowered]])\"",
+   "Chapter 1 wins. Reword Chapter 8: \"For a Save Action, you choose after the Saves, among the creatures that take damage.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-061",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 21,
+  "where": "Chapter 8, Empowered",
+  "kind": "ambiguity",
+  "quote": "The die deals the same kind of damage as the Action (its pool and its type).",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 45,
+    "quote": "choose one of the damage types the Action deals, with its pool and subtype"
+   }
+  ],
+  "problem": "An Action can deal two damages (the Paladin's Binding Light: Vigor of the weapon's subtype and Resolve Holy). The Critical's extra die lets you choose which of them it follows; the Empowered die doesn't say.",
+  "options": [
+   "Reword: \"The die deals one of the damages the Action deals, your choice before you roll it: its pool and its subtype.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-062",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 46,
+  "where": "Chapter 8, Grabbed and Immobilized",
+  "kind": "wording-repeat",
+  "quote": "(1 AP [Move]: a Body or Instinct Check against the [[Action DC]] of the Action that grabbed you)",
+  "other": [
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 58,
+    "quote": "(1 AP [Move]: a Body or Instinct Check against the [[Action DC]] of the Action that Immobilized you)"
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 405,
+    "quote": "You are no longer Immobilized, and no longer Grabbed if you were."
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 46,
+    "quote": "when the holder goes Down or is Unconscious"
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 4,
+    "quote": "**It ends when its source goes Down or is Unconscious**"
+   }
+  ],
+  "problem": "What Break Free costs and rolls is on its card, and is written out again inside Grabbed and inside Immobilized (and in two Glossary rows). Grabbed also repeats the opening paragraph's rule that a condition ends when its source goes Down.",
+  "options": [
+   "Reword both to a pointer. Grabbed: \"...or when you [[Break Free]].\" (and drop \"when the holder goes Down or is Unconscious\"). Immobilized: \"you can remove Immobilized with [[Break Free]], the one Move Action you can use while Immobilized.\"",
+   "Cut only the parenthesis in Grabbed",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-063",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 60,
+  "where": "Chapter 8, Immobilized",
+  "kind": "ambiguity",
+  "quote": "is automatically disrupted: you aren't moved",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 113,
+    "quote": "When an Action is **disrupted**, it doesn't happen, and the resources and AP spent on it are wasted."
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 65,
+    "quote": "The rest of the Action works as usual."
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 65,
+    "quote": "A Save Action doesn't roll, but it always has a Modifier"
+   }
+  ],
+  "problem": "\"Disrupted\" is a defined word: the whole Action doesn't happen. Here it seems to mean only that the movement fails. With an Immobilized ally, does the Paladin's Bulwark of Faith (Guard, then Slid 1, no roll) still give its Guard? One reader says yes; another says the whole Reaction is lost.",
+  "options": [
+   "Only the movement fails. Reword: \"A Forced Movement or a Reposition that comes with no roll doesn't move you; the rest of the Action or effect happens.\"",
+   "The whole Action is lost. Reword: \"...and doesn't roll is disrupted (see [[Disrupting Actions]]): nothing of it happens.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-064",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 65,
+  "where": "Chapter 8, Immobilized",
+  "kind": "wording-repeat",
+  "quote": "(11 + the Modifier that Action used; 13 with no Action behind it; the highest if there are several)",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 135,
+    "quote": "**11 + the Modifier the Action used**"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 135,
+    "quote": "With no Action behind the effect, it is 13; with several, the highest."
+   }
+  ],
+  "problem": "The parenthesis repeats the whole definition of the Action DC from Chapter 1, right after the link to it.",
+  "options": [
+   "Cut the parenthesis (the link to Action DC stays)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-065",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 75,
+  "where": "Chapter 8, Imperiled",
+  "kind": "wording-rationale",
+  "quote": "This takes no Action, but you are [[Slowed]] 1 that turn (or increase your Slowed value by 1), so no condition can keep you there.",
+  "other": [
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 103,
+    "quote": "You don't lose AP when you become Slowed, only when you regain AP at the start of your next turn."
+   }
+  ],
+  "problem": "\"So no condition can keep you there\" is a reason, and it hangs on the wrong half of the sentence: it follows from \"takes no Action\", not from being Slowed. The timing is loose too: Slowed says it only bites when you next regain AP, while this means the turn that is starting.",
+  "options": [
+   "Reword: \"This takes no Action, so nothing can stop it. On that turn you regain 1 AP less, as if Slowed 1 (it adds to a Slowed value you already have).\"",
+   "Cut only \", so no condition can keep you there\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-066",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 81,
+  "where": "Chapter 8, Lingering",
+  "kind": "wording-repeat",
+  "quote": "**Tier 1:** no effect. **Tier 2:** you take half the Lingering at the end of the current turn (even when it is another creature's turn, such as an ally's who used Shake Off on you), then it ends. **Tier 3:** it ends.",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 253,
+    "quote": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes."
+   }
+  ],
+  "problem": "Lingering's second paragraph is the Shake Off card over again: who rolls, with which Attribute, against which DC, and the three Tiers.",
+  "options": [
+   "Reword the paragraph: \"The [[Shake Off]] Action can end it; its Save is against DC 13, or the DC the Lingering writes (**Lingering 1d6 (Bo/In; DC 15)**). Healing doesn't end a Lingering; the end of the encounter does. If you would gain Lingering again, keep the one with the higher average (see [[Stacking]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-067",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 99,
+  "where": "Chapter 8, Sickened (also Blinded and Dazed)",
+  "kind": "other",
+  "quote": "you can't eat, drink or swallow anything: no potions",
+  "other": [
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 6,
+    "quote": "### Blinded"
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 14,
+    "quote": "### Dazed"
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 19,
+    "quote": "### Empowered"
+   }
+  ],
+  "problem": "No card, creature or rule in the book gives Blinded, Dazed or Sickened, and nothing makes a creature Empowered (the Reload Shot only borrows its die). Sickened also forbids potions, which the book doesn't have.",
+  "options": [
+   "Keep them as a toolbox and say so in the chapter's opening: \"Some conditions are not on any card yet.\"",
+   "Set Blinded, Dazed and Sickened aside until a card gives them (Empowered stays: the Reload Shot uses its die)",
+   "Keep it as it is"
+  ],
+  "pick": 1,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-068",
+  "file": "book/rules-src/08-conditions.md",
+  "line": 117,
+  "where": "Chapter 8, Vulnerable and Pressed",
+  "kind": "wording-repeat",
+  "quote": "If you would have Vulnerable twice, only the highest value applies.",
+  "other": [
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 85,
+    "quote": "If you would be Pressed twice, only the highest value applies."
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 4,
+    "quote": "for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]])"
+   }
+  ],
+  "problem": "The chapter's opening paragraph already gives this rule for every condition with a value, with Vulnerable as its example; Vulnerable and Pressed each say it again.",
+  "options": [
+   "Cut the sentence from Vulnerable and from Pressed",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-069",
+  "file": "book/rules-src/11-species.md",
+  "line": 9,
+  "where": "Species, Human",
+  "kind": "ambiguity",
+  "quote": "- **Health:** +3 to one threshold and +2 to the other (you choose)",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 8,
+    "quote": "the choice can't be changed later"
+   },
+   {
+    "file": "book/rules-src/05-characters.md",
+    "line": 60,
+    "quote": "on a Rest you can also change your class's Attribute choices and which of its two Health values is your Vigor"
+   }
+  ],
+  "problem": "The book says a class's Health assignment is permanent, and which class choices can be changed on a Rest. It says neither for a Human's two choices (the two Attributes, and which threshold gets the +3).",
+  "options": [
+   "Add to Human: \"Both choices are made when you build the character and can't be changed later.\"",
+   "Add them to Chapter 5's optional rule: \"...and your species' choices.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B2-070",
+  "file": "book/rules-src/15-gear.md",
+  "line": 6,
+  "where": "Gear, Weapons, first sentence",
+  "kind": "wording-instruction",
+  "quote": "Your class determines your Weapon Modifier.",
+  "other": [],
+  "problem": "A stray opening sentence: nothing that follows uses it, and it is no longer exact (you choose which of your class's two values is your Weapon Modifier).",
+  "options": [
+   "Cut the sentence",
+   "Reword: \"Weapon Actions roll your Weapon Modifier (see [[Weapon, Power and Signature Modifiers]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-071",
+  "file": "book/rules-src/15-gear.md",
+  "line": 13,
+  "where": "Gear, Weapon Damage [W] and the weapon tables",
+  "kind": "other",
+  "quote": "A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals.",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 33,
+    "quote": "| Name | Group | Properties | Type | Range | Damage | Rung |"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 175,
+    "quote": "All damage a creature takes is either **Vigor damage** (wounds, bruises, broken bones) or **Resolve damage** (fear, pain, despair)"
+   },
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 35,
+    "quote": "each part with its own pool and damage type is one instance"
+   },
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 21,
+    "quote": "(its pool and its type)"
+   }
+  ],
+  "problem": "\"Type\" means two things. Chapter 1 defines the damage types as Vigor and Resolve, and this sentence follows it; but the weapon tables' Type column holds Slash, Pierce and Blunt (the subtypes), and Chapter 4 and Empowered say \"pool and type\" where type is the subtype. \"Reading the Weapon Tables\" explains neither the Type nor the Properties column.",
+  "options": [
+   "One vocabulary everywhere: \"pool\" for Vigor or Resolve, \"subtype\" for Slash, Fire and the rest. The column becomes \"Subtype\"; this sentence \"A weapon's damage has its own pool and subtype, written in its table\"; Chapter 4 \"its own pool and subtype\"; Empowered \"its pool and its subtype\"",
+   "Rename only the tables' column to \"Subtype\" and add it to Reading the Weapon Tables",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-072",
+  "file": "book/rules-src/15-gear.md",
+  "line": 13,
+  "where": "Gear, Weapon Damage [W]",
+  "kind": "wording-instruction",
+  "quote": "Later weapons, such as wands and staves, may deal Resolve damage or both.",
+  "other": [],
+  "problem": "A note about what may be designed later: it is not a rule, and a player can't use it.",
+  "options": [
+   "Cut the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-073",
+  "file": "book/rules-src/15-gear.md",
+  "line": 15,
+  "where": "Gear, the whole Weapons section",
+  "kind": "placeholder-unmarked",
+  "quote": "and [V] 0 / 4 + 2d4! / 8 + 2d4! with a Crossbow",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 37,
+    "quote": "| Dagger | Daggers | Light, Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 4 + 1d4! | Basic |"
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 88,
+    "quote": "one with the Dagger takes 1 Bane, as a Light weapon in the off hand"
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 114,
+    "quote": "A Pike has Range 3 and Long."
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 126,
+    "quote": "(a thrown Dagger: [V] 0 / 1 + 1d4! / 3 + 1d4!)"
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 136,
+    "quote": "you can choose to make a **Reload Shot**"
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 272,
+    "quote": "a lance has Range 1 / 2"
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 274,
+    "quote": "A pike with Range 3 and Long is at its best 2 or 3 squares away."
+   }
+  ],
+  "problem": "One open box says that every weapon but four is a placeholder; nothing else does. The twelve placeholder rows (Dagger, Handaxe, Greataxe, Mace, Maul, Spear, Pike, Knuckle Dagger, Hand Crossbow, Crossbow, Pistol, Musket) look like the designed ones, and the text reasons from them as settled: the 2[W] example (Crossbow), the off-hand and thrown examples (Dagger), the Pike under Long and in Chapter 3, and whole rules only placeholder weapons use (Light, Long, Thrown, Firearm, Reload with its Reload Shot, the Reload Basic Action). Chapter 3 even uses a lance, which is in no table.",
+  "options": [
+   "Mark each placeholder row in the tables (for example \"placeholder\" in the Rung column), add \"(placeholder rule)\" to the properties only they have, and use only the four designed weapons in examples",
+   "Move the placeholder weapons, and the properties only they have, to a section of their own at the end: \"Playtest weapons (placeholders)\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-074",
+  "file": "book/rules-src/15-gear.md",
+  "line": 26,
+  "where": "Gear, Reading the Weapon Tables, last paragraph",
+  "kind": "wording-rationale",
+  "quote": "A melee weapon deals more than a ranged one, which strikes from safety.",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 26,
+    "quote": "The die tells weapons apart: a d4 on a big flat number is steady (Hammers, Crossbows), a d8 swings (Axes, Firearms), a d6 is in the middle."
+   }
+  ],
+  "problem": "The paragraph explains why the weapons' numbers are what they are (design reasons), and its last sentence describes Hammers, Crossbows, Axes and Firearms, which are all placeholders.",
+  "options": [
+   "Cut the paragraph",
+   "Keep its first two sentences and cut \"The die tells weapons apart...\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-075",
+  "file": "book/rules-src/15-gear.md",
+  "line": 90,
+  "where": "Gear, Hands (the Two-handed property)",
+  "kind": "ambiguity",
+  "quote": "A weapon with the **Two-handed** property must be held with both hands: holding it with one hand gives **3 Banes on [Strike, Weapon] Actions with that weapon**.",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 85,
+    "quote": "**[Strike, Weapon] Actions with a weapon you hold in your off hand take 2 Banes.**"
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 96,
+    "quote": "Weapons have properties instead of traits: Melee, Ranged, Light, Long, Projectile, Firearm, Strung, Thrown, Reload, Two-handed, Barehanded and Non-threatening."
+   }
+  ],
+  "problem": "\"Must be held with both hands\" and \"holding it with one hand gives 3 Banes\" pull against each other, and it isn't said whether the 2 off-hand Banes add when that one hand is the off hand (5 Banes: Doomed). Two-handed is also the only property with a rule that has no entry under Properties.",
+  "options": [
+   "Move it under Properties as its own entry: \"A **Two-handed** weapon is made for both hands. Held in one hand, [Strike, Weapon] Actions with it take 3 Banes, in place of the off-hand Banes.\"",
+   "The same entry, but the Banes add: \"...take 3 Banes, and the off-hand Banes too if that hand is your off hand.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-076",
+  "file": "book/rules-src/15-gear.md",
+  "line": 92,
+  "where": "Gear, Hands, last paragraph",
+  "kind": "wording-repeat",
+  "quote": "A creature with both hands full has to **Release** something first (0 AP: drop an object, or let go of it with one hand)",
+  "other": [
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 30,
+    "quote": "You also need a **hand free** to make any Action with this trait."
+   },
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 30,
+    "quote": "With both hands full you can stow one weapon, or swap it for another."
+   },
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 193,
+    "quote": "hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands"
+   }
+  ],
+  "problem": "The paragraph restates the Handle trait and the Release and Regrip cards, and less exactly: it says that with both hands full you must Release first, while Handle lets you stow or swap with both hands full.",
+  "options": [
+   "Reword to a pointer: \"Actions with the [[Handle]] trait need a free hand; [[Release]] and [[Regrip]] change what your hands hold.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-077",
+  "file": "book/rules-src/15-gear.md",
+  "line": 102,
+  "where": "Gear, Barehanded",
+  "kind": "undefined-word",
+  "quote": "A **Barehanded** weapon can't be disarmed and doesn't occupy a hand (or a similar appendage), but you must still have a free hand to use it.",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 180,
+    "quote": "One that loses its weapon (disarmed, the weapon broken)"
+   },
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 102,
+    "quote": "A hidden blade, a Knuckle Dagger or a spiked buckle could be too."
+   }
+  ],
+  "problem": "Nothing in the book disarms a creature or breaks a weapon: there is no rule, Action or card for it, so \"can't be disarmed\" protects against nothing. The same entry says a Knuckle Dagger \"could be\" Barehanded, while the weapon table says it is.",
+  "options": [
+   "Cut \"can't be disarmed and\" until a disarm rule exists, and reword the end: \"Fists and the Knuckle Dagger are Barehanded.\"",
+   "Keep the words and add an open box: \"How a creature is disarmed, or a weapon broken, is not written yet.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-078",
+  "file": "book/rules-src/15-gear.md",
+  "line": 126,
+  "where": "Gear, Thrown",
+  "kind": "contradiction",
+  "quote": "A thrown weapon leaves your hand.",
+  "other": [
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 207,
+    "quote": "A thrown weapon stays in your hand for the rules: the game doesn't track where it lands."
+   }
+  ],
+  "problem": "Gear says a thrown weapon leaves your hand; the Glossary says it stays in your hand for the rules and the game doesn't track where it lands (the rule decided on 2026-11-19).",
+  "options": [
+   "The Glossary wins. Reword Gear: \"A thrown weapon stays in your hand for the rules: the game doesn't track where it lands.\"",
+   "Gear wins: a thrown weapon is gone until you pick it up or draw another (the Glossary changes)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-079",
+  "file": "book/rules-src/15-gear.md",
+  "line": 155,
+  "where": "Gear, Mastery",
+  "kind": "undefined-word",
+  "quote": "A deeper weapon has fewer of them.",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 160,
+    "quote": "| **20, 30, 45, 60** | The weapon's later unlocks. |"
+   }
+  ],
+  "problem": "\"A deeper weapon\" is defined nowhere, and \"has fewer of them\" seems to go against the sentence before it (every weapon's unlocks are at the same Mastery) and the table (the same four later unlocks for every weapon).",
+  "options": [
+   "Cut the sentence",
+   "Reword: \"A weapon doesn't need an unlock at every one of them.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B2-080",
+  "file": "book/rules-src/15-gear.md",
+  "line": 169,
+  "where": "Gear, Fists (the weapon)",
+  "kind": "stale",
+  "quote": "Fists have no Weapon Technique: Unarmed Talents give their Actions.",
+  "other": [],
+  "problem": "Talents are set aside: the book has no Unarmed Talents, so the sentence points to something a reader can't find.",
+  "options": [
+   "Reword: \"Fists have no Weapon Technique.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B2-081",
+  "file": "book/rules-src/15-gear.md",
+  "line": 179,
+  "where": "Gear, Armor (no wards)",
+  "kind": "other",
+  "quote": "The armor a creature wears gives its **Armor value**",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 289,
+    "quote": "**Ward value** is the value provided by the ward a creature carries or is, such as a holy symbol, a charm, a ring or a feature."
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 238,
+    "quote": "Your armor gives your Armor value and your charm your Ward value"
+   }
+  ],
+  "problem": "Core says a ward you carry (a holy symbol, a charm, a ring) gives a Ward value, the way armor gives an Armor value. Gear has an Armor table and nothing about wards: no list, no values, no open box. As written, every PC's Ward value is 0, and a player who looks for a charm finds none.",
+  "options": [
+   "Add an open box under Armor: \"Wards (a holy symbol, a charm, a ring) and their Ward values are not written yet: a character's Ward value is 0 for now.\"",
+   "Add a Wards table beside Armor's",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ }
+]

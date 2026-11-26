@@ -21,3 +21,13 @@ Three passes. **Nothing in the rulebook or in Foundry is changed by the audit: e
   "options": ["Remove it", "Keep it", "Reword: <the whole new text>"],
   "pick": 0, "confidence": "high | medium | low" }
 ```
+
+## What came out (2026-11-26)
+
+282 questions on the answer page: **243 on the rulebook** (Chapters 1 to 4: 90; Chapters 5 to 8, Species, Gear and the Basic Actions' cards: 79; the classes, the Bestiary and the Glossary: 74), **33 on Foundry and the tools**, **6 on the project's files**. By kind, in the book: 60 that can be read two ways, 37 the same rule repeated, 35 other (examples and arithmetic that don't follow their rule, steps out of order), 32 notes to the writer, 26 leftovers of something replaced, 25 contradictions, 14 reasons in the place of rules, 7 rules written in one place only, 6 words with no rule, 1 unmarked placeholder (Chapter 15's twelve weapons).
+
+Four independent readers, one pass each; Claude read every finding, checked every quote against its file with `build.mjs` (none missing) and spot-checked the larger claims in the text. Seven findings were left out (`DROP` in `build.mjs`, each with its reason: six said the same as another reader's, one asked for the "NPCs have no Escalation" sentence Lucas removed). **Not checked:** the drawn diagrams, the built HTML pages, anything in Foundry by running it.
+
+Pass 2 (these records) was applied directly: `HANDOFF.md` and `MASTER-PLAN.md` rewritten as the current state, the old files in `archive/old-notes/`.
+
+**Nothing in the rulebook or in Foundry was changed.** When Lucas sends his answers, one pack applies them: the book first (rules-src, logged in `rules-backlog.md`), then Foundry.
