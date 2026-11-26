@@ -466,6 +466,19 @@ Lucas, on the Elite's open rule (K6): "Ok, lets settle it and start." **Proposed
 
 **The Boss is parked (Lucas, 2026-11-25): "Should we work on the boss now? I feel we need the playtest with normal enemies first."** Claude agrees: every number of the Boss is the Standard's estimates multiplied by the party's size (the benchmark turn of 17, 36 Health a PC, 6.0 damage a turn), so an error found at the table would be built into it four times over; its rule also leans on how conditions and the Rally Point's size play, which the playtest is there to show. The three ways above stay as proposed. **What playtest 8 should settle before the Boss:** the plain PC's real damage a turn; what four Standards really cost and how many Downs; whether hits of 3 or 4 vanish under Guard and reductions; whether a Rally Point stays a quarter.
 
+### Lucas's answers to the cleanup audit's Bestiary questions (2026-11-26; applied to Chapter 14, Foundry v0.0.521)
+
+- **The bands (B3-035): the table's holes closed.** Easy about 1 (up to 1¼); Normal about 1½ (above 1¼, up to 2); Hard about 2½ (above 2, up to 3); Deadly above 3.
+- **Momentum (B3-037):** "Late in a good expedition, a party can take a band more." removed; "Momentum doesn't change the budget: it is the party's reward." stays.
+- **No number assumes a class (B3-038):** one sentence: "with their class cards, the PCs find a fight cheaper or shorter than its band." (How the numbers were measured stays in this record, decision 4.)
+- **A Minion's CV (B3-039):** "A Minion's CV of 30 is for Minions mixed with other enemies; about three of them count for one PC."
+- **A rank never moves its Defenses or its Modifiers (B3-040):** the reason after it removed.
+- **The unit (B3-053):** "A Standard is the unit: CV 100, one for each PC in a normal fight." The Elite: "two units: CV 200, the place of two Standards in a normal fight"; the Glossary's Standard row the same. (A Standard is not one PC's worth: one a PC is a fight the party wins.)
+- **"Special Action" dropped (B3-070; "Yes"):** an NPC's **other Actions** (every one that is not a Basic attack) are 2 AP and Round by default; by default one hits one creature, or two for less damage each; its own card can do otherwise. The stat blocks write "(Round, 2 AP; ...)"; the cards' category is "Other Action".
+- **Hurled Goblin (B3-074; "Good"):** "the ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions." (no more "not a Reposition or a Forced Movement").
+- **The Critical (B3-052, with B1-003; "Yes"):** each Basic attack card writes its own Critical row, by default 1d10! of its own pool and subtype (a Minor enemy's too: the only die of a Minor enemy that explodes). Nothing plays differently; each row can now be tuned on its own.
+- **Still held:** an NPC's items and losing its weapon (B3-033, B3-065; B3-069's section stays under its open box).
+
 ### What comes next
 
 - **Done (2026-11-25):** the four creatures of the playtest are designed and built (the Goblin Sneak, Minion; the Grave Wisp, Grunt; the Orc Warrior, Standard; the Ogre Chieftain, Elite); **Chapter 14's playtest text is in the book** (`rules-backlog.md`, the top entry); **the Foundry pass is done, v0.0.519** (`foundry/foundry-backlog.md`, "THE BESTIARY'S REBUILD IN FOUNDRY: BUILT IN v0.0.519"; by hand: Pass Through's line and targets, Hurled Goblin's landing, Crushing Grip's one at a time).

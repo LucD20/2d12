@@ -168,6 +168,10 @@
    {
     "label": "Tier 3",
     "text": "[V] 1d4! Pi; [[Lingering]] 1d4 (Bo/In)."
+   },
+   {
+    "label": "Critical",
+    "text": "[V] 1d10! Pi."
    }
   ],
   "blocks": [],
@@ -203,6 +207,10 @@
    {
     "label": "Tier 3",
     "text": "[V] 1[W] + 1[D] + [Mod]"
+   },
+   {
+    "label": "Critical",
+    "text": "[V] 1d10!"
    }
   ],
   "blocks": [],
@@ -939,6 +947,10 @@
     "text": "[V] 2 + 1d6! Bl; Grabbed."
    },
    {
+    "label": "Critical",
+    "text": "[V] 1d10! Bl."
+   },
+   {
     "label": "Special",
     "text": "The ogre holds one creature at a time: a new Grab lets the first go."
    }
@@ -1328,6 +1340,10 @@
     "text": "[R] 2d6! Ho; Pulled 2."
    },
    {
+    "label": "Critical",
+    "text": "[R] 1d10! Ho."
+   },
+   {
     "label": "Bloodied",
     "text": "You can Slide the target that distance instead of pulling it."
    },
@@ -1613,6 +1629,10 @@
    {
     "label": "Tier 3",
     "text": "[V] 1d6! + [Mod] Bl"
+   },
+   {
+    "label": "Critical",
+    "text": "[V] 1d10! Bl."
    }
   ],
   "blocks": [],
@@ -1819,6 +1839,10 @@
    {
     "label": "Tier 3",
     "text": "[R] 1d4 Ps; Half-Blinded (EoT)."
+   },
+   {
+    "label": "Critical",
+    "text": "[R] 1d10! Ps."
    }
   ],
   "blocks": [],
@@ -1895,6 +1919,10 @@
    {
     "label": "Tier 3",
     "text": "[V] 2 + 1d6! Sl; Hindered (EoT)."
+   },
+   {
+    "label": "Critical",
+    "text": "[V] 1d10! Sl."
    }
   ],
   "blocks": [],
@@ -1931,6 +1959,10 @@
    {
     "label": "Tier 3",
     "text": "[R] 1d12! Ps."
+   },
+   {
+    "label": "Critical",
+    "text": "[R] 1d10! Ps."
    },
    {
     "label": "Bloodied",
@@ -2322,7 +2354,7 @@
    },
    {
     "label": "Effect",
-    "text": "The Minion is thrown: the ogre places it in an empty square adjacent to the target (hit or miss). This is not a Reposition or a Forced Movement: it triggers no Reactions, and the Minion takes no damage."
+    "text": "The ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions."
    }
   ],
   "blocks": [],
@@ -2381,6 +2413,10 @@
    {
     "label": "Tier 3",
     "text": "[R] 1d4 Ps; Taunted by the goblin (1 round)."
+   },
+   {
+    "label": "Critical",
+    "text": "[R] 1d10! Ps."
    }
   ],
   "blocks": [],
@@ -2595,7 +2631,7 @@
   "body": [
    {
     "label": "Setup",
-    "text": "You Advance up to 5 squares in a straight line toward the target."
+    "text": "You Advance 5 squares in a straight line toward the target."
    }
   ],
   "blocks": [
@@ -3630,6 +3666,10 @@
    {
     "label": "Tier 3",
     "text": "[R] 1d4! Ps; Staggered (EoT)."
+   },
+   {
+    "label": "Critical",
+    "text": "[R] 1d10! Ps."
    }
   ],
   "blocks": [],
@@ -3987,6 +4027,10 @@
    {
     "label": "Tier 3",
     "text": "[V] 1d6 Pi."
+   },
+   {
+    "label": "Critical",
+    "text": "[V] 1d10! Pi."
    }
   ],
   "blocks": [],
@@ -4141,6 +4185,10 @@
    {
     "label": "Tier 3",
     "text": "[R] 1d6 Co."
+   },
+   {
+    "label": "Critical",
+    "text": "[R] 1d10! Co."
    }
   ],
   "blocks": [],

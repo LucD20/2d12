@@ -11,7 +11,7 @@ import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
 import { onceKey, onceBlocked, isMarked, ignoredBy } from "./automation.mjs";
 import { bbCount, bbKey } from "./calc.mjs";
-import { originOk, attrsOk, bleedOf, bleedText, needsOrigin, hasBleed } from "./condrules.mjs";   // v0.0.314 (pack AU)
+import { originOk, attrsOk, bleedOf, bleedText, needsOrigin, hasBleed, sameLingeringKind } from "./condrules.mjs";   // v0.0.314 (pack AU)
 import { diceAvg } from "./fxrules.mjs";   // v0.0.426: Lingering keeps the higher average
 const SOCKET = "system.twod12";
 const F = "twod12";
@@ -327,7 +327,12 @@ export function withBleed(af, b) {
 export const sameSourceKeeps = (sys, have, originUuid) => !needsOrigin(sys) || String(have?.origin ?? "") === String(originUuid ?? "");
 export async function createEffect(actor, item, origin, over = null, extra = {}) {
   const s = item.system;
-  const olds = actor.effects.filter(e => e.getFlag(F, "effectUuid") === item.uuid), old = olds.map(e => e.id);
+  let olds = actor.effects.filter(e => e.getFlag(F, "effectUuid") === item.uuid);
+  // v0.0.521 (the cleanup audit, B2-066, Lucas: "Different subtypes can run together"; book, Chapter 8, Several Lingerings): a Lingering is "the same
+  // one again" only for the same subtype (none and none): another subtype's Lingering is left as it is and runs beside it
+  const newBleed = hasBleed(s) ? bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over?.bleed ?? null } } }) : null;
+  if (newBleed) olds = olds.filter(e => sameLingeringKind(bleedOf(e), newBleed));
+  const old = olds.map(e => e.id);
   const d = over?.duration ? { type: over.duration.type, rounds: over.duration.rounds ?? 1 } : { type: s.duration.type, rounds: s.duration.rounds };
   // The same effect again doesn't stack: it keeps the longer duration (the value is the same: it is the same effect).
   // v0.0.424 (Lucas, Chapter 8): a condition with a source (Frightened of, Taunted by, Grabbed by) comes from one source at a time: from a
@@ -338,10 +343,10 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   let value = s.valued ? Math.max(1, Math.trunc(Number(over?.value)) || 1) : undefined;
   if (s.valued) for (const e of olds) if (keeps(e)) value = Math.max(value, Number(e.getFlag(F, "value")) || 0);
   // v0.0.426 (the audit; book, Chapter 8, Lingering: "If you would gain Lingering again, keep the one with the higher average"): a weaker or equal new
-  // Lingering leaves the one the creature has
-  if (olds.length && hasBleed(s)) {
+  // Lingering leaves the one the creature has (v0.0.521: the one of the same subtype)
+  if (olds.length && newBleed) {
     const avg = b => diceAvg(String(b?.dmg ?? "").replace(/!/g, ""));
-    const now = Math.max(...olds.map(e => avg(bleedOf(e)) ?? -1)), next = avg(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over?.bleed ?? null } } }));
+    const now = Math.max(...olds.map(e => avg(bleedOf(e)) ?? -1)), next = avg(newBleed);
     if (next !== null && now >= next) return;
   }
   if (old.length) await actor.deleteEmbeddedDocuments("ActiveEffect", old);

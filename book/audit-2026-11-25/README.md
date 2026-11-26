@@ -43,3 +43,7 @@ Done in Foundry v0.0.520's commit, from Lucas's answers to the Foundry and files
 - **Repaired:** `node book/ruler/spec.mjs --check` prints "ok" again; the SIM reads its own frozen copy of the old Bestiary's tables (`book/ruler/sim/tables.mjs`, `npcbudget.mjs`), and its reports come out unchanged; the gallery's shots are saved again (98).
 - **Not moved:** `playtest-2.md` to `playtest-6.md` (the SIM reads one; HANDOFF names them). **Not edited:** the guarded magic files, so 15 of them keep the old paths of moved files.
 - **CLAUDE.md** (F-039): the test count, the sync scripts' sentence, the SIM's frozen copy, what `archive/`, `book/ideas/` and `book/cards/set-aside/` hold.
+
+## The held questions answered (2026-11-26)
+
+Lucas answered 16 of the held questions (B1-003, B1-023, B2-004, B2-009, B2-066, B2-069, B3-004, B3-035, B3-037 to B3-040, B3-052, B3-053, B3-070, B3-074): applied to the book and to Foundry v0.0.521 (`applied.md`, "The held questions answered"; `organize.mjs` carries his words as `ANSWERED`). Six stay held (`do: "hold"`): B3-033 and B3-065 (an NPC's items), B2-050, B3-011, B3-015, F-033.

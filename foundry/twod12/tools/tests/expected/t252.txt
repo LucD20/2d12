@@ -1,5 +1,5 @@
 --- an NPC
-v0.0.381: beside the name (Escalation over the Saves): Checks and Saves Bo +2 Ap −1 Checks | in the middle: Basic Cleaver 1 AP Special Brutal Swing 2 AP Reactions Hold the Line 1R
+v0.0.381: beside the name (Escalation over the Saves): Checks and Saves Bo +2 Ap −1 Checks | in the middle: Basic Cleaver 1 AP Other Brutal Swing 2 AP Reactions Hold the Line 1R
 the rank's ring: true | a stamp opens its Version: true | the name right-clicks to the card: true | v0.0.381: nothing hidden, the lines wrap (no +N more): true
 --- a PC
 Aveline Human Paladin · Level 1 Actions Basic Actions Reactions Escalation Hands and Gear Checks and Saves Skills later Conditions and Effects Utility Smite 1 AP 2 AP Rebuke 1R

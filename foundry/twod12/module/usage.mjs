@@ -67,7 +67,7 @@ export const atWillKeyOf = item => (hasTrait(item, "strike") ? "__strike" : item
 
 /**
  * v0.0.320 (pack AU part 2; book, Bestiary, Elite Escalation): the extra uses this creature's settings give right now ("More uses of a Frequency":
- * "round" = its Round Special Actions twice a round, "encounter" = its Encounter Special Actions a second time). Special = not a Basic Action.
+ * "round" = its own Round Actions twice a round, "encounter" = its own Encounter Actions a second time). Its own = not a Basic Action (isSpecial: the old name).
  */
 export function freqMoreOf(actor) {
   const out = new Set();

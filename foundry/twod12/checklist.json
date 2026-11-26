@@ -4,6 +4,22 @@
    "name": "Characters and sheets",
    "items": [
     {
+     "id": "hq-other",
+     "v": "v0.0.521",
+     "title": "No \"Special Actions\" on an NPC; Hurled Goblin and Lay On Hands' words",
+     "do": "As the GM, open the Ogre Chieftain's sheet (Hurled Goblin's card), add an Effect with a \"More uses of a Frequency\" setting and open its Details; then open Durgan's Lay On Hands.",
+     "expect": "The setting says \"its own Round Actions (not the Basic Actions) can be used twice per turn-cycle\" (its list line \"Own Round Actions twice per turn-cycle\"); no \"Special\" in either; Hurled Goblin's Effect reads \"the ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions.\"; Lay On Hands' Setup button reads \"Advance 5 squares\".",
+     "rev": 1
+    },
+    {
+     "id": "hq-human",
+     "v": "v0.0.521",
+     "title": "A Human's choices lock after level 1",
+     "do": "Log in as a player who owns Aveline (Human Paladin, level 1 confirmed) and click Species: Choices on her Build tab. Then do the same as the GM.",
+     "expect": "As the player: the Species window shows her two Attributes and the +3 side ticked, every option off (hovering one gives the reason: \"Locked: your level 1 is confirmed...\"), the same reason at the bottom, and only a Close button. As the GM: the options work and Save choices saves them.",
+     "rev": 1
+    },
+    {
      "id": "cu-cards",
      "v": "v0.0.520",
      "title": "Tend and the Basic Actions' new cards",
@@ -112,11 +128,48 @@
    "name": "Chat cards",
    "items": [
     {
+     "id": "hq-crit-basic",
+     "v": "v0.0.521",
+     "title": "The Basic Attack's Critical row",
+     "do": "With Aveline, make Basic Attacks against the Orc Warrior until one is a Critical (or set the dice), first with nothing else, then with Smite's Holy damage on the same attack.",
+     "expect": "The card shows \"Critical: [V] 1d10!\" under Tier 3. On the Critical, the pick bar asks \"Its 1d10!: choose the damage type, or don't apply it\": one option, her sword's Slash ([V] 1d10! Sl), then Don't apply; with Smite, a second option [R] 1d10! Ho. The die is rolled with the chosen type and explodes; the damage card shows the Critical line; the Encounter Log counts the Critical as before.",
+     "rev": 1
+    },
+    {
+     "id": "hq-crit-npc",
+     "v": "v0.0.521",
+     "title": "The creatures' Critical rows",
+     "do": "With the Goblin Sneak, roll Shiv against Kaela until a Critical; then the Orc Warrior's Hamstringing Axe against Durgan; then the Grave Wisp's Guttering Glance against Sylwen.",
+     "expect": "Each card shows its own Critical row ([V] 1d10! Pi, [V] 1d10! Sl, [R] 1d10! Ps). On the Critical the pick bar asks \"Apply: [V] 1d10! Pi.\" / Don't apply; the 1d10 explodes on a 10 even for the goblin (its Tier dice still don't); the damage is the row's pool and subtype.",
+     "rev": 1
+    },
+    {
+     "id": "hq-crit-default",
+     "v": "v0.0.521",
+     "title": "A new Basic attack gets the default row",
+     "do": "On the Orc Warrior's sheet, make a new Action, give it a Tier 2 of [V] 1d4 Bl, then tick \"Basic attack\" in its sheet.",
+     "expect": "Its Critical row fills with \"[V] 1d10!\" by itself (an existing row is never overwritten); on a Critical the pick bar offers [V] 1d10! Bl.",
+     "rev": 1
+    },
+    {
      "id": "bst-ticks-damage",
      "v": "v0.0.519",
      "title": "Damage removes a Minion's ticks by the Tier",
      "do": "With Aveline, use Word of Radiance (or any Save Action) on two goblins.",
      "expect": "Each goblin's own Save, turned over: a Tier 1 Save removes 3 (Down), a Tier 2 removes 2, a Tier 3 with no damage removes none.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Conditions and their Tiers",
+   "items": [
+    {
+     "id": "hq-lingering",
+     "v": "v0.0.521",
+     "title": "Lingerings of different subtypes run together; Shake Off ends one",
+     "do": "Give Durgan a Lingering 1d4 Pi (the Orc Warrior's Barbed Javelin, Tier 3), then a Lingering 1d6 Fi (by hand from the Conditions), then another Lingering 1d4 Pi. End his turn. Then use Shake Off on him.",
+     "expect": "He keeps two Lingerings: the Piercing one (the second Piercing one, not higher, leaves the first) and the Fire one. At the end of his turn each deals its own damage card. Shake Off asks in the bottom bar which Lingering it ends (both listed by name); the Save uses that Lingering's Attributes and DC, and only that one ends (or is halved on a Tier 2).",
      "rev": 1
     }
    ]

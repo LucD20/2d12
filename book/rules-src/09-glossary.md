@@ -23,9 +23,9 @@
 | [[Attribute DCs\|**Attribute DC**]] | 11 + an Attribute, named by it: Body DC, Mind DC, Appeal DC, Instinct DC. What an Attribute Action rolls against, and the DC of a Save set by an Attribute. |
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
 | [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead. |
-| [[Basic Attack\|**Basic Attack**]] | The Basic Action every PC has: a Strike with the weapon you wield ([V] 1d4! / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]). Your class adds a line to it and gives you a Power Basic attack; an NPC has its own Basic attack. A Basic attack's Critical deals 1d10! more. |
+| [[Basic Attack\|**Basic Attack**]] | The Basic Action every PC has: a Strike with the weapon you wield ([V] 1d4! / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]; Critical: [V] 1d10!). Your class adds a line to it and gives you a Power Basic attack; an NPC has its own Basic attacks. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
-| [[Basic attacks\|**Basic attack**]] | An NPC's own attack: 1 AP, At-will. Every NPC has two by default (a melee and a ranged one, or one against each Defense), sharing one At-will count; its Tier 1 deals nothing unless its card says so. |
+| [[Basic attacks\|**Basic attack**]] | An NPC's own attack: 1 AP, At-will. Every NPC has two by default (a melee and a ranged one, or one against each Defense), sharing one At-will count; its Tier 1 deals nothing unless its card says so; its Critical row is 1d10! of its own damage type by default. Its other Actions are 2 AP and Round by default. |
 | [[Blinded\|**Blinded**]] | You can't see: heard creatures are Hidden to you (Doomed against them), sight Rolls are Doomed. |
 | [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). Bloodied: Speed −2 (minimum 1) and Steadiness −1. Strained: you don't regain your Reaction Point. Actions and features use them too. |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
@@ -34,14 +34,13 @@
 | [[Areas\|**Burst**]] | An area centered on a corner, where four squares meet: a 2 Burst affects every square whose center is within 2 squares of that corner. |
 | [[Charge\|**Charge**]] | A Basic Action (2 AP, Round): Advance in a straight line at least 3 squares toward a creature, then make a Basic Attack against it. |
 | [[Checks\|**Check**]] | A roll of one Attribute Modifier against a DC (13 unless stated). |
-| [[Class Actions and Picks\|**Class Actions**]] | The Actions your class gives you at level 1, the Hallmark Action and the Hallmark Reaction among them. |
 | [[Senses\|**Clear**]] | You perceive the creature well: no penalty either way. |
 | [[Collision\|**Collision**]] | Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt. |
 | [[Building an encounter\|**Combat Value (CV)**]] | What an NPC counts for in an encounter: Minion 30, Grunt 50, Standard 100, Elite 200. CV 100 a PC is a normal fight. |
 | [[Corners\|**Corners**]] | You can't cut a solid corner: anything solid, such as a wall, a pillar or an object that fills a square, that reaches the corner point where four squares meet. |
 | [[Cover\|**Cover**]] | How well a target is protected: count the blocked corners of its space (for a larger creature, its least-covered square). 1 Field Bane for one, 2 for two; three make the roll Doomed. Cover Banes apply to [Strike] and [Area] Actions. |
 | [[Crawl\|**Crawl**]] | A Move Action: you move 1 square (1 AP), or 3 squares (2 AP) when your Speed is 5 or higher. The movement a Prone creature can use. |
-| [[Critical\|**Critical**]] | Doubles on a result that is already Tier 3, a total 20 or more above the DC, or three matching dice on a Favored roll. Only Actions with a Critical row use it; once an encounter, it also raises your Escalation by 1. |
+| [[Critical\|**Critical**]] | Doubles on a result that is already Tier 3, a total 20 or more above the DC, or three matching dice on a Favored roll. It adds the Action's Critical row, if it has one; once an encounter, it also raises your Escalation by 1. |
 | [[Daily\|**Daily**]] | Once per Sleep. |
 | [[Sight Senses\|**Dark Sight**]] | A Sight Sense: Dim light and Darkness count as Bright for you. |
 | [[Daunted\|**Daunted**]] | Of a source: 1 Bane on all your Rolls, and moving closer to it is Difficult Terrain, while you see it. |
@@ -89,8 +88,8 @@
 | [[Grunts\|**Grunt**]] | An NPC rank with CV 50: half a Standard (Health 18), 3 AP a turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts until you regain AP again. |
 | [[Half-Blinded\|**Half-Blinded**]] | Your Sight perceives no creature better than Obscured. |
-| [[Class Actions and Picks\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
-| [[Class Actions and Picks\|**Hallmark Reaction**]] | A choice of two class Reactions at level 1; you take one. |
+| [[Hallmarks and Picks\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
+| [[Hallmarks and Picks\|**Hallmark Reaction**]] | A choice of two class Reactions at level 1; you take one. |
 | [[Hands\|**Hands**]] | Your main hand and your off hand, chosen when you make your character, and how many of them hold a weapon. |
 | [[Hazardous Terrain\|**Hazardous Terrain [HT]**]] | Terrain that harms the creatures in it. Written [HT: Entering, Turn] in the text of the effect that creates it (notation, not a trait). It affects a creature at most once per turn-cycle. |
 | [[Rally Points\|**Heal**]] | To remove damage. The creature chooses which damage. |
@@ -114,7 +113,7 @@
 | [[Light (property)\|**Light**]] | A weapon property: a small one-handed melee weapon; 1 Bane in your off hand instead of 2. |
 | [[Line\|**Line**]] | An area that starts from your square, aimed at any square, written like Line 10: one square per step, the nearest to the segment; ties take one side, chosen before rolling. |
 | [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the creature's space that nothing blocks (for a larger creature, check each square it occupies). Needed to target a creature, and for anything a card or a feature does to a creature. |
-| [[Lingering\|**Lingering**]] | Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap); Shake Off (1 AP) and a Save against DC 13 end it; healing doesn't. Any damage type can linger. |
+| [[Lingering\|**Lingering**]] | Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap); Shake Off (1 AP) and a Save against DC 13 end it; healing doesn't. Any damage type can linger: Lingerings of different subtypes run together, and of the same subtype the higher average stays; a Shake Off ends one. |
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Basic Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
 | [[Divine, Fear, Focus and Magical\|**Magical**]] | A trait: marks a magical Action or attack for other rules and features. |
@@ -133,7 +132,7 @@
 | [[Non-threatening\|**Non-threatening**]] | A weapon property: the weapon doesn't threaten, so you can't flank with it, unless a feature says otherwise. Fists have it. |
 | [[Senses\|**Obscured**]] | Your Actions against the creature take 1 Field Bane; its Actions against you gain 1 Field Boon when it perceives you better than you perceive it. |
 | [[Rules Language\|**Origin**]] | The creature that uses an Action, or the Point of Origin of an Area. |
-| [[Class Actions and Picks\|**Pick**]] | One choice from the other Actions a class offers; the level list says how many you take and of which kind. |
+| [[Hallmarks and Picks\|**Pick**]] | One choice from the other Actions a class offers; the level list says how many you take and of which kind. |
 | [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
 | [[Point Out\|**Point Out**]] | A Basic Action (At-will, 1 AP): an ally (Tier 2) or every ally within 10 squares (Tier 3) perceives a creature you perceive 1 step better. |
 | [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Power Actions roll it; Ward Defense adds it. |
@@ -185,7 +184,6 @@
 | [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction Point doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
 | [[Sneak\|**Sneak**]] | A Basic Action (Round, 1 AP, [Subtle]): an Advance of half your Speed that keeps Hide, as its card says. |
 | [[Reading an Action\|**Special**]] | A card's line that is a rule about the card itself. |
-| [[Special Actions\|**Special Action**]] | An NPC Action that is not a Basic attack: 2 AP and Round by default. By default a Special hits one creature, or two for less damage each; a creature's own Special can do otherwise (an area, for example). |
 | [[Rules Language\|**Specific beats general**]] | A card or feature that says something different from a general rule wins for that case. |
 | [[Building a Character\|**Speed**]] | How far a creature can move with an Advance: species Speed plus class Speed Modifier. |
 | [[Squads\|**Squad**]] | Up to 2 Minions that share one place in the turn order (one Initiative roll); each takes its own whole turn. |
@@ -195,7 +193,7 @@
 | [[Stages\|**Stage**]] | A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, Guard per unspent AP, Rally Points; never your Attributes). |
 | [[Stages\|**Stage Talent**]] | The Talent of levels 4, 8 and 12, the first level of Stages 1, 2 and 3. |
 | [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction Point waits. |
-| [[Standards\|**Standard**]] | An NPC rank with CV 100, one PC's worth: Health 36 by default. |
+| [[Standards\|**Standard**]] | An NPC rank with CV 100, the unit: one for each PC in a normal fight; Health 36 by default. |
 | [[The Start of the Encounter\|**Start of the encounter**]] | After Initiative and before the first turn: abilities that happen then resolve one at a time, in turn order, which the GM can change. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Steel Yourself\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |

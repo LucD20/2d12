@@ -152,7 +152,7 @@ Some Actions have a **Setup** line. It says what happens before the rest of the 
 
 ### Targets
 
-An Action that targets something can only be used if it has a valid target. An Action with no valid target can't be used. An Action that names a number of targets needs that many: "Two creatures" can't be used against one. "Up to" means any number from one to that many. Most Actions target creatures only, but the GM can allow one to target an unattended object, such as a barrel, a crate or a door. Usually the Action rolls against DC 13 for the object, but the GM can set a different DC depending on the circumstances.
+An Action that targets something can only be used if it has a valid target. An Action with no valid target can't be used. An Action that names a number of targets needs that many: "Two creatures" can't be used against one. "Up to" means any number from one to that many. When an Action targets a creature, you can target an object instead, such as a barrel, a crate or a door. Usually the Action rolls against DC 13 for the object, but the GM can set a different DC depending on the circumstances (the rest of targeting objects is not written yet: see [[Line of Effect]]).
 
 ### Willing and Unwilling
 
@@ -208,7 +208,7 @@ A **Buff** is an effect that modifies another Action, such as the 2 Boons that F
 
 #### Stacking
 
-Unless a card says otherwise, the same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2. A condition with a source, such as Daunted of a creature, comes from one source at a time (see [[Chapter 8: Conditions]]).
+Unless a card says otherwise, the same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2. Lingerings of different subtypes are different effects (see [[Lingering]]). A condition with a source, such as Daunted of a creature, comes from one source at a time (see [[Chapter 8: Conditions]]).
 
 Five things do add up:
 

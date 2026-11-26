@@ -30,13 +30,17 @@
     {
      "label": "Tier 3",
      "text": "[V] 2 + 1d6! Sl; Hindered (EoT)."
+    },
+    {
+     "label": "Critical",
+     "text": "[V] 1d10! Sl."
     }
    ],
    "foundry": {
     "img": "icons/svg/sword.svg",
     "npcWeapon": "War Axe",
     "automation": "gold",
-    "automationNote": "a Basic attack (the exploding die, the Critical's 1d10!); Hindered (EoT) when a Tier 3 lands."
+    "automationNote": "a Basic attack (the exploding die, its Critical row's 1d10!); Hindered (EoT) when a Tier 3 lands."
    }
   },
   {
@@ -71,18 +75,22 @@
     {
      "label": "Tier 3",
      "text": "[V] 1d4! Pi; [[Lingering]] 1d4 (Bo/In)."
+    },
+    {
+     "label": "Critical",
+     "text": "[V] 1d10! Pi."
     }
    ],
    "foundry": {
     "img": "icons/svg/thrust.svg",
     "npcWeapon": "Javelin",
     "automation": "gold",
-    "automationNote": "a Basic attack (the exploding die, the Critical's 1d10!; it shares the At-will count with the axe); Lingering 1d4 (Bo/In) when a Tier 3 lands. The Setup's draw is text: an NPC's items are flavor."
+    "automationNote": "a Basic attack (the exploding die, its Critical row's 1d10!; it shares the At-will count with the axe); Lingering 1d4 (Bo/In) when a Tier 3 lands. The Setup's draw is text: an NPC's items are flavor."
    }
   },
   {
    "name": "War Howl",
-   "category": "Special Action",
+   "category": "Other Action",
    "npc": "Orc Warrior",
    "book": false,
    "ruler": false,
@@ -229,13 +237,17 @@
     {
      "label": "Tier 3",
      "text": "[V] 1d6 Pi."
+    },
+    {
+     "label": "Critical",
+     "text": "[V] 1d10! Pi."
     }
    ],
    "foundry": {
     "img": "icons/svg/dagger.svg",
     "npcWeapon": "Shiv",
     "automation": "gold",
-    "automationNote": "a Basic attack of a Minor enemy (its dice don't explode; the Critical's 1d10!)."
+    "automationNote": "a Basic attack of a Minor enemy (its Tiers' dice don't explode; its Critical row's 1d10!)."
    }
   },
   {
@@ -266,6 +278,10 @@
     {
      "label": "Tier 3",
      "text": "[R] 1d4 Ps; Taunted by the goblin (1 round)."
+    },
+    {
+     "label": "Critical",
+     "text": "[R] 1d10! Ps."
     }
    ],
    "foundry": {
@@ -284,7 +300,7 @@
   },
   {
    "name": "Knife in the Back",
-   "category": "Special Action",
+   "category": "Other Action",
    "npc": "Goblin Sneak",
    "book": false,
    "ruler": false,
@@ -420,6 +436,10 @@
     {
      "label": "Tier 3",
      "text": "[R] 1d6 Co."
+    },
+    {
+     "label": "Critical",
+     "text": "[R] 1d10! Co."
     }
    ],
    "foundry": {
@@ -456,6 +476,10 @@
     {
      "label": "Tier 3",
      "text": "[R] 1d4 Ps; Half-Blinded (EoT)."
+    },
+    {
+     "label": "Critical",
+     "text": "[R] 1d10! Ps."
     }
    ],
    "foundry": {
@@ -466,7 +490,7 @@
   },
   {
    "name": "Pass Through",
-   "category": "Special Action",
+   "category": "Other Action",
    "npc": "Grave Wisp",
    "book": false,
    "ruler": false,
@@ -587,6 +611,10 @@
      "text": "[V] 2 + 1d6! Bl; Grabbed."
     },
     {
+     "label": "Critical",
+     "text": "[V] 1d10! Bl."
+    },
+    {
      "label": "Special",
      "text": "The ogre holds one creature at a time: a new Grab lets the first go."
     }
@@ -595,7 +623,7 @@
     "img": "icons/svg/hand.svg",
     "npcWeapon": "Club",
     "automation": "silver",
-    "automationNote": "a Basic attack (the exploding die, the Critical's 1d10!); Grabbed when a Tier 3 lands. By hand: one creature held at a time (the GM ends the first Grab when a second one lands)."
+    "automationNote": "a Basic attack (the exploding die, its Critical row's 1d10!); Grabbed when a Tier 3 lands. By hand: one creature held at a time (the GM ends the first Grab when a second one lands)."
    }
   },
   {
@@ -627,6 +655,10 @@
     {
      "label": "Tier 3",
      "text": "[R] 1d4! Ps; Staggered (EoT)."
+    },
+    {
+     "label": "Critical",
+     "text": "[R] 1d10! Ps."
     }
    ],
    "foundry": {
@@ -637,7 +669,7 @@
   },
   {
    "name": "Great Sweep",
-   "category": "Special Action",
+   "category": "Other Action",
    "npc": "Ogre Chieftain",
    "book": false,
    "ruler": false,
@@ -674,7 +706,7 @@
   },
   {
    "name": "Hurled Goblin",
-   "category": "Special Action",
+   "category": "Other Action",
    "npc": "Ogre Chieftain",
    "book": false,
    "ruler": false,
@@ -707,7 +739,7 @@
     },
     {
      "label": "Effect",
-     "text": "The Minion is thrown: the ogre places it in an empty square adjacent to the target (hit or miss). This is not a Reposition or a Forced Movement: it triggers no Reactions, and the Minion takes no damage."
+     "text": "The ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions."
     }
    ],
    "foundry": {

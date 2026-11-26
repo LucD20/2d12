@@ -78,7 +78,9 @@ At the start of your turn you get back to safety, to a legal square next to the 
 
 **Lingering X (Attributes)** is damage that keeps coming: at the end of each of your turns, you take X damage, a number or dice rolled each time. It is Vigor damage when the Attributes are **Bo/In** and Resolve damage when they are **Mi/Ap**, unless the Lingering writes its pool before the value: **Lingering [V] 1 (Ap)** is Vigor damage with an Appeal Save. A Lingering can have a subtype, written after the value: **Lingering [R] 1d6 Ho (Mi/Ap)**: a wound that bleeds, a fire that clings, holy light that keeps burning.
 
-The [[Shake Off]] Action can end it; its Save is against DC 13, or the DC the Lingering writes (**Lingering 1d6 (Bo/In; DC 15)**). Healing doesn't end a Lingering; the end of the encounter does. If you would gain Lingering again, keep the one with the higher average (see [[Stacking]]).
+The [[Shake Off]] Action can end it; its Save is against DC 13, or the DC the Lingering writes (**Lingering 1d6 (Bo/In; DC 15)**). Healing doesn't end a Lingering; the end of the encounter does.
+
+**Several Lingerings.** Lingerings of different subtypes run together: each deals its damage at the end of your turn, as its own instance. If you would gain a Lingering of a subtype you already have a Lingering of (or one with no subtype while you have one with no subtype), keep the one with the higher average (see [[Stacking]]). A Shake Off ends one Lingering, chosen by the creature that uses it, with that Lingering's Attributes and DC.
 
 ### Pressed
 

@@ -40,7 +40,7 @@
   "id": "B1-003",
   "section": "book",
   "group": "Chapter 1 (roll)",
-  "do": "hold",
+  "do": "apply",
   "chosen": null,
   "note": "Should we just add the \"Critical\" row for each Basic Attack? Then we can fine tune each? This would remove the basic attack entry.",
   "ask": "Lucas's idea: give every Basic attack card its own Critical row (then each can be tuned) and drop Chapter 1's general Basic attack rule. B3-004 and B3-052 wait on the same answer.",
@@ -56,7 +56,8 @@
     "quote": "Only Actions with a Critical row use it; once an encounter, it also raises your Escalation by 1."
    }
   ],
-  "problem": "Chapter 1 gives every Basic attack 1d10! more on a Critical, with no Critical row needed. The Glossary's Critical entry says only Actions with a Critical row use a Critical."
+  "problem": "Chapter 1 gives every Basic attack 1d10! more on a Critical, with no Critical row needed. The Glossary's Critical entry says only Actions with a Critical row use a Critical.",
+  "answered": "2026-11-26: \"Yes\" (every Basic attack card gets its own Critical row; Chapter 1's general Basic-attack rule goes; \"then we can fine tune each\")"
  },
  {
   "id": "B1-004",
@@ -398,7 +399,8 @@
     "quote": "\"Up to\" means any number from one to that many."
    }
   ],
-  "problem": "\"Up to\" is defined twice with different floors: here it allows none, while Chapter 2's Targets says \"up to\" means from one to that many. A reader of this chapter alone would let \"up to three creatures\" be zero."
+  "problem": "\"Up to\" is defined twice with different floors: here it allows none, while Chapter 2's Targets says \"up to\" means from one to that many. A reader of this chapter alone would let \"up to three creatures\" be zero.",
+  "answered": "2026-11-26: \"Yes\" (leave Foundry as it is: any Action can be rolled with no target). \"In the rules though, if there isnt already, you should note: When targeting a creature, you can instead target an object.\""
  },
  {
   "id": "B1-024",
@@ -1659,7 +1661,7 @@
   "id": "B2-004",
   "section": "book",
   "group": "Chapter 5 (characters)",
-  "do": "nothing",
+  "do": "apply",
   "chosen": "Keep it as it is",
   "note": "I think we shouldnt define class actions, is this term used anywhere?",
   "why": "Kept. His question (is \"Class Actions\" used anywhere?) is answered in the report: Chapter 5's heading, paragraph and level-list sentence, and four Glossary rows.",
@@ -1686,7 +1688,8 @@
     "quote": "### Level 2: Encounter Pick"
    }
   ],
-  "problem": "The two class documents no longer have a Repertoire: each has one list of three Encounter Actions at level 2 and no Passive, Turn, Round or Daily list, so a Pick \"from any list\" can't happen. The paragraph's last sentence is a note about how classes are written, not a rule."
+  "problem": "The two class documents no longer have a Repertoire: each has one list of three Encounter Actions at level 2 and no Passive, Turn, Round or Daily list, so a Pick \"from any list\" can't happen. The paragraph's last sentence is a note about how classes are written, not a rule.",
+  "answered": "2026-11-26: \"We will be adding Paladin trait to all Paladin Actions, and Archer to all Archer's Actions, so we can just call them their trait if necessary, like Paladin Actions.\" (the term \"Class Actions\" is dropped; the traits are an open item)"
  },
  {
   "id": "B2-005",
@@ -2383,7 +2386,8 @@
     "quote": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes."
    }
   ],
-  "problem": "Lingering's second paragraph is the Shake Off card over again: who rolls, with which Attribute, against which DC, and the three Tiers."
+  "problem": "Lingering's second paragraph is the Shake Off card over again: who rolls, with which Attribute, against which DC, and the three Tiers.",
+  "answered": "2026-11-26: \"Different subtypes can run together\""
  },
  {
   "id": "B2-067",
@@ -2484,7 +2488,7 @@
   "id": "B3-004",
   "section": "book",
   "group": "Chapter 9 (glossary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": null,
   "note": "see above, about changing to add to each card",
   "ask": "With B1-003 (a Critical row on each Basic attack card).",
@@ -2500,7 +2504,8 @@
     "quote": "**A Basic attack** (the [[Basic Attack]], [[Fists]], a class's Power Basic attack, an NPC's [[Basic attacks|Basic attack]]) deals **1d10!** more damage."
    }
   ],
-  "problem": "\"Basic attack\" with a small a means two things. In Chapter 1's Critical rule it is a family of four attacks (the Basic Attack card, Fists, a class's Power Basic attack, an NPC's). The glossary and Chapter 14 define it as an NPC's own attack only, so a player checking whether Drawing Light or Harrying Shot is a Basic attack reads \"an NPC's own attack\"."
+  "problem": "\"Basic attack\" with a small a means two things. In Chapter 1's Critical rule it is a family of four attacks (the Basic Attack card, Fists, a class's Power Basic attack, an NPC's). The glossary and Chapter 14 define it as an NPC's own attack only, so a player checking whether Drawing Light or Harrying Shot is a Basic attack reads \"an NPC's own attack\".",
+  "answered": "2026-11-26: \"Yes\" (with B1-003: each Basic attack card writes its Critical row)"
  },
  {
   "id": "B3-006",
@@ -2705,7 +2710,8 @@
     "quote": "on a Rest you can also change your class's Attribute choices and which of its two Health values is your Vigor"
    }
   ],
-  "problem": "The book says a class's Health assignment is permanent, and which class choices can be changed on a Rest. It says neither for a Human's two choices (the two Attributes, and which threshold gets the +3)."
+  "problem": "The book says a class's Health assignment is permanent, and which class choices can be changed on a Rest. It says neither for a Human's two choices (the two Attributes, and which threshold gets the +3).",
+  "answered": "2026-11-26: \"Yes, first level confirmed\""
  },
  {
   "id": "B3-016",
@@ -2885,7 +2891,7 @@
   "id": "B3-035",
   "section": "book",
   "group": "Chapter 14 (bestiary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": null,
   "note": "bestiary is being rebuilt",
   "ask": "The bands leave holes (1¾ to 2 is in none, 1¼ is in two, under ¾ in none): close the table (Easy up to 1¼; Normal above 1¼ up to 2; Hard above 2 up to 3; Deadly above 3)?",
@@ -2906,7 +2912,8 @@
     "quote": "| **Easy** | about 1 (¾ to 1¼) |"
    }
   ],
-  "problem": "The bands leave a hole: Normal ends at 1¾ and Hard starts at 2, so a fight that cost 1.9 Rally Points a PC is in no band. A cost under ¾ is in none either, and 1¼ is in two."
+  "problem": "The bands leave a hole: Normal ends at 1¾ and Hard starts at 2, so a fight that cost 1.9 Rally Points a PC is in no band. A cost under ¾ is in none either, and 1¼ is in two.",
+  "answered": "2026-11-26: close the table: Easy \"about 1 (up to 1¼)\", Normal \"about 1½ (above 1¼, up to 2)\", Hard \"about 2½ (above 2, up to 3)\", Deadly \"above 3\""
  },
  {
   "id": "B3-036",
@@ -2926,7 +2933,7 @@
   "id": "B3-037",
   "section": "book",
   "group": "Chapter 14 (bestiary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": null,
   "note": "bestiary is being rebuilt",
   "ask": "\"Momentum doesn't change the budget\" beside \"late in a good expedition a party can take a band more\": keep only the first?",
@@ -2942,13 +2949,14 @@
     "quote": "**Momentum doesn't change the budget:** it is the party's reward."
    }
   ],
-  "problem": "Two sentences side by side pull opposite ways: Momentum doesn't change the budget, yet a party late in a good expedition can take a harder band. \"The budget\" is used nowhere else, and late in an expedition a party has Momentum but fewer of the Rally Points the same bullet says a normal fight counts on."
+  "problem": "Two sentences side by side pull opposite ways: Momentum doesn't change the budget, yet a party late in a good expedition can take a harder band. \"The budget\" is used nowhere else, and late in an expedition a party has Momentum but fewer of the Rally Points the same bullet says a normal fight counts on.",
+  "answered": "2026-11-26: remove \"Late in a good expedition, a party can take a band more.\"; keep \"Momentum doesn't change the budget\""
  },
  {
   "id": "B3-038",
   "section": "book",
   "group": "Chapter 14 (bestiary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": null,
   "note": "bestiary is being rebuilt",
   "ask": "The paragraph \"No number in this chapter assumes a class\": cut it to one sentence for the GM (with their class cards, the PCs find a fight cheaper or shorter than its band)?",
@@ -2958,13 +2966,14 @@
   "line": 42,
   "quote": "**No number in this chapter assumes a class.**",
   "other": [],
-  "problem": "This paragraph records how the numbers were derived (measured against a PC with no class cards). The one thing a GM takes from it is its last point: with their class cards, the PCs find a fight cheaper or shorter than its band."
+  "problem": "This paragraph records how the numbers were derived (measured against a PC with no class cards). The one thing a GM takes from it is its last point: with their class cards, the PCs find a fight cheaper or shorter than its band.",
+  "answered": "2026-11-26: one sentence: \"No number in this chapter assumes a class: with their class cards, the PCs find a fight cheaper or shorter than its band.\""
  },
  {
   "id": "B3-039",
   "section": "book",
   "group": "Chapter 14 (bestiary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": null,
   "note": "bestiary is being rebuilt",
   "ask": "\"A Minion's CV assumes it is mixed with other enemies, about three a PC\": reword so it can't be read as three Minions for each PC?",
@@ -2980,13 +2989,14 @@
     "quote": "A fight of Minions alone is not a straight line: the last ones standing act the most"
    }
   ],
-  "problem": "\"About three a PC\" can mean \"use about three Minions for each PC\" (which is a fight of Minions alone, the case the next sentence warns about) or \"about three Minions count for one PC\". \"Not a straight line\" and \"the last ones standing act the most\" are the writer's shorthand."
+  "problem": "\"About three a PC\" can mean \"use about three Minions for each PC\" (which is a fight of Minions alone, the case the next sentence warns about) or \"about three Minions count for one PC\". \"Not a straight line\" and \"the last ones standing act the most\" are the writer's shorthand.",
+  "answered": "2026-11-26: \"A Minion's CV of 30 is for Minions mixed with other enemies; about three of them count for one PC.\""
  },
  {
   "id": "B3-040",
   "section": "book",
   "group": "Chapter 14 (bestiary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": null,
   "note": "bestiary is being rebuilt",
   "ask": "\"what makes an Elite stronger is never the PCs' cards working less often\": remove the clause (a reason, not a rule)?",
@@ -2996,7 +3006,8 @@
   "line": 64,
   "quote": "what makes an Elite stronger is never the PCs' cards working less often.",
   "other": [],
-  "problem": "The clause justifies the rule before it (a rank never moves its Defenses or its Modifiers); it adds nothing a GM applies."
+  "problem": "The clause justifies the rule before it (a rank never moves its Defenses or its Modifiers); it adds nothing a GM applies.",
+  "answered": "2026-11-26: remove the clause"
  },
  {
   "id": "B3-041",
@@ -3239,7 +3250,7 @@
   "id": "B3-052",
   "section": "book",
   "group": "Chapter 14 (bestiary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": null,
   "note": "see above about critical in basic attacks",
   "ask": "With B1-003: if every Basic attack card writes its own Critical row, a Minor enemy's card says whether its Critical die explodes.",
@@ -3255,13 +3266,14 @@
     "quote": "an [[Empowered]] die included"
    }
   ],
-  "problem": "One sentence says a Minor enemy's dice never explode, an Empowered die included; the next gives it the Critical's 1d10!, written with the \"!\" that means the die explodes. Does a goblin's Critical die explode?"
+  "problem": "One sentence says a Minor enemy's dice never explode, an Empowered die included; the next gives it the Critical's 1d10!, written with the \"!\" that means the die explodes. Does a goblin's Critical die explode?",
+  "answered": "2026-11-26: \"Yes\" (with B1-003: the Minion's and Grunt's cards write their own Critical row)"
  },
  {
   "id": "B3-053",
   "section": "book",
   "group": "Chapter 14 (bestiary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": null,
   "note": "bestiary is being rebuilt",
   "ask": "\"A Standard is one PC\" beside \"not an even match\": say \"A Standard is the unit: CV 100, one for each PC in a normal fight\"?",
@@ -3292,7 +3304,8 @@
     "quote": "An NPC rank with CV 100, one PC's worth: Health 36 by default."
    }
   ],
-  "problem": "The chapter says a Standard \"is one PC\" and an Elite is \"two PCs' worth\", and also that one Standard for each PC is a fight the party wins and \"not an even match\". A GM who reads \"one PC's worth\" expects four Standards against four PCs to be a coin flip."
+  "problem": "The chapter says a Standard \"is one PC\" and an Elite is \"two PCs' worth\", and also that one Standard for each PC is a fight the party wins and \"not an even match\". A GM who reads \"one PC's worth\" expects four Standards against four PCs to be a coin flip.",
+  "answered": "2026-11-26: \"A Standard is the unit: CV 100, one for each PC in a normal fight.\" (and the places that repeat it agree)"
  },
  {
   "id": "B3-054",
@@ -3692,7 +3705,7 @@
   "id": "B3-070",
   "section": "book",
   "group": "Chapter 14 (bestiary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": "Reword the same way and give it another name, so it isn't the card line's (for Lucas to choose)",
   "note": "likely can just say \"its other Actions, more thematic and complex than the NPCs basic attacks...\"",
   "ask": "\"Special Action\" is also the name of a card line (Special:). Lucas: \"likely can just say 'its other Actions, more thematic and complex than the NPC's basic attacks'\". The rank table and the stat blocks use the word (\"Special; Round, 2 AP\"): drop the defined term and call them its other Actions, or rename it (Signature is taken; \"Feature Action\", \"Maneuver\")?",
@@ -3718,7 +3731,8 @@
     "quote": "| **Special** | A rule about the card itself: a limit, an exception, an extra cost. |"
    }
   ],
-  "problem": "By this definition a Reaction, an Elite's Encounter Action and a Shove are all Special Actions (\"2 AP and Round by default\"), yet the stat blocks label them apart (Special, Reaction, its Encounter Action). \"Special\" is also already the name of a card line (a rule about the card itself)."
+  "problem": "By this definition a Reaction, an Elite's Encounter Action and a Shove are all Special Actions (\"2 AP and Round by default\"), yet the stat blocks label them apart (Special, Reaction, its Encounter Action). \"Special\" is also already the name of a card line (a rule about the card itself).",
+  "answered": "2026-11-26: \"Yes\" (the defined term is dropped: \"its other Actions\")"
  },
  {
   "id": "B3-071",
@@ -3790,7 +3804,7 @@
   "id": "B3-074",
   "section": "book",
   "group": "Chapter 14 (bestiary)",
-  "do": "hold",
+  "do": "apply",
   "chosen": "Reword the Effect: \"The Minion is thrown: the ogre places it in an empty square adjacent to the target to which the ogre has Line of Effect (hit or miss). The Minion has left its square but has not moved; nothing reduces or stops the throw, it triggers no Reactions, and the Minion takes no damage.\"",
   "note": "Isnt it easier to jsut say \"the ogre places it... This is a forced movement effect, causing no collision.\"",
   "ask": "Hurled Goblin. Lucas: \"Isn't it easier to just say 'the ogre places it... This is a forced movement effect, causing no collision.'\" As Forced Movement it would be reduced by the goblin's Steadiness, need a path with Line of Effect at every square, and count for \"left your square\"; as a plain placement none of that applies. Which?",
@@ -3806,7 +3820,8 @@
     "quote": "| Movement | A Move Action | You moved | You left your square |"
    }
   ],
-  "problem": "Being \"placed\" is a movement Chapter 3 doesn't have. The card says what it is not, and leaves open whether the Minion has left its square (Leaning, Hide and \"until you leave your square\" end), whether Steadiness or Immobilized stops the throw, and whether the ogre needs Line of Effect to the landing square."
+  "problem": "Being \"placed\" is a movement Chapter 3 doesn't have. The card says what it is not, and leaves open whether the Minion has left its square (Leaning, Hide and \"until you leave your square\" end), whether Steadiness or Immobilized stops the throw, and whether the ogre needs Line of Effect to the landing square.",
+  "answered": "2026-11-26: \"Good\" (the ogre places the Minion in an empty square adjacent to the target, hit or miss; it takes no damage and triggers no Reactions)"
  },
  {
   "id": "B3-075",
@@ -4168,7 +4183,8 @@
     "quote": "You can use it once during an Advance Action without ending the Advance (see [[Advance]])."
    }
   ],
-  "problem": "The Advance card states in full two rules that Chapter 3's Advance section also states in full (an Advance is one piece; one Interact fits inside it). The Interact card and the Glossary say the second one again."
+  "problem": "The Advance card states in full two rules that Chapter 3's Advance section also states in full (an Advance is one piece; one Interact fits inside it). The Interact card and the Glossary say the second one again.",
+  "answered": "2026-11-26: \"Leave on Charge, remove from Lay on Hands. Charge is a special case.\""
  },
  {
   "id": "B2-014",

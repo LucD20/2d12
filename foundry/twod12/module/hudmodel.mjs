@@ -30,12 +30,12 @@ export const hudSavesHtml = saves => `<span class="hud-g g-saves"><span class="h
 
 /** NPC: m = { name, img, sub, rankKey, groups: { basic, special, react, esc: [action] }, saves: [{ key, label, short, value }], escPips } */
 export function npcHudHtml(m) {
-  // v0.0.381 (Lucas: "too much mouse travel"): beside the name, Escalation over the Checks and Saves; the attacks (Basic, Special) and the
+  // v0.0.381 (Lucas: "too much mouse travel"): beside the name, Escalation over the Checks and Saves; the attacks (Basic, Other; v0.0.521: no "Special") and the
   // Reactions in the middle. A line wraps (the HUD grows taller) rather than hiding anything.
   const g = m.groups ?? {};
   const esc = groupHtml(m.escPips ? `Escalation ${m.escPips}` : "Escalation", g.esc ?? []);
   const side = `<div class="hud-blk hud-side">${esc ? `<div class="hud-l">${esc}</div>` : ""}<div class="hud-l">${hudSavesHtml(m.saves ?? [])}</div></div>`;
-  const l1 = groupHtml("Basic", g.basic ?? []) + groupHtml("Special", g.special ?? []), l2 = groupHtml("Reactions", g.react ?? []);
+  const l1 = groupHtml("Basic", g.basic ?? []) + groupHtml("Other", g.special ?? []), l2 = groupHtml("Reactions", g.react ?? []);
   return `${hudIdHtml(m)}<div class="hud-mid npc">${side}<div class="hud-blk hud-center"><div class="hud-l">${l1 || '<span class="hud-none">No Actions.</span>'}</div>${l2 ? `<div class="hud-l">${l2}</div>` : ""}</div></div>`;
 }
 

@@ -166,7 +166,7 @@ function escPane(r) {
   const opts = Object.entries(TWOD12.escHookWhen ?? {});
   return grid([["When", sel("trig", r.trig, opts, "Trigger")], (TWOD12.escHookWhen?.[r.trig] ?? "").includes(" N ") ? ["Within", `${step("n", r.n, 0, 12)} <span class="fr-m">squares</span>`] : null]) + help("Once an encounter, +1 Escalation (the class hook in Chapter 2).");
 }
-const usesPane = r => grid([["Gives", seg("which", r.which, [["round", "Round Specials twice"], ["encounter", "Encounter Specials again"]], "w")]]) + help("The Elite ladder (Bestiary, Elite Escalation). Special Actions are the creature's own, not the Basic Actions.");
+const usesPane = r => grid([["Gives", seg("which", r.which, [["round", "Own Round Actions twice"], ["encounter", "Own Encounter Actions again"]], "w")]]) + help("The Elite ladder (Bestiary, Elite Escalation). Its own Actions: not the Basic Actions.");
 const ASW = [["Gold", "#e8a33a"], ["Holy", "#ffd27a"], ["Ally", "#4a8fd8"], ["Enemy", "#c0392b"], ["Arcane", "#9b6bd8"], ["Nature", "#4caf6a"]];
 const colorRow = (f, v, sw) => `<span class="fr-colors"><input type="color" data-fr-in="${f}" value="${esc(/^#[0-9a-f]{6}$/i.test(v) ? v : "#e8a33a")}" aria-label="Color">${sw.map(([n, c]) => `<button type="button" class="fr-sw${v === c ? " on" : ""}" style="--c:${c}" data-fr="set" data-f="${f}" data-v="${c}">${n}</button>`).join("")}</span>`;
 /* v0.0.327 (PACK ZONE): what an area does inside, the Aura's and the Zone's one block (archive/mockups/zone-prototype.html): four part rows, each with

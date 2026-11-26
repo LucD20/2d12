@@ -86,7 +86,8 @@
             "[V] 1 Bl",
             "[V] 2 + [Mod] Bl",
             "[V] 1d6! + [Mod] Bl"
-          ]
+          ],
+          "critical": "[V] 1d10! Bl."
         }
       ],
       "foundry": {
@@ -367,7 +368,8 @@
             "[V] 1d4!",
             "[V] 1[W] + [Mod]",
             "[V] 1[W] + 1[D] + [Mod]"
-          ]
+          ],
+          "critical": "[V] 1d10!"
         }
       ],
       "foundry": {

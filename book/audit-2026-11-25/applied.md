@@ -159,3 +159,31 @@ Written by `node` from `applied-B1.json`, `applied-B2.json` and `applied-B3.json
 - **B3-023 (rule):** Foundry asks for the Reaction Point before Smite's roll, not after the Tier is seen.
 - **B3-024 (rule):** Foundry offers Sworn Blade's Slide after the Basic Attack's damage, against a target Strained by then.
 - **B3-025 (rule):** Foundry must not Doom Drawing Light for the Paladin being Engaged.
+
+## The held questions answered (2026-11-26, Lucas; applied to the book, Foundry v0.0.521)
+
+Sixteen of the held questions answered (`work-order.json`: `do: "apply"` and `answered`, his words). Still held: B3-033, B3-065 (and B3-069's section under its open box), B2-050, B3-011, B3-015, F-033; B2-008 and B2-080 stay reminders.
+
+- **B1-003, B3-004, B3-052 (rule; "Yes"):** every Basic attack card writes its own Critical row (Basic Attack [V] 1d10!; Fists [V] 1d10! Bl; Drawing Light [R] 1d10! Ho; Harrying Shot [R] 1d10! Ps; the eight creature Basic attacks their own pool and subtype). Chapter 1 drops the general Basic-attack rule: an Action with a Critical row gets that row, any other a plain Tier 3; a Critical row whose damage writes no subtype deals one of the damage types the Action deals, pool and subtype, chosen before it is rolled. Chapter 14: a Minor enemy's damage dice explode only where its card writes ! (its Critical row); each Basic attack has a Critical row by default; the stat blocks print it. The Glossary's Basic Attack, Basic attack and Critical rows agree.
+- **B3-035 (rule):** the bands: Easy about 1 (up to 1¼); Normal about 1½ (above 1¼, up to 2); Hard about 2½ (above 2, up to 3); Deadly above 3.
+- **B3-037:** "Late in a good expedition, a party can take a band more." removed.
+- **B3-038:** "No number in this chapter assumes a class: with their class cards, the PCs find a fight cheaper or shorter than its band."
+- **B3-039:** "A Minion's CV of 30 is for Minions mixed with other enemies; about three of them count for one PC."
+- **B3-040:** the clause after "A rank never moves its Defenses or its Modifiers." removed.
+- **B3-053:** "A Standard is the unit: CV 100, one for each PC in a normal fight."; the Elite: "two units: CV 200, the place of two Standards in a normal fight"; the Glossary's Standard row the same.
+- **B3-070 ("Yes"):** "Special Action" is no defined term: Chapter 14's "Its other Actions" ("An NPC's other Actions (every one that is not a Basic attack) are 2 AP and Round by default..."); the stat blocks drop "Special; "; the Grunt's, the Standard's, the Elite's and the pricing box's "Special" say "other Action"; the Glossary row removed (the Basic attack row carries the default); the cards' category "Other Action".
+- **B3-074 ("Good"):** Hurled Goblin's Effect: "the ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions." (chapter and card).
+- **B1-023 ("Yes"; Foundry unchanged):** Chapter 2, Targets: "When an Action targets a creature, you can target an object instead" (in the place of "the GM can allow one to target an unattended object"), the DC 13 default kept, and a pointer to the open box on targeting objects.
+- **B2-069 (rule; "Yes, first level confirmed"):** Human: "Both choices are made when you build the character; once you have taken your level 1, they can't be changed."
+- **B2-066 (rule; "Different subtypes can run together"):** Chapter 8, "Several Lingerings": different subtypes run together, each its own instance; the same subtype (or none and none) keeps the higher average; one Shake Off ends one Lingering, chosen by its user, with that Lingering's Attributes and DC. Stacking and the Glossary point to it.
+- **B2-009 ("Leave on Charge, remove from Lay on Hands"):** Lay On Hands: "You Advance 5 squares in a straight line toward the target."
+- **B2-004:** "Class Actions" is no defined term: Chapter 5's "Hallmarks and Picks"; the Glossary row removed; the Paladin and Archer traits logged as open (`book/rules-backlog.md`, `foundry/foundry-backlog.md`).
+
+### What Foundry follows (v0.0.521)
+
+- **B1-003 (rule):** the Critical's extra comes only from the card's Critical row; a row whose dice write no subtype takes one of the Action's damage types (the pick bar). Same result for the Basic Attack, Fists, the two Power Basic attacks and the eight creature attacks.
+- **B2-069 (rule):** a Human's choices lock once the first class level is confirmed (a GM still can change them).
+- **B2-066 (rule):** Lingerings of different subtypes run together, each its own damage at the end of the turn; Shake Off ends one (a pick when there are several).
+- **B3-070:** labels and help texts say "other Actions" for an NPC's non-Basic Actions.
+- **B2-009:** Lay On Hands' Setup button reads "Advance 5 squares".
+- **B1-023:** nothing to build (Lucas: any Action can still be rolled with no target).

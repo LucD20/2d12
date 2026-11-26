@@ -1632,7 +1632,7 @@ export async function useAction(actor, item, opts = {}) {
       if (crit && t === 3 && !ridesOn(t) && String(version.critical ?? "").trim() && uuids.length) {
         try {
           const C = await import("./critical.mjs"), rowText = String(version.critical).trim();
-          const ans = await C.askCritical({ actor, item, basic: false, rowText });
+          const ans = await C.askCritical({ actor, item, rowText });
           if (ans.apply) {
             chips.push(...tierConditionChips(rowText));
             const gainAp = C.critRowAp(rowText);
@@ -1959,16 +1959,16 @@ export async function rollDamage(message, { again = false } = {}) {
     }
     // v0.0.407 (Stage 0 in Foundry; book, Chapter 8, Empowered): the first damage the creature deals on each of its turns adds 1d6! of the Action's pool and type
     if (empOn && (!again || hadEmp) && !empLater && !empUsed) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls, { explode: !minorNpc(actor) }) : null; if (ec) { comps.push(ec); empUsed = true; } }
-    // the core rework batch 2 (book, Chapter 1, Critical; critical.mjs): a Basic attack's 1d10! of a type it deals, or the card's own Critical row
-    // (its dice rolled here, its conditions applied with the Tier's); always optional: the pick bar asks before the die is rolled
+    // the core rework batch 2 (book, Chapter 1, Critical; critical.mjs): the card's own Critical row (its dice rolled here, a die with no subtype
+    // of a type the Action deals; its conditions applied with the Tier's); always optional: the pick bar asks before the die is rolled
     let critConds = [], critApplied = false;
     if (crit && !again) {
       try {
         const C = await import("./critical.mjs"), rowText = String(version.critical ?? "").trim();
-        const ans = await C.askCritical({ actor, item, comps, basic: C.isBasicAttack(item.system, item.getFlag?.("twod12", "basic")), rowText });
-        if (ans.apply && ans.kind) comps.push(await C.critComponent({ ...ans.kind }, rolls));
+        // v0.0.521 (the cleanup audit, B1-003): the extra is only the card's Critical row; its dice with no subtype take the type chosen (ans.kind)
+        const ans = await C.askCritical({ actor, item, comps, rowText });
         if (ans.apply && ans.row) {
-          for (const d of C.critRowDice(rowText)) comps.push(await C.critComponent(d, rolls));
+          for (const d of C.critRowDice(rowText)) comps.push(await C.critComponent(C.critDieFor(d, ans.kind), rolls));
           critConds = (await import("./inline.mjs")).tierConditionChips(rowText);
           const gainAp = C.critRowAp(rowText);
           if (gainAp > 0 && game.combat?.started) {

@@ -7,7 +7,7 @@ Rule of the order (Lucas, 2026-11-11): decide what changes the numbers before bu
 ## 1. Now
 
 1. **Playtest 8** (Lucas): the level 1 pregens against the Bestiary's four new creatures, measured by the Encounter Log.
-2. **The cleanup audit** (`book/audit-2026-11-25/`): Lucas answers its questions, then one pack applies the answers (the book first, then Foundry).
+2. **The cleanup audit** (`book/audit-2026-11-25/`): answered and applied (the book, Foundry v0.0.520 and v0.0.521); 6 questions still held for Lucas (`work-order.json`, `do: "hold"`).
 
 ## 2. After playtest 8: the Bestiary (`book/bestiary-design.md`)
 

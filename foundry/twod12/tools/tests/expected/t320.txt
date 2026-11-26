@@ -1,0 +1,34 @@
+--- 1. the Critical row on every Basic attack card
+Basic Attack: [V] 1d10! | Fists: [V] 1d10! Bl.
+Drawing Light: basicAttack true | Critical [R] 1d10! Ho. | its dice: [{"pool":"M","formula":"1d10!","sub":"Ho"}]
+Harrying Shot: basicAttack true | Critical [R] 1d10! Ps. | its dice: [{"pool":"M","formula":"1d10!","sub":"Ps"}]
+Hamstringing Axe (Orc Warrior): basicAttack true | Critical [V] 1d10! Sl. | its dice: [{"pool":"B","formula":"1d10!","sub":"Sl"}]
+Barbed Javelin (Orc Warrior): basicAttack true | Critical [V] 1d10! Pi. | its dice: [{"pool":"B","formula":"1d10!","sub":"Pi"}]
+Shiv (Goblin Sneak): basicAttack true | Critical [V] 1d10! Pi. | its dice: [{"pool":"B","formula":"1d10!","sub":"Pi"}]
+Jeer (Goblin Sneak): basicAttack true | Critical [R] 1d10! Ps. | its dice: [{"pool":"M","formula":"1d10!","sub":"Ps"}]
+Slipping Touch (Grave Wisp): basicAttack true | Critical [R] 1d10! Co. | its dice: [{"pool":"M","formula":"1d10!","sub":"Co"}]
+Guttering Glance (Grave Wisp): basicAttack true | Critical [R] 1d10! Ps. | its dice: [{"pool":"M","formula":"1d10!","sub":"Ps"}]
+Crushing Grip (Ogre Chieftain): basicAttack true | Critical [V] 1d10! Bl. | its dice: [{"pool":"B","formula":"1d10!","sub":"Bl"}]
+Roar (Ogre Chieftain): basicAttack true | Critical [R] 1d10! Ps. | its dice: [{"pool":"M","formula":"1d10!","sub":"Ps"}]
+a Basic attack in the packs with no Critical row: none
+the Basic Attack with a Longsword: the options [V] 1d10! Sl | the die {"pool":"B","formula":"1d10!","sub":"Sl"}
+with Smite's [R] Ho too: the options [V] 1d10! Sl | [R] 1d10! Ho
+Shiv's typed row is asked as it is: Apply: [V] 1d10! Pi.
+no general Basic-attack path left: true true | the row's dice take the kind: true
+the default row when a Basic attack is ticked: ["[V] 1d10!","[V] 1d6! Bl."] | all written: null | registered: true
+--- 2. a Human's choices lock once level 1 is confirmed (a player; the GM still can)
+{"gm":false,"hasClass":true,"chooses":true} -> Locked: your level 1 is confirmed, so these choices can't change (the GM can still change them).
+{"gm":true,"hasClass":true,"chooses":true} -> (open)
+{"gm":false,"hasClass":false,"chooses":true} -> (open)
+{"gm":false,"hasClass":true,"chooses":false} -> (open)
+the locked window: every option off true | chosen still shown: body,mind | confirm: false | cancel: Close | message: Locked: your level 1 is confirmed, so these choices can't change (the GM can still change them).
+editSpecies reads it and saves nothing when locked: true
+--- 3. Lingering by subtype
+Pi and Fi: false | Pi and Pi: true | none and none: true | none and Pi: false
+createEffect keeps another subtype's: true | each deals its own damage at the end of the turn: true | Shake Off picks one: true
+--- 4. no "Special Actions" for an NPC's other Actions
+freqMore: {"round":"its own Round Actions (not the Basic Actions) can be used twice per turn-cycle","encounter":"its own Encounter Actions can be used a second time"}
+the four creatures' card categories: Basic Action | Basic attack | Encounter Action | Other Action | Reaction
+Hurled Goblin: The ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions.
+--- 5. Lay On Hands
+Setup: You @Move[advance|distance:5]{Advance 5 squares} in a straight line toward the target.

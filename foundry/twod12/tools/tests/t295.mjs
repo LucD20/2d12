@@ -50,8 +50,8 @@ console.log("strainedExtraD (Steady Draw): T3 pre-strained:", JSON.stringify(AC.
 
 console.log("--- Power Basic attacks (Drawing Light, Harrying Shot) and Bloodied tier gating");
 const dl = docOf("action", "Drawing Light"), hs = docOf("action", "Harrying Shot");
-console.log("Drawing Light: basicAttack", CR.isBasicAttack(dl.system), "| stateLines:", JSON.stringify(dl.system.stateLines));
-console.log("Harrying Shot: basicAttack", CR.isBasicAttack(hs.system), "| stateLines:", JSON.stringify(hs.system.stateLines));
+console.log("Drawing Light: basicAttack", !!dl.system.basicAttack, "| stateLines:", JSON.stringify(dl.system.stateLines));
+console.log("Harrying Shot: basicAttack", !!hs.system.basicAttack, "| stateLines:", JSON.stringify(hs.system.stateLines));
 console.log("Harrying Shot Bloodied gating: T2", SL.stateLinesFor(hs.system.stateLines, {}, { b: true }, 2).length, "| T3", SL.stateLinesFor(hs.system.stateLines, {}, { b: true }, 3).length);
 console.log("Drawing Light Bloodied gating: T2", SL.stateLinesFor(dl.system.stateLines, {}, { b: true }, 2).length, "| T3", SL.stateLinesFor(dl.system.stateLines, {}, { b: true }, 3).length);
 

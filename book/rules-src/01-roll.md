@@ -42,11 +42,10 @@ A result is a **Critical** when you roll **Doubles on a result that is already T
 
 On a Critical you get the Tier 3 result, and:
 
-- **A Basic attack** (the [[Basic Attack]], [[Fists]], a class's Power Basic attack, an NPC's [[Basic attacks|Basic attack]]) deals **1d10!** more damage. Before you roll it, choose one of the damage types the Action deals, with its pool and subtype: an Action that deals only [V] Piercing adds [V] 1d10! Pi; one that deals [V] Piercing and [R] Holy adds either, your choice.
-- **An Action with a Critical row** (written under Tier 3 and above the Effects, such as [[Trip]] and [[Shove]]) gets that effect instead. A Basic attack with a Critical row of its own uses the row, not the 1d10!.
+- **An Action with a Critical row** (written under Tier 3 and above the Effects, such as [[Trip]], [[Shove]] and the [[Basic Attack]]) gets that row. A Critical row that writes damage with no subtype (the Basic Attack's [V] 1d10!) deals it as one of the damage types the Action deals, its pool and subtype, chosen before you roll it: an Action that deals only [V] Piercing adds [V] 1d10! Pi; one that deals [V] Piercing and [R] Holy adds either, your choice.
 - **Any other Action:** a Critical is simply a Tier 3.
 
-**A Critical is always optional:** the creature that rolled it chooses whether to apply its extra (the die or the row); the result is a Tier 3 either way. Once an encounter, a Critical on one of your Actions also raises your Escalation by 1 (see [[Escalation]]), whether or not you apply its extra.
+**A Critical is always optional:** the creature that rolled it chooses whether to apply its Critical row; the result is a Tier 3 either way. Once an encounter, a Critical on one of your Actions also raises your Escalation by 1 (see [[Escalation]]), whether or not you apply its row.
 
 ## Boons and Banes
 

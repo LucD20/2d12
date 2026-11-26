@@ -61,6 +61,9 @@ export function bleedOf(e) {
   for (const [k, v] of Object.entries(over ?? {})) if (v !== undefined && v !== null && v !== "" && !(Array.isArray(v) && !v.length)) b[k] = v;
   return b;
 }
+/** Pure (v0.0.521; the cleanup audit, B2-066; book, Chapter 8, Several Lingerings): two Lingerings are the same kind when their subtype is (none and
+ *  none too): then the higher average stays; of different subtypes they run together. */
+export const sameLingeringKind = (a, b) => String(a?.sub ?? "").trim().toLowerCase() === String(b?.sub ?? "").trim().toLowerCase();
 /** Parse "mi/ap", "Bo/In", "body" into Attribute keys. */
 export function parseAttrs(s) {
   const map = { bo: "body", mi: "mind", ap: "appeal", in: "instinct", body: "body", mind: "mind", appeal: "appeal", instinct: "instinct" };

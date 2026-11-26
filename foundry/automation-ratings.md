@@ -29,7 +29,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Fists | Gold | |
 | Relocate | Gold | |
 | Trip | Gold | |
-| Shake Off | Silver | "within your Reach" isn't checked (v0.0.414) |
+| Shake Off | Silver | "within your Reach" isn't checked (v0.0.414); with several Lingerings the pick bar asks which one it ends (v0.0.521) |
 | Shove | Gold | |
 | Haul | Gold | |
 | Aid | Silver | Quickened 1 on the target (its next turn's AP); the Check against Daunted: by hand. |

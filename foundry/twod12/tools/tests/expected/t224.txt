@@ -6,7 +6,7 @@ Their Rolls with [Projectile] Actions: ignore Low cover and one range Bane.
 Their Rolls with [Body] Actions: show the note Brute Force.
 Rolls against them made by anyone but Ogre Chieftain: 1 Bane. | Their Rolls: 5 Boons (Favored). | Does nothing yet: switch on a part below.
 filter in the book's notation: [Melee, Strike] Actions, not [Divine] | [Strike] Actions that are [Melee] or [Ranged], not [Fear] | any Action
-list labels: (empty) | Grants (empty) | Aura 2: (empty) | Light 1 / 2 | Can't move closer | Fists lose Non-threatening | Escalation +1: ally Bloodied / Down | Round Specials twice per turn-cycle
+list labels: (empty) | Grants (empty) | Aura 2: (empty) | Light 1 / 2 | Can't move closer | Fists lose Non-threatening | Escalation +1: ally Bloodied / Down | Own Round Actions twice per turn-cycle
 part summaries: 1 Boon | off | Low cover and one range Bane
 --- 5.2 to 5.8
 +1 Support bonus to every Defense.
@@ -24,7 +24,7 @@ At the start of each encounter, it can use Mark Quarry once for 0 AP; posts “C
 Its Fists don't have the property Non-threatening.
 Choose one weapon with the property Projectile: it starts at 3 Mastery.
 Once an encounter, when an ally within 5 squares becomes Bloodied or goes Down: its Escalation rises by 1.
-Its Encounter Special Actions can be used a second time.
+Its own Encounter Actions can be used a second time.
 Aura 2: Allies inside, and this creature, gain Beacon's Ward.
 Aura (equal to the origin's Power Modifier): Allies inside, and this creature, gain Beacon's Ward.
 Sheds Bright light in a 1 Emanation and Dim light 2 squares further.

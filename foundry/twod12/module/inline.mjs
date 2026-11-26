@@ -826,8 +826,16 @@ async function handleShakeOff(cfg, ctx) {
   let actors = groups.find(g => g.some(lingering))?.filter(lingering) ?? groups[0] ?? [];
   if (!actors.length) return ui.notifications.warn("Target the Lingering creature (or none, for yourself).");
   for (const actor of actors) {
-    const list = [...(actor.effects ?? [])].filter(e => !e.disabled).map(e => [e, bleedOf(e)]).filter(([, b]) => b);
+    let list = [...(actor.effects ?? [])].filter(e => !e.disabled).map(e => [e, bleedOf(e)]).filter(([, b]) => b);
     if (!list.length) { ui.notifications.info(`${actor.name} has no Lingering.`); continue; }
+    // v0.0.521 (the cleanup audit, B2-066; book, Chapter 8, Several Lingerings): one Shake Off ends one Lingering, chosen by the creature that uses
+    // it (the pick bar), with that Lingering's Attributes and DC
+    if (list.length > 1) {
+      const { pickBar } = await import("./pickbar.mjs");
+      const id = await pickBar({ icon: "fa-hand", text: `<b>Shake Off</b>: <b>${esc(actor.name)}</b> has ${list.length} Lingerings. Which one?`, options: list.map(([e, b]) => ({ id: e.id, label: bleedText(b) })), cancel: "Cancel" }).catch(() => "");
+      list = list.filter(([e]) => e.id === id);
+      if (!list.length) continue;
+    }
     for (const [e, b] of list) {
       const keys = (b.attrs?.length ? b.attrs : ["body", "instinct"]).filter(k => k in TWOD12.attributes);
       const key = keys.reduce((best, k) => ((actor.system.attributes?.[k] ?? 0) > (actor.system.attributes?.[best] ?? -99) ? k : best), keys[0] ?? "body");

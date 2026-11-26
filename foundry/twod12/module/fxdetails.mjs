@@ -174,7 +174,7 @@ export function settingShort(x) {
     case "mastery": return `${TWOD12.weaponTraits[x.mstTrait] ?? "?"} weapon at ${Math.max(0, Number(x.mstValue) || 0)} Mastery`;
     case "note": return `note "${x.title || "(no title)"}"`;
     case "resist": return x.rwKind === "immune" ? `Immunity ${TWOD12.subtypes[x.dmgSub] || "?"}` : `${x.rwKind === "weak" ? "Weakness" : "Resistance"} ${TWOD12.subtypes[x.dmgSub] || "?"} ${Math.max(0, Number(x.rwValue) || 0)}`;   // the Bestiary's rebuild: the word first   // v0.0.320
-    case "freqmore": return x.fmWhich === "encounter" ? "Encounter Specials a second time" : "Round Specials twice per turn-cycle";
+    case "freqmore": return x.fmWhich === "encounter" ? "Own Encounter Actions a second time" : "Own Round Actions twice per turn-cycle";
     default: return strip(settingSentence(x)).replace(/\.$/, "").replace(/^The next action/, "next action");
   }
 }

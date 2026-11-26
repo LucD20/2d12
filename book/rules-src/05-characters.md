@@ -22,7 +22,7 @@ When you pick your class, you choose its Attribute increases when they say "or",
 
 Each class is written in its own document: [[Paladin]] and [[Archer]].
 
-### Class Actions and Picks
+### Hallmarks and Picks
 
 Over its first levels, every class gives you the same kinds of things:
 
@@ -32,11 +32,11 @@ Over its first levels, every class gives you the same kinds of things:
 - The **Apex**, at level 4 (see [[Escalation Abilities]]).
 - Its **Features**.
 
-A class's **Class Actions** are the Actions it gives you at level 1, the Hallmark Action and the Hallmark Reaction among them. A **Pick** is one choice from the other Actions it offers: the level list says how many Picks you take at each level and of which kind (an Encounter Pick is one of its Encounter Actions). Two classes' Picks don't need to match: each offers what fits it.
+A **Pick** is one choice from the Actions a class offers beyond the ones it gives you at level 1 (the Hallmark Action and the Hallmark Reaction among them): the level list says how many Picks you take at each level and of which kind (an Encounter Pick is one of its Encounter Actions). Two classes' Picks don't need to match: each offers what fits it.
 
 ### Leveling Up
 
-Each class has a **level list**: what you gain at each level (Features, Class Actions and Picks). When you reach a new level, you take what its entry gives you. **Levels give options; Stages change the numbers** (below).
+Each class has a **level list**: what you gain at each level (Features, Actions and Picks). When you reach a new level, you take what its entry gives you. **Levels give options; Stages change the numbers** (below).
 
 The first three levels have the same shape for every class:
 

@@ -12,7 +12,7 @@ Your species gives you Attribute changes, a **Vigor** and a **Resolve** bonus (a
 - **Steadiness:** 0
 - **Size:** Medium (3)
 
-Both choices are made when you build the character and can't be changed later.
+Both choices are made when you build the character; once you have taken your level 1, they can't be changed.
 
 ## Dwarf
 

@@ -1,18 +1,14 @@
-// The core rework, batch 2 (Lucas, 2026-11-22; book, Chapter 1, Critical): on a Critical,
-//   - a Basic attack (the Weapon Attack, Fists, an NPC's Basic attack) deals 1d10! more, of one damage type the Action deals (pool and subtype),
-//     chosen before it is rolled;
-//   - an Action with a Critical row gets that row instead (Trip: [V] 1d6! Bl; Shove: Prone): its damage is rolled with the Tier, its conditions
-//     are applied as the Tier's;
+// The core rework, batch 2 (Lucas, 2026-11-22; book, Chapter 1, Critical); v0.0.521 (the cleanup audit, B1-003, Lucas 2026-11-26: "Yes"): on a Critical,
+//   - an Action with a Critical row gets that row (the Basic Attack: [V] 1d10!; Trip: [V] 1d6! Bl; Shove: Prone): its damage is rolled with the Tier,
+//     its conditions are applied as the Tier's. No rule gives a Basic attack the 1d10! any more: every Basic attack card writes its own row;
+//   - a row whose dice write no subtype ("[V] 1d10!") deals one of the damage types the Action deals (pool and subtype), chosen before it is rolled;
 //   - a Critical is always optional: the pick bar asks ("Don't apply" keeps a plain Tier 3).
 // Pure helpers first (the tests load them), then the question and the roll.
 import { bookRoll, diceOfRoll } from "./explode.mjs";
 
-export const CRIT_DIE = "1d10!";
+export const CRIT_DIE = "1d10!";   // a new NPC Basic attack's default Critical row: [V] 1d10! (item-sheet.mjs)
 const POOL_OF = { V: "B", R: "M", B: "B", M: "M" };
 const POOL_WORD = { B: "V", M: "R" };
-
-/** Pure: is this Action a Basic attack (the 1d10! by rule)? sys = the item's system, basicKey = its flag basic. */
-export const isBasicAttack = (sys, basicKey = "") => !!sys?.basicAttack || ["basicWeaponAttack", "fists"].includes(String(basicKey ?? ""));
 
 /** Pure: the damage types (pool and subtype) the Action's damage components deal, each once, in order. comps = [{ pool, sub, kind, total }] */
 export function critKinds(comps = []) {
@@ -42,33 +38,65 @@ export function critRowAp(text) {
   return m ? Math.max(0, Number(m[1]) || 0) : 0;
 }
 
+/** Pure: does the row write dice with no subtype (its type is one of the Action's, chosen)? */
+export const critRowOpen = text => critRowDice(text).some(d => !d.sub);
+
+/** Pure: the pick bar's options for a row: one a damage type for an open row (when the Action deals any), else the row as it is. */
+export function critOptions(rowText, plain, comps = []) {
+  const dice = critRowDice(rowText), open = dice.find(d => !d.sub), kinds = open ? critKinds(comps) : [];
+  if (open && kinds.length) {
+    const rest = String(plain ?? "").replace(/\[(?:V|R|B|M)\]\s*\d+d\d+!?(?:\s+[A-Z][a-z])?\.?/g, "").replace(/^[\s;,.]+|[\s;,]+$/g, "");
+    return kinds.map((k, i) => ({ id: `k${i}`, label: `${kindText(k, open.formula)}${rest ? `; ${rest}` : ""}` }));
+  }
+  return plain ? [{ id: "row", label: `Apply: ${plain}` }] : [];
+}
+
 /**
- * Ask (the pick bar, never a dialog) whether to apply the Critical's extra, and for a Basic attack which type its 1d10! is. Returns
- * { apply: false } or { apply: true, kind } (kind for the die) / { apply: true, row: true }.
+ * Ask (the pick bar, never a dialog) whether to apply the Critical row, and for a row whose dice write no subtype which of the Action's damage
+ * types they deal. Returns { apply: false } or { apply: true, row: true, kind? } (kind: the pool and subtype for the row's open dice).
  */
-export async function askCritical({ actor, item, comps = [], basic = false, rowText = "" }) {
+export async function askCritical({ actor, item, comps = [], rowText = "" }) {
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   const plain = String(rowText ?? "").replace(/@\w+\[([^\]|]*)[^\]]*\](?:\{([^}]*)\})?/g, (_m, a, b) => b || (a ? a[0].toUpperCase() + a.slice(1) : "")).replace(/<[^>]+>/g, "").trim();
-  let options;
-  if (plain) options = [{ id: "row", label: `Apply: ${plain}` }];
-  else if (basic) options = critKinds(comps).map((k, i) => ({ id: `k${i}`, label: kindText(k) }));
-  else return { apply: false };
+  const options = critOptions(rowText, plain, comps);
   if (!options.length) return { apply: false };
+  const typed = options[0].id !== "row", die = critRowDice(rowText).find(d => !d.sub)?.formula ?? CRIT_DIE;
   options.push({ id: "no", label: "Don't apply" });
   let id = options[0].id;
   try {
     const { pickBar } = await import("./pickbar.mjs");
-    id = await pickBar({ icon: "fa-star", text: `<b>${esc(item?.name ?? "Critical")}</b>: a Critical! ${plain ? "Apply its Critical row?" : "Its 1d10!: choose the damage type, or don't apply it."} (${esc(actor?.name ?? "")})`, options, cancel: "" });
+    id = await pickBar({ icon: "fa-star", text: `<b>${esc(item?.name ?? "Critical")}</b>: a Critical! ${typed ? `Its ${esc(die)}: choose the damage type, or don't apply it.` : "Apply its Critical row?"} (${esc(actor?.name ?? "")})`, options, cancel: "" });
   } catch (e) { console.warn("twod12 | the Critical's question", e); }
   if (!id || id === "no") return { apply: false };
   if (id === "row") return { apply: true, row: true };
   const k = critKinds(comps)[Number(String(id).slice(1))];
-  return k ? { apply: true, kind: k } : { apply: false };
+  return k ? { apply: true, row: true, kind: k } : { apply: false };
 }
+
+/** Pure: a row's die as the component to roll: an open die (no subtype) takes the chosen kind's pool and subtype. */
+export const critDieFor = (d, kind) => (d.sub || !kind ? d : { ...d, pool: kind.pool, sub: kind.sub });
 
 /** Roll one Critical die as a damage component (kind "D", crit: true). */
 export async function critComponent({ pool = "B", sub = "", formula = CRIT_DIE }, rolls = [], label = "Critical") {
   const r = await bookRoll(formula).evaluate();
   rolls.push(r);
   return { pool, sub, kind: "D", formula, total: r.total, dice: diceOfRoll(r), label, crit: true };
+}
+
+// v0.0.521 (the cleanup audit, B1-003; book, Chapter 14, Basic attacks: "Each Basic attack has a Critical row by default: 1d10! of its own pool and
+// subtype"): ticking "Basic attack" on an Action whose Versions write no Critical row fills it with the open row "[V] 1d10!" (its type is the one the
+// Action deals, chosen on the Critical). A Basic attack made before v0.0.521 with no row has no Critical extra: nothing migrates it.
+export const DEFAULT_CRIT_ROW = `[V] ${CRIT_DIE}`;
+/** Pure: the Versions with the default Critical row where none is written (null when every Version already has one, or there is none). */
+export function withDefaultCritRow(versions = []) {
+  const vs = Array.isArray(versions) ? versions : Object.values(versions ?? {});
+  if (!vs.length || vs.every(v => String(v?.critical ?? "").trim() || v?.noTiers)) return null;
+  return vs.map(v => (String(v?.critical ?? "").trim() || v?.noTiers ? v : { ...v, critical: DEFAULT_CRIT_ROW }));
+}
+export function registerCriticalHooks() {
+  Hooks.on("updateItem", (item, changes, _options, userId) => {
+    if (userId !== game.user.id || item.type !== "action" || foundry.utils.getProperty(changes, "system.basicAttack") !== true) return;
+    const vs = withDefaultCritRow(item.toObject().system?.versions);
+    if (vs) item.update({ "system.versions": vs }).catch(e => console.warn("twod12 | the default Critical row", e));
+  });
 }

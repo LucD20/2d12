@@ -180,6 +180,10 @@
      "text": "[R] 2d6! Ho; Pulled 2."
     },
     {
+     "label": "Critical",
+     "text": "[R] 1d10! Ho."
+    },
+    {
      "label": "Bloodied",
      "text": "You can Slide the target that distance instead of pulling it."
     },
@@ -203,7 +207,7 @@
     "automation": "gold",
     "basicAttack": true,
     "engagedOk": true,
-    "automationNote": "the damage, the Pull, and the Bloodied Pull-or-Slide choice; a Critical's 1d10! (a Basic attack); not Doomed for being Engaged."
+    "automationNote": "the damage, the Pull, and the Bloodied Pull-or-Slide choice; its Critical row's 1d10!; not Doomed for being Engaged."
    }
   },
   {
@@ -256,7 +260,7 @@
    "body": [
     {
      "label": "Setup",
-     "text": "You Advance up to 5 squares in a straight line toward the target."
+     "text": "You Advance 5 squares in a straight line toward the target."
     }
    ],
    "traits": [

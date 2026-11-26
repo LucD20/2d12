@@ -19,6 +19,14 @@ differ):
 
 ## Characters and sheets
 
+### hq-other · v0.0.521 · No "Special Actions" on an NPC; Hurled Goblin and Lay On Hands' words
+Do: As the GM, open the Ogre Chieftain's sheet (Hurled Goblin's card), add an Effect with a "More uses of a Frequency" setting and open its Details; then open Durgan's Lay On Hands.
+Expect: The setting says "its own Round Actions (not the Basic Actions) can be used twice per turn-cycle" (its list line "Own Round Actions twice per turn-cycle"); no "Special" in either; Hurled Goblin's Effect reads "the ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions."; Lay On Hands' Setup button reads "Advance 5 squares".
+
+### hq-human · v0.0.521 · A Human's choices lock after level 1
+Do: Log in as a player who owns Aveline (Human Paladin, level 1 confirmed) and click Species: Choices on her Build tab. Then do the same as the GM.
+Expect: As the player: the Species window shows her two Attributes and the +3 side ticked, every option off (hovering one gives the reason: "Locked: your level 1 is confirmed..."), the same reason at the bottom, and only a Close button. As the GM: the options work and Save choices saves them.
+
 ### cu-cards · v0.0.520 · Tend and the Basic Actions' new cards
 Do: In a world from before v0.0.520, refresh the Basic Actions when asked (or Update from the compendium, Basic Actions too), then open Aveline's Actions tab and the HUD's Basic tab.
 Expect: Heal is now Tend (in Utility, same rolls and Rally Point button); Relocate has no Strike trait; Seek's card writes its lines once, with a Use button for 1 AP and one for 2 AP; Crawl's 2 AP block starts with "Requirement: Your Speed is 5 or higher."; Advance's card has its Advance button, and using Advance still moves at once (no card first).
@@ -73,6 +81,18 @@ Expect: Flanking: no warning, the flanking Field Boon in the dialog. Alone: the 
 
 ## Chat cards
 
+### hq-crit-basic · v0.0.521 · The Basic Attack's Critical row
+Do: With Aveline, make Basic Attacks against the Orc Warrior until one is a Critical (or set the dice), first with nothing else, then with Smite's Holy damage on the same attack.
+Expect: The card shows "Critical: [V] 1d10!" under Tier 3. On the Critical, the pick bar asks "Its 1d10!: choose the damage type, or don't apply it": one option, her sword's Slash ([V] 1d10! Sl), then Don't apply; with Smite, a second option [R] 1d10! Ho. The die is rolled with the chosen type and explodes; the damage card shows the Critical line; the Encounter Log counts the Critical as before.
+
+### hq-crit-npc · v0.0.521 · The creatures' Critical rows
+Do: With the Goblin Sneak, roll Shiv against Kaela until a Critical; then the Orc Warrior's Hamstringing Axe against Durgan; then the Grave Wisp's Guttering Glance against Sylwen.
+Expect: Each card shows its own Critical row ([V] 1d10! Pi, [V] 1d10! Sl, [R] 1d10! Ps). On the Critical the pick bar asks "Apply: [V] 1d10! Pi." / Don't apply; the 1d10 explodes on a 10 even for the goblin (its Tier dice still don't); the damage is the row's pool and subtype.
+
+### hq-crit-default · v0.0.521 · A new Basic attack gets the default row
+Do: On the Orc Warrior's sheet, make a new Action, give it a Tier 2 of [V] 1d4 Bl, then tick "Basic attack" in its sheet.
+Expect: Its Critical row fills with "[V] 1d10!" by itself (an existing row is never overwritten); on a Critical the pick bar offers [V] 1d10! Bl.
+
 ### bst-ticks-damage · v0.0.519 · Damage removes a Minion's ticks by the Tier
 Do: With Sylwen, make a Basic Attack against a Goblin Sneak; apply the damage of a Tier 1 hit (roll again until you get one), then of a Tier 2 on another goblin.
 Expect: The Tier 1 removes 1 tick ("Took 1 tick"; the goblin counts as Bloodied: one pip left); the Tier 2 removes 2 and the goblin goes Down. The damage's size doesn't matter. A heal on the first goblin (Durgan's Lay On Hands) gives back 1 tick and ends Bloodied.
@@ -80,6 +100,10 @@ Do: With Aveline, use Word of Radiance (or any Save Action) on two goblins.
 Expect: Each goblin's own Save, turned over: a Tier 1 Save removes 3 (Down), a Tier 2 removes 2, a Tier 3 with no damage removes none.
 
 ## Conditions and their Tiers
+
+### hq-lingering · v0.0.521 · Lingerings of different subtypes run together; Shake Off ends one
+Do: Give Durgan a Lingering 1d4 Pi (the Orc Warrior's Barbed Javelin, Tier 3), then a Lingering 1d6 Fi (by hand from the Conditions), then another Lingering 1d4 Pi. End his turn. Then use Shake Off on him.
+Expect: He keeps two Lingerings: the Piercing one (the second Piercing one, not higher, leaves the first) and the Fire one. At the end of his turn each deals its own damage card. Shake Off asks in the bottom bar which Lingering it ends (both listed by name); the Save uses that Lingering's Attributes and DC, and only that one ends (or is halved on a Tier 2).
 
 ## Movement
 

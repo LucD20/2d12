@@ -110,11 +110,11 @@ export function convertEffects(text) {
     (m, n, k, bb, pl, who, what, trait) => `@Boon[${bb === "Bane" ? "-" : ""}${n}|bb:${k.toLowerCase()}${trait ? `|traits:${trait.toLowerCase()}` : "|next:roll"}${who === "your" ? "|self:yes" : ""}]{${n} ${k} ${bb}${pl}} on ${who} next ${what}`);
   // v0.0.410 (pack F2, Trade Places; book, Swapping Places): "You and the target swap squares." is a Swap chip
   s = s.replace(/\bYou and the target swap squares\b/g, "You and the target @Swap[]{swap squares}");
-  // v0.0.409 (pack F2, the Paladin's Setups): "Advance up to 5 squares in a straight line toward the target" (Lay On Hands), "You Advance." (Reckoning)
-  s = s.replace(/\bAdvance\s+up\s+to\s+(\d+)\s+squares\b/g, (m, n) => `@Move[advance|distance:${n}]{Advance up to ${n} squares}`);
+  // v0.0.409 (pack F2, the Paladin's Setups): "Advance 5 squares in a straight line toward the target" (Lay On Hands), "You Advance." (Reckoning)
+  s = s.replace(/\bAdvance\s+(up\s+to\s+)?(\d+)\s+squares\b/g, (m, up, n) => `@Move[advance|distance:${n}]{Advance ${up ? "up to " : ""}${n} squares}`);   // v0.0.521 (the cleanup audit, B2-009): "Advance 5 squares" (Lay On Hands) too; a button's own label is never made a button again (the (?<!\{) below)
   s = s.replace(/\b(You|you)\s+Advance(?=\s*\.)/g, (m, y) => `${y} @Move[advance|distance:speed]{Advance}`);
   s = s.replace(/\b(pushed|pulled|slid|advance|walk|evade|reposition)\s+half\s+(?:your\s+)?(speed|walk)\b(\s*\(rounded down\))?/gi, (m, k, r, down) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${down ? `floor(${r.toLowerCase()}/2)` : `${r.toLowerCase()}/2`}${k.toLowerCase() === "reposition" ? "|reach:yes" : ""}]`);   // v0.0.227: "(rounded down)" floors (the evaluator rounds up)
-  s = s.replace(new RegExp(`\\b(pushed|pulled|slid|advance|walk|evade|reposition)\\s+(${EXPR})(?![\\w/])`, "gi"), (m, k, e) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${e.replace(/\s+/g, "").toLowerCase()}${k.toLowerCase() === "reposition" ? "|reach:yes" : ""}]`);   // v0.0.227: "Reposition N" (Relocate) is a move button too, kept within Reach
+  s = s.replace(new RegExp(`(?<!\\{)\\b(pushed|pulled|slid|advance|walk|evade|reposition)\\s+(${EXPR})(?![\\w/])`, "gi"), (m, k, e) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${e.replace(/\s+/g, "").toLowerCase()}${k.toLowerCase() === "reposition" ? "|reach:yes" : ""}]`);   // v0.0.227: "Reposition N" (Relocate) is a move button too, kept within Reach
   // "Reposition 3": a free-direction Forced Movement within an Emanation of that many squares
   s = s.replace(/\bReposition\s+(\d+)\b/g, "@Move[reposition|distance:$1]");
   // "Cleave 2": a button that deals Attribute damage to the creatures next to the target

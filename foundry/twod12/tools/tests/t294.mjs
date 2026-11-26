@@ -1,6 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t294.mjs)
 // v0.0.477 to v0.0.479 (the core rework, batches 1 and 2; book/core-rework.md): a Favored / Doomed source counts as 5 (calc.mjs bbResolve), the
-// Critical (critical.mjs: a Basic attack's 1d10!, a card's Critical row, the type chosen), Bloodied's Steadiness below 0 (move.mjs steadyValue),
+// Critical (critical.mjs: a card's Critical row, the type chosen for a row with no subtype; since v0.0.521 no Basic-attack rule), Bloodied's Steadiness below 0 (move.mjs steadyValue),
 // the Bloodied / Strained lines (statelines.mjs stateLinesFor), the cards' data (Trip, Shove, the Ogre's placeholder line, Break Free, Lean).
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -16,12 +16,15 @@ console.log("the odds follow it: Doomed + 2 Banes = Doomed:", JSON.stringify(CA.
   "| Doomed + 1 Boon = a normal roll at -4:", JSON.stringify(CA.tierProbs(3, 13, 1, 0, "doomed")) === JSON.stringify(CA.tierProbs(3, 13, 0, 4, "")));
 
 console.log("--- the Critical (critical.mjs)");
-console.log("Basic attacks:", CR.isBasicAttack({ basicAttack: true }), CR.isBasicAttack({}, "basicWeaponAttack"), CR.isBasicAttack({}, "fists"), "| not:", CR.isBasicAttack({}, "trip"), CR.isBasicAttack({}, ""));
+// v0.0.521 (the cleanup audit, B1-003): no rule gives a Basic attack the 1d10!: each card writes its Critical row (an open one takes a type chosen)
+console.log("Basic attacks' rows:", ["basicWeaponAttack", "fists"].map(k => BASIC_ACTIONS[k].versions[0].critical).join(" | "), "| open:", CR.critRowOpen("[V] 1d10!"), CR.critRowOpen("[V] 1d10! Bl."));
 const comps = [{ pool: "B", sub: "Pi", kind: "W", total: 5 }, { pool: "B", sub: "Pi", kind: "A", total: 2 }, { pool: "M", sub: "Ho", kind: "D", total: 3 }, { pool: "B", sub: "Pi", kind: "E", total: 4 }, { pool: "B", sub: "Fi", kind: "D", total: 6, crit: true }];
 console.log("the types it can choose:", CR.critKinds(comps).map(k => CR.kindText(k)).join(" | "));
+console.log("the open row's options:", CR.critOptions("[V] 1d10!", "[V] 1d10!", comps).map(o => o.label).join(" | "), "| a typed row:", CR.critOptions("[V] 1d10! Bl.", "[V] 1d10! Bl.", comps).map(o => o.label).join(" | "), "| no damage dealt:", CR.critOptions("[V] 1d10!", "[V] 1d10!", []).map(o => o.label).join(" | "));
+console.log("the open die takes the kind:", JSON.stringify(CR.critDieFor(CR.critRowDice("[V] 1d10!")[0], { pool: "M", sub: "Ho" })), "| a typed one keeps its own:", JSON.stringify(CR.critDieFor(CR.critRowDice("[R] 1d10! Ps.")[0], { pool: "B", sub: "Pi" })));
 console.log("a Critical row's dice:", JSON.stringify(CR.critRowDice("[V] 1d6! Bl.")), "| none:", JSON.stringify(CR.critRowDice("@Condition[prone]")));
 console.log("Trip's Critical:", BASIC_ACTIONS.trip.versions.map(v => v.critical).join(" | "), "|| Shove's:", BASIC_ACTIONS.shove.versions.map(v => v.critical).join(" | "));
-console.log("wired: asked before the damage roll, a Tier with no damage too:", src("module/actions.mjs").includes("const ans = await C.askCritical({ actor, item, comps, basic: C.isBasicAttack(") && src("module/actions.mjs").includes("const ans = await C.askCritical({ actor, item, basic: false, rowText });"));
+console.log("wired: asked before the damage roll, a Tier with no damage too:", src("module/actions.mjs").includes("const ans = await C.askCritical({ actor, item, comps, rowText });") && src("module/actions.mjs").includes("const ans = await C.askCritical({ actor, item, rowText });") && src("module/actions.mjs").includes("C.critComponent(C.critDieFor(d, ans.kind), rolls)"));
 
 console.log("--- Bloodied: Steadiness below 0 (move.mjs steadyValue), Speed −2 (data.mjs)");
 console.log("Pushed 2 vs Steadiness 1:", MV.steadyValue(2, 1), "| vs -1:", MV.steadyValue(2, -1), "| a Reposition 2 vs -1:", MV.steadyValue(2, -1, "reposition"), "| Pushed 1 vs 2:", MV.steadyValue(1, 2));

@@ -6,8 +6,8 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. **Re
 
 ## Where things stand (2026-11-26)
 
-- **Foundry: v0.0.520** (the cleanup audit followed: `book/audit-2026-11-25/foundry-needs.md`, 29 built, 40 already so, 12 open in `foundry/foundry-backlog.md`, "THE CLEANUP AUDIT: WHAT FOUNDRY STILL HAS TO FOLLOW"). 316 tests pass. Released once it reaches main (v0.0.519 is the release before it). **Not tested by Lucas:** the 15 `bst-*` tests (the Bestiary's rebuild) and the 7 `cu-*` and 2 `cl-*` tests (v0.0.520) in `foundry/to-test.md`. Existing worlds need the four creatures imported again from the NPCs compendium, and the Basic Actions refreshed (Heal becomes Tend).
-- **The book:** Chapters 1 to 9 (Core Rules), 11 Species, 12 Paladin, 13 Archer, 14 Bestiary, 15 Gear; six HTML documents; the Talents document is set aside. Only Stage 0 (levels 1 to 3) is written. `python3 build_rules.py`: 0 unresolved refs, 20 open boxes.
+- **Foundry: v0.0.521** (Lucas's answers to the audit's held questions: the Critical only from each card's Critical row, a Human's choices locked after level 1, Lingerings by subtype, no "Special Actions"; v0.0.520 followed the audit's book: `book/audit-2026-11-25/foundry-needs.md`; 10 items open in `foundry/foundry-backlog.md`, "THE CLEANUP AUDIT: WHAT FOUNDRY STILL HAS TO FOLLOW", and the Paladin / Archer traits). 317 tests pass. Released once it reaches main (v0.0.519 is the release before it). **Not tested by Lucas:** the 15 `bst-*` tests (the Bestiary's rebuild), the 7 `cu-*` and 2 `cl-*` tests (v0.0.520) and the 6 `hq-*` tests (v0.0.521) in `foundry/to-test.md`. Existing worlds need the four creatures imported again from the NPCs compendium, the Basic Actions refreshed (Heal becomes Tend; the Basic Attack's and Fists' Critical rows) and "Update from the compendium" (Drawing Light's and Harrying Shot's Critical rows).
+- **The book:** Chapters 1 to 9 (Core Rules), 11 Species, 12 Paladin, 13 Archer, 14 Bestiary, 15 Gear; six HTML documents; the Talents document is set aside. Only Stage 0 (levels 1 to 3) is written. `python3 build_rules.py`: 0 unresolved refs, 24 open boxes.
 - **The core rework** (`book/core-rework.md`, section P is its order): batches 1 to 4 built. Batch 5 (Escalation): the first step is built (no Arts, no Escalation Passives, the Escalation Die dE, Steady Draw's 2dE); the rest waits (Lucas: no extra levels until level 1 feels good). Batches 6 and 7 are the Bestiary.
 - **The Bestiary** (`book/bestiary-design.md`): rebuilt from the ground up. Decided and in the book as playtest rules: the measure of a fight (Rally Points a PC, and Downs), the bands, the normal fight (CV 100 a PC), the four ranks' defaults (Minion with ticks, Grunt, Standard, Elite), and four creatures, one a rank (Goblin Sneak, Grave Wisp, Orc Warrior, Ogre Chieftain). **The Boss is parked until after playtest 8. Every number is a playtest value.**
 - **The Hide package** (Hide, Sneak, Seek, Point Out; v0.0.513 to v0.0.518): in the book and in Foundry, tested by Lucas.
@@ -16,12 +16,12 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. **Re
 ## What is happening now
 
 1. **Playtest 8** (Lucas): level 1 pregens against the new creatures. The fights Claude suggests are in `foundry/foundry-backlog.md`, "Playtest 8, the fights Claude suggests".
-2. **The cleanup audit** (`book/audit-2026-11-25/`): Lucas answered its 282 questions; 223 are applied to the book (`applied.md`), 16 are held as questions (`work-order.json`, `do: "hold"`), and Foundry follows the book in v0.0.520 (`foundry-needs.md`; the 12 open items in `foundry/foundry-backlog.md`). The approved removals and moves are done too (old drafts, card builders and mockups in `archive/`; the sync scripts, the Elite ladder, the Ruler line and 21 unused functions gone).
+2. **The cleanup audit** (`book/audit-2026-11-25/`): Lucas answered its 282 questions; they are applied to the book (`applied.md`; the held questions he answered on 2026-11-26 in its last section), 6 are still held (`work-order.json`, `do: "hold"`), and Foundry follows the book in v0.0.520 and v0.0.521 (`foundry-needs.md`; the open items in `foundry/foundry-backlog.md`). The approved removals and moves are done too (old drafts, card builders and mockups in `archive/`; the sync scripts, the Elite ladder, the Ruler line and 21 unused functions gone).
 
 ## Waiting on Lucas
 
-- His checklist on v0.0.519 and v0.0.520, and playtest 8's report.
-- The cleanup audit's 16 held questions (`work-order.json`, `do: "hold"`), and the open Foundry items that are his call (an "up to N targets" Action with no target; when Human's choices lock).
+- His checklist on v0.0.519 to v0.0.521, and playtest 8's report.
+- The cleanup audit's 6 held questions (`work-order.json`, `do: "hold"`: an NPC's items and losing its weapon, B3-033 / B3-065; the reminders B2-050, B3-011, B3-015, F-033; B2-008 and B2-080 stay reminders too). Next on his word: the Paladin and Archer traits on every class Action (`book/rules-backlog.md`).
 - Reviewed, not decided: a Rally Point of a third of Health (`book/bestiary-design.md`; "I will playtest as is"). On watch: the Ogre's Backhand (a Save is ready if it is too strong).
 - The older list of open items that stood here was not checked line by line: it is in the archived copy.
 

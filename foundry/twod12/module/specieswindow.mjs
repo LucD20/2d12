@@ -2,7 +2,7 @@
 // the Species window (pickwindow.mjs), opened when a species is dropped on a character and from the sheet (the Species section's "Choices" link,
 // the Health line's species button). Its selections: the two Attributes of a species that lets you choose (Human), and the side of the bigger
 // Health bonus (Human +3 / +2: with the class's high value, Vigor or Resolve). What it grants is listed: Attributes, Health bonuses, Speed,
-// Reach, Size, Steadiness. Nothing is applied before Confirm.
+// Reach, Size, Steadiness. Nothing is applied before Confirm. v0.0.521: a player's choices lock once the first class level is confirmed (speciesLockReason).
 import { TWOD12 } from "./config.mjs";
 import { pickWith } from "./pickwindow.mjs";
 const AN = TWOD12.attributes, SIZE = { 1: "Tiny", 2: "Small", 3: "Medium", 4: "Large", 5: "Huge", 6: "Gargantuan", 7: "Colossal" };
@@ -12,24 +12,36 @@ const sgn = n => `${n >= 0 ? "+" : "−"}${Math.abs(n)}`;
  * Pure: the window's model for a species (its system data, name and img) and the state { chosen: [attribute keys], side: "" | "vigor" | "resolve" }.
  * adding: the species is being added (the confirm label); className: the class's name when the character has one (the Health row's words).
  */
-export function speciesModel(sp, state, { adding = true, className = "" } = {}) {
+export function speciesModel(sp, state, { adding = true, className = "", locked = "" } = {}) {
   const s = sp.system ?? sp, chosen = state.chosen ?? [], side = state.side ?? "";
+  // v0.0.521 (the cleanup audit, B2-069): locked (the reason): every choice shown, none can change, no Confirm
+  const lk = o => (locked ? { ...o, off: true, tip: locked } : o);
   const fixed = Object.entries(s.attributes ?? {}).filter(([, v]) => v);
   const sections = [];
   if (s.pickTwo) {
     sections.push({ title: "Attributes", pill: `${chosen.length} / 2`, done: chosen.length === 2, sub: "Choose two different Attributes to gain +1.",
-      rows: [{ key: "attr", label: "+1 to", opts: Object.entries(AN).map(([k, l]) => ({ k, l, on: chosen.includes(k), off: chosen.length >= 2 && !chosen.includes(k), cls: `cw-a-${k}` })) }] });
+      rows: [{ key: "attr", label: "+1 to", opts: Object.entries(AN).map(([k, l]) => lk({ k, l, on: chosen.includes(k), off: chosen.length >= 2 && !chosen.includes(k), cls: `cw-a-${k}` })) }] });
   } else sections.push({ title: "Attributes", pill: "Granted", done: true, html: `<div class="cw-grant">${fixed.length ? fixed.map(([k, v]) => `<span class="cw-a-${k}"><b>${AN[k]}</b> ${sgn(v)}</span>`).join("") : "<em>No Attribute changes.</em>"}</div>` });
   const big = Math.max(s.bodyMod ?? 0, s.mindMod ?? 0), small = Math.min(s.bodyMod ?? 0, s.mindMod ?? 0);
   if (s.pickHealth) {
     sections.push({ title: "Health", pill: "Chosen", done: true, sub: `${sgn(big)} to one threshold and ${sgn(small)} to the other: you choose. "With the high value" follows where the class's high Health value goes.`,
-      rows: [{ key: "side", label: `${sgn(big)} on`, opts: [{ k: "", l: className ? `the ${className}'s high value` : "the class's high value", on: side === "" }, { k: "vigor", l: "Vigor", on: side === "vigor" }, { k: "resolve", l: "Resolve", on: side === "resolve" }] }] });
+      rows: [{ key: "side", label: `${sgn(big)} on`, opts: [{ k: "", l: className ? `the ${className}'s high value` : "the class's high value", on: side === "" }, { k: "vigor", l: "Vigor", on: side === "vigor" }, { k: "resolve", l: "Resolve", on: side === "resolve" }].map(lk) }] });
   } else sections.push({ title: "Health", pill: "Granted", done: true, html: `<div class="cw-grant"><span><b>Vigor</b> ${sgn(s.bodyMod ?? 0)}</span><span><b>Resolve</b> ${sgn(s.mindMod ?? 0)}</span></div>` });
   sections.push({ title: "What it grants", pill: "Granted", done: true, html: `<div class="cw-grant"><span><b>Speed</b> ${s.speed ?? 5}</span><span><b>Reach</b> ${s.reach ?? 1}</span><span><b>Size</b> ${SIZE[s.size ?? 3] ?? ""} (${s.size ?? 3})</span><span><b>Steadiness</b> ${s.steadiness ?? 0}</span></div>` });
   const complete = !s.pickTwo || chosen.length === 2;
   const stats = [["Speed", String(s.speed ?? 5)], ["Reach", String(s.reach ?? 1)], ["Size", `${SIZE[s.size ?? 3] ?? ""} (${s.size ?? 3})`], ["Steadiness", String(s.steadiness ?? 0)], ["Health", s.pickHealth ? `${sgn(big)} / ${sgn(small)}, your choice` : `Vigor ${sgn(s.bodyMod ?? 0)}, Resolve ${sgn(s.mindMod ?? 0)}`]];
-  const message = !complete ? `${2 - chosen.length} Attribute${2 - chosen.length === 1 ? "" : "s"} left to choose.` : (s.pickTwo || s.pickHealth ? "Everything is chosen. You can change it from the sheet (Species: Choices)." : "Nothing to choose: this species grants everything.");
+  const message = !complete ? `${2 - chosen.length} Attribute${2 - chosen.length === 1 ? "" : "s"} left to choose.` : (s.pickTwo || s.pickHealth ? "Everything is chosen. You can change it from the sheet (Species: Choices) until your level 1 is confirmed." : "Nothing to choose: this species grants everything.");
+  if (locked) return { name: sp.name ?? "Species", sub: "Species", img: sp.img ?? "", stats, sections, complete: false, message: locked, confirm: false, cancel: "Close" };
   return { name: sp.name ?? "Species", sub: "Species", img: sp.img ?? "", stats, sections, complete, message, confirm: adding ? `Add ${sp.name ?? "the species"} to sheet` : "Save choices" };
+}
+
+/**
+ * Pure (v0.0.521; the cleanup audit, B2-069; book, Species, Human: "once you have taken your level 1, they can't be changed"): why a player can't
+ * change a species' choices, or "". The first class level is confirmed once the character has its class (the class window adds it on Confirm).
+ * A GM always can. o: { gm, character, hasClass, chooses } (chooses: the species has a choice: pickTwo or pickHealth).
+ */
+export function speciesLockReason({ gm = false, character = true, hasClass = false, chooses = false } = {}) {
+  return !gm && character && hasClass && chooses ? "Locked: your level 1 is confirmed, so these choices can't change (the GM can still change them)." : "";
 }
 
 /** Pure: a click on a row. */
@@ -40,19 +52,20 @@ export function speciesPick(state, row, k) {
 }
 
 /** Open the window for a species item (the compendium's, or the character's copy) and wait: { chosen, side } or null. */
-export async function chooseSpecies({ item, actor = null, adding = true }) {
+export async function chooseSpecies({ item, actor = null, adding = true, locked = "" }) {
   // v0.0.245 (Lucas): a dropped species starts fresh (no Attributes chosen, the bigger bonus with the high value); editing from the sheet keeps the current choices.
   let state = adding ? { chosen: [], side: "" } : { chosen: [...(item.system?.chosen ?? [])], side: actor?.system?.speciesHigh ?? "" };
   const className = actor?.itemTypes?.class?.[0]?.name ?? "";
-  return pickWith({ title: `Species: ${item.name}`, model: () => speciesModel(item, state, { adding, className }), pick: (row, k) => { state = speciesPick(state, row, k); }, result: () => ({ chosen: state.chosen, side: state.side }) });
+  return pickWith({ title: `Species: ${item.name}`, model: () => speciesModel(item, state, { adding, className, locked }), pick: (row, k) => { if (!locked) state = speciesPick(state, row, k); }, result: () => ({ chosen: state.chosen, side: state.side }) });
 }
 
 /** From the sheet: the character's species copy, its choices changed in place. */
 export async function editSpecies(actor) {
   const sp = actor?.itemTypes?.species?.[0];
   if (!sp) return ui.notifications.warn(`${actor?.name ?? "This character"} has no species.`);
-  const res = await chooseSpecies({ item: sp, actor, adding: false });
-  if (!res) return;
+  const locked = speciesLockReason({ gm: !!game.user?.isGM, character: actor.type === "character", hasClass: !!actor.itemTypes?.class?.length, chooses: !!(sp.system?.pickTwo || sp.system?.pickHealth) });
+  const res = await chooseSpecies({ item: sp, actor, adding: false, locked });
+  if (!res || locked) return;
   if (JSON.stringify([...(sp.system.chosen ?? [])]) !== JSON.stringify(res.chosen)) await sp.update({ "system.chosen": res.chosen });
   if ((actor.system.speciesHigh ?? "") !== res.side) await actor.update({ "system.speciesHigh": res.side });
 }

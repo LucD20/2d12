@@ -152,6 +152,10 @@
      "text": "[R] 1d12! Ps."
     },
     {
+     "label": "Critical",
+     "text": "[R] 1d10! Ps."
+    },
+    {
      "label": "Bloodied",
      "text": "On a Tier 3, the target is Daunted of you (EoT)."
     }
@@ -168,7 +172,7 @@
     "folder": "Archer",
     "automation": "gold",
     "basicAttack": true,
-    "automationNote": "the damage; a Critical's 1d10! (a Basic attack); the Bloodied line's Daunted after the damage lands on a Bloodied target on a Tier 3."
+    "automationNote": "the damage; its Critical row's 1d10!; the Bloodied line's Daunted after the damage lands on a Bloodied target on a Tier 3."
    }
   },
   {

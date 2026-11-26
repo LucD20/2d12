@@ -47,13 +47,33 @@ const READ = {
   "F-025": { do: "apply", why: "Lucas confirmed the manifest updates work: the four files go." },
   "F-033": { do: "hold", topic: "later", ask: "Which is the oldest world you still play (its system version)? The one-time migrations older than it can go." },
 };
+// Lucas's answers to the held questions (2026-11-26): each becomes "apply" with his words (applied.md, "The held questions answered").
+const ANSWERED = {
+ "B1-003": "2026-11-26: \"Yes\" (every Basic attack card gets its own Critical row; Chapter 1's general Basic-attack rule goes; \"then we can fine tune each\")",
+ "B1-023": "2026-11-26: \"Yes\" (leave Foundry as it is: any Action can be rolled with no target). \"In the rules though, if there isnt already, you should note: When targeting a creature, you can instead target an object.\"",
+ "B2-004": "2026-11-26: \"We will be adding Paladin trait to all Paladin Actions, and Archer to all Archer's Actions, so we can just call them their trait if necessary, like Paladin Actions.\" (the term \"Class Actions\" is dropped; the traits are an open item)",
+ "B2-066": "2026-11-26: \"Different subtypes can run together\"",
+ "B3-004": "2026-11-26: \"Yes\" (with B1-003: each Basic attack card writes its Critical row)",
+ "B2-069": "2026-11-26: \"Yes, first level confirmed\"",
+ "B3-035": "2026-11-26: close the table: Easy \"about 1 (up to 1¼)\", Normal \"about 1½ (above 1¼, up to 2)\", Hard \"about 2½ (above 2, up to 3)\", Deadly \"above 3\"",
+ "B3-037": "2026-11-26: remove \"Late in a good expedition, a party can take a band more.\"; keep \"Momentum doesn't change the budget\"",
+ "B3-038": "2026-11-26: one sentence: \"No number in this chapter assumes a class: with their class cards, the PCs find a fight cheaper or shorter than its band.\"",
+ "B3-039": "2026-11-26: \"A Minion's CV of 30 is for Minions mixed with other enemies; about three of them count for one PC.\"",
+ "B3-040": "2026-11-26: remove the clause",
+ "B3-052": "2026-11-26: \"Yes\" (with B1-003: the Minion's and Grunt's cards write their own Critical row)",
+ "B3-053": "2026-11-26: \"A Standard is the unit: CV 100, one for each PC in a normal fight.\" (and the places that repeat it agree)",
+ "B3-070": "2026-11-26: \"Yes\" (the defined term is dropped: \"its other Actions\")",
+ "B3-074": "2026-11-26: \"Good\" (the ogre places the Minion in an empty square adjacent to the target, hit or miss; it takes no damage and triggers no Reactions)",
+ "B2-009": "2026-11-26: \"Leave on Charge, remove from Lay on Hands. Charge is a special case.\""
+};
 const out = [];
 for (const f of F) {
   const a = A[f.id] ?? {}, chosen = a.choice == null ? null : f.options[a.choice], r = READ[f.id];
   let todo = r?.do ?? (chosen == null ? "hold" : /^(keep (it|everything|them) (all )?(as it is|as they are|in place)|keep it as it is|leave them where they are)/i.test(chosen) ? "nothing" : "apply");
   if (!r && /^keep/i.test(chosen ?? "") && !/[,;:]| and |move|cut|remove|reword/i.test(chosen.slice(4))) todo = "nothing";
+  if (ANSWERED[f.id]) todo = "apply";
   out.push({ id: f.id, section: f.section, group: f.group, do: todo, chosen, note: a.note || undefined, extra: r?.extra, why: r?.why, ask: r?.ask, topic: r?.topic,
-    where: f.where, file: f.file, line: f.line, quote: f.quote, other: f.other, problem: f.problem, what: f.what, paths: f.paths, evidence: f.evidence });
+    where: f.where, file: f.file, line: f.line, quote: f.quote, other: f.other, problem: f.problem, what: f.what, paths: f.paths, evidence: f.evidence, answered: ANSWERED[f.id] });
 }
 fs.writeFileSync(path.join(HERE, "work-order.json"), JSON.stringify(out, null, 1));
 const n = k => out.filter(x => x.do === k).length;
