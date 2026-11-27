@@ -1,9 +1,9 @@
 --- 1. sf-charge: the normal Range a Charge stops at
 Durgan (Arming Sword, Drawing Light on his sheet): its Basic attacks read 0; ways [["Arming Sword",1]]; a pick false
-Sylwen (Hunting Bow): its Basic attacks read 0; ways [["Hunting Bow",8]]; a pick false
-the Orc Warrior: its Basic attacks read 2; ways [["Hamstringing Axe",1],["Barbed Javelin",6]]; a pick true
+Sylwen (Hunting Bow): its Basic attacks read 0; ways []; a pick false
+the Orc Warrior: its Basic attacks read 2; ways [["Hamstringing Axe",1]]; a pick false
 an enemy 5 squares from Durgan: stop Range 1, 4 squares to run: can Charge
-(v0.0.525's reading, every creature's basicAttack items: stop Range 5, 0 squares: too close)
+(v0.0.525's reading, every creature's basicAttack items: stop Range 1, 4 squares: can Charge)
 move.mjs reads chargeNpcAttacks: true
 --- 2. ox-pointout
 rows: [{"id":"k1","name":"Kaela","state":"unsensed"},{"id":"s1","name":"Sylwen","state":"pointed"}]

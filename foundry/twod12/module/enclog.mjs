@@ -116,6 +116,7 @@ export function lineText(e, nm = r => r?.name ?? "?", an = n => n) {
     case "state": return `${nm(e.who)} becomes ${d.state}${d.by ? ` (${d.by})` : ""}${d.cardLine ? ` · ${d.cardLine}` : ""}`;
     case "rx": return `${nm(e.who)} ${d.outcome === "used" ? "uses" : d.outcome === "skipped" ? "skipped" : "passed"} ${an(d.action)}${d.trigger ? ` on ${d.trigger}` : ""}${d.detail ? ` (${d.detail})` : ""}`;
     case "block": return `${nm(e.who)}'s ${d.mode || "movement"} is blocked${d.by ? ` by ${d.by}` : ""}`;
+    case "save": return `${nm(e.who)}: ${d.label} ${d.total} vs DC ${d.dc}${d.action ? ` (${an(d.action)})` : ""} T${d.tier}`;   // v0.0.532
     case "check": return `${nm(e.who)}: ${d.label} ${d.total} vs DC ${d.dc}${d.vs ? ` (${d.vs})` : ""}${d.banes ? `, ${d.banes} Bane${d.banes === 1 ? "" : "s"}` : ""} T${d.tier}`;
     case "turn": return `End of turn: AP ${d.apSpent ?? 0}/${d.apMax ?? 4}${d.apKept ? ` · kept ${d.apKept}${d.guard ? ` (+${d.guard} Guard)` : ""}` : ""}`;
     case "down": return `${nm(e.who)} goes Down`;
@@ -141,7 +142,7 @@ export function turnText(turn, nm, an, { details = false } = {}) {
   const parts = [], tail = [];
   for (const e of turn.items) {
     if (e.k === "turn") continue;
-    if (["heal", "down", "up", "note"].includes(e.k) || (details && ["dmg", "cond", "state"].includes(e.k))) { tail.push(lineText(e, nm, an)); continue; }
+    if (["heal", "down", "up", "note", "save"].includes(e.k) || (details && ["dmg", "cond", "state"].includes(e.k))) { tail.push(lineText(e, nm, an)); continue; }
     if (e.k === "rx") { if (details || e.d?.outcome === "used") tail.push(lineText(e, nm, an)); continue; }
     if (!["act", "move", "push"].includes(e.k)) continue;
     const mine = !e.who?.id || e.who.id === ownId;
@@ -520,6 +521,10 @@ export const patchLine = (id, changes) => send({ type: "patch", id, changes });
 
 /** Deduplication window so card-applied damage doesn't also trigger a duplicate updateActor line. */
 const recentCardDmg = new Map();
+/** v0.0.532: the last by-hand damage line of each creature ({ id, n, at }): a card's line for the same damage within 2 seconds voids it. */
+const recentManual = new Map();
+/** Pure (v0.0.532): does a card's damage line stand for this by-hand line (the same creature's, the same total, within 2 seconds)? */
+export const sameAsManual = (m, n, now = Date.now()) => !!m && Number(m.n) === Number(n) && now - Number(m.at) <= 2000;
 export function noteCardDamageApplied(actorUuid) {
   if (actorUuid) recentCardDmg.set(actorUuid, Date.now());
 }
@@ -536,6 +541,10 @@ export async function logDamageCard({ origin = null, target = null, v = 0, r = 0
   const text = parts.join(", ") || "0 damage";
   if (!game.combat?.started) return "";
   const id = newId();
+  // v0.0.532 (playtest 11: "Backhand's 2 damage is in the Adjust column, not in Raw"): the update was already logged by hand (the actor's hook):
+  // the card's line replaces it, so the damage counts once, in Raw
+  const man = tgtRef.actorUuid ? recentManual.get(tgtRef.actorUuid) : null;
+  if (sameAsManual(man, n)) { recentManual.delete(tgtRef.actorUuid); patchLine(man.id, { off: true, why: "the card's line" }); }
   await logLine("dmg", tgtRef, {
     n, v: Number(v) || 0, r: Number(r) || 0,
     pool: r > 0 && !v ? "R" : "V",
@@ -569,6 +578,8 @@ export function cardShare(mods = []) {
 /** v0.0.511 (core rework section R, batch 4): a movement refused because a creature blocks the way (Chapter 3, Creatures in your way). */
 export const logBlocked = (actor, by = "", mode = "") => logLine("block", refOf(actor), { by, mode });
 /** v0.0.511 (section R: Tumbles and their Checks): a Check rolled from a card (a Tumble's Appeal or Instinct Check against its targets). */
+/** v0.0.532 (playtest 11: "Crack the Ground and Dying Flare post no result line when nobody is hurt"): each creature's Save against a Save Action, with its Tier. */
+export const logSave = (actor, { label = "Save", total = 0, dc = 13, tier = 0, action = "" } = {}) => logLine("save", refOf(actor), { label, total, dc, tier, ...(action ? { action } : {}) });
 export const logCheck = (actor, { label = "Check", total = 0, dc = 13, tier = 0, vs = "", banes = 0 } = {}) => logLine("check", refOf(actor), { label, total, dc, tier, ...(vs ? { vs } : {}), ...(banes ? { banes } : {}) });
 /** v0.0.488: log every offered Reaction row (used, passed, or skipped) when a Reactions stack finishes. */
 export function logReactionMoment(st) {
@@ -622,6 +633,8 @@ export async function snapshotCombat(combat) {
   if (changed) { try { await combat.setFlag(F, SNAP, curSnap); } catch (e) { console.warn("twod12 | encSnap", e); } }
 }
 
+/** Pure (v0.0.532): a report's "vs" list: every kind of enemy once, in order (it was cut at three). */
+export const foeTitle = foes => [...new Set((foes ?? []).map(cleanCreatureName).filter(Boolean))].join(", ");
 /** v0.0.488: archive finished combat (last 5) in GM world setting so End Combat never loses the log. Serialized to avoid concurrent deleteCombat races. */
 let archiveChain = Promise.resolve();
 export function archivedEncounters() {
@@ -633,7 +646,7 @@ export function archiveCombat(combat, outcome = "") {
   if (!log.length) return Promise.resolve(null);
   const creatures = unifiedCreatures(combat);
   const foes = creatures.filter(c => c.side !== "pc").map(c => c.name);
-  const uniqFoes = [...new Set(foes)].slice(0, 3).join(", ");
+  const uniqFoes = foeTitle(foes);   // v0.0.532 (playtest 11: the title left out the Ogre Chieftain): every kind, not the first three
   const id = combat.id || newId();
   const baseEntry = {
     id, savedAt: Date.now(),
@@ -706,7 +719,9 @@ export function registerEncLogHooks() {
       const dealt = up.filter(([n]) => n > 0), healed = -up.filter(([n]) => n < 0).reduce((s, [n]) => s + n, 0);
       const fromCard = !!options.twod12CardDmg || Date.now() - (recentCardDmg.get(actor.uuid) ?? 0) < 900;
       if (dealt.length && !fromCard) {
-        logLine("dmg", refOf(actor), { n: dealt.reduce((s, [n]) => s + n, 0), v: vUp, r: rUp, pool: rUp > 0 && !vUp ? "R" : "V", text: dealt.map(([n, l]) => `${n} ${l}`).join(", "), manual: true });
+        const mid = newId(), n = dealt.reduce((s, [n]) => s + n, 0);
+        recentManual.set(actor.uuid, { id: mid, n, at: Date.now() });   // v0.0.532: a card's line for the same damage, just after, replaces it (logDamageCard)
+        logLine("dmg", refOf(actor), { n, v: vUp, r: rUp, pool: rUp > 0 && !vUp ? "R" : "V", text: dealt.map(([n, l]) => `${n} ${l}`).join(", "), manual: true }, mid);
       }
       if (healed > 0) logLine("heal", refOf(actor), { n: healed, rp: Math.max(0, (actor.system?.rallyUsed ?? 0) - (options.twod12LogRally ?? 0)) });
       const bl = !!actor.system?.bloodied, st = !!actor.system?.strained, down = !!actor.system?.atZero;
@@ -729,7 +744,7 @@ export function registerEncLogHooks() {
 
 /* ------------------------------------------------------------------ the STYLE-3 window */
 const { ApplicationV2 } = foundry.applications?.api ?? {};
-const ICON = { act: "fa-dice", move: "fa-shoe-prints", push: "fa-hand", dmg: "fa-heart-crack", heal: "fa-heart-pulse", cond: "fa-triangle-exclamation", state: "fa-bolt", rx: "fa-shield", turn: "fa-flag-checkered", down: "fa-skull", up: "fa-person-rays", note: "fa-note-sticky" };
+const ICON = { save: "fa-shield-halved", act: "fa-dice", move: "fa-shoe-prints", push: "fa-hand", dmg: "fa-heart-crack", heal: "fa-heart-pulse", cond: "fa-triangle-exclamation", state: "fa-bolt", rx: "fa-shield", turn: "fa-flag-checkered", down: "fa-skull", up: "fa-person-rays", note: "fa-note-sticky" };
 
 export class EncounterLog extends (ApplicationV2 ?? class {}) {
   static DEFAULT_OPTIONS = { id: "twod12-encounter-log", window: { title: "Encounter Log", icon: "fa-solid fa-book-open", resizable: true }, position: { width: 860, height: 680 }, classes: ["twod12", "enclog-app"] };

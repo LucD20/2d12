@@ -1,0 +1,40 @@
+--- 1. Collision
+a standing orc: block
+a Prone orc: pass
+an Unconscious PC: pass
+a dead orc (Dead status): none
+an NPC at 0, not Unconscious: none
+Pushed 4, a Prone creature in square 2 (passed through)          stops after 4, block -, unused 0, damage {"self":0,"other":0}, passEnd false
+Pushed 2, aimed into the Prone creature's square (stops before it) stops after 1, block -, unused 0, damage {"self":0,"other":0}, passEnd true
+Pushed 4, a Prone creature in 2 and a wall after 3               stops after 3, block wall, unused 1, damage {"self":2,"other":0}, passEnd false
+Pushed 4, a Prone creature in 3 and a wall after 3 (last legal: 2) stops after 2, block wall, unused 2, damage {"self":4,"other":0}, passEnd false
+Pushed 4, a standing creature in square 2 (a Collision, as before) stops after 1, block creature, unused 3, damage {"self":3,"other":3}, passEnd false
+Reposition 3, a Prone creature in 2 (passes, no damage)          stops after 3, block -, unused 0, damage {"self":0,"other":0}, passEnd false
+the GM's Alt-drag through a lying creature, dropped beyond it: {"done":3,"block":null,"damage":{"self":0,"other":0}}
+dropped on it: stops before it: 1 {"self":0,"other":0}
+the Push / Pull and Slid / Reposition tools and the Alt-drag read it: true true
+--- 2. Charge: Melee only
+a bow: none | ask: false | the Basic Attack: {}
+a sword and a bow: Arming Sword 1 | ask: false | the Basic Attack: {"weaponId":"s"}
+a Thrown axe: Hand Axe (in hand) 1 | ask: false | the Basic Attack: {"weaponId":"h"}
+a sword and a dagger: Arming Sword 1, Dagger (in hand) 1 | ask: false | the Basic Attack: {"weaponId":"s","dual":["s","d"]}
+a sword and a spear (Range 2): Arming Sword 1, Spear 2 | ask: true | the Basic Attack: {"weaponId":"s"}
+the spear picked for the stop, its Basic Attack: {"weaponId":"p"}
+Reach 2, the sword: Arming Sword 2
+the Orc Warrior: Hamstringing Axe 1 | the Ogre Chieftain (Reach (2)): Crushing Grip 2 | a creature with only a ranged Basic attack: none
+its Basic Attack, an NPC: {"actionId":"a"}
+refused, a PC with a bow: Sylwen can't Charge without a Melee weapon in hand (a Charge's Basic Attack is made with a Melee weapon; a Thrown weapon counts, used in hand).
+refused, an NPC: Archer can't Charge: none of its Basic attacks is Melee (a Charge's Basic Attack is made in melee). | allowed: ""
+refused before its AP: true | the granted use takes the stop's weapon: true | kept on chargeUse: true
+--- 3. Taunted and several targets
+the goblin only: Bane true
+the ogre (the taunter) only: Bane false
+the ogre and the goblin: Bane false
+two goblins: Bane true
+no target: Bane false
+--- 4. Grabbed: Vulnerable 1 while held
+its riders: [["Vulnerable",1]] | linked: Immobilized | ends with its holder: true
+its text says it: true
+a rider is created linked to it (it ends with Grabbed): true
+--- the book
+Chapter 3: true | Chapter 8, Taunted: true | Grabbed: true | Charge: true

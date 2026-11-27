@@ -324,7 +324,7 @@ export function registerInline() {
       if (kind === "Pause") return inlineEl("Pause", cfg, cfg.label || "After the damage", "fa-pause");
       if (kind === "Swap") return inlineEl("Swap", cfg, match[3] ?? "Swap squares", "fa-right-left");   // v0.0.410 (Hold the Line, Trade Places)
       if (kind === "ShakeOff") return inlineEl("ShakeOff", cfg, match[3] ?? "Shake Off: the Save", "fa-droplet-slash");   // v0.0.414 (book, Shake Off)
-      if (kind === "Mark") return inlineEl("Mark", cfg, match[3] ?? "Apply Effect", "fa-crosshairs");
+      if (kind === "Mark") return inlineEl("Mark", cfg, match[3] ?? "Apply effect", "fa-crosshairs");
       if (kind === "Place") return inlineEl("Place", cfg, cfg.label ?? match[3] ?? "Place it", "fa-cube");   // pack TALENTS-PT (the Ice Pillar)
       if (kind === "Bounce") return inlineEl("Bounce", cfg, cfg.label ?? match[3] ?? "Bounce", "fa-share");   // pack TALENTS-PT (Ricochet)   // v0.0.418 (playtest 5, G4: Judge with no target)
       if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
@@ -956,12 +956,14 @@ async function handleMark(cfg, ctx = {}) {
   if (!user) return ui.notifications.warn("This button works from the card of the Action that marks.");
   if (!user.isOwner) return ui.notifications.warn(`Only ${user.name}'s player (or the GM) can mark with it.`);   // v0.0.421 (the audit)
   const mine = new Set(user.getActiveTokens?.().map(t => t.id) ?? []);
-  const tok = [...(game.user?.targets ?? [])].find(t => t.actor && !mine.has(t.id)) ?? (canvas.tokens?.controlled ?? []).find(t => t.actor && !mine.has(t.id));
+  // v0.0.532 (playtest 11, the marks): the creature targeted, else the card's target (the mark placed again by hand), else a selected one
+  let cardTok = null; try { const u = f?.targets?.[0]?.uuid; const d = u ? await fromUuid(u) : null; cardTok = d?.object ?? null; } catch (e) { cardTok = null; }
+  const tok = [...(game.user?.targets ?? [])].find(t => t.actor && !mine.has(t.id)) ?? (cardTok && !mine.has(cardTok.id) ? cardTok : null) ?? (canvas.tokens?.controlled ?? []).find(t => t.actor && !mine.has(t.id));
   if (!tok) return ui.notifications.warn("Target the creature first, then click the button.");
-  const { setQuarry } = await import("./mark.mjs");
+  const { setQuarry, markWords } = await import("./mark.mjs");
   await setQuarry(user, tok, cfg.kind ?? "");
   const { postFollow } = await import("./followup.mjs");
-  const what = cfg.kind === "judge" ? "is Judged by" : "is marked by";
+  const what = markWords(cfg.kind ?? "");
   if (ctx.message) await postFollow(ctx.message, "fa-crosshairs", `<b>${esc(tok.name)}</b> ${what} <b>${esc(user.name)}</b>.`);
 }
 
@@ -1436,6 +1438,8 @@ export async function saveRoll(msg, idx) {
   const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dc = Number(data.dc) || cfg.dc;
   const chk = await performCheck({ mod, boons: fxm.boons + manB, banes: fxm.banes + manN, dc, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on" || fxm.favored, doomed: data.doomed === "on" || fxm.doomed, sources: fxm.sources, manualBoons: manB, manualBanes: manN });
   expireOnUse(actor, new Set(), new Set(), { rolled: true }).catch(() => {});   // v0.0.458: a Bane "on its next roll" (Dirty Trick) is spent by a Save or a Check too
+  // v0.0.532 (playtest 11: a Save Action that hurts nobody wrote no line): each creature's Save and its Tier go to the Encounter Log
+  try { const { logSave } = await import("./enclog.mjs"); const fa = msg.getFlag?.("twod12", "action"); logSave(actor, { label: `${TWOD12.attributes[key]} Save`, total: chk.total, dc, tier: chk.tier, action: (() => { try { const a0 = fa?.actorUuid ? fromUuidSync(fa.actorUuid) : null; return (a0?.actor ?? a0)?.items?.get?.(fa.itemId)?.name ?? ""; } catch (e) { return ""; } })() }); } catch (e) { console.warn("twod12 | the Save's log line", e); }
   // The damage of the tier rolled is calculated right away and every die (check and damage) is thrown at once.
   const parts = parseParts(cfg.tiers[`t${chk.tier}`]);
   // Several Targets: the damage of a Tier is rolled once, by the first creature on that Tier, and every other creature on it takes the same.

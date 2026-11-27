@@ -138,7 +138,7 @@ Every NPC Action that attacks makes **three separate choices**:
 
 **Every NPC has two Basic attacks by default:** normally a melee one and a ranged one, or one against each Defense. Each is 1 AP and At-will, and **they share one At-will count**, as a PC's At-will [Strike] Actions do (see [[Strike]]): the second one of a turn takes 1 Bane, whichever it is.
 
-- **When a rule calls for a Basic Attack** (the Basic Attack at the end of a [[Charge]], for example), an NPC uses one of its own Basic attacks: one that can reach the target, its choice when both can.
+- **When a rule calls for a Basic Attack** (the Basic Attack at the end of a [[Charge]], for example), an NPC uses one of its own Basic attacks: one that can reach the target, its choice when both can (for a Charge, one of its Melee Basic attacks).
 
 ### Losing its weapon
 

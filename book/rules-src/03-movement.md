@@ -49,7 +49,7 @@ An Action that lets you move gives a distance, written "Advance 5" or "Evade 2".
 
 **No movement ends in another creature's square:** an Advance, an Evade, a Forced Movement or a Reposition.
 
-**Creatures in your way.** Your own movement (an Advance, an Evade, a Charge, a Crawl) **can't enter or pass through an unwilling creature's space**: an enemy holds its ground. **An ally's space** (any willing creature's) is [[Difficult Terrain]]: you can pass through it, never end in it, and it is the one Difficult Terrain an Evade can cross (at its double cost). **An Unconscious creature** is Difficult Terrain too, whichever side it is on; a creature that is Down and still fighting holds its space like any other. **A dead creature** doesn't affect movement: you can pass through its space and end in it. Size doesn't change this. The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise. Forced Movement and Reposition keep their own rules (see [[Collision]]).
+**Creatures in your way.** Your own movement (an Advance, an Evade, a Charge, a Crawl) **can't enter or pass through an unwilling creature's space**: an enemy holds its ground. **An ally's space** (any willing creature's) is [[Difficult Terrain]]: you can pass through it, never end in it, and it is the one Difficult Terrain an Evade can cross (at its double cost). **An Unconscious creature** is Difficult Terrain too, whichever side it is on; a creature that is Down and still fighting holds its space like any other. **A dead creature** doesn't affect movement: you can pass through its space and end in it. Size doesn't change this. The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise. Forced Movement and Reposition keep their own rules: a Prone, an Unconscious or a dead creature is never in their way (see [[Collision]]).
 
 **Changes to your Speed.** Apply every other change first, then halve it: with Speed 6, a −2 to your Speed and Hindered, your Speed is (6 − 2) halved = 2. Halving rounds down.
 
@@ -169,6 +169,8 @@ Each square of the path must be next to the previous one, and each counts as 1 t
 
 Collision happens when something is in the way of the destination the origin chose. For Pushed and Pulled, calculate it from the center of the creature: draw a line from where the creature started to where the Forced Movement was meant to end. For Slid, follow the path the origin chose. If something is in the way, the creature stops in the **last legal square** the line or the path passes through: a square where the whole creature fits and that has no object or creature in it.
 
+**A Prone, an Unconscious or a dead creature never causes a Collision.** A Forced Movement or a Reposition passes through its space as if it were empty, and the diagonal beside it is free; neither creature takes damage. The moved creature can't end in that space (a dead creature's excepted: see [[Movement|Creatures in your way]]): aimed there, it stops in the last legal square before it, with no damage.
+
 A creature that stops short takes Lethal Blunt Vigor damage for its **unused squares**: the squares between where it stopped and the destination the origin chose.
 
 - **An object** (a wall, a closed door, etc.): **2 damage** for each unused square.
@@ -191,7 +193,7 @@ Reposition moves a creature of your choice along a path, but it isn't Forced Mov
 - It ignores Difficult Terrain.
 - Its value is reduced by the creature's [[Steadiness]].
 - It can't move a creature into Hazardous Terrain or a Deadly Hazard, though it can move the creature to a less advantageous position, for example into a flanked square.
-- It can't pass through creatures or objects: it stops in the last legal square before one, without Collision damage. It can never make a creature end its movement inside another creature or an object.
+- It can't pass through creatures (a Prone, an Unconscious or a dead creature excepted: see [[Collision]]) or objects: it stops in the last legal square before one, without Collision damage. It can never make a creature end its movement inside another creature or an object.
 
 > [!example]
 > Your Reach is 2. Dave stands next to you and a goblin next to him, in a line. Reposition 2 can't move the goblin through Dave's square, but the path can go around him, staying within your Reach: 1 square diagonally over Dave, then 1 square to the side, into the square next to you.

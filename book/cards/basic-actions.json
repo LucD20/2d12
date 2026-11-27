@@ -27,7 +27,7 @@
       "versions": [
         {
           "ap": 2,
-          "effects": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within the normal Range of the weapon you attack with. You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes.",
+          "effects": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within the melee Range of the Melee weapon you attack with (a [[Thrown]] weapon used in hand). You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target, with that weapon. That Basic Attack counts toward At-will Banes.",
           "foundry": {
             "sub": [
               ["Advance in a", "@Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge] in a"],

@@ -72,6 +72,11 @@ export async function handleUse(cfg, ctx = {}) {
     }
   }
   if (!list.length) return ui.notifications.warn(`${actor.name} has no Action called "${cfg.target}".`);
+  // v0.0.532 (Lucas, playtest 11: "Charge is asking for weapons twice"): the Charge's Basic Attack (1A) is made with the weapon (an NPC: the Basic
+  // attack) chosen for its stop (move.mjs chargeStopRange, kept on the combatant's chargeUse flag)
+  let chargeWith = ctx.chargeWith ?? {};
+  if (!ctx.chargeWith) try { const { combatantOf } = await import("./combat.mjs"), cu = combatantOf(actor)?.getFlag?.(F, "chargeUse"); if (msg?.id && cu?.messageId === msg.id) chargeWith = cu; } catch (e) { chargeWith = {}; }
+  if (chargeWith.actionId && list.some(i => i.id === chargeWith.actionId)) list = list.filter(i => i.id === chargeWith.actionId);
   const item = await chooseAction(list, cfg.target, actor);
   if (!item) return;
   const used = foundry.utils.deepClone(msg?.getFlag?.(F, "usedTargets") ?? {});
@@ -81,6 +86,7 @@ export async function handleUse(cfg, ctx = {}) {
     excludeTargets: cfg.distinct ? (used[key] ?? []) : [],
     countAtWill: !!cfg.countAtWill,
     asReaction: !!cfg.asReaction,   // v0.0.525 (B3-022)
+    ...(chargeWith.weaponId && actor.items?.get?.(chargeWith.weaponId) ? { weaponId: chargeWith.weaponId, ...(Array.isArray(chargeWith.dual) && chargeWith.dual.length > 1 ? { dual: chargeWith.dual } : {}) } : {}),   // v0.0.532
     onUsed: ({ targets }) => { used[key] = [...(used[key] ?? []), ...targets.map(t => t.uuid)]; }
   });
   if (!ok) return;
@@ -98,10 +104,11 @@ export async function chargeUseFromCard(actor, msg) {
   const text = (item?.system?.versions ?? []).map(v => v.effects ?? "").join(" ");
   const tag = firstUseTag(text);
   const { combatantOf } = await import("./combat.mjs"), cb = combatantOf(actor);
+  const cu = cb?.getFlag?.(F, "chargeUse"), chargeWith = cu?.messageId === msg?.id ? { ...cu } : {};   // v0.0.532: its weapon, read before the flag goes
   try { await cb?.unsetFlag?.(F, "chargeUse"); } catch (e) { /* gone */ }
   if (!tag) return ui.notifications.warn("The Charge's card has no Basic Attack to use.");
   const { parseInline } = await import("./inline.mjs");
-  return handleUse(parseInline("Use", tag), { message: msg });
+  return handleUse(parseInline("Use", tag), { message: msg, chargeWith });
 }
 /** Chat hook: the @Use buttons show how many uses are left, and are dimmed when none are. */
 export function updateUseButtons(msg, html) {

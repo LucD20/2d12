@@ -1,7 +1,7 @@
 import { firstName } from "./util.mjs";   // v0.0.530: Shake Off's result card
 // v0.0.314 (pack AU, the conditions as items; book, Chapter 8): the pure rules of the conditions the conditions pass added.
 //   Frightened: its Bane only while the creature sees its origin (the effect's "whileSeen" rule; conditions.mjs gives effectOff the sight check).
-//   Taunted: its Bane only on Actions against a creature other than its origin (a Boons and Banes setting's "vsOrigin").
+//   Taunted: its Bane only on Actions whose targets don't include its origin (a Boons and Banes setting's "vsOrigin"; v0.0.532: several targets).
 //   Sickened N: N Banes on Body and Instinct Saves (a Boons and Banes setting's Attributes, by value).
 //   Staggered: no Reactions (the "noReactions" rule); Dazed N: N AP lost now, the rest from the next regain (the "loseAp" rule);
 //   Grabbed: Immobilized, and it ends when the holder goes Down (the "endsWithOrigin" rule); Bleed: damage at the end of each turn (a Bleed setting).
@@ -9,14 +9,18 @@ import { firstName } from "./util.mjs";   // v0.0.530: Shake Off's result card
 const F = "twod12";
 const flagOf = (e, k) => e?.getFlag?.(F, k) ?? e?.flags?.[F]?.[k];
 
-/** Does a Boons and Banes modifier with "vsOrigin" count against these targets? "not": one target other than the origin; "only": the origin among them. */
+/**
+ * Does a Boons and Banes modifier with "vsOrigin" count against these targets? "not": targets that don't include the origin; "only": the origin
+ * among them. v0.0.532 (Lucas, playtest 11: "When an ability targets multiple people and the taunted source is included, it shouldnt apply"; book,
+ * Chapter 8, Taunted: "An Action whose targets include that creature takes no Bane from Taunted"): "not" was "one target other than the origin".
+ */
 export function originOk(m, originUuid, targetUuids = []) {
   const v = m?.vsOrigin || "";
   if (!v) return true;
   const list = (targetUuids ?? []).filter(Boolean);
   if (!list.length) return false;   // no target (a Check, a Save): Taunted's Bane is on Actions against a creature
   if (!originUuid) return v === "not";
-  return v === "not" ? list.some(u => u !== originUuid) : list.includes(originUuid);
+  return v === "not" ? !list.includes(originUuid) : list.includes(originUuid);
 }
 
 /** Does a roll with these traits match a modifier's Attributes (none listed: every roll)? A Save or Check carries its Attribute as a trait. */

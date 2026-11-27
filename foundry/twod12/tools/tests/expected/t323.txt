@@ -9,9 +9,9 @@ a Dying PC enemy, fighting: block | dead false | Unconscious false
 its space: no creature's on a path (ends there, passes): true | not in a Charge's way: true | not a blocker on a diagonal: true
 --- 2. Charge stops at the weapon's normal Range (B2-014)
 a sword: Arming Sword 1 | ask: false
-a bow: Hunting Bow 12 | a Long weapon: Spear 2 | Reach 2 with the sword: Arming Sword 2
-a Thrown axe: Hand Axe (in hand) 1, Hand Axe (thrown) 5 | ask: true | a sword and a bow, ask: true
-an NPC's Basic attacks (first, its weapons left out): Hamstringing Axe 1, Barbed Javelin 6 | nothing in hand: 0
+a bow:  | a Long weapon: Spear 2 | Reach 2 with the sword: Arming Sword 2
+a Thrown axe: Hand Axe (in hand) 1 | ask: false | a sword and a bow, ask: false
+an NPC's Basic attacks (first, its weapons left out): Hamstringing Axe 1 | nothing in hand: 0
 the picker stops there: true | asked with the pick bar: true
 --- 3. Shake Off's face (B2-015): the book's Save line and three Tiers
 its lines: Save | Tier 1 | Tier 2 | Tier 3 | the Save line ends in its button: true | drawn rich: rich

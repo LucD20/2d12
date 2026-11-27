@@ -33,10 +33,10 @@
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
 | [[Buffs\|**Buff**]] | An effect that modifies another Action, such as the 2 Boons that Feint's Tier 3 gives your next [Strike] Action against its target. |
 | [[Areas\|**Burst**]] | An area centered on a corner, where four squares meet: a 2 Burst affects every square whose center is within 2 squares of that corner. |
-| [[Charge\|**Charge**]] | A Basic Action (2 AP, Round): Advance in a straight line at least 3 squares toward a creature, then make a Basic Attack against it. |
+| [[Charge\|**Charge**]] | A Basic Action (2 AP, Round): Advance in a straight line at least 3 squares toward a creature, then make a Basic Attack against it with a Melee weapon. |
 | [[Checks\|**Check**]] | A roll of one Attribute Modifier against a DC (13 unless stated). |
 | [[Senses\|**Clear**]] | You perceive the creature well: no penalty either way. |
-| [[Collision\|**Collision**]] | Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt. |
+| [[Collision\|**Collision**]] | Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt. A Prone, an Unconscious or a dead creature never causes one: the movement passes through its space. |
 | [[Building an encounter\|**Combat Value (CV)**]] | What an NPC counts for in an encounter: Minion 30, Grunt 50, Standard 100, Elite 200. CV 100 a PC is a normal fight. |
 | [[Corners\|**Corners**]] | You can't cut a solid corner: anything solid, such as a wall, a pillar or an object that fills a square, that reaches the corner point where four squares meet. |
 | [[Cover\|**Cover**]] | How well a target is protected: count the blocked corners of its space (for a larger creature, its least-covered square). 1 Field Bane for one, 2 for two; three make the roll Doomed. Cover Banes apply to [Strike] and [Area] Actions. |
@@ -86,7 +86,7 @@
 | [[Divine, Fear, Focus and Magical\|**Focus**]] | A trait with no rules of its own: other rules and features refer to it. |
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no Reactions from movement, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
-| [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free (a Check against the Action DC of the Action that grabbed you). |
+| [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized and Vulnerable 1, and only the holder can move you; it ends when the holder lets go or you Break Free (a Check against the Action DC of the Action that grabbed you). |
 | [[Grunts\|**Grunt**]] | An NPC rank with CV 50: half a Standard (Health 22), 3 AP a turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts until you regain AP again. |
 | [[Half-Blinded\|**Half-Blinded**]] | Your Sight perceives no creature better than Obscured. |
@@ -208,7 +208,7 @@
 | [[Swapping Places\|**Swap squares**]] | Two creatures each enter the square the other left; a Reposition for each. |
 | [[Tags\|**Tag**]] | A word on a creature (not an Action) that other rules refer to, such as Profane. |
 | [[Talents\|**Talent**]] | A feature any character can take, apart from their class, in the Talent slots of the level list. None is written yet. |
-| [[Taunted\|**Taunted**]] | By a creature: 1 Bane on your Actions against anyone else. |
+| [[Taunted\|**Taunted**]] | By a creature: 1 Bane on your Actions against anyone else; none on an Action whose targets include it. |
 | [[Senses\|**Thick wall**]] | A wall at least 1 square thick: it usually blocks Hearing and Tremorsense. |
 | [[Flanking\|**Threatens**]] | A creature threatens every enemy within the normal range of a Melee weapon, for as long as it qualifies to use that weapon's Basic Attack (1A); a Non-threatening weapon doesn't (not adjacent ones with a Long weapon). |
 | [[Thrown\|**Thrown**]] | A weapon property: the weapon can be used in hand or thrown, with a Range for each. A thrown weapon stays in your hand for the rules: the game doesn't track where it lands. |

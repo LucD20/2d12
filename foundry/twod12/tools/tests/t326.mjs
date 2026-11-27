@@ -18,8 +18,8 @@ const sword = { id: "w1", name: "Arming Sword", system: { traits: set(["melee", 
 const bow = { id: "w2", name: "Hunting Bow", system: { traits: set(["projectile", "ranged"]), range: "8/16/24" } };
 const drawingLight = { id: "a1", name: "Drawing Light", system: { basicAttack: true, distance: "5" } }   // as the pregen stores it;
 const durgan = { type: "character", items: [sword, drawingLight] };
-const npcAtk = { id: "a2", name: "Hamstringing Axe", system: { basicAttack: true, distance: "reach" } };
-const orc = { type: "npc", items: [npcAtk, { id: "a3", name: "Barbed Javelin", system: { basicAttack: true, distance: "6" } }] };
+const npcAtk = { id: "a2", name: "Hamstringing Axe", system: { basicAttack: true, distance: "reach", traits: set(["weapon", "melee", "strike"]) } };   // v0.0.532: the cards' traits
+const orc = { type: "npc", items: [npcAtk, { id: "a3", name: "Barbed Javelin", system: { basicAttack: true, distance: "6", traits: set(["weapon", "ranged", "strike"]) } }] };
 for (const [who, actor, weapons] of [["Durgan (Arming Sword, Drawing Light on his sheet)", durgan, [sword]], ["Sylwen (Hunting Bow)", { type: "character", items: [bow] }, [bow]], ["the Orc Warrior", orc, []]]) {
   const npcAttacks = WR.chargeNpcAttacks(actor), list = WR.chargeAttacks({ weapons, npcAttacks, reach: 1 });
   console.log(`${who}: its Basic attacks read ${npcAttacks.length}; ways ${JSON.stringify(list.map(x => [x.label, x.normal]))}; a pick ${WR.chargeNeedsPick(list)}`);
@@ -27,7 +27,7 @@ for (const [who, actor, weapons] of [["Durgan (Arming Sword, Drawing Light on hi
 // the candidate rule of move.mjs (need = distance - stop Range, at least 3): an enemy 5 squares from Durgan
 const stop = WR.chargeAttacks({ weapons: [sword], npcAttacks: WR.chargeNpcAttacks(durgan), reach: 1 })[0].normal, need = 5 - stop;
 console.log(`an enemy 5 squares from Durgan: stop Range ${stop}, ${need} squares to run: ${need >= 3 ? "can Charge" : "too close"}`);
-const before = WR.chargeAttacks({ weapons: [sword], npcAttacks: durgan.items.filter(i => i.system?.basicAttack), reach: 1 })[0].normal;
+const before = WR.chargeAttacks({ weapons: [sword], npcAttacks: durgan.items.filter(i => i.system?.basicAttack), reach: 1 })[0]?.normal ?? 1;   // v0.0.532: Melee only, Drawing Light is not one
 console.log(`(v0.0.525's reading, every creature's basicAttack items: stop Range ${before}, ${5 - before} squares: ${5 - before >= 3 ? "can Charge" : "too close"})`);
 console.log("move.mjs reads chargeNpcAttacks:", /npcAttacks: chargeNpcAttacks\(actor\)/.test(src("module/move.mjs")));
 

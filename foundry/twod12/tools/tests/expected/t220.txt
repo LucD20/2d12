@@ -19,7 +19,7 @@ Lingering   whileSeen false noReactions false loseAp false endsWithOrigin false 
 Daunted of the Ogre, an attack on the Goblin: Daunted 1 | a Body Save: Daunted 1
 the Ogre out of Kai's Sight (a wall): the Bane stops: none
 seen again: Daunted 1
-Taunted by the Ogre: vs the Goblin: Taunted 1 | vs the Ogre: none | vs both: Taunted 1 | a Check (no target): none
+Taunted by the Ogre: vs the Goblin: Taunted 1 | vs the Ogre: none | vs both: none | a Check (no target): none
 Sickened 2: a Body Save: Sickened 2 2 | an Instinct Save: Sickened 2 2 | a Mind Save: none | a Body Check: none | an attack: none
 Challenged keeps its [Strike] and counts only against others: []
 --- the pure rules (condrules.mjs)

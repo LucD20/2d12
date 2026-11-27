@@ -1,9 +1,9 @@
 grant: {"ap":5,"freeMove":0,"evadeMove":0,"moveLeft":0} | 
-evade move 2: {"ap":5,"freeMove":0,"evadeMove":0,"moveLeft":0} | 
+evade move 2: {"ap":5,"freeMove":0,"evadeMove":0,"moveLeft":0,"diagPar":0} | 
 difficult terrain with Evade left -> blocked: false | Could not work out the distance "walk/2".Orc has no Speed.Orc has no Speed.
-after End movement: {"ap":5,"freeMove":0,"evadeMove":0,"moveLeft":0,"-=charge":null,"-=ignoreTerrain":null,"-=passEnemies":null,"-=noFarther":null} | 
-difficult terrain, no Evade -> allowed: true {"ap":5,"freeMove":0,"evadeMove":0,"moveLeft":0,"-=charge":null,"-=ignoreTerrain":null,"-=passEnemies":null,"-=noFarther":null} | 
-Traverse grant: {"ap":5,"freeMove":0,"evadeMove":0,"moveLeft":0,"-=charge":null,"-=ignoreTerrain":null,"-=passEnemies":null,"-=noFarther":null} | 
+after End movement: {"ap":5,"freeMove":0,"evadeMove":0,"moveLeft":0,"diagPar":0,"-=charge":null,"-=ignoreTerrain":null,"-=passEnemies":null,"-=noFarther":null} | 
+difficult terrain, no Evade -> allowed: true {"ap":5,"freeMove":0,"evadeMove":0,"moveLeft":0,"diagPar":0,"-=charge":null,"-=ignoreTerrain":null,"-=passEnemies":null,"-=noFarther":null} | 
+Traverse grant: {"ap":5,"freeMove":0,"evadeMove":0,"moveLeft":0,"diagPar":0,"-=charge":null,"-=ignoreTerrain":null,"-=passEnemies":null,"-=noFarther":null} | 
 bad expression: Orc has no Speed.Could not work out the distance "walk".Could not work out the distance "banana".
 Basic Attack [strike/weapon] AP 1 | Advance [move/self] AP 1 | Evade [self] AP 1/2 | Reload [handle/weapon] AP 1 | Interact [handle] AP 1 | Steel Yourself [self] AP 1/2 | Crawl [move/self] AP 1/2 | Regrip [self] AP 1 | Release [self] AP 0 | Stand [move/self] AP 1 | Break Free [body/instinct/move] AP 1 | Charge [move/strike] AP 2 | Lean [self/subtle] AP 1 | Fists [strike/weapon] AP 1 | Relocate [body/handle/instinct] AP 1/2/3 | Trip [body/handle/instinct] AP 1/2 | Shove [body/handle] AP 1/2 | Haul [body/handle] AP 1/2/3 | Shake Off [handle] AP 1 | Aid [appeal/focus/instinct] AP 1 | Demoralize [appeal] AP 1 | Feint [focus/mind] AP 1 | Tend [appeal/handle/mind] AP 2 | Tumble [appeal/instinct/move] AP 1/2 | Hide [instinct/subtle] AP 1 | Sneak [move/self/subtle] AP 1 | Seek [instinct/mind/subtle] AP 1/2 | Point Out [appeal/instinct] AP 1
 @Move[evade|distance:1] || @Move[evade|distance:floor(speed/2)]

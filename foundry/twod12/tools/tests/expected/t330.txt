@@ -1,0 +1,9 @@
+labels: Judged, Bound Ally, Marked, Marked
+read: {"marks":[{"kind":"judge","uuid":"Scene.s.Token.gw","name":"Grave Wisp"},{"kind":"bound","uuid":"Scene.s.Token.ka","name":"Kaela"}],"conds":[{"actorUuid":"Scene.s.Token.oc.Actor.oc","effectId":"e1","targetName":"Ogre Chieftain","name":"Taunted"},{"actorUuid":"Scene.s.Token.ow.Actor.ow","effectId":"e4","targetName":"Orc Warrior","name":"Grabbed"}]}
+rows: Grave Wisp: Judged (m:judge) | Kaela: Bound Ally (m:bound) | Ogre Chieftain: Taunted (c:Scene.s.Token.oc.Actor.oc:e1) | Orc Warrior: Grabbed (c:Scene.s.Token.ow.Actor.ow:e4)
+none: null
+the entry: a title, 4 rows, a remove each: 4 | aria-label, no tooltip: true
+folded: 0 rows
+in the Situational tab after Hiding: true | the HUD builds it: true | remove and fold: true
+a remove posts a system line: true | through the GM when needed: true | the owner or the GM: true
+the card's Apply effect, also after a mark lands: true | on the targeted creature, else the card's: true

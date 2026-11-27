@@ -45,7 +45,7 @@ console.log("beyond its free squares off its turn: refused:", mvs.includes("if (
 
 console.log("--- G4 Judge with no target");
 console.log("the chip:", JSON.stringify(IN.parseInline("Mark", "judge")), "| it marks the targeted creature:", inl.includes('if (kind === "Mark") return handleMark(cfg, ctx);') && inl.includes("await setQuarry(user, tok, cfg.kind ?? \"\");"),
-  "| used with no target: asks on the map, else the button:", act.includes("text: `<b>${esc(item.name)}</b>: which creature? Click its token.`") && act.includes("@Mark[${it.markKind ?? \"\"}]{Apply Effect}"));
+  "| used with no target: asks on the map, else the button:", act.includes("text: `<b>${esc(item.name)}</b>: which creature? Click its token.`") && act.includes("@Mark[${it.markKind ?? \"\"}]{Apply effect}"));
 
 console.log("--- H1 Steadiness asked only when an ally moves you");
 const tok = d => ({ document: { disposition: d } });

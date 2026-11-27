@@ -1,0 +1,41 @@
+--- 2. The Advance's area with an ally in the path
+the ally's square: reachable true, a stop false, crossed true
+along the row: (0,2) true (2 + 1), (0,3) false (it would cost 4)
+stops 35, crossed 1, the area 36
+drawn from rangeStops, the crossed squares hatched: true
+a Crawl's 'dt' ends with its squares: true
+--- 3. The second diagonal across drags
+after a count of 0, a drag with 1 diagonal: {"extra":0,"par":1}
+after a count of 1, a drag with 1 diagonal: {"extra":1,"par":0}
+after a count of 1, a drag with 2 diagonals: {"extra":0,"par":1}
+after a count of 1, a drag with 3 diagonals: {"extra":1,"par":0}
+after a count of 0, a drag with 2 diagonals: {"extra":0,"par":0}
+after a count of 0, a drag with 0 diagonals: {"extra":0,"par":0}
+after a count of 1, a drag with 0 diagonals: {"extra":0,"par":1}
+two drags of 1 diagonal each: 1 + 2 = 3 squares (one drag of 2: 3)
+every drag of the creature's own movement: true | kept on each drag: true
+from 0 at the start of a turn: 2 | off its turn: true
+--- 4. The card names the creature the Action was resolved against
+same: false | changed: true | one more: true | none to one: true
+run again on the new targets when Roll is pressed: true
+--- 5. [D] in its pool's color
+[V] 1[W] + 1[D] + [Mod] -> (pool) <span class="pool-b">1[W] + 1[D] + [Mod]</span>
+[V] 1[D] + [Mod] -> (pool) <span class="pool-b">1[D] + [Mod]</span>
+[V] 1[W] + [Mod] -> (pool) <span class="pool-b">1[W] + [Mod]</span>
+2[D] Pi -> <span class="dtamt" style="color:#44513f;--sc-d:#a9b8a4">2[D]</span> <span class="dtype dt-pi" style="color:#44513f;--sc-d:#a9b8a4">(pool) Pierce</span>
+--- 6. The effect icons' minimum size on screen
+zoom 1: an icon of 20 px is 20.0 px on screen; scale 1.00
+zoom 0.6: an icon of 20 px is 12.0 px on screen; scale 1.33
+zoom 0.4: an icon of 20 px is 8.0 px on screen; scale 2.00
+zoom 0.25: an icon of 20 px is 5.0 px on screen; scale 3.00
+zoom 0.1: an icon of 20 px is 2.0 px on screen; scale 3.00
+zoom 2: an icon of 20 px is 40.0 px on screen; scale 1.00
+registered: true
+--- 7. The Encounter Log
+a card's line replaces the by-hand one: true false false
+the title: Ogre Chieftain, Orc Warrior, Grave Wisp, Goblin Sneak
+a Save line: Aveline: Instinct Save 16 vs DC 14 (Crack the Ground) T2
+Kaela: Raw 2, Adjust 0, Net 2 | the Wisp: Raw 9, Net 9
+# 2d12 Encounter Report — vs Ogre Chieftain, Grave Wisp (1 round)
+- Ogre Chieftain: Crack the Ground vs Aveline, Kaela (Instinct Save); Aveline: Instinct Save 19 vs DC 14 (Crack the Ground) T3; Kaela: Instinct Save 21 vs DC 14 (Crack the Ground) T3; Kaela takes 2 Vigor; Grave Wisp takes 9 Resolve.
+Weak's extra in Raw: true | a Collision's damage logged as a card's: true | each Save logged: true

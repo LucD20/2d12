@@ -43,7 +43,7 @@ If your Resolve reaches 0, you must make a **Mind Save** (DC 13). Resolve cannot
 
 ### Grabbed
 
-A creature within its Reach holds you: you are [[Immobilized]], and only the holder can [[Forced Movement|Force Move]] or [[Reposition]] you (the holder's own Forced Movement or Reposition of you ignores your Immobilized). Grabbed ends when the holder lets go (no Action), when you are no longer within the holder's Reach, or when you [[Break Free]]. The holder can't use the hand or limb that holds you for anything else.
+A creature within its Reach holds you: you are [[Immobilized]] and [[Vulnerable]] 1, and only the holder can [[Forced Movement|Force Move]] or [[Reposition]] you (the holder's own Forced Movement or Reposition of you ignores your Immobilized). Grabbed ends when the holder lets go (no Action), when you are no longer within the holder's Reach, or when you [[Break Free]]. The Immobilized and the Vulnerable 1 that Grabbed gives end with it; while held, a higher Vulnerable from another effect applies instead (see [[Stacking]]). The holder can't use the hand or limb that holds you for anything else.
 
 ### Half-Blinded
 
@@ -114,7 +114,7 @@ You can't use [[Reactions]]. Your Reaction Point isn't lost: you can use it agai
 
 ### Taunted
 
-Taunted is always **by** a creature. Your Actions against any creature other than it take **1 Bane**.
+Taunted is always **by** a creature. Your Actions against any creature other than it take **1 Bane**. An Action whose targets include that creature takes no Bane from Taunted, whatever its other targets.
 
 ### Vulnerable
 

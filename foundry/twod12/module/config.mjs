@@ -408,10 +408,11 @@ export const inkOf = code => { const k = Object.keys(TWOD12.subtypeInk ?? {}).fi
 // an amount with no pool before it ("+1d6 Ho" from a bonus) keeps the type's ink as before.
 // Pack R-core: [V] Vigor and [R] Resolve damage are the B and M pools (both spellings read until R-Foundry).
 const POOL_CSS = { B: "b", V: "b", M: "m", R: "m" }, POOL_KEY = { B: "B", V: "B", M: "M", R: "M", C: "C" };
-const POOL_EXPR = /\[(B|M|V|R)\](\s*)((?:\d+d\d+!?|\d*\[W\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+!?|\d*\[W\]|\[Mod\]|\[At\]|\d+))*)/g;
+// v0.0.532 (Lucas, playtest 11: "The '1[D] + [Mod]' isnt red"): the weapon's die [D] too ("[V] 1[W] + 1[D] + [Mod]"), as the text colors (TOKEN_RE) read it
+const POOL_EXPR = /\[(B|M|V|R)\](\s*)((?:\d+d\d+!?|\d*\[[WD]\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+!?|\d*\[[WD]\]|\[Mod\]|\[At\]|\d+))*)/g;
 export const prettyDamage = html => String(html ?? "")
   .replace(POOL_EXPR, (m, p, sp, expr) => `${poolIcon(POOL_KEY[p])}${sp}<span class="pool-${POOL_CSS[p]}">${expr}</span>`)
-  .replace(/(\d*\[W\]|\[At\]|\d+d\d+!?(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)};--sc-d:${brightOf(code) || inkOf(code)}">${amt}</span>${sp}${code}` : m))
+  .replace(/(\d*\[[WD]\]|\[At\]|\d+d\d+!?(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)};--sc-d:${brightOf(code) || inkOf(code)}">${amt}</span>${sp}${code}` : m))
   .replace(/\[(B|M|C|V|R)\]/g, (m, p) => poolIcon(POOL_KEY[p]))
   .replace(/\b(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, m => dtypeHtml(m));
 

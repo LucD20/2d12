@@ -6,17 +6,17 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 27.3 | 321 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.0 | 361 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 48.1 | 512 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 48.6 | 514 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.7 | 225 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.2 | 106 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.9 | 64 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.0 | 99 |
-| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.3 | 122 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 34.0 | 237 |
+| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.6 | 122 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 34.2 | 237 |
 | 11-species.md | Species | species |  | 0.9 | 34 |
 | 12-paladin.md | Paladin | paladin |  | 3.6 | 94 |
 | 13-archer.md | Archer | archer |  | 4.0 | 97 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 19.5 | 206 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 19.6 | 206 |
 | 15-gear.md | Gear | gear |  | 13.2 | 201 |
 
 ## 01-roll.md: Chapter 1: The Roll
@@ -112,37 +112,37 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 144:   ### Pulled
 - 157:   ### Slid
 - 168:   ### Collision
-- 186: ## Reposition
-- 215:   ### Swapping Places
-- 221: ## Steadiness
-- 227: ## Difficult Terrain
-- 235: ## Hazardous Terrain
-- 254:   ### Deadly Hazards
-- 260: ## Reach
-- 270:   ### Weapon Range
-- 278:   ### Weapon Actions and Your Weapon
-- 282: ## Engaged
-- 292:   ### Ranged Combat While Engaged
-- 298: ## Flanking
-- 326: ## Line of Effect
-- 339: ## Cover
-- 358: ## Areas
-- 364:   ### Cover against an area
-- 368:   ### Emanation
-- 376:   ### Aura
-- 380:   ### Burst
-- 386:   ### Line
-- 408:   ### Other areas
-- 415: ## Light
-- 427:   ### Bright
-- 431:   ### Dim
-- 435:   ### Darkness
-- 439: ## Senses
-- 470:   ### Hiding
-- 487:   ### Sight Senses
-- 494:   ### Other Senses
+- 188: ## Reposition
+- 217:   ### Swapping Places
+- 223: ## Steadiness
+- 229: ## Difficult Terrain
+- 237: ## Hazardous Terrain
+- 256:   ### Deadly Hazards
+- 262: ## Reach
+- 272:   ### Weapon Range
+- 280:   ### Weapon Actions and Your Weapon
+- 284: ## Engaged
+- 294:   ### Ranged Combat While Engaged
+- 300: ## Flanking
+- 328: ## Line of Effect
+- 341: ## Cover
+- 360: ## Areas
+- 366:   ### Cover against an area
+- 370:   ### Emanation
+- 378:   ### Aura
+- 382:   ### Burst
+- 388:   ### Line
+- 410:   ### Other areas
+- 417: ## Light
+- 429:   ### Bright
+- 433:   ### Dim
+- 437:   ### Darkness
+- 441: ## Senses
+- 472:   ### Hiding
+- 489:   ### Sight Senses
+- 496:   ### Other Senses
 
-Open (to be decided) boxes: 76: "Flying isn't written yet: going up and down, ending a turn in the air,"; 336: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 412: "Cones are not written yet (and Lines wider than 1 square)."
+Open (to be decided) boxes: 76: "Flying isn't written yet: going up and down, ending a turn in the air,"; 338: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 414: "Cones are not written yet (and Lines wider than 1 square)."
 
 ## 04-health.md: Chapter 4: Health
 

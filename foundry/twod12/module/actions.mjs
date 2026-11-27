@@ -144,6 +144,8 @@ export function talentModsFor(actor, item) {
   return [...(actor.itemTypes?.talent ?? []), ...(actor.itemTypes?.action ?? []).filter(isTalentAction)].flatMap(t => (t.system.modifiers ?? []).filter(m => m.spec && grantMatches(m.spec, item) && (m.when === "always" || out)).map(m => ({ ...m, talent: t.name })));
 }
 
+/** v0.0.532 (playtest 11, Judge's card): pure: do the creatures targeted now differ from the ones the roll dialog opened on (by token id)? */
+export const targetsChanged = (before, now) => { const ids = l => new Set((l ?? []).map(t => t?.id ?? t?.document?.id ?? "").filter(Boolean)); const a = ids(before), b = ids(now); return a.size !== b.size || [...a].some(x => !b.has(x)); };
 async function pickWeapon(actor, item, candidates = null, chosenId = "") {
   const linked = item.getFlag("twod12", "weaponId");
   if (linked) return actor.items.get(linked) ?? null;
@@ -613,6 +615,14 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.224: Break Free is the one Move Action an Immobilized creature can use (and only then).
   if ((basicKey === "breakFree" && !actor.statuses?.has?.("immobilized")) && refuse(`${actor.name} is not Immobilized.`)) return;
   if (((it.traits.has("move") || basicKey === "safeMovement") && basicKey !== "breakFree" && actor.statuses?.has?.("immobilized")) && refuse(`${actor.name} is Immobilized and can't move: Break Free (1 AP) first.`)) return;
+  // v0.0.532 (Lucas, playtest 11: "Charge [...] should only be Melee"; book, Charge): its Basic Attack is made with a Melee weapon (an NPC: one of
+  // its Melee Basic attacks); with none, it can't Charge (refused before its AP are paid)
+  if (basicKey === "charge") {
+    const { chargeAttacks, chargeNpcAttacks, chargeRefusal } = await import("./weaponrange.mjs");
+    const ba = { getFlag: (sc, k) => (k === "basic" ? "basicWeaponAttack" : undefined), system: {} };
+    const why = chargeRefusal(actor, chargeAttacks({ weapons: weaponsFor(actor, ba), npcAttacks: chargeNpcAttacks(actor), reach: s.reach ?? 1 }));
+    if (why && refuse(why)) return;
+  }
   // Prone: you can't Evade, and the only Move Actions you can use are Crawl and Stand.
   if (actor.statuses?.has?.("prone")) {
     if ((basicKey === "safeMovement") && refuse(`${actor.name} is Prone and can't Evade.`)) return;
@@ -1048,6 +1058,11 @@ export async function useAction(actor, item, opts = {}) {
     // v0.0.398 (Lucas): live: false: the targets change only with the dialog's Target button
     rdData = await askAction({ inp, state: opts.rdState ?? null, live: false, card: () => item.sheet?.render(true), skip: (!!opts.skipDialog && !opts.restart) || !!opts.rollAfterPlace });   // v0.0.376: the HUD's Skip roll dialog; v0.0.397: Roll placed the area: roll at once
     if (!rdData) return;
+    // v0.0.532 (Lucas, playtest 11, Judge: "if I just target while the dialog is opened, without clicking on 'Target' on the roll dialog, it targets
+    // correctly but the chat card still says Grave Wisp"): the dialog keeps the creatures it opened on (v0.0.398, live: false), but the Action is
+    // resolved on the creatures targeted when Roll is pressed (Judge's mark went there): targets changed on the map run it again on them, at once,
+    // with the same choices, so the card names the creature the Action was resolved against
+    if (!rdData.restart && rollsAtOthers && !isAreaAction && !senseFree && targetsChanged(aimed, [...(game.user?.targets ?? [])])) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: opts.noSetup || opts.setupRan, setupRan: !!opts.setupRan, noHandle: true, weaponId: rdData.weaponId ?? previewWeapon?.id ?? opts.weaponId, attrKey: rdData.attrKey ?? opts.attrKey, rollAfterPlace: true });
     // v0.0.440: Roll was pressed (or Roll placing the area): the Setup now; after its movement the Action runs again from the new square
     if (setupLater && (!rdData.restart || rdData.rollAfter)) {
       const st = await runSetups();
@@ -1594,7 +1609,12 @@ export async function useAction(actor, item, opts = {}) {
       }
     } catch (e) { console.warn("twod12 | Opening Shot", e); }
   }
-  if (it.marksTarget && game.user.targets.size) { try { await setQuarry(actor, [...game.user.targets][0], it.markKind ?? ""); } catch (e) { console.warn("twod12 | marking", e); } }
+  if (it.marksTarget && game.user.targets.size) {
+    try { await setQuarry(actor, [...game.user.targets][0], it.markKind ?? ""); } catch (e) { console.warn("twod12 | marking", e); }
+    // v0.0.532 (Lucas, playtest 11: "the chat card of these marks should have a 'Apply effect', so we can also do it manually"): the card keeps the
+    // button, for a mark that was missed or removed (it marks the creature targeted then, else the card's target)
+    try { if (cmsg) { const { postFollow } = await import("./followup.mjs"); await postFollow(cmsg, "fa-crosshairs", `${await enrich(`@Mark[${it.markKind ?? ""}]{Apply effect}`, item)} places the mark again by hand (on the creature targeted, else the card's).`); } } catch (e) { console.warn("twod12 | the mark's button", e); }
+  }
   // v0.0.418 (playtest 5, G4: Judge with no target did nothing): used with no target, it asks on the map (click the creature's token); skipped,
   // the card keeps an Apply Effect button that marks the creature targeted when it is clicked
   else if (it.marksTarget) {
@@ -1605,7 +1625,7 @@ export async function useAction(actor, item, opts = {}) {
       const tok = id && id !== "done" ? toks.find(t => t.id === id) : null;
       const { postFollow } = await import("./followup.mjs");
       if (tok) { await setQuarry(actor, tok, it.markKind ?? ""); if (cmsg) await postFollow(cmsg, "fa-crosshairs", `<b>${esc(tok.name)}</b> ${markWords(it.markKind)} <b>${esc(actor.name)}</b>.`); }
-      else if (cmsg) await postFollow(cmsg, "fa-crosshairs", `No target: ${await enrich(`@Mark[${it.markKind ?? ""}]{Apply Effect}`, item)} (target the creature, then click).`);
+      else if (cmsg) await postFollow(cmsg, "fa-crosshairs", `No target: ${await enrich(`@Mark[${it.markKind ?? ""}]{Apply effect}`, item)} (target the creature, then click).`);
     } catch (e) { console.warn("twod12 | marking with no target", e); }
   }
   // v0.0.412 (book, Mastery): the weapon a Strike was made with is noted for the encounter's end (no Mastery on a Tier 3 any more)

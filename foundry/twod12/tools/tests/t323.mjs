@@ -36,9 +36,9 @@ const show = list => list.map(x => `${x.label} ${x.normal}`).join(", ");
 console.log("a sword:", show(WR.chargeAttacks({ weapons: [sword] })), "| ask:", WR.chargeNeedsPick(WR.chargeAttacks({ weapons: [sword] })));
 console.log("a bow:", show(WR.chargeAttacks({ weapons: [bow] })), "| a Long weapon:", show(WR.chargeAttacks({ weapons: [long] })), "| Reach 2 with the sword:", show(WR.chargeAttacks({ weapons: [sword], reach: 2 })));
 console.log("a Thrown axe:", show(WR.chargeAttacks({ weapons: [axe] })), "| ask:", WR.chargeNeedsPick(WR.chargeAttacks({ weapons: [axe] })), "| a sword and a bow, ask:", WR.chargeNeedsPick(WR.chargeAttacks({ weapons: [sword, bow] })));
-const orc = [{ id: "a", name: "Hamstringing Axe", system: { distance: "reach" } }, { id: "j", name: "Barbed Javelin", system: { distance: "6" } }];
+const orc = [{ id: "a", name: "Hamstringing Axe", system: { distance: "reach", traits: new Set(["melee"]) } }, { id: "j", name: "Barbed Javelin", system: { distance: "6", traits: new Set(["ranged"]) } }];   // v0.0.532: the cards' traits
 console.log("an NPC's Basic attacks (first, its weapons left out):", show(WR.chargeAttacks({ weapons: [bow], npcAttacks: orc })), "| nothing in hand:", WR.chargeAttacks({ weapons: [] }).length);
-console.log("the picker stops there:", mv.includes("const reach = Math.max(1, num(ch.stopRange) || num(c.actor?.system?.reach) || 1);"), "| asked with the pick bar:", mv.includes("Charge: which weapon do you attack with?"));
+console.log("the picker stops there:", mv.includes("const reach = Math.max(1, num(ch.stopRange) || num(c.actor?.system?.reach) || 1);"), "| asked with the pick bar:", mv.includes("Charge: which Melee weapon do you attack with?"));
 
 console.log("--- 3. Shake Off's face (B2-015): the book's Save line and three Tiers");
 const so = asItem("Shake Off", B.shakeOff, "shakeOff"), m = CM.cardModel(so);

@@ -286,6 +286,14 @@ async function barModel(actor, token = null) {
     hiding = H.hidingModel(map, { names, targets: [...(game.user?.targets ?? [])].map(t => ({ id: t.id, name: t.name })), hidThisTurn, selfId: selfTok?.id ?? "", pointed: actor.getFlag?.(F, "pointedOut") ?? {} });   // v0.0.530: Point Out's rows
     if (hiding) { let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.hideFold") ?? "[]"); } catch (e) { folded = []; } hiding.folded = folded.includes(actor.uuid); }   // v0.0.518: folded by this viewer
   } catch (e) { hiding = null; }
+  // v0.0.532 (Lucas, playtest 11): the marks this creature placed (Judged, a Bound Ally) and the conditions with a source it gave (Taunted, Daunted,
+  // Grabbed), each with a remove (marks.mjs)
+  let placedMarks = null;
+  try {
+    const MKS = await import("./marks.mjs"), inp = MKS.placedOf(actor);
+    let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.markFold") ?? "[]"); } catch (e) { folded = []; }
+    placedMarks = MKS.placedModel({ ...inp, folded: folded.includes(actor.uuid) });
+  } catch (e) { placedMarks = null; }
   try {
     const cu = cb?.c?.getFlag?.(F, "chargeUse"), cmsg = cu?.messageId ? game.messages?.get?.(cu.messageId) : null;
     // v0.0.514 (Lucas on v0.0.513: "Charge from it needs to have the blinking as well and a cancel button"): an urgent entry (it pulses, as a Reaction does)
@@ -295,7 +303,7 @@ async function barModel(actor, token = null) {
   try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }
   return {
     h3: true, basicGroups, conds,
-    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, charge: chargeSit, hiding, tiles, view: st.view },
+    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, charge: chargeSit, hiding, placed: placedMarks, tiles, view: st.view },
     npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
@@ -653,6 +661,13 @@ async function onClick(ev) {
     try { localStorage.setItem("twod12.hideFold", JSON.stringify(folded.slice(-50))); } catch (e) { /* no storage */ }
     return renderHud();
   }
+  if (kind === "markfold") {   // v0.0.532: the Marks entry folded to its title, for this viewer only
+    let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.markFold") ?? "[]"); } catch (e) { folded = []; }
+    folded = folded.includes(actor.uuid) ? folded.filter(u => u !== actor.uuid) : [...folded, actor.uuid];
+    try { localStorage.setItem("twod12.markFold", JSON.stringify(folded.slice(-50))); } catch (e) { /* no storage */ }
+    return renderHud();
+  }
+  if (kind === "markrm") { const MKS = await import("./marks.mjs"); await MKS.removeMark(actor, b.dataset.mk ?? ""); return renderHud(); }   // v0.0.532
   if (kind === "pointrm") { const H = await import("./hide.mjs"); await H.removePointedOut(actor, [b.dataset.obs]); return renderHud(); }   // v0.0.530 (ox-pointout)
   if (kind === "hideflip" || kind === "hiderm" || kind === "hideadd") {   // v0.0.517: the Hiding entry's buttons
     const H = await import("./hide.mjs");

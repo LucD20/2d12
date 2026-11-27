@@ -78,4 +78,4 @@ console.log("diagonals on a path:", M.diagonalsOn([{ i: 0, j: 0 }, { i: 1, j: 1 
 const area = par => M.reachableCells([{ i: 0, j: 0 }], 1, () => false, par).length;
 console.log("1 square left, after an even number of diagonals:", area(0), "squares | after an odd number (the next diagonal costs 2):", area(1), "squares");
 const mvsrc = (await import("node:fs")).readFileSync(ROOT + "module/move.mjs", "utf8");
-console.log("the drag pays the second diagonal and can't pass the Evade:", mvsrc.includes("if (p === 1 && d % 2 === 1) squares += 1;") && mvsrc.includes("if (squares > left + 1e-6) { warn(`Evade has"));
+console.log("the drag pays the second diagonal and can't pass the Evade:", mvsrc.includes("squares += step.extra;")   /* v0.0.532: diagonalStep */ && mvsrc.includes("if (squares > left + 1e-6) { warn(`Evade has"));

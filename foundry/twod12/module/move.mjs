@@ -5,7 +5,7 @@ import { tokenDistance, lightAt, seenLight, sightSenses, regionHasPoint, vertica
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
 import { sysCard, sysLine, apText } from "./sysmsg.mjs";
-import { logMove, logPush, voidLastAction, patchLine, logBlocked } from "./enclog.mjs";   // v0.0.223: the Encounter Log
+import { logMove, logPush, voidLastAction, patchLine, logBlocked, logDamageCard } from "./enclog.mjs";   // v0.0.223: the Encounter Log
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells, tokensInEmanation } from "./template.mjs";
 import * as MK from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
 import { tierDistance } from "./inline.mjs";
@@ -223,8 +223,11 @@ export function pathTo(map, key) {
  * loeAt(shift) (optional, Slid and Reposition, v0.0.174): false when the origin would lose Line of Effect to the creature there: the movement ends
  * before that square, and that is not a Collision (no damage). damageless: a Reposition never deals Collision damage.
  */
-export function analyzePath(path, N, { wallBetween, creatureAt, cornerAt = null, throughCreatures = false, loeAt = null, damageless = false }) {
-  let done = 0, block = null;
+export function analyzePath(path, N, { wallBetween, creatureAt, cornerAt = null, throughCreatures = false, loeAt = null, damageless = false, passAt = null }) {
+  // v0.0.532 (Lucas, playtest 11: "Prone, unconscious and dead should not cause collision"; book, Chapter 3, Collision): passAt(shift) is true where a
+  // Prone or Unconscious creature lies (creatureAt leaves them and the dead out): the movement passes through, but never ends there; it stops in the
+  // last square free of them (lastFree), and aimed into one, with no damage (passEnd)
+  let done = 0, block = null, lastFree = 0;
   for (let n = 1; n < path.length; n++) {
     const a = path[n - 1], b = path[n];
     if (wallBetween(a, b)) { block = { type: "wall" }; break; }
@@ -235,12 +238,22 @@ export function analyzePath(path, N, { wallBetween, creatureAt, cornerAt = null,
     if (t) { block = { type: "creature", token: t }; break; }
     if (loeAt && !loeAt(b)) { block = { type: "loe" }; break; }
     done = n;
+    if (!passAt || !passAt(b)) lastFree = n;
   }
+  const passEnd = !block && done !== lastFree;
+  done = lastFree;
   const unused = block ? N - done : 0;
   const k = TWOD12.collision;
   const damage = !block || damageless || block.type === "loe" ? { self: 0, other: 0 } : (block.type === "wall" ? { self: unused * k.wall, other: 0 } : { self: unused * k.creature, other: unused * k.creature });
-  return { done, block, final: path[done], unused, damage };
+  return { done, block, final: path[done], unused, damage, passEnd };
 }
+
+/**
+ * v0.0.532 (book, Chapter 3, Collision: "A Prone, an Unconscious or a dead creature never causes a Collision"): how a creature meets a Forced Movement
+ * or a Reposition (pure): "none", a dead one (passed through and ended in: Creatures in your way); "pass", a Prone or Unconscious one (passed
+ * through, never ended in); "block", any other (a Collision; a Reposition stops). The origin of a Pulled aimed at its own square is always "block".
+ */
+export const collisionWay = t => (deadTok(t) ? "none" : (downTok(t) || !!t?.actor?.statuses?.has?.("prone")) ? "pass" : "block");
 
 /**
  * The path tool (Slid and Reposition, v0.0.174): can the next square (a shift) be added to the path? It must be next to the last square
@@ -289,7 +302,7 @@ export function breakFreeCheck(actor) {
 let setupLogName = "";
 export const setSetupLog = name => { setupLogName = String(name ?? ""); };
 /** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each: a drag that pays AP is an Advance Action, v0.0.414). */
-export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = "", undoCtx = null } = {}) {
+export async function chargeMovement(c, cost, dest = null, { par = null, logMode = "", undoCtx = null } = {}) {
   const snap = undoCtx ? snapshotMoveUndo(c, undoCtx, cost) : null;
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
   let evade = num(c.getFlag(F, "evadeMove")), free = num(c.getFlag(F, "freeMove")), left = num(c.getFlag(F, "moveLeft"));
@@ -308,14 +321,17 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
   }
   if (spent && !useEvade) newMoveAction(c.id);   // v0.0.274: a drag that spends AP is a new Advance (a new Move Action for the Reactions); before any await
   const evadeEnded = useEvade > 0 && evade <= 0;
-  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(spent && !useEvade ? { [`flags.${F}.advOwn`]: true, [`flags.${F}.advInteract`]: false } : {}), ...(evadeEnded ? { ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`), ...unset(`flags.${F}.noFarther`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
+  // v0.0.532 (playtest 11, the Advance's area): a Crawl's "ignores Difficult Terrain" (the flag "dt") ends with its free squares; it stayed for the
+  // rest of the turn, so a later Advance's area and cost ignored Difficult Terrain (an ally's space too)
+  const crawlEnded = !evadeEnded && useFree > 0 && free <= 0 && c.getFlag(F, "ignoreTerrain") === "dt";
+  await c.update({ ...(crawlEnded ? unset(`flags.${F}.ignoreTerrain`) : {}), [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(spent && !useEvade ? { [`flags.${F}.advOwn`]: true, [`flags.${F}.advInteract`]: false } : {}), ...(evadeEnded ? { ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.passEnemies`), ...unset(`flags.${F}.noFarther`) } : {}), ...(par !== null && par !== undefined ? { [`flags.${F}.diagPar`]: num(par) % 2 } : {}) });   // v0.0.532 (playtest 11): the diagonals' count of every drag, not only an Evade's
   if (evadeEnded) promptStowAfter(c).catch(e => console.warn("twod12 | stow after Evade", e));
   if (evadeEnded) runThenMove(c).catch(e => console.warn("twod12 | the next movement", e));   // v0.0.512: Slip Away's Advance 2 after its Evade 1
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
   if (!useEvade) await expireOnUse(c.actor, new Set(["move"])).catch(() => {});
   const rem = free + evade + Math.round(left * 100) / 100;
-  if (rem > 0 && dest) showRange(c, rem, dest, evade > 0 ? par : 0);
+  if (rem > 0 && dest) showRange(c, rem, dest, num(par) % 2);   // v0.0.532: the next diagonal's cost carries over
   const ap = getAP(c);
   const sq = Math.round(cost * 100) / 100;
   const what = useEvade ? `Evade ${sq} sq, no reactions` : `Advance ${sq} sq`;
@@ -594,21 +610,25 @@ async function promptStowAfter(c) {
 }
 
 /**
- * v0.0.525 (B2-014): the normal Range a Charge stops at, and the weapon (or NPC Basic attack) it is for: { normal, label }. The creature's Reach when
- * nothing is in hand; the pick bar when its ways differ (Cancel or Escape: the first way).
+ * v0.0.525 (B2-014): the normal Range a Charge stops at, and the weapon (or NPC Basic attack) it is for: { normal, label, use }. v0.0.532 (playtest
+ * 11): Melee ways only; the pick bar only when two Melee ways differ in Range (Cancel or Escape: the first way); use: the weapon (or the NPC's Basic
+ * attack) the granted Basic Attack (1A) is made with (chargeUseWeapon), so it is not asked again. The creature's Reach when nothing is read.
  */
 async function chargeStopRange(actor) {
   const reach = Math.max(1, num(actor?.system?.reach) || 1);
   try {
-    const { chargeAttacks, chargeNeedsPick, chargeNpcAttacks } = await import("./weaponrange.mjs"), { weaponsFor } = await import("./fists.mjs");
+    const { chargeAttacks, chargeNeedsPick, chargeNpcAttacks, chargeUseWeapon } = await import("./weaponrange.mjs"), { weaponsFor } = await import("./fists.mjs");
     const ba = { getFlag: (s, k) => (k === "basic" ? "basicWeaponAttack" : undefined), system: {} };
     const list = chargeAttacks({ weapons: weaponsFor(actor, ba), npcAttacks: chargeNpcAttacks(actor), reach });   // v0.0.530: an NPC's Basic attacks only
-    if (!list.length) return { normal: reach, label: "" };
-    if (!chargeNeedsPick(list)) return list[0];
-    const { pickBar } = await import("./pickbar.mjs");
-    const id = await pickBar({ icon: "fa-person-running-fast", text: `<b>Charge: which weapon do you attack with?</b> The Charge stops where the target is within its normal Range.`, options: list.map(x => ({ id: x.key, label: `${x.label} (Range ${x.normal})` })) });
-    return list.find(x => x.key === id) ?? list[0];
-  } catch (e) { console.warn("twod12 | the Charge's weapon", e); return { normal: reach, label: "" }; }
+    if (!list.length) return { normal: reach, label: "", use: {} };
+    let pick = list[0];
+    if (chargeNeedsPick(list)) {
+      const { pickBar } = await import("./pickbar.mjs");
+      const id = await pickBar({ icon: "fa-person-running-fast", text: `<b>Charge: which Melee weapon do you attack with?</b> The Charge stops where the target is within its Range, and its Basic Attack (1A) is made with it.`, options: list.map(x => ({ id: x.key, label: `${x.label} (Range ${x.normal})` })) });
+      pick = list.find(x => x.key === id) ?? list[0];
+    }
+    return { ...pick, use: chargeUseWeapon(list, pick) };
+  } catch (e) { console.warn("twod12 | the Charge's weapon", e); return { normal: reach, label: "", use: {} }; }
 }
 
 async function grantFreeMove(cfg, ctx, kind = "walk") {
@@ -631,7 +651,9 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (kind !== "evade") newMoveAction(c.id);   // v0.0.274: a Move Action's movement (Advance, Charge, Crawl): a new one for the Reactions
   await c.setFlag(F, key, num(c.getFlag(F, key)) + n);
   if (combat?.combatant?.id !== c.id) await c.setFlag(F, "offTurnAt", turnStamp(combat));   // v0.0.421: granted off its turn (a Reaction): tracked during this turn only
-  if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
+  // v0.0.532 (book, Chapter 3: "the count continues through your whole turn, across every Action that moves you. If you move when it isn't your
+  // turn, you calculate it from the start"): a movement off the creature's turn starts its diagonals from 0 (v0.0.183 did it for every new Evade)
+  if (combat?.combatant?.id !== c.id) await c.setFlag(F, "diagPar", 0);
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", cfg.ignoreTerrain === "dt" ? "dt" : true);   // true: Cut Through; v0.0.528 "dt": Difficult Terrain only (Crawl)
   if (cfg.passEnemies) await c.setFlag(F, "passEnemies", true);   // batch 4: Tumble
   if (cfg.sneak) await c.setFlag(F, "sneaking", true);   // v0.0.513 (Sneak): Hide holds during this movement (hide.mjs reviewHide); cleared at the turn's end
@@ -657,7 +679,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
     // v0.0.525 (the cleanup audit, B2-014; book, Charge): it stops where the target is within the normal Range of the weapon it attacks with; the
     // pick bar asks which when its ways differ (a sword and a bow, a Thrown weapon in hand or thrown, an NPC's two Basic attacks)
     const stop = await chargeStopRange(actor);
-    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "", targetId, messageId: ctx?.message?.id ?? "", stopRange: stop.normal, stopWith: stop.label });   // v0.0.343: its card (deleted when given up)
+    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "", targetId, messageId: ctx?.message?.id ?? "", stopRange: stop.normal, stopWith: stop.label, use: stop.use ?? {} });   // v0.0.532: use, the granted Basic Attack's weapon   // v0.0.343: its card (deleted when given up)
   }
   const sq = `${n} square${n === 1 ? "" : "s"}`;
   if (cfg.quiet && kind !== "charge") { showRange(c, n); return true; }   // v0.0.224: a Setup's movement (its bar says it), no chat line
@@ -750,7 +772,7 @@ export async function advanceAsEvade(combatantId, max = 0) {
   if (!c?.isOwner) return warn("Only the owner can change this movement.");
   const free = num(c.getFlag(F, "freeMove")), n = max > 0 ? Math.min(free, max) : free;
   if (!n) return warn("There is no movement left to Evade with.");
-  await c.update({ [`flags.${F}.evadeMove`]: num(c.getFlag(F, "evadeMove")) + n, [`flags.${F}.freeMove`]: free - n, [`flags.${F}.diagPar`]: 0 });
+  await c.update({ [`flags.${F}.evadeMove`]: num(c.getFlag(F, "evadeMove")) + n, [`flags.${F}.freeMove`]: free - n });   // v0.0.532: the diagonals' count carries on
   showRange(c, n);
 }
 
@@ -1053,7 +1075,11 @@ function choosePush(origin, target, N, mode = "push") {
     const map = repo ? repositionShifts(cells, oCells, N, origin.actor?.system?.reach ?? 1) : pull ? pullShifts(cells, oCells, N) : pushShifts(cells, oCells, N);
     // The origin is a creature in the way of a Pulled aimed at its own square (both take damage); a Pushed moves away from it.
     const others = canvas.tokens.placeables.filter(t => t.id !== target.id && (repo || pull || t.id !== origin.id));
-    const occupied = others.map(t => ({ t, set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+    // v0.0.532 (Chapter 3, Collision): a dead creature is not in the way, a Prone or Unconscious one is passed through (passAt), not ended in
+    const wayOf = t => (t.id === origin.id ? "block" : collisionWay(t));
+    const occupiedAll = others.map(t => ({ t, way: wayOf(t), set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+    const occupied = occupiedAll.filter(o => o.way === "block"), lying = occupiedAll.filter(o => o.way === "pass");
+    const passAt = sh => lying.some(o => cells.some(c => o.set.has(`${c.i + sh.di},${c.j + sh.dj}`)));
     const pt = sh => {
       const pts = cells.map(c => cellCenter(c.i + sh.di, c.j + sh.dj));
       return { x: pts.reduce((a, p) => a + p.x, 0) / pts.length, y: pts.reduce((a, p) => a + p.y, 0) / pts.length };
@@ -1063,7 +1089,7 @@ function choosePush(origin, target, N, mode = "push") {
     // The whole creature must fit: every square it occupies is tested against walls (a Forced Movement never squeezes), and against the corners it cuts.
     const wallsOn = (a, b) => cells.some(c => wallBetween(cellCenter(c.i + a.di, c.j + a.dj), cellCenter(c.i + b.di, c.j + b.dj)));
     const w = Math.max(1, Math.round(target.document.width ?? 1)), h = Math.max(1, Math.round(target.document.height ?? 1));
-    const cornerAt = (a, b) => stepCorners({ i: tl.i + a.di, j: tl.j + a.dj }, { i: tl.i + b.di, j: tl.j + b.dj }, { w, h, solidAt: solidCorner, creatureAt: c => creatureIn(c, [target]) });
+    const cornerAt = (a, b) => stepCorners({ i: tl.i + a.di, j: tl.j + a.dj }, { i: tl.i + b.di, j: tl.j + b.dj }, { w, h, solidAt: solidCorner, creatureAt: c => { const t = creatureIn(c, [target]); return t && wayOf(t) === "block" ? t : null; } });   // v0.0.532
     const gfx = new PIXI.Graphics();
     MK.addOnTop(gfx);
     const prevInteractive = canvas.tokens.interactiveChildren;
@@ -1101,7 +1127,7 @@ function choosePush(origin, target, N, mode = "push") {
         gfx.lineStyle(3, MK.GOLD, 1).drawRect(landTl.x + 2, landTl.y + 2, w * gs - 4, h * gs - 4);
       }
       // v0.0.468: the plate short (the HUD says the rest): "Pushed 2", or the Collision and its damage
-      const R = current.result, short = !R.block ? `${repo ? "Repositioned" : MOVE_LABEL[mode]} ${R.done}` : R.block.type === "loe" ? `Stops after ${R.done}: no Line of Effect` : repo ? `Stops after ${R.done}` : `Collision after ${R.done}: ${R.damage.self} Vigor${R.block.type === "creature" ? " each" : ""}`;
+      const R = current.result, short = !R.block ? `${repo ? "Repositioned" : MOVE_LABEL[mode]} ${R.done}${R.passEnd ? ": not in a lying creature's space" : ""}` : R.block.type === "loe" ? `Stops after ${R.done}: no Line of Effect` : repo ? `Stops after ${R.done}` : `Collision after ${R.done}: ${R.damage.self} Vigor${R.block.type === "creature" ? " each" : ""}`;
       const pl = MK.plate([short], { fs: Math.max(13, Math.round(gs * 0.17)), warn: !!R.block }); pl.position.set(endP.x, endP.y - (h * gs) / 2 - 4); plates.addChild(pl);
       if (current.result.block) {
         const bad = pts.slice(current.result.done, current.result.done + 2);
@@ -1114,7 +1140,7 @@ function choosePush(origin, target, N, mode = "push") {
     const text = r => {
       if (repo) return r.block ? `${r.block.type === "wall" ? (r.block.corner ? "A solid corner" : "A wall") : r.block.token.name} is in the way: stops after ${r.done} square${r.done === 1 ? "" : "s"}` : `Reposition ${r.done} square${r.done === 1 ? "" : "s"}`;
       const steps = `${r.done} of ${r.done + r.unused} squares aimed (maximum ${N})`;
-      if (!r.block) return `${MOVE_LABEL[mode]} ${r.done} (${steps})`;
+      if (!r.block) return `${MOVE_LABEL[mode]} ${r.done} (${steps})${r.passEnd ? ": it can't end in a Prone or Unconscious creature's space, so it stops before it, with no Collision" : ""}`;
       const d = r.damage;
       return r.block.type === "wall"
         ? `${r.block.corner ? "Solid corner" : "Wall"}: ${r.unused} unused, ${d.self} Vigor damage (${steps})`
@@ -1127,8 +1153,8 @@ function choosePush(origin, target, N, mode = "push") {
       const node = pushNodeForCell(map, cells, o) ?? (pull ? pullIntoOrigin(cells, oCells, { i: o.i, j: o.j }, N) : null);
       if (!node || !node.steps) { current = null; fbar.set(""); try { canvas.app.view.style.cursor = ""; } catch (e) { /* no view */ } return draw(); }
       const path = repo || node.intoOrigin ? lineShifts(node) : pathTo(map, shiftKey(node));
-      const r0 = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt });
-      const result = pushCollisionResult(r0, path, N, { wallBetween: wallsOn, creatureAt, cornerAt }, repo);
+      const r0 = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt, passAt });
+      const result = pushCollisionResult(r0, path, N, { wallBetween: wallsOn, creatureAt, cornerAt, passAt }, repo);
       current = { path, result };
       fbar.set(text(result));   // v0.0.461: no pointer tip (the plate and the HUD say it)
       try { canvas.app.view.style.cursor = "pointer"; } catch (e) { /* no view */ }
@@ -1181,17 +1207,21 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     const cells = tokenCells(target), tl = { i: Math.min(...cells.map(c => c.i)), j: Math.min(...cells.map(c => c.j)) };
     const oCells = tokenCells(origin), reach = Math.max(1, num(origin.actor?.system?.reach) || 1);
     const w = Math.max(1, Math.round(target.document.width ?? 1)), h = Math.max(1, Math.round(target.document.height ?? 1));
-    const occupied = canvas.tokens.placeables.filter(t => t.id !== target.id && t.actor && !t.document?.hidden).map(t => ({ t, set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+    // v0.0.532 (Chapter 3, Collision): a dead creature is not in the way, a Prone or Unconscious one is passed through (passAt), not ended in
+    const wayOf = t => (t.id === origin.id ? "block" : collisionWay(t));
+    const occupiedAll = canvas.tokens.placeables.filter(t => t.id !== target.id && t.actor && !t.document?.hidden).map(t => ({ t, way: wayOf(t), set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+    const occupied = occupiedAll.filter(o => o.way === "block"), lying = occupiedAll.filter(o => o.way === "pass");
     const foot = sh => cells.map(c => ({ i: c.i + sh.di, j: c.j + sh.dj }));
     const creatureAt = sh => occupied.find(o => foot(sh).some(c => o.set.has(`${c.i},${c.j}`)))?.t ?? null;
+    const passAt = sh => lying.some(o => foot(sh).some(c => o.set.has(`${c.i},${c.j}`)));
     const wallsOn = (a, b) => cells.some(c => wallBetween(cellCenter(c.i + a.di, c.j + a.dj), cellCenter(c.i + b.di, c.j + b.dj)));
-    const cornerAt = (a, b) => stepCorners({ i: tl.i + a.di, j: tl.j + a.dj }, { i: tl.i + b.di, j: tl.j + b.dj }, { w, h, solidAt: solidCorner, creatureAt: c => creatureIn(c, [target]) });
+    const cornerAt = (a, b) => stepCorners({ i: tl.i + a.di, j: tl.j + a.dj }, { i: tl.i + b.di, j: tl.j + b.dj }, { w, h, solidAt: solidCorner, creatureAt: c => { const t = creatureIn(c, [target]); return t && wayOf(t) === "block" ? t : null; } });
     const loeAt = sh => loeTo(origin, target, sh);
     const inReach = sh => foot(sh).some(c => oCells.some(o => Math.max(Math.abs(c.i - o.i), Math.abs(c.j - o.j)) <= reach));
     const reachOutline = withinReach ? emanationCells(oCells, reach) : [];
     const path = [{ di: 0, dj: 0 }];
     let hover = null;
-    const analyze = p => analyzePath(p, p.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt, loeAt, damageless: repo });
+    const analyze = p => analyzePath(p, p.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt, loeAt, damageless: repo, passAt });
     const why = sh => {
       const p = pathStepProblem(path, sh, N);
       if (p) return p;
@@ -1360,6 +1390,16 @@ async function moveToken(doc, dx, dy) {
 }
 
 const bodyDamage = n => ({ B: { l: n, n: 0 }, M: { l: 0, n: 0 } });
+/**
+ * v0.0.532 (playtest 11: "Backhand's 2 damage is in the Adjust column, not in Raw": the 2 was the Collision of its Pushed 2): a Collision's damage
+ * is written to the Encounter Log as a card's damage (Raw, the origin's, collision), not left to the by-hand line of the actor's update.
+ */
+async function collisionDamage(actor, n, origin = null) {
+  const before = actor?.system?.damage ?? {}, sum = d => (Number(d.bodyLethal) || 0) + (Number(d.bodyNonlethal) || 0) + (Number(d.mindLethal) || 0) + (Number(d.mindNonlethal) || 0);
+  const was = sum(before);
+  await applyToActor(actor, bodyDamage(n));
+  try { const took = actor?.isOwner ? Math.max(0, sum(actor?.system?.damage ?? {}) - was) : n;   /* through the GM: as aimed */ await logDamageCard({ origin: origin?.actor ?? origin ?? null, target: actor, v: took, r: 0, raw: n, reducedBy: Math.max(0, n - took), collision: true, note: "Collision" }); } catch (e) { console.warn("twod12 | the Collision's log line", e); }
+}
 
 /**
  * Steadiness (v0.0.169): the value of a Forced Movement or Reposition is reduced by the target's Steadiness. A creature can choose not to apply it
@@ -1419,12 +1459,12 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
     const d = result.damage;
     if (result.block.type === "wall") {
       lines.push(`It hits ${result.block.corner ? "a solid corner" : "a wall"} with ${result.unused} unused: <b>${d.self} Vigor</b> damage.`);
-      if (target.actor && d.self) await applyToActor(target.actor, bodyDamage(d.self));
+      if (target.actor && d.self) await collisionDamage(target.actor, d.self, origin);
     } else {
       const o = result.block.token;
       lines.push(`It hits <b>${esc(o.name)}</b>${result.block.corner ? " (it can't pass diagonally between two creatures)" : ""} with ${result.unused} unused: both take <b>${d.self} Vigor</b> damage.`);
-      if (target.actor && d.self) await applyToActor(target.actor, bodyDamage(d.self));
-      if (o.actor && d.other) await applyToActor(o.actor, bodyDamage(d.other));
+      if (target.actor && d.self) await collisionDamage(target.actor, d.self, origin);
+      if (o.actor && d.other) await collisionDamage(o.actor, d.other, origin);
     }
   }
   await postFollow(opts.msg, "fa-hand", lines.join(" "), { cls: "pushmsg" });
@@ -1569,14 +1609,14 @@ export function creaturesInReach(token, reach = 1) {
 }
 
 /** After a Charge's movement: if no creature is within Reach, its required Weapon Attack (1A) can't be made, so the Charge is disrupted. */
-function chargeFollowUp(c, doc, reach, to = null, messageId = "") {
+function chargeFollowUp(c, doc, reach, to = null, messageId = "", use = {}) {
   const token = doc.object ?? canvas.tokens?.get?.(doc.id);
   if (!token) return;
   // v0.0.215 (Lucas, playtest 2: "disrupted" when it wasn't): measured from the Charge's end square, not from where the token is drawn
   // 600 ms later (a long Charge was still moving, so nobody seemed to be within Reach).
   const at = to ? { id: doc.id, document: { id: doc.id, x: to.x, y: to.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } } : token;
   // v0.0.512 (playtest 7: "Charge's Weapon Attack isn't in the HUD's Situational tab"): its Basic Attack (1A) waits there, from the Charge's card
-  if (creaturesInReach(at, reach).length) { if (messageId && c.isOwner) c.setFlag(F, "chargeUse", { messageId }).catch(() => {}); return; }
+  if (creaturesInReach(at, reach).length) { if (messageId && c.isOwner) c.setFlag(F, "chargeUse", { messageId, ...use }).catch(() => {}); return; }   // v0.0.532: and its weapon
   postCard("Charge", `${esc(c.name)}'s Charge is disrupted`, "No creature within Reach for its Basic Attack (1A). The AP stay spent.", "chargemsg").catch(() => {});
 }
 
@@ -1706,14 +1746,16 @@ function measureSquares(from, to) {
  * Collision"; GM only): the token goes in a straight line toward the square it was dropped on, any distance, no Reactions, no movement spent,
  * Difficult Terrain ignored; it stops before the first wall or creature and the squares left are a Collision (book: Forced Movement).
  */
-export function forcedDragPath(cells, { wallAt, creatureAt }) {
-  let done = 0, block = null;
+export function forcedDragPath(cells, { wallAt, creatureAt, passAt = null }) {
+  let done = 0, block = null, lastFree = 0;
   for (let n = 1; n < cells.length; n++) {
     if (wallAt(cells[n - 1], cells[n])) { block = { type: "wall" }; break; }
     const t = creatureAt(cells[n]);
     if (t) { block = { type: "creature", token: t }; break; }
     done = n;
+    if (!passAt || !passAt(cells[n])) lastFree = n;   // v0.0.532: a Prone or Unconscious creature passed through, not ended in
   }
+  done = lastFree;
   const total = cells.length - 1, unused = block ? total - done : 0, k = TWOD12.collision;
   const damage = !block ? { self: 0, other: 0 } : block.type === "wall" ? { self: unused * k.wall, other: 0 } : { self: unused * k.creature, other: unused * k.creature };
   return { done, block, unused, damage, total };
@@ -1724,9 +1766,10 @@ function forcedDragPlan(doc, dest) {
   const a = cellAt({ x: homePos(doc).x + 2, y: homePos(doc).y + 2 }), b = cellAt({ x: dest.x + 2, y: dest.y + 2 });
   const cells = [a, ...lineSteps({ x: a.j, y: a.i }, { x: b.j, y: b.i }, "left").map(c => ({ i: c.y, j: c.x }))];
   const mid = c => { const t = canvas.grid.getTopLeftPoint({ i: c.i, j: c.j }); return { x: t.x + (w * size) / 2, y: t.y + (h * size) / 2 }; };
-  const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor).map(t => ({ t, set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+  const all = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor).map(t => ({ t, way: collisionWay(t), set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+  const others = all.filter(o => o.way === "block"), lying = all.filter(o => o.way === "pass");   // v0.0.532 (Chapter 3, Collision)
   const foot = c => { const out = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) out.push(`${c.i + di},${c.j + dj}`); return out; };
-  const r = forcedDragPath(cells, { wallAt: (p, q) => wallBetween(mid(p), mid(q)) || spaceInWall(q, w, h), creatureAt: c => others.find(o => foot(c).some(k => o.set.has(k)))?.t ?? null });
+  const r = forcedDragPath(cells, { wallAt: (p, q) => wallBetween(mid(p), mid(q)) || spaceInWall(q, w, h), creatureAt: c => others.find(o => foot(c).some(k => o.set.has(k)))?.t ?? null, passAt: c => lying.some(o => foot(c).some(k => o.set.has(k))) });
   const end = canvas.grid.getTopLeftPoint({ i: cells[r.done].i, j: cells[r.done].j });
   return { r, cells, end, w, h };
 }
@@ -1735,8 +1778,8 @@ async function forcedDrag(doc, dest) {
   clearDragPreview();
   if (r.done > 0) await doc.update({ x: end.x, y: end.y }, { twod12Forced: true, animate: true, animation: { movementSpeed: TWOD12.pushSpeed, easing: "easeOutCubic" } });
   const lines = [`<b>${esc(doc.name)}</b> is Force Moved ${r.done} square${r.done === 1 ? "" : "s"} (GM, Alt-drag).`];
-  if (r.block?.type === "wall") { lines.push(`It hits a wall with ${r.unused} unused: <b>${r.damage.self} Vigor</b> damage.`); if (doc.actor && r.damage.self) await applyToActor(doc.actor, bodyDamage(r.damage.self)); }
-  else if (r.block) { lines.push(`It hits <b>${esc(r.block.token.name)}</b> with ${r.unused} unused: both take <b>${r.damage.self} Vigor</b> damage.`); if (doc.actor && r.damage.self) await applyToActor(doc.actor, bodyDamage(r.damage.self)); if (r.block.token.actor && r.damage.other) await applyToActor(r.block.token.actor, bodyDamage(r.damage.other)); }
+  if (r.block?.type === "wall") { lines.push(`It hits a wall with ${r.unused} unused: <b>${r.damage.self} Vigor</b> damage.`); if (doc.actor && r.damage.self) await collisionDamage(doc.actor, r.damage.self); }
+  else if (r.block) { lines.push(`It hits <b>${esc(r.block.token.name)}</b> with ${r.unused} unused: both take <b>${r.damage.self} Vigor</b> damage.`); if (doc.actor && r.damage.self) await collisionDamage(doc.actor, r.damage.self); if (r.block.token.actor && r.damage.other) await collisionDamage(r.block.token.actor, r.damage.other); }
   await ChatMessage.create({ content: sysLine("fa-hand", lines.join(" "), "pushmsg") });
 }
 
@@ -1842,12 +1885,13 @@ export function dragRangeSquares(c, combat = globalThis.game?.combat) {
   if (!c || !combat?.started) return { squares: 0, par: 0, kind: "walk" };
   if (c.actor?.statuses?.has?.("immobilized")) return { squares: 0, par: 0, kind: "walk" };
   const ev = num(c.getFlag?.(F, "evadeMove"));
-  if (ev > 0) return { squares: ev, par: num(c.getFlag?.(F, "diagPar")) % 2, kind: "evade" };
+  const par = num(c.getFlag?.(F, "diagPar")) % 2;   // v0.0.532: the diagonals' count of the turn, for every movement
+  if (ev > 0) return { squares: ev, par, kind: "evade" };
   const fr = num(c.getFlag?.(F, "freeMove")), ml = num(c.getFlag?.(F, "moveLeft"));
-  if (fr + ml > 0) return { squares: Math.round((fr + ml) * 100) / 100, par: 0, kind: "walk" };
+  if (fr + ml > 0) return { squares: Math.round((fr + ml) * 100) / 100, par, kind: "walk" };
   if (combat.combatant?.id !== c.id) return { squares: 0, par: 0, kind: "walk" };
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
-  if (getAP(c) >= 1 && walk > 0) return { squares: walk, par: 0, kind: "walk" };
+  if (getAP(c) >= 1 && walk > 0) return { squares: walk, par, kind: "walk" };
   return { squares: 0, par: 0, kind: "walk" };
 }
 
@@ -2005,7 +2049,7 @@ export async function undoLastMove(target = null, { alreadyMoved = false } = {})
         }
       }
       const rem = f.evadeMove + f.freeMove + f.moveLeft;
-      if (rem > 0) showRange(c, rem, entry.from, f.evadeMove > 0 ? (f.diagPar % 2) : 0);
+      if (rem > 0) showRange(c, rem, entry.from, f.diagPar % 2);
       else clearRange();
     }
     if (entry.enclogId) { try { patchLine(entry.enclogId, { off: true, why: "Undone" }); } catch (e) { /* no log */ } }
@@ -2173,14 +2217,15 @@ export function registerMovement() {
         return false;
       }
       // v0.0.183: an Evade over several drags counts its diagonals as one movement: after an odd number, the next diagonal costs 2
-      // (Foundry measures each drag from 0). It can't go beyond the Evade's squares.
-      let par = 0;
-      if (evading && !ch) {
-        const p = num(c.getFlag(F, "diagPar")) % 2, d = diagonalsOn([origin, ...(movement?.pending?.waypoints ?? []), to]);
-        if (p === 1 && d % 2 === 1) squares += 1;
+      // (Foundry measures each drag from 0). It can't go beyond the Evade's squares. v0.0.532 (Lucas, playtest 11: "after moving diagonaly and
+      // dropping the token, I dont think it was counting the first square as second diagonal even though it should be"; book, Chapter 3: the count
+      // continues through your whole turn): every drag of the creature's own movement carries the count (diagPar), an Advance's too
+      const p = num(c.getFlag(F, "diagPar")) % 2, step = diagonalStep(p, diagonalsOn([origin, ...(movement?.pending?.waypoints ?? []), to]));
+      squares += step.extra;
+      const par = step.par;
+      if (evading) {
         const left = num(c.getFlag(F, "evadeMove"));
-        if (squares > left + 1e-6) { warn(`Evade has ${left} square${left === 1 ? "" : "s"} left${p === 1 && d % 2 === 1 ? " (this diagonal is the second one: it costs 2)" : ""}. Choose a shorter path, or use End movement.`); return false; }
-        par = (p + d) % 2;
+        if (squares > left + 1e-6) { warn(`Evade has ${left} square${left === 1 ? "" : "s"} left${step.extra ? " (this diagonal is the second one: it costs 2)" : ""}. Choose a shorter path, or use End movement.`); return false; }
       }
       // An Advance through an unwilling creature's squares pays for Difficult Terrain (unless Foundry already counted it).
       if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);   // v0.0.468: a Large token's too, through Foundry's cost (hardStep reads how its steps come)
@@ -2235,6 +2280,16 @@ export function diagonalsOn(points, offsetOf = p => canvas.grid.getOffset(p)) {
   return d;
 }
 
+/**
+ * v0.0.532 (pure; book, Chapter 3: every second diagonal costs 2, and the count continues through your whole turn): one drag of a movement with
+ * `diagonals` diagonal steps, after a count that left `prevPar` (1: the next diagonal is a second one). Foundry measures each drag from 0 (its
+ * first diagonal 1), so the drag costs `extra` more; `par` is the count it leaves.
+ */
+export function diagonalStep(prevPar, diagonals) {
+  const p = (Math.trunc(Number(prevPar)) || 0) % 2, d = Math.max(0, Math.trunc(Number(diagonals)) || 0);
+  return { extra: p === 1 && d % 2 === 1 ? 1 : 0, par: (p + d) % 2 };
+}
+
 /** Squares within N of the token (every second diagonal costs 2), not through walls. */
 export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterCost = () => 0) {
   const best = new Map(), key = (i, j) => `${i},${j}`;
@@ -2264,6 +2319,17 @@ export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterC
   const out = new Map();
   for (const k of seen.keys()) { const [ij] = k.split("|"); const [i, j] = ij.split(",").map(Number); out.set(ij, { i, j }); }
   return [...out.values()];
+}
+
+/**
+ * v0.0.532 (pure; book, Chapter 3, Creatures in your way: an ally's or an Unconscious creature's space is Difficult Terrain you can pass through,
+ * never end in): the squares of a movement area split into where the creature can stop (stops) and the creatures' spaces it only crosses
+ * (through). kindAt(cell): wayKind of the creature there ("dt", "block", "none") or ""; own: the mover's own squares ("i,j").
+ */
+export function rangeStops(area, kindAt, own = new Set()) {
+  const stops = [], through = [];
+  for (const x of area ?? []) (!own.has(`${x.i},${x.j}`) && kindAt(x) === "dt" ? through : stops).push(x);
+  return { stops, through };
 }
 
 /** Draw the area around the combatant's token (or around a position it is about to be at). */
@@ -2307,7 +2373,11 @@ export function showRange(c, squares, dest = null, par = 0) {
     const enterCost = cell => (ignoring ? 0 : difficult(cell) ? (evading ? Infinity : 1) : (!own.has(`${cell.i},${cell.j}`) && whoAt(cell) === "dt" ? 1 : 0));
     const betweenTwo = (a, b) => a.i !== b.i && a.j !== b.j && whoAt({ i: a.i, j: b.j }) === "block" && whoAt({ i: b.i, j: a.j }) === "block";   // batch 4: two enemies corner to corner
     const blocked = (a, b) => wallBetween(pt(a), pt(b)) || (!own.has(`${b.i},${b.j}`) && (cantCell(b) || (!passing && (whoAt(b) === "block" || betweenTwo(a, b)))));
-    const area = reachableCells(cells, squares, blocked, par, enterCost);
+    const area0 = reachableCells(cells, squares, blocked, par, enterCost);
+    // v0.0.532 (Lucas, playtest 11: "The Advance area isn't clear anymore, I think its because it isnt taking into account allies being difficult
+    // terrain"): an ally's (or an Unconscious creature's) space is crossed at double cost but never ended in: it is left out of the area where the
+    // creature can stop, and hatched as the Difficult Terrain it is (rangeStops)
+    const { stops: area, through } = rangeStops(area0, whoAt, own);
     rangeGfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(rangeGfx);   // the movement area stays under the tokens (a large pale area)
     // v0.0.461 (the map notes' redesign, b and c): where it can stop in pale ink (blue had no meaning); an Evade's edge dashed (only an Evade is);
@@ -2328,6 +2398,7 @@ export function showRange(c, squares, dest = null, par = 0) {
       if (!evading) { for (const x of area) if (!own.has(`${x.i},${x.j}`) && difficult(x)) hatch(x, MK.INK, 0.35); }
       else { for (const k of nearBlocked()) { const [i, j] = k.split(",").map(Number); if (difficult({ i, j })) hatch({ i, j }, MK.RED, 0.55); } }
     }
+    for (const x of through) hatch(x, MK.INK, 0.35);   // v0.0.532: an ally's space it can cross (an Evade too), not stop in
     if (cantLimits.length) {
       for (const k of nearBlocked()) { const [i, j] = k.split(",").map(Number); if (cantCell({ i, j })) hatch({ i, j }, MK.RED, 0.55); }
     }
@@ -2582,6 +2653,7 @@ async function runCharge(c, doc, go, reach) {
   const points = r.cells.slice(1, end + 1).map(cell => r.tl(cell));
   if (!points.length) return endMovement(c.id);
   const chargeMsgId = c.getFlag(F, "charge")?.messageId ?? "";   // v0.0.512: its card, for the HUD's Basic Attack (1A)
+  const chargeWith = c.getFlag(F, "charge")?.use ?? {};   // v0.0.532: the weapon chosen for its stop
   await c.unsetFlag(F, "charge").catch(() => {});
   if (r.bad >= 0) await postCard("Charge", `${esc(c.name)}'s Charge stops early`, `${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}: it ends on the last legal square (${go.stopSq} squares).`, "chargemsg");
   await moveThrough(doc, points);
@@ -2589,5 +2661,5 @@ async function runCharge(c, doc, go, reach) {
   await chargeMovement(c, go.stopSq, null, { logMode: "Charge" });
   await c.update({ [`flags.${F}.freeMove`]: 0 });
   clearRange();
-  chargeFollowUp(c, doc, reach, go.stopTl, chargeMsgId);
+  chargeFollowUp(c, doc, reach, go.stopTl, chargeMsgId, chargeWith);
 }

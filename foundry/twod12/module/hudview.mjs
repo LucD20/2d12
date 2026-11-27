@@ -4,6 +4,7 @@
 //   kind over columns by Frequency, the side panel), or folded to one line. Several tokens: their cards.
 //   The marks (book/research/ui-marks-and-state.md): AP squares, the Reaction Point a diamond, Strikes slashes, a hairline between them, the same shapes
 //   on every turn (the carousel's out-of-turn diamonds of v0.0.201 are gone); a filled mark is one still there. AP above the maximum (an effect that grants AP) and a second Reaction Point add marks of the same kind.
+import { placedHtml } from "./marks.mjs";   // v0.0.532: the Marks entry (the marks a creature placed; not the AP marks below)
 import { esc } from "./util.mjs";
 
 export const HUD_TABS_PC = [["act", "Actions"], ["rx", "Reactions"], ["basic", "Basic"], ["esc", "Escalation"]];
@@ -196,6 +197,7 @@ export function rightHtml(s = {}) {
   }
   // v0.0.463 (Lucas: "prone should be low priority, moving under new situational effects"): Prone's Stand / Crawl goes after the asks (below)
   if (s.hiding) avail.push(hidingHtml(s.hiding));   // v0.0.517: Hiding (not urgent), before Prone
+  if (s.placed) avail.push(placedHtml(s.placed));   // v0.0.532: the marks placed by this creature (marks.mjs), after Hiding
   if (s.prone) avail.push(sitItemHtml(s.prone));
   for (const ex of s.extras ?? []) avail.push(sitItemHtml(ex));
   if (s.notes) avail.push(`<div class="h3-si"><div class="t">${esc(s.notes)}</div></div>`);
