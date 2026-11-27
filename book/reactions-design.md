@@ -359,3 +359,50 @@ The Bane's worth: 6 to 8% of each Strike it makes this turn, about 1.5 to 2 on a
 - **Judge's 0R** (Trigger: the creature you Judged goes Down; it Judges another). It costs no AP, moves nothing, stops nothing, and fires at most once per creature that falls. The new economy doesn't touch it. Keep.
 - **Bear the Blow** (Durgan's playtest Talent, 0R, Turn: his adjacent Bound Ally's damage is split, half to him, and he gains 1 Guard). It is the "move the damage onto the protector" kind, which limits itself through his own Health (`research/reactions.md`, takeaway 3). It is a 0R, so the AP price doesn't reach it. It is a Talent, so its price is the Talents' pass (`talents-design.md`), not this rebuild. Keep, and flag it there.
 - **Smite's extra die** costs 1 AP on his own turn instead of the Reaction Point (decided in `rules-backlog.md`). Nothing to decide here.
+
+## Batch 2, the Archer at level 1 (PROPOSED 2026-11-27, waiting for Lucas)
+
+**The brief (2026-11-16):** "very mobile, running away or moving side to side to distract enemies"; "shooting fast and precise, then moving away"; "they keep on the back lines since they are fragile". Her Hallmark Reactions are Snap Shot and Slip Away; both answer "an enemy would enter a square adjacent to you" (`cards/archer-redesign.md`, Decision 6). Her marginal AP is a bow shot: **Sylwen and Kaela 6.1 to 6.3, then 5.7 to 5.9** (`research/action-economy.md` 4.1). The charter is set aside for this session.
+
+### Card 1: Snap Shot (kept, Lucas: "actually fine")
+
+> **Snap Shot** · Archer Hallmark Reaction · 1R · Turn · [Weapon, Ranged, Projectile, Strike]
+> **Interrupt:** The target would enter a square adjacent to you. · Distance: Weapon · Target: One enemy
+> **Attack:** Weapon vs. Armor Defense · **Tier 1:** [V] [Mod]. · **Tier 2:** [V] 1[W] + [Mod]; Hindered (EoT). · **Tier 3:** [V] 1[W] + [Mod]; Immobilized (EoT).
+
+**At the new price [arithmetic, `research/action-economy.md` 4.1]:** about 5.2 damage, plus Hindered on a Tier 2 and Immobilized on a Tier 3 before the enemy arrives: about 9 to 11 a use, against her AP's 6. **Above an AP, and that is right:** it fires only when an enemy reaches her (about a third of her rounds), and it is the shot she can't take on her turn once she is Engaged (a [Ranged] Action while Engaged is Doomed). It isn't one of her turn's repeats either, so the repeat's Doomed doesn't reach it. **No change proposed.** (Its Tier 2 and Tier 3 cut the enemy's movement; Lucas kept the card knowing it.)
+
+### Card 2: Slip Away (to rebuild)
+
+**Today:** *Interrupt:* the target would enter a square adjacent to you. *Effect:* you Evade 1, then Advance 2. Three squares of her token moving in the middle of the enemy's move, which is exactly the kind Lucas called the most disrupting. Played once in playtests 8 to 11.
+
+**Every candidate:**
+
+| # | Slip Away as | What moves, what stops | Worth a use | Notes |
+|---|---|---|---|---|
+| A | **Interrupt: an enemy would make a [Strike] Action against you. That Strike's roll against you is Doomed.** | nothing moves, nothing stops; the attack still happens | a Doomed attack keeps 62 to 70% of its worth [`action-economy.md`], so about 4 to 6 off a 12 to 16 hit; **and a Doomed roll can't make Doubles**, so no Critical (the Minion's 24) | "slipping" the blow: DC20's Side Step without the step, Pathfinder 2e's Nimble Dodge (`research/reactions.md`); chosen before the roll, so some go on misses: a gamble, never a duty; per target, Chapter 1 already handles a Doomed target among several |
+| B | Trigger: an enemy enters a square adjacent to you. At the end of its turn, you Evade 2. | her token moves, but after the enemy's turn ends | about an AP of movement, and her own turn starts free of it | 13th Age's Control the Range pattern; she still takes the hit; a new timing ("at the end of its turn") to write |
+| C | Interrupt: the target would enter a square adjacent to you. You Evade 1. | one square, mid-move | a delay: the enemy with movement left follows | the smallest form of today's |
+| D | today's (Evade 1, then Advance 2) | three squares, mid-move | about 7 a turn at the old price | what Lucas discarded |
+| E | an enemy's Strike would damage you; you take half | nothing | about 7 to 8 | rejected: the brief gives her "no protection of its own but distance and movement"; this is the Shield's payload on herself |
+| F | the attacker takes a Bane / is Pressed 1 | nothing | about 1 to 2 | too small |
+
+**Claude's proposal: A.**
+
+> **Slip Away** · Archer Hallmark Reaction · 1R · Turn
+> *You are already turning as the blow comes, and it finds the space where you were.*
+> **Interrupt:** An enemy would make a [Strike] Action against you.
+> **Target:** The triggering creature
+> **Effect:** That Strike's roll against you is Doomed.
+
+**Analysis.**
+- **"Moving side to side to distract enemies":** the dodge is the movement, told and not moved. No token moves, no turn stops, and the attack still rolls.
+- **The decision it gives:** before the roll, is this attacker worth one of my shots next turn? A goblin with a knife at her side: maybe. The ogre's Great Sweep: yes. Some uses land on misses, so it is never automatic (`research/reactions.md`, takeaway 6).
+- **No Critical:** a Doomed roll keeps the two lowest of 3d12 and can't make Doubles (Chapter 1). Against enemies whose damage is in their Critical (playtest 11's goblin: a Critical for 16 and a second Shiv for 8), that is most of the value.
+- **With Snap Shot:** the same enemy can draw both: Snap Shot on its step in, Slip Away on its swing (two different Actions, so Chapter 2's "once per triggering Action" allows it). 2 AP of her next turn.
+- **The rules it touches:** "would make a [Strike] Action against you" is a moment before the roll (Foundry: `strikeAgainst`, today for an ally within N; it needs "you"). Chapter 2's "an Interrupt can't change that roll" is about "would damage", which comes after the roll; this one comes before. Boons still meet it (Chapter 1: 1 to 4 Boons bring a Doomed roll back to a normal one with Banes): a flanking enemy with Vulnerable on her can still hit her well.
+- **Lost:** the escape. An enemy that reached her stays next to her, and her bow is Doomed on her turn until she Evades (1 AP), as today without Slip Away. Option B keeps the escape at the end of the enemy's turn.
+- **Complexity:** one Version, 15 words, no roll of her own.
+- **Table feel:** "the orc swings; Kaela slips it: roll three, keep the two lowest."
+
+**For Lucas to choose:** A (the dodge), B (the escape after its turn), C (one square now), or keep D.
