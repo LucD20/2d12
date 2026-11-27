@@ -430,3 +430,46 @@ Both fire only when she is reached (about a third of her rounds), so form 1's tw
 - **Disruption:** none. The enemy's turn is over: its token, its Actions and its rolls are done. Her token moves between two turns (the 13th Age pattern, `research/reactions.md` takeaway 7).
 - **The timing to write (Chapter 2, the least ambiguity):** "ends its turn" happens **after everything at the end of that turn** (its Lingering, its EoT effects ending, its AP regained), just before the next creature's turn starts. Several Reactions on it: the usual order (Chapter 2: the reacting creatures decide the order).
 - **With Snap Shot:** the enemy that comes for her can draw Snap Shot on the way in and Slip Away at the end of its turn: 2 AP of her next turn, a shot and a clean escape.
+
+**Lucas (2026-11-27):** "Lets Make Snap shot then a weaker attack, to be less 2 APs for one, because yeah, Slip away is almost a worse slip away. Make Slip away: you evade 1, then you can Interact to swap weapons."
+
+**Snap Shot: Evade 1, then a weaker shot.** Her bow (Hunting Bow; the Recurve deals the same on average) is [V] 0 / 1 + 1d4! / 2 + 1d4!, her Modifier +2. Her Basic Attack with it is about 6. The shot below takes the Modifier off Tier 2 and the extra die off Tier 3:
+
+> **Snap Shot** · Archer Hallmark Reaction · 1R · Turn · [Weapon, Ranged, Projectile, Strike]
+> *A foe lunges for you; you give it one step of ground and an arrow for the trouble.*
+> **Interrupt:** The target would enter a square adjacent to you.
+> **Distance:** Weapon · **Target:** One enemy
+> **Effect:** You Evade 1, then make this attack.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W].
+> **Tier 3:** [V] 1[W] + [Mod].
+
+```
+The shot: 2 / about 3.9 / about 6.9 .............. about 4 a use   [arithmetic: her bow, +2]
+Evade 1 before it ............................... about 2          [judgment: one square of ground; she isn't Engaged when she shoots, and the enemy may not reach her this turn]
+--- About 6 a use: about one AP (it was about 12 as Evade 1 and a Basic Attack).
+```
+
+- **Her token moves one square during the enemy's move**, which Lucas chose. The enemy's move goes on (it may follow her). An Evade can't enter Difficult Terrain and triggers no Reactions.
+- **The shot is its own attack, not a Basic Attack:** it isn't one of her turn's repeats, and its Tiers are written on the card.
+
+**Slip Away: Evade 1, then a free weapon swap.**
+
+> **Slip Away** · Archer Hallmark Reaction · 1R · Turn
+> *Your foe's turn ends with it standing over you, and by the time it looks down you are gone, a different weapon in your hand.*
+> **Trigger:** An enemy ends its turn adjacent to you.
+> **Target:** The triggering creature
+> **Effect:** You Evade 1. Then you can use [[Interact]] to swap the weapon you hold for another you carry, with no AP.
+
+```
+Evade 1 ......................................... 1 AP on her turn   [the Evade Action's 1 AP Version]
+A swap with no AP ............................... 1 AP on her turn when she wants it   [the Interact Action]
+--- About 1 to 2 AP for one, between two turns: her turn starts free of that enemy, with the bow (or the dagger) already in hand.
+```
+
+- **The brief's "fast to change to melee for a quick strike then moving back"** in one card. Its siblings: Darting Blade (the swap inside the strike) and Shifting Aim.
+- **Disruption:** none; the enemy's turn is over. "Ends its turn" is the timing above (after everything at the end of that turn).
+- **Interact's swap** (Chapter 6: stow the one you hold and draw another; stowing and swapping need no free hand) is unchanged; only its AP is waived.
+
+**For Lucas to confirm:** Snap Shot's three Tier lines (or another weaker shot), and Slip Away's wording.
