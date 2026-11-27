@@ -222,3 +222,67 @@ Taunted by you (1 round) ........................ 1 to 2  [arithmetic: 1 Bane, 6
 **Analysis.** Broad: any enemy, any ally within 5, once on each creature's turn. Less strong than the half: about the Paladin's last AP, not more. It isn't a reflex because he decides before the roll (a miss would have missed anyway) and because each use costs a blow of his next turn. It makes a Tier 3 into a Tier 2 or a Tier 2 into a miss about a sixth of the time each, so the table sees it as "that one missed because of the Paladin". The Taunt is the deterrent of the research (4e's mark, Draw Steel's Judgment). Judge no longer appears in it, so Rebuke's trigger is free again. Rules it touches: the new moment (above); "+N Defense" is Chapter 2's ("raises every Defense"), unnamed, so it doesn't add to another unnamed bonus. Complexity: one Version, about 25 words, no roll of its own.
 
 **For Lucas to choose:** A (and +1 + Pow, or a flat +2), B, C or D.
+
+**Lucas, 2026-11-27: "SoF is good."** Shield of Faith is settled as above (B).
+
+## Batch 1, card 2: Rebuke (PROPOSED 2026-11-27, waiting for Lucas)
+
+**Lucas's direction:** "Lets make Rebuke more broad, and less strong. Could be turn, not about reducing damage."
+
+**Today's card (stage0):** 1R · Turn · [Power, Save, Divine] · 3 squares · one enemy. *Trigger:* the target moves away from you. *Effect:* Hindered (EoT). *Save* (Appeal): on a Tier 1 or 2, its Move Action is disrupted. It is the strongest stop the Paladin has, it rolls a Save on the GM's turn, and its disrupted move sends a token back: two of the things Lucas named.
+
+**Broad means:** any enemy, a common moment. **Less strong means:** under the Shield's 9 to 10 a use, and nothing that stops or moves. **The charter** asks that the two Hallmark Reactions "share a trigger and a payload where they can, and differ by the rider" (`class-charter.md`). Shield of Faith answers the Judged creature's hit on an ally, so the shared moment is **an enemy damages an ally**: the Shield narrow and before the damage, Rebuke broad and after it. One prevents, aimed; the other punishes, for anyone.
+
+**Every trigger the rules offer:**
+
+| Trigger | How often | Notes |
+|---|---|---|
+| **An enemy within 5 squares of you damages an ally** (a Trigger: after the damage) | most enemy turns | shares the Shield's moment; leaves the enemy's turn whole; the hit has landed, so it never reduces it |
+| An enemy within 5 squares moves closer to an ally | most enemy turns | the "stay in front" moment; a payload here lands during the move (Hindered halves what is left) |
+| The target moves away from you (today) | about half the rounds (`ruler/reactions.md`: 48 to 61%) | a front-line moment; 3 squares |
+| An enemy makes a [Strike] against an ally (before the roll) | most enemy turns | Foundry's `strikeAgainst`; a payload can't change the roll (Chapter 2) |
+| An enemy ends its turn within 5 squares of you | every turn | lands when nothing is left to disrupt, but every enemy, every turn: the duty the Shield just escaped |
+
+**Every payload (nothing that reduces the damage; at most one rider), priced against the Paladin's AP (6.2 to 8.8, `research/action-economy.md` 4.1):**
+
+| Payload | What it does to the turn | Worth a use | Notes |
+|---|---|---|---|
+| **Slowed 1** | nothing now; it regains 1 AP less at the end of this turn, so its next turn is 3 AP | one of its AP: about 4 to 5 on a Standard (about 19 a turn), about 8 on the ogre (32), about 3 on a Minion | the enemy's turn is left whole; it prices itself: worth it on the big enemy, not on the goblin; Slowed doesn't stack, so a second Rebuke on the same enemy adds nothing |
+| Hindered (EoT) | halves what is left of its movement now | 0 to one attack | today's half; it bends the turn in progress |
+| Immobilized (EoT), Prone | ends the movement / Crawl only | up to an attack | a stop: what Lucas named |
+| Dazed 1 | it loses 1 AP now | as Slowed, but now | takes from the turn in progress: an action it planned can fail mid-turn |
+| [R] Holy damage (1d6! + Pow, about 5 to 6) | nothing | 5 to 6 | the 4e Divine Challenge's shape; the brief's "not a consistent damage dealer" |
+| Pressed 1 (1 round) | its Strikes take 1 Pressure Bane | about 1.5 to 2 | small |
+| Vulnerable 1 (1 round) | allies gain 1 Boon against it | about 2 to 4 over the party's attacks | support; small |
+| Daunted of you (1 round) | Banes, and Difficult Terrain toward him | about 1 to 2 | pushes it off him |
+| Taunted by you (1 round) | 1 Bane against anyone else | about 1 to 2 | the Shield's rider: the two would read the same |
+| Judged by you | moves the mark (1 AP on his turn) | about 1 AP once | a tempting pairing with the Shield; it changes Judge's price |
+| Pushed, Pulled, Slid; the Paladin moves | a token moves on the enemy's turn | | rejected: what Lucas named |
+
+**Claude's proposal:**
+
+> **Rebuke** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Focus]
+> *You call your foe's cruelty by its name, and the weight of it slows every step that follows.*
+> **Trigger:** An enemy damages an ally within 5 squares of you.
+> **Target:** The triggering creature
+> **Effect:** The target is Slowed 1.
+
+```
+Slowed 1 on the triggering enemy ............ 4 to 5 on a Standard, about 8 on an Elite, about 3 on a Minion
+                                               [arithmetic: one of its 4 AP, its turn's damage / 4]
+--- Under the Shield (9 to 10) and under his own AP (6.2 to 8.8), except against the Elite.
+    He Rebukes the ogre and lets the goblin go: the choice is the size of the enemy.
+```
+
+**Analysis.**
+- **Broad:** any enemy, at the most common moment.
+- **Less strong:** it never touches the hit or the turn in progress. It takes one AP from the enemy's next turn: the same trade the Paladin just made, AP for AP.
+- **The decision it gives:** which enemy's next turn is worth one of his blows. An Elite's AP is worth more than his, a Minion's much less. And beside the Shield: Shield the Judged creature's hit, Rebuke everyone else's.
+- **Disruption:** none in the turn it answers. The token doesn't move, nothing stops, and there is no roll on the GM's turn (today's Appeal Save goes).
+- **The rules it touches:** Slowed is being reworded for the end-of-turn regain (step 9 of the order). The wording has to make Slowed 1 cost exactly one AP, once: "you regain 1 AP less the next time you regain AP; then it ends", or Rebuke would cost a creature two turns' AP. Rebuke writes no duration, and waits for that rule.
+- **Siblings:** Shield of Faith (the same moment, before the damage, the Judged creature only). Judge (the mark). Bulwark of Faith (card 3).
+- **Traits:** [Divine, Focus], as the Shield. [Power] and [Save] leave with the Save. Tireless Vigil's second Reaction Point "pays only for [Divine] Reactions": it covers both, and its rewording is step 9.
+- **Complexity:** one Version, 13 words, no roll, one condition.
+- **Table feel:** "the goblin's knife lands; the Paladin says 'Rebuke, it's Slowed'": said once the hit is applied, nothing undone.
+
+**For Lucas to choose:** the trigger (an enemy damages an ally; moves closer to an ally; moves away from you) and the payload (Slowed 1; Holy damage; Hindered; Vulnerable 1; Pressed 1).
