@@ -1,5 +1,5 @@
 --- 1. the card model mirrors book/cards.py (t260)
-Crawl: # 1 AP | Effect | # 2 AP | Requirement | Effect | the 2 AP Requirement: Your Speed is 5 or higher.
+Crawl: # 1 AP | Effect | # 2 AP | Requirement | Effect | Special | the 2 AP Requirement: Your Speed is 5 or higher.
 Seek, its two Versions printed once: Special | Attack | Tier 1 | Tier 2 | Tier 3 | merged: true | heading: 1 AP / 2 AP | both kept: 2
 Relocate's three Versions stay three blocks: 3
 the sheet's card keeps a Use button for each: true

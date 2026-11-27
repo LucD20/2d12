@@ -80,19 +80,6 @@ export const MINION_SQUAD = 2;
 // movement (pass through its space and end in it), for every mover; down: an Unconscious creature (Difficult Terrain), never one Down and fighting.
 export const creatureWay = ({ drifting = false, unwilling = false, down = false, dead = false } = {}) => (dead ? "none" : drifting ? "pass" : !down && unwilling ? "block" : "dt");
 
-/**
- * One square of Difficult Terrain always (v0.0.525, the cleanup audit, B2-016; v0.0.527, Lucas, 2026-11-26: "all difficult terrain applies
- * regardless of how many has been moved"; book, Chapter 3, Difficult Terrain: "Whenever you have at least 1 square of movement left, you can enter
- * one more square, whatever it costs; that ends the movement"). Pure: what a move costs the movement. cost: its squares with Difficult Terrain;
- * entered: the squares it enters; budget: what this movement has left. One square entered with at least 1 square left that costs more than is
- * left: it enters it and the movement is spent (its budget). Anything else costs what it costs. (v0.0.525 to v0.0.526: only a movement none of
- * which was used yet.)
- */
-export const oneSquareCost = ({ cost = 0, entered = 0, budget = 0 } = {}) => {
-  const c = Number(cost) || 0, b = Number(budget) || 0;
-  return Math.round(Number(entered) || 0) === 1 && b >= 1 - 1e-6 && c > b + 1e-6 ? b : c;
-};
-
 /* ---- Minion ticks (the Bestiary's rebuild, 2026-11-25; book, Bestiary, Ticks; book/cards/goblin-sneak-redesign.md) ---- */
 /** A Minion's ticks when its entry names no other number. */
 export const MINION_TICKS = 2;

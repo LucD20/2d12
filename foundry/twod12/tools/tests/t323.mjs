@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t323.mjs)
 // v0.0.525 (the cleanup audit's open Foundry items, 2026-11-26; foundry/foundry-backlog.md, "THE CLEANUP AUDIT: WHAT FOUNDRY STILL HAS TO FOLLOW"):
 // a dead creature doesn't affect movement (Chapter 3); Charge stops at the normal Range of the weapon it attacks with (B2-014); Shake Off's face,
-// the book's Save line and three Tiers (B2-015); one square of Difficult Terrain always (B2-016); Point Out on any Unsensed creature (B2-030);
+// the book's Save line and three Tiers (B2-015); one square of Difficult Terrain always (B2-016; removed in v0.0.528, Crawl ignores Difficult Terrain); Point Out on any Unsensed creature (B2-030);
 // Empowered's pool and subtype chosen (B2-061); a thick wall blocks Hearing (B3-077); Shifting Aim off the Archer's turn (B3-026); Judge's free
 // re-Judge is a Reaction (B3-022). The pure parts; what Foundry draws and moves is Lucas's checklist.
 import fs from "node:fs";
@@ -47,15 +47,19 @@ console.log("the Use still makes no roll:", B.shakeOff.versions[0].noTiers, "| i
 console.log("Tier 2:", m.versions[0].lines.find(l => l.label === "Tier 2")?.text);
 console.log("the no-roll chat card draws the Tiers:", src("module/chatcards.mjs").includes('(m.card.after ?? []).filter(l => /^Tier [123]$/.test(l.label))'), "| and not its Effect text:", src("module/actions.mjs").includes('chipCard ? "" : version.effects ?? ""'));
 
-console.log("--- 4. one square of Difficult Terrain always (B2-016; Chapter 3's example: Mark)");
-const one = (cost, entered, budget, size) => RR.oneSquareCost({ cost, entered, budget, size });
-console.log("Crawl 1 into rubble (costs 2):", one(2, 1, 1, 1), "| Speed 1, Advance into rubble:", one(2, 1, 1, 1), "| Advance 3, 2 used, then rubble:", one(2, 1, 1, 3), "| two squares:", one(3, 2, 1, 1), "| no movement:", one(2, 1, 0, 0), "| Speed 5:", one(2, 1, 5, 5));
-const area = oneAlways => MV.reachableCells([{ i: 0, j: 0 }], 1, () => false, 0, () => 1, oneAlways).length;
-console.log("the movement area of a 1-square movement where every square costs 2: without the rule", area(false), "| with it", area(true));
-// v0.0.527 (Lucas, 2026-11-26: "all difficult terrain applies regardless of how many has been moved"): one more square with 1 left, after 2 used
-const area3 = oneAlways => MV.reachableCells([{ i: 0, j: 0 }], 3, () => false, 0, () => 1, oneAlways).length;
-console.log("a 3-square movement where every square costs 2: without the rule", area3(false), "| with it", area3(true), "| the book:", src("../../book/rules-src/03-movement.md").includes("Whenever you have at least 1 square of movement left, you can enter one more square, whatever it costs; that ends the movement."));
-console.log("Evade left out (an Evade can't enter Difficult Terrain):", JSON.stringify(MV.moveBudget({ getFlag: (s, k) => (k === "evadeMove" ? 2 : 0), actor: { system: { speed: 5 } } })), "| a granted movement:", JSON.stringify(MV.moveBudget({ getFlag: (s, k) => ({ freeMove: 1, freeSize: 1 })[k] ?? 0, actor: { system: { speed: 1 } } })), "| a new AP's Speed:", JSON.stringify(MV.moveBudget({ getFlag: () => 0, actor: { system: { speed: 1 } } })));
+console.log("--- 4. one square of Difficult Terrain always: removed (v0.0.528); Crawl ignores Difficult Terrain");
+// v0.0.528 (Lucas, 2026-11-26: "lets remove it and add to Crawl that it ignores difficult terrain"): v0.0.525's and v0.0.527's allowance is undone
+// (roundrules.mjs oneSquareCost, move.mjs moveBudget, freeSize, reachableCells' oneAlways); a square of Difficult Terrain costs 2, and a movement that
+// can't pay can't enter it. Crawl's @Move carries dt:ignore (the flag ignoreTerrain "dt"): Difficult Terrain costs it nothing extra, creatures are
+// in its way as usual.
+const area = (n, more) => MV.reachableCells([{ i: 0, j: 0 }], n, () => false, 0, () => more).length;
+console.log("a 1-square movement where every square costs 2:", area(1, 1), "| a 3-square one:", area(3, 1), "| a 1-square one that ignores it:", area(1, 0));
+console.log("the allowance is gone:", !("oneSquareCost" in RR), !("moveBudget" in MV), !/oneAlways|freeSize|oneSquareCost|moveBudget/.test(src("module/move.mjs")), "| the book:", !src("../../book/rules-src/03-movement.md").includes("one more square"));
+const IL = await import(ROOTURL + "module/inline.mjs"), P = t => IL.parseInline("Move", t).ignoreTerrain;
+console.log("@Move dt:ignore:", JSON.stringify(P("advance|distance:1|dt:ignore")), "| terrain:ignore (Cut Through):", P("evade|distance:2|terrain:ignore"), "| both:", P("evade|distance:2|terrain:ignore|dt:ignore"), "| none:", P("advance|distance:1"));
+console.log("Crawl's two movements:", B.crawl.versions.map(v => /@Move\[advance\|distance:\d\|dt:ignore\|/.test(v.effects)).join(), "| its Special:", B.crawl.special, "| the book:", src("../../book/rules-src/03-movement.md").includes("A movement that **ignores Difficult Terrain**, such as a [[Crawl]], counts each of those squares as a normal square."));
+const mvs = src("module/move.mjs");
+console.log("a \"dt\" movement doesn't pass creatures:", mvs.includes('cutThrough = ignoring && it !== "dt"'), mvs.includes("{ ignoring: cutThrough }"), mvs.includes('(ignoring && it !== "dt") || !!c.getFlag?.(F, "passEnemies")'), "| the flag kept:", mvs.includes('cfg.ignoreTerrain === "dt" ? "dt" : true'));
 
 console.log("--- 5. Point Out on any Unsensed creature (B2-030)");
 const H = await import(ROOTURL + "module/hide.mjs");

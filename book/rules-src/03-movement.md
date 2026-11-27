@@ -226,10 +226,9 @@ Some creatures are harder to move than others. Every creature has a **Steadiness
 
 ## Difficult Terrain
 
-Each square of difficult terrain counts double the squares it would normally count. **Whenever you have at least 1 square of movement left, you can enter one more square, whatever it costs; that ends the movement.** The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. Creatures' spaces: see [[Movement|Creatures in your way]].
+Each square of difficult terrain counts double the squares it would normally count. The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. Creatures' spaces: see [[Movement|Creatures in your way]].
 
-> [!example]
-> Mark is Prone at the edge of a field of rubble (Difficult Terrain). He Crawls 1 square into the rubble: that square counts 2, but with 1 square of movement left he can always enter one more square, and his Crawl ends there. Later, standing, he Advances with a Speed of 3: 2 squares across open ground, then, with 1 square left, into a square of rubble, where his movement ends.
+A movement that **ignores Difficult Terrain**, such as a [[Crawl]], counts each of those squares as a normal square. Nothing else about them changes: you still can't end your movement in an ally's space, and Hazardous Terrain still affects you.
 
 @@DIAGRAM:difficult@@
 

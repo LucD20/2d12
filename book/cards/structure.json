@@ -920,7 +920,12 @@
     ]
    }
   ],
-  "after": [],
+  "after": [
+   {
+    "label": "Special",
+    "text": "Your Crawl ignores Difficult Terrain."
+   }
+  ],
   "passive": false
  },
  "Crushing Grip": {

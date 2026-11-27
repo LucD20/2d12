@@ -160,6 +160,9 @@ export function parseInline(kind, inner) {
     else if (key === "pass") cfg.passEnemies = /^(enemies|yes|true)$/i.test(val);
     else if (key === "sneak") cfg.sneak = /^(yes|true)$/i.test(val);   // v0.0.513 (the Hide package, Sneak): the movement keeps Hide (hide.mjs)   // batch 4 (Tumble): @Move[advance|...|pass:enemies]: through enemies' spaces (never ending in one)
     else if (key === "terrain") cfg.ignoreTerrain = /^(ignore|ignores|yes|true)$/i.test(val);   // @Move[evade|distance:2|terrain:ignore]: it moves through creatures and ignores Difficult Terrain (Cut Through)
+    // v0.0.528 (Lucas, 2026-11-26: Crawl "ignores difficult terrain"): @Move[advance|distance:1|dt:ignore]: Difficult Terrain costs it nothing extra (Darkness,
+    // a Zone, an ally's or an Unconscious creature's space count 1); creatures are in its way as usual (an enemy blocks, no ending in an ally's space)
+    else if (key === "dt") { if (/^(ignore|ignores|yes|true)$/i.test(val) && cfg.ignoreTerrain !== true) cfg.ignoreTerrain = "dt"; }
     else if (key === "upto") cfg.upto = /^(yes|true|1|y)$/i.test(val);
     else if (key === "expire") cfg.expire = val.toLowerCase();
     else if (key === "round" || key === "rounds") { if (/^eot$/i.test(val)) cfg.expire = "eot"; else cfg.rounds = Number(val) || 0; }   // v0.0.250 (Lucas): rounds:eot reads as EoT

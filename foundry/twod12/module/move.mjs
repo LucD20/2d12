@@ -1,4 +1,4 @@
-import { creatureWay, oneSquareCost } from "./roundrules.mjs";   // the Bestiary's rebuild: Drifting; v0.0.525: one square always
+import { creatureWay } from "./roundrules.mjs";   // the Bestiary's rebuild: Drifting
 import { homePos, leanOf } from "./lean.mjs";
 import { tokenDistance, lightAt, seenLight, sightSenses, regionHasPoint, verticalSquares, withHeight } from "./light.mjs";
 // Movement: AP tracking for the creature whose turn it is (v0.0.414: an Advance is one piece, combat.mjs advanceAfterAction; free movement from @Move[walk]),
@@ -331,18 +331,6 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
   if (spent && ap < spent) warn(`${c.name} did not have enough AP for that movement.`);
 }
 
-/**
- * v0.0.525 (B2-016, one square of Difficult Terrain always): what the movement a drag spends has left: { budget }. A granted movement (an Advance,
- * a Crawl): what is left of it; none: what is left of the last AP's Speed, else a new AP's Speed (moveLeft 0). An Evade is left out (it can't enter
- * Difficult Terrain at all). v0.0.527 (Lucas, 2026-11-26): any movement with at least 1 square left, used or not (the size it had is not read).
- */
-export function moveBudget(c) {
-  const free = num(c?.getFlag?.(F, "freeMove")), left = num(c?.getFlag?.(F, "moveLeft")), walk = num(c?.actor?.system?.moveSpeed ?? c?.actor?.system?.speed);
-  if (num(c?.getFlag?.(F, "evadeMove")) > 0) return { budget: 0 };
-  if (free > 0) return { budget: free };
-  return { budget: left > 1e-6 ? left : walk };
-}
-
 /** The distance of a @Move button: a number, or an expression such as walk/2 (rounded up). */
 export function moveDistance(cfg, actor) {
   const raw = cfg.distanceExpr ? evalExpr(cfg.distanceExpr, actor) : (num(cfg.distance) || 1);
@@ -641,10 +629,9 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   const key = kind === "evade" ? "evadeMove" : "freeMove";
   if (kind !== "evade") newMoveAction(c.id);   // v0.0.274: a Move Action's movement (Advance, Charge, Crawl): a new one for the Reactions
   await c.setFlag(F, key, num(c.getFlag(F, key)) + n);
-  if (kind !== "evade") await c.setFlag(F, "freeSize", num(c.getFlag(F, "freeMove")));   // v0.0.525 (B2-016): the movement's size, for "one square always"
   if (combat?.combatant?.id !== c.id) await c.setFlag(F, "offTurnAt", turnStamp(combat));   // v0.0.421: granted off its turn (a Reaction): tracked during this turn only
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
-  if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
+  if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", cfg.ignoreTerrain === "dt" ? "dt" : true);   // true: Cut Through; v0.0.528 "dt": Difficult Terrain only (Crawl)
   if (cfg.passEnemies) await c.setFlag(F, "passEnemies", true);   // batch 4: Tumble
   if (cfg.sneak) await c.setFlag(F, "sneaking", true);   // v0.0.513 (Sneak): Hide holds during this movement (hide.mjs reviewHide); cleared at the turn's end
   const fAct = ctx?.message?.getFlag?.(F, "action");
@@ -682,7 +669,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   }
   // v0.0.225 (Lucas: "End movement" and "Advance instead" were still chat buttons): a bottom bar, as a Setup's movement (Cut Through).
   const what = kind === "evade"
-    ? `Evade up to ${sq}: no reactions; ${cfg.ignoreTerrain ? "through any creature's space (not ending in one), ignoring Difficult Terrain" : "not into or through Difficult Terrain"}${nfNote}. Drag your token.`
+    ? `Evade up to ${sq}: no reactions; ${cfg.ignoreTerrain === "dt" ? "ignoring Difficult Terrain" : cfg.ignoreTerrain ? "through any creature's space (not ending in one), ignoring Difficult Terrain" : "not into or through Difficult Terrain"}${nfNote}. Drag your token.`
     : `Advance up to ${sq} without spending AP${nfNote}. Drag your token.`;
   freeMoveBar(c, kind, what);
   showRange(c, n);
@@ -2114,8 +2101,10 @@ export function registerMovement() {
       }
       const c = currentCombatantFor(doc);
       if (!c) return;
-      const ignoring = !!c.getFlag(F, "ignoreTerrain");   // Cut Through: through creatures, and terrain costs nothing extra
-      const passing = ignoring || !!c.getFlag(F, "passEnemies");   // batch 4: Tumble passes enemies' spaces (its Check by hand)
+      // Cut Through (the flag true): through creatures, and terrain costs nothing extra; v0.0.528 ("dt", a Crawl): Difficult Terrain costs nothing
+      // extra, and creatures are in the way as for any movement
+      const it = c.getFlag(F, "ignoreTerrain"), ignoring = !!it, cutThrough = ignoring && it !== "dt";
+      const passing = cutThrough || !!c.getFlag(F, "passEnemies");   // batch 4: Tumble passes enemies' spaces (its Check by hand)
       const to = movement?.destination ?? { x: doc.x, y: doc.y };
       const origin = leanOf(doc) ? homePos(doc) : (movement?.origin ?? { x: doc.x, y: doc.y });   // a Leaning token is nudged: it moves from its own square
       let squares = num(movement?.pending?.cost) || num(movement?.pending?.distance);
@@ -2139,7 +2128,7 @@ export function registerMovement() {
         }
       }
       // Creatures in the way: no move ends inside another creature's space, and an unwilling creature's squares are Difficult Terrain.
-      const way = creaturesOnPath(doc, [origin, ...(movement?.pending?.waypoints ?? []), to], { ignoring });
+      const way = creaturesOnPath(doc, [origin, ...(movement?.pending?.waypoints ?? []), to], { ignoring: cutThrough });
       if (way.endIn) { warn(`You can't end your movement in ${way.endIn}'s space.`); return false; }
       const ch = c.getFlag(F, "charge");
       // Corners: no movement cuts a solid corner (a Charge is judged by its straight line, below).
@@ -2176,8 +2165,6 @@ export function registerMovement() {
       }
       // An Advance through an unwilling creature's squares pays for Difficult Terrain (unless Foundry already counted it).
       if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);   // v0.0.468: a Large token's too, through Foundry's cost (hardStep reads how its steps come)
-      // v0.0.525 (the cleanup audit, B2-016; book, Chapter 3): a movement of at least 1 square can always enter one square, whatever it costs
-      if (!ch && !evading) squares = oneSquareCost({ cost: squares, entered: dist > 0 ? dist / gridUnit() : 0, ...moveBudget(c) });
       // v0.0.418 (G6): off its turn a creature moves only the squares a Reaction gave it (no AP spent for more)
       if (game.combat?.combatant?.id !== c.id && squares > offTurnFree(c) + 1e-6) { warn(`${c.name} has ${offTurnFree(c)} free square${offTurnFree(c) === 1 ? "" : "s"} left (it isn't its turn). Choose a shorter path, or use End movement.`); return false; }
       mark(keyOf(doc, to.x, to.y));
@@ -2230,7 +2217,7 @@ export function diagonalsOn(points, offsetOf = p => canvas.grid.getOffset(p)) {
 }
 
 /** Squares within N of the token (every second diagonal costs 2), not through walls. */
-export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterCost = () => 0, oneAlways = false) {   // v0.0.525: oneAlways (B2-016)
+export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterCost = () => 0) {
   const best = new Map(), key = (i, j) => `${i},${j}`;
   const queue = [];
   for (const c of cells) { best.set(`${key(c.i, c.j)}|${par0}`, 0); queue.push({ i: c.i, j: c.j, cost: 0, par: par0 ? 1 : 0 }); }   // par0 1: the next diagonal costs 2 (v0.0.183)
@@ -2244,15 +2231,11 @@ export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterC
     for (const [a, b] of NEIGH) {
       const diag = a !== 0 && b !== 0, step = diag ? (cur.par === 0 ? 1 : 2) : 1;
       const nc = cur.cost + step;
-      if (nc > n) continue;   // a step itself must fit (a second diagonal costs 2)
-      const oneMore = oneAlways && n - cur.cost >= 1 - 1e-6;   // v0.0.527: with 1 square left, one more square whatever its terrain costs
+      if (nc > n) continue;
       const ni = cur.i + a, nj = cur.j + b;
       if (blocked({ i: cur.i, j: cur.j }, { i: ni, j: nj })) continue;
       // v0.0.224 (Lucas: the area ignored Darkness): entering a square can cost more (Difficult Terrain: +1) or be impossible (Infinity: an Evade).
-      const more = enterCost({ i: ni, j: nj });
-      // v0.0.525 (B2-016); v0.0.527 (Lucas, 2026-11-26: "all difficult terrain applies regardless of how many has been moved"): with at least 1
-      // square of the movement left, one more square can always be entered, whatever it costs: the movement ends there
-      const tc = oneMore && Number.isFinite(more) && nc + more > n ? n : nc + (Number.isFinite(more) ? more : Infinity);
+      const more = enterCost({ i: ni, j: nj }), tc = nc + (Number.isFinite(more) ? more : Infinity);
       if (tc > n) continue;
       const nk = `${key(ni, nj)}|${diag ? 1 - cur.par : cur.par}`;
       if (seen.has(nk) && seen.get(nk) <= tc) continue;
@@ -2277,8 +2260,8 @@ export function showRange(c, squares, dest = null, par = 0) {
     const pt = ({ i, j }) => cellCenter(i, j);
     // v0.0.224: Difficult Terrain for this creature (Darkness it can't see in, a Difficult Terrain area, an unwilling creature's space): an Advance
     // pays 1 more to enter it, an Evade can't enter it (unless it ignores terrain, Cut Through).
-    const evading = num(c.getFlag?.(F, "evadeMove")) > 0 || c.kind === "evade", ignoring = !!c.getFlag?.(F, "ignoreTerrain");
-    const passing = ignoring || !!c.getFlag?.(F, "passEnemies");   // batch 4: Tumble passes enemies' spaces
+    const evading = num(c.getFlag?.(F, "evadeMove")) > 0 || c.kind === "evade", it = c.getFlag?.(F, "ignoreTerrain"), ignoring = !!it;
+    const passing = (ignoring && it !== "dt") || !!c.getFlag?.(F, "passEnemies");   // batch 4: Tumble passes enemies' spaces; v0.0.528: a "dt" movement (Crawl) doesn't
     const senses = sightSenses(tok.actor), memo = new Map();
     // the core rework batch 4: a creature's square: an enemy's blocks (unless it passes), an ally's or a Down creature's is Difficult Terrain (an Evade can cross it)
     const whoAt = cell => { const o2 = creatureIn(cell, [tok.id]); return o2 ? wayKind(o2, tok.document) : ""; };
@@ -2305,8 +2288,7 @@ export function showRange(c, squares, dest = null, par = 0) {
     const enterCost = cell => (ignoring ? 0 : difficult(cell) ? (evading ? Infinity : 1) : (!own.has(`${cell.i},${cell.j}`) && whoAt(cell) === "dt" ? 1 : 0));
     const betweenTwo = (a, b) => a.i !== b.i && a.j !== b.j && whoAt({ i: a.i, j: b.j }) === "block" && whoAt({ i: b.i, j: a.j }) === "block";   // batch 4: two enemies corner to corner
     const blocked = (a, b) => wallBetween(pt(a), pt(b)) || (!own.has(`${b.i},${b.j}`) && (cantCell(b) || (!passing && (whoAt(b) === "block" || betweenTwo(a, b)))));
-    const oneMore = !evading;   // v0.0.525 (B2-016); v0.0.527: one more square with at least 1 left, whatever was used (reachableCells)
-    const area = reachableCells(cells, squares, blocked, par, enterCost, oneMore);
+    const area = reachableCells(cells, squares, blocked, par, enterCost);
     rangeGfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(rangeGfx);   // the movement area stays under the tokens (a large pale area)
     // v0.0.461 (the map notes' redesign, b and c): where it can stop in pale ink (blue had no meaning); an Evade's edge dashed (only an Evade is);

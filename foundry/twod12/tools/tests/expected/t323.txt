@@ -18,11 +18,12 @@ its lines: Save | Tier 1 | Tier 2 | Tier 3 | the Save line ends in its button: t
 the Use still makes no roll: true | its Effect text kept for the older faces: true | the short card keeps the Save line: true
 Tier 2: The target takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends.
 the no-roll chat card draws the Tiers: true | and not its Effect text: true
---- 4. one square of Difficult Terrain always (B2-016; Chapter 3's example: Mark)
-Crawl 1 into rubble (costs 2): 1 | Speed 1, Advance into rubble: 1 | Advance 3, 2 used, then rubble: 1 | two squares: 3 | no movement: 2 | Speed 5: 2
-the movement area of a 1-square movement where every square costs 2: without the rule 1 | with it 9
-a 3-square movement where every square costs 2: without the rule 9 | with it 21 | the book: true
-Evade left out (an Evade can't enter Difficult Terrain): {"budget":0} | a granted movement: {"budget":1} | a new AP's Speed: {"budget":1}
+--- 4. one square of Difficult Terrain always: removed (v0.0.528); Crawl ignores Difficult Terrain
+a 1-square movement where every square costs 2: 1 | a 3-square one: 9 | a 1-square one that ignores it: 9
+the allowance is gone: true true true | the book: true
+@Move dt:ignore: "dt" | terrain:ignore (Cut Through): true | both: true | none: undefined
+Crawl's two movements: true,true | its Special: Your Crawl ignores Difficult Terrain. | the book: true
+a "dt" movement doesn't pass creatures: true true true | the flag kept: true
 --- 5. Point Out on any Unsensed creature (B2-030)
 Unsensed from Hide (its senses: Clear): {"hide":"hidden","floor":false,"changed":true}
 Unsensed in Darkness (no Hide): {"hide":"","floor":true,"changed":true}

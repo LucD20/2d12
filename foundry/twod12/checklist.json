@@ -271,6 +271,14 @@
    "name": "Movement",
    "items": [
     {
+     "id": "cl-crawl",
+     "v": "v0.0.528",
+     "title": "Crawl ignores Difficult Terrain; no square without paying for it",
+     "do": "In a combat, draw a Difficult Terrain region next to Kaela and put Sylwen beside her. Make Kaela Prone and Crawl (1 AP) 1 square into the region; Crawl again (1 AP) into Sylwen's space and try to end there. Then make Kaela Stand, step out of the region, use Advance and move in the open until she has 1 square of it left, and try to drag her 1 square into the region.",
+     "expect": "The Crawl's area shows the square in the region (not hatched) and she enters it for 1 square, as on open ground. Sylwen's space is in the second Crawl's area, but ending there is refused (\"You can't end your movement in Sylwen's space\"). Standing, each square of the region costs her Advance 2 (the ruler shows it); with 1 square of the Advance left the area stops short of the region, and the drag into it spends another AP (a new Advance), as before v0.0.525.",
+     "rev": 1
+    },
+    {
      "id": "ox-dead",
      "v": "v0.0.525",
      "title": "A dead creature doesn't get in the way",
@@ -284,14 +292,6 @@
      "title": "Charge stops at the weapon's normal Range",
      "do": "Durgan (Arming Sword) Charges an Orc Warrior 5 squares away. Then Sylwen, with her Hunting Bow in hand, Charges an orc about 16 squares away; then with only her Dagger in hand.",
      "expect": "Durgan stops adjacent, as before. Sylwen with the bow stops on the first square from which the orc is within 12 squares (the bow's normal Range), the line and texts saying \"in Range\"; an orc already within 12 is \"too close\". With the Dagger, if it is a Thrown weapon the bottom bar first asks \"Dagger (in hand)\" or \"Dagger (thrown)\", and she stops where that Range reaches.",
-     "rev": 1
-    },
-    {
-     "id": "ox-onesquare",
-     "v": "v0.0.525",
-     "title": "Rev 2 · One square of Difficult Terrain always, whatever was moved",
-     "do": "Draw a Difficult Terrain region next to Kaela. Make her Prone and Crawl (1 square) into it. Then, standing outside the region, use Advance and move in the open until she has 1 square left of it, and drag her 1 square into the region.",
-     "expect": "The Crawl's area shows the square in the region and she enters it; the Crawl is spent, no AP more. With 1 square of the Advance left, its area shows the squares of the region next to her and she enters one: the Advance ends there and no further AP is spent (v0.0.525 to v0.0.526 spent another AP).",
      "rev": 1
     },
     {

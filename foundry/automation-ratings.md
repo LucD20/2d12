@@ -17,7 +17,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Advance | Gold | |
 | Evade | Gold | |
 | Charge | Gold | v0.0.525: it stops where the target is within the normal Range of the weapon it attacks with (the pick bar asks when its weapons differ) |
-| Crawl | Silver | the 2 AP Version's "Your Speed is 5 or higher" isn't checked |
+| Crawl | Silver | the 2 AP Version's "Your Speed is 5 or higher" isn't checked; v0.0.528: its movement ignores Difficult Terrain (`@Move[...|dt:ignore]`) |
 | Reload | Silver | the Tier 1 "next Reload attempt gains 2 Boons" isn't carried to the next roll |
 | Interact | Bronze | drawing, stowing and swapping are done on the hands buttons, not by the card; only waking a creature is offered |
 | Steel Yourself | Gold | |

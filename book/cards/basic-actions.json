@@ -49,9 +49,10 @@
       "traits": ["move", "self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "You move 1 square.", "foundry": { "sub": [["move 1 square", "@Move[advance|distance:1|label:move 1 square]"]] } },
-        { "ap": 2, "requirements": "Your Speed is 5 or higher.", "effects": "You move 3 squares.", "foundry": { "sub": [["move 3 squares", "@Move[advance|distance:3|label:move 3 squares]"]] } }
+        { "ap": 1, "effects": "You move 1 square.", "foundry": { "sub": [["move 1 square", "@Move[advance|distance:1|dt:ignore|label:move 1 square]"]] } },
+        { "ap": 2, "requirements": "Your Speed is 5 or higher.", "effects": "You move 3 squares.", "foundry": { "sub": [["move 3 squares", "@Move[advance|distance:3|dt:ignore|label:move 3 squares]"]] } }
       ],
+      "notes": "Your Crawl ignores Difficult Terrain.",
       "foundry": { "basic": "crawl", "automation": "silver", "img": "icons/svg/falling.svg" }
     },
     {

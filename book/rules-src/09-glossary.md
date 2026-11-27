@@ -40,7 +40,7 @@
 | [[Building an encounter\|**Combat Value (CV)**]] | What an NPC counts for in an encounter: Minion 30, Grunt 50, Standard 100, Elite 200. CV 100 a PC is a normal fight. |
 | [[Corners\|**Corners**]] | You can't cut a solid corner: anything solid, such as a wall, a pillar or an object that fills a square, that reaches the corner point where four squares meet. |
 | [[Cover\|**Cover**]] | How well a target is protected: count the blocked corners of its space (for a larger creature, its least-covered square). 1 Field Bane for one, 2 for two; three make the roll Doomed. Cover Banes apply to [Strike] and [Area] Actions. |
-| [[Crawl\|**Crawl**]] | A Move Action: you move 1 square (1 AP), or 3 squares (2 AP) when your Speed is 5 or higher. The movement a Prone creature can use. |
+| [[Crawl\|**Crawl**]] | A Move Action: you move 1 square (1 AP), or 3 squares (2 AP) when your Speed is 5 or higher. It ignores Difficult Terrain. The movement a Prone creature can use. |
 | [[Critical\|**Critical**]] | Doubles on a result that is already Tier 3, a total 20 or more above the DC, or three matching dice on a Favored roll. It adds the Action's Critical row, if it has one; once an encounter, it also raises your Escalation by 1. |
 | [[Daily\|**Daily**]] | Once per Sleep. |
 | [[Sight Senses\|**Dark Sight**]] | A Sight Sense: Dim light and Darkness count as Bright for you. |

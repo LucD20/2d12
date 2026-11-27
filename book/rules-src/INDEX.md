@@ -6,7 +6,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 27.3 | 321 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.0 | 361 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 48.3 | 513 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 48.1 | 512 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.7 | 225 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.2 | 106 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.9 | 64 |
@@ -116,33 +116,33 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 215:   ### Swapping Places
 - 221: ## Steadiness
 - 227: ## Difficult Terrain
-- 236: ## Hazardous Terrain
-- 255:   ### Deadly Hazards
-- 261: ## Reach
-- 271:   ### Weapon Range
-- 279:   ### Weapon Actions and Your Weapon
-- 283: ## Engaged
-- 293:   ### Ranged Combat While Engaged
-- 299: ## Flanking
-- 327: ## Line of Effect
-- 340: ## Cover
-- 359: ## Areas
-- 365:   ### Cover against an area
-- 369:   ### Emanation
-- 377:   ### Aura
-- 381:   ### Burst
-- 387:   ### Line
-- 409:   ### Other areas
-- 416: ## Light
-- 428:   ### Bright
-- 432:   ### Dim
-- 436:   ### Darkness
-- 440: ## Senses
-- 471:   ### Hiding
-- 488:   ### Sight Senses
-- 495:   ### Other Senses
+- 235: ## Hazardous Terrain
+- 254:   ### Deadly Hazards
+- 260: ## Reach
+- 270:   ### Weapon Range
+- 278:   ### Weapon Actions and Your Weapon
+- 282: ## Engaged
+- 292:   ### Ranged Combat While Engaged
+- 298: ## Flanking
+- 326: ## Line of Effect
+- 339: ## Cover
+- 358: ## Areas
+- 364:   ### Cover against an area
+- 368:   ### Emanation
+- 376:   ### Aura
+- 380:   ### Burst
+- 386:   ### Line
+- 408:   ### Other areas
+- 415: ## Light
+- 427:   ### Bright
+- 431:   ### Dim
+- 435:   ### Darkness
+- 439: ## Senses
+- 470:   ### Hiding
+- 487:   ### Sight Senses
+- 494:   ### Other Senses
 
-Open (to be decided) boxes: 76: "Flying isn't written yet: going up and down, ending a turn in the air,"; 337: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 413: "Cones are not written yet (and Lines wider than 1 square)."
+Open (to be decided) boxes: 76: "Flying isn't written yet: going up and down, ending a turn in the air,"; 336: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 412: "Cones are not written yet (and Lines wider than 1 square)."
 
 ## 04-health.md: Chapter 4: Health
 

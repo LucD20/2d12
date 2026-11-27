@@ -151,6 +151,10 @@ Expect: He keeps two Lingerings: the Piercing one (the second Piercing one, not 
 
 ## Movement
 
+### cl-crawl · v0.0.528 · Crawl ignores Difficult Terrain; no square without paying for it
+Do: In a combat, draw a Difficult Terrain region next to Kaela and put Sylwen beside her. Make Kaela Prone and Crawl (1 AP) 1 square into the region; Crawl again (1 AP) into Sylwen's space and try to end there. Then make Kaela Stand, step out of the region, use Advance and move in the open until she has 1 square of it left, and try to drag her 1 square into the region.
+Expect: The Crawl's area shows the square in the region (not hatched) and she enters it for 1 square, as on open ground. Sylwen's space is in the second Crawl's area, but ending there is refused ("You can't end your movement in Sylwen's space"). Standing, each square of the region costs her Advance 2 (the ruler shows it); with 1 square of the Advance left the area stops short of the region, and the drag into it spends another AP (a new Advance), as before v0.0.525.
+
 ### ox-dead · v0.0.525 · A dead creature doesn't get in the way
 Do: In a combat, take a Goblin Sneak to 0 with Aveline (no Unconscious status on it). Advance Durgan through its square, then end a movement in it. Then give another goblin at 0 the Unconscious status and move Durgan through it.
 Expect: The dead goblin's square costs nothing extra and Durgan can stop in it (the movement area includes it). The Unconscious goblin's square costs double and Durgan can't end there.
@@ -158,10 +162,6 @@ Expect: The dead goblin's square costs nothing extra and Durgan can stop in it (
 ### ox-charge · v0.0.525 · Charge stops at the weapon's normal Range
 Do: Durgan (Arming Sword) Charges an Orc Warrior 5 squares away. Then Sylwen, with her Hunting Bow in hand, Charges an orc about 16 squares away; then with only her Dagger in hand.
 Expect: Durgan stops adjacent, as before. Sylwen with the bow stops on the first square from which the orc is within 12 squares (the bow's normal Range), the line and texts saying "in Range"; an orc already within 12 is "too close". With the Dagger, if it is a Thrown weapon the bottom bar first asks "Dagger (in hand)" or "Dagger (thrown)", and she stops where that Range reaches.
-
-### ox-onesquare · v0.0.525 · Rev 2 · One square of Difficult Terrain always, whatever was moved
-Do: Draw a Difficult Terrain region next to Kaela. Make her Prone and Crawl (1 square) into it. Then, standing outside the region, use Advance and move in the open until she has 1 square left of it, and drag her 1 square into the region.
-Expect: The Crawl's area shows the square in the region and she enters it; the Crawl is spent, no AP more. With 1 square of the Advance left, its area shows the squares of the region next to her and she enters one: the Advance ends there and no further AP is spent (v0.0.525 to v0.0.526 spent another AP).
 
 ### cu-inway · v0.0.520 · A creature Down but still fighting holds its space
 Do: Durgan is Dying and keeps fighting; as the GM, drag the Orc Warrior through Durgan's square. Then Durgan collapses (Unconscious) and you drag it again.
