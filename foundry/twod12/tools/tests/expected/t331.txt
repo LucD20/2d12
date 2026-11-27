@@ -10,19 +10,19 @@ five Boons, three Banes: dice 13 | mods 2 Weapon | +1 Flanking with Durgan [Fiel
 the third Field: <span class="cc-rb-e off"><span class="cc-rb-en">0</span><span class="cc-rb-nm"><s>Shifting Aim</s> <span class="cc-rb-k">(Field: 2 at most)</span></span>
 a Field source of 3 (2 of 3 count): dice 10 | mods 2 Weapon | +2 Wall of spears [Field] | B 2 N 0 adds 2 | words: - | total 14
 its words: +2 Wall of spears (Field: 2 of 3 count)
---- Favored and Doomed (3d12, one dropped; a source counts 5 once; 5 or more left)
-Favored by a source: dice 19 (3d12, the 4 is dropped) | mods 2 Weapon | +5 Hidden <Favored> | +1 Flanking with Durgan [Field] | −1 Low cover [Field] | B 6 N 1 adds 0 favored | words: Favored : 5 Boons left | total 21
-its dice: 9, 10, 4 dropped | the Favored line: +5 Hidden (Favored: counts as 5 Boons)
-Doomed by a source: dice 11 (3d12, the 11 is dropped) | mods 2 Weapon | +1 Shifting Aim [Field] | −5 You are Engaged <Doomed> | −1 Far range | B 1 N 6 adds 0 doomed | words: Doomed : 5 Banes left | total 13
-five Banes left (no source): dice 13 (3d12, the 12 is dropped) | mods 2 Weapon | −2 Engaged | −2 Far | −1 Frightened | B 0 N 5 adds 0 doomed | words: Doomed : 5 Banes left | total 15
-Favored and Doomed cancel: dice 13 | mods 2 Weapon | +5 Hidden <Favored> | −5 High cover <Doomed> | B 5 N 5 adds 0 | words: Favored and Doomed cancel | total 15
-two Favored sources (5 once): dice 19 (3d12, the 4 is dropped) | mods 2 Weapon | +5 Hidden <Favored> | 0 Situational <Favored> | B 5 N 0 adds 0 favored | words: Favored : 5 Boons left | total 21
-Favored, posted before v0.0.533 (no source named): dice 19 (3d12, the 4 is dropped) | mods 2 Weapon | +5 (no name) <Favored> | B 5 N 0 adds 0 favored | words: Favored : 5 Boons left | total 21
-three of a kind, Favored: dice 14 (3d12, the 7 is dropped) | mods 2 Weapon | +5 Hidden <Favored> | B 5 N 0 adds 0 favored | words: Favored : 5 Boons left | total 16
+--- Favored and Doomed (3d12, one dropped; v0.0.536: not Boons or Banes, the Boons and Banes beside them add; at most 4 count)
+Favored by a source: dice 19 (3d12, the 4 is dropped) | mods 2 Weapon | 0 Hidden <Favored> | +1 Flanking with Durgan [Field] | −1 Low cover [Field] | B 1 N 1 adds 0 favored | words: Favored ; 1 and 1 cancel | total 21
+its dice: 9, 10, 4 dropped | the Favored line: Hidden (Favored: 3d12, the two highest)
+Doomed by a source: dice 11 (3d12, the 11 is dropped) | mods 2 Weapon | +1 Shifting Aim [Field] | 0 You are Engaged <Doomed> | −1 Far range | B 1 N 1 adds 0 doomed | words: Doomed ; 1 and 1 cancel | total 13
+five Banes left: 4 count (v0.0.536: never Doomed): dice 13 | mods 2 Weapon | −2 Engaged | −2 Far | −1 Frightened | B 0 N 5 adds -4 | words: 4 of 5 count | total 11
+Favored and Doomed cancel: dice 13 | mods 2 Weapon | 0 Hidden <Favored> | 0 High cover <Doomed> | B 0 N 0 adds 0 | words: Favored and Doomed cancel | total 15
+two Favored sources (Favored once): dice 19 (3d12, the 4 is dropped) | mods 2 Weapon | 0 Hidden <Favored> | 0 Situational <Favored> | B 0 N 0 adds 0 favored | words: Favored | total 21
+Favored, posted before v0.0.533 (no source named): dice 19 (3d12, the 4 is dropped) | mods 2 Weapon | 0 (no name) <Favored> | B 0 N 0 adds 0 favored | words: Favored | total 21
+three of a kind, Favored: dice 14 (3d12, the 7 is dropped) | mods 2 Weapon | 0 Hidden <Favored> | B 0 N 0 adds 0 favored | words: Favored | total 16
 --- a Save: the target rolls; the user's Banes turned into the target's Boons (inline.mjs saveExtraMods: "Caster's Banes")
 Instinct Save: dice 12 | mods 1 Instinct | +2 Caster's Banes | +1 Low cover [Field] | −1 Vulnerable 1 | B 3 N 1 adds 2 | words: 3 Boons, 1 Bane | total 15
 its lines: Goblin Archer rolls 12 7 5 +1 Instinct +2 Boons and Banes 3 Boons, 1 Bane +2 Caster's Banes +1 Low cover (Field) −1 Vulnerable 1 15 against DC 14 Their Tier 2 | a Tier 3 with Doubles: no Critical: Their Tier 3
-the caster Doomed: 5 Boons on the Save: dice 12 (3d12, the 9 is dropped) | mods 1 Instinct | +5 Caster Doomed | B 5 N 0 adds 0 favored | words: Favored : 5 Boons left | total 17
+the caster Doomed: the Save Favored (v0.0.536): dice 16 (3d12, the 5 is dropped) | mods 1 Instinct | 0 Caster Doomed <Favored> | B 0 N 0 adds 0 favored | words: Favored | total 17
 --- the total line: Doubles, a Critical, hidden Defenses, forced, the Applied line
 Doubles raise: 15 against AD 14 Tier 2, Doubles: Tier 3
 a Critical (Doubles on a Tier 3): 23 against AD 15 Tier 3, Doubles: Critical

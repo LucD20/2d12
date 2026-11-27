@@ -171,7 +171,8 @@ export function diceLine(inp, st) {
   return { ...diceText(inp, st), mod, names, boons: t.boons, banes: t.banes, bbNotes: bbNotes(t) };
 }
 /** The notes for the names past their limit and the five: ["Field Banes 3, limit 2", "5 Boons left: Favored instead"]. */
-export const bbNotes = t => [...(t.capped ?? []).map(x => `${x.name} ${x.side} ${x.raw}, limit ${x.kept}`), ...(t.five ? [`${Math.abs((t.boons ?? 0) - (t.banes ?? 0))} ${t.five === "favored" ? "Boons" : "Banes"} left: ${t.five === "favored" ? "Favored" : "Doomed"} instead`] : [])];
+// v0.0.536 (book, Chapter 1): no five any more: 5 or more left after cancelling count as 4
+export const bbNotes = t => { const net = (t.boons ?? 0) - (t.banes ?? 0); return [...(t.capped ?? []).map(x => `${x.name} ${x.side} ${x.raw}, limit ${x.kept}`), ...(Math.abs(net) > 4 ? [`${Math.abs(net)} ${net > 0 ? "Boons" : "Banes"} left: 4 count`] : [])]; };
 /** Empowered (Ch. 8; v0.0.407: on / off, Enfeebled gone): net 1 when it is on. line: "" when it is off. */
 export function stepNet(inp, st) {
   const t = tally(chipsOf(inp, st, "shared"), st);

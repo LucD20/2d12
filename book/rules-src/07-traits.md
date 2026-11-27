@@ -71,7 +71,7 @@ These Actions roll your **Signature Modifier**: the higher of your Weapon Modifi
 
 ### Strike
 
-A Strike is an Action with the Strike trait: an attack aimed at a creature. You can make at most 3 Strikes per turn. All At-will [Strike] Actions share one At-will count: **your second and your third At-will [Strike] in a turn are [[Favored and Doomed Rolls|Doomed]]**, even if they are different Actions. That Doomed counts as 5 Banes, as any effect that makes a roll Doomed (see [[Five Boons or Banes]]). A Strike made as a Linked Action counts toward neither, unless its Action says otherwise (see [[Linked Actions]]). A [Strike] made as a Reaction counts toward the repeats of the turn it is made in only when that turn is yours; in another creature's turn it counts toward neither that turn's repeats nor yours.
+A Strike is an Action with the Strike trait: an attack aimed at a creature. You can make at most 3 Strikes per turn. All At-will [Strike] Actions share one At-will count: **your second and your third At-will [Strike] in a turn are [[Favored and Doomed Rolls|Doomed]]**, even if they are different Actions. Boons and Banes still add to that roll, but it stays Doomed: it can't roll Doubles (see [[Favored and Doomed Rolls]]). A Strike made as a Linked Action counts toward neither, unless its Action says otherwise (see [[Linked Actions]]). A [Strike] made as a Reaction counts toward the repeats of the turn it is made in only when that turn is yours; in another creature's turn it counts toward neither that turn's repeats nor yours.
 
 ### Subtle
 

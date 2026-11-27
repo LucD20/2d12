@@ -64,10 +64,14 @@ export function bbFive(boons = 0, banes = 0) {
  * boons / banes: counts after the limits of their names (bbCount). { net, add, state, five (the state when the Boons or Banes themselves reached it,
  * not a Favored / Doomed source), cancel (both sources) }.
  */
+// v0.0.536 (Lucas, 2026-11-27: option A, "yes" to no conversion; book, Chapter 1, Five Boons or Banes and Favored and Doomed Rolls): Favored and
+// Doomed are not Boons or Banes: they decide the dice (both: a normal roll); the Boons and Banes cancel among themselves and at most 4 count, in
+// every state; they never make a roll Favored or Doomed (five is always "").
+export const BB_MAX = 4;
 export function bbResolve(boons = 0, banes = 0, favored = false, doomed = false) {
-  const net = (Number(boons) || 0) - (Number(banes) || 0) + (favored ? 5 : 0) - (doomed ? 5 : 0);
-  const state = net >= 5 ? "favored" : net <= -5 ? "doomed" : "";
-  return { net, add: state ? 0 : net, state, five: state && !(state === "favored" ? favored : doomed) ? state : "", cancel: !!favored && !!doomed };
+  const net = (Number(boons) || 0) - (Number(banes) || 0);
+  const state = favored && doomed ? "" : favored ? "favored" : doomed ? "doomed" : "";
+  return { net, add: Math.max(-BB_MAX, Math.min(BB_MAX, net)), state, five: "", cancel: !!favored && !!doomed };
 }
 /** The roll's state from its own Favored / Doomed and the five b/b (before the core rework; the frozen SIM still uses it): Favored and Doomed together are a normal roll; never Favored (or Doomed) twice. */
 export function rollState(favored = false, doomed = false, five = "") {

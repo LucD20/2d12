@@ -33,6 +33,14 @@
    "name": "The roll dialog",
    "items": [
     {
+     "id": "fd-boons",
+     "v": "v0.0.536",
+     "title": "Favored and Doomed don't count as Boons or Banes; at most 4 count",
+     "do": "Kaela, standing next to the Orc Warrior (Engaged: her bow is Doomed), shoots it with a Basic Attack while the orc is Vulnerable 1 (from the Token HUD). Then Aveline attacks the Grave Wisp with 6 Banes added by hand in the roll dialog.",
+     "expect": "Kaela's roll is 3d12, the two lowest, + 1 (Vulnerable's Boon still counts); the written sum shows \"You are Engaged (Doomed: 3d12, the two lowest)\" with no number and the Boon as +1. Aveline's roll stays 2d12 and subtracts 4; the dialog's note reads \"6 Banes left: 4 count\", and the roll is not Doomed.",
+     "rev": 1
+    },
+    {
      "id": "ae-doomed",
      "v": "v0.0.535",
      "title": "A repeated At-will Strike is Doomed",
@@ -46,6 +54,32 @@
      "title": "Smite's extra die and Steady Draw's Special cost 1 AP",
      "do": "Aveline uses Smite with the chip \"1 AP: 1 more Smite die\" on; Sylwen gets a Tier 2 with a Basic Attack with the chip \"1 AP: 2dE more on a Tier 2 or 3\" on.",
      "expect": "Each spends 1 AP of the turn (the Turn Log shows it) and adds its die or dice; with no AP left, a warning says so and nothing is added.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Chat cards",
+   "items": [
+    {
+     "id": "rv-cards",
+     "v": "v0.0.536",
+     "title": "Quick Shots, Lay On Hands, Consecrated Ground (the review)",
+     "do": "Sylwen uses Quick Shots on the Orc Warrior (force a Tier 1 and a Critical with the dialog's Flat if needed); Aveline uses Lay On Hands (1 AP) on Kaela; Durgan (level 2) places Consecrated Ground and Kaela starts her turn in it.",
+     "expect": "Quick Shots' Tier 1 deals [V] 1d6! + Mod, there is no Evade after it, and on a Critical a \"Basic Attack\" button makes one free Basic Attack (no AP spent). Lay On Hands gives Guard 4 + Aveline's Power Modifier. Consecrated Ground gives Kaela Guard 2 + Durgan's Power Modifier.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Conditions and their Tiers",
+   "items": [
+    {
+     "id": "fd-save",
+     "v": "v0.0.536",
+     "title": "A Doomed caster gives Favored Saves",
+     "do": "The Orc Warrior uses War Howl while Taunted by Durgan with Durgan outside the area (1 Bane), then again with Doomed turned on in its roll dialog, with Aveline and Sylwen in the area.",
+     "expect": "The first time, each target's Save has \"Caster's Banes\" +1. The second, each target's Save is Favored (\"Caster Doomed\"), not 5 Boons.",
      "rev": 1
     }
    ]

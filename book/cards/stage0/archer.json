@@ -181,7 +181,7 @@
    "name": "Quick Shots",
    "category": "Archer Hallmark Action",
    "level": 1,
-   "flavor": "You loose arrow after arrow into one foe before the first has landed, and step away while it reels.",
+   "flavor": "You loose arrow after arrow into one foe before the first has landed.",
    "frequency": "Round",
    "cost": "2 AP",
    "body": [
@@ -191,7 +191,7 @@
     },
     {
      "label": "Tier 1",
-     "text": "[V] [Mod]."
+     "text": "[V] 1d6! + [Mod]."
     },
     {
      "label": "Tier 2",
@@ -203,11 +203,7 @@
     },
     {
      "label": "Critical",
-     "text": "You gain 1 AP."
-    },
-    {
-     "label": "Effect",
-     "text": "You Evade 2."
+     "text": "You make a [Projectile, Ranged] [[Basic Attack]] (1A)."
     }
    ],
    "traits": [
@@ -222,8 +218,11 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automationNote": "2[W] / 3[W] by Tier, the Evade 2 (it starts by itself after the roll), and +1 AP on a Critical (when applied).",
-    "automation": "gold"
+    "automationNote": "1d6! / 2[W] / 3[W] by Tier; on a Critical, the Basic Attack (1A) by its button on the card (no AP; a Linked Action, so it isn't a repeat).",
+    "automation": "gold",
+    "version": {
+     "critical": "You make a [Projectile, Ranged] @Use[Basic Attack|ap:0|label:Basic Attack] (1A)."
+    }
    }
   },
   {

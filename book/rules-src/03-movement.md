@@ -505,7 +505,7 @@ Other senses work in any light, but only within their range and conditions, and 
 > [!example]
 > A Goblin with Dark Sight stands in Darkness, and Krysta, who has only Sight and Hearing, stands in Bright torchlight. Krysta can only hear the Goblin, so it is Hidden to her: her Actions against it are Doomed, and its Actions against her are Favored. The Goblin sees Krysta Clearly.
 >
-> A Snake with Lesser Heatsight attacks Krysta in the same Darkness. Krysta is warm, so the Snake perceives her as Obscured (1 Bane on its Actions), while she only hears the Snake (Hidden: Doomed against it). The Snake gains Favored against her, which is 5 Boons: less its 1 Field Bane, it rolls normally and adds 4 (see [[Five Boons or Banes]]). In Dim light, the Snake's heatsight would give it nothing more than its Sight.
+> A Snake with Lesser Heatsight attacks Krysta in the same Darkness. Krysta is warm, so the Snake perceives her as Obscured (1 Bane on its Actions), while she only hears the Snake (Hidden: Doomed against it). The Snake is Favored against her, and its 1 Field Bane still counts: it rolls 3d12, keeps the two highest and subtracts 1 (see [[Favored and Doomed Rolls]]). In Dim light, the Snake's heatsight would give it nothing more than its Sight.
 >
 > A Cave Worm with Tremorsense loses Krysta when she climbs a rope. If she is also quiet (she Hides) and it is dark, she is Unsensed: the Worm can't target her.
 >

@@ -1390,8 +1390,9 @@ export function saveExtraMods(cfg = {}, row = {}) {
   const ub = Number(cfg.userBanes) || 0;
   if (ub > 0) {
     usedBoon += ub;
-    out.push({ id: "syn:save:ub", name: ub >= 5 ? "Caster Doomed" : "Caster's Banes", boons: ub, banes: 0, match: true });
+    out.push({ id: "syn:save:ub", name: "Caster's Banes", boons: ub, banes: 0, match: true });
   }
+  if (cfg.userDoomed) out.push({ id: "syn:save:ud", name: "Caster Doomed", boons: 0, banes: 0, favored: true, match: true });   // v0.0.536: the user's Doomed makes the Saves Favored
   const remBoon = Math.max(0, (Number(cfg.boon) || 0) - usedBoon);
   const remBane = Math.max(0, (Number(cfg.bane) || 0) - usedBane);
   if (remBoon) out.push({ id: "syn:save:cfgb", name: cfg.source || "Action bonus", boons: remBoon, banes: 0, match: true });

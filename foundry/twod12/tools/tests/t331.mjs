@@ -36,16 +36,16 @@ console.log("the third Field:", (CC.breakdownHtml(many).match(/<span class="cc-r
 show("a Field source of 3 (2 of 3 count)", { d1: [5], d2: [5], total: 14, dc: 13, tier: 3, base: 2, doubles: true, boonFaces: [1, 1], baneFaces: [], sources: [{ name: "Wall of spears", boons: 3, bb: "field" }], mods: [{ v: 2, label: "Weapon" }] });
 console.log("its words:", txt(CC.breakdownHtml({ d1: [5], d2: [5], total: 14, dc: 13, tier: 3, base: 2, doubles: true, boonFaces: [1, 1], baneFaces: [], sources: [{ name: "Wall of spears", boons: 3, bb: "field" }], mods: [{ v: 2, label: "Weapon" }] }).match(/<div class="cc-rb-sub">[\s\S]*?<\/div>/)[0]));
 
-console.log("--- Favored and Doomed (3d12, one dropped; a source counts 5 once; 5 or more left)");
+console.log("--- Favored and Doomed (3d12, one dropped; v0.0.536: not Boons or Banes, the Boons and Banes beside them add; at most 4 count)");
 const fav = show("Favored by a source", { d1: [9], d2: [10], dropped: [4], state: "favored", five: "", total: 21, dc: 14, tier: 3, base: 3, boonFaces: [], baneFaces: [], mods: W,
   sources: [{ name: "Hidden", boons: 0, banes: 0, bb: "", fav: true }, { name: "Flanking with Durgan", boons: 1, bb: "field" }, { name: "Low cover", banes: 1, bb: "field" }] });
 console.log("its dice:", fav.dice.map(d => `${d.faces.join("→")}${d.off ? " dropped" : ""}${d.dbl ? " dbl" : ""}`).join(", "), "| the Favored line:", txt(CC.breakdownHtml({ d1: [9], d2: [10], dropped: [4], state: "favored", total: 21, dc: 14, tier: 3, base: 3, sources: [{ name: "Hidden", fav: true }], mods: W }).match(/<div class="cc-rb-sub">[\s\S]*?<\/div>/)[0]));
 show("Doomed by a source", { d1: [8], d2: [3], dropped: [11], state: "doomed", total: 13, dc: 14, tier: 1, base: 1, boonFaces: [], baneFaces: [], mods: W,
   sources: [{ name: "Shifting Aim", boons: 1, bb: "field" }, { name: "You are Engaged (Doomed)", doom: true }, { name: "Far range", banes: 1 }] });
-show("five Banes left (no source)", { d1: [6], d2: [7], dropped: [12, 3], state: "doomed", five: "doomed", total: 15, dc: 13, tier: 2, base: 2, boonFaces: [], baneFaces: [], mods: W,
+show("five Banes left: 4 count (v0.0.536: never Doomed)", { d1: [6], d2: [7], total: 11, dc: 13, tier: 1, base: 1, boonFaces: [], baneFaces: [1, 1, 1, 1], mods: W,
   sources: [{ name: "Engaged", banes: 2 }, { name: "Far", banes: 2 }, { name: "Frightened", banes: 1 }] });
 show("Favored and Doomed cancel", { d1: [6], d2: [7], total: 15, dc: 13, tier: 2, base: 2, boonFaces: [], baneFaces: [], mods: W, sources: [{ name: "Hidden", fav: true }, { name: "High cover (Doomed)", doom: true }] });
-show("two Favored sources (5 once)", { d1: [9], d2: [10], dropped: [4], state: "favored", total: 21, dc: 14, tier: 3, base: 3, boonFaces: [], baneFaces: [], mods: W, sources: [{ name: "Hidden", fav: true }, { name: "Situational", fav: true }] });
+show("two Favored sources (Favored once)", { d1: [9], d2: [10], dropped: [4], state: "favored", total: 21, dc: 14, tier: 3, base: 3, boonFaces: [], baneFaces: [], mods: W, sources: [{ name: "Hidden", fav: true }, { name: "Situational", fav: true }] });
 show("Favored, posted before v0.0.533 (no source named)", { d1: [9], d2: [10], dropped: [4], state: "favored", five: "", total: 21, dc: 14, tier: 3, base: 3, boonFaces: [], baneFaces: [], mods: W, sources: [{ name: "Hidden", boons: 0, banes: 0, bb: "" }] });
 show("three of a kind, Favored", { d1: [7], d2: [7], dropped: [7], state: "favored", total: 16, dc: 14, tier: 3, base: 2, crit: true, triple: true, doubles: true, boonFaces: [], baneFaces: [], mods: W, sources: [{ name: "Hidden", fav: true }] });
 
@@ -54,7 +54,7 @@ const sv = { name: "Goblin Archer", d1: [7], d2: [5], total: 15, dc: 14, dcLabel
   sources: [{ name: "Caster's Banes", boons: 2 }, { name: "Low cover", boons: 1, bb: "field" }, { name: "Vulnerable 1", banes: 1 }] };
 show("Instinct Save", sv, { save: true });
 console.log("its lines:", txt(CC.breakdownHtml(sv, { save: true, lead: "Goblin Archer rolls" })), "| a Tier 3 with Doubles: no Critical:", txt(CC.breakdownHtml({ ...sv, d1: [9], d2: [9], total: 22, tier: 3, base: 3, doubles: true, crit: true }, { save: true }).match(/<span class="cc-rb-res">[\s\S]*?<\/span><\/span>/)[0]));
-show("the caster Doomed: 5 Boons on the Save", { d1: [7], d2: [5], dropped: [9], state: "favored", five: "favored", total: 17, dc: 14, tier: 2, base: 2, boonFaces: [], baneFaces: [], mods: [{ v: 1, label: "Instinct" }], sources: [{ name: "Caster Doomed", boons: 5 }] }, { save: true });
+show("the caster Doomed: the Save Favored (v0.0.536)", { d1: [7], d2: [9], dropped: [5], state: "favored", total: 17, dc: 14, tier: 2, base: 2, boonFaces: [], baneFaces: [], mods: [{ v: 1, label: "Instinct" }], sources: [{ name: "Caster Doomed", fav: true }] }, { save: true });
 
 console.log("--- the total line: Doubles, a Critical, hidden Defenses, forced, the Applied line");
 const end = (r, o = {}) => txt(CC.breakdownHtml(r, o).match(/<span class="cc-rb-n cc-rb-tot">[\s\S]*$/)[0]);

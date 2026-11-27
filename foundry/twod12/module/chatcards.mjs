@@ -168,7 +168,8 @@ export function rollSumModel(r, { save = false, hide = false } = {}) {
   const used = { boon: {}, bane: {} }, seen = { boon: false, bane: false }, entries = [];
   for (const s of r.sources ?? []) {
     const name = bbName(s.name), k = bbKey(s.bb);
-    if (s.fav || s.doom) { const side = s.fav ? "boon" : "bane"; entries.push({ side, name, n: 5, counted: seen[side] ? 0 : 5, kind: "", special: s.fav ? "Favored" : "Doomed", again: seen[side] }); seen[side] = true; continue; }
+    // v0.0.536 (book, Chapter 1): Favored / Doomed are not Boons or Banes: an entry that counts 0 (it decides the dice)
+    if (s.fav || s.doom) { const side = s.fav ? "boon" : "bane"; entries.push({ side, name, n: 0, counted: 0, kind: "", special: s.fav ? "Favored" : "Doomed", again: seen[side] }); seen[side] = true; continue; }
     for (const [side, n] of [["boon", Math.max(0, Number(s.boons) || 0)], ["bane", Math.max(0, Number(s.banes) || 0)]]) {
       if (!n) continue;
       let counted = n;
@@ -177,21 +178,21 @@ export function rollSumModel(r, { save = false, hide = false } = {}) {
     }
   }
   // a roll Favored or Doomed with no source named for it (a card posted before v0.0.533, a Check's own switch): one entry, no name
-  if (r.state && !r.five && !seen[r.state === "favored" ? "boon" : "bane"]) { const side = r.state === "favored" ? "boon" : "bane"; entries.push({ side, name: "", n: 5, counted: 5, kind: "", special: r.state === "favored" ? "Favored" : "Doomed" }); seen[side] = true; }
+  if (r.state && !r.five && !seen[r.state === "favored" ? "boon" : "bane"]) { const side = r.state === "favored" ? "boon" : "bane"; entries.push({ side, name: "", n: 0, counted: 0, kind: "", special: r.state === "favored" ? "Favored" : "Doomed" }); seen[side] = true; }
   const sum = side => entries.filter(e => e.side === side && !e.special).reduce((a, e) => a + e.counted, 0);
   // Boons or Banes the roll counted beyond its named sources (no state: the row's faces are the counts): one entry with no name a side
-  if (!r.state) for (const [side, faces] of [["boon", r.boonFaces], ["bane", r.baneFaces]]) { const more = (faces ?? []).length - sum(side); if (more > 0) entries.push({ side, name: "", n: more, counted: more, kind: "", special: "" }); }
+  for (const [side, faces] of [["boon", r.boonFaces], ["bane", r.baneFaces]]) { const more = (faces ?? []).length - sum(side); if (more > 0) entries.push({ side, name: "", n: more, counted: more, kind: "", special: "" }); }
   const count = side => entries.filter(e => e.side === side).reduce((a, e) => a + e.counted, 0);
   let B = count("boon"), N = count("bane");
-  let res = bbResolve(B - (seen.boon ? 5 : 0), N - (seen.bane ? 5 : 0), seen.boon, seen.bane);
+  let res = bbResolve(B, N, seen.boon, seen.bane);
   // the total is the roll's: what the parts don't explain is an entry with no name (never a number the roll didn't add)
   const gap = Number(r.total) - diceSum - modSum - res.add;
-  if (!res.state && !r.state && Number.isFinite(gap) && gap !== 0) {
+  if (Number.isFinite(gap) && gap !== 0) {
     const side = gap > 0 ? "boon" : "bane", e = entries.find(x => x.side === side && !x.name && !x.special);
     if (e) { e.n += Math.abs(gap); e.counted += Math.abs(gap); } else entries.push({ side, name: "", n: Math.abs(gap), counted: Math.abs(gap), kind: "", special: "" });
-    B = count("boon"); N = count("bane"); res = bbResolve(B - (seen.boon ? 5 : 0), N - (seen.bane ? 5 : 0), seen.boon, seen.bane);
+    B = count("boon"); N = count("bane"); res = bbResolve(B, N, seen.boon, seen.bane);
   }
-  const state = r.state || res.state, add = state ? 0 : res.add, net = state && !res.state ? (state === "favored" ? Math.max(5, res.net) : Math.min(-5, res.net)) : res.net;
+  const state = r.state || res.state, add = res.add, net = res.net;
   const base = r.base ?? r.tier, tier = r.tier;
   const crit = !save && !!r.crit;
   const critWhy = !crit ? "" : r.triple ? "three of a kind" : r.doubles && base === 3 ? "Doubles" : hide ? "" : "20 over";
@@ -199,17 +200,19 @@ export function rollSumModel(r, { save = false, hide = false } = {}) {
     note: dropped ? `3d12, the ${dropped[0]} is dropped` : "" };
 }
 /** The cancelling in a few words, for the line "Boons and Banes": "2 and 2 cancel", "4 Boons, 3 Banes", "Favored: 5 Boons left" ("" for one side alone). */
+// v0.0.536 (book, Chapter 1): Favored and Doomed name the dice; the Boons and Banes beside them cancel as usual, at most 4 counting
 export function rollSumCancel(m) {
-  if (m.state) return `<b>${m.state === "favored" ? "Favored" : "Doomed"}</b>: ${Math.abs(m.net)} ${m.net > 0 ? "Boons" : "Banes"} left`;
-  if (m.cancel) return `Favored and Doomed cancel${m.net ? `: ${plural(Math.abs(m.net), m.net > 0 ? "Boon" : "Bane")} left` : ""}`;
-  return m.B && m.N ? (m.net === 0 ? `${m.B} and ${m.N} cancel` : `${plural(m.B, "Boon")}, ${plural(m.N, "Bane")}`) : "";
+  const bb = (m.B && m.N ? (m.net === 0 ? `${m.B} and ${m.N} cancel` : `${plural(m.B, "Boon")}, ${plural(m.N, "Bane")}`) : "") + (Math.abs(m.net) > 4 ? `${m.B && m.N ? "; " : ""}4 of ${Math.abs(m.net)} count` : "");
+  if (m.state) return `<b>${m.state === "favored" ? "Favored" : "Doomed"}</b>${bb ? `; ${bb}` : ""}`;
+  if (m.cancel) return `Favored and Doomed cancel${bb ? `; ${bb}` : ""}`;
+  return bb;
 }
 /** One Boon or Bane's words after its number: its name, then its kind or why it does not count, in parentheses. */
 function rollSumName(e) {
   const nm = esc(e.name || (e.special || (e.side === "boon" ? "Boon" : "Bane")));
-  const why = e.special ? (e.again ? `(${e.special}: counts once)` : `(${e.name ? `${e.special}: ` : ""}counts as 5 ${e.side === "boon" ? "Boons" : "Banes"})`)
+  const why = e.special ? (e.again ? `(${e.special}: counts once)` : `(${e.name ? `${e.special}: ` : ""}3d12, the two ${e.special === "Favored" ? "highest" : "lowest"})`)
     : e.counted === 0 ? `(${e.kind}: ${BB_LIMIT} at most)` : e.counted < e.n ? `(${e.kind}: ${e.counted} of ${e.n} count)` : e.kind ? `(${e.kind})` : "";
-  return `${e.counted === 0 ? `<s>${nm}</s>` : nm}${why ? ` <span class="cc-rb-k">${why}</span>` : ""}`;
+  return `${e.counted === 0 && !e.special ? `<s>${nm}</s>` : nm}${why ? ` <span class="cc-rb-k">${why}</span>` : ""}`;
 }
 /** A d12 as rolled, for the written sum: an exploded 12 in the accent, then what it rolled again and "11 + 6"; a Doubles die outlined; the dropped die quiet. */
 const rbDieGroup = d => `<span class="cc-rb-dg${d.off ? " off" : ""}">${(d.faces ?? []).map((f, i) => `${polyDieHtml(12, f, { cls: `cc-die${d.dbl && i === 0 ? " dbl" : ""}`, boom: f === 12, chain: i > 0 })}`).join("")}${(d.faces ?? []).length > 1 ? `<span class="cc-rb-q">${d.faces.map(x => (x === 12 ? 11 : x)).join(" + ")}</span>` : ""}<span class="cc-sr">${d.off ? "dropped: " : ""}${(d.faces ?? []).join(", ")}</span></span>`;
@@ -225,7 +228,7 @@ export function breakdownHtml(r, { hide = false, save = false, id = "", open = f
   const lines = [num(m.diceSum) + `<div class="cc-rb-t"><span class="cc-rb-dice">${m.dice.map(rbDieGroup).join("")}</span>${m.note ? ` <span class="cc-rb-q">${esc(m.note)}</span>` : ""}</div>`];
   for (const x of m.mods) lines.push(num(sg(x.v)) + `<div class="cc-rb-t">${esc(x.label)}</div>`);
   if (m.entries.length) {
-    const rows = m.entries.map(e => `<span class="cc-rb-e${e.counted === 0 ? " off" : ""}"><span class="cc-rb-en">${e.counted === 0 ? "0" : sg(e.side === "boon" ? e.counted : -e.counted)}</span><span class="cc-rb-nm">${rollSumName(e)}</span></span>`).join("");
+    const rows = m.entries.map(e => `<span class="cc-rb-e${e.counted === 0 && !e.special ? " off" : ""}"><span class="cc-rb-en">${e.special ? "" : e.counted === 0 ? "0" : sg(e.side === "boon" ? e.counted : -e.counted)}</span><span class="cc-rb-nm">${rollSumName(e)}</span></span>`).join("");
     const words = rollSumCancel(m);
     lines.push(num(sg(m.add), m.add ? "" : "zero") + `<div class="cc-rb-t"><b>Boons and Banes</b>${words ? ` <span class="cc-rb-q cc-rb-g">${words}</span>` : ""}<div class="cc-rb-sub">${rows}</div></div>`);
   }

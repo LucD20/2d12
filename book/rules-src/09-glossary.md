@@ -23,7 +23,7 @@
 | [[Rolls\|**Attribute Action**]] | An Action that rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait (not a Weapon, Power or Signature roll). |
 | [[Attribute DCs\|**Attribute DC**]] | 11 + an Attribute, named by it: Body DC, Mind DC, Appeal DC, Instinct DC. What an Attribute Action rolls against, and the DC of a Save set by an Attribute. |
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
-| [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead. |
+| [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name; after cancelling, at most 4 count. They never make a roll Favored or Doomed. |
 | [[Basic Attack\|**Basic Attack**]] | The Basic Action every PC has: a Strike with the weapon you wield ([V] 1d4! / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]; Critical: [V] 1d10!). Your class adds a line to it and gives you a Power Basic attack; an NPC has its own Basic attacks. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
 | [[Basic attacks\|**Basic attack**]] | An NPC's own attack: 1 AP, At-will. Every NPC has two by default (a melee and a ranged one, or one against each Defense), sharing one At-will count; its Tier 1 deals nothing unless its card says so. |
@@ -57,7 +57,7 @@
 | [[Distinct Choices\|**Distinct Choices**]] | A class's Attribute increases go to different Attributes. |
 | [[Divine, Fear, Focus and Magical\|**Divine**]] | A trait with no rules of its own: other rules and features refer to it. |
 | [[Dominant Damage\|**Dominant Damage**]] | Whether you have more Vigor or Resolve damage. |
-| [[Favored and Doomed Rolls\|**Doomed**]] | A roll of 3d12, keeping the two lowest. |
+| [[Favored and Doomed Rolls\|**Doomed**]] | A roll of 3d12, keeping the two lowest, with no Doubles; Boons and Banes still add to it. Only an effect makes a roll Doomed. |
 | [[Doubles\|**Doubles**]] | Both d12s match: the tier goes up. |
 | [[Going Down\|**Down**]] | Your total damage equals or goes above your Health Pool. |
 | [[Dying\|**Dying**]] | Down with Vigor as your Dominant Damage: Slowed 1, or your Slowed value + 1 (at most 3); the first time in an encounter, roll on the Dying Table, then collapse or keep fighting. |
@@ -78,7 +78,7 @@
 | [[Evade\|**Evade**]] | Movement that doesn't trigger reactions, in one piece; not into Difficult Terrain, except across an ally's space. |
 | [[Exhausted\|**Exhausted**]] | A condition with a value: less Speed, Banes on all Rolls, a lower Resolve. |
 | [[Exploding Dice\|**Exploding**]] | A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die written with ! (1d6!) counts its highest face as one less; every weapon's die is one. |
-| [[Favored and Doomed Rolls\|**Favored**]] | A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical. |
+| [[Favored and Doomed Rolls\|**Favored**]] | A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical; Boons and Banes still add to it. Only an effect makes a roll Favored. |
 | [[Divine, Fear, Focus and Magical\|**Fear**]] | A trait with no rules of its own: other rules and features refer to it. |
 | [[Named Boons and Banes\|**Field**]] | A named Boon or Bane from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2. |
 | [[Firearm\|**Firearm**]] | A trait and a weapon property: the weapon shoots with powder, and a Firearm Action needs one. It is not Projectile. |

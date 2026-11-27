@@ -349,8 +349,8 @@ const dur = (type, rounds = 1) => ({ type, rounds });
 FX("Consecrated Ground (1 Bane)", "icons/svg/sun.svg", { description: "<p>1 Bane on [Weapon], [Power] and [Signature] Actions while in the Consecrated Ground.</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: [], any: ["weapon", "magic", "signature"], none: [] }] });
 // v0.0.409 (pack F2; book, Consecrated Ground, 2026-11-16): the Zone, 3 rounds: Difficult Terrain for enemies; you and your allies who start a turn in it
 // gain Guard equal to your Power Modifier (fxrules.mjs the "guard" row; areafx.mjs healAtTurnStart)
-FX("Consecrated Ground", "icons/svg/sun.svg", { description: "<p>The consecrated ground (3 rounds): Difficult Terrain for enemies; you and your allies who start a turn in it gain Guard equal to your Power Modifier.</p>",
-  where: "map", zone: { src: "action", inside: { carry: { on: false }, diff: { on: true, who: "enemies" }, guard: { on: true, who: "allies", self: true, formula: "@origin.pow" } }, show: true, outline: "#d4a62a", fill: "#d4a62a" },
+FX("Consecrated Ground", "icons/svg/sun.svg", { description: "<p>The consecrated ground (3 rounds): Difficult Terrain for enemies; you and your allies who start a turn in it gain Guard equal to 2 + your Power Modifier.</p>",   // v0.0.536 (Lucas, the review: "2 + Pow")
+  where: "map", zone: { src: "action", inside: { carry: { on: false }, diff: { on: true, who: "enemies" }, guard: { on: true, who: "allies", self: true, formula: "@origin.pow + 2" } }, show: true, outline: "#d4a62a", fill: "#d4a62a" },
   ends: { time: { on: true, mode: "rounds", rounds: 3 } } });
 // v0.0.409 (pack F2): the effects of the Paladin's Arts (Lantern of Faith: Kindle, Reveal; Hold the Line: Brace; Commandment: Courage)
 const lantern = n => ({ type: "light", bright: n, dim: 2 * n, color: "#ffd27a", lightAlpha: 0.2, lightAnim: "sunburst", lightSpeed: 2, lightIntensity: 3 });

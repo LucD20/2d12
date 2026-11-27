@@ -1,7 +1,7 @@
 2d12 and 1 boon: the boon only for Lonny               Nari: 5|7 boons  banes  → 14 vs DC 13: tier 2 || Lonny: 5|7 boons 1 banes  → 15 vs DC 13: tier 2
   dice rolled: 2 d12 and 0 boon dice | Nari's total uses no boon: true | Lonny's does: true
 same dice, three DCs (16 total)                        a: 6|8 boons  banes  → 16 vs DC 13: tier 2 || b: 6|8 boons  banes  → 16 vs DC 17: tier 1 || c: 6|8 boons  banes  → 16 vs DC 24: tier 1
-3d12 because two targets need it (3, 9, 11)            plain: 3|9 boons  banes  → 14 vs DC 13: tier 2 || favored: 9|11 (favored, dropped 3) boons  banes  → 22 vs DC 13: tier 3 || doomed: 3|9 (doomed, dropped 11) boons  banes  → 14 vs DC 13: tier 2 || both: 3|9 boons 11111 banes 11111 → 14 vs DC 13: tier 2
+3d12 because two targets need it (3, 9, 11)            plain: 3|9 boons  banes  → 14 vs DC 13: tier 2 || favored: 9|11 (favored, dropped 3) boons  banes  → 22 vs DC 13: tier 3 || doomed: 3|9 (doomed, dropped 11) boons  banes  → 14 vs DC 13: tier 2 || both: 3|9 boons  banes  → 14 vs DC 13: tier 2
   dice rolled: 3 | plain used the first two: true | favored kept 9+11: true | doomed kept 3+9: true | both cancel out: true
 nobody needs a third die: dice rolled 2
 boon and bane dice shared                              one boon: 6|7 boons 1 banes  → 16 vs DC 13: tier 2 || three boons, one bane: 6|7 boons 111 banes 1 → 17 vs DC 13: tier 2 || two banes: 6|7 boons  banes 11 → 13 vs DC 13: tier 2 || none: 6|7 boons  banes  → 15 vs DC 13: tier 2

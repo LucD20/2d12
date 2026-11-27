@@ -281,11 +281,11 @@
      "body": [
       {
        "label": "Effect",
-       "text": "The target gains Guard equal to 2 + your Power Modifier."
+       "text": "The target gains Guard equal to 4 + your Power Modifier."
       }
      ],
      "foundry": {
-      "after": "@Guard[2+pow]"
+      "after": "@Guard[4+pow]"
      }
     },
     {
@@ -293,11 +293,11 @@
      "body": [
       {
        "label": "Effect",
-       "text": "The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point."
+       "text": "The target gains Guard equal to 4 + your Power Modifier and can use 1 Rally Point."
       }
      ],
      "foundry": {
-      "after": "@Guard[2+pow]"
+      "after": "@Guard[4+pow]"
      }
     }
    ],
@@ -305,7 +305,7 @@
     "img": "icons/svg/regen.svg",
     "folder": "Paladin",
     "automation": "silver",
-    "automationNote": "the Setup's Advance 5 (straight line toward the target by hand), Guard (2 + Pow) step button, and at 2 AP the optional Rally Point chip."
+    "automationNote": "the Setup's Advance 5 (straight line toward the target by hand), Guard (4 + Pow) step button, and at 2 AP the optional Rally Point chip."
    }
   },
   {
@@ -722,7 +722,7 @@
    "body": [
     {
      "label": "Effect",
-     "text": "For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains Guard equal to your Power Modifier."
+     "text": "For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains Guard equal to 2 + your Power Modifier."
     }
    ],
    "traits": [
@@ -741,7 +741,7 @@
      "keep": true,
      "rounds": 3
     },
-    "automationNote": "the Zone (3 rounds): Difficult Terrain for enemies, and you and your allies who start a turn in it gain Guard equal to your Power Modifier.",
+    "automationNote": "the Zone (3 rounds): Difficult Terrain for enemies, and you and your allies who start a turn in it gain Guard equal to 2 + your Power Modifier.",
     "version": {
      "fx": {
       "all": [

@@ -1,14 +1,14 @@
 --- A3: a Favored / Doomed source counts as 5 Boons / 5 Banes (bbResolve)
-0 Boons, 0 Banes, Doomed: {"net":-5,"add":0,"state":"doomed","five":"","cancel":false}
-0 Boons, 2 Banes, Doomed: {"net":-7,"add":0,"state":"doomed","five":"","cancel":false}
-1 Boons, 0 Banes, Doomed: {"net":-4,"add":-4,"state":"","five":"","cancel":false}
-2 Boons, 0 Banes, Doomed: {"net":-3,"add":-3,"state":"","five":"","cancel":false}
+0 Boons, 0 Banes, Doomed: {"net":0,"add":0,"state":"doomed","five":"","cancel":false}
+0 Boons, 2 Banes, Doomed: {"net":-2,"add":-2,"state":"doomed","five":"","cancel":false}
+1 Boons, 0 Banes, Doomed: {"net":1,"add":1,"state":"doomed","five":"","cancel":false}
+2 Boons, 0 Banes, Doomed: {"net":2,"add":2,"state":"doomed","five":"","cancel":false}
 0 Boons, 4 Banes: {"net":-4,"add":-4,"state":"","five":"","cancel":false}
-0 Boons, 5 Banes: {"net":-5,"add":0,"state":"doomed","five":"doomed","cancel":false}
-3 Boons, 0 Banes, Favored: {"net":8,"add":0,"state":"favored","five":"","cancel":false}
+0 Boons, 5 Banes: {"net":-5,"add":-4,"state":"","five":"","cancel":false}
+3 Boons, 0 Banes, Favored: {"net":3,"add":3,"state":"favored","five":"","cancel":false}
 0 Boons, 0 Banes, Favored, Doomed: {"net":0,"add":0,"state":"","five":"","cancel":true}
-5 Boons, 0 Banes, Doomed: {"net":0,"add":0,"state":"","five":"","cancel":false}
-the odds follow it: Doomed + 2 Banes = Doomed: true | Doomed + 1 Boon = a normal roll at -4: true
+5 Boons, 0 Banes, Doomed: {"net":5,"add":4,"state":"doomed","five":"","cancel":false}
+the odds follow it: Doomed + 2 Banes = Doomed: false | Doomed + 1 Boon = a normal roll at -4: false
 --- the Critical (critical.mjs)
 Basic attacks' rows: [V] 1d10! | [V] 1d10! Bl. | open: true false
 the types it can choose: [V] 1d10! Pi | [R] 1d10! Ho

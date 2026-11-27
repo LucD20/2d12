@@ -9,8 +9,8 @@ five Boons and High cover's Doomed: normal: "" | Favored twice is Favored: favor
 a Favored + Doomed roll with 5 Boons is still normal (never Favored twice): ""
 --- the odds (calc.mjs tierProbs; the ruler shares it)
 +0 vs 13 with 1 Boon = +1 with none: true | 3 Boons 1 Bane = +2: true
-5 Boons = Favored: true | 4 Boons = +4: true | 5 Banes = Doomed: true
-5 Boons on a Doomed roll = normal: true
+5 Boons = +4 (not Favored): true | 4 Boons = +4: true | 5 Banes = -4 (not Doomed): true
+5 Boons on a Doomed roll = Doomed + 4: true | 1 Boon on a Doomed roll = Doomed + 1: true
 Favored +0 vs 13: T1 / T2 / T3 13.9 / 46.9 / 39.2 | Critical 9.3 (the book's ruler run: T3 39.2 / 52.5 / 66.6, Crit 9.3 / 13.1 / 17.7)
 Favored +2 vs 13: T1 / T2 / T3 6.9 / 40.5 / 52.5 | Critical 13.1 (the book's ruler run: T3 39.2 / 52.5 / 66.6, Crit 9.3 / 13.1 / 17.7)
 Favored +4 vs 13: T1 / T2 / T3 2.8 / 30.7 / 66.6 | Critical 17.7 (the book's ruler run: T3 39.2 / 52.5 / 66.6, Crit 9.3 / 13.1 / 17.7)
@@ -23,21 +23,21 @@ normal 4, 4 (+0):      keeps 0+1 total 8 tier 2 Doubles
 Favored for initiative (no Doubles) 5, 5, 7: keeps 0+2 total 12 tier 1
 --- a roll (roll.mjs performCheck, resolveShared)
 6 + 7 + 2, 3 Boons 1 Bane: 17 | bo / ba 3 1 | faces [1,1,1] [1] | state "" | d12 rolled 2
-6 Boons 1 Bane: five left, Favored, 3 d12: favored favored | bo 0 | total 15 (6 + 7 + 2) | d12 rolled 3
-5 Boons on a Doomed roll: normal, 2 d12: ""  | total 15
-several targets, dice 4 4 9: Favored 13 tier 3 Doubles | 1 Boon (first two) 9 tier 2 Doubles | 5 Boons: Favored favored 13 tier 3
+6 Boons 1 Bane: 5 left, 4 count, 2 d12:   | bo 5 | total 19 (6 + 7 + 2) | d12 rolled 2
+5 Boons on a Doomed roll: Doomed + 4, 3 d12: "doomed"  | total 14
+several targets, dice 4 4 9: Favored 13 tier 3 Doubles | 1 Boon (first two) 9 tier 2 Doubles | 5 Boons: +4, no state "" 12 tier 2
 the old card shows counts, not dice: true Weapon Attack 6 + 7 + 2 + Boons 3 &minus; Banes 1 15 DC 13
 --- the sources' names (effects.mjs resolveModifiers)
 chips: Zone +0/-3 pressure | Zone +1/-0 (no name) | Prone (Orc) +1/-0 field
 resolved: Boons 3 (Prone 1 + Flanking 2 Field: 2, + 1 unnamed) | Banes 2 (3 Pressure: 2) | Doomed true High cover (Doomed)
 --- the roll dialog (rolldlg.mjs)
 3 Field Banes + range + Frightened: ▼ 4 | notes: Field Banes 3, limit 2 | odds = +2 - 4: true
-two more by hand (5 left):  3d12, lowest 2 | state doomed | notes: Field Banes 3, limit 2 · 6 Banes left: Doomed instead | odds = Doomed +2: true
+two more by hand (6 left, v0.0.536: 4 count, not Doomed):  2d12 | state "" | notes: Field Banes 3, limit 2 · 6 Banes left: 4 count | odds = +2 - 4: true
 the chip carries its name: true | an unnamed one doesn't: true
 the ladder's tip: Doubles raise one Tier; Doubles on a Tier 3 are a Critical. A Favored roll: any pair of the three dice is Doubles, three of a kind a Critical. A Doomed roll has no Doubles.
 --- the chat card's lines (chatcards.mjs)
 boon 1 Situational | bane -1 Low cover [Field] | bane -1 Obscured [Field] | bane 0 Long weapon [Field] over
-five Banes on the card (v0.0.533: the written sum's words): true
+five Banes on the card (v0.0.536: 4 count): true
 retarget: no Boon dice any more, a third d12 for a target that reaches 5: {"d12":1,"boon":0,"bane":0}
 --- the sources in the code
 High cover: Doomed, no Field Banes: true | several targets: true

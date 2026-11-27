@@ -6,7 +6,7 @@ Rule of the order (Lucas, 2026-11-11): decide what changes the numbers before bu
 
 ## 1. Now
 
-1. **The action economy and the level 1 Reactions: built** (the book and Foundry v0.0.535, 2026-11-27): 4 AP regained at the end of the turn, no Reaction Point, a repeated At-will [Strike] Doomed, the eight rebuilt Reactions, Hit and Run removed (`book/rules-backlog.md`, the top section). **Next:** Lucas's checklist on v0.0.535, then **a playtest of the same fight** (`book/playtest-11.md`'s); his word on the build's questions (`HANDOFF.md`, "Waiting on Lucas") and on the re-sized review rows (`book/cards/review-2026-11-27/resized.md`). Later: Bulwark of Faith (level 2), Full Defense and Assess (future Basic Actions).
+1. **The action economy and the level 1 Reactions: built** (the book and Foundry v0.0.535, 2026-11-27): 4 AP regained at the end of the turn, no Reaction Point, a repeated At-will [Strike] Doomed, the eight rebuilt Reactions, Hit and Run removed; then (v0.0.536) Favored and Doomed no longer count as Boons or Banes and the review's approved rows (`book/rules-backlog.md`, the top section). **Next:** Lucas's checklist on v0.0.536, then **a playtest of the same fight** (`book/playtest-11.md`'s). Later: Bulwark of Faith (level 2), Full Defense and Assess (future Basic Actions).
 2. **The cleanup audit** (`book/audit-2026-11-25/`): answered and applied (the book, Foundry v0.0.520 to v0.0.527); 5 questions still held for Lucas (`work-order.json`, `do: "hold"`).
 
 ## 2. The Bestiary (`book/bestiary-design.md`)

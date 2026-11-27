@@ -1,5 +1,5 @@
 --- [Mod] as the card writes it (a Structure card), none added by the roll; none shown for an NPC
-Smite: 1d6! Ho / 1W + Mod + 1d6! Ho / 1W + Mod + 2d6! Ho | Trick Shots (Pin): - / Mod / Mod | Seizing Cut: - / 1W / 1W + Mod | Quick Shots: Mod / 2W + Mod / 3W + Mod
+Smite: 1d6! Ho / 1W + Mod + 1d6! Ho / 1W + Mod + 2d6! Ho | Trick Shots (Pin): - / Mod / Mod | Seizing Cut: - / 1W / 1W + Mod | Quick Shots: 1d6! + Mod / 2W + Mod / 3W + Mod
 the Basic Attack writes its own [Mod] on all three Tiers (core rework batch 3): 1d4! / 1W / 1W + 1D
 attrMode: a Structure card none | an old card t2 | an NPC's none
 a subtype is its pool's ([V] 1[W] + [Mod] + [R] 1d6! Ho): 1WB,ModB,1d6!MH

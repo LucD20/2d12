@@ -68,12 +68,10 @@ Apply the limit to each side first, then cancel: 3 Field Banes and 1 Field Boon 
 
 ### Five Boons or Banes
 
-After the limits and the cancelling, if you still have **5 or more Boons**, you don't add them: the roll is **Favored** instead. With **5 or more Banes**, the roll is **Doomed** instead. 8 Boons and 3 Banes leave 5 Boons: the roll is Favored. 6 Boons and 2 Banes leave 4 Boons: add 4.
-
-**An effect that makes a roll Favored or Doomed** (a condition, a feature) counts as **5 Boons** or **5 Banes**, with no name: put them in with the others before cancelling. Several such effects still count as 5 once: a roll can't be Favored or Doomed twice. So more Banes never help a roll, and more Boons never hurt it.
+After the limits and the cancelling, **at most 4 Boons or 4 Banes count**: any more add nothing. 8 Boons and 3 Banes leave 5 Boons: add 4. 6 Boons and 2 Banes leave 4 Boons: add 4. Boons and Banes never make a roll Favored or Doomed: only an effect that says so does (see [[Favored and Doomed Rolls]]).
 
 > [!example]
-> Lana is Doomed by a condition and has 2 Banes from Cover: 7 Banes, still Doomed. A 1 Support Boon and 2 Field Boons from allies bring it to 4 Banes: she rolls normally and subtracts 4.
+> Lana is Doomed by a condition and has 2 Banes from Cover. A 1 Support Boon and 2 Field Boons from allies cancel the Banes and leave 1 Boon: she rolls 3d12, keeps the two lowest and adds 1. She is still Doomed, so she can't roll Doubles.
 
 ## Favored and Doomed Rolls
 
@@ -81,7 +79,7 @@ When a roll is **Favored**, you roll **3d12** and keep the **two highest**. If *
 
 When a roll is **Doomed**, you roll **3d12** and keep the **two lowest**. A Doomed roll can't produce Doubles.
 
-A roll that is both Favored and Doomed is a normal roll, and nothing is added to it: the 5 Boons and the 5 Banes cancel (see [[Five Boons or Banes]]).
+**Favored and Doomed are not Boons or Banes.** They decide the dice you roll and which you keep; your Boons and Banes still cancel each other and are added as usual (see [[Five Boons or Banes]]): Doomed with 1 Boon is 3d12, the two lowest, + 1. Several effects that make a roll Favored still make it Favored once (Doomed too). A roll that is both Favored and Doomed is a normal roll of 2d12, with its Boons and Banes added.
 
 Step by step:
 
@@ -149,7 +147,7 @@ An Action with the **Save** trait doesn't roll: each target rolls the Save the c
 
 The tiers are the target's result: **Tier 1 is the worst for them**. A line for two Tiers is written **Tier 1 or 2**.
 
-A Save Action has no Critical. Your own Boons don't apply to it, but **your own Banes do, turned around**: after cancelling your Boons and Banes as for a roll, each Bane you have left gives every target **1 Boon** on its Save (no name; if you would be Doomed, that is 5 Boons: their Saves are Favored). Effects on the target's Saves apply as well. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target (from your square when the Action has no area). Your [[Senses]] don't change a Save Action: the target rolls, so a target that is Obscured or Hidden to you adds no Bane to its Save.
+A Save Action has no Critical. Your own Boons don't apply to it, but **your own Banes do, turned around**: after cancelling your Boons and Banes as for a roll, each Bane you have left gives every target **1 Boon** on its Save (no name; at most 4, as always), and if your roll would be Doomed, their Saves are Favored. Effects on the target's Saves apply as well. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target (from your square when the Action has no area). Your [[Senses]] don't change a Save Action: the target rolls, so a target that is Obscured or Hidden to you adds no Bane to its Save.
 
 ## Roll Effects
 
@@ -314,7 +312,7 @@ When a rule names a trait before the word "Action," it means an Action with that
 
 1. Roll **2d12** and add the relevant Modifier.
 2. Any **12** counts as 11 and is rolled again, adding the result.
-3. Add **1 for each Boon** and subtract **1 for each Bane**. Named ones (Field, Pressure, Support) count up to 2 of each name; an effect that makes the roll Favored or Doomed counts as 5 Boons or 5 Banes. If 5 or more Boons are left after cancelling, the roll is Favored instead; 5 or more Banes, Doomed.
+3. Add **1 for each Boon** and subtract **1 for each Bane**. Named ones (Field, Pressure, Support) count up to 2 of each name; after cancelling, at most 4 count. Favored and Doomed come only from effects and don't count as Boons or Banes.
 4. Compare to the **DC**: below it is Tier 1, from the DC up to DC + 6 is Tier 2, and DC + 7 or more is Tier 3.
 5. If both d12s match, move the result **up one tier**.
 6. A **Favored** roll is 3d12: keep the two highest, and any pair among the three is Doubles. A **Doomed** roll is 3d12: keep the two lowest, with no Doubles.

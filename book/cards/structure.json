@@ -760,7 +760,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains Guard equal to your Power Modifier."
+    "text": "For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains Guard equal to 2 + your Power Modifier."
    }
   ],
   "blocks": [],
@@ -2625,11 +2625,11 @@
     "body": [
      {
       "label": "Effect",
-      "text": "The target gains Guard equal to 2 + your Power Modifier."
+      "text": "The target gains Guard equal to 4 + your Power Modifier."
      }
     ],
     "foundry": {
-     "after": "@Guard[2+pow]"
+     "after": "@Guard[4+pow]"
     }
    },
    {
@@ -2637,11 +2637,11 @@
     "body": [
      {
       "label": "Effect",
-      "text": "The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point."
+      "text": "The target gains Guard equal to 4 + your Power Modifier and can use 1 Rally Point."
      }
     ],
     "foundry": {
-     "after": "@Guard[2+pow]"
+     "after": "@Guard[4+pow]"
     }
    }
   ],
@@ -3147,7 +3147,7 @@
   "name": "Quick Shots",
   "escalation": null,
   "frequency": "Round",
-  "flavor": "You loose arrow after arrow into one foe before the first has landed, and step away while it reels.",
+  "flavor": "You loose arrow after arrow into one foe before the first has landed.",
   "distance": "Weapon",
   "area": null,
   "target": "One creature",
@@ -3166,7 +3166,7 @@
    },
    {
     "label": "Tier 1",
-    "text": "[V] [Mod]."
+    "text": "[V] 1d6! + [Mod]."
    },
    {
     "label": "Tier 2",
@@ -3178,11 +3178,7 @@
    },
    {
     "label": "Critical",
-    "text": "You gain 1 AP."
-   },
-   {
-    "label": "Effect",
-    "text": "You Evade 2."
+    "text": "You make a [Projectile, Ranged] [[Basic Attack]] (1A)."
    }
   ],
   "blocks": [],

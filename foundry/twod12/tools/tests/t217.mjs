@@ -30,8 +30,9 @@ console.log("a Favored + Doomed roll with 5 Boons is still normal (never Favored
 
 console.log("--- the odds (calc.mjs tierProbs; the ruler shares it)");
 console.log("+0 vs 13 with 1 Boon = +1 with none:", pc(C.tierProbs(0, 13, 1, 0)) === pc(C.tierProbs(1, 13, 0, 0)), "| 3 Boons 1 Bane = +2:", pc(C.tierProbs(0, 13, 3, 1)) === pc(C.tierProbs(2, 13, 0, 0)));
-console.log("5 Boons = Favored:", pc(C.tierProbs(0, 13, 5, 0)) === pc(C.tierProbs(0, 13, 0, 0, "favored")), "| 4 Boons = +4:", pc(C.tierProbs(0, 13, 4, 0)) === pc(C.tierProbs(4, 13, 0, 0)), "| 5 Banes = Doomed:", pc(C.tierProbs(0, 13, 0, 5)) === pc(C.tierProbs(0, 13, 0, 0, "doomed")));
-console.log("5 Boons on a Doomed roll = normal:", pc(C.tierProbs(0, 13, 5, 0, "doomed")) === pc(C.tierProbs(0, 13, 0, 0)));
+// v0.0.536 (Lucas, 2026-11-27: option A; book, Chapter 1): at most 4 count, never Favored or Doomed; Boons and Banes add to a Favored / Doomed roll
+console.log("5 Boons = +4 (not Favored):", pc(C.tierProbs(0, 13, 5, 0)) === pc(C.tierProbs(4, 13, 0, 0)), "| 4 Boons = +4:", pc(C.tierProbs(0, 13, 4, 0)) === pc(C.tierProbs(4, 13, 0, 0)), "| 5 Banes = -4 (not Doomed):", pc(C.tierProbs(0, 13, 0, 5)) === pc(C.tierProbs(-4, 13, 0, 0)));
+console.log("5 Boons on a Doomed roll = Doomed + 4:", pc(C.tierProbs(0, 13, 5, 0, "doomed")) === pc(C.tierProbs(4, 13, 0, 0, "doomed")), "| 1 Boon on a Doomed roll = Doomed + 1:", pc(C.tierProbs(0, 13, 1, 0, "doomed")) === pc(C.tierProbs(1, 13, 0, 0, "doomed")));
 for (const m of [0, 2, 4]) console.log(`Favored +${m} vs 13: T1 / T2 / T3 ${pc(C.tierProbs(m, 13, 0, 0, "favored"))} | Critical ${(C.critProb(m, 13, 0, 0, "favored") * 100).toFixed(1)} (the book's ruler run: T3 39.2 / 52.5 / 66.6, Crit 9.3 / 13.1 / 17.7)`);
 
 console.log("--- the dice kept (roll.mjs keepDice)");
@@ -53,13 +54,13 @@ let r = await R.performCheck({ mod: 2, boons: 3, banes: 1, dc: 13 });
 console.log("6 + 7 + 2, 3 Boons 1 Bane:", r.total, "| bo / ba", r.bo, r.ba, "| faces", JSON.stringify(r.boonFaces), JSON.stringify(r.baneFaces), "| state", JSON.stringify(r.state), "| d12 rolled", r.rolls.length);
 SEQ = [6, 7, 2];
 r = await R.performCheck({ mod: 2, boons: 6, banes: 1, dc: 13 });
-console.log("6 Boons 1 Bane: five left, Favored, 3 d12:", r.state, r.five, "| bo", r.bo, "| total", r.total, "(6 + 7 + 2) | d12 rolled", r.rolls.length);
-SEQ = [6, 7];
+console.log("6 Boons 1 Bane: 5 left, 4 count, 2 d12:", r.state, r.five, "| bo", r.bo, "| total", r.total, "(6 + 7 + 2) | d12 rolled", r.rolls.length);
+SEQ = [6, 7, 2];
 r = await R.performCheck({ mod: 2, boons: 5, banes: 0, dc: 13, doomed: true });
-console.log("5 Boons on a Doomed roll: normal, 2 d12:", JSON.stringify(r.state), r.five, "| total", r.total);
+console.log("5 Boons on a Doomed roll: Doomed + 4, 3 d12:", JSON.stringify(r.state), r.five, "| total", r.total);
 const shared = { d: [d(4), d(4), d(9)].map(x => ({ ...x, faces: [x.first] })), boonFaces: [], baneFaces: [] };
 const one = R.resolveShared(shared, { mod: 0, dc: 13, boons: 0, banes: 0, favored: true }), two = R.resolveShared(shared, { mod: 0, dc: 13, boons: 1, banes: 0 }), three = R.resolveShared(shared, { mod: 0, dc: 13, boons: 5, banes: 0 });
-console.log("several targets, dice 4 4 9: Favored", one.total, `tier ${one.tier}`, one.doubles ? "Doubles" : "", "| 1 Boon (first two)", two.total, `tier ${two.tier}`, two.doubles ? "Doubles" : "", "| 5 Boons: Favored", three.state, three.total, `tier ${three.tier}`);
+console.log("several targets, dice 4 4 9: Favored", one.total, `tier ${one.tier}`, one.doubles ? "Doubles" : "", "| 1 Boon (first two)", two.total, `tier ${two.tier}`, two.doubles ? "Doubles" : "", "| 5 Boons: +4, no state", JSON.stringify(three.state), three.total, `tier ${three.tier}`);
 const html = R.checkHtml("Weapon Attack", { d1: [6], d2: [7], total: 15, dc: 13, mod: 2, adj: 0, boonFaces: [1, 1, 1], baneFaces: [1], bo: 3, ba: 1, five: "", sources: [], state: "", tier: 2, base: 2 });
 console.log("the old card shows counts, not dice:", !html.includes("die d3"), html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 60));
 
@@ -89,7 +90,7 @@ let dl = D.diceLine(inp, st), calc = D.creatureCalc(inp, st, "orc");
 console.log("3 Field Banes + range + Frightened: ▼", dl.banes, "| notes:", dl.bbNotes.join(" · "), "| odds = +2 - 4:", D.oddsOf(calc).join("/") === [0, 1, 2].map(i => Math.round(C.tierProbs(-2, 13, 0, 0)[i] * 100)).join("/"));
 D.addManual(st, "shared", "bane"); D.addManual(st, "shared", "bane");
 dl = D.diceLine(inp, st); calc = D.creatureCalc(inp, st, "orc");
-console.log("two more by hand (5 left): ", dl.dice, "| state", calc.state, "| notes:", dl.bbNotes.join(" · "), "| odds = Doomed +2:", D.oddsOf(calc).join("/") === [0, 1, 2].map(i => Math.round(C.tierProbs(2, 13, 0, 0, "doomed")[i] * 100)).join("/"));
+console.log("two more by hand (6 left, v0.0.536: 4 count, not Doomed): ", dl.dice, "| state", JSON.stringify(calc.state), "| notes:", dl.bbNotes.join(" · "), "| odds = +2 - 4:", D.oddsOf(calc).join("/") === [0, 1, 2].map(i => Math.round(C.tierProbs(-2, 13, 0, 0)[i] * 100)).join("/"));
 console.log("the chip carries its name:", D.chipHtml(inp.chips[0], st).includes('<small class="rd-bbn">Field</small>'), "| an unnamed one doesn't:", !D.chipHtml(inp.chips[3], st).includes("rd-bbn"));
 console.log("the ladder's tip:", D.LADDER_TIP);
 
@@ -97,8 +98,8 @@ console.log("--- the chat card's lines (chatcards.mjs)");
 const CC = await import(ROOTURL + "module/chatcards.mjs");
 const lines = CC.boonBaneLines({ boonFaces: [1], baneFaces: [1, 1], sources: [{ name: "Low cover (Orc)", banes: 1, bb: "field" }, { name: "Obscured (Orc)", banes: 1, bb: "field" }, { name: "Long weapon", banes: 1, bb: "field" }, { name: "Situational", boons: 1 }] });
 console.log(lines.map(x => `${x.kind} ${x.val} ${x.name}${x.bb ? ` [${x.bb}]` : ""}${x.over ? " over" : ""}`).join(" | "));
-const br = CC.breakdownHtml({ d1: [6], d2: [7], total: 9, dc: 13, tier: 1, base: 1, boonFaces: [], baneFaces: [], five: "doomed", sources: [{ name: "Engaged", banes: 2 }, { name: "Far", banes: 2 }, { name: "Frightened", banes: 1 }], mods: [] });
-console.log("five Banes on the card (v0.0.533: the written sum's words):", br.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").includes("Doomed : 5 Banes left"));
+const br = CC.breakdownHtml({ d1: [6], d2: [7], total: 9, dc: 13, tier: 1, base: 1, boonFaces: [], baneFaces: [1, 1, 1, 1], sources: [{ name: "Engaged", banes: 2 }, { name: "Far", banes: 2 }, { name: "Frightened", banes: 1 }], mods: [] });
+console.log("five Banes on the card (v0.0.536: 4 count):", br.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").includes("4 of 5 count"));
 console.log("retarget: no Boon dice any more, a third d12 for a target that reaches 5:", JSON.stringify(CC.missingDice({ dice: { d: [d(3), d(4)], boonFaces: [], baneFaces: [] } }, [{ boons: 5, banes: 0 }])));
 
 console.log("--- the sources in the code");

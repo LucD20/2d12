@@ -59,14 +59,14 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Judge | Silver | the 0 AP use only at the start of an encounter (v0.0.525: the 0R when the Judged creature goes Down is its message's button, used as a Reaction: Staggered warns; v0.0.527: no damage reduction left to automate, Lucas 2026-11-26) |
 | Smite | Gold | |
 | Binding Light | Gold | |
-| Lay On Hands | Silver | the Setup's Advance in a straight line toward the target |
+| Lay On Hands | Silver | the Setup's Advance in a straight line toward the target (v0.0.536: Guard 4 + Pow) |
 | Shield of Faith | Gold | (v0.0.535: offered by itself only for the creature you Judged, the moment strikeDamage with momentMarked judge; the half by momentSplit halve) |
 | Rebuke | Gold | (v0.0.535: the moment enemyMoves within 3, no standing up; the damage and the Pressure Bane run on Use) |
 | Lantern of Faith | Gold | |
 | Hold the Line | Silver | Brace's squares stay where you used it if you move (Foundry's Aura follows you); Trade Places between different Sizes is refused (v0.0.431) |
 | Commandment | Silver | Courage (an Aura 3: ignore Daunted) is only a reminder |
 | Bulwark of Faith | Gold | |
-| Consecrated Ground | Gold | |
+| Consecrated Ground | Gold | (v0.0.536: Guard 2 + Pow at each turn's start inside) |
 | Word of Radiance | Gold | |
 | Reckoning | Gold | |
 | Armor of Faith (Feature) | Gold | |
@@ -80,7 +80,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Card | Rating | What is by hand |
 |---|---|---|
 | Darting Blade | Silver | drawing and stowing the Light weapon |
-| Quick Shots | Silver | a Critical's 1 AP back |
+| Quick Shots | Silver | a Critical's Basic Attack (1A): its button on the card (v0.0.536; it was the 1 AP back) |
 | Strafe | Gold | |
 | Slip Away | Silver | the weapon swap (Interact (1A)): by hand (v0.0.535: the moment enemyEndsTurn; the Evade 1 starts by itself) |
 | Snap Shot | Silver | the Evade 1 before the shot: its button on the card (v0.0.535) |

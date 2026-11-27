@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.535**. Tests: `node tools/tests/run.mjs` (330 tests, see the README; the next new test is t335). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.536**. Tests: `node tools/tests/run.mjs` (330 tests, see the README; the next new test is t335). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
@@ -9,6 +9,8 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 ## THE ACTION ECONOMY AND THE REBUILT REACTIONS (v0.0.535, 2026-11-27)
 
 - [x] **(v0.0.535)** The AP regained at the end of the turn, 4 AP at the encounter's start, no Reaction Point (Tireless Vigil's Divine-only AP kept), no Guard from unspent AP, the HUD's Reaction mark only for that AP; the Doomed repeat; Strained Speed −2, Bloodied's space; the moments ("moves within N" without standing up, "ends its turn", the Judged creature's Strike, "reaches its Health Pool"); the rebuilt level 1 Reactions; Hit and Run removed (the changelog has the detail).
+- [x] **(v0.0.536)** Favored and Doomed are not Boons or Banes (option A), at most 4 Boons or Banes count; Quick Shots, Lay On Hands and Consecrated Ground from the review (the changelog has the detail).
+- [ ] **An old chat card's written sum** (posted before v0.0.536, Favored or Doomed with Boons or Banes) is re-counted with the new rule: its total stays the old one, so an unnamed entry can appear to reach it. Nothing to fix unless it confuses.
 - [ ] **An Evade through a Bloodied enemy's space:** Foundry lets it (the space is "dt" for every movement: `roundrules.mjs creatureWay`); the book allows an Evade only through an ally's space. The same gap stood already for an Unconscious enemy. To fix: an Evade treats an unwilling creature's "dt" space as blocking.
 - [ ] **Slip Away's weapon swap** (Interact (1A)) is by hand after the Evade; Snap Shot's Evade 1 is its button on the card before the shot (both Silver).
 - [ ] **"Ends its turn" Reactions** are offered without holding the next turn's start (a Trigger: nothing waits); if the table finds the next creature starting before the answer confusing, hold `startTurn` for them.

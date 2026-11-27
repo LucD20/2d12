@@ -4,15 +4,15 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
-| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 27.6 | 321 |
+| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 27.5 | 319 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 36.3 | 374 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 49.3 | 515 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.7 | 225 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.2 | 105 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.9 | 64 |
-| 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.3 | 99 |
+| 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.4 | 99 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.8 | 122 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 34.8 | 238 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 35.0 | 238 |
 | 11-species.md | Species | species |  | 0.9 | 34 |
 | 12-paladin.md | Paladin | paladin |  | 3.6 | 94 |
 | 13-archer.md | Archer | archer |  | 3.9 | 94 |
@@ -28,26 +28,26 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 50: ## Boons and Banes
 - 55:   ### Named Boons and Banes
 - 69:   ### Five Boons or Banes
-- 78: ## Favored and Doomed Rolls
-- 99: ## Rolls
-- 126: ## Checks
-- 130:   ### Action DC
-- 134:   ### Attribute DCs
-- 138: ## Saves
-- 146:   ### Save Actions
-- 154: ## Roll Effects
-- 158:   ### Damage on a Card
-- 162:   ### Modifier Damage [Mod]
-- 168:   ### Damage Types
-- 177:   ### Damage Subtypes
-- 188:   ### Resistance, Weakness and Immunity
-- 198:   ### Riders
-- 202: ## Several Targets
-- 223: ## Rounding
-- 229: ## Reading an Action
-- 265:   ### Notation
-- 291:   ### Rules Language
-- 313: ## Summary
+- 76: ## Favored and Doomed Rolls
+- 97: ## Rolls
+- 124: ## Checks
+- 128:   ### Action DC
+- 132:   ### Attribute DCs
+- 136: ## Saves
+- 144:   ### Save Actions
+- 152: ## Roll Effects
+- 156:   ### Damage on a Card
+- 160:   ### Modifier Damage [Mod]
+- 166:   ### Damage Types
+- 175:   ### Damage Subtypes
+- 186:   ### Resistance, Weakness and Immunity
+- 196:   ### Riders
+- 200: ## Several Targets
+- 221: ## Rounding
+- 227: ## Reading an Action
+- 263:   ### Notation
+- 289:   ### Rules Language
+- 311: ## Summary
 
 ## 02-turns.md: Chapter 2: Turns and Actions
 

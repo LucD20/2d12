@@ -58,9 +58,11 @@ export async function showDice(rolls) {
  * (calc.mjs bbCount); they cancel, and 5 or more left make the roll Favored / Doomed instead. { state, five, bo, ba, net }.
  */
 export function bbRoll(boons = 0, banes = 0, favored = false, doomed = false) {
-  // the core rework A3: a Favored / Doomed source counts as 5 Boons / 5 Banes before cancelling
-  const r = bbResolve(boons, banes, favored, doomed), bo = Math.max(0, Number(boons) || 0) + (favored ? 5 : 0), ba = Math.max(0, Number(banes) || 0) + (doomed ? 5 : 0);
-  return { state: r.state, five: r.five, bo: r.state ? 0 : bo, ba: r.state ? 0 : ba, net: r.net };
+  // v0.0.536 (book, Chapter 1): the Boons and Banes add in every state, at most 4 after cancelling (the larger side shown cut to the smaller + 4)
+  const r = bbResolve(boons, banes, favored, doomed);
+  let bo = Math.max(0, Number(boons) || 0), ba = Math.max(0, Number(banes) || 0);
+  if (bo - ba > r.add) bo = ba + r.add; else if (bo - ba < r.add) ba = bo - r.add;
+  return { state: r.state, five: r.five, bo, ba, net: r.net };
 }
 
 /** 2d12 + mod + boons - banes vs DC. Does not post anything. */

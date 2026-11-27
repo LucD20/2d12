@@ -1562,8 +1562,10 @@ export async function useAction(actor, item, opts = {}) {
       if (nlSwitched) { cfg.boon = (Number(cfg.boon) || 0) + 1; cfg.nlSwitched = true; }   // the switch: every creature gains 1 Boon on its Save (book, Chapter 4)
       // the core rework A4 (Lucas, 2026-11-21; book, Chapter 1, Save Actions): the user's own Boons don't apply, its Banes do, turned around: after
       // cancelling the user's Boons and Banes, each Bane left gives every target 1 Boon on its Save (Doomed: 5, their Saves Favored)
-      { const own = bbResolve(fxm.boons + manB, fxm.banes + manN, !!fxm.favored, !!fxm.doomed), ub = own.state === "doomed" ? 5 : Math.max(0, -own.net);
-        if (ub) { cfg.boon = (Number(cfg.boon) || 0) + ub; cfg.userBanes = ub; } }
+      // v0.0.536 (book, Chapter 1, Save Actions): the user's Banes left (at most 4) give that many Boons; the user's Doomed makes their Saves Favored
+      { const own = bbResolve(fxm.boons + manB, fxm.banes + manN, !!fxm.favored, !!fxm.doomed), ub = Math.max(0, -own.add);
+        if (ub) { cfg.boon = (Number(cfg.boon) || 0) + ub; cfg.userBanes = ub; }
+        if (own.state === "doomed") cfg.userDoomed = true; }
       const point = areaOutcome?.point ?? null;
       // v0.0.283 (pack chat-cards): this card becomes the Save card (v0.0.286: several targets too, a row each; an [HT] area's repeat keeps the old card)
       // v0.0.317 (Lucas: "without a target (setting the DC) it uses the old card"): no target is the new card too, empty, with its target button
