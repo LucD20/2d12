@@ -71,7 +71,7 @@ const CS = await import(ROOTURL + "module/chatscroll.mjs");
 console.log("at the bottom:", CS.atBottom({ scrollHeight: 1000, scrollTop: 560, clientHeight: 400 }), "| scrolled up to read:", CS.atBottom({ scrollHeight: 1000, scrollTop: 200, clientHeight: 400 }), "| registered:", src("module/twod12.mjs").includes("registerChatScroll();"));
 
 // 9. Charge: given up, its card deleted and one line; "Charge!" on the bar
-console.log("its card id kept:", mv.includes('messageId: ctx?.message?.id ?? "", stopRange: stop.normal')   /* v0.0.525: the normal Range it stops at (B2-014) */, "| deleted (through the GM if not yours):", mv.includes('game.socket.emit("system.twod12", { type: "deleteMessage", messageId: m.id })') && src("module/damage.mjs").includes('data?.type === "deleteMessage"'), "| the line:", mv.includes("gives up Charge."), "| Charge! next to Give up:", mv.includes('class="lb-go"') && mv.includes('bar.querySelector(".lb-go").addEventListener'));
+console.log("its card id kept:", mv.includes('messageId: ctx?.message?.id ?? "", stopRange: stop.normal')   /* v0.0.525: the normal Range it stops at (B2-014) */, "| deleted (through the GM if not yours):", mv.includes('game.socket.emit("system.twod12", { type: "deleteMessage", messageId: m.id })') && src("module/damage.mjs").includes('data?.type === "deleteMessage"'), "| the line:", mv.includes("gives up Charge."), "| Charge! next to Give up:", mv.includes('class="lb-go lb-w-go"')   /* v0.0.529: one slot for Charge / Charge anyway */ && mv.includes('bar.querySelector(".lb-go").addEventListener'));
 
 // 10. No "X marks Y" line; 11. Covering Fire's text; 12. hidden tokens react and provoke
 const arc = fs.readFileSync(ROOT + "../../book/cards/archer.json", "utf8");

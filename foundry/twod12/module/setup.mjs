@@ -1,6 +1,7 @@
 // Setup: "what happens before the dice are rolled" (see Actions in the rules). Its movement (an Advance or an Evade) is made first, so the roll's range,
 // cover and Engaged are read from where the creature ends. The card then shows the Setup without its movement button, because it has been done.
 import { esc } from "./util.mjs";
+import { askHtml } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
 const TAG = /@Move\[([^\]]*)\]/g;
 
 const MOVE_WORD = { advance: "Advance", walk: "Advance", evade: "Evade", charge: "Charge", pushed: "Pushed", pulled: "Pulled", slid: "Slid", reposition: "Reposition" };
@@ -51,8 +52,12 @@ export async function setupBar(o) {
     const txt = String(o.text ?? "").trim();
     // v0.0.456 (pack SHEETS-HUD's leftover, the HUD mockup's A4: "4 of 6 squares left"): the squares the movement has left, kept up to date
     const sq = o.squares ?? null, leftNow = () => { try { return Math.max(0, Math.round((Number(game.combat?.combatants?.get(sq.cid)?.getFlag("twod12", sq.key)) || 0) * 100) / 100); } catch (e) { return 0; } };
-    const leftHtml = () => (sq ? ` <span class="lb-left"><b>${leftNow()}</b> of ${sq.total} square${sq.total === 1 ? "" : "s"} left.</span>` : "");
-    bar.innerHTML = `<i class="fa-solid fa-person-running lb-ic"></i><span class="lb-text"><b>${esc(o.title ?? "Setup")}</b>${txt ? `: ${esc(txt)}` : ""} Move your token, then Continue.${leftHtml()}</span><button type="button" class="lb-go fill"><i class="fa-solid fa-dice"></i> Continue: the roll</button><button type="button" class="lb-give">Cancel the Action</button><span class="lb-keys"><kbd>Enter</kbd> Continue \u00b7 <kbd>Esc</kbd> Cancel the Action</span>`;   // v0.0.461 (the map notes, d / h): the filled one first, the key line
+    const leftHtml = () => (sq ? `<span class="lb-left"><b>${leftNow()}</b> of ${sq.total} square${sq.total === 1 ? "" : "s"} left.</span>` : "");
+    // v0.0.461 (the map notes, d / h): the filled one first, the key line. v0.0.529 (the sit-fixed mockup, rule A): the frame: the Action's name, the
+    // Setup's text, the squares left on a line of their own, the keys, then Continue at the left and Cancel the Action at the right end
+    bar.innerHTML = askHtml({ icon: "fa-person-running", head: esc(o.title ?? "Setup"), text: `${txt ? `${esc(txt)} ` : ""}Move your token, then Continue.`, lines: 2,
+      stat: sq ? leftHtml() : null, statCls: "cnt", keys: "<kbd>Enter</kbd> Continue \u00b7 <kbd>Esc</kbd> Cancel the Action",
+      left: '<button type="button" class="lb-go fill"><i class="fa-solid fa-dice"></i> Continue: the roll</button>', give: '<button type="button" class="lb-give">Cancel the Action</button>' });
     // v0.0.441 (pack SHEETS-HUD, D7: "Strafe's Advance in the HUD's place, not the old floating bar"): in the HUD's Situational section when a
     // creature's bar is on screen, as the pick bar asks; at the bottom of the screen with no HUD
     const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");

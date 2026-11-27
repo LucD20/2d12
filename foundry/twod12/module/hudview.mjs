@@ -147,7 +147,10 @@ export function basicTabHtml(groups = []) {
 /** One thing waiting in the Situational section. it = { lead, tag, text (html), btns: [{ label, q (the quiet "no"), hud, data, off, why }] } */
 export function sitItemHtml(it) {
   const btn = b => `<button type="button" class="hb-btn${b.q ? " q" : ""}"${b.hud ? ` data-hud="${esc(b.hud)}"` : ""}${Object.entries(b.data ?? {}).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("")}${b.off ? ` disabled aria-label="${esc(`${b.label}: ${b.why ?? ""}`)}"` : ""}>${esc(b.label)}</button>`;
-  return `<div class="h3-si${it.pulse ? " pulse" : ""}"><div class="h"><b>${esc(it.lead)}</b>${it.tag ? `<span class="tg">${esc(it.tag)}</span>` : ""}</div>${it.text ? `<div class="t">${it.text}</div>` : ""}${(it.btns ?? []).length ? `<div class="bs">${it.btns.map(btn).join("")}</div>` : ""}</div>`;
+  // v0.0.529 (the sit-fixed mockup, rule A): one row of buttons, the main ones from the left, the quiet one (Pass, Cancel) last at its right end
+  const bs = it.btns ?? [], main = bs.filter(b => !b.q), quiet = bs.filter(b => b.q);
+  const row = bs.length ? `<div class="bs">${main.map(btn).join("")}${quiet.length ? `<span class="h3-sp"></span>${quiet.map(btn).join("")}` : ""}</div>` : "";
+  return `<div class="h3-si${it.pulse ? " pulse" : ""}"><div class="h"><b>${esc(it.lead)}</b>${it.tag ? `<span class="tg">${esc(it.tag)}</span>` : ""}</div>${it.text ? `<div class="t">${it.text}</div>` : ""}${row}</div>`;
 }
 /** v0.0.517 (Lucas: the mockup foundry/mockups/hide-hud, layout A): the Hiding entry: each creature's mark, its name, its state as the button
  *  (a click flips Hidden and Unsensed), a remove; then Add against the creatures targeted and not listed. h = hide.mjs hidingModel. */
@@ -157,11 +160,13 @@ export function hidingHtml(h) {
   if (!h) return "";
   const word = s => (s === "hidden" ? "Hidden" : "Unsensed");
   const rows = h.rows.map(r => `<div class="h3-hd-r">${HIDE_MARK[r.state]}<span class="nm">${esc(r.name)}</span><button type="button" class="hb-btn q h3-hd-st" data-hud="hideflip" data-obs="${esc(r.id)}" data-state="${esc(r.state)}" aria-label="${esc(`${word(r.state)} to ${r.name}: switch to ${word(r.state === "hidden" ? "unsensed" : "hidden")}`)}">${word(r.state)}</button><button type="button" class="h3-hd-x" data-hud="hiderm" data-obs="${esc(r.id)}" aria-label="${esc(`Remove ${r.name}`)}">\u2715</button></div>`).join("");
-  const add = h.add ? `<div class="h3-hd-add"><div class="t">Add against <b>${esc(h.add.label)}</b>:</div><div class="bs">${["unsensed", "hidden"].map(s => `<button type="button" class="hb-btn q" data-hud="hideadd" data-ids="${esc(h.add.ids.join(","))}" data-state="${s}">${HIDE_MARK[s]}${word(s)}</button>`).join("")}</div></div>`
-    : `<div class="h3-hd-hint">${h.rows.length ? "To add a creature, target one that isn't listed." : "Not hiding from anyone. To add a creature, target it."}</div>`;
+  // v0.0.529 (the sit-fixed mockup, rule A): the Add line is always two lines, above the list: its sentence (or the hint), then Unsensed and Hidden,
+  // off while no creature that isn't listed is targeted (they came and went under the list)
+  const add = `<div class="h3-hd-add"><div class="t">${h.add ? `Add against <b>${esc(h.add.label)}</b>:` : h.rows.length ? "To add a creature, target one that isn't listed." : "Not hiding from anyone. To add a creature, target it."}</div>`
+    + `<div class="bs">${["unsensed", "hidden"].map(s => `<button type="button" class="hb-btn q" data-hud="hideadd"${h.add ? ` data-ids="${esc(h.add.ids.join(","))}"` : " disabled"} data-state="${s}">${HIDE_MARK[s]}${word(s)}</button>`).join("")}</div></div>`;
   // v0.0.518 (Lucas: "Allow the player to click on Hiding to condense it to just the title"): the title folds and unfolds it (per viewer)
   const head = `<button type="button" class="h h3-hd-fold" data-hud="hidefold" aria-expanded="${h.folded ? "false" : "true"}"><b>Hiding</b><span class="tg">from Hide${h.rows.length ? ` \u00b7 ${h.rows.length}` : ""}</span><i class="fa-solid fa-chevron-${h.folded ? "right" : "down"}" aria-hidden="true"></i></button>`;
-  return `<div class="h3-si h3-hd${h.folded ? " folded" : ""}">${head}${h.folded ? "" : `${rows}${add}`}</div>`;
+  return `<div class="h3-si h3-hd${h.folded ? " folded" : ""}">${head}${h.folded ? "" : `${add}${rows}`}</div>`;
 }
 /**
  * D3 / D7: the right column. s = { rx, grants, cancels, prone: sitItem | null, tiles: [hand tile] | null, view }
@@ -176,7 +181,15 @@ export function rightHtml(s = {}) {
   const chargeHtml = s.charge ? sitItemHtml(s.charge) : "";   // v0.0.514: the Charge's Basic Attack (1A), urgent (it pulses)
   const otherRxHtml = otherRxs.map(r => `<div class="h3-rxjump"><span class="rj-txt"><b>${esc(r.who)}</b> \u00b7 ${esc(r.name)} (${esc(r.cost)})</span><button type="button" class="hb-btn" data-hud="pickactor" data-actor="${esc(r.actorUuid)}">Select</button></div>`).join("");
   const avail = [];
-  if ((s.grants ?? []).length) avail.push(`<div class="hb-gr"><div class="hb-grh">Granted${(s.cancels ?? []).length ? ` by ${esc(s.cancels.map(x => x.source).join(", "))}` : ""}${(s.cancels ?? []).map(x => `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}">Cancel</button>`).join("")}</div>${s.grants.map(lineHtml).join("")}</div>`);
+  // v0.0.529 (the sit-fixed mockup, rule A): one line a source, each with its own Cancel at its right end, the source's name cut with an ellipsis
+  // (it was one line "Granted by A, B" and then two Cancel buttons that did not say which)
+  if ((s.grants ?? []).length) {
+    const cancels = s.cancels ?? [], mine = new Set(cancels.map(x => x.effect));
+    const group = (head, lines, x) => `<div class="hb-gr"><div class="hb-grh"><span class="src">${head}</span>${x ? `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}">Cancel</button>` : ""}</div>${lines.map(lineHtml).join("")}</div>`;
+    for (const x of cancels) { const lines = s.grants.filter(l => l.grant?.effect === x.effect); if (lines.length) avail.push(group(`Granted by ${esc(x.source)}`, lines, x)); }
+    const rest = s.grants.filter(l => !mine.has(l.grant?.effect));
+    if (rest.length) avail.push(group("Granted", rest, null));
+  }
   // v0.0.463 (Lucas: "prone should be low priority, moving under new situational effects"): Prone's Stand / Crawl goes after the asks (below)
   if (s.hiding) avail.push(hidingHtml(s.hiding));   // v0.0.517: Hiding (not urgent), before Prone
   if (s.prone) avail.push(sitItemHtml(s.prone));
@@ -192,9 +205,10 @@ export function rightHtml(s = {}) {
   const tab = (k, label) => `<button type="button" class="h3-rt h3-rt-${k}" role="tab" data-hud="rtab" data-rtab="${k}" aria-selected="${k === view}">${label}</button>`;
   const sitLbl = `Situational<span class="h3-rcnt">${count || ""}</span>`;
   const tabs = `<div class="h3-rtabs" role="tablist">${tab("sit", sitLbl)}${tab("main", hands ? "Hands" : "Macros")}</div>`;
-  // the pick bar, a Forced Movement, a Setup's movement and End movement ask in .hb-ask (pickbar.mjs, move.mjs, setup.mjs: hudAskSlot)
+  // the pick bar, a Forced Movement, a Setup's movement and End movement ask in .hb-ask (pickbar.mjs, move.mjs, setup.mjs: hudAskSlot); v0.0.529 (the
+  // sit-fixed mockup, rule A 5 and 6): it is the tab's first thing, so a Reaction that arrives meanwhile goes under the question and can't push it
   const availHtml = avail.length ? `<div class="h3-sit-avail">${avail.join("")}</div>` : "";
-  return `<div class="h3-side${has ? " has-sit" : ""}${urg ? " has-urg" : ""}" data-rtab="${view}">${tabs}<div class="h3-pane h3-p-sit"><div class="h3-sit${has ? " on" : ""}${urg ? " urg" : ""}"><div class="h3-sit-urg">${rxHtml}${chargeHtml}${otherRxHtml}<div class="hb-ask"></div></div>${availHtml}</div></div>`
+  return `<div class="h3-side${has ? " has-sit" : ""}${urg ? " has-urg" : ""}" data-rtab="${view}">${tabs}<div class="h3-pane h3-p-sit"><div class="h3-sit${has ? " on" : ""}${urg ? " urg" : ""}"><div class="hb-ask"></div><div class="h3-sit-urg">${rxHtml}${chargeHtml}${otherRxHtml}</div>${availHtml}</div></div>`
     + `<div class="h3-pane h3-p-main">${hands}<div class="h3-hot"></div></div></div>`;
 }
 /** D2: the identity column. m: the bar's model (tokenBarHtml). */

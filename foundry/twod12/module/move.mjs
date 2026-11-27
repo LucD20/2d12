@@ -27,6 +27,7 @@ import { allEffects } from "./passives.mjs";
 import { moveLimitBreaks } from "./fxrules.mjs";
 import { areaDifficult } from "./areafx.mjs";
 import { ignoredBy } from "./automation.mjs";
+import { askHtml, tiesHtml, setTies, chargeButtons, splitLead } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
 /** The Movement limits of a creature that work now, each with its origin's token: [{ dir, name, token }] (Frightened: can't move closer to its source). */
 // v0.0.361 (PACK PERF, D34): a drag measures many steps in a row, each asking for the mover's limits (8 of its 8.4 µs a step went to allEffects):
 // they are read once and kept 200 ms. The source's token is kept, not its square, so a source that moves is still measured where it stands.
@@ -685,13 +686,18 @@ function freeMoveBar(c, kind, text) {
   freeBar?.remove();
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-setupbar twod12-freebar";
-  bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-go lb-undo" style="display:none"><i class="fa-solid fa-rotate-left"></i> Undo move</button><button type="button" class="lb-give lb-end">End movement</button><span class="lb-count"></span><span class="lb-keys"><kbd>Ctrl+Z</kbd> Undo · <kbd>Esc</kbd> End movement</span>`;
+  // v0.0.529 (the sit-fixed mockup, rule A): the frame: the name, the sentence, the squares left (a line of its own), the keys, then Advance instead
+  // (its two wordings one slot), Undo move (off before a move, never hidden) and End movement at the right end
+  bar.innerHTML = askHtml({ icon: kind === "evade" ? "fa-wind" : "fa-person-running", head: esc(c.name), text: esc(text), lines: 2, stat: "", statCls: "cnt lb-count",
+    keys: "<kbd>Ctrl+Z</kbd> Undo \u00b7 <kbd>Esc</kbd> End movement",
+    left: `${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-go lb-undo" disabled><i class="fa-solid fa-rotate-left"></i> Undo move</button>`,
+    give: '<button type="button" class="lb-give lb-end">End movement</button>' });
   // v0.0.441 (D7): End movement asks in the HUD's Situational section too (the floating bar only with no HUD)
   const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");
   if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
   // v0.0.461 (the map notes' redesign, b / c / h): the squares left, big, kept up to date; Escape ends the movement (it did nothing)
   const leftOf = cb => num(cb?.getFlag(F, "freeMove")) + num(cb?.getFlag(F, "evadeMove")) + (barOpts.drag ? num(cb?.getFlag(F, "moveLeft")) : 0);
-  const refreshUndo = () => { const ub = bar.querySelector(".lb-undo"); if (ub) ub.style.display = canUndoMove(c.tokenId) ? "" : "none"; };
+  const refreshUndo = () => { const ub = bar.querySelector(".lb-undo"); if (ub) ub.disabled = !canUndoMove(c.tokenId); };   // v0.0.529: off, in its place
   const count = () => { const cb = game.combat?.combatants.get(c.id), left = leftOf(cb), el = bar.querySelector(".lb-count"); if (el) el.innerHTML = `<b>${left}</b> square${left === 1 ? "" : "s"} left`; refreshUndo(); };
   count();
   const turn = `${game.combat?.round}:${game.combat?.turn}`;
@@ -711,12 +717,12 @@ function freeMoveBar(c, kind, text) {
       bar.dataset.evadeN = String(num(game.combat?.combatants.get(c.id)?.getFlag(F, "evadeMove")));
       (barOpts.onSwap ? barOpts.onSwap(true) : evadeAsAdvance(c.id)).catch?.(() => {});
       if (b) b.innerHTML = '<i class="fa-solid fa-wind"></i> Evade instead';
-      if (t) t.innerHTML = `<b>${esc(c.name)}</b>: the movement is an Advance now (it triggers reactions). Drag your token.`;
+      if (t) t.innerHTML = "the movement is an Advance now (it triggers reactions). Drag your token.";
     } else {
       const n = num(bar.dataset.evadeN);
       (barOpts.onSwap ? barOpts.onSwap(false, n) : advanceAsEvade(c.id, n)).catch?.(() => {});
       if (b) b.innerHTML = '<i class="fa-solid fa-person-running"></i> Advance instead';
-      if (t) t.innerHTML = `<b>${esc(c.name)}</b>: ${esc(text)}`;
+      if (t) t.innerHTML = esc(text);
     }
     bar.dataset.mode = toAdvance ? "advance" : "evade";
   };
@@ -968,11 +974,17 @@ function forcedBar(mode, target, origin, N, onEnd) {
     slid: "in any direction: click the squares of its path one by one, then the last one again (Enter)", reposition: "within the area: click its new square" }[mode] ?? "";
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-setupbar twod12-forcedbar";
-  bar.innerHTML = `<i class="fa-solid ${mode === "pull" ? "fa-hand-back-fist" : "fa-hand"} lb-ic"></i><span class="lb-text"><b>${esc(target.name)}</b> is ${label} up to ${N} square${N === 1 ? "" : "s"} ${how}. <small>Forced Movement ignores Difficult Terrain and triggers no Reactions; a wall or a creature in the way stops it (a Collision).</small><span class="lb-now"></span></span>`
-    + '<button type="button" class="lb-go lb-book"><i class="fa-solid fa-book-open"></i> Rules</button>'
-    + (mode === "slid" || mode === "reposition" ? '<button type="button" class="lb-go lb-back"><i class="fa-solid fa-rotate-left"></i> Take back a step</button>' : "")
-    + '<button type="button" class="lb-give lb-end">Don\'t move it</button>'
-    + `<span class="lb-keys">${mode === "slid" || mode === "reposition" ? "<kbd>Enter</kbd> Move \u00b7 <kbd>Backspace</kbd> Take back \u00b7 " : ""}<kbd>Esc</kbd> Don't move it</span>`;   // v0.0.461 (the map notes, f / h)
+  // v0.0.529 (the sit-fixed mockup, rule A): the title "X is Pushed up to N squares", the text the rest (the rule's small reminder is left out in the
+  // Situational tab: system.css; the Rules button opens it), the result under the mouse two lines of its own, the keys, then Rules and Take back
+  // a step (off until a step was clicked) at the left, Don't move it at the right end
+  const steps = mode === "slid" || mode === "reposition";
+  bar.innerHTML = askHtml({ icon: mode === "pull" ? "fa-hand-back-fist" : "fa-hand", head: `${esc(target.name)} <span class="lb-pl">is ${label} up to ${N} square${N === 1 ? "" : "s"}</span>`,
+    text: `${how}. <small>Forced Movement ignores Difficult Terrain and triggers no Reactions; a wall or a creature in the way stops it (a Collision).</small>`, lines: 2,
+    stat: "", statCls: "res lb-now",
+    keys: `${steps ? "<kbd>Enter</kbd> Move \u00b7 <kbd>Backspace</kbd> Take back \u00b7 " : ""}<kbd>Esc</kbd> Don't move it`,   // v0.0.461 (the map notes, f / h)
+    left: '<button type="button" class="lb-go lb-book"><i class="fa-solid fa-book-open"></i> Rules</button>'
+      + (steps ? '<button type="button" class="lb-go lb-back" disabled><i class="fa-solid fa-rotate-left"></i> Take back a step</button>' : ""),
+    give: '<button type="button" class="lb-give lb-end">Don\'t move it</button>' });
   // v0.0.404 (Lucas: "Put this in the HUD area as well, that area will become the area for stuff like this"): in the HUD's side panel when a
   // creature's bar is shown (else its middle), as the pick bar; at the bottom with no HUD
   let hud = null, side = false;
@@ -982,7 +994,7 @@ function forcedBar(mode, target, origin, N, onEnd) {
   bar.querySelector(".lb-book").addEventListener("click", ev => { ev.preventDefault(); import("./inline.mjs").then(m => m.openBook({ ref: mode === "pull" ? "Pulled" : mode === "slid" ? "Slid" : mode === "push" ? "Pushed" : "Forced Movement", doc: "Chapter 3, Forced Movement" })).catch(() => {}); });
   bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); onEnd?.(); });
   const now = bar.querySelector(".lb-now");
-  return { set: t => { if (now) now.innerHTML = t ? ` <b class="lb-res">${esc(t)}</b>` : ""; }, close: () => { bar.remove(); try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ } }, onBack: f => bar.querySelector(".lb-back")?.addEventListener("click", ev => { ev.preventDefault(); f(); }) };
+  return { set: t => { if (now) now.innerHTML = t ? `<b class="lb-res">${esc(t)}</b>` : ""; }, canBack: on => { const b = bar.querySelector(".lb-back"); if (b) b.disabled = !on; }, close: () => { bar.remove(); try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ } }, onBack: f => bar.querySelector(".lb-back")?.addEventListener("click", ev => { ev.preventDefault(); f(); }) };
 }
 
 /**
@@ -1293,14 +1305,14 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
       resolve(v);
     };
     const confirm = () => (path.length > 1 ? finish({ path: [...path], result: analyze(path) }) : finish({ ended: true }));
-    const takeBack = () => { if (path.length > 1) { path.pop(); draw(); fbar?.set(text(analyze(path))); } };   // v0.0.461 (choice 6A): Backspace and the button
+    const takeBack = () => { if (path.length > 1) { path.pop(); draw(); fbar?.set(text(analyze(path))); } fbar?.canBack?.(path.length > 1); };   // v0.0.529: Take back a step off with no step   // v0.0.461 (choice 6A): Backspace and the button
     const down = ev => {
       if (ev.button !== 0) return;   // v0.0.461 (choice 6A): a right-click is Foundry's (it pans the map); Backspace takes a square back
       const sh = posOf(ev), last = path[path.length - 1];
       if (sh.di === last.di && sh.dj === last.dj) return confirm();
       const bad = why(sh);
       if (bad) return fbar?.set(`Not here: ${bad}.`);   // v0.0.461: in the HUD, not a notification
-      path.push(sh); move(ev);
+      path.push(sh); fbar?.canBack?.(path.length > 1); move(ev);
     };
     const keys = ev => { if (/input|textarea|select/i.test(ev.target?.tagName ?? "")) return; if (ev.key === "Escape") finish({ ended: true }); else if (ev.key === "Enter") confirm(); else if (ev.key === "Backspace") { ev.preventDefault(); takeBack(); } };   // v0.0.461: Escape is "Don't move it" (5A)
     fbar.onBack?.(takeBack);
@@ -1487,17 +1499,20 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
   const heldIds = (canvas.tokens?.controlled ?? []).map(t => t.id);
   const giveBack = () => { for (const id of heldIds) { const t = canvas.tokens?.get?.(id); if (t && !t.destroyed && !t.controlled) t.control?.({ releaseOthers: false }); } };
   try {
-  while (list.length) {
+  // v0.0.529 (the sit-fixed mockup, rule A): a creature already moved keeps its square in the row, shown off (it left the row and the others slid
+  // left, under the mouse); the bar asks again until every one is moved or Done
+  const all = [...list], movedIds = new Set();
+  while (all.some(t => !movedIds.has(t.id))) {
     // v0.0.461 (the map notes, g): one end button ("Done: the rest stay"; Done and Stop did the same); how many are moved
     const pick = await pickBar({ icon: "fa-hand", done: "Done: the rest stay", cancel: false,
-      text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature (here or its token) to move it.${moved.length ? ` <small>${moved.length} of ${moved.length + list.length} moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
-      options: list.map((t, n) => { const d = distanceFor(cfg, ctx, t, N); return { id: String(n), label: d === N ? t.name : `${t.name} (${label} ${d})`, token: t, img: t.document?.texture?.src || t.actor?.img || "" }; }) });   // v0.0.397: a square with its picture   // v0.0.248: its token on the map can be clicked too; v0.0.249: its own distance by Tier
+      text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature (here or its token) to move it.${moved.length ? ` <small>${moved.length} of ${all.length} moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
+      options: all.map((t, n) => { const d = distanceFor(cfg, ctx, t, N); return { id: String(n), label: d === N ? t.name : `${t.name} (${label} ${d})`, token: t, img: t.document?.texture?.src || t.actor?.img || "", off: movedIds.has(t.id) }; }) });   // v0.0.397: a square with its picture   // v0.0.248: its token on the map can be clicked too; v0.0.249: its own distance by Tier
     if (pick == null || pick === "done") break;
-    const t = list[Number(pick)];
-    if (!t) break;
+    const t = all[Number(pick)];
+    if (!t || movedIds.has(t.id)) break;
     await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach: !!cfg.withinReach, by, msg: ctx?.message ?? null });
     moved.push(t.name);
-    list = list.filter(x => x.id !== t.id);
+    movedIds.add(t.id);
     giveBack();
   }
   } finally { try { giveBack(); setTimeout(giveBack, 300); } catch (e) { /* gone */ } }
@@ -2385,7 +2400,11 @@ export function openChargePicker(c, token) {
   // v0.0.461 (the map notes' redesign, e): before a target the bar lists the enemies it can Charge as pictures (as the map marks them); with one,
   // the two real choices; a last line names the keys. Give up says what it gives back.
   const back = Math.max(0, num(ch.refund));
-  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-opts lb-cands"></span><span class="lb-side"><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-go">Charge</button><button type="button" class="lb-give">Give up${back ? ` \u00b7 ${back} AP back` : ""}</button><span class="lb-keys"></span>`;
+  // v0.0.529 (the sit-fixed mockup, rule A): the frame: the title and its tag, three lines of text, the pictures of the enemies it can Charge (kept
+  // after one is picked, that one marked) with the Ties at the right end of their row (off with no tie), then Charge (off with no target or too
+  // close; Charge / Charge anyway one slot) and Give up at the right end. The keys' line is left out in the Situational tab (no room: system.css).
+  bar.innerHTML = askHtml({ icon: "fa-person-running-fast", head: "Target the enemy to Charge", text: "", lines: 3, opts: `<span class="lb-cands"></span><span class="lb-sp"></span>${tiesHtml(false)}`, optsCls: "lb-chg", keys: "",
+    left: '<button type="button" class="lb-go lb-w-go" disabled>Charge</button>', give: `<button type="button" class="lb-give">Give up${back ? ` \u00b7 ${back} AP back` : ""}</button>` });
   // v0.0.453 (Lucas, playtest 6: "Charge should show in the situational section of the hud"): it asks there, as End movement and a Setup do
   let hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null;
   const inSide = !!slot?.classList?.contains("hb-ask");
@@ -2454,8 +2473,9 @@ export function openChargePicker(c, token) {
   const gsz = () => canvas.grid?.size ?? 100;
   const boxOf = t => { const cs = tokenCells(t), gs = gsz(), i0 = Math.min(...cs.map(c => c.i)), j0 = Math.min(...cs.map(c => c.j)), i1 = Math.max(...cs.map(c => c.i)), j1 = Math.max(...cs.map(c => c.j)); const w = (j1 - j0 + 1) * gs, h = (i1 - i0 + 1) * gs; return { x: j0 * gs, y: i0 * gs, w, h, c: { x: j0 * gs + w / 2, y: i0 * gs + h / 2 } }; };
   const pickEl = bar.querySelector(".lb-cands");
+  // v0.0.529 (rule A): the pictures stay after a target is picked; the one picked is marked (on)
   const drawCands = () => {
-    pickEl.innerHTML = target ? "" : cands.filter(x => x.ok).map(x => `<button type="button" class="lb-opt sq" data-cand="${esc(x.t.id)}" aria-label="${esc(x.t.name)}"><img src="${esc(x.t.document?.texture?.src ?? "")}" alt=""><b class="lb-num">${x.n}</b></button>`).join("");
+    pickEl.innerHTML = cands.filter(x => x.ok).map(x => `<button type="button" class="lb-opt sq${target?.id === x.t.id ? " on" : ""}" data-cand="${esc(x.t.id)}" aria-label="${esc(x.t.name)}"${target?.id === x.t.id ? ' aria-pressed="true"' : ""}><img src="${esc(x.t.document?.texture?.src ?? "")}" alt=""><b class="lb-num">${x.n}</b></button>`).join("");
   };
   pickEl.addEventListener("click", async ev => { const b = ev.target.closest("[data-cand]"); if (!b) return; ev.preventDefault(); ev.stopPropagation(); const t = canvas.tokens?.get?.(b.dataset.cand); if (t) await setTarget(t); });
   const draw = () => {
@@ -2464,21 +2484,24 @@ export function openChargePicker(c, token) {
     const gs = gsz(), fs = Math.max(13, Math.round(gs * 0.18));
     // the limit: a faint pale edge (gold is for a choice)
     outlineCells(gfx, limit, { color: MK.INK, width: 2, alpha: 0.7 });   // v0.0.466 (Lucas: "very very faint"): stronger
-    bar.querySelector(".lb-text").innerHTML = text();   // v0.0.421 (the audit): no title (the tooltip review)
+    // v0.0.529 (rule A): the lead on the title line, the rest the text
+    const parts = splitLead(text()), hd = bar.querySelector(".lb-head");
+    if (hd) hd.innerHTML = `<b>${parts.head}</b>${parts.tag ? ` <span class="lb-tag">${parts.tag}</span>` : ""}`;
+    bar.querySelector(".lb-text").innerHTML = parts.text;   // v0.0.421 (the audit): no title (the tooltip review)
     drawCands();
     const keys = bar.querySelector(".lb-keys");
-    // v0.0.219 (Lucas): the bar keeps one size; the Ties buttons keep their place (hidden, not removed) so Give up never moves.
-    const sb = bar.querySelector(".lb-side"), tie = !!cur?.path?.ties;
-    sb.hidden = false; sb.style.visibility = tie ? "visible" : "hidden";
-    sb.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
+    // v0.0.219 (Lucas): the bar keeps one size; the Ties buttons keep their place so Give up never moves (v0.0.529: off with no tie, rule A)
+    const tie = !!cur?.path?.ties;
+    setTies(bar.querySelector(".lb-ties"), tie, side);
     const go = bar.querySelector(".lb-go"), give = bar.querySelector(".lb-give");
+    const setGo = st => { const b = chargeButtons(st); go.disabled = b.goOff; go.textContent = b.goLabel; go.classList.toggle("fill", b.goFill); give.classList.toggle("fill", b.giveFill); };
     if (!target) {
       for (const x of cands) {
         const b = boxOf(x.t);
         if (x.ok) { fillCells(gfx, tokenCells(x.t), MK.GOLD, 0.22); MK.attentionRing(marks, b.c, Math.max(b.w, b.h) * 0.62); const pin = MK.numberPin(x.n, { fs: Math.max(12, Math.round(gs * 0.16)) }); pin.position.set(b.c.x + Math.max(b.w, b.h) * 0.46, b.c.y - Math.max(b.w, b.h) * 0.46); marks.addChild(pin); }
         else { const pl = MK.plate([x.why], { fs: Math.round(fs * 0.85), color: 0xb3a68e }); pl.position.set(b.c.x, b.y - 4); marks.addChild(pl); }
       }
-      go.hidden = true; give.classList.add("fill"); go.classList.remove("fill");
+      setGo({ target: false });   // v0.0.529: Charge off, in its place (it was hidden)
       keys.innerHTML = "<kbd>Esc</kbd> Give up";
       return;
     }
@@ -2504,13 +2527,12 @@ export function openChargePicker(c, token) {
       const lines = short ? ["Too close", `a Charge moves at least ${ch.min}`] : blocked ? [`Stops after ${cur.stopSq}`, who ? `${target.name} in ${RW}` : `${target.name} not in ${RW}: disrupted`] : [`${r.sq} squares \u00b7 in ${RW}`, `then Basic Attack (1A) on ${target.name}`];
       const pl = MK.plate(lines, { fs, warn: blocked || short }); pl.position.set(p.x, p.y - (Math.max(1, Math.round(doc.height)) * gs) / 2 - 4); marks.addChild(pl);
     }
-    go.hidden = short; go.textContent = blocked ? "Charge anyway" : "Charge";
-    go.classList.toggle("fill", !blocked); give.classList.toggle("fill", blocked);
+    setGo({ target: true, short, blocked });   // v0.0.529: off when too close (it was hidden), Charge / Charge anyway one slot
     keys.innerHTML = short ? "<kbd>Esc</kbd> Give up \u00b7 another enemy: click it" : `<kbd>Enter</kbd> ${blocked ? "Charge anyway" : "Charge"} \u00b7 <kbd>Esc</kbd> Give up`;
   };
   const setTarget = async t => { target = t; try { await c.setFlag(F, "charge", { ...ch, targetId: t.id }); ch.targetId = t.id; } catch (e) { /* the flag is only a record */ } cur = computeTarget(); draw(); };
   const flip = () => { side = side === "left" ? "right" : "left"; if (target) cur = computeTarget(); draw(); };
-  bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
+  bar.querySelectorAll(".lb-ties button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));   // v0.0.529: the Ties pair (sitframe.mjs tiesHtml)
   bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); close(true); });
   // v0.0.343 (Lucas, playtest 4): "Charge!" next to Give up: the line shown (toward the target, or the last square pointed at) goes, as a confirmed click
   bar.querySelector(".lb-go").addEventListener("click", async ev => { ev.preventDefault(); ev.stopPropagation(); await confirm(); });   // v0.0.461: Charge (or Charge anyway)

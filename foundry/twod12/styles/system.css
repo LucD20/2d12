@@ -5775,3 +5775,103 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-hd .h3-hd-fold { display: flex; align-items: baseline; gap: 6px; width: 100%; background: none; border: 0; padding: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 .twod12-hud .h3-hd .h3-hd-fold .fa-solid { margin-left: auto; font-size: 10px; color: var(--hud-mute, #b3a68e); }
 .twod12-hud .h3-hd .h3-hd-fold:focus-visible { outline: 1px solid var(--hud-line); outline-offset: 2px; }
+
+/* ==== v0.0.529 (Lucas, 2026-11-27: "use mockup A"; foundry/mockups/sit-fixed, rule A): the Situational tab's buttons never move. Every question is
+   one frame of fixed bands (sitframe.mjs askHtml): a title line, a text box of a fixed number of lines (cut, never grown), what changes on lines of
+   its own, the options, the keys, then one row of buttons whose way out is at its right end. A question takes the tab's whole height and is its
+   first thing, so the way out is the HUD's bottom right corner. A button that can only sometimes be used is shown off in its place. The list
+   entries (a Reaction, Granted, Hiding, Prone) keep one title line and one row of buttons. Replaces, in the tab, the wrapping row of v0.0.456 /
+   v0.0.460 / v0.0.461. ==== */
+/* the tab: its scrollbar's place always kept; a size container, so a question can take exactly its height */
+.twod12-hud .h3-p-sit .h3-sit { scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: var(--hud-hair) transparent; container-type: size; padding-right: 3px; }
+.twod12-hud .h3-sit:has(> .hb-ask > .twod12-linebar) { padding-top: 2px; padding-bottom: 2px; }
+.twod12-hud .h3-sit > .hb-ask { flex: none; display: flex; flex-direction: column; gap: 5px; }
+.twod12-hud .h3-sit > .hb-ask:has(> *) ~ .h3-sit-avail { border-top: 1px solid var(--hud-hair); padding-top: 5px; }
+/* a question: title 17 px | text | status | options | keys | buttons, the last row */
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud { flex: none; height: 100cqh; min-width: 0; display: flex !important; flex-direction: column; flex-wrap: nowrap !important; align-items: stretch; gap: 2px !important; padding: 0 !important; font-size: .78rem; line-height: 15px; color: var(--hud-ink); }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-head { flex: none; height: 17px; line-height: 17px; display: flex; align-items: baseline; gap: 7px; white-space: nowrap; overflow: hidden; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-head > b { font-size: .88rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-head .lb-pl { font-weight: 400; font-size: .81rem; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-head > .lb-tag { flex: none; margin: 0; color: var(--hud-mute); font-size: .75rem; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-text { flex: 0 1 auto !important; height: calc(var(--n, 2) * 15px); min-height: 0; margin: 0 !important; line-height: 15px; white-space: normal; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--n, 2); }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-text small { font-size: .72rem; color: var(--hud-mute); }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-text .lb-tag { margin-left: 0; color: var(--hud-mute); }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.twod12-forcedbar.in-hud > .lb-text small { display: none; }   /* the rule's reminder: the Rules button */
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-stat { flex: none; height: 15px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--hud-mute); font-size: inherit; margin: 0; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-stat.two { height: 30px; white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-stat.lb-warn { color: var(--s-bane, #f3a79e); }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-stat.res { height: 26px; line-height: 13px; color: var(--hud-ink); white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-stat.res b { font-weight: 700; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-stat.cnt { height: 20px; line-height: 20px; color: var(--hud-ink); }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-stat.cnt b { font-size: 17px; font-weight: 700; margin-right: 2px; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-stat .lb-left { display: inline; margin: 0; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-stat .lb-left b { font-size: 17px; }
+/* the options: their own row (sized when the bar opens: they never change while it is up), pictures 27 px from the left */
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts { flex: none !important; min-height: 27px; display: flex !important; flex-wrap: wrap !important; align-items: center; align-content: center; gap: 4px !important; overflow: hidden; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts .lb-opt.sq { box-sizing: border-box !important; width: 27px !important; height: 27px !important; max-width: 27px !important; min-width: 0 !important; position: relative; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts .lb-opt.sq img { display: block; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts .lb-opt.sq .lb-num { min-width: 12px; height: 12px; font: 700 9.5px/12px "Source Sans 3", sans-serif; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts .lb-opt.sq.on::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 2px var(--s-gold); background: color-mix(in srgb, var(--s-gold) 22%, transparent); pointer-events: none; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts .lb-opt.sq:hover, .twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts .lb-opt.sq.hover { outline: 2px solid var(--hud-ink); outline-offset: -1px; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts .lb-opt.sq[disabled] { border-color: var(--hud-hair) !important; opacity: .5; cursor: default; outline: 0; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts .lb-opt.sq[disabled] .lb-num { background: var(--hud-hair); color: var(--hud-mute); }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts > .lb-cands { flex: none; display: flex; flex-wrap: nowrap; gap: 4px; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud .lb-sp { flex: 1 1 0; min-width: 0; }
+/* the keys' line, then the buttons: the last row (the band above takes what is left) */
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-keys { flex: none !important; display: block; height: 15px; line-height: 15px; margin: 0 !important; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-keys kbd { line-height: 11px; vertical-align: 1px; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.twod12-chargebar.in-hud > .lb-keys { display: none; }   /* the Charge: no room for the keys */
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > :is(.lb-head, .lb-text, .lb-stat) + :is(.lb-opts, .lb-keys, .lb-acts) { margin-top: auto !important; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-acts { flex: none; min-height: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 3px 5px; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-acts > .lb-sp { display: none; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-acts > .lb-give { margin-left: auto !important; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud :is(.lb-acts, .lb-opts) button:not(.sq) { padding: 0 7px !important; }
+/* two wordings of one button, one slot of one width */
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud .lb-acts .lb-adv { width: 100px !important; justify-content: center; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud .lb-acts .lb-w-go { width: 96px !important; justify-content: center; }
+/* the Ties (the Line, the Charge): always there, off with no tie; the Tab key is in the keys' line */
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud .lb-ties { flex: none; display: inline-flex !important; flex-wrap: nowrap !important; align-items: center; gap: 6px; visibility: visible !important; }
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud .lb-ties kbd { display: none; }
+/* a button that can't be used now: in its place, off */
+.twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud :is(.lb-acts, .lb-opts) button[disabled]:not(.sq), .twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud :is(.lb-acts, .lb-opts) button[disabled]:not(.sq):hover { background: none !important; border-color: var(--hud-hair) !important; color: var(--s-faint) !important; cursor: default; }
+/* a list entry: one title line, a Reaction's sentence two lines kept, one row of buttons, the quiet one at its right end */
+.twod12-hud .h3-sit .h3-si { flex: none; min-width: 0; }
+.twod12-hud .h3-sit .h3-si > .h { height: 17px; line-height: 17px; white-space: nowrap; overflow: hidden; }
+.twod12-hud .h3-sit .h3-si > .h > b { min-width: 0; overflow: hidden; text-overflow: ellipsis; } .twod12-hud .h3-sit .h3-si > .h > .tg { flex: none; }
+.twod12-hud .h3-sit .h3-si > .t:has(+ .bs) { height: 30px; line-height: 15px; margin: 1px 0 3px; font-size: .78rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.twod12-hud .h3-sit .h3-si .bs { min-height: 22px; flex-wrap: wrap; align-items: center; gap: 3px 5px; margin-top: 2px; }
+.twod12-hud .h3-sit .h3-si .bs > .h3-sp { display: none; } .twod12-hud .h3-sit .h3-si .bs > .h3-sp + * { margin-left: auto; }
+.twod12-hud .h3-sit .h3-si .bs .hb-btn { padding: 0 7px; }
+.twod12-hud .h3-sit .hb-btn[disabled], .twod12-hud .h3-sit .hb-btn[disabled]:hover { background: none; border-color: var(--hud-hair); color: var(--s-faint); cursor: default; }
+/* Granted: one line a source, its Cancel at the right end */
+.twod12-hud .h3-sit .hb-grh { height: 22px; margin-bottom: 0; }
+.twod12-hud .h3-sit .hb-grh .src { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Hiding: the Add line first, always two lines, then the creatures; the state's button one width */
+.twod12-hud .h3-sit .h3-hd .h3-hd-add { margin: 2px 0 0; padding-bottom: 4px; }
+.twod12-hud .h3-sit .h3-hd .h3-hd-add .t { height: 16px; line-height: 16px; margin: 0; font-size: .78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--hud-mute); }
+.twod12-hud .h3-sit .h3-hd .h3-hd-add .t b { color: var(--hud-ink); }
+.twod12-hud .h3-sit .h3-hd .h3-hd-add .bs { margin-top: 1px; flex-wrap: nowrap; }
+.twod12-hud .h3-sit .h3-hd .h3-hd-add .hb-btn { width: 96px; justify-content: center; }
+.twod12-hud .h3-sit .h3-hd .h3-hd-r { grid-template-columns: 14px minmax(0, 1fr) 78px 18px; height: 25px; padding: 0; }
+.twod12-hud .h3-sit .h3-hd .h3-hd-st { width: 78px; min-width: 0; padding: 0; justify-content: center; color: var(--hud-ink); }
+/* a narrower window (the right column 260 / 220 / 200 px; not drawn in the mockup): the buttons may take a second row (still fixed: they never
+   change while a bar is up), the keys' line and the Ties' word give their room, so the way out stays in the corner (at the narrowest, 200 px,
+   the text of End movement's question gives its room to a third row of buttons) */
+@container (max-width: 260px) {
+  .twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-keys { display: none; }
+  .twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > :is(.lb-head, .lb-text, .lb-stat) + .lb-keys + .lb-acts { margin-top: auto !important; }
+  .twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud .lb-ties .lb-lbl, .twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts > .lb-sp { display: none; }
+  .twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts > .lb-ties { margin-left: auto; }
+}
+@container (max-width: 190px) { .twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts > .lb-ties { gap: 3px; } .twod12-hud .h3-sit .hb-ask > .twod12-linebar.in-hud > .lb-opts > .lb-ties button { padding: 0 4px !important; } }
+/* outside the tab (the HUD's middle, the floating bar: not in the mockup) the bands fall back into the old row, and what the tab shows off is
+   hidden there as before */
+.twod12-linebar:not(.in-side) > .lb-head { flex: none; display: inline-flex; align-items: baseline; gap: 4px; }
+.twod12-linebar:not(.in-side) > .lb-acts { display: contents; }
+.twod12-linebar:not(.in-side) .lb-sp { display: none; }
+.twod12-linebar:not(.in-side) > .lb-keys { order: 9; }
+.twod12-linebar:not(.in-side) > :is(.lb-text, .lb-stat):empty { display: none; }
+.twod12-linebar:not(.in-side) > .lb-opts:has(> .lb-cands) { display: contents; }
+.twod12-linebar.twod12-areabar:not(.in-side) .lb-ties.off { display: none; }
+.twod12-linebar.twod12-chargebar:not(.in-side) .lb-ties.off { visibility: hidden; }
+.twod12-linebar.twod12-chargebar:not(.in-side) .lb-cands:has(.on), .twod12-linebar.twod12-chargebar:not(.in-side) .lb-go[disabled], .twod12-linebar.twod12-freebar:not(.in-side) .lb-undo[disabled] { display: none; }

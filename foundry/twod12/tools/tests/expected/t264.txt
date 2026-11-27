@@ -18,8 +18,8 @@ hover texts left: 32
   module/hudview.mjs: title="${esc(s.why || "")}">${esc(shortLabel(l, s))}</button>`
   module/initview.mjs: data-tooltip="From an effect: ${esc(by)}"` : ""}>${label}</button>`; 
   module/moment.mjs: data-tooltip="${b.back.start && b.back.steps < b.back.total ? `Move ${
-  module/pickbar.mjs: data-tooltip="${esc(x.label)}"><img src="${esc(x.img)}" alt="">${x.num
-  module/pickbar.mjs: data-tooltip="${esc(x.tip)}"` : ""}>${esc(x.label)}</button>`)).join("
+  module/pickbar.mjs: data-tooltip="${esc(x.label)}"${x.off ? " disabled" : ""}><img src="${
+  module/pickbar.mjs: data-tooltip="${esc(x.tip)}"` : ""}${x.off ? " disabled" : ""}>${esc(x
   module/pickwindow.mjs: data-tooltip="${esc(o.tip)}"` : ""}${o.style ? ` style="${esc(o.style)
   module/rolldlg.mjs: data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${e
   module/rolldlg.mjs: data-tooltip="${esc(x.why ?? "")}" class="cant"` : ""}>${esc(x.cost)}<

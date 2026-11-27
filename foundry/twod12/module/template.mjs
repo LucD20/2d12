@@ -12,6 +12,7 @@ import { lineFromSpace, cutLine, inLineHeight } from "./linearea.mjs";
 import { solidTile } from "./corners.mjs";
 import { shapesForCells } from "./regionshape.mjs";
 import * as MK from "./mapmark.mjs";
+import { askHtml, tiesHtml, setTies, areaStat } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
 
 /** The center of a token's whole space. */
 const spaceCenter = tk => { const s = canvas.grid.size, d = tk.document, h = homePos(d); return { x: h.x + (d.width ?? 1) * s / 2, y: h.y + (d.height ?? 1) * s / 2 }; };
@@ -216,10 +217,13 @@ function place(shape, n, { within = 0, user = null } = {}) {
     const isLine = shape === "line", shapeName = isLine ? `Line ${n}` : `${n} ${shape === "burst" ? "Burst" : "Emanation"}`;
     const bar = document.createElement("div");
     bar.className = "twod12-linebar twod12-areabar";
-    bar.innerHTML = `<i class="fa-solid ${isLine ? "fa-arrow-right-long" : "fa-burst"} lb-ic"></i><span class="lb-text"></span><span class="lb-side" hidden><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-give">Cancel</button><span class="lb-keys">${isLine ? "<kbd>Tab</kbd> Flip ties \u00b7 " : ""}<kbd>Esc</kbd> Cancel</span>`;
+    // v0.0.529 (the sit-fixed mockup, rule A: Lucas, 2026-11-27): the frame: the title and its "within", one line of text, the count (two lines of
+    // its own), the keys, then the buttons: a Line's Ties at the left (off with no tie, never hidden), Cancel at the right end
+    bar.innerHTML = askHtml({ icon: isLine ? "fa-arrow-right-long" : "fa-burst", head: `Place ${shapeName}`, tag: within ? `within ${within} sq.` : "", text: "", lines: 1, stat: "", statCls: "two",
+      keys: `${isLine ? "<kbd>Tab</kbd> Flip ties \u00b7 " : ""}<kbd>Esc</kbd> Cancel`, left: isLine ? tiesHtml(false) : "", give: '<button type="button" class="lb-give">Cancel</button>' });
     const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, inSide = !!slot?.classList?.contains("hb-ask");
     if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", inSide); slot.append(bar); hud.hudAsking(true, inSide); } else document.body.append(bar);
-    bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
+    bar.querySelectorAll(".lb-ties button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));   // v0.0.529: the Ties pair (sitframe.mjs tiesHtml)
     bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); done(null); });
     const flip = () => { side = side === "left" ? "right" : "left"; if (lastPos) current = compute(shape, n, lastPos, { user, side }); draw(); };
     // "Within N sq.": the Point of Origin can be at most that far from the creature using the Action (a spot that is too far is shown in red).
@@ -234,18 +238,20 @@ function place(shape, n, { within = 0, user = null } = {}) {
       return areaReach(placed, cand);
     };
     const showBar = (far, hits) => {
-      const b = bar.querySelector(".lb-side"), tie = isLine && !!current?.hasTie;
-      b.hidden = !tie; b.style.display = tie ? "" : "none";
-      b.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
-      const tx = bar.querySelector(".lb-text");
-      if (!current) { tx.innerHTML = `<b>Place ${shapeName}</b>${within ? ` <span class="lb-tag">within ${within} sq.</span>` : ""} Click on the map to place.`; return; }
-      if (far) { tx.innerHTML = `<b>Place ${shapeName}</b> <span class="lb-warn">Too far (${placementDistance(user, current)} sq., max ${within}).</span>`; return; }
+      // v0.0.529 (rule A): only the text and the count change; the Ties keep their place, off with no tie
+      const tie = isLine && !!current?.hasTie;
+      if (isLine) setTies(bar.querySelector(".lb-ties"), tie, side);
+      const tx = bar.querySelector(".lb-text"), stEl = bar.querySelector(".lb-stat");
+      const setStat = o => { const r = areaStat(o); if (stEl) { stEl.textContent = r.stat; stEl.className = `lb-stat ${r.cls}`; } };
+      if (!current) { tx.textContent = "Click on the map to place."; setStat({ placed: false }); return; }
+      if (far) { tx.textContent = ""; setStat({ placed: true, far: true, dist: placementDistance(user, current), within }); return; }
       const od = user?.document?.disposition ?? 1;
       const en = hits.affected.filter(t => t.document?.disposition !== 0 && t.document?.disposition !== od).length;
       const al = hits.affected.filter(t => t.document?.disposition === od).length;
       const parts = [en ? `${en} enem${en === 1 ? "y" : "ies"}` : "", al ? `${al} all${al === 1 ? "y" : "ies"}` : "", hits.blocked.length ? `${hits.blocked.length} blocked (No LoE)` : ""].filter(Boolean);
       const count = parts.length ? parts.join(", ") : `${current.cells.length} square${current.cells.length === 1 ? "" : "s"}`;
-      tx.innerHTML = `<b>Place ${shapeName}</b> <span class="lb-tag">${count}${current.cut ? " · cut by wall" : ""}</span> Click to place.`;
+      tx.textContent = "Click to place.";
+      setStat({ placed: true, count, cut: !!current.cut });
     };
     const draw = () => {
       gfx.clear();

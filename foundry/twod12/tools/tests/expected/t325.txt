@@ -1,0 +1,40 @@
+--- 1. the frame: its bands in one order, the way out last
+every band: icon > lb-head > lb-text > lb-stat > lb-side > lb-keys > lb-acts
+the text's lines: true | the way out after the spacer, the last thing: true
+no title, no status, no options, no keys: lb-text > lb-acts | the row of buttons kept: true
+--- 2. the lead
+{"head":"Judge","tag":"","text":"which creature? Click its token."}
+{"head":"Minions","tag":"3 of the squad left","text":"<span class=\"lb-q\">Which one goes?</span>"}
+{"head":"","tag":"","text":"Who gains <b>Guard 1d8+3</b>?"}
+{"head":"Push 2","tag":"","text":"away from <b>Durgan</b>: click a creature."}
+--- 3. the Ties: always drawn, off with no tie
+no tie: <span class="lb-side lb-ties off"><span class="lb-lbl">Ties</span><button type="button" data-side="left" class="" disabled>Left</button><button type="button" data-side="right" class="" disabled>Right</button><kbd>Tab</kbd></span>
+a tie, right chosen: <span class="lb-side lb-ties"><span class="lb-lbl">Ties</span><button type="button" data-side="left" class="">Left</button><button type="button" data-side="right" class="on">Right</button><kbd>Tab</kbd></span>
+setTies, no tie: {"hidden":false,"display":"","vis":"","off":true,"disabled":[true,true],"on":[false,false]}
+setTies, a tie: {"off":false,"disabled":[false,false],"on":[true,false]}
+--- 4. the area's status line and the Charge's buttons
+{} -> {"stat":"","cls":"two"}
+{"placed":true,"count":"2 enemies, 1 ally","cut":true} -> {"stat":"2 enemies, 1 ally · cut by wall","cls":"two"}
+{"placed":true,"far":true,"dist":12,"within":10} -> {"stat":"Too far (12 sq., max 10).","cls":"two lb-warn"}
+{} -> {"goOff":true,"goLabel":"Charge","goFill":false,"giveFill":true}
+{"target":true} -> {"goOff":false,"goLabel":"Charge","goFill":true,"giveFill":false}
+{"target":true,"blocked":true} -> {"goOff":false,"goLabel":"Charge anyway","goFill":false,"giveFill":true}
+{"target":true,"short":true} -> {"goOff":true,"goLabel":"Charge","goFill":false,"giveFill":false}
+--- 5. the pick bar in the frame
+bands: icon > lb-head > lb-text > lb-side > lb-acts | the moved one in its place, off: true | Done at the left: true
+a question with Cancel: icon > lb-head > lb-text > lb-side > lb-acts | the title: true | Cancel at the right end: true
+--- 6. the right column: the question first, the quiet button last, Granted a line a source, Hiding's Add first
+the ask slot is the tab's first thing: true
+the Reaction: Use, then Pass after the spacer: true
+Granted, one line a source: 2 Granted by Judge -> e1 | Granted by Battle Cry -> e2
+the Charge's Basic Attack: Cancel at the right end: true | Prone has no spacer: true
+Hiding, no target: the Add line first, its buttons off: true | To add a creature, target one that isn't listed.
+Hiding, the Ogre targeted: the same two buttons, on: true | the same place: true
+--- 7. the sources: what rule A shows off is no longer hidden
+the area's Ties: true
+Undo move: true
+Take back a step: true
+the Charge: true
+the Push of several keeps the moved ones: true
+every bar in the frame: template.mjs 1, move.mjs 3, setup.mjs 1, pickbar.mjs 1 | the Setup's squares their own line: true
+the CSS block: the tab a size container with its gutter: true | a question the tab's height: true | one row of buttons, the way out at its right end: true | colors only from the theme's tokens (dark and light; a hex only as a fallback): true

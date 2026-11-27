@@ -2,6 +2,7 @@
 // window: an icon, a text, one button per option, and Done / Cancel. "Who gains the Guard?" and the Push picker use it; any map picker can.
 import { esc } from "./util.mjs";
 import * as MAPMARK from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
+import { askHtml, splitLead } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
 
 /** v0.0.441 (the HUD mockup, R5): a question that already has a "no" answer (Judge's "Not now") shows no third button "Cancel" (Escape still cancels). */
 export const hasNo = o => (o.options ?? []).some(x => /^no$/i.test(String(x.id ?? "")) || /^(no|not now)$/i.test(String(x.label ?? "").trim()));
@@ -11,9 +12,15 @@ export function pickBarHtml(o) {
   // v0.0.476 (Lucas, checklist v0.0.475: the Ice Pillar's bar showed "Here" eight times): an option with mapOnly is picked on the map only (no button)
   const opts = (o.options ?? []).filter(x => !x.mapOnly).map(x => (x.img
     // v0.0.454 (Lucas, playtest 6, D5 "Proposed A"): its token's number in a corner, the name on a hover (asked by Lucas: t264's list)
-    ? `<button type="button" class="lb-opt sq${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}" aria-label="${esc(x.label)}" data-tooltip="${esc(x.label)}"><img src="${esc(x.img)}" alt="">${x.num ? `<b class="lb-num">${esc(x.num)}</b>` : ""}</button>`
-    : `<button type="button" class="lb-opt${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}"${x.tip && x.off ? ` data-tooltip="${esc(x.tip)}"` : ""}>${esc(x.label)}</button>`)).join("");
-  return `<i class="fa-solid ${esc(o.icon ?? "fa-hand-pointer")} lb-ic"></i><span class="lb-text">${o.text ?? ""}</span><span class="lb-side lb-opts">${opts}</span>${o.done ? `<button type="button" class="lb-go" data-id="__done"><i class="fa-solid fa-check"></i> ${esc(o.done)}</button>` : ""}${hasNo(o) || o.cancel === false ? "" : `<button type="button" class="lb-give" data-id="__cancel">${esc(o.cancel ?? "Cancel")}</button>`}`;
+    // v0.0.529 (the sit-fixed mockup, rule A): an option that is off (a creature already moved in a Push of several) keeps its place, shown off
+    ? `<button type="button" class="lb-opt sq${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}" aria-label="${esc(x.label)}" data-tooltip="${esc(x.label)}"${x.off ? " disabled" : ""}><img src="${esc(x.img)}" alt="">${x.num ? `<b class="lb-num">${esc(x.num)}</b>` : ""}</button>`
+    : `<button type="button" class="lb-opt${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}"${x.tip && x.off ? ` data-tooltip="${esc(x.tip)}"` : ""}${x.off ? " disabled" : ""}>${esc(x.label)}</button>`)).join("");
+  // v0.0.529 (rule A): the frame: the lead (the text's first <b>) on the title line, the rest the text, the options a row of their own, then Done at
+  // the left of the last row and Cancel at its right end (a bar with no Cancel keeps the row)
+  const { head, tag, text } = splitLead(o.text ?? "");
+  return askHtml({ icon: esc(o.icon ?? "fa-hand-pointer"), head, tag, text, lines: 3, opts: opts || null,
+    left: o.done ? `<button type="button" class="lb-go" data-id="__done"><i class="fa-solid fa-check"></i> ${esc(o.done)}</button>` : "",
+    give: hasNo(o) || o.cancel === false ? "" : `<button type="button" class="lb-give" data-id="__cancel">${esc(o.cancel ?? "Cancel")}</button>` });
 }
 
 /**
@@ -22,11 +29,11 @@ export function pickBarHtml(o) {
  * v0.0.248 (Lucas): an option with a `token` can be picked by clicking that token on the map too; the candidates are outlined in gold meanwhile.
  */
 export async function pickBar(o) {
-  if (typeof document === "undefined") return o.options?.[0]?.id ?? (o.done ? "done" : null);   // no DOM (the tests): the first option
+  if (typeof document === "undefined") return o.options?.find?.(x => !x.off)?.id ?? (o.done ? "done" : null);   // no DOM (the tests): the first option (v0.0.529: not one shown off)
   let back = async () => {};
   if (o.aside !== false) { try { back = await (await import("./template.mjs")).stepAside(); } catch (e) { /* nothing to minimize */ } }
   // v0.0.280: an option can be a set of squares too (cells: [{ i, j }]), picked by clicking one of them (Move back's squares)
-  const toks = (o.options ?? []).filter(x => x.token || x.cells?.length);
+  const toks = (o.options ?? []).filter(x => (x.token || x.cells?.length) && !x.off);   // v0.0.529: an option shown off is not picked on the map either
   let T = null;
   if (toks.length && globalThis.canvas?.ready) { try { T = await import("./template.mjs"); } catch (e) { T = null; } }
   // v0.0.400 (Lucas: after the first push, the second question floated bare): a click on the map releases the controlled tokens, so the HUD
@@ -138,7 +145,7 @@ export async function pickBar(o) {
     };
     const key = ev => {
       if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); finish(null); }
-      if (ev.key === "Enter" && !/input|textarea/i.test(ev.target?.tagName ?? "")) { ev.preventDefault(); finish(o.done ? "done" : (o.options?.find?.(x => !x.mapOnly)?.id ?? null)); }   // v0.0.476: never a map-only square
+      if (ev.key === "Enter" && !/input|textarea/i.test(ev.target?.tagName ?? "")) { ev.preventDefault(); finish(o.done ? "done" : (o.options?.find?.(x => !x.mapOnly && !x.off)?.id ?? null)); }   // v0.0.476: never a map-only square
     };
     bar.addEventListener("click", ev => {
       const b = ev.target.closest("button[data-id]");

@@ -75,6 +75,34 @@ Expect: Ticked: the orc's sound ripple goes from Kaela's view and her Actions sk
 
 ## The HUD
 
+### sf-area · v0.0.529 · Placing an area: Cancel and the Ties never move
+Do: In a combat, select Sylwen and use Volley: before clicking, move the mouse over the enemies, over empty squares, then farther than its range, and then to the HUD's Cancel. Cancel it. Then select the Ogre Chieftain, use Crack the Ground and move the mouse around the ogre until the Line has a tie (the HUD's Ties Left / Right come on), then away again; click Left and Right; then Cancel. Try it once with a narrower Foundry window too.
+Expect: The question fills the Situational tab: "Place 2 Burst" (or "Place Line 3") and "within N sq." on the first line, then "Click to place.", then its own lines for the count ("2 enemies, 1 ally ...") or "Too far (12 sq., max 10)." in red, the keys' line, then the buttons. Cancel stays in the HUD's bottom right corner the whole time, whatever the count says. For the Line, Ties Left / Right are always at the left of the buttons' row: greyed out with no tie, usable (the side chosen filled) with one; nothing shifts when they come on. In a narrower window the keys' line goes, and Cancel still stays in its corner.
+
+### sf-pick · v0.0.529 · The pick bar: pictures in one row, a creature already pushed keeps its square
+Do: Select Aveline, Judge an enemy, and when the HUD asks "which creature?" look at the tab before answering. Then use Word of Radiance (3 AP) with three or four enemies in the light, and push them one at a time from the HUD's pictures.
+Expect: The Judge's question: the name on the title line, the sentence under it, the creatures' pictures (smaller than before, 27 px) in one row from the left, "Later" in the bottom right corner. The Push: the pictures in one row, "Done: the rest stay" at the left of the last row; after a creature is pushed its picture stays in its place, greyed out (it can't be clicked or picked on the map), so the next creature's picture never slides under the mouse.
+
+### sf-forced · v0.0.529 · Forced Movement: Don't move it and Take back a step stay put
+Do: Select Durgan and Shove the Goblin Sneak (1 AP; on a Tier 2 or 3); move the mouse over several squares, against a wall, then to Don't move it. Then, with Durgan's Bulwark of Faith, Slide a creature: before clicking a square, look at Take back a step; click two squares, take one back, then finish.
+Expect: The title reads "Goblin Sneak is Pushed up to N squares" (N by the Tier), the sentence under it, the result under the mouse on its own two lines ("Pushed 1 ...", "Wall: ..."), the keys' line, then Rules at the left and Don't move it in the bottom right corner, never moving. The rule's small reminder is not in the tab (Rules opens the book). For the Slide, Take back a step is greyed out until a square is clicked, and greyed again when every step is taken back; it never appears or disappears.
+
+### sf-move · v0.0.529 · End movement and a Setup's movement: the buttons never shift
+Do: Select Kaela and use Darting Blade (its Evade): before moving, look at the HUD; drag 1 square, click Undo move, click Advance instead, then Evade instead, then End movement. Then use Strafe: drag Kaela 1 square at a time and watch the squares left, then Cancel the Action (and use it again with Continue: the roll).
+Expect: Darting Blade: "Kaela" on the title line, the sentence, "3 squares left" on its own line (the number big), the keys, then Advance instead, Undo move and End movement in one row. Undo move is greyed out before a move and usable after it, in the same place (End movement no longer jumps when it comes); Advance instead and Evade instead take the same width. Strafe: "N of 3 squares left." on its own line, Continue: the roll at the left, Cancel the Action in the bottom right corner; only the number changes.
+
+### sf-charge · v0.0.529 · Charge: the enemies' pictures stay, Give up stays in the corner
+Do: In a combat, select Durgan and use Charge with no target: look at the HUD. Pick the Goblin Sneak from its picture, then another enemy, then one that is too close; move the target so the path has a tie (Ties Left / Right); then Give up. Charge again and use it; then use the Basic Attack (1A) from the HUD (and once Cancel it).
+Expect: The enemies Durgan can Charge are pictures in one row, Ties Left / Right at the right end of that row (greyed out with no tie), then Charge (greyed out) and "Give up · 2 AP back" in the bottom right corner. Once a target is picked the pictures stay, the one picked marked; Charge becomes usable (filled), "Charge anyway" when blocked takes the same place and width, greyed out again when too close. No button moves through the whole Charge. The keys' line is not in the tab (no room). The Basic Attack (1A) entry: Basic Attack at the left, Cancel at the right end.
+
+### sf-list · v0.0.529 · Reactions, Granted, Hiding, Prone: one row each, the quiet button last
+Do: Let a Goblin Sneak leave Aveline's reach so a Reaction asks in her HUD. Give Durgan two granted uses from two sources (Aveline's Judge, and a second one from another card). Make Kaela Hide from two creatures, then target a third one, then untarget it. Make Kaela Prone, spend her AP, and look at Stand / Crawl.
+Expect: The Reaction: its sentence on two lines (a long one is cut after two lines), Use at the left, Pass at the right end. Granted: one line per source ("Granted by Judge", "Granted by ..."), each with its own Cancel at its right end; a long source name is cut with "…". Hiding: the Add line is under the title, always two lines ("To add a creature, target one that isn't listed." and Unsensed / Hidden greyed out; "Add against Ogre:" with the two buttons usable while a new creature is targeted), then the creatures; the state's button is one width for Hidden and Unsensed. Prone: Stand and Crawl stay in one row, greyed out in place with no AP.
+
+### sf-stack · v0.0.529 · Something arrives while a question is up
+Do: Select Sylwen and use Volley (the area waits for its placement); meanwhile, as the GM, move a Goblin Sneak out of Sylwen's or another PC's reach so a Reaction comes (or make Sylwen Prone first).
+Expect: The question stays the first thing in the Situational tab and keeps its whole height: Cancel doesn't move. The tab's count goes up (gold); the Reaction and Prone are under the question (scroll the tab with the wheel to see them).
+
 ### bst-ticks-show · v0.0.519 · A Minion's ticks, for the GM and the players
 Do: Put two Goblin Sneaks on the map in a combat. Look at them as the GM, then log in as a player (or use a player's view). Right-click one goblin for the Token HUD; select it for the system's HUD.
 Expect: Each goblin shows two red pips at the top of its token, for the players too. The HUD shows one bar "2/2 ticks" (two segments); the Token HUD has one box with 2 in it (type -1: one pip goes; +1: it comes back).

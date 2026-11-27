@@ -20,7 +20,7 @@ const b = HV.basicTabHtml(groups);
 console.log(strip(b), "| groups:", (b.match(/class="h3-bg"/g) ?? []).length, "| Charge dim in its place:", /class="h3-bl off"[^>]*data-item-id="b"/.test(b), "| its stamp struck, still clicked (v0.0.453):", b.includes('class="hb-st no" data-hud="use"'), "| a Strike's strip:", b.includes('class="h3-bl strike"'));
 console.log("--- D3: the right column");
 const empty = HV.rightHtml({ tiles: [{ name: "Hunting Bow", grip: "Main" }, { name: "Free (Fists)", grip: "Off", free: true }] });
-console.log("empty:", strip(empty), "| the ask slot is in the Situational section:", /class="h3-sit"><div class="h3-sit-urg"><div class="hb-ask"><\/div>/.test(empty), "| the macro bar's slot last:", empty.endsWith('<div class="h3-hot"></div></div></div>'));
+console.log("empty:", strip(empty), "| the ask slot is in the Situational section:", /class="h3-sit"><div class="hb-ask"><\/div><div class="h3-sit-urg">/.test(empty)   /* v0.0.529 (rule A 5): the tab's first thing */, "| the macro bar's slot last:", empty.endsWith('<div class="h3-hot"></div></div></div>'));
 const rx = HV.rightHtml({ rx: { name: "Snap Shot", cost: "1R", lead: "The Goblin Sneak would enter a square adjacent to you.", msg: "m1", row: 2 } });
 console.log("a Reaction:", strip(rx), "| Use and Pass answer it:", rx.includes('data-hud="rx" data-msg="m1" data-row="2" data-k="rxUse"') && rx.includes('data-k="rxPass"'), "| lit:", rx.includes('class="h3-sit on urg"'));
 const prone = HV.rightHtml({ prone: { lead: "Prone", text: "Your only Move Actions: Stand, Crawl, Break Free.", btns: [{ label: "Stand · 1 AP", hud: "use", data: { item: "s1", ap: 1 } }, { label: "Crawl 3 · 2 AP", hud: "use", data: { item: "c1", ap: 2 }, off: true, why: "Not enough AP" }] } });

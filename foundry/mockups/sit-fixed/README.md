@@ -4,7 +4,7 @@ Lucas, after playtest 8: "When using the area, if I move it around, the 'Cancel'
 Cancel and it moves since it is also moving on the map. Lets make all buttons of the situational tab be fixed. Lets do a mockup of each and make
 sure it is always fixed."
 
-Nothing here is in the system. `index.html` is the page (static; built by `node build.mjs` from `sit-fixed.css`); `check.mjs` renders it,
+**Built in v0.0.529 (rule A; Lucas, 2026-11-27: "use mockup A"; rule B not built):** `foundry/twod12/module/sitframe.mjs`, the modules below and the v0.0.529 block of `system.css`; the open questions at the end were chosen by Claude (the changelog lists each). The page itself is still the static mockup. `index.html` is the page (static; built by `node build.mjs` from `sit-fixed.css`); `check.mjs` renders it,
 saves `sit-fixed-dark.png` / `sit-fixed-light.png` and measures every button (run it from `foundry/twod12`:
 `node ../mockups/sit-fixed/check.mjs`).
 
