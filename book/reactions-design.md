@@ -481,3 +481,66 @@ A swap with no AP ............................... 1 AP on her turn when she want
 > **Slip Away** · Archer Hallmark Reaction · 1R · Turn · *Trigger:* An enemy ends its turn adjacent to you. · Target: The triggering creature · *Effect:* You Evade 1. Then you can use [[Interact]] (1A) to swap the weapon you hold for another you carry.
 
 **The level 1 PCs' Reactions are done** (Shield of Faith, Rebuke, Snap Shot, Slip Away; Judge's 0R and Bear the Blow kept). Next: batch 3, the creatures (Backhand, Blood for Blood, Dying Flare, Shriek and Scatter).
+
+## Batch 3, the creatures at level 1 (PROPOSED 2026-11-27, all four at once, waiting for Lucas)
+
+**Read first:** `bestiary-design.md` (no Bestiary number is argued from; a Standard's sheet has "one reaction"; NPCs play by the PCs' rules; "No NPC has a Reaction by default"), the four creature records (`cards/ogre-chieftain-redesign.md`, `orc-warrior-redesign.md`, `grave-wisp-redesign.md`, `goblin-sneak-redesign.md`), playtests 8 to 11. **The NPC's side of the price:** a Reaction now costs the creature 1 AP of its next turn, about one of its Basic attacks (the Standards' and the ogre's Tier 2 is 2 + 1d10!, Tier 3 8 + 1d12!: about 6 to 8 an AP at the table; a Minion's about 3). The GM chooses like a player: a Reaction worth less than that is a turn thrown away. **The rules for every one of them:** card rule 35 (no sentence the rules already hold).
+
+### Blood for Blood (Orc Warrior, Standard): kept (Lucas: "actually fine")
+
+Round · 1R · Distance 2 · *Requirement:* the orc is Bloodied. *Trigger:* the target deals Vigor damage to the orc. *Effect:* the orc Advances up to 2 toward the target, then makes a Basic attack against it with 1 Bane.
+
+- **At the new price:** a Basic attack with 1 Bane (about 6 to 7) and up to 2 squares, for an AP of its next turn: about even, and only while Bloodied (from about two landed hits on). **No change.**
+- **What to know at the table:** its Advance is a real Advance, so it can trigger the PCs' movement Reactions (Rebuke: an enemy within 3 squares moves). The Basic attack inside it isn't one of the orc's turn's repeats.
+
+### Backhand (Ogre Chieftain, Elite): change its moment
+
+**Today:** Turn · 1R · *Trigger:* an enemy enters a square adjacent to the ogre. *Effect:* it takes [V] 2 Bl and is Pushed 2, with no roll; its movement isn't disrupted: it goes on with the movement it has left. **Lucas's ruling at its design (2026-11-25):** the PC "can move in with 2 movements only, get backhanded, then still has movement, it doesnt disrupt movemetn".
+
+**What the playtests showed:** playtest 8 found its trigger unclear ("many players can say 'Oh, but I moved closer, that means it enters right? So it procs?'"). In playtests 9 to 11 it fired four times, twice into a wall or a creature ("Kaela Pushed 0 (hits Orc Warrior)", the dead orc). And it is the one PC-moving Reaction left: the PC's token is thrown in the middle of the PC's own move, which then goes on from the new square. Its odd case is the Charge: thrown out after the Charge's movement, the Charge's attack has no target.
+
+| # | Backhand as | The PC's turn | Worth a use | Notes |
+|---|---|---|---|---|
+| A | today's | thrown mid-move, the move goes on | 2 + Collision, and about 2 squares of the PC's movement | "enters a square adjacent" to read; the Charge case |
+| **B** | **Trigger: an enemy ends its turn adjacent to the ogre. Effect: it takes [V] 2 Bl and is Pushed 2.** | **untouched**: the swat comes after its turn | 2 + Collision, and the PC's next turn starts 3 squares away (outside Reach 2): about an AP of movement to come back | Slip Away's moment, so one timing rule serves both; no Charge case; a PC can still walk in, strike, and walk out on its own turn without being swatted |
+| C | Trigger: an enemy enters a square adjacent to the ogre. Effect: it takes [V] 2 + 1d10! Bl (no Push) | untouched but for the damage | about 8 | a plain swat; the ogre loses its "get away from me" |
+| D | as A, but a Trigger on "ends a Move Action adjacent to the ogre" | thrown between two of its Actions | as A | clearer than A; a Charge is one Action, so its attack comes first; still mid-turn |
+
+**Claude's proposal: B.** It keeps what the ogre is (a giant that doesn't let you stand next to it) and his ruling's spirit (it doesn't stop the PC's move), and nothing happens inside the PC's turn. "Ends its turn" is the timing written for Slip Away (after everything at the end of that turn).
+
+> **Backhand** · Reaction · 1R · Turn
+> *You stood in its reach as if it weren't looking.*
+> **Trigger:** An enemy ends its turn adjacent to the ogre.
+> **Target:** The triggering creature
+> **Effect:** The target takes [V] 2 Bl and is Pushed 2.
+
+### Dying Flare (Grave Wisp, Standard): a 0R, and a Trigger
+
+**Today:** Encounter · 1R · *Interrupt:* the wisp would go Down. *Save* (Instinct), in a 1 Emanation: *Tier 1:* [R] 1d10 Co; Hindered (EoT). *Tier 2:* [R] 1d10 Co. *Tier 3:* no effect. *Special:* then the wisp goes Down.
+
+- **It costs the wisp nothing it will use:** it is going Down, so the AP of its next turn is never spent. Written 1R it reads as a price it isn't. **Proposed: 0R** (Chapter 2: "A 0R Reaction uses no AP; its Frequency still limits it"; Encounter stays).
+- **Interrupt or Trigger:** as an Interrupt it needs its Special ("Then the wisp goes Down"). As a **Trigger on "the wisp goes Down"** it happens just after, at its moment: still before what is left of the attacker's Action (Chapter 2's "At its moment": Lonny's Darting Blade Evade still waits for it, the book's own example). The Special goes, one line shorter. The book's example needs its wording changed from "would go Down" to "goes Down".
+- **Disruption:** it stops nothing and moves no one; it is damage at the moment it dies.
+
+> **Dying Flare** · Reaction · 0R · Encounter · [Power, Save, Area] · Area: 1 Emanation · Targets: All creatures in the Area
+> *It goes out the way a lamp does when it is dropped.*
+> **Trigger:** The wisp goes Down.
+> **Save:** Instinct · **Tier 1:** [R] 1d10 Co; Hindered (EoT). · **Tier 2:** [R] 1d10 Co. · **Tier 3:** No effect.
+
+**For Lucas:** a creature that is Down can still use it (the Trigger is its going Down). Chapter 4's NPCs Going Down says they die or fall Unconscious; the card is the exception, and its trigger says so.
+
+### Shriek and Scatter (Goblin Sneak, Minion): no Evade, the Jeer at the killer
+
+**Today:** Encounter · 1R · Distance 6 · *Target:* one ally with the Goblin Tag. *Trigger:* the target goes Down. *Effect:* the goblin can Evade 1, then uses Jeer. Never seen in four playtests (a Minion had no Reaction Point and never kept an AP).
+
+- **Its Evade 1 moves a token in the middle of the PC's Action** (the Action that put the first goblin Down). The Jeer is the card's point ("the rest remember how much they hate you").
+- **Proposed:** drop the Evade; the Jeer goes at the creature that put the goblin Down. Jeer's Tier 3 Taunts (1 round), so the killer is pulled toward the goblin that is left: the squad's revenge. A Minion has 3 AP: this is one of them.
+- **With the end-of-turn regain** a Minion's AP are there between its turns, so the card can now happen. "A Minion pays a Reaction with an AP it kept" (Chapter 14) goes with the Reaction Point.
+
+> **Shriek and Scatter** · Reaction · 1R · Encounter · Distance: 6 sq.
+> *One of them drops, and the rest remember how much they hate you.*
+> **Trigger:** An ally with the Goblin Tag goes Down.
+> **Target:** The creature that put it Down
+> **Effect:** The goblin uses [[Jeer]] (1A) against the target.
+
+(The name keeps "Scatter" though it no longer moves: **for Lucas** to rename or keep.)
