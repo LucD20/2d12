@@ -6,7 +6,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 27.3 | 321 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.0 | 361 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 48.7 | 514 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 49.0 | 515 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.7 | 225 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.2 | 106 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.9 | 64 |
@@ -108,41 +108,41 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 95:   ### Corners
 - 103: ## Straight Line
 - 117: ## Forced Movement
-- 131:   ### Pushed
-- 144:   ### Pulled
-- 157:   ### Slid
-- 168:   ### Collision
-- 188: ## Reposition
-- 217:   ### Swapping Places
-- 223: ## Steadiness
-- 229: ## Difficult Terrain
-- 237: ## Hazardous Terrain
-- 256:   ### Deadly Hazards
-- 262: ## Reach
-- 272:   ### Weapon Range
-- 280:   ### Weapon Actions and Your Weapon
-- 284: ## Engaged
-- 294:   ### Ranged Combat While Engaged
-- 300: ## Flanking
-- 328: ## Line of Effect
-- 341: ## Cover
-- 360: ## Areas
-- 366:   ### Cover against an area
-- 370:   ### Emanation
-- 378:   ### Aura
-- 382:   ### Burst
-- 388:   ### Line
-- 410:   ### Other areas
-- 417: ## Light
-- 429:   ### Bright
-- 433:   ### Dim
-- 437:   ### Darkness
-- 441: ## Senses
-- 472:   ### Hiding
-- 489:   ### Sight Senses
-- 496:   ### Other Senses
+- 132:   ### Pushed
+- 145:   ### Pulled
+- 158:   ### Slid
+- 169:   ### Collision
+- 189: ## Reposition
+- 218:   ### Swapping Places
+- 224: ## Steadiness
+- 230: ## Difficult Terrain
+- 238: ## Hazardous Terrain
+- 257:   ### Deadly Hazards
+- 263: ## Reach
+- 273:   ### Weapon Range
+- 281:   ### Weapon Actions and Your Weapon
+- 285: ## Engaged
+- 295:   ### Ranged Combat While Engaged
+- 301: ## Flanking
+- 329: ## Line of Effect
+- 342: ## Cover
+- 361: ## Areas
+- 367:   ### Cover against an area
+- 371:   ### Emanation
+- 379:   ### Aura
+- 383:   ### Burst
+- 389:   ### Line
+- 411:   ### Other areas
+- 418: ## Light
+- 430:   ### Bright
+- 434:   ### Dim
+- 438:   ### Darkness
+- 442: ## Senses
+- 473:   ### Hiding
+- 490:   ### Sight Senses
+- 497:   ### Other Senses
 
-Open (to be decided) boxes: 76: "Flying isn't written yet: going up and down, ending a turn in the air,"; 338: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 414: "Cones are not written yet (and Lines wider than 1 square)."
+Open (to be decided) boxes: 76: "Flying isn't written yet: going up and down, ending a turn in the air,"; 339: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 415: "Cones are not written yet (and Lines wider than 1 square)."
 
 ## 04-health.md: Chapter 4: Health
 
