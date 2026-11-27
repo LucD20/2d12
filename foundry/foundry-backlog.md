@@ -12,7 +12,7 @@ His words are quoted. The fight's record: `book/playtest-11.md`. Three of them a
 **Bugs**
 - [ ] **Charge and weapons.** "Charge is allowing attacks with Ranged weapons. It should only be Melee." (v0.0.525 built the audit's B2-014, which stops a Charge at a thrown or ranged weapon's normal Range: this reverses it; the book's Charge card says "the weapon you attack with".) And: "Charge is asking for weapons twice, one when using it, one when clicking to use the granted basic attack." (`move.mjs chargeStopRange`, the granted Basic Attack.)
 - [ ] **Forced Movement stopped by a dead token.** "Forced movement is getting stopped by dead tokens. Prone, unconscious and dead should not cause collision." (Playtest 11's log: "Kaela Pushed 0 (hits Orc Warrior)", the orc dead. A rule first: Chapter 3, Collision.)
-- [ ] **The Token HUD above windows.** "The Token HUD is showing above the initiative window, its also above the add lingering damage type and most windows." (v0.0.531 lowered Foundry's `#hud` from z 1000 to 70: to ask him which version he played on; if v0.0.531, the fix did not work and the windows are not where the test page assumed.)
+- [x] **(v0.0.531; Lucas, 2026-11-27: "Was in v0.0.530. .531 fixed the hud though.")** **The Token HUD above windows.** "The Token HUD is showing above the initiative window, its also above the add lingering damage type and most windows."
 - [ ] **The Advance's area.** "The Advance area isn't clear anymore, I think its because it isnt taking into account allies being difficult terrain." (`move.mjs reachableCells`, `showRange`; v0.0.525 to v0.0.528 touched them.)
 - [ ] **The second diagonal.** "after moving diagonaly and dropping the token, I dont think it was counting the first square as second diagonal even though it should be" (the move hook's count across two drags of one movement).
 - [ ] **Judge's chat card names the first target.** "if I just target while the dialog is opened, without clicking on 'Target' on the roll dialog, it targets correctly but the chat card still says Grave Wisp." (Tiny; any card that prints its target at the time the dialog opened.)
@@ -22,11 +22,11 @@ His words are quoted. The fight's record: `book/playtest-11.md`. Three of them a
 
 **To build**
 - [ ] **Marks in the Situational tab.** "A target that is 'marked', like by Judge and similar, should have it on the situational tab or something, similar to Hiding, so we can remove it manually. And the chat card of these marks should have a 'Apply effect', so we can also do it manually."
-- [ ] **The chat card that shows a roll's Boons, Banes, bonuses and penalties: a redesign.** "The chat card to read bonuses and penalties really needs a redesign, we have done it a couple of times and hasnt worked." He meant to send an image (not received). A mockup first, by Fable at medium effort (CLAUDE.md).
+- [ ] **The chat card that shows a roll's Boons, Banes, bonuses and penalties: a redesign.** "The chat card to read bonuses and penalties really needs a redesign, we have done it a couple of times and hasnt worked." His picture of it: `foundry/mockups/roll-breakdown/lucas-2026-11-27.png`. A mockup first, by Fable at medium effort (CLAUDE.md): `foundry/mockups/roll-breakdown/`.
 
-**Rules to decide (the book first)**
-- [ ] **Taunted and several targets.** "When an ability targets multiple people and the taunted source is included, it shouldnt apply (Round 3; ogre chieftain, i removed it manually)." Chapter 8 says only "Your Actions against any creature other than it take 1 Bane".
-- [ ] **Grabbed.** "Grabbed should likely cause a penalty to attacks, or make you easier to hit, or both." Chapter 8's Grabbed is Immobilized and held; nothing on attacks.
+**Rules, decided by Lucas the same day ("yes to all"; the book first, then Foundry; not built)**
+- [ ] **Taunted and several targets.** "When an ability targets multiple people and the taunted source is included, it shouldnt apply (Round 3; ogre chieftain, i removed it manually)." Chapter 8 says only "Your Actions against any creature other than it take 1 Bane". **Decided:** an Action whose targets include the creature that Taunted you takes no Bane from Taunted.
+- [ ] **Grabbed.** "Grabbed should likely cause a penalty to attacks, or make you easier to hit, or both." Chapter 8's Grabbed is Immobilized and held; nothing on attacks. **Decided (Claude's proposal, his yes):** a Grabbed creature is Vulnerable 1 while it is held.
 - [ ] **Snap Shot.** "Snapshot's immbolized is essentially a disruption." For the Reactions' rebuild (decided, not built).
 
 ## LUCAS'S CHECKLIST ON v0.0.530 (2026-11-27: 6 passed, 1 failed, 1 skipped): FIXED in v0.0.531 (NOT tested by Lucas)
