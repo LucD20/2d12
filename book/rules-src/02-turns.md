@@ -47,7 +47,7 @@ A **turn-cycle** is the period from the start of a creature's turn to the start 
 
 You spend **Action Points (AP)** to do things on your turn, and to pay for [[Reactions]] on any turn. Every creature starts an encounter with **4 AP** (a [[Minions|Minion]] with 3).
 
-At the **end of your turn**, after everything else that happens then, you **regain AP**: you lose any AP you didn't use and gain **4 AP**. Those AP are your next turn's, and until it starts they also pay for the Reactions you use: whatever you spend reacting, you don't have on your next turn.
+At the **end of your turn**, after everything else that happens then, you **regain AP**: you lose any AP you didn't use and gain **4 AP**. Those AP are your next turn's. A Reaction is paid with the AP you have when it happens: on your own turn, with that turn's AP; on another creature's turn, with the AP you regained for your next turn, so whatever you spend reacting then, you don't have on your next turn.
 
 ### Unspent AP
 
