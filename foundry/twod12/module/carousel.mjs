@@ -45,11 +45,9 @@ function card(combat, c, st) {
   // v0.0.390 (PACK HUD2, Lucas: "All your picks"): the HUD's marks, the same shapes on every turn (book/research/ui-marks-and-state.md): AP squares,
   // the Reaction Point a diamond, the Strikes left as slashes, a hairline between them; frozen keeps its dashed look (CSS) and its tooltip
   const slowed = (() => { try { return slowedOf(c.actor); } catch (e) { return 0; } })();
-  const rapMax = Math.max(1, rapMaxOf(c));
+  const rapMax = rapMaxOf(c);   // v0.0.535: 0 but with Tireless Vigil (no Reaction Point)
   const dense = Math.max(ap, apMax(c)) >= 6 || rapMax > 1;
-  const marks = rapMax > 1
-    ? marksHtml({ ap, max: Math.max(apMax(c), 1), slowed, rap, rapMax, strikes: combat.started ? strikesUsed(c.actor) : 0, showStrikes: combat.started })
-    : marksHtml({ ap, max: Math.max(apMax(c), 1), slowed, rap, rapMax: 1, strikes: combat.started ? strikesUsed(c.actor) : 0, showStrikes: combat.started });
+  const marks = marksHtml({ ap, max: Math.max(apMax(c), 1), slowed, rap, rapMax, strikes: combat.started ? strikesUsed(c.actor) : 0, showStrikes: combat.started });
   const pips = `<div class="tp-marks ${pipKind}${dense ? " dense" : ""}">${marks}</div>`;
   const strikes = "";   // v0.0.390: the Strikes are in the marks
   const htag = "";   // v0.0.453 (Lucas, playtest 6: "Remove the 'Bloodied' 'Dying' from the combat strip"): no state tag under the name
@@ -308,7 +306,7 @@ function showApButtons(div, combat) {
   const f = ensureFloat(), r = div.getBoundingClientRect();
   f.dataset.id = div.dataset.combatantId;
   const rBtn = f.querySelector('[data-tc="raptog"]');
-  if (rBtn && c) rBtn.classList.toggle("on", getRAP(c) > 0);
+  if (rBtn && c) { rBtn.classList.toggle("on", getRAP(c) > 0); rBtn.hidden = !(rapMaxOf(c) > 0); }   // v0.0.535: only with Tireless Vigil's AP
   f.style.display = "flex";
   const fw = f.offsetWidth || 100;
   const x = Math.max(8, Math.min(window.innerWidth - fw - 8, r.left + r.width / 2 - fw / 2));

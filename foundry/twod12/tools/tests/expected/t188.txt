@@ -13,4 +13,4 @@ the book (the card Structure of 2026-11-16; Beacon and its nested card left the 
 after: 2 AP: @Move[pushed|distance:1|t1:3|t2:2|t3:1|pick:yes|from:area] | its Special (d8s against a Profane creature) is the description: true
 the chip options: {"from":"area","pick":true,"t3":"2"} | the distance by Tier: null 2 | Prone on the Criticals only: true
 move.mjs: the area's center as the origin, the distance per creature, the pusher named: true | the cards keep the point and the Critical: true
-Rebuke's note: offered by itself in the Reactions message when an enemy within 3 squares moves away from you; Use makes the Appeal Save and the enemy is Hindered (EoT); on a Tier 1 or 2 its Move Action is disrupted: Move back in the Reactions message (to the square it left).
+Rebuke's note: offered by itself in the Reactions message when an enemy within 3 squares moves (it leaves a square within 3 with its own Move Action; standing up doesn't count); Use: [R] 1d6! Holy on it and 1 Pressure Bane on its next Strike (EoT).

@@ -24,7 +24,7 @@ const L = await import(new URL("../../../../book/cards/load.mjs", import.meta.ur
 const rb = L.readBody([{ label: "Setup", text: "s" }, { label: "Special", text: "before" }, { label: "Attack", text: "Weapon vs. Armor Defense" }, { label: "Tier 1", text: "a" }, { label: "Tier 2", text: "b" }, { label: "Tier 3", text: "c" }, { label: "Special", text: "after" }]);
 console.log("the loader: before the roll a card line", JSON.stringify(rb.lines), "| after it the notes", JSON.stringify(rb.notes));
 const C = await import(ROOTURL + "tools/content.mjs");
-for (const n of ["Darting Blade", "Hit and Run"]) { const d = C.docs.find(x => x.name === n); console.log(n, "| lines above the roll:", JSON.stringify(d.system.lines ?? []), "| Special at the end:", JSON.stringify(d.system.special ?? "")); }
+for (const n of ["Darting Blade", "Smite"]) { const d = C.docs.find(x => x.name === n); console.log(n, "| lines above the roll:", JSON.stringify(d.system.lines ?? []), "| Special at the end:", JSON.stringify(d.system.special ?? "")); }
 
 console.log("--- (4) The Bestiary");
 // the Bestiary's rebuild (2026-11-25): the old Goblin's and Ogre's cards left the packs (OLD_CLASS_DOCS keeps them); the old chapter's bullets are

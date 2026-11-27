@@ -3,10 +3,10 @@ only a chip naming an item opens it on its name: true | the right-click opens th
 --- V1.2 a Tier's condition applies when the Tier lands (G1-G3)
 the chip read from the Tier's text: {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"cond":"hindered","dur":"eot"} | the Tier's group carries them: true | both damage cards pass them: true
 an attack's row applies them when its damage landed: true | a Save's Tier (the old card, the new card's Damage button, a Tier with no damage): true
-Snap Shot's Tiers 2 and 3 hold the chips: ["@Condition[hindered|eot]","@Condition[immobilized|eot]"]
+Snap Shot's Tiers 2 and 3 hold the chips: ["",""]
 dragged onto a token (G1): true
 --- G8 Rebuke's Hindered: a Save Action with no damage runs its chain on use
-Rebuke: true "@Condition[hindered|eot]" | no damage in its Tiers: true | wired: true
+Rebuke: false "@Damage[1d6![mind,holy]] @Boon[-1|bb:pressure|traits:strike]" | no damage in its Tiers: true | wired: true
 --- G6 a Reaction's movement off its turn is tracked
 the creature whose turn it is: c1 | Kaela, not on the turn, with Evade 1: c2 (free squares 1) | a creature off its turn with none: not tracked | v0.0.421: squares left from its own turn (no Reaction this turn): not tracked
 beyond its free squares off its turn: refused: true

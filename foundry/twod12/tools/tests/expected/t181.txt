@@ -1,5 +1,5 @@
 --- the numbers
-AP a turn: 4 | Reaction AP: 1 | roles: minion 3, grunt 3, standard 4, elite 4 | Guard an AP by Stage: 2 / 3 / 4
+AP a turn: 4 | Reaction AP: 0 | roles: minion 3, grunt 3, standard 4, elite 4 | Guard an AP by Stage: 2 / 3 / 4
 regain: healthy 4 | Slowed 2 (conditionValue stub: none) Minion 3 | most AP 4
 paying a Reaction (the Reaction AP first): 1R with RAP {"fromRap":1,"fromAp":0} 1R without {"fromRap":0,"fromAp":1} 2R with RAP {"fromRap":1,"fromAp":1} 0R {"fromRap":0,"fromAp":0}
 Guard of kept AP: 1 AP at Stage 1 / 2 / 3: 2 / 3 / 4 | 2 AP at Stage 1: 4 | after a 1R paid with a kept AP (Guard 4, Stage 1): 2 | never under 0: 0
@@ -10,13 +10,14 @@ the old call still works: {"a":{"B":{"l":2,"n":0},"M":{"l":0,"n":0}},"taken":3,"
 --- the ticker's line: the Reaction AP as a diamond
 ["+4 +R","−1R","−1R"] | <span class="tk-pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><span class="hsep"></span><i class="rap on"></i></span> | <i class="rap spent" | no rap on an old line
 --- a combat (stubs): a Reaction out of turn pays with the Reaction AP, then a kept AP (v0.0.274: the Guard of the unused AP is not touched)
-1R: true | AP 1 RAP 0 AP Guard 2 (the Reaction AP paid: the Guard stays)
-another 1R: true | AP 0 RAP 0 AP Guard 2 (a kept AP paid: one AP less unused when its turn starts)
+1R: true | AP 0 RAP 1 AP Guard 2 (the Reaction AP paid: the Guard stays)
+another 1R: true | AP 0 RAP 1 AP Guard 2 (a kept AP paid: one AP less unused when its turn starts)
 a Reaction with nothing left asks (stub says yes): true | AP 0
 --- v0.0.274 (Lucas, the book's Unspent AP): a turn that ends with AP left changes nothing; the next turn's start gives Guard for 1 round
 unusedApGuard: the first turn {"unused":0,"guard":0} | 2 unused at Stage 1 {"unused":2,"guard":4} | 1 at Stage 3 {"unused":1,"guard":4}
-the turn starts with 2 unused: 4 | actor.apGuard 4 | no chat line (v0.0.362: the Turn Breakdown shows it): true
+the turn starts with 2 unused: 0 | actor.apGuard 0 | no chat line (v0.0.362: the Turn Breakdown shows it): true
 the next start, none unused: the Guard before ends: 0 | actor.apGuard 0
---- wiring: the turn start gives the Reaction AP and the unused AP's Guard: true | the turn's end does nothing to the AP (v0.0.274): true | damage takes the AP Guard first: true | the encounter's end drops it: true
-the Reaction AP pip: sheet false | strip (v0.0.390: the HUD's diamond) true | tracker true | a Reaction row counts it: true | Slowed / Quickened texts (4 AP, never the Reaction AP): true
+--- v0.0.535: the end of the turn regains the AP: true | AP 4 | a second call does nothing: false | frozen (swapped away) regains nothing: false 
+--- wiring: the turn's end regains the AP, then its 'ends its turn' Triggers, then the next turn starts: true | the start gives only Quickened's AP: true | every creature starts with its AP: true | the turn's end does nothing to the AP (v0.0.274): true | damage takes the AP Guard first: true | the encounter's end drops it: true
+the Reaction AP pip: sheet false | strip (v0.0.390: the HUD's diamond) true | tracker true | a Reaction row counts it: true | Slowed / Quickened texts (4 AP, never the Reaction AP): false
 no plain apmsg line left in combat.mjs / damage.mjs: true | warnings: 0

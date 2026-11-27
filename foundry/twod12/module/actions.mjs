@@ -27,7 +27,7 @@ import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches, demoralizedTarget, markDemoralized } from "./usage.mjs";   // (markAtWill: imported where used)
 import { tierProbs, topStep, bbCount, bbResolve } from "./calc.mjs";
-import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS, escalationDie } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged; v0.0.510: escalationDie (Steady Draw's dE)
+import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS, escalationDie, atWillRepeat } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged; v0.0.510: escalationDie (Steady Draw's dE)
 import { weaponDiceFormula, weaponDieOnlyFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, chooseEmpowered } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die; core rework batch 3: [D]
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
@@ -63,7 +63,7 @@ export function autoEffectEvadeTag(version) {
 export function autoMoveChain(version, reaction = false) {
   if (!reaction || !version?.noTiers) return [];
   const txt = String(version.effects ?? "").trim();
-  if (!/^You\s+@Move\[/i.test(txt) || /@(?!Move\[)\w+\[/.test(txt)) return [];
+  if (!/^You\s+@Move\[/i.test(txt) || /@(?!Move\[|Book\[)\w+\[/.test(txt)) return [];   // v0.0.535 (Slip Away): a book link (Interact) is no chip
   const tags = [...txt.matchAll(/@Move\[([^\]]+)\]/g)].map(m => m[1]);
   return tags.every(t => ["evade", "advance"].includes(t.split("|")[0].trim().toLowerCase())) ? tags : [];
 }
@@ -825,7 +825,11 @@ export async function useAction(actor, item, opts = {}) {
   if (usesReload && rw.unloaded) dlgWarns.push(`${previewWeapon.name} is unloaded: Reload it before using it again`);
   // At-will: each use after the first in a turn has 1 more bane (uses from another Action don't count).
   const atWill = opts.free && !opts.countAtWill ? 0 : atWillUses(actor, item);   // v0.0.224: a Charge's Weapon Attack counts; v0.0.494: At-will [Strike] Actions share one count
-  if (atWill > 0) extraMods.push({ id: "syn:atwill", name: `${atWill + 1}x At-will use`, boons: 0, banes: atWill, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane (At-will [Strike] Actions share one count)" });
+  // v0.0.535 (the action economy, Lucas 2026-11-27; book, Chapter 7, Strike): a repeated At-will [Strike] is Doomed (5 Banes, so Boons still meet it:
+  // Chapter 1, Five Boons or Banes); another At-will Action keeps 1 Bane a use (roundrules.mjs atWillRepeat)
+  const rep = atWillRepeat(atWill, it.traits.has("strike"));
+  if (rep.doomed) extraMods.push({ id: "syn:atwill", name: `${atWill + 1}x At-will Strike (Doomed)`, boons: 0, banes: 0, doomed: true, match: true, predicate: "An At-will [Strike] Action used again in the same turn is Doomed (At-will [Strike] Actions share one count)" });
+  else if (rep.banes > 0) extraMods.push({ id: "syn:atwill", name: `${atWill + 1}x At-will use`, boons: 0, banes: rep.banes, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane" });
   // Helper: Roll Dialog notices for Cover-changing effects on attacker (coverLower, buff) and target (coverHigher, debuff) — active when Cover changes, muted/explained when it can't (e.g., no Cover to raise/lower).
   const pushCoverChanges = (cov0, cov, covLow, covHi, tkName = "", forUuid = "") => {
     const tag = tkName ? ` (${tkName})` : "", extra = forUuid ? { for: forUuid, showInDialog: true } : {};
@@ -1155,7 +1159,8 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.409 (pack F2; book, Smite): the Reaction Point spent for 1 more Smite die (the roll dialog's chip); without one, no extra die
   let smiteMore = false;
   if (data.smiteMore === "on") {
-    try { const C = await import("./combat.mjs"); const cb = C.combatantOf(actor); if (!cb || !game.combat?.started) smiteMore = true; else if (C.getRAP(cb) > 0) { await C.setRAP(cb, C.getRAP(cb) - 1); smiteMore = true; } else ui.notifications.warn(`${actor.name} has no Reaction Point left: no extra Smite die.`); } catch (e) { console.warn("twod12 | Smite", e); }
+    // v0.0.535 (the action economy, Lucas 2026-11-27; book, Smite): the extra die costs 1 AP (the Reaction Point is gone)
+    try { const C = await import("./combat.mjs"); const cb = C.combatantOf(actor); if (!cb || !game.combat?.started) smiteMore = true; else if (C.getAP(cb) > 0) { await C.setAP(cb, C.getAP(cb) - 1, `${item.name}: 1 more die`); smiteMore = true; } else ui.notifications.warn(`${actor.name} has no AP left: no extra Smite die.`); } catch (e) { console.warn("twod12 | Smite", e); }
   }
   const isWeapon = it.traits.has("weapon");
 
@@ -1461,9 +1466,10 @@ export async function useAction(actor, item, opts = {}) {
       const tiers = mres ? mres.map(r => Number(r.chk?.tier) || 0) : [Number(chk?.tier) || 0];
       if (h && steadyPays(tiers)) {
         const C = await import("./combat.mjs"), cb = game.combat?.started ? C.combatantOf(actor) : null;
-        if (cb && !(C.getRAP(cb) > 0)) ui.notifications.warn(`${actor.name} has no Reaction Point left: no ${key} dice.`);
+        // v0.0.535 (the action economy; book, Steady Draw): its Special costs 1 AP (the Reaction Point is gone)
+        if (cb && !(C.getAP(cb) > 0)) ui.notifications.warn(`${actor.name} has no AP left: no ${key} dice.`);
         else {
-          if (cb) await C.setRAP(cb, C.getRAP(cb) - 1);
+          if (cb) await C.setAP(cb, C.getAP(cb) - 1, `${key}: ${Number(h.hook.deMore) || 2}dE more`);
           if (game.combat?.started) await actor.setFlag("twod12", "onceUsed", { ...(actor.getFlag("twod12", "onceUsed") ?? {}), [key]: game.combat.id });
           steadyDE = Number(h.hook.deMore) || 2;
         }

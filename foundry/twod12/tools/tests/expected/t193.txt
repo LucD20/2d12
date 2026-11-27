@@ -3,7 +3,7 @@ The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, t
 Reduce: 2d6+pow {"s2":"3d6+pow","s3":"4d6+pow"} pick 5 | the Stage's: 3d6+pow | Pause: After the damage
 the steps of a chain: ["(first): 1","After the damage: 1"]
 two Apply buttons, the second named by the Pause: true
-Shield of Faith: Targets One ally | Distance "5" | An enemy's [Strike] Action would damage the target. | That damage is reduced by @Reduce[1+pow]{1 + Pow}, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). | after: @Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger] | gold
+Shield of Faith: Targets One ally | Distance "5" | The creature you Judged would damage the target with a [Strike] Action. | The target takes half of that damage, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). | after: @Condition[taunted|rounds:1|to:trigger] | gold
 Bulwark of Faith: Targets One ally | Distance "5" | An enemy's [Strike] Action would damage the target. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. | after: @Guard[rally] @Pause[After the damage] @Move[slid|distance:1] | gold
 the Consecrated Ground Zone: on the map, 3 rounds, Difficult Terrain for enemies, Guard for allies: map 3 enemies @origin.pow | the card applies it: Consecrated Ground
 the Interrupt / Trigger line first: true

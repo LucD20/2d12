@@ -196,7 +196,7 @@ export function cardSystem(c, resolve = s => s) {
   // the roll, Steel Yourself's at the end); its description keeps them for the other surfaces
   else if (c.category === "Basic Action") { if (c.rules) sys.lines = [{ label: "Special", text: resolve(fxText(c.rules)) }]; if (c.notes) sys.special = resolve(fxText(c.notes)); }
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));   // v0.0.360 (the audit's D17): an Action holds rules (Mark Quarry)
-  for (const k of ["weaponUse", "weaponNeeds", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat", "momentSplit", "momentPool", "momentState", "momentTag", "reqFlank", "engagedOk"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // the Bestiary's rebuild: momentPool, momentState, momentTag, reqFlank   // pack TALENTS-PT: momentSplit (Bear the Blow); v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
+  for (const k of ["weaponUse", "weaponNeeds", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat", "momentSplit", "momentMarked", "momentPool", "momentState", "momentTag", "reqFlank", "engagedOk"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // the Bestiary's rebuild: momentPool, momentState, momentTag, reqFlank   // pack TALENTS-PT: momentSplit (Bear the Blow); v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }
 

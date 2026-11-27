@@ -124,7 +124,7 @@
       "deMore": 2
      }
     ],
-    "automationNote": "on your Basic Attack's Tier 3 against a target already Strained when you roll, its damage rolls 1[D] more; the roll dialog's chip \"Reaction Point: 2dE more on a Tier 2 or 3\" (off until ticked, once an encounter): on a Tier 2 or 3 it spends your Reaction Point and adds your Escalation die twice to the damage (d4 at Escalation 1 and 2 ... d12 at 6); on a Tier 1 nothing is spent."
+    "automationNote": "on your Basic Attack's Tier 3 against a target already Strained when you roll, its damage rolls 1[D] more; the roll dialog's chip \"1 AP: 2dE more on a Tier 2 or 3\" (off until ticked, once an encounter): on a Tier 2 or 3 it spends 1 AP and adds your Escalation die twice to the damage (d4 at Escalation 1 and 2 ... d12 at 6); on a Tier 1 nothing is spent."
    }
   },
   {
@@ -295,9 +295,11 @@
    "foundry": {
     "img": "icons/svg/wing.svg",
     "folder": "Archer",
-    "moment": "enemyAdjacent",
-    "automationNote": "offered by itself in the Reactions message when an enemy would enter a square adjacent to you (Move back: it stops before that square); Use: the Evade 1 starts by itself, then the Advance 2 when it ends (or at End movement; another Action gives it up).",
-    "automation": "gold"
+    "moment": "enemyEndsTurn",
+    "automationNote": "offered by itself in the Reactions message when an enemy ends its turn adjacent to you (after everything at the end of its turn); Use: the Evade 1 starts by itself; the weapon swap (Interact) by hand on the sheet or the HUD.",
+    "automation": "silver",
+    "momentRange": 1,
+    "momentTarget": "source"
    }
   },
   {
@@ -348,8 +350,8 @@
     "moment": "enemyAdjacent",
     "momentRange": 0,
     "momentTarget": "subject",
-    "automationNote": "offered by itself in the Reactions message when an enemy would enter a square adjacent to you (Move back: it stops before that square); Use: the shot, Hindered (EoT) on a Tier 2, Immobilized (EoT) on a Tier 3.",
-    "automation": "gold"
+    "automationNote": "offered by itself in the Reactions message when an enemy would enter a square adjacent to you (Move back: it stops before that square), once a round; Use: the Evade 1 by its button on the card, then the shot (Tier 1 [V] [Mod], Tier 2 [V] 1[W], Tier 3 [V] 1[W] + [Mod]).",
+    "automation": "silver"
    }
   },
   {

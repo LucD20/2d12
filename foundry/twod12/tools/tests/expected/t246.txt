@@ -1,6 +1,6 @@
 --- Action Points
 a turn's AP: 4, Slowed 1: 4 3 | Quickened 1: 5 | a Minion: 3 | never under 0: 0
-the Reaction AP before the first turn / after: 0 1
+the Reaction AP before the first turn / after: 0 0
 paying 1R with the Reaction AP: {"fromRap":1,"fromAp":0} | 2R with it and a kept AP: {"fromRap":1,"fromAp":1} | 1R with a kept AP only: {"fromRap":0,"fromAp":1}
 can pay: 1R with nothing: false | 1R with the Reaction AP: true | 2R with the Reaction AP alone: false | 0R: true
 Unspent AP (Drak, Stage 1, 1 AP left): {"unused":1,"guard":2} | Stage 2, 2 AP: {"unused":2,"guard":6} | Stage 3: {"unused":1,"guard":4} | the first turn: {"unused":0,"guard":0}
@@ -26,7 +26,8 @@ a Minion: 6 + 6 Health, no Reaction AP, up to 2 in a turn slot (roundrules: 2): 
 --- one copy of each rule
 the numbers are config.mjs's: true
 sheetmodel.mjs takes payReaction from it: true
-combat.mjs takes unusedApGuard and the turn's AP from it: true
+combat.mjs takes the turn's AP from roundrules (regainAP at the end of the turn, turnAP for the most): true
+regainAP 4 / Slowed 1 / Slowed 9: 4 3 0 | the encounter's first AP (4, a Minion 3): 4 3 | a repeated At-will Strike / another At-will: {"doomed":true,"banes":0} {"doomed":false,"banes":2} {"doomed":false,"banes":0}
 escalation.mjs takes the start and the raise from it (v0.0.407: the 1-to-6 ladder): true
 flanking.mjs takes the rule from it (batch 4: flankBoon, oppositeSides; the frozen SIM keeps flankBoons): true
 pure (it imports only config, calc and guard): ./config.mjs ./calc.mjs ./guard.mjs | no Foundry global: true

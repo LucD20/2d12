@@ -573,7 +573,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           size: SIZE_NAMES[s.size ?? 3] ?? "", tags, role: s.roleLabel ?? "", cv: s.cv ?? "",
           cvTip: a.type === "npc" ? cvTip(TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : "",
           ap: { inCombat: !!c, pips: Array.from({ length: Math.max(Number(s.apPerTurn) || TWOD12.apPerTurn, ap) }, (_, k) => ({ n: k + 1, on: k < ap })), rap: !!rap,
-            tip: c ? `${ap} AP${s.apGuard ? ` (Guard ${s.apGuard} from the AP its last turn left unused, 1 round)` : ""}, Reaction Point ${rap ? "ready" : "spent"}. Click a pip to correct the AP (it is said in the chat); click the R to spend or give back the Reaction Point.` : `Not in combat: ${Number(s.apPerTurn) || TWOD12.apPerTurn} AP and 1 Reaction Point are regained at the start of each turn in combat.` }
+            tip: c ? `${ap} AP (regained at the end of its turn; its Reactions pay with them). Click a pip to correct the AP (it is said in the chat).` : `Not in combat: ${Number(s.apPerTurn) || TWOD12.apPerTurn} AP and 1 Reaction Point are regained at the start of each turn in combat.` }
         };
       })(),
       health: {

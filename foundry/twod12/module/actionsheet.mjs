@@ -74,7 +74,9 @@ function whenSec(m) {
     // the Bestiary's rebuild (2026-11-25): what the moment needs (a pool of the damage, your state after it, the creature's Tag)
     ["Needs", `${sel('name="system.momentPool"', s.momentPool ?? "", [["", "Any damage"], ["B", "Vigor damage"], ["M", "Resolve damage"]], "Pool")}${sel('name="system.momentState"', s.momentState ?? "", [["", "In any state"], ["bloodied", "While you are Bloodied"], ["strained", "While you are Strained"]], "State")}${field("system.momentTag", s.momentTag ?? "", "Tag (goblin)", "amt")}`],
     // pack TALENTS-PT (Bear the Blow): used, the held damage is split with you (share.mjs)
-    ["Damage", sel('name="system.momentSplit"', s.momentSplit ?? "", [["", "As it is"], ["half", "Split: half to you (rounded up; your Resistance and Immunity don't count)"]], "Damage")],
+    ["Damage", sel('name="system.momentSplit"', s.momentSplit ?? "", [["", "As it is"], ["half", "Split: half to you (rounded up; your Resistance and Immunity don't count)"], ["halve", "The creature takes half (rounded up, after its Resistance and Weakness, before reductions and Guard)"]], "Damage")],
+    // v0.0.535 (Shield of Faith): only when the triggering creature is the one you marked (Judged)
+    ["Caused by", sel('name="system.momentMarked"', s.momentMarked ?? "", [["", "Any creature"], ["judge", "The creature you Judged"], ["bound", "The creature you marked as your Bound Ally"]], "Caused by")],
     ["Used on", seg("system.momentTarget", s.momentTarget ?? "subject", [["subject", "The creature of the moment"], ["source", "The one that caused it"]], "w")],
     ["Card line", named("system.trigger", s.trigger, "An enemy within 5 squares makes a [Strike] Action against an ally.", "wide")],
     s.momentThreat ? ["Old", tog("system.momentThreat", true, "Only a creature you threaten (turn it off: any creature within the range)")] : null

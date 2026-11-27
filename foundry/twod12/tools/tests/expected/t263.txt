@@ -6,7 +6,7 @@ Chapter 3: true | every area's creatures give none: true | the Save card's Cover
 --- (3) A Special about the roll above the Attack line
 the loader: before the roll a card line [{"label":"Special","text":"before"}] | after it the notes ["after"]
 Darting Blade | lines above the roll: [{"label":"Special","text":"You make this Strike with a Light weapon you hold."}] | Special at the end: ""
-Hit and Run | lines above the roll: [{"label":"Special","text":"The bow's hit is Doomed if you are Engaged when you make it."}] | Special at the end: "[W] is the weapon that hit."
+Smite | lines above the roll: [{"label":"Smite dice","text":"[R] 1d6! Ho for each Escalation you have, up to 4 dice. Against a Profane creature they are 1d8!s."}] | Special at the end: "Before you roll Smite, you can spend 1 AP to roll 1 more Smite die. Neither extra die counts toward the 4."
 --- (4) The Bestiary
 Orc Warrior: Hamstringing Axe | Tier 2  | Tier 3 @Condition[hindered|eot] | Effect "" | after -
 (old) Dirty Trick | Tier 2 @Boon[-1|bb:pressure|next:roll]{1 Pressure Bane} on its next roll. | Tier 3 @Boon[-1|bb:pressure|next:roll]{1 Pressure Bane} on its next roll. | Effect "" | after -

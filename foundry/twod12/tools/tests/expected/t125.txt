@@ -1,4 +1,4 @@
-healthy: regain 4, most 4 | Slowed 2: regain 2, most 2 | Quickened 2: regain 6, most 6 | Quickened 2 + Slowed 2: regain 4, most 4 | Desperate: regain 4, most 4 | Dying + Slowed 3: regain 1, most 1 | Dying + Slowed 1: regain 3, most 3 | Imperiled: regain 3, most 3 | Slowed 9: regain 0, most 0
+healthy: regain 4, most 4 | Slowed 2: regain 2, most 2 | Quickened 2: regain 4, most 6 | Quickened 2 + Slowed 2: regain 2, most 4 | Desperate: regain 4, most 4 | Dying + Slowed 3: regain 1, most 1 | Dying + Slowed 1: regain 3, most 3 | Imperiled: regain 3, most 3 | Slowed 9: regain 0, most 0
 Frequency: Weapon with none "" | Round round
 Vs.: Reload DC 13 | Weapon Attack AD
 Round, used on its own turn (round 1, turn 2): r1 t2 used, r2 t0 used, r2 t1 used, r2 t2 free

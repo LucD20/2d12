@@ -115,7 +115,7 @@ export async function rollDialogInput(c) {
   // v0.0.440 (Lucas, checklist: "the Reaction Point toggle is hidden"; the dice "need to grow"): always shown (pinned), and on, its die joins the Tiers
   if ([...(it.versions ?? [])].some(v => v.diceRule === "smite")) {
     let prof = false; try { const { isProfaneFor } = await import("./judge.mjs"); prof = !!(c.rollsAtOthers && c.targetToken && isProfaneFor(actor, c.targetToken)); } catch (e) { prof = false; }
-    chips.push({ id: "syn:smite", scope: "shared", row: "damage", kind: "pass", n: 0, special: "smite", pinned: true, label: "Reaction Point: 1 more Smite die", tag: `+1d${prof ? 8 : 6}! Ho`, pool: "M", tiers: [1, 2, 3], start: "off", tip: "Spend your Reaction Point to roll 1 more Smite die (it doesn't count toward the 4)." });
+    chips.push({ id: "syn:smite", scope: "shared", row: "damage", kind: "pass", n: 0, special: "smite", pinned: true, label: "1 AP: 1 more Smite die", tag: `+1d${prof ? 8 : 6}! Ho`, pool: "M", tiers: [1, 2, 3], start: "off", tip: "Spend your Reaction Point to roll 1 more Smite die (it doesn't count toward the 4)." });
   }
   // v0.0.510 (Lucas on v0.0.509: "the roll dialog should likely have a button like the Smite"): Steady Draw's 2dE, off until ticked, once an encounter;
   // paid (the Reaction Point) only when the roll gets a Tier 2 or 3 (actions.mjs useAction), its dice on those Tiers (actions.mjs rollDamage)
@@ -123,7 +123,7 @@ export async function rollDialogInput(c) {
     const { activeHooks } = await import("./hooks.mjs"), { escalationDie } = await import("./roundrules.mjs");
     const de = activeHooks(actor, "basicLine").find(h => Number(h.hook?.deMore) > 0);
     const used = de && game.combat?.started && (actor.getFlag?.("twod12", "onceUsed") ?? {})[de.item?.name ?? "deMore"] === game.combat.id;
-    if (de && !used) { const n = Number(de.hook.deMore) || 2, die = escalationDie(actor.system?.escalation); chips.push({ id: "syn:steadyde", scope: "shared", row: "damage", kind: "pass", n: 0, special: "steadyde", pinned: true, label: `Reaction Point: ${n}dE more on a Tier 2 or 3`, tag: `+${n}d${die}`, pool: "B", tiers: [2, 3], start: "off", tip: `${de.item?.name ?? "Your class line"}: once an encounter, spend your Reaction Point on a Tier 2 or 3 to deal ${n}dE (d${die} now) more.` }); }
+    if (de && !used) { const n = Number(de.hook.deMore) || 2, die = escalationDie(actor.system?.escalation); chips.push({ id: "syn:steadyde", scope: "shared", row: "damage", kind: "pass", n: 0, special: "steadyde", pinned: true, label: `1 AP: ${n}dE more on a Tier 2 or 3`, tag: `+${n}d${die}`, pool: "B", tiers: [2, 3], start: "off", tip: `${de.item?.name ?? "Your class line"}: once an encounter, spend your Reaction Point on a Tier 2 or 3 to deal ${n}dE (d${die} now) more.` }); }
   }
   if (c.usesReload) chips.push({ id: "syn:reload", scope: "shared", row: "boons", kind: "fav", n: 1, special: "reload", pinned: true, label: "Reload shot", start: "off", tip: "A powerful shot: Favored and Empowered. Afterwards the weapon must be reloaded before it is used again." });
   // Passives: the Bonus Damage of your Features, Talents and effects, shown in the Tiers they add to (Radiant Zeal "+1d6 Ho" on T1-T3, Heavy Blows "+2" on T3)

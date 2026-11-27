@@ -1,4 +1,4 @@
-Rebuke x1: Its Move Action is disrupted. | its chain: @Condition[hindered|eot]
+Rebuke x1:  | its chain: @Damage[1d6![mind,holy]] @Boon[-1|bb:pressure|traits:strike]
 Heartseeker x3: @Condition[vulnerable|value:1|eot] | its chain: @Condition[vulnerable|value:1|eot|tier:3]
 Marksman's Shot critical: The target is @Condition[blinded|eot]{Blinded (EoT)}. | its chain: @Condition[vulnerable|value:2|eot|tier:3] @Condition[blinded|eot|crit:yes]
 Word of Radiance x3: @Move[pushed|distance:1] | its chain: @Move[pushed|distance:1|t1:3|t2:2|t3:1|pick:yes|from:area]

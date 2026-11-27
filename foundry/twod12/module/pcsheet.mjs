@@ -4,7 +4,7 @@
 import { inventoryHtml, lootHtml } from "./inventory.mjs";   // v0.0.455 (group 4)
 import { statSym } from "./statsyms.mjs";   // v0.0.454 (playtest 6, D3): the NPC sheet's stat symbols
 import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, distanceNote, areaText, vsText, isTalentAction, autoChip, npcRoleRow, stageOf } from "./config.mjs";
-import { combatantOf, getAP, getRAP, slowedOf, apPerTurn, quickenedOf, baseAP } from "./combat.mjs";
+import { combatantOf, getAP, getRAP, rapMaxOf, slowedOf, apPerTurn, quickenedOf, baseAP } from "./combat.mjs";
 import { guardPerAP } from "./guard.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
@@ -160,8 +160,9 @@ export async function pcModel(sheet, ctx) {
   const hookNames = [...new Set(escHooksOf(a).map(h => h.source))];
   const strip = {
     inCombat,
-    ap: { pips, rap: !!rap, text: `${ap} of ${regained} · Reaction ${rap ? "ready" : "used"}`, slowedTip: `Lost to Slowed ${slowed} this turn`,
-      tip: `${ap} AP left of the ${regained} this turn gave (${baseAP(a)}${quickenedOf(a) ? ` + Quickened ${quickenedOf(a)}` : ""}${slowed ? ` − Slowed ${slowed}` : ""}). Click a pip to correct the AP (the chat says so).` },
+    // v0.0.535 (the action economy, Lucas 2026-11-27): no Reaction Point: the AP are regained at the end of the turn and pay for the Reactions until the next turn
+    ap: { pips, rap: !!rap, rapShow: cbt ? rapMaxOf(cbt) > 0 : false, text: `${ap} AP${rap ? " · Divine Reaction ready" : ""}`, slowedTip: `Slowed ${slowed}: ${slowed} fewer AP regained at the end of the turn`,
+      tip: `${ap} AP: the ones regained at the end of the last turn (${baseAP(a)}${slowed ? ` − Slowed ${slowed}` : ""}${quickenedOf(a) ? `, + Quickened ${quickenedOf(a)} when the turn starts` : ""}), less what Reactions spent since. Click a pip to correct the AP (the chat says so).` },
     guard: { total: (Number(s.guard) || 0) + (Number(s.apGuard) || 0), per: guardPerAP(s.stage),
       tip: `Guard ${Number(s.guard) || 0}${s.apGuard ? ` + ${s.apGuard} from the AP your last turn kept (taken first, 1 round)` : ""}. It takes damage before your Health, can't be healed and ends with the encounter. Click +1, right-click −1, Ctrl: 5.` },
     esc: { n: escNow, pips: Array.from({ length: Math.max(1, Number(TWOD12.escalation?.max) || 6) }, (_, k) => k < escNow), rungs: escRungs(escNow, rungNames, apex, apexAt), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
@@ -172,7 +173,7 @@ export async function pcModel(sheet, ctx) {
     strikes: strikesLine(strikesUsed(a)),
     // v0.0.291: the Senses cell (both sheets), the NPC's Strikes diamonds and next Bane, the Elite's ladder
     senses: senseChips(s.senses ?? {}), strikePips: strikePips(strikesUsed(a)), strikesLeft: Math.max(0, 3 - strikesUsed(a)),
-    nextBane: basicAtk && combat?.started ? nextBanes(atWillUses(a, basicAtk)).replace(/^next: /, "Basic attack: next +") : "",
+    nextBane: basicAtk && combat?.started ? nextBanes(atWillUses(a, basicAtk)).replace(/^next: /, "Basic attack: next ") : "",
     elite,   // the cleanup audit (2026-11-26): an NPC with Escalation on shows its level; the default ladder's rungs (eliteRungs) are gone
     // v0.0.443 (group 1): the combat line's two lists (hooks, the ladder with its shields); none for a Standard NPC
     lists: combatLists({ npc, elite, hookNames, used: { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id },

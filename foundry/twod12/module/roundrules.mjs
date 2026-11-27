@@ -10,7 +10,13 @@ import { apGuardOf } from "./guard.mjs";
 export const AP_PER_TURN = TWOD12.apPerTurn, REACTION_AP = TWOD12.reactionAp;
 /** The AP a creature regains at the start of its turn: its base (4; a Minion 3), more with Quickened, fewer with Slowed, never under 0. The Reaction Point is apart. */
 export const turnAP = (base = AP_PER_TURN, { slowed = 0, quickened = 0 } = {}) => Math.max(0, (Number(base) || 0) + (Number(quickened) || 0) - (Number(slowed) || 0));
-/** The Reaction Point a creature has: it is gained when it regains AP at the start of its turn, so none before its first turn of the encounter. */
+/** v0.0.535 (the action economy, Lucas 2026-11-27; Ch. 2, Action Points): the AP a creature regains at the END of its turn: its base (4; a Minion 3)
+ *  less Slowed, never under 0 (the AP left are lost: it regains up to its base, never its base more). Quickened is apart: AP when the turn starts. */
+export const regainAP = (base = AP_PER_TURN, slowed = 0) => Math.max(0, (Number(base) || 0) - (Number(slowed) || 0));
+/** The AP a creature starts an encounter with: its base (Ch. 2: every creature starts an encounter with 4 AP; a Minion 3). */
+export const encounterStartAP = (base = AP_PER_TURN) => Math.max(0, Number(base) || 0);
+/** The Reaction Point a creature has: it is gained when it regains AP at the start of its turn, so none before its first turn of the encounter.
+ *  v0.0.535: the Reaction Point is gone (TWOD12.reactionAp 0); what is left is Tireless Vigil's AP only for [Divine] Reactions. */
 export const reactionAPAt = hadTurn => (hadTurn ? REACTION_AP : 0);
 /** Paying a Reaction (cost N R): the Reaction Point first, then AP kept from the turn. { fromRap, fromAp } (fromAp can be more than the AP there are: the caller checks). */
 export const payReaction = (cost, ap, rap) => { const fromRap = Math.min(Math.max(0, rap), Math.max(0, cost)); return { fromRap, fromAp: Math.max(0, cost - fromRap) }; };
@@ -22,6 +28,9 @@ export const unusedApGuard = (hadTurn, apLeft, stage) => { const unused = hadTur
 export const STRIKES_PER_TURN = 3;
 /** The At-will Bane (Ch. 2, At-will): an At-will Action used again in the same turn takes 1 Bane for each earlier use (no name: it adds up). */
 export const atWillBanes = usesBefore => Math.max(0, Math.trunc(Number(usesBefore)) || 0);
+/** v0.0.535 (the action economy, Lucas 2026-11-27; Ch. 7, Strike): an At-will [Strike] used again in a turn is Doomed (it counts as 5 Banes, Ch. 1),
+ *  in the place of the 1 and 2 Banes; any other At-will Action keeps its Banes. { doomed, banes }. */
+export const atWillRepeat = (usesBefore, strike = true) => { const n = atWillBanes(usesBefore); return strike ? { doomed: n > 0, banes: 0 } : { doomed: false, banes: n }; };
 
 /* ---- Escalation (Ch. 2, Escalation and Momentum) ---- */
 /** The ladder (v0.0.407, Stage 0 in Foundry): Escalation runs 1 to 6 (config.mjs escalation). */
@@ -78,7 +87,8 @@ export const MINION_SQUAD = 2;
  */
 // v0.0.525 (book, Chapter 3, Creatures in your way; Lucas, 2026-11-26: "Agreed on the difficult terrain"): "none": a dead creature doesn't affect
 // movement (pass through its space and end in it), for every mover; down: an Unconscious creature (Difficult Terrain), never one Down and fighting.
-export const creatureWay = ({ drifting = false, unwilling = false, down = false, dead = false } = {}) => (dead ? "none" : drifting ? "pass" : !down && unwilling ? "block" : "dt");
+// v0.0.535 (Lucas, 2026-11-27; book, Chapter 4, Bloodied): a Bloodied creature's space can be passed by anyone, as Difficult Terrain (never ending there)
+export const creatureWay = ({ drifting = false, unwilling = false, down = false, dead = false, bloodied = false } = {}) => (dead ? "none" : drifting ? "pass" : !down && unwilling && !bloodied ? "block" : "dt");
 
 /* ---- Minion ticks (the Bestiary's rebuild, 2026-11-25; book, Bestiary, Ticks; book/cards/goblin-sneak-redesign.md) ---- */
 /** A Minion's ticks when its entry names no other number. */

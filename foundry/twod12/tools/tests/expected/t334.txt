@@ -1,0 +1,33 @@
+--- (1) the AP (Chapter 2, Action Points)
+regained at the end of the turn: healthy 4 | Slowed 1 3 | a Minion 3 | Slowed 5 0
+the encounter's first AP: a PC 4 | a Minion 3 | the Reaction Point (config): 0
+the most AP with Quickened 1 and Slowed 1 (turnAP): 4 | Quickened 2: 6
+the regain is the end of the turn's (combatTurnChange: the prior combatant), once a turn (apRegained), never for one that swapped away: true
+a card's Slowed ends once it has cost its AP (the Down rider's stays): true | the rest of a Dazed is taken from the regain: true
+the turn's start: only Quickened's AP, the Divine-only AP lost: true | no Guard from unspent AP: true
+the end-of-turn line reads 'AP regained': true
+--- (2) the repeated At-will [Strike] (Chapter 7, Strike)
+1st / 2nd / 3rd At-will Strike: {"doomed":false,"banes":0} {"doomed":true,"banes":0} {"doomed":true,"banes":0} | another At-will Action's 2nd: {"doomed":false,"banes":1}
+the roll dialog's chip is Doomed (5 Banes: Boons still meet it): true
+a Reaction in another creature's turn counts toward no repeats: true | on your own turn it counts: true | an Action that isn't a Reaction: true
+--- (3) the moments (moment.mjs)
+new moments: enemyEndsTurn {"who":"enemy"} "An enemy within N ends its turn (after everything at its end)" | selfDowned {"who":"self","downOk":true} "Your damage reaches your Health Pool (you go Down)"
+standing up is not moving: true | 'moves within N' is measured on the squares it left: true
+the triggering creature must be the one you marked (momentMarked): true | momentSplit halve halves the held damage: true
+a Down creature is offered only its own 'reaches its Health Pool': true | the end of a turn opens 'ends its turn': true
+halving 15 Vigor and 1 Resolve (the half taken rounded up): 7 off -> {"B":{"l":8,"n":0},"M":{"l":0,"n":1}}
+--- (4) Strained, Bloodied (Chapter 4)
+a Bloodied enemy's space: passable as Difficult Terrain: dt | a healthy enemy's: block | an ally's: dt
+Speed -2 from Strained (not Bloodied), PC and NPC: true
+--- (5) the cards
+Shield of Faith: turn interrupt strikeDamage 5 marked:judge halve | 1R | The creature you Judged would damage the target with a [Strike] Action.
+Rebuke: turn trigger enemyMoves 3 | 1R | An enemy within 3 squares of you moves.
+Snap Shot: round interrupt enemyAdjacent 0 | 1R | The target would enter a square adjacent to you.
+Slip Away: turn trigger enemyEndsTurn 1 on:source | 1R | An enemy ends its turn adjacent to you.
+Backhand: turn trigger enemyEndsTurn 1 on:source | 1R | An enemy ends its turn adjacent to the ogre.
+Blood for Blood: round trigger selfDamage  on:source | 1R | The target deals Vigor damage to the orc (the blow that makes it Bloodied counts).
+Dying Flare: encounter trigger selfDowned  | 0R | The wisp's damage reaches its Health Pool.
+Goblin Shriek: encounter trigger allyDown 6 on:source | 1R | A Goblin ally goes Down.
+Rebuke's chain: @Damage[1d6![mind,holy]] @Boon[-1|bb:pressure|traits:strike] | Shield of Faith's: @Condition[taunted|rounds:1|to:trigger]
+Hit and Run is gone from the compendium and the pregens: true | Shriek and Scatter renamed: true
+Smite's and Steady Draw's chips cost 1 AP: true

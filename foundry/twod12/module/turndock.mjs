@@ -55,7 +55,7 @@ export function headPips(ap, rap, max, rapMax = 1) {
   if (ap === null || ap === undefined) return "";
   const m = Math.max(1, num(max), num(ap));
   const out = []; for (let i = 0; i < m; i++) out.push(`<i class="${i < num(ap) ? "on" : ""}"></i>`);
-  if (rap !== null && rap !== undefined) {
+  if (rap !== null && rap !== undefined && Math.max(num(rapMax), num(rap)) > 0) {   // v0.0.535: no Reaction Point: a diamond only for Tireless Vigil's AP
     const rm = Math.max(1, num(rapMax), num(rap));
     out.push(`<b class="hsep"></b><i class="r${num(rap) >= 1 ? " on" : ""}"></i>`);   // v0.0.394: a hairline, as the HUD
     for (let i = 1; i < rm; i++) out.push(`<i class="r${i < num(rap) ? " on" : ""}"></i>`);
@@ -119,7 +119,7 @@ export function modelFor(combat, c, { ticks = null, key = null, round = null } =
   const role = String(a?.system?.role ?? "");
   const baseMax = role === "minion" ? 2 : role === "boss" ? 6 : 4;
   const maxAp = Math.max(1, num(c?.getFlag?.(F, "apMax")) || baseMax, num(c?.getFlag?.(F, "ap")));
-  const rapMax = Math.max(1, num(c?.getFlag?.(F, "rapMax")) || (role === "boss" ? 2 : 1), num(c?.getFlag?.(F, "rap")));
+  const rapMax = Math.max(num(c?.getFlag?.(F, "rapMax")), num(c?.getFlag?.(F, "rap")));   // v0.0.535: no Reaction Point by default
   return dockModel({ who: firstName(c?.name ?? ""), round: round ?? combat?.round ?? 0, lines, reacts, live, ticks: ticks ?? ticksAt(combat, c), on: onRows(fx, a?.system ?? {}), apGuard: a?.system?.apGuard ?? 0,
     ap: c?.getFlag?.(F, "ap") ?? null, rap: c?.getFlag?.(F, "rap") ?? null, max: maxAp, rapMax });
 }

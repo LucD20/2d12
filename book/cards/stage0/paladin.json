@@ -120,7 +120,7 @@
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
     "automation": "gold",
-    "automationNote": "the Smite dice by your Escalation (up to 4, 1 more on a Tier 3), d8s against a Profane creature (Judged by you, or the Profane Tag), the Reaction Point for 1 more die (the roll dialog's chip, paid when used).",
+    "automationNote": "the Smite dice by your Escalation (up to 4, 1 more on a Tier 3), d8s against a Profane creature (Judged by you, or the Profane Tag), 1 AP for 1 more die (the roll dialog's chip, paid when used).",
     "version": {
      "diceRule": "smite",
      "tiers": [
@@ -338,16 +338,18 @@
     "automation": "gold",
     "moment": "strikeDamage",
     "momentRange": 5,
-    "automationNote": "offered by itself in the Reactions message when an enemy's Strike would damage an ally within 5 squares (the damage waits); Use reduces that damage by 1 + Pow and Taunts the attacker (1 round).",
+    "automationNote": "offered by itself in the Reactions message when the creature you Judged would damage an ally within 5 squares with a Strike (the damage waits); Use: the ally takes half of it, rounded up (after its Resistance, before reductions and Guard), and the attacker is Taunted by you (1 round).",
     "version": {
-     "after": "@Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger]",
+     "after": "@Condition[taunted|rounds:1|to:trigger]",
      "sub": [
       [
        "@Condition[taunted|rounds:1]",
        "@Condition[taunted|rounds:1|to:trigger]"
       ]
      ]
-    }
+    },
+    "momentMarked": "judge",
+    "momentSplit": "halve"
    }
   },
   {
@@ -377,12 +379,23 @@
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
     "automation": "gold",
-    "moment": "enemyAway",
+    "moment": "enemyMoves",
     "momentRange": 3,
-    "automationNote": "offered by itself in the Reactions message when an enemy within 3 squares moves away from you; Use makes the Appeal Save and the enemy is Hindered (EoT); on a Tier 1 or 2 its Move Action is disrupted: Move back in the Reactions message (to the square it left).",
+    "automationNote": "offered by itself in the Reactions message when an enemy within 3 squares moves (it leaves a square within 3 with its own Move Action; standing up doesn't count); Use: [R] 1d6! Holy on it and 1 Pressure Bane on its next Strike (EoT).",
     "version": {
-     "after": "@Condition[hindered|eot]"
-    }
+     "after": "@Damage[1d6![mind,holy]] @Boon[-1|bb:pressure|traits:strike]",
+     "sub": [
+      [
+       "[R] 1d6! Ho",
+       "@Damage[1d6![mind,holy]]{[R] 1d6! Ho}"
+      ],
+      [
+       "Pressed 1 until it makes a [Strike] Action (EoT)",
+       "@Boon[-1|bb:pressure|traits:strike]{Pressed 1} until it makes a [Strike] Action (EoT)"
+      ]
+     ]
+    },
+    "momentTarget": "subject"
    }
   },
   {
@@ -827,7 +840,7 @@
    "foundry": {
     "img": "icons/svg/eye.svg",
     "automation": "silver",
-    "automationNote": "the second Reaction Point while your Escalation is 4 or more; that it pays only for [Divine] Reactions: by hand.",
+    "automationNote": "the AP only for [Divine] Reactions, gained when you regain AP while your Escalation is 4 or more and lost when your turn starts (the diamond on the HUD); that it pays only for [Divine] Reactions: by hand.",
     "hooks": [
      {
       "kind": "rapMore",

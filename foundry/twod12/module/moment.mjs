@@ -41,7 +41,13 @@ export const MOMENTS = {
   //   allyDown: an ally goes Down (a Trigger), within momentRange, with the Tag momentTag when it names one: Shriek and Scatter
   allyDown: { who: "ally", tag: true },
   //   enemyEnters: an enemy entered a square adjacent to the owner (a Trigger that never moves it back: the mover goes on with what it has left): Backhand
-  enemyEnters: { who: "enemy", move: true, adjacent: true, noBack: true }
+  enemyEnters: { who: "enemy", move: true, adjacent: true, noBack: true },
+  // v0.0.535 (the Reactions rebuilt, Lucas 2026-11-27; book, Chapter 2, Ends Its Turn): an enemy ends its turn within momentRange (1: adjacent), after
+  // everything at the end of that turn (its AP regained: combat.mjs regainAtTurnEnd calls endTurnMoment): Slip Away, Backhand
+  enemyEndsTurn: { who: "enemy" },
+  // v0.0.535 (Dying Flare: "Trigger: The wisp's damage reaches its Health Pool"): the owner's own damage reached its Pool (a Trigger, after the
+  // damage); the owner is Down then, and still offered it (downOk)
+  selfDowned: { who: "self", downOk: true }
 };
 
 /* ------------------------------------------------------------------ pure pieces (tests) */
@@ -299,16 +305,16 @@ export const faceOf = p => {
 const isDown = actor => !!(actor?.system?.atZero || actor?.statuses?.has?.("unconscious") || actor?.statuses?.has?.("dead"));
 
 /** Why this creature can't use this Reaction now ("" when it can): spent, Down, no AP left. */
-export async function blockedWhy(actor, item) {
+export async function blockedWhy(actor, item, { downOk = false } = {}) {
   const f = isFaded(actor, item);
   if (f?.faded) return f.why || "spent";
-  if (isDown(actor)) return "Down";
+  if (isDown(actor) && !downOk) return "Down";
   if (reactionsOff(actor)) return "Staggered: no Reactions";   // v0.0.314 (pack AU; book, Ch. 8): the Reaction Point waits
   try {
     const C = await import("./combat.mjs"), c = game.combat?.started ? C.combatantOf(actor, game.combat) : null;
     if (c) {
       const min = Math.min(...(item.system.versions ?? []).map(v => Number(v.ap) || 0));
-      if (Number.isFinite(min) && C.getAP(c) + C.getRAP(c) < min) return `no AP left (it costs ${min}R)`;
+      if (Number.isFinite(min) && min > 0 && C.getAP(c) + C.getRAP(c) < min) return `no AP left (it costs ${min}R)`;
     }
   } catch (e) { /* no combat module (tests) */ }
   return "";
@@ -357,11 +363,15 @@ export async function collectReactions(ev) {
   const rows = [], blocked = [];
   for (const tk of globalThis.canvas?.tokens?.placeables ?? []) {
     const actor = tk.actor;
-    if (!actor || isDown(actor) || tk.combatant?.isDefeated || tk.combatant?.defeated) continue;   // v0.0.493: defeated/down tokens never trigger Reactions; v0.0.343: a token the GM hid on the map reacts too
+    if (!actor) continue;
+    // v0.0.535: a moment about the owner going Down (selfDowned: Dying Flare) is offered to a creature that is Down, and only that one
+    const downNow = isDown(actor) || tk.combatant?.isDefeated || tk.combatant?.defeated;
+    if (downNow && !ev.kinds.some(k => MOMENTS[k]?.downOk)) continue;   // v0.0.493: defeated/down tokens never trigger Reactions; v0.0.343: a token the GM hid on the map reacts too
     if (ev.source?.actor && actor.uuid === ev.source.actor.uuid) continue;   // never a Reaction to your own Strike or move
     for (const item of actor.itemTypes?.action ?? []) {
       const k = item.system?.moment, def = MOMENTS[k];
       if (!def || !item.system.reaction || !ev.kinds.includes(k)) continue;
+      if (downNow && !def.downOk) continue;
       const kind = item.system.reactionKind === "interrupt" ? "interrupt" : "trigger";
       if (ev.only && kind !== ev.only) continue;
       if (ev.filter && !ev.filter.has(`${actor.uuid}|${item.id}`)) continue;
@@ -399,6 +409,13 @@ export async function collectReactions(ev) {
       if (!hit) continue;
       // v0.0.426 (the audit; book, Shield of Faith, Bulwark of Faith: "An enemy's [Strike] Action would damage the target"): not an ally's Strike
       if (k === "strikeDamage" && ev.source?.actor && !sideOk("enemy", tk.document?.disposition, ev.source.token?.document?.disposition ?? ev.source.disposition, false)) continue;
+      // v0.0.535 (Shield of Faith: "The creature you Judged would damage the target"): the triggering creature must be the one this creature marked
+      const MK = String(item.system.momentMarked ?? "").trim();
+      if (MK) {
+        const trigC = def.move || def.who === "enemy" && !ev.source?.actor ? hit.sj : ev.source;
+        let m = ""; try { m = (await import("./mark.mjs")).markOf(actor, MK)?.uuid ?? ""; } catch (e) { m = ""; }
+        if (!m || !trigC || ![trigC.token?.document?.uuid, trigC.token?.uuid, trigC.actor?.uuid].includes(m)) continue;
+      }
       const target = item.system.momentTarget === "source" && ev.source?.actor ? ev.source : hit.sj;
       const sq = squaresOf(item.system.distance);   // a Distance in squares limits how far the target can be (Rebuke: 5 sq.)
       // v0.0.426 (the audit: Rebuke wasn't offered when the enemy ended its move more than 3 squares away): a movement's target is measured on the
@@ -412,7 +429,7 @@ export async function collectReactions(ev) {
       const trig = def.move || !ev.source?.actor ? hit.sj?.actor : ev.source.actor;
       const feintBy = trig?.uuid && reactionsOffVs(actor, trig.uuid) ? trig : null;
       // v0.0.410 (book, A Reaction's Target): Line of Effect to the target, and the target and the triggering creature perceived (Hidden is enough)
-      const why = (feintBy ? `Feinted: no Reactions vs. ${cleanName(feintBy.name)}` : "") || (await reactionSight(tk, target.token ?? null, ev.source?.token ?? null)) || await blockedWhy(actor, item);
+      const why = (feintBy ? `Feinted: no Reactions vs. ${cleanName(feintBy.name)}` : "") || (await reactionSight(tk, target.token ?? null, ev.source?.token ?? null)) || await blockedWhy(actor, item, { downOk: !!def.downOk });
       if (why) blocked.push({ ...row, why }); else rows.push(row);
     }
   }
@@ -986,12 +1003,15 @@ export async function damageMoment(actor, a, from, reaches, { shared = false } =
   const res = await openMoment({ kinds, subjects: [subject], source, only: "interrupt", hold: true, plain, lead: plain, base });
   const half = (res.used ?? []).find(u => u.ok && u.half && (!source || !u.half.targetUuid || [source.actor.uuid, source.token?.document?.uuid].includes(u.half.targetUuid)));
   // pack TALENTS-PT: a Reaction used whose setting momentSplit is "half" (Bear the Blow) splits the held damage with its user (share.mjs)
-  let split = null;
+  // v0.0.535 (Shield of Faith: "The target takes half of that damage"): momentSplit "halve": the held damage is halved, rounded up (damage.mjs halveHeld,
+  // before the reductions and the Guard; the Resistance is already counted in it)
+  let split = null, halveBy = "";
   for (const u of (res.used ?? []).filter(x => x.ok)) {
     let it = null; try { const d = await fromUuid(u.actorUuid); it = (d?.documentName === "Actor" ? d : d?.actor)?.items?.get?.(u.itemId) ?? null; } catch (e) { it = null; }
-    if (it?.system?.momentSplit === "half") { split = { actorUuid: u.actorUuid, by: it.name, mode: "half" }; break; }
+    if (it?.system?.momentSplit === "halve" && !halveBy) halveBy = it.name;
+    if (it?.system?.momentSplit === "half" && !split) split = { actorUuid: u.actorUuid, by: it.name, mode: "half" };
   }
-  return { half: !!half, halfBy: half?.half?.source ?? "", id: res.id ?? "", gained: res.id ? Math.max(0, protectionOf(actor) - before) : 0, never: !!res.never, split };
+  return { half: !!half || !!halveBy, halfBy: halveBy || (half?.half?.source ?? ""), id: res.id ?? "", gained: res.id ? Math.max(0, protectionOf(actor) - before) : 0, never: !!res.never, split };
 }
 /** The damage would take the creature to its Pool: the "would go Down" Interrupts. Resolves to { saved (one was used: the damage stops 1 under the Pool), id, never }. */
 export async function downMoment(actor, a, from) {
@@ -1053,12 +1073,30 @@ export function landedMoment(actor, dealt, from, wentDown, extra = {}) {
   // "an ally goes Down" (allyDown)
   const kinds = [...(dealt > 0 && from?.strike ? ["strikeDamage"] : []), ...(dealt > 0 ? ["allyDamage", "selfDamage"] : []), ...(wentDown ? ["wouldDown", "allyDown"] : [])];
   if (!kinds.length) return;
+  // v0.0.535 (Dying Flare): the owner's damage reached its Pool: its own Trigger, offered before the others (a Down creature, alone: collectReactions)
+  if (wentDown) (async () => {
+    const subject = party(actor), source = await sourceOf(from), plain = `<b>${nameOf(subject)}</b>'s damage reaches its Health Pool`;
+    const base = { kind: "landed", label: "Down", face: faceOf(source ?? subject), target: faceOf(subject), dealt };
+    await openMoment({ kinds: ["selfDowned"], subjects: [subject], source, only: "trigger", plain, lead: plain, base });
+  })().catch(e => console.warn("twod12 | Reactions", e));
   (async () => {
     const source = await sourceOf(from), subject = party(actor);
     const plain = wentDown ? `<b>${nameOf(subject)}</b> goes Down` : `<b>${nameOf(subject)}</b> takes <b>${dealt}</b> damage${source ? ` from <b>${nameOf(source)}</b>` : ""}`;
     const base = { kind: "landed", label: wentDown ? "Down" : from?.strike ? "Strike" : "Damage", face: faceOf(source ?? subject), target: faceOf(subject), dealt, msgId: lastCardId(m => !!(m.getFlag?.(F, "ccDmg") || m.getFlag?.(F, "dmgCard"))) };   // v0.0.347: the damage card (reprinted after the chain)
     await openMoment({ kinds, subjects: [subject], source, only: "trigger", plain, lead: plain, base, pools: extra.pools ?? null, state: extra.state ?? null });
   })().catch(e => console.warn("twod12 | Reactions", e));
+}
+/**
+ * v0.0.535 (the Reactions rebuilt; book, Chapter 2, Ends Its Turn): a creature ended its turn, after everything at its end (combat.mjs calls it once
+ * the AP are regained): the Triggers "an enemy ends its turn within N" (Slip Away, Backhand: N 1, adjacent). Nothing waits on it.
+ */
+export async function endTurnMoment(actor) {
+  if (!actor) return;
+  const subject = party(actor);
+  if (!subject?.token) return;
+  const plain = `<b>${nameOf(subject)}</b> ends its turn`;
+  const base = { kind: "turnend", label: "Ends its turn", face: faceOf(subject) };
+  await openMoment({ kinds: ["enemyEndsTurn"], subjects: [subject], source: subject, only: "trigger", plain, lead: plain, base });
 }
 /** A Strike was made (useAction, after its card): "a Strike is made against an ally". A Trigger: nothing waits. */
 export function strikeMoment(actor, targets) {
@@ -1142,6 +1180,7 @@ const pendingOn = new Set(); // v0.0.279: a Reaction already waiting on an open 
 /** Pure (v0.0.495, fix-rx-order-dead): is this creature dead, defeated, or Unconscious (moving its body should not trigger combat Reactions)? */
 export const isInertMover = (actor, cbt = null, doc = null) => !!(cbt?.isDefeated || cbt?.defeated || actor?.statuses?.has?.("dead") || actor?.statuses?.has?.("unconscious") || doc?.hasStatusEffect?.("dead") || (actor?.type === "npc" && isDown(actor)));
 /** A creature moved (not an Evade, not a Forced Movement): "an enemy moves closer" and "an enemy moves (or stands up)". */
+// v0.0.535 (book, Chapter 2, Moving Within N Squares): standing up leaves no square, so it triggers no movement moment (kinds [] when stand)
 export function moveMoment(doc, origin, dest, { stand = false, before = null, waypoints = null } = {}) {
   (async () => {
     const actor = doc?.actor;
@@ -1160,7 +1199,7 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const sqs = movePlaces(waypoints?.length ? waypoints : [fromAt, toAt], gsz, size);
     const left = stand ? [fromAt] : (sqs.length > 1 ? sqs.slice(0, -1) : [fromAt]), entered = sqs.length > 1 ? sqs.slice(1) : [toAt];
     const ev = {
-      kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves", "enemyAway", "enemyAdjacent", "enemyEnters"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered, enemyAway: left, enemyAdjacent: entered, enemyEnters: entered },
+      kinds: stand ? [] : ["enemyCloser", "enemyMoves", "enemyAway", "enemyAdjacent", "enemyEnters"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered, enemyAway: left, enemyAdjacent: entered, enemyEnters: entered },
       adjacent: tk => entered.some(e => tokenDistance(e, tk) <= 1),
       closer: tk => sideToks(tk.document.disposition).some(s => closerStep(sqs.length > 1 ? sqs : [fromAt, toAt], q => tokenDistance(q, s))),   // v0.0.520 (B1-038): square by square
       // v0.0.409 (Rebuke): a step of its path that ends farther from this creature than the square it left

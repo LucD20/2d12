@@ -1,5 +1,5 @@
 Save damage: 1d8 Fi -> 1d8 Fi | [B] 1d8 Fi -> 1d8 B Fi | [M] 2d6 Ho -> 2d6 M Ho | 1d4 Fire -> 1d4 Fi | 1d8[body,fire] -> 1d8 B Fi | 2d6 -> 2d6
-Quickened 1 + Slowed 2: regain 3 most 3 | Desperate rider Slowed 1: regain 3
+Quickened 1 + Slowed 2: regain 2 most 3 | Desperate rider Slowed 1: regain 3
 desperate + other Slowed none -> Slowed 1 (Desperate)
 dying + other Slowed 1 -> Slowed 2 (Dying)
 shattered + other Slowed 2 -> Slowed 3 (Shattered)

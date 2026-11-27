@@ -13,7 +13,7 @@ Heal: 3d6+pow {"s2":"4d6+pow","s3":"6d6+pow"} allies | the Stage's formula: 3d6+
 texts: 3d6 + Pow | twice a Rally Point's heal | three times a Rally Point's heal | with Pow 3: 1 Rally Point (+1d6+3) | Heal 3d6+2 | none: Heal 3d6 + Pow
 --- the cards
 Lay On Hands: 1 AP: The target gains @Guard[2+pow]{Guard 2 + Pow}. | 2 AP: The target gains @Guard[2+pow]{Guard 2 + Pow} and can use @Rally[1]. | rank: silver
-Shield of Faith: That damage is reduced by @Reduce[1+pow]{1 + Pow}, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). | after: @Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger]
+Shield of Faith: The target takes half of that damage, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). | after: @Condition[taunted|rounds:1|to:trigger]
 Bulwark of Faith: 1R: The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. || @Guard[rally] @Pause[After the damage] @Move[slid|distance:1]
 Mithril cards: Brawler, Aim | the tracker lists them: true
 no 'until the end / start of X turn' left in the cards: true

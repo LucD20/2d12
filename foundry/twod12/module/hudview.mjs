@@ -25,11 +25,12 @@ export function apSquares({ ap = 0, max = 4, slowed = 0 } = {}) {
 }
 export function marksHtml(m = {}) {
   // a filled mark is one still there: an AP, the Reaction Point, a Strike left this turn (as the carousel always drew them)
-  const sq = apSquares(m), rapMax = Math.max(1, n0(m.rapMax ?? 1), n0(m.rap)), sMax = n0(m.strikeMax ?? 3) || 3, left = Math.max(0, sMax - n0(m.strikes));
+  // v0.0.535 (the action economy, Lucas 2026-11-27): no Reaction Point: the diamonds show only the AP only for [Divine] Reactions (Tireless Vigil), when it has any
+  const sq = apSquares(m), rapMax = Math.max(n0(m.rapMax ?? 0), n0(m.rap)), sMax = n0(m.strikeMax ?? 3) || 3, left = Math.max(0, sMax - n0(m.strikes));
   const squares = `<span class="hm-ap">${sq.map(c => `<i${c ? ` class="${c}"` : ""}></i>`).join("")}</span>`;
-  const diamonds = `<span class="hm-r">${Array.from({ length: rapMax }, (_, k) => `<i${k < n0(m.rap) ? ' class="on"' : ""}></i>`).join("")}</span>`;
+  const diamonds = rapMax ? `<span class="hm-r">${Array.from({ length: rapMax }, (_, k) => `<i${k < n0(m.rap) ? ' class="on"' : ""}></i>`).join("")}</span>` : "";
   const slashes = m.showStrikes === false ? "" : `<b class="hm-sep"></b><span class="hm-sk">${Array.from({ length: sMax }, (_, k) => `<i${k < left ? ' class="on"' : ""}></i>`).join("")}</span>`;
-  return `<span class="hm">${squares}<b class="hm-sep"></b>${diamonds}${slashes}</span>`;
+  return `<span class="hm">${squares}${diamonds ? `<b class="hm-sep"></b>${diamonds}` : ""}${slashes}</span>`;
 }
 /** Escalation ticks (max from the system's config: 3 today, 6 once Foundry follows the book). */
 export const escHtml = (n, max) => `<span class="hm-esc">${Array.from({ length: n0(max) }, (_, k) => `<i${k < n0(n) ? ' class="on"' : ""}></i>`).join("")}</span>`;

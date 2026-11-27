@@ -30,7 +30,7 @@ console.log("setStackOrder refuses Trigger before Interrupt:", M.setStackOrder(m
 console.log("rxoverlay pinNumbers keeps Interrupt #1:", JSON.stringify([...RX.pinNumbers({ rows: mix }).entries()]));
 const mo = src("module/moment.mjs");
 console.log("collectReactions skips defeated/down & sorts Interrupt first:",
-  mo.includes("if (!actor || isDown(actor) || tk.combatant?.isDefeated || tk.combatant?.defeated) continue;")
+  mo.includes("const downNow = isDown(actor) || tk.combatant?.isDefeated || tk.combatant?.defeated;") && mo.includes("if (downNow && !def.downOk) continue;")
   && mo.includes("rows.sort((x, y) => (kindRank(x) - kindRank(y)) || (x.dist - y.dist));"));
 
 // 2. rally.mjs + damage.mjs: Lay On Hands @Rally targets card target / prompts

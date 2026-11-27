@@ -28,9 +28,9 @@ console.log("wired: asked before the damage roll, a Tier with no damage too:", s
 
 console.log("--- Bloodied: Steadiness below 0 (move.mjs steadyValue), Speed −2 (data.mjs)");
 console.log("Pushed 2 vs Steadiness 1:", MV.steadyValue(2, 1), "| vs -1:", MV.steadyValue(2, -1), "| a Reposition 2 vs -1:", MV.steadyValue(2, -1, "reposition"), "| Pushed 1 vs 2:", MV.steadyValue(1, 2));
-console.log("Speed −2 with Exhausted's, before halving:", src("module/data.mjs").includes("minus: (this.exhausted > 0 ? this.exhausted : 0) + (this.bloodied ? 2 : 0)") && src("module/data.mjs").includes("minus: this.bloodied ? 2 : 0"),
+console.log("Strained (v0.0.535: was Bloodied): Speed −2 with Exhausted's, before halving:", src("module/data.mjs").includes("minus: (this.exhausted > 0 ? this.exhausted : 0) + (this.strained ? 2 : 0)") && src("module/data.mjs").includes("minus: this.strained ? 2 : 0"),
   "| Steadiness −1 below 0:", src("module/defense.mjs").includes('if (actor?.system?.bloodied) parts.push({ name: "Bloodied", bonus: -1 });'));
-console.log("Strained: no Reaction Point at the start of the turn:", src("module/combat.mjs").includes("export const rapAtRegain = c => (c?.actor?.system?.strained ? getRAP(c) : rapMaxOf(c));"));
+console.log("v0.0.535: Strained no longer touches the Reaction AP:", src("module/combat.mjs").includes("export const rapAtRegain = c => rapMaxOf(c);"), "| a Bloodied creature's space is Difficult Terrain:", src("module/roundrules.mjs").includes('!down && unwilling && !bloodied ? "block" : "dt"'));
 
 console.log("--- the Bloodied / Strained lines (statelines.mjs stateLinesFor)");
 const L = { bloodied: "after-B", strained: "after-S", bloodiedBefore: "before-B", strainedBefore: "" };

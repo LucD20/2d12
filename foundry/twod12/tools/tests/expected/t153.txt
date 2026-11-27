@@ -1,5 +1,5 @@
 Paladin: Repertoire Bulwark of Faith, Consecrated Ground, Word of Radiance | Passives  | Actives 
-Archer: Repertoire Volley, Hit and Run, Covering Fire | Passives  | Actives 
+Archer: Repertoire Volley, Covering Fire | Passives  | Actives 
 the book's Talents: 15
   Challenge          ok combat 1
   Heavy Blows        ok combat 1 | Great Weapon | settings bonusdamage

@@ -36,7 +36,7 @@ console.log("Relocate is no Strike:", !B.relocate.traits.includes("strike"), "| 
 const A = await import(ROOTURL + "module/actions.mjs");
 console.log("Advance still moves at once (a book link is no button):", A.pureMove({ traits: new Set(B.advance.traits) }, B.advance.versions[0], "advance"));
 const card = n => [...C.docs, ...(C.actors ?? []).flatMap(a => a.items ?? [])].find(d => d.name === n && d.type === "action")?.system ?? {};
-console.log("Drawing Light: engagedOk", card("Drawing Light").engagedOk, "| Slip Away: no Distance", JSON.stringify(card("Slip Away").distance), "| War Howl's Tier 2:", card("War Howl").versions?.[0]?.t2?.[0]?.dice, "| Shriek and Scatter:", card("Shriek and Scatter").distance, "/", card("Shriek and Scatter").targets);
+console.log("Drawing Light: engagedOk", card("Drawing Light").engagedOk, "| Slip Away: no Distance", JSON.stringify(card("Slip Away").distance), "| War Howl's Tier 2:", card("War Howl").versions?.[0]?.t2?.[0]?.dice, "| Goblin Shriek:", card("Goblin Shriek").distance, "/", card("Goblin Shriek").targets);
 
 console.log("--- 3. rolls");
 const trip = { traits: new Set(["body", "handle", "instinct"]) }, attrs = { body: 1, instinct: 3 };

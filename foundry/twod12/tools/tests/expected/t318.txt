@@ -37,11 +37,11 @@ the flanking Requirement (a warning): true
 a Line written the book's way: {"size":3,"shape":"line","within":0,"targets":"all","center":false,"keep":false,"rounds":0}
 --- the creatures
 Goblin Sneak: minion | ratings custom/custom | custom {"body":0,"mind":0,"appeal":-1,"instinct":2,"bodyHealth":0,"mindHealth":0,"weapon":2,"power":2} | AD 13 WD 12 | Speed 6 | ticks 2 tags ["goblin"]   | goblin-sneak.png
-    Shiv:gold, Jeer:gold, Knife in the Back:gold, Shriek and Scatter:gold(allyDown)
+    Shiv:gold, Jeer:gold, Knife in the Back:gold, Goblin Shriek:gold(allyDown)
 Grave Wisp: grunt | ratings custom/custom | custom {"body":-1,"mind":2,"appeal":0,"instinct":1,"bodyHealth":8,"mindHealth":14,"weapon":2,"power":2} | AD 12 WD 14 | Speed 6 |   Resistance Psychic 3, Weakness Holy 3, Immunity Cold  | grave-wisp.png
-    Drifting:gold, Slipping Touch:gold, Guttering Glance:gold, Pass Through:silver, Dying Flare:gold(selfDown)
+    Drifting:gold, Slipping Touch:gold, Guttering Glance:gold, Pass Through:silver, Dying Flare:gold(selfDowned)
 Orc Warrior: standard | ratings custom/custom | custom {"body":2,"mind":-1,"appeal":1,"instinct":1,"bodyHealth":28,"mindHealth":17,"weapon":2,"power":2} | AD 13 WD 13 | Speed 5 |     | orc-warrior.png
     Hamstringing Axe:gold, Barbed Javelin:gold, War Howl:gold, Blood for Blood:gold(selfDamage), Cornered:gold
 Ogre Chieftain: elite | ratings custom/custom | custom {"body":3,"mind":-1,"appeal":1,"instinct":1,"bodyHealth":55,"mindHealth":35,"weapon":2,"power":2} | AD 14 WD 12 | Speed 5 |  tags ["ogre"]  Reach 2 Steadiness 1 Size 4 | ogre-chieftain.png
-    Crushing Grip:silver, Roar:gold, Great Sweep:gold, Hurled Goblin:silver, Crack the Ground:gold, Backhand:gold(enemyEnters)
+    Crushing Grip:silver, Roar:gold, Great Sweep:gold, Hurled Goblin:silver, Crack the Ground:gold, Backhand:gold(enemyEndsTurn)
 the old cards out of the packs, kept as fixtures: true

@@ -15,9 +15,9 @@ Sharpshooter: Choose your Hallmark Action: Double Shot or Rolling Shot. Choose o
 Marked Quarry (the Mark Quarry Action's rules since v0.0.360): At the start of each encounter, choose one enemy as your Marked Quarry with this Action. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time.
 Harrying Shots: Archer Escalation | While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they take 1 Bane on [Strike] Actions (EoT). (Apply the Harried effect from the compendium.)
 Level 1: Attribute increases (attr) | Features (items granted): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot | Hallmark Action (items): Quick Shots, Strafe | Hallmark Reaction (items): Slip Away, Snap Shot | Skill Talent (talent)
-Level 2: Escalation Hook (items granted): Thrill of the Kill | Encounter Pick (items): Volley, Hit and Run, Covering Fire | Talent (talent)
+Level 2: Escalation Hook (items granted): Thrill of the Kill | Encounter Pick (items): Volley, Covering Fire | Talent (talent)
 Level 3: Skill Talent (talent)
 Level 4: Stage Talent (talent)
-Repertoire: Volley, Hit and Run, Covering Fire | Escalation:  / 
+Repertoire: Volley, Covering Fire | Escalation:  / 
 Shot needs a Projectile weapon: true | a Weapon Action with one is a Shot: true
 Mastery tab: no Techniques option (v0.0.213) true | Bow Mastery choice (Sharpshooter gives it) true | tab for every character false

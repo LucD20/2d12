@@ -1,6 +1,6 @@
 --- the chain as steps
 every chain of the compendium reads and writes back unchanged: true
-Rebuke: After the damage: the target is Hindered until the end of their turn.
+Rebuke: After the damage: Damage 1d6![mind,holy]. After the damage: Boon -1.
 Word of Radiance: After the damage: the others in the area, one by one are Pushed 3 (Tier 1), 2 (Tier 2), 1 (Tier 3), away from the area's center.
 Marksman's Shot: On a Tier 3: the target is Vulnerable 2 until the end of their turn. On a Critical: the target is Blinded until the end of their turn.
 a bare option kept: @Condition[vulnerable|value:2|eot|tier:3] | its label: Vulnerable 2 (EoT) | an unknown option kept: @Move[pushed|distance:2|terrain:ignore|foo:bar]
@@ -19,10 +19,10 @@ v0.0.358: the Tiers as four switches: 1:|on:1 2:|on:2 3:|tier:3 12:|on:1,2 23:|t
 the same Push on every Tier is one distance: @Move[pushed|distance:1]
 --- the order of events
 Bulwark of Faith: Interrupt > Pay 1 AP (R) > One ally > Guard rally* > Pause: After the damage* > Slid 1*
-Rebuke: Trigger > Pay 1 AP (R) > One enemy > The target's Save > The damage > Hindered (EoT)*
+Rebuke: Trigger > Pay 1 AP (R) > The triggering creature > Damage 1d6![mind,holy]* > Boon -1*
 Covering Fire: On your turn > Pay 2 AP > Place the area > Covering Fire
 --- the tab
-renders for every Action: true 143 | failures: none
+renders for every Action: true 142 | failures: none
 Word of Radiance: 1 Version tab: 1 | its Tier fields: 3 | "On a Tier 1 or 2": false | 2 steps: 1 | Fill: true | the chain isn't a text field: true
 Covering Fire: "On use": true | the area's size and rounds on the Version: true | Who set by the Zone: true
 every Tier's damage reads back from its text: true

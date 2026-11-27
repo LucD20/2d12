@@ -10,8 +10,8 @@ console.log("Vow of Enmity 2 AP:", tiers("Vow of Enmity", 2), "|| 3 AP:", tiers(
 console.log("Champion's Challenge 2 AP:", tiers("Champion's Challenge", 2));
 console.log("Hallowed Stance:", get("Hallowed Stance").system.description.replace(/<[^>]+>/g, ""));   // v0.0.409 (pack F2): the redesigned card
 const vs = n => { const d = get(n); return G.vsText({ ...d.system, traits: new Set(d.system.traits) }) || "(none)"; };
-// v0.0.409 (pack F2): the redesigned Rebuke and Word of Radiance are Appeal Saves; Binding Light AD
-const book = { "Smite": "AD", "Vow of Enmity": "WD", "Rebuke": "Appeal Save", "Binding Light": "AD", "Champion's Challenge": "WD", "Word of Radiance": "Appeal Save", "Divine Retribution": "AD (Weapon mode) or WD (Power mode)", "Judgment": "WD", "Whirlwind": "AD", "Cut Through": "AD", "Pummel": "AD", "Leg Sweep": "AD" };
+// v0.0.409 (pack F2): the redesigned Rebuke and Word of Radiance are Appeal Saves; Binding Light AD; v0.0.535: Rebuke has no roll (damage and Pressed)
+const book = { "Smite": "AD", "Vow of Enmity": "WD", "Rebuke": "(none)", "Binding Light": "AD", "Champion's Challenge": "WD", "Word of Radiance": "Appeal Save", "Divine Retribution": "AD (Weapon mode) or WD (Power mode)", "Judgment": "WD", "Whirlwind": "AD", "Cut Through": "AD", "Pummel": "AD", "Leg Sweep": "AD" };
 const bad = Object.entries(book).filter(([n, v]) => vs(n) !== v).map(([n, v]) => `${n}: ${vs(n)} (book ${v})`);
 console.log("Vs. entries as in the book:", bad.length ? bad.join(" | ") : "all " + Object.keys(book).length + " match");
 console.log("no-roll cards have no Vs.:", ["Lay On Hands", "Shield of Faith", "Sacred Weapon", "Bulwark of Faith", "Judge", "Consecrated Ground", "Hold the Line", "Precise Aim"].every(n => vs(n) === "(none)"));

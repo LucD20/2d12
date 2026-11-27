@@ -591,7 +591,7 @@ export const downTok = t => !deadTok(t) && !!t?.actor?.statuses?.has?.("unconsci
  * creature's space is never Difficult Terrain for it"): a Feature hook on the creature, { kind: "drift" } (a setting anyone can remove).
  */
 export const isDrifting = actor => { try { return [...(actor?.items ?? [])].some(i => (i.system?.hooks ?? []).some(h => h?.kind === "drift")); } catch (e) { return false; } };
-export const wayKind = (t, doc) => creatureWay({ drifting: isDrifting(doc?.actor), unwilling: (t?.document?.disposition ?? 0) !== (doc?.disposition ?? 0), down: downTok(t), dead: deadTok(t) });
+export const wayKind = (t, doc) => creatureWay({ drifting: isDrifting(doc?.actor), unwilling: (t?.document?.disposition ?? 0) !== (doc?.disposition ?? 0), down: downTok(t), dead: deadTok(t), bloodied: !!t?.actor?.system?.bloodied });   // v0.0.535: a Bloodied creature's space
 /** An enemy that blocks (unwilling and not Down) in a square, for the diagonal between two of them (book: blocked); none for a drifting mover. */
 const blockerIn = (cell, doc) => { if (isDrifting(doc?.actor)) return null; const t = unwillingIn(cell, doc); return t && !downTok(t) && !deadTok(t) ? t : null; };
 

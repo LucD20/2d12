@@ -1,6 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t272.mjs)
 // v0.0.429 (pack CARD-ONE step 6, the differences t260 listed): Foundry's cards have the book's lines in the book's order, all 48: an Effect the
-// card writes above the roll stays there (Rebuke, Reckoning, Hit and Run: load.mjs effectFirst, cardmodel.mjs), only the Tiers the card writes
+// card writes above the roll stays there (Snap Shot since v0.0.535, Reckoning; Rebuke and Hit and Run before: load.mjs effectFirst, cardmodel.mjs), only the Tiers the card writes
 // (Circling Shot, Trick Shots' Knock Back: no Tier 1 line; tiersWritten), a Basic Action's rules and notes as its Special lines (Weapon Attack,
 // Steel Yourself: cardgen.mjs, basic.mjs). The attack chat card draws such an Effect once.
 import fs from "node:fs";
@@ -10,7 +10,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const all = [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name)), ...C.pcs.flatMap(a => a.items ?? [])];
 const card = n => all.find(x => x.name === n && x.type === "action");
 const v0 = n => card(n).system.versions[0];
-console.log("Effect above the roll:", ["Rebuke", "Reckoning", "Hit and Run"].map(n => `${n} ${!!v0(n).effectFirst}`).join(", "));
+console.log("Effect above the roll:", ["Snap Shot", "Reckoning"].map(n => `${n} ${!!v0(n).effectFirst}`).join(", "));
 console.log("Tiers written:", `Circling Shot ${v0("Circling Shot").tiersWritten}`, `| Knock Back ${card("Trick Shots").system.versions.find(v => v.mode === "Knock Back")?.tiersWritten}`, `| Basic Attack ${v0("Basic Attack").tiersWritten ?? "(all)"}`);
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
 console.log("Basic Actions' Specials:", `Basic Attack ${JSON.stringify(BASIC_ACTIONS.basicWeaponAttack.lines?.map(l => l.label))}`, `| Steel Yourself special ${!!BASIC_ACTIONS.rally.special}`);

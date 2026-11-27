@@ -96,7 +96,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     this.mdt = Math.max(0, mdtFull - 4 * (this.exhausted ?? 0));   // Exhausted: - 4 x value
     deriveHealth(this);
     // the core rework batch 2 (book, Chapter 4, Bloodied): Speed −2 (minimum 1, with Exhausted's, before halving); Steadiness −1 (it can go below 0: defense.mjs steadinessOf)
-    this.moveSpeed = applySpeedMods(this.parent, this.speed, { minus: (this.exhausted > 0 ? this.exhausted : 0) + (this.bloodied ? 2 : 0) });
+    // v0.0.535 (Lucas, 2026-11-27): the Speed −2 moved from Bloodied to Strained (minimum 1); Bloodied keeps its Steadiness −1 and opens its space (roundrules.mjs creatureWay)
+    this.moveSpeed = applySpeedMods(this.parent, this.speed, { minus: (this.exhausted > 0 ? this.exhausted : 0) + (this.strained ? 2 : 0) });
 
     this.rallyHeal = Math.ceil((this.bdt + mdtFull) / 4);   // Rally Points use the Health Pool before Exhausted lowers Resolve
     // v0.0.243 (pack R; book, Rally Points): the class's Rally value + 1 / 2 / 3 / 4 by Stage (v0.0.407: Stages 0 to 3).
@@ -332,7 +333,7 @@ export class NpcData extends CharacterData {
     this.wounds = 0;
     this.reach = Math.max(1, Number(this.reachBase) || 1);   // the stat block's Reach (edited in the sidebar)
     this.steadiness = Math.max(0, Number(this.steadiness) || 0);
-    this.moveSpeed = applySpeedMods(this.parent, this.speed, { minus: this.bloodied ? 2 : 0 });   // the core rework batch 2: Bloodied, Speed −2 (minimum 1)
+    this.moveSpeed = applySpeedMods(this.parent, this.speed, { minus: this.strained ? 2 : 0 });   // v0.0.535: Strained, Speed −2 (minimum 1); Bloodied no longer
     // NPCs do not use the Dying and Shattered tables: at 0 HP they die with more lethal damage, or fall unconscious with more nonlethal.
     if (this.atZero) this.zeroState = this.lethal > this.nonlethal ? "Dead (more Lethal damage)" : (this.nonlethal > this.lethal ? "Unconscious (more Nonlethal damage)" : "Dead or Unconscious (the GM chooses)");
     // v0.0.527 (Lucas, 2026-11-26: "Lets remove this rule"; book, Rally Points: "NPCs have no Rally Points"): none, and none an Action can let it
@@ -537,7 +538,8 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       structure: bool(), lines: new ArrayField(new SchemaField({ label: str(), text: str() })), special: str(),
       // pack TALENTS-PT: momentSplit "half":
       // used for its moment, the held damage is split with its user, half (rounded up, each damage type on its own) to the user (share.mjs)
-      momentSplit: choice({ "": "None", half: "Half to you (rounded up)" }, ""),
+      momentSplit: choice({ "": "None", half: "Half to you (rounded up)", halve: "The creature takes half (rounded up)" }, ""),   // v0.0.535 (Shield of Faith): halve
+      momentMarked: str(),   // v0.0.535 (Shield of Faith: "The creature you Judged would damage..."): the triggering creature must be the one you marked with this kind ("judge")
       marksTarget: bool(), markKind: str(),   // v0.0.409 (pack F2): "judge": the mark is Judged (Judge: it counts as Profane for its marker)
       basicAttack: bool(),   // v0.0.216 (Lucas): an NPC's Basic attack: used when an Action calls for a Weapon Attack (NPCs have none)
       basicRating: choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "medium"),   // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating (the Bestiary's suggested average; the dice stay the GM's)

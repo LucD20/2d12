@@ -166,9 +166,11 @@ export const TWOD12 = {
   },
   // v0.0.261 (Lucas, Divine Intervention): the moment a Reaction watches for by itself ("would go Down": asked before the damage lands)
   // v0.0.272 (pack RX, Lucas): the first set of moments. "Within N" is measured to the creature the moment is about (the ally, the enemy who moves).
-  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves or stands up", enemyAway: "An enemy within N moves away from you", enemyAdjacent: "An enemy within N would enter a square adjacent to you", boundDamage: "An Action would damage the creature you marked (your Bound Ally) within N",
+  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves (it leaves a square within N; standing up is not moving)", enemyAway: "An enemy within N moves away from you", enemyAdjacent: "An enemy within N would enter a square adjacent to you", boundDamage: "An Action would damage the creature you marked (your Bound Ally) within N",
     // the Bestiary's rebuild (2026-11-25): four moments the playtest creatures need (moment.mjs MOMENTS)
-    selfDamage: "You take damage (of a pool, while in a state)", selfDown: "You would go Down", allyDown: "An ally within N goes Down (with a Tag)", enemyEnters: "An enemy within N enters a square adjacent to you (it isn't moved back)" },   // pack TALENTS-PT: Bear the Blow
+    selfDamage: "You take damage (of a pool, while in a state)", selfDown: "You would go Down", allyDown: "An ally within N goes Down (with a Tag)", enemyEnters: "An enemy within N enters a square adjacent to you (it isn't moved back)",
+    // v0.0.535 (the Reactions rebuilt, Lucas 2026-11-27): Slip Away and Backhand; Dying Flare as a Trigger
+    enemyEndsTurn: "An enemy within N ends its turn (after everything at its end)", selfDowned: "Your damage reaches your Health Pool (you go Down)" },   // pack TALENTS-PT: Bear the Blow
   // v0.0.272: whom the Reaction is used on when its moment comes ("the triggering creature" of the card)
   momentTargets: { subject: "The creature of the moment (the ally, the enemy who moves)", source: "The creature that caused it (the attacker)" },
   // v0.0.264 (Lucas): a Grant's "On [a result], [what happens]": the result, and what happens (the target's next damage halved, or a line on the card)
@@ -325,7 +327,7 @@ export const TWOD12 = {
   vsBase: 11,   // the core rework A7 (Lucas, 2026-11-21; book, Chapter 1, Attribute DCs): an Attribute DC = 11 + the Attribute (v0.0.307: 12 + it)
   // Pack R (v0.0.243; book, Chapter 2): 4 AP a turn and 1 Reaction Point (the Reaction Point pays only for Reactions; Slowed and Quickened change the 4 only);
   // each AP kept at the end of the turn is Guard 2 / 2 / 3 / 4 by Stage (0 to 3) until the AP are regained (guard.mjs).
-  apPerTurn: 4, reactionAp: 1, guardPerAp: [2, 2, 3, 4],
+  apPerTurn: 4, reactionAp: 0, guardPerAp: [2, 2, 3, 4],   // v0.0.535 (the action economy, Lucas 2026-11-27): no Reaction Point (0), no Guard from unspent AP (guardPerAp unused but by the old Builder rows)
   // Escalation (book, Chapter 2; v0.0.407): a level from 1 to 6, never spent; 1 + the party's Momentum (0 to 4) at the start of an encounter, +1 a round,
   // +1 once an encounter on a Critical and on the class's hook. momentumMax: the party's Momentum (roundrules.mjs momentumAfter).
   escalation: { min: 1, max: 6, momentumMax: 4 },

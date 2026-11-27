@@ -170,7 +170,7 @@ export async function markUsed(actor, item, { keepFrequency = false } = {}) {   
   }
   if (f === "round") { if (u.roundAt?.[item.id]) (u.roundPrev ??= {})[item.id] = u.roundAt[item.id]; (u.roundAt ??= {})[item.id] = [combat.round, combat.turn]; }   // v0.0.320: the use before is kept (twice a round)
   if (f === "encounter") { if (!(u.encounter ??= []).includes(item.id)) u.encounter.push(item.id); else if (!(u.encounter2 ??= []).includes(item.id)) u.encounter2.push(item.id); }
-  if (f === "atwill") {
+  if (f === "atwill" && !offTurnReaction(actor, item, combat)) {
     const k = `${combat.round}:${combat.turn}`, ak = atWillKeyOf(item);
     const counts = u.atwillKey === k ? Object.fromEntries(u.atwillList ?? []) : {};
     u.atwillKey = k;
@@ -196,9 +196,11 @@ export async function markUsed(actor, item, { keepFrequency = false } = {}) {   
 }
 
 /** v0.0.224: a Linked use that counts toward At-will Banes only (a Charge's Weapon Attack): not its Frequency or the 3 Strikes. */
+/** v0.0.535 (the action economy; book, Chapter 7, Strike): a Reaction made in another creature's turn counts toward no turn's At-will repeats. */
+export const offTurnReaction = (actor, item, combat = game.combat) => !!item?.system?.reaction && !!combat?.combatant && (combat.combatant.actor?.uuid ?? "") !== (actor?.uuid ?? "");
 export async function markAtWill(actor, item) {
   const combat = game.combat;
-  if (!combat?.started || !actor?.isOwner || effectiveFrequency(item.system) !== "atwill") return;
+  if (!combat?.started || !actor?.isOwner || effectiveFrequency(item.system) !== "atwill" || offTurnReaction(actor, item, combat)) return;
   const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
   if (u.combatId !== combat.id) Object.assign(u, { combatId: combat.id, round: combat.round, roundUsed: [], encounter: [], turnKey: "", strikes: 0, demoralized: [] });
   const k = `${combat.round}:${combat.turn}`, ak = atWillKeyOf(item);

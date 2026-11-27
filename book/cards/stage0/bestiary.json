@@ -368,15 +368,16 @@
     "momentRange": 6,
     "momentTag": "goblin",
     "automation": "gold",
-    "automationNote": "offered by itself when an ally with the Goblin Tag within 6 squares goes Down (a Minion pays it with an AP it kept: it has no Reaction Point); Use: the Evade 1 button, then Jeer (the button; the GM picks its target).",
+    "automationNote": "offered by itself when an ally with the Goblin Tag within 6 squares goes Down; used on the creature whose Action put it Down; Use: the Jeer button (the GM rolls it against that creature).",
     "version": {
      "sub": [
       [
-       "then uses Jeer",
-       "then uses @Use[Jeer|label:Jeer]"
+       "uses Jeer (1A)",
+       "uses @Use[Jeer|label:Jeer (1A)]"
       ]
      ]
-    }
+    },
+    "momentTarget": "source"
    }
   },
   {
@@ -568,13 +569,13 @@
    ],
    "foundry": {
     "img": "icons/svg/explosion.svg",
-    "moment": "selfDown",
+    "moment": "selfDowned",
     "areaCfg": {
      "targets": "all",
      "center": false
     },
     "automation": "gold",
-    "automationNote": "offered by itself when the wisp would go Down (an Interrupt that saves nothing); the 1 Emanation around it, each creature's Instinct Save against its Power DC, the damage, Hindered (EoT) on a Tier 1; then the held damage lands and the wisp goes Down."
+    "automationNote": "offered by itself when the wisp's damage reaches its Health Pool (a Trigger, after the damage, before the rest of the attacker's Action); 0R; the 1 Emanation around it, each creature's Instinct Save against its Power DC, the damage, Hindered (EoT) on a Tier 1."
    }
   },
   {
@@ -822,17 +823,19 @@
    ],
    "foundry": {
     "img": "icons/svg/hand.svg",
-    "moment": "enemyEnters",
+    "moment": "enemyEndsTurn",
     "automation": "gold",
-    "automationNote": "offered by itself when an enemy enters a square adjacent to the ogre (a Trigger: the mover isn't moved back and goes on with the movement it has left); Use: the 2 Blunt damage button and the Pushed 2 button.",
+    "automationNote": "offered by itself when an enemy ends its turn adjacent to the ogre (after everything at the end of its turn); Use: the 1d6 Blunt damage button and the Pushed 2 button.",
     "version": {
      "sub": [
       [
-       "[V] 2 Bl",
-       "@Damage[2[body,blunt]]{[V] 2 Bl}"
+       "[V] 1d6 Bl",
+       "@Damage[1d6[body,blunt]]{[V] 1d6 Bl}"
       ]
      ]
-    }
+    },
+    "momentRange": 1,
+    "momentTarget": "source"
    }
   }
  ]

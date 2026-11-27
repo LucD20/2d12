@@ -54,12 +54,12 @@ async function dazeOnApply(effect) {
   }
   const { now, rest } = dazeSplit(C.getAP(c), v);
   if (now) await C.setAP(c, C.getAP(c) - now, `${effect.name}`, { kind: "react" });
-  await ChatMessage.create({ content: sysLine("fa-star-half-stroke", `<b>${name}</b> is ${esc(effect.name)}: loses <b>${now} AP</b> now${rest ? `, and ${rest} from the AP of its next turn` : ""}.`) });
+  await ChatMessage.create({ content: sysLine("fa-star-half-stroke", `<b>${name}</b> is ${esc(effect.name)}: loses <b>${now} AP</b> now${rest ? `, and ${rest} from the AP it regains at the end of its turn` : ""}.`) });
   if (rest) await effect.setFlag(F, "dazeRest", rest);
   else await effect.delete();
 }
 
-/** The start of a creature's turn, after it regains AP: a Dazed that still has AP to take takes them, then ends. GM only (combat.mjs startTurn). */
+/** v0.0.535: the end of a creature's turn, once it regains AP: a Dazed that still has AP to take takes them, then ends. GM only (combat.mjs regainAtTurnEnd). */
 export async function dazeAtTurnStart(c) {
   const actor = c?.actor;
   if (!actor) return;
@@ -67,7 +67,7 @@ export async function dazeAtTurnStart(c) {
   for (const e of fxList(actor).filter(x => Number(x.getFlag?.(F, "dazeRest")) > 0)) {
     const rest = Number(e.getFlag(F, "dazeRest")), have = C.getAP(c), take = Math.min(have, rest);
     if (take) await C.setAP(c, have - take, `${e.name}`, { kind: "react" });
-    await ChatMessage.create({ content: sysLine("fa-star-half-stroke", `<b>${esc(c.name)}</b>: ${esc(e.name)} takes <b>${take} AP</b> of this turn's AP, then ends.`) });
+    await ChatMessage.create({ content: sysLine("fa-star-half-stroke", `<b>${esc(c.name)}</b>: ${esc(e.name)} takes <b>${take} AP</b> of the AP it just regained, then ends.`) });
     await e.delete();
   }
 }

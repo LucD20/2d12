@@ -2,7 +2,7 @@ labels: Paladin Archer | group: keywords keywords | help: true true
 the book's GROUPS has them as Keywords: true | Chapter 7's rule: true
 Paladin Actions (10), each with [Paladin]: true | Judge, Smite, Drawing Light, Binding Light, Lay On Hands, Shield of Faith, Rebuke, Bulwark of Faith, Consecrated Ground, Word of Radiance
 Paladin Features without it: true | Sworn Blade, Kindled Wrath
-Archer Actions (9), each with [Archer]: true | Darting Blade, Harrying Shot, Quick Shots, Strafe, Slip Away, Snap Shot, Volley, Hit and Run, Covering Fire
+Archer Actions (8), each with [Archer]: true | Darting Blade, Harrying Shot, Quick Shots, Strafe, Slip Away, Snap Shot, Volley, Covering Fire
 Archer Features without it: true | Shifting Aim, Steady Draw, Thrill of the Kill
 no other Action carries a class trait: true 
 the pregens' copies carry it: true 

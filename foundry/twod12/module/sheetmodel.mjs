@@ -85,7 +85,8 @@ export function basicUnavailable(key, c = {}) {
 }
 
 /** "next: 1 Bane", "next: 2 Banes" (an At-will Action's next use this turn), or "". */
-export const nextBanes = uses => { const n = Math.max(0, Math.trunc(Number(uses)) || 0); return n ? `next: ${n} Bane${n === 1 ? "" : "s"}` : ""; };
+// v0.0.535 (the action economy): the Basic attacks are At-will [Strike] Actions, so a repeat is Doomed (roundrules.mjs atWillRepeat)
+export const nextBanes = uses => { const n = Math.max(0, Math.trunc(Number(uses)) || 0); return n ? "next: Doomed" : ""; };
 
 /** Book, Chapter 4: Bloodied while Vigor damage >= Vigor; Strained while Resolve damage >= Resolve. s: { bodyDamage, mindDamage, bdt, mdt }. */
 export function healthTags(s = {}) {

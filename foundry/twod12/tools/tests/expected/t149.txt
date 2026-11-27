@@ -23,7 +23,7 @@ both owned from before: 0 of 0 made, complete true | First [Complete] - | Second
 Paladin level 2: 0 of 2 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Bulwark of Faith/Consecrated Ground | Talent [0 / 1] Ricochet/Take Aim/Cold Domain/Shared Burden
 the level 2 Talent doesn't offer Heavy Blows (owned): true | 4 Talents offered
 Paladin level 3: 0 of 0 made, complete true | Skill Talent [Complete] -
-Archer level 2: 0 of 2 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Volley/Hit and Run/Covering Fire | Talent [0 / 1] Ricochet/Take Aim/Cold Domain/Shared Burden
+Archer level 2: 0 of 2 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Volley/Covering Fire | Talent [0 / 1] Ricochet/Take Aim/Cold Domain/Shared Burden
 Repertoire filter: Any Bulwark of Faith, Consecrated Ground, Word of Radiance | Turn  | Passive 0
 a Feature in the Repertoire is Passive: Tireless Vigil | and in Any: true
 a Repertoire pick excludes what this level grants: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Bulwark of Faith/Consecrated Ground

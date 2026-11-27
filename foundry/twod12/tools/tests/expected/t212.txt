@@ -21,7 +21,7 @@ haul      can: "" | can't: "Reach under 2"
 rally     can: "" | can't: "No Rally Points left"
 crawl     can: "" | can't: ""
 advance   can: "" | can't: ""
-Steel Yourself while Down: Not while Down | next Banes: "" next: 1 Bane / next: 2 Banes
+Steel Yourself while Down: Not while Down | next Banes: "" next: Doomed / next: Doomed
 --- Bloodied / Strained, to Down, the Down state
 Vigor 23 Resolve 12, damage 9 / 5: {"bloodied":false,"strained":false} | 23 / 12: {"bloodied":true,"strained":true} | threshold 0: {"bloodied":false,"strained":false}
 to Down (pool 35): 21 0 0

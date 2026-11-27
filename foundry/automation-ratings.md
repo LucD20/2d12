@@ -60,8 +60,8 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Smite | Gold | |
 | Binding Light | Gold | |
 | Lay On Hands | Silver | the Setup's Advance in a straight line toward the target |
-| Shield of Faith | Gold | |
-| Rebuke | Gold | |
+| Shield of Faith | Gold | (v0.0.535: offered by itself only for the creature you Judged, the moment strikeDamage with momentMarked judge; the half by momentSplit halve) |
+| Rebuke | Gold | (v0.0.535: the moment enemyMoves within 3, no standing up; the damage and the Pressure Bane run on Use) |
 | Lantern of Faith | Gold | |
 | Hold the Line | Silver | Brace's squares stay where you used it if you move (Foundry's Aura follows you); Trade Places between different Sizes is refused (v0.0.431) |
 | Commandment | Silver | Courage (an Aura 3: ignore Daunted) is only a reminder |
@@ -73,7 +73,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Roving Judgment (Feature) | Gold | |
 | Kindled Wrath (Feature) | Gold | |
 | Weight of Judgment (Feature) | Bronze | the Judged creature's Speed −2 is by hand (it is the whole Feature) |
-| Tireless Vigil (Feature) | Silver | the second Reaction AP paying only for [Divine] Reactions |
+| Tireless Vigil (Feature) | Silver | that its AP (v0.0.535: gained with the regain, lost at the turn's start) pays only for [Divine] Reactions |
 | Hallowed Stance (Feature) | Silver | once on your turn |
 
 ## The Archer (11 Actions, 8 Features)
@@ -82,13 +82,12 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Darting Blade | Silver | drawing and stowing the Light weapon |
 | Quick Shots | Silver | a Critical's 1 AP back |
 | Strafe | Gold | |
-| Slip Away | Gold | |
-| Snap Shot | Gold | |
+| Slip Away | Silver | the weapon swap (Interact (1A)): by hand (v0.0.535: the moment enemyEndsTurn; the Evade 1 starts by itself) |
+| Snap Shot | Silver | the Evade 1 before the shot: its button on the card (v0.0.535) |
 | Footwork | Silver | Hands Busy's Interact or Reload; Weave through unwilling creatures |
 | Trick Shots | Gold | |
 | Spotter | Silver | Keep Low is only a reminder; Find the Gap's Cover one level lower |
 | Volley | Gold | |
-| Hit and Run | Bronze | one 3d12 roll for many targets (v0.0.520, the book: each other hit worked out by hand from the same dice, as for Several Targets; the targets before the first square too), the free draws and the bow shot |
 | Covering Fire | Gold | |
 | Shifting Aim (Feature) | Gold | v0.0.525: on another creature's turn too (a move made during that turn counts) |
 | Lean and Loose (Feature) | Gold | |
@@ -116,11 +115,11 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Basic Actions (20) | 14 | 4 | 2 |
 | Weapon Techniques (4) | 1 | 3 | 0 |
 | Paladin (19) | 12 | 6 | 1 |
-| Archer (19) | 12 | 5 | 2 |
+| Archer (18; v0.0.535: Hit and Run removed, Snap Shot and Slip Away Silver) | 10 | 7 | 1 |
 | Playtest Talents (7) | 6 | 1 | 0 |
-| **All (69)** | **45** | **19** | **5** |
+| **All (68)** | **43** | **21** | **4** |
 
-**The Bronze ones, the first to raise:** Hit and Run (one roll applied to every creature passed), Opening Shot (the ally's 1R Weapon Attack as a
+**The Bronze ones, the first to raise:** Opening Shot (the ally's 1R Weapon Attack as a
 button on the line), Weight of Judgment (a Speed −2 effect on the Judged creature), Interact (the draw / stow / swap as its choices), Hide (waits
 for the book).
 
@@ -132,7 +131,7 @@ for the book).
 | Shiv | Gold | |
 | Jeer | Gold | |
 | Knife in the Back | Gold | (its Requirement, the flank, warns as every Requirement does) |
-| Shriek and Scatter | Gold | (offered by itself: the moment allyDown with the Goblin Tag; Jeer's target is the GM's pick) |
+| Goblin Shriek | Gold | (v0.0.535, renamed from Shriek and Scatter; offered by itself: the moment allyDown with the Goblin Tag, used on the creature that put it Down; Jeer by its button) |
 
 ### Grave Wisp (Grunt; `book/cards/grave-wisp-redesign.md`)
 | Card | Rating | What is by hand |
@@ -141,7 +140,7 @@ for the book).
 | Slipping Touch | Gold | (the Tier 1's Evade 1 is a button) |
 | Guttering Glance | Gold | |
 | Pass Through | Silver | the Setup's straight line and the targets (up to two enemies whose space it passed): the GM's |
-| Dying Flare | Gold | (offered by itself: the moment selfDown) |
+| Dying Flare | Gold | (v0.0.535: offered by itself as a Trigger, the moment selfDowned, to the Down wisp; 0R) |
 
 ### Orc Warrior (Standard; `book/cards/orc-warrior-redesign.md`)
 | Card | Rating | What is by hand |
@@ -160,6 +159,6 @@ for the book).
 | Great Sweep | Gold | |
 | Hurled Goblin | Silver | its Requirement (a willing Minion ally within its Reach) and the landing (the GM moves the Minion to an empty square adjacent to the target) |
 | Crack the Ground | Gold | (the Line 3 and its Zone, Difficult Terrain for every creature until the encounter ends) |
-| Backhand | Gold | (offered by itself: the moment enemyEnters, no Move back; the 2 damage (1 before v0.0.527) and the Push 2 are buttons) |
+| Backhand | Gold | (v0.0.535: offered by itself, the moment enemyEndsTurn within 1; the 1d6 damage and the Push 2 are buttons) |
 
 **The four creatures (24 cards): 20 Gold, 4 Silver, 0 Bronze.**

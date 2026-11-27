@@ -1,5 +1,5 @@
-documents: 118
-references: 52 | broken: none
+documents: 117
+references: 50 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): false | its id is the old one: undefined
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Judge, Smite, Sworn Blade, Drawing Light | Hallmark Action (items, choice, pick 1): Binding Light, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Skill Talent (talent, pick 1)
 Level 2: Escalation Hook (items, granted): Kindled Wrath | Encounter Pick (items, choice, pick 1): Bulwark of Faith, Consecrated Ground, Word of Radiance | Talent (talent, pick 1)
@@ -12,8 +12,8 @@ Judge: atwill 10 One enemy you can see | marks: true judge | 0 AP: The target is
 Smite: divine,paladin,signature,strike,unfailing,weapon encounter | 2 AP 1d6! Ho / 1[W]++1d6! Ho / 1[W]++2d6! Ho (dice rule smite)
 Binding Light: 2 AP 1d6 Ho / 1[W]++1d6 Ho / 1[W]++1d8 Ho |  / @Condition[immobilized|rounds:1] / @Condition[immobilized|rounds:1]
 Lay On Hands: One willing ally | Setup: You @Move[advance|distance:5]{Advance 5 squares} in a straight line toward the target. | 1 AP: The target gains @Guard[2+pow]{Guard 2 + Pow}. || 2 AP: The target gains @Guard[2+pow]{Guard 2 + Pow} and can use @Rally[1].
-Shield of Faith: turn interrupt strikeDamage 5 | 1R | An enemy's [Strike] Action would damage the target. | That damage is reduced by @Reduce[1+pow]{1 + Pow}, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). [after: @Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger]]
-Rebuke: turn trigger enemyAway 3 | 1R | The target moves away from you. | The target is @Condition[hindered|eot]. [after: @Condition[hindered|eot]]
+Shield of Faith: turn interrupt strikeDamage 5 | 1R | The creature you Judged would damage the target with a [Strike] Action. | The target takes half of that damage, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). [after: @Condition[taunted|rounds:1|to:trigger]]
+Rebuke: turn trigger enemyMoves 3 | 1R | An enemy within 3 squares of you moves. | @Damage[1d6![mind,holy]]{[R] 1d6! Ho}, and the target is @Boon[-1|bb:pressure|traits:strike]{Pressed 1} until it makes a [Strike] Action (EoT). [after: @Damage[1d6![mind,holy]] @Boon[-1|bb:pressure|traits:strike]]
 Bulwark of Faith: encounter interrupt strikeDamage 5 | 1R | An enemy's [Strike] Action would damage the target. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. [after: @Guard[rally] @Pause[After the damage] @Move[slid|distance:1]]
 Lantern of Faith (Art): Kindle 1 AP: You shed @Book[Bright]{Bright light} 3 (EoE). {} || Reveal 1 AP 5: The target sheds @Book[Bright]{Bright light} 1 (1 round). {} || Glare 1 AP [magic,save] 5 vs instinct: @Condition[half-blinded|eot]{Half-Blinded (EoT)}
 Hold the Line (Art): Brace 1 AP: The squares adjacent to you now are Difficult Terrain for enemies (1 round). They stay where they are if you move. {} || Trade Places 1 AP reach: You and the target @Swap[]{swap squares}. Each of you is moved by a Reposition. || Rescue 1 AP reach: @Move[reposition|distance:2] the target.
@@ -26,7 +26,7 @@ Kindled Wrath: Paladin Feature, escalation passive false | Once an encounter, wh
 Armor of Faith: Paladin Escalation Passive, escalation passive true | When you use a [Divine] Reaction (not Judge's 0R), you gain Guard equal to 1 + your Power Modifier. | hooks [{"kind":"reactionGuard","traits":["divine"],"formula":"1+pow"}] | settings 
 Roving Judgment: Paladin Escalation Passive, escalation passive true | The 1 AP use of Judge costs you 0 AP. | hooks [{"kind":"apCost","markKind":"judge","ap":1,"cost":0}] | settings 
 Weight of Judgment: Paladin Escalation Passive, escalation passive true | A creature Judged by you has its Speed reduced by 2 (to a minimum of 1). | hooks [] | settings 
-Tireless Vigil: Paladin Escalation Passive, escalation passive true | You gain 1 more Reaction Point when you regain AP. It pays only for [Divine] Reactions. | hooks [{"kind":"rapMore","n":1}] | settings 
+Tireless Vigil: Paladin Escalation Passive, escalation passive true | When you regain AP, you also gain 1 AP that pays only for [Divine] Reactions. If you haven't spent it when your next turn starts, you lose it. | hooks [{"kind":"rapMore","n":1}] | settings 
 Hallowed Stance: Paladin Escalation Passive, escalation passive true | Once on your turn, a [Divine] Action you use gains "Setup: You Advance 3." | hooks [{"kind":"setupAdvance","traits":["divine"],"n":3}] | settings 
 Kindle (Bright light 3): encounter | light | You shed Bright light 3 (Dim light 3 more), EoE (Lantern of Faith, Kindle).
 Reveal (Bright light 1): rounds | light | The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).
@@ -36,8 +36,8 @@ the old cards out of Foundry: all gone | old cards kept in their folder:  | in n
 Aveline (Human Paladin, Smite): Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke, Kindled Wrath, Word of Radiance, Cold Domain, Rime Strike, Thwart Cut | ids unique: true
 Durgan (Dwarf Paladin, Lay On Hands): Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith, Kindled Wrath, Bulwark of Faith, Shared Burden, Oath of Burden, Bear the Blow, Seizing Cut | ids unique: true
 Sylwen (Elf Archer, Quick Shots): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Thrill of the Kill, Volley, Take Aim, Take Aim, Wounding Shot | ids unique: true
-Kaela (Human Archer, Strafe): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Thrill of the Kill, Hit and Run, Ricochet, Ricochet, Circling Shot | ids unique: true
-Goblin Sneak (minion, speed 6): Shiv atwill, Jeer atwill, Knife in the Back round, Shriek and Scatter encounter reaction
+Kaela (Human Archer, Strafe): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Thrill of the Kill, Covering Fire, Ricochet, Ricochet, Circling Shot | ids unique: true
+Goblin Sneak (minion, speed 6): Shiv atwill, Jeer atwill, Knife in the Back round, Goblin Shriek encounter reaction
 Grave Wisp (grunt, speed 6): Slipping Touch atwill, Guttering Glance atwill, Pass Through round, Dying Flare encounter reaction
 Ice Pillar (minion, speed 0): 
 Ogre Chieftain (elite, speed 5): Crushing Grip atwill, Roar atwill, Great Sweep round, Hurled Goblin round, Crack the Ground encounter, Backhand turn reaction
