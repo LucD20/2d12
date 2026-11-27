@@ -76,3 +76,13 @@ Shared by all three: the d12 marks are the system's (pentagons; an exploded 12 a
 - `build.mjs`: the cases as data; counts with the system's `calc.mjs` (`bbCount`, `bbResolve`), throws if an entry list and the rule disagree; writes `index.html` and `today.html`. `roll-breakdown.css`: the styles (put into the page).
 - `today.html`: today's panel, drawn by the system's `breakdownHtml` with the system's `system.css` and `theme.css` (read, not changed). The page shows pictures of it (`today-*.png`).
 - `check.mjs` (run from `foundry/twod12`, then `build.mjs` again): dark and light, 1280 px and 390 px: nothing leaves a card, every unbreakable piece is on one line, every number in C is beside the first line of its name, the click opens the names, no hover text; writes `measured.json` and the pictures (`design-A/B/C-dark/light.png`, `page-phone-*.png`).
+
+## Lucas's answers (2026-11-27)
+
+1. **Design C, the written sum.**
+2. **Always behind a click**, as today: the breakdown opens from the card's roll line.
+3. **Closed at first**, always.
+4. An entry that does not count is **struck through**, with its reason.
+5. Several targets: "I will let you choose". **Claude's choice: each target's row opens its own breakdown, as today** (it changes the least, and behind a click a reader opens the one target they are asking about).
+
+Still to settle at the build: inside the opened breakdown, C's own list of Boons and Banes is shown open (the click that opened the breakdown is the one click); the Defense keeps today's badge.
