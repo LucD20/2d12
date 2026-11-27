@@ -157,6 +157,7 @@ export function registerSocket() {
     if (data?.type === "shakeOff") { const e = await fromUuid(data.effectUuid); if (e) await (data.what === "ends" ? e.delete() : e.setFlag("twod12", "shakeHalf", true)); return; }   // v0.0.426: Shake Off on a creature its user doesn't own
     if (data?.type === "deleteMessage") { const m = game.messages?.get(data.messageId); if (m) await m.delete(); return; }   // v0.0.343: a given-up Charge's card
     if (data?.type === "applyEffects") return applyEffects(data.effectUuids, data.targetUuids, data.origin, data.over);
+    if (data?.type === "clearMark") return (await import("./marks.mjs")).clearMarkAsGM(data);   // v0.0.534: a mark removed from the carrier's "Marked by"
     if (data?.type === "deleteEffect") { const a = await fromUuid(data.actorUuid); const act = a?.documentName === "Actor" ? a : a?.actor; const e = act?.effects?.get?.(data.effectId); if (e) await e.delete(); return; }
     if (data?.type === "applyBoon") { const a = await fromUuid(data.actorUuid); if (a) await applyBoonEffect(a, data.cfg, data.origin); return; }
     if (data?.type === "applyFeintNoRx") {

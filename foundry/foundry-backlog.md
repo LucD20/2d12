@@ -1,11 +1,17 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.533**. Tests: `node tools/tests/run.mjs` (329 tests, see the README; the next new test is t334). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.534**. Tests: `node tools/tests/run.mjs` (329 tests, see the README; the next new test is t334). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
 
-## PLAYTEST 11: LUCAS'S NOTES: BUILT IN v0.0.532 (2026-11-27; the roll card's redesign and Snap Shot left; NOT tested by Lucas: the checklist's `ox-charge` Rev 3 and the ten `pt-*` tests)
+## LUCAS'S CHECKLIST ON v0.0.533 (2026-11-27: 17 passed, 1 failed): "MARKED BY" BUILT IN v0.0.534 (NOT tested by Lucas: `pt-marks` Rev 2)
+
+Passed and deleted from `foundry/to-test.md`: `pal-zoom`, `pt-dcolor`, `rb-sum`, `rb-states`, `rb-save`, `rb-many`, `pt-grab`, `hq-lingering` (Rev 4), `ox-charge` (Rev 3), `pt-collision`, `pt-area` (Rev 2), `pt-diag`, `mv-dt`, `mv-deadpush`, `pt-judge`, `pt-taunt`, `pt-log` (the v0.0.531 to v0.0.533 builds below).
+
+- [x] **(v0.0.534: `marks.mjs carriedOf`, `placedModel`'s `dir: "on"`, `placedHtml`, one `removeMark` for both sides (`parseMarkKey`; a flag on a creature the user doesn't own through the GM, the socket "clearMark", `clearMarkAsGM`); `hud.mjs`, `hudview.mjs`, `damage.mjs`; t330, `pt-marks` Rev 2)** **`pt-marks`: "It all works, but add the situational on the target of the mark as well 'Marked by'".** The creature that carries marks (Judged by, Taunted by, Daunted of, Grabbed by, a Bound Ally) shows "Marked by" next to "Marks · by you", the same rows and ✕; a mark removed on either side leaves both.
+
+## PLAYTEST 11: LUCAS'S NOTES: BUILT IN v0.0.532 (2026-11-27; the roll card's redesign and Snap Shot left; tested by Lucas on v0.0.533: all passed but `pt-marks`, extended in v0.0.534: the section above)
 
 His words are quoted. The fight's record: `book/playtest-11.md`. Three of them are rule questions first (the book, then Foundry): they are also in `book/rules-backlog.md`.
 
@@ -31,7 +37,7 @@ His words are quoted. The fight's record: `book/playtest-11.md`. Three of them a
 - [x] **(v0.0.532: Chapter 8; the Grabbed condition's Vulnerable 1 rider, linked to it; t328, `pt-grab`)** **Grabbed.** "Grabbed should likely cause a penalty to attacks, or make you easier to hit, or both." Chapter 8's Grabbed is Immobilized and held; nothing on attacks. **Decided (Claude's proposal, his yes):** a Grabbed creature is Vulnerable 1 while it is held.
 - [ ] **Snap Shot.** "Snapshot's immbolized is essentially a disruption." For the Reactions' rebuild (decided, not built).
 
-## LUCAS'S CHECKLIST ON v0.0.530 (2026-11-27: 6 passed, 1 failed, 1 skipped): FIXED in v0.0.531 (NOT tested by Lucas)
+## LUCAS'S CHECKLIST ON v0.0.530 (2026-11-27: 6 passed, 1 failed, 1 skipped): FIXED in v0.0.531 (tested by Lucas on v0.0.533: `hq-lingering` Rev 4 and `ox-charge` Rev 3 passed)
 
 Passed and deleted from `foundry/to-test.md`: `ox-pointout`, `sf-area`, `sf-forced`, `sf-charge`, `bst-cornered`, `ox-shakeoff` (the v0.0.530 fixes below). `ox-charge` skipped ("answered on v0.0.529"), kept unchanged.
 

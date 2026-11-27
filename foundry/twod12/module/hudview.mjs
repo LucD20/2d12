@@ -198,6 +198,7 @@ export function rightHtml(s = {}) {
   // v0.0.463 (Lucas: "prone should be low priority, moving under new situational effects"): Prone's Stand / Crawl goes after the asks (below)
   if (s.hiding) avail.push(hidingHtml(s.hiding));   // v0.0.517: Hiding (not urgent), before Prone
   if (s.placed) avail.push(placedHtml(s.placed));   // v0.0.532: the marks placed by this creature (marks.mjs), after Hiding
+  if (s.carried) avail.push(placedHtml(s.carried));   // v0.0.534: the marks on this creature ("Marked by"), next to it
   if (s.prone) avail.push(sitItemHtml(s.prone));
   for (const ex of s.extras ?? []) avail.push(sitItemHtml(ex));
   if (s.notes) avail.push(`<div class="h3-si"><div class="t">${esc(s.notes)}</div></div>`);

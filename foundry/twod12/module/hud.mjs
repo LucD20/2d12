@@ -288,12 +288,14 @@ async function barModel(actor, token = null) {
   } catch (e) { hiding = null; }
   // v0.0.532 (Lucas, playtest 11): the marks this creature placed (Judged, a Bound Ally) and the conditions with a source it gave (Taunted, Daunted,
   // Grabbed), each with a remove (marks.mjs)
-  let placedMarks = null;
+  let placedMarks = null, carriedMarks = null;
   try {
     const MKS = await import("./marks.mjs"), inp = MKS.placedOf(actor);
     let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.markFold") ?? "[]"); } catch (e) { folded = []; }
     placedMarks = MKS.placedModel({ ...inp, folded: folded.includes(actor.uuid) });
-  } catch (e) { placedMarks = null; }
+    // v0.0.534 (Lucas on v0.0.533, pt-marks: "add the situational on the target of the mark as well 'Marked by'"): the mirror, on the creature that carries them
+    carriedMarks = MKS.placedModel({ ...MKS.carriedOf(actor), dir: "on", folded: folded.includes(`on:${actor.uuid}`) });
+  } catch (e) { placedMarks = null; carriedMarks = null; }
   try {
     const cu = cb?.c?.getFlag?.(F, "chargeUse"), cmsg = cu?.messageId ? game.messages?.get?.(cu.messageId) : null;
     // v0.0.514 (Lucas on v0.0.513: "Charge from it needs to have the blinking as well and a cancel button"): an urgent entry (it pulses, as a Reaction does)
@@ -303,7 +305,7 @@ async function barModel(actor, token = null) {
   try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }
   return {
     h3: true, basicGroups, conds,
-    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, charge: chargeSit, hiding, placed: placedMarks, tiles, view: st.view },
+    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, charge: chargeSit, hiding, placed: placedMarks, carried: carriedMarks, tiles, view: st.view },
     npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
@@ -661,9 +663,10 @@ async function onClick(ev) {
     try { localStorage.setItem("twod12.hideFold", JSON.stringify(folded.slice(-50))); } catch (e) { /* no storage */ }
     return renderHud();
   }
-  if (kind === "markfold") {   // v0.0.532: the Marks entry folded to its title, for this viewer only
+  if (kind === "markfold") {   // v0.0.532: the Marks entry folded to its title, for this viewer only (v0.0.534: "Marked by" on its own, "on:<uuid>")
     let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.markFold") ?? "[]"); } catch (e) { folded = []; }
-    folded = folded.includes(actor.uuid) ? folded.filter(u => u !== actor.uuid) : [...folded, actor.uuid];
+    const fk = b.dataset.dir === "on" ? `on:${actor.uuid}` : actor.uuid;
+    folded = folded.includes(fk) ? folded.filter(u => u !== fk) : [...folded, fk];
     try { localStorage.setItem("twod12.markFold", JSON.stringify(folded.slice(-50))); } catch (e) { /* no storage */ }
     return renderHud();
   }
@@ -826,7 +829,8 @@ export function registerHud() {
   Hooks.on("deleteChatMessage", msg => { if (st.rxs.delete(msg.id) || st.rx?.msg === msg.id) { syncRxHead(); renderHud(); } });
   for (const h of ["controlToken", "canvasReady", "updateCombat", "combatTurn", "combatRound", "deleteCombat", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect"]) Hooks.on(h, () => renderHud());
   const mine = a => a && (a.uuid === st.actorUuid || (globalThis.canvas?.tokens?.controlled ?? []).some(t => t.actor === a));
-  Hooks.on("updateActor", a => { if (mine(a)) renderHud(); });
+  // v0.0.534: a mark placed or removed on another creature's flags redraws the HUD (the selected creature's "Marked by")
+  Hooks.on("updateActor", (a, ch) => { const f = ch?.flags?.twod12; if (mine(a) || (st.actorUuid && f && Object.keys(f).some(x => /quarry|marks/.test(x)))) renderHud(); });
   Hooks.on("updateCombatant", (c, ch) => { if (mine(c?.actor) && JSON.stringify(ch?.flags?.twod12 ?? {}).includes("chargeUse")) renderHud(); });
   Hooks.on("targetToken", user => { if (user === game.user && st.actorUuid) renderHud(); });   // v0.0.517: the Hiding entry's Add follows your targets   // v0.0.512: the Charge's Basic Attack waits in Situational
   for (const h of ["createItem", "updateItem", "deleteItem"]) Hooks.on(h, i => { if (mine(i.parent)) renderHud(); });
