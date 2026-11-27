@@ -352,3 +352,10 @@ The Bane's worth: 6 to 8% of each Strike it makes this turn, about 1.5 to 2 on a
 > **Effect:** [R] 1d6! Ho, and the target is Pressed 1 until it makes a [Strike] Action (EoT).
 
 **DECIDED (Lucas, 2026-11-27), with the rule for "moves within N" (Chapter 2, at the build):** a creature moves within N squares of you when, with its own Move Action, it leaves a square that is within N squares of you. Not built.
+
+**Lucas (2026-11-27): "Lets not work on level 2 yet, just level 1."** Bulwark of Faith (level 2) waits; the rebuild covers level 1 only for now.
+
+**The Paladin's level 1 cards left that touch Reactions** (Claude's proposal: keep both as they are):
+- **Judge's 0R** (Trigger: the creature you Judged goes Down; it Judges another). It costs no AP, moves nothing, stops nothing, and fires at most once per creature that falls. The new economy doesn't touch it. Keep.
+- **Bear the Blow** (Durgan's playtest Talent, 0R, Turn: his adjacent Bound Ally's damage is split, half to him, and he gains 1 Guard). It is the "move the damage onto the protector" kind, which limits itself through his own Health (`research/reactions.md`, takeaway 3). It is a 0R, so the AP price doesn't reach it. It is a Talent, so its price is the Talents' pass (`talents-design.md`), not this rebuild. Keep, and flag it there.
+- **Smite's extra die** costs 1 AP on his own turn instead of the Reaction Point (decided in `rules-backlog.md`). Nothing to decide here.
