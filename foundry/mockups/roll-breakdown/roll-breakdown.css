@@ -1,0 +1,115 @@
+/* The roll's breakdown, three designs: a mockup (the system doesn't load this file). build.mjs puts it into index.html. */
+/* the faces: the web link in the page, or the repository's own files when the page is opened from a checkout */
+@font-face { font-family: "Source Sans 3"; font-weight: 200 900; font-style: normal; src: url("../../../book/rules-assets/source-sans-3.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 200 900; font-style: normal; src: url("../../../book/rules-assets/source-serif-4.woff2") format("woff2"); }
+/* the colors: copied from style-tokens.css (dark is the default; .twod12-light is the light theme). The Tiers are palette A (STYLE-3). */
+:root { --s-pg: #1f1c18; --s-pg-2: #28241d; --s-band: #332c22; --s-rule: #7a683f; --s-hair: #4a4132; --s-ink: #ece3cf; --s-mute: #b3a68e; --s-faint: #8a7f6b; --s-gold: #d4a548; --page: #14120f;
+  --ta-1: #a8471a; --ta-2: #0e6e52; --ta-3: #2366a3; --ta-c: #d9a62e; --ta-cr: #f0c35a; }
+.twod12-light { --s-pg: #f4ede0; --s-pg-2: #eae0c8; --s-band: #dfd2b6; --s-rule: #8a6d3b; --s-hair: #cdb88a; --s-ink: #2a241d; --s-mute: #5d5446; --s-faint: #8f8774; --s-gold: #96670f; --page: #e6dcc6;
+  --ta-1: #b34a12; --ta-2: #0f7a5a; --ta-3: #0a64a8; --ta-c: #d9a62e; --ta-cr: #8a6414; }
+* { box-sizing: border-box; }
+html { font-size: 16px; }
+body { margin: 0; background: var(--page); color: var(--s-ink); font: 400 15px/1.45 "Source Sans 3", sans-serif; }
+main { max-width: 1290px; margin: 0 auto; padding: 28px 16px 60px; }
+h1 { font: 600 28px/1.2 "Source Serif 4", serif; margin: 0 0 6px; text-wrap: balance; }
+h2 { font: 700 19px/1.3 "Source Sans 3", sans-serif; margin: 44px 0 4px; padding-top: 10px; border-top: 1px solid var(--s-hair); }
+h3 { font: 700 15px/1.3 "Source Sans 3", sans-serif; margin: 22px 0 2px; }
+p { margin: 0 0 10px; max-width: 76ch; } .mute { color: var(--s-mute); font-weight: 400; }
+code { font: 400 13px/1 ui-monospace, Menlo, Consolas, monospace; color: var(--s-mute); }
+ul { margin: 0 0 10px; padding-left: 20px; max-width: 76ch; } li { margin-bottom: 4px; }
+.rec { border-left: 2px solid var(--s-gold); padding: 2px 0 2px 12px; margin: 10px 0 0; } .rec p:last-child { margin: 0; }
+.reset { all: unset; cursor: pointer; color: var(--s-mute); border-bottom: 1px solid var(--s-hair); font-size: 14px; } .reset:hover { color: var(--s-ink); }
+.reset:focus-visible, .tog:focus-visible { outline: 2px solid var(--s-ink); outline-offset: 2px; }
+.row { display: flex; flex-wrap: wrap; gap: 18px 14px; margin-top: 10px; align-items: flex-start; }
+.case { margin: 0; max-width: 100%; }
+.case figcaption { font-size: 13px; line-height: 1.3; color: var(--s-mute); margin-bottom: 5px; max-width: 300px; min-height: 51px; display: flex; flex-direction: column; justify-content: flex-end; }
+.case figcaption b { color: var(--s-ink); font-size: 13.5px; }
+img.shot { display: block; max-width: 100%; height: auto; }
+.tw { overflow-x: auto; max-width: 100%; }
+table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { padding: 4px 14px 4px 0; text-align: right; border-bottom: 1px solid var(--s-hair); font-weight: 400; }
+thead th { font-weight: 700; } tbody th { text-align: left; }
+
+/* ---- the chat card's surface (the "table look": flat, a thin line, no box inside it) ---- */
+.card { width: 300px; max-width: 100%; background: var(--s-pg); border: 1px solid var(--s-rule); padding: 7px 8px; color: var(--s-ink); font: 400 12.5px/1.4 "Source Sans 3", sans-serif; font-variant-numeric: tabular-nums; }
+.card.w232 { width: 232px; } .card.w420 { width: 420px; }
+.rb p { margin: 0; max-width: none; }
+.rb b { font-weight: 700; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.q { color: var(--s-mute); } .q b { color: var(--s-ink); }
+.k { color: var(--s-mute); }
+.g { white-space: nowrap; }
+s { color: var(--s-faint); text-decoration-thickness: 1px; }
+.lead { color: var(--s-mute); margin-bottom: 2px !important; }
+
+/* the d12 as the system marks it (a pentagon); an exploded 12 and Doubles take the accent; the die dropped is quiet */
+.dice, .dg, .drop { display: inline-flex; align-items: center; gap: 3px; }
+.dice { gap: 4px; } .drop { margin-left: 2px; }
+.d { position: relative; display: inline-flex; width: 22px; height: 22px; flex: none; }
+.d svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.d polygon { fill: var(--s-pg-2); stroke: var(--s-rule); stroke-width: 1.65; stroke-linejoin: round; }
+.d text { font: 700 12px "Source Sans 3", sans-serif; fill: var(--s-ink); }
+.d.boom polygon { fill: color-mix(in srgb, var(--s-gold) 24%, var(--s-pg-2)); stroke: var(--s-gold); stroke-width: 2; }
+.d.boom text { fill: var(--s-gold); }
+.d.dbl polygon { stroke: var(--s-gold); stroke-width: 2.4; }
+.d.off polygon { fill: var(--s-pg); stroke: var(--s-hair); stroke-dasharray: 2.5 2; }
+.d.off text { fill: var(--s-faint); text-decoration: line-through; }
+.op { font-weight: 600; }
+
+/* the Tier: the one filled thing (palette A) */
+.tier { display: inline-block; padding: 0 7px; font-weight: 700; line-height: 19px; border-radius: 2px; color: #fff; white-space: nowrap; }
+.tier.t1 { background: var(--ta-1); } .tier.t2 { background: var(--ta-2); } .tier.t3 { background: var(--ta-3); }
+.tier.crit { background: var(--ta-c); color: #221d16; box-shadow: 0 0 0 1px var(--ta-cr); }
+.tot { font-size: 16px; line-height: 1; }
+
+/* the click that opens the names: a word with a small caret, never a box */
+.tog { all: unset; cursor: pointer; display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; border-bottom: 1px dotted var(--s-faint); }
+.tog:hover { border-bottom-color: var(--s-ink); }
+.car { color: var(--s-mute); font-size: 10px; margin-left: -1px; }
+
+/* ---- the sentence (design A; B's and C's last line use it too): terms that never break inside ---- */
+.a-line { display: flex; flex-wrap: wrap; align-items: center; gap: 1px 7px; min-height: 24px; }
+.a-line .t { white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
+.a-line .end { display: flex; flex: 1 1 auto; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1px 7px; }
+.a-line .t.res { margin-left: auto; }
+.a-line .why { color: var(--s-mute); }
+.rb.a .names { margin-top: 3px; padding-top: 3px; border-top: 1px solid var(--s-hair); }
+.a-l { padding-left: 12px; text-indent: -12px; }
+.a-l .e, .a-l .k, .a-l b { text-indent: 0; }
+.a-tg { margin-top: 4px; padding-top: 4px; border-top: 1px solid var(--s-hair); }
+
+/* ---- the ledger (design B): Boons | Banes, a row for each kind ---- */
+.b-led { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.b-led.one { grid-template-columns: minmax(0, 1fr); } .b-led.one .b-c { padding: 0 0 2px; border-left: 0; } .b-led.one .b-h { justify-content: flex-start; }
+.b-c { padding: 0 8px 2px 0; min-width: 0; }
+.b-c.bane { padding: 0 0 2px 8px; border-left: 1px solid var(--s-hair); }
+.b-h { display: flex; justify-content: space-between; gap: 6px; padding-bottom: 1px; }
+.b-k { display: block; color: var(--s-mute); font-size: 11.5px; line-height: 1.3; }
+.b-c .e { display: block; padding-left: 8px; text-indent: -8px; overflow-wrap: break-word; }
+.b-x { border-top: 1px solid var(--s-hair); margin-top: 2px !important; padding: 3px 0 1px; color: var(--s-mute); }
+.b-x b { color: var(--s-ink); }
+.rb.b > .a-line, .rb.b .a-tg > .a-line { border-top: 1px solid var(--s-rule); padding-top: 3px; margin-top: 2px; }
+.rb.b > .a-line:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+.rb.b > .b-led + .b-x, .rb.b .b-x { }
+.rb.b .lead + .a-line { border-top: 0; }
+.b-tn { margin-bottom: 1px !important; }
+
+/* ---- the written sum (design C): a column of numbers, each line starts with its own ---- */
+.c-sum { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 9px; row-gap: 0; align-items: baseline; line-height: 1.32; }
+.c-n { text-align: right; font-weight: 700; min-width: 20px; }
+.c-n.zero { color: var(--s-mute); }
+.c-t { min-width: 0; }
+.c-sum > .c-t .dice { vertical-align: middle; }
+.c-sum > .c-n:first-child { align-self: center; }
+.c-sub { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 7px; margin: 1px 0 2px; }
+.c-sub[hidden] { display: none; }
+.c-sub .e { display: contents; }
+.c-sub .n { text-align: right; color: var(--s-ink); align-self: start; }
+.c-sub .nm { min-width: 0; overflow-wrap: break-word; }
+.c-sub .e.off .n { color: var(--s-faint); }
+.c-tot { border-top: 1px solid var(--s-rule); padding-top: 3px; margin-top: 2px; align-self: stretch; display: flex; align-items: center; }
+.c-n.c-tot { justify-content: flex-end; }
+.c-t.c-tot .a-line { flex: 1; }
+.c-tot.c-sh { font-weight: 700; } .c-t.c-tot.c-sh { font-weight: 400; }
+
+@media (max-width: 520px) { main { padding: 20px 16px 48px; } h1 { font-size: 23px; } }
