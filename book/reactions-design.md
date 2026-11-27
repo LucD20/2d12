@@ -55,7 +55,7 @@ A Reaction now costs 1 AP of your next turn. On your turn, 1 AP buys about a Str
 9. **The cards that pay or count the old Reaction AP:** Smite's extra die, Steady Draw's Special, Tireless Vigil's second Reaction AP, Strained, Staggered, the Minion's line.
 10. **Chapter 2's Reactions section re-read whole,** then Foundry's list (`moment.mjs`, the Reactions message, the HUD's Reaction mark), then the build with the rest of the economy.
 
-## Decision 1: what a Reaction is for (PROPOSED 2026-11-27, waiting for Lucas)
+## Decision 1: what a Reaction is for (ANSWERED 2026-11-27: no family is banned)
 
 **Every family the rules offer, the rejected ones included:**
 
@@ -90,3 +90,32 @@ A Reaction now costs 1 AP of your next turn. On your turn, 1 AP buys about a Str
 - **A (Claude's):** Protect and Punish (and Moments); no stopping, no movement in a Reaction.
 - **B:** A, plus movement as a rider that happens once the triggering Action has ended (the Archer steps away after the swing, never during the walk).
 - **C:** every family allowed, each card limited case by case ("we limit each case as we go"), with rarer triggers for the ones that stop or move.
+
+**Lucas's answer (2026-11-27):** "Snap Shot and Blood for Blood is actually fine." So no family is banned as a rule: it is the same "we limit each case as we go" as the cap (in effect option C). Snap Shot (an Interrupt shot as the enemy steps up) and Blood for Blood (the orc Advances 2 and attacks) are kept as designs, to be re-sized for the new price in their batches. What disrupted is judged card by card: the table above is the evidence for each one.
+
+**His reading of the price, confirmed (Claude, 2026-11-27):** "now Reactions should be worth much closer to a normal AP, since you no longer has a chance of 'wasting' them." Yes. The old anchor (a 1R Reaction worth 10 to 15 points a turn, `class-charter.md`) priced a free point that was lost if unused. Now an AP not spent on a Reaction is spent on your next turn, so a Reaction is a trade against about a Strike (6 to 9 damage at level 1, about 25 points). Three things move it a little either way, case by case:
+
+- **Up:** it happens at the best moment, with the information in front of you (the damage is known before it lands; the enemy has committed to its move). And a [Strike] made as a Reaction isn't one of your turn's repeats, so it escapes the repeat's Doomed (decided, not built) and the 3-Strike cap.
+- **Down:** the AP comes out of a turn you haven't planned yet. Losing 1 of 4 can break a 2 + 2 turn (Smite 2 and a Charge, say), so one Reaction can cost more than one AP's worth of that turn.
+- **The threat:** a Reaction the enemy has to play around is worth something even when it isn't used. This isn't priced; it is judged per card.
+
+**How the rebuild runs (Lucas, 2026-11-27): in batches, one class at a time.** Batch 1, the Paladin: Shield of Faith, Rebuke, Bulwark of Faith (and the Hallmark Reaction slot). Batch 2, the Archer: Snap Shot (kept), Slip Away. Batch 3, the creatures: Backhand, Blood for Blood (kept), Dying Flare, Shriek and Scatter. Then the cards that paid the old Reaction Point (step 9 of the order above). This replaces steps 3 to 8 of the order as separate decisions: each batch settles them for its cards.
+
+## The toolbox: what a Reaction can carry, by what it does to the turn it lands in
+
+Read from Chapter 1 (Boons, Banes, Favored and Doomed), Chapter 2 (Buffs, Stacking, durations), Chapter 3 (Forced Movement, Reposition, Steadiness, Engaged, Flanking), Chapter 4 (Guard, Rally Points, health states) and Chapter 8 (conditions), 2026-11-27. **Durations in a Reaction:** an EoT given on another creature's turn ends at the end of *that* turn when the affected creature is the one whose turn it is (so Rebuke's Hindered (EoT) cuts the mover's movement now), and lasts until the end of its next turn otherwise. "1 round" counts down from the current slot, so it covers that creature's next turn.
+
+**It changes the rest of the turn it lands in** (the mover feels it at once: the kind Lucas called disrupting when it stops or moves):
+
+- **Stops or cuts:** disrupted (the Action never happens, or stops where it is); Immobilized (the movement ends); Hindered (the movement left is halved); Prone (Move Actions are only Crawl, Stand, Break Free).
+- **Takes from what is left:** Dazed N (AP lost now); Staggered (no Reactions; a Reaction can turn off the enemy's Reactions for the rest of its turn).
+- **Bends its choices:** Taunted (1 Bane against anyone else; Shield of Faith's rider); Daunted of a source (1 Bane on every roll and Difficult Terrain toward the source while it is seen); Pressed N (Pressure Banes on its [Strike] Actions, at most 2); a Doomed or a Bane on the roll being made is impossible, because Chapter 2 says an Interrupt "can't change that roll".
+- **Moves tokens:** Pushed, Pulled, Slid (Forced Movement: no movement Reactions, Collision 2 a square on objects, 1 each on creatures, Steadiness reduces it, Bloodied lowers Steadiness); Reposition (within your Reach, no Collision, never into a hazard); your own Advance or Evade (an Advance can trigger the enemy's Reactions, an Evade can't).
+
+**It changes nothing in the current turn, only what comes later:**
+
+- **On the enemy, for its next turn:** Slowed N (fewer AP regained; with the end-of-turn regain, to be reworded); Lingering (damage at the end of each of its turns); Sickened N (Banes on Body and Instinct Saves, no potions); Vulnerable N for 1 round (every ally's Actions against it gain N Boons: Demoralize's shape); Taunted or Daunted for 1 round, once the current turn is over.
+- **On you or an ally:** a damage reduction (reductions add up; Guard takes what is left); Guard (keep the higher; it ends with the encounter); a Rally Point used or healing (Lay On Hands' kind); Quickened 1 on its next turn (Aid's shape); a Buff on its next roll or Action ("its next roll has 1 Boon", wasted if not made by the end of its next turn; Feint's shape); Favored on its next roll (counts as 5 Boons, cancels a Doomed); Empowered (1d6! on the first damage of each of its turns); +1 Defense (unnamed) or a named +1 Field / Support bonus (different names add up).
+- **On the board:** perception (Point Out's step: Unsensed to Hidden), a mark (Judge's kind), light.
+
+**Limits that apply to every one of them:** the target needs Line of Effect and must be perceived (Hidden is enough); you react once to the same Action; Interrupts resolve before Triggers; Boons and Banes with the same name add up to 2; 5 or more after cancelling become Favored or Doomed; Guard and Defense bonuses don't stack with themselves; Forced Movement and Reposition trigger no movement Reactions.
