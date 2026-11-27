@@ -2,6 +2,15 @@
 
 The book is built from `rules-src/` with `build_rules.py` (assets in `rules-assets/`). How the files are written is in `rules-src/README.md`; `rules-src/INDEX.md` (generated) is a map of every chapter; `python3 build_rules.py --where Term` lists every mention of a term. The full earlier version of this list was in `archive/old-notes/rules-backlog-history.md` (not in this bundle).
 
+## PLAYTEST 11: RULES LUCAS RAISED (2026-11-27; to decide, nothing changed)
+
+- [ ] **Collision:** "Prone, unconscious and dead should not cause collision." (A dead Orc Warrior stopped a Push.)
+- [ ] **Charge:** "It should only be Melee." (The audit's B2-014 let it stop at a thrown or ranged weapon's normal Range.)
+- [ ] **Taunted with several targets:** "When an ability targets multiple people and the taunted source is included, it shouldnt apply."
+- [ ] **Grabbed:** "should likely cause a penalty to attacks, or make you easier to hit, or both."
+- [ ] **Snap Shot:** "Snapshot's immbolized is essentially a disruption." With the Reactions' rebuild.
+- The Foundry side and the bugs: `foundry/foundry-backlog.md`, "PLAYTEST 11: LUCAS'S NOTES FOR THE NEXT PASS".
+
 ## THE BARBED JAVELIN'S LINGERING IS PIERCING (Lucas, 2026-11-27; applied, Foundry v0.0.530)
 
 - [x] **(v0.0.530: `cards/stage0/bestiary.json`, Chapter 14's stat block, the card's automation note; Foundry's stored effect `@Condition[bleed|dmg:1d10|sub:Pi|attrs:bo/in]`)** **The Orc Warrior's Barbed Javelin: Tier 3's Lingering is written with its subtype, "Lingering 1d10 Pi (Bo/In)"** (Chapter 8: a subtype is written after the value). **Lucas** (his checklist on v0.0.529, hq-lingering): "Barbed Javelin doesnt ahve an actual subtype when it should have". Piercing is the javelin's own damage. So a second Piercing Lingering keeps the higher one, and a Lingering of another subtype runs beside it (Chapter 8, Several Lingerings).
