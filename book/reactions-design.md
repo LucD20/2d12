@@ -340,3 +340,15 @@ The Bane's worth: 6 to 8% of each Strike it makes this turn, about 1.5 to 2 on a
 **What changes from the last draft:** it is easier to trigger (any step near him, not only toward an ally), and shorter to read. It no longer cares where the enemy goes, so it guards the Paladin's 3 squares, not the path to the back line: an enemy that walks around the 3 squares to reach the Archer pays nothing. It fires more often, but each use costs an AP, so he still chooses which enemy. The size is unchanged: about 5.5 to 6 a use, a little under his AP.
 
 **Still open:** the die (1d6! proposed; 1d4! or 1d8!) and Pressed's duration (EoT proposed; 1 round).
+
+**Lucas (2026-11-27), on the trigger:** "If the enemy is 4sq away, move into 3sq, should it really trigger? It didnt move inside the 3sq area." **No, and the rule already says so:** it leaves a square 4 away, so nothing fires. Only a step that *leaves* a square within 3 counts, which means moving inside the area: 4 to 3 doesn't fire; 4 to 3 to 2 fires at the second step; 3 to 4 (walking out) fires; 2 to 2 sideways fires. Claude's earlier line ("once it takes a step inside the 3 squares") meant that second step and read badly.
+
+**Lucas, on the damage and the Bane:** "[R] 1d6! Holy damage is good, but Pressed 1 EoT might be too much; I think should be Pressed 1 until it makes a Strike Action (EoT)." So the Bane falls on its next [Strike] only. Chapter 2's "Until" already gives the reading: it lasts through that Strike and ends once it is resolved; the (EoT) ends it at the end of its turn if no Strike comes. Worth: 1 Bane on one Strike, about 0.8 to 1, so about 5 a use.
+
+> **Rebuke** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Focus]
+> *You raise a hand and a flash of holy light sears the foe that moves against you; its next blow comes slower through the glare.*
+> **Trigger:** An enemy within 3 squares of you moves.
+> **Target:** The triggering creature
+> **Effect:** [R] 1d6! Ho, and the target is Pressed 1 until it makes a [Strike] Action (EoT).
+
+**DECIDED (Lucas, 2026-11-27), with the rule for "moves within N" (Chapter 2, at the build):** a creature moves within N squares of you when, with its own Move Action, it leaves a square that is within N squares of you. Not built.
