@@ -288,3 +288,37 @@ Slowed 1 on the triggering enemy ............ 4 to 5 on a Standard, about 8 on a
 **For Lucas to choose:** the trigger (an enemy damages an ally; moves closer to an ally; moves away from you) and the payload (Slowed 1; Holy damage; Hindered; Vulnerable 1; Pressed 1).
 
 **Lucas, 2026-11-27: "The charters are starting to get on the way, lets set them aside for this session."** For the rest of this session's rebuild, `class-charter.md` doesn't bind the Reactions (its "two Hallmark Reactions share a trigger", the 35-point budget, the "half the rounds" target). The book's rules, the card Structure and Lucas's card-writing rules still apply. Rebuke's damage trigger now stands on its own reasons (broad, after the hit, leaves the turn whole), not on the charter's.
+
+**Lucas's direction (2026-11-27):** "5 squares, moves closer to an ally, I want something more 'rebuke' like, like flashing a divine light, I think it could work some damage, maybe cause a bane on Strikes of the creature." So the trigger is decided (an enemy within 5 squares of you moves closer to an ally), and the payload is damage with a Bane on its Strikes. Slowed is dropped.
+
+**The Bane is Pressed 1** (Chapter 8: "Your [Strike] Actions take that many Pressure Banes", at most 2 count): it is the condition that already says it, so no new wording. **Its duration, EoT:** given on the enemy's own turn it ends at the end of that turn (Chapter 2, End of Turn), so it covers exactly the Strikes it walked up to make. "1 round" would cover its next turn too.
+
+**The damage has no roll to attack**, so it can't use [Mod] (Chapter 1: the Modifier of the roll). The Paladin's cards write such damage as exploding dice ([R] 1d4! / 1d6! / 1d8! Ho):
+
+| Damage | Average | With Pressed 1 (EoT) | Against his AP (6.2 to 8.8) |
+|---|---:|---:|---|
+| [R] 1d4! Ho | 2.9 | about 4.5 | well under |
+| **[R] 1d6! Ho** | 4.2 | **about 5.5 to 6** | **a little under: "less strong"** |
+| [R] 1d8! Ho | 5.1 | about 6.5 to 7 | about even |
+
+The Bane's worth: 6 to 8% of each Strike it makes this turn, about 1.5 to 2 on a Standard's two [arithmetic, `research/action-economy.md` 2.2].
+
+**Claude's proposal:**
+
+> **Rebuke** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Focus]
+> *You raise a hand and a flash of holy light sears the foe that dares to pass you; its blows come slower through the glare.*
+> **Trigger:** An enemy within 5 squares of you moves closer to an ally.
+> **Target:** The triggering creature
+> **Effect:** [R] 1d6! Ho, and the target is Pressed 1 (EoT).
+
+**Analysis.**
+- **Rebuke-like:** a flash and a burn on the one that walks past him, and its next blows weakened. It punishes the choice; it doesn't undo it.
+- **Disruption:** the damage lands during the move (a Trigger: after the first square closer, at the square he chooses, Chapter 2), and the move goes on. The token doesn't move, nothing stops (unless the damage puts it Down), and there is no Save on the GM's turn. The Bane bends the rest of its turn, as asked.
+- **Less strong:** about 5.5 to 6 a use, under the Shield's 9 to 10 and a little under his own AP. He uses it when an enemy goes for the back line, not on every step.
+- **With the Shield:** Rebuke the enemy that walks to the Archer; Shield the Judged one's hit. Together on one enemy (it moves closer, then hits): about 15 for 2 AP.
+- **The rules it touches:** Chapter 2's Moving Closer is written "closer to you"; the card needs "closer to an ally". **Claude's proposal:** reword it "closer to a creature" (to you, to an ally: whoever the card names), with the rest unchanged. Damage dealt in the middle of a Move Action is already Chapter 2's "At its moment".
+- **Traits:** [Divine, Focus]. Its damage is [R] Holy, so a Profane rule or a Talent that keys on Holy damage reads it.
+- **Complexity:** one Version, 14 words, one damage die, one condition.
+- **Table feel:** "the orc runs for Sylwen; the Paladin flashes it: 4 Holy, and its swing takes a Bane."
+
+**For Lucas to choose:** the die (1d4!, 1d6!, 1d8!) and Pressed's duration (EoT, or 1 round).
