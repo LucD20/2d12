@@ -23,14 +23,18 @@ run again on the new targets when Roll is pressed: true
 [V] 1[D] + [Mod] -> (pool) <span class="pool-b">1[D] + [Mod]</span>
 [V] 1[W] + [Mod] -> (pool) <span class="pool-b">1[W] + [Mod]</span>
 2[D] Pi -> <span class="dtamt" style="color:#44513f;--sc-d:#a9b8a4">2[D]</span> <span class="dtype dt-pi" style="color:#44513f;--sc-d:#a9b8a4">(pool) Pierce</span>
---- 6. The effect icons' minimum size on screen
-zoom 1: an icon of 20 px is 20.0 px on screen; scale 1.00
-zoom 0.6: an icon of 20 px is 12.0 px on screen; scale 1.33
-zoom 0.4: an icon of 20 px is 8.0 px on screen; scale 2.00
-zoom 0.25: an icon of 20 px is 5.0 px on screen; scale 3.00
-zoom 0.1: an icon of 20 px is 2.0 px on screen; scale 3.00
-zoom 2: an icon of 20 px is 40.0 px on screen; scale 1.00
-registered: true
+--- 6. (v0.0.533) The status palette's size on screen (statuspal.mjs paletteScale, clampShift); fxscale.mjs gone: true
+zoom 1: the palette (430 px) is 430 px on screen; scale 1.00
+zoom 0.6: the palette (430 px) is 430 px on screen; scale 1.67
+zoom 0.4: the palette (430 px) is 430 px on screen; scale 2.50
+zoom 0.25: the palette (430 px) is 430 px on screen; scale 4.00
+zoom 0.1: the palette (430 px) is 172 px on screen; scale 4.00
+zoom 2: the palette (430 px) is 860 px on screen; scale 1.00
+zoom 0: the palette (430 px) is 0 px on screen; scale 1.00
+zoom NaN: the palette (430 px) is NaN px on screen; scale 1.00
+inside the window (1280 x 720): {"dx":-58,"dy":0} {"dx":0,"dy":48} {"dx":0,"dy":-92} | taller than the window: {"dx":0,"dy":-42} | inside: none: {"dx":0,"dy":0}
+the CSS: scale and translate from its top-left corner: true | on canvasPan and when it opens: true
+the token's icons as before v0.0.532 (no registerFxScale): true
 --- 7. The Encounter Log
 a card's line replaces the by-hand one: true false false
 the title: Ogre Chieftain, Orc Warrior, Grave Wisp, Goblin Sneak

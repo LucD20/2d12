@@ -8,7 +8,7 @@ import { coverFromPoint } from "./cover.mjs";
 import { TWOD12, unconsciousDoom, doomStatus, cardVars, cardHead, prettyDamage, poolIcon, dtypeIcon } from "./config.mjs";
 import { performCheck, checkHtml, esc, sgn, showDice, combineRolls } from "./roll.mjs";
 import { traitChevrons } from "./config.mjs";
-import { askRoll, enrich, adjLabelOf, ccRowOf } from "./actions.mjs";
+import { askRoll, enrich, adjLabelOf, ccRowOf, stateSources } from "./actions.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-target Save card
 import { bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, chooseEmpowered } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die
 import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem } from "./effects.mjs";
@@ -1436,7 +1436,9 @@ export async function saveRoll(msg, idx) {
   if (!data) return;
   const fxm = resolveModifiers(actor, data.fx, extraMods);
   const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dc = Number(data.dc) || cfg.dc;
-  const chk = await performCheck({ mod, boons: fxm.boons + manB, banes: fxm.banes + manN, dc, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on" || fxm.favored, doomed: data.doomed === "on" || fxm.doomed, sources: fxm.sources, manualBoons: manB, manualBanes: manN });
+  // v0.0.533: the sources that made the Save Favored or Doomed, by name, for the card's written sum (actions.mjs stateSources)
+  const stSrc = stateSources(data.favored === "on" || fxm.favored ? [...(fxm.favBy ?? []), ...(data.rd?.shared?.favored ?? [])] : [], data.doomed === "on" || fxm.doomed ? [...(fxm.doomBy ?? []), ...(data.rd?.shared?.doomed ?? [])] : []);
+  const chk = await performCheck({ mod, boons: fxm.boons + manB, banes: fxm.banes + manN, dc, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on" || fxm.favored, doomed: data.doomed === "on" || fxm.doomed, sources: [...fxm.sources, ...stSrc], manualBoons: manB, manualBanes: manN });
   expireOnUse(actor, new Set(), new Set(), { rolled: true }).catch(() => {});   // v0.0.458: a Bane "on its next roll" (Dirty Trick) is spent by a Save or a Check too
   // v0.0.532 (playtest 11: a Save Action that hurts nobody wrote no line): each creature's Save and its Tier go to the Encounter Log
   try { const { logSave } = await import("./enclog.mjs"); const fa = msg.getFlag?.("twod12", "action"); logSave(actor, { label: `${TWOD12.attributes[key]} Save`, total: chk.total, dc, tier: chk.tier, action: (() => { try { const a0 = fa?.actorUuid ? fromUuidSync(fa.actorUuid) : null; return (a0?.actor ?? a0)?.items?.get?.(fa.itemId)?.name ?? ""; } catch (e) { return ""; } })() }); } catch (e) { console.warn("twod12 | the Save's log line", e); }

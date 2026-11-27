@@ -1,0 +1,15 @@
+--- one step (hardStepCost: its normal cost, what Foundry priced it, Difficult or not)
+a straight step: 1 -> Difficult: 2
+a first diagonal: 1 -> Difficult: 2
+a second diagonal: 2 -> Difficult: 3 (the book: 3; it was 4)
+Foundry's own terrain already priced it 2 (no stacking): 2 | a step with no length given: 2
+on a 5-foot grid (Foundry gives feet): a straight step 10 | a second diagonal 15
+two sources on one square (Darkness and an ally's space): the price is a yes or no, once: 2
+the grid rules (the SIM): straight 2 | first diagonal 2 | second diagonal 3 | plain second diagonal 2
+--- the movement area and the drag give the same number
+two diagonals into rubble: the drag pays 5 (1 + 1, then 2 + 1) | along that path, the area with 5 has (2,2): true | with 4 it does not: true
+a straight step into rubble: the drag pays 2 | the area with 1 doesn't have (0,1): true | with 2 it does: true
+the move hook's own count adds 1 a hard step: true | the area adds 1 a square: true | hardStep uses hardStepCost: true
+an Evade through an ally's space pays its 1 more when Foundry didn't count it: true
+Crawl (dt:ignore) and Cut Through still pay nothing more: true
+no 'double' left in the pricing: true

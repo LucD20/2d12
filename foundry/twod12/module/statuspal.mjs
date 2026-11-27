@@ -103,6 +103,52 @@ export function groupPalette(app, html) {
   return true;
 }
 
+/* ---- v0.0.533 (Lucas, 2026-11-27, on v0.0.532's pt-fxzoom: "No, not the token icons, I mean the right click -> active effect window"): the Token
+   HUD lives in #hud, which Foundry scales with the canvas, so zoomed out the status palette shrank with the map. Zoomed out, the palette is scaled
+   back by the inverse of the canvas's scale (the CSS `scale` property, which composes with any transform Foundry gives it, from its top-left corner:
+   it stays on its button's side and keeps its centre line), so it keeps its normal size on screen; at 100% or closer it is left alone (never grown).
+   Zoomed out and pushed past the window's edge, it is moved back inside. Only the palette: the HUD's buttons and bars stay as Foundry draws them. ---- */
+export const PALETTE_MAX_SCALE = 4;
+/** Pure: the palette's scale for a canvas scale: 1 at 1 and above, 1 / scale below, at most PALETTE_MAX_SCALE (a scale of 0 or nonsense: 1). */
+export function paletteScale(z, max = PALETTE_MAX_SCALE) {
+  const s = Number(z);
+  if (!Number.isFinite(s) || s <= 0 || s >= 1) return 1;
+  return Math.min(max, 1 / s);
+}
+/**
+ * Pure: the shift (in screen pixels) that brings a box back inside the window, with a margin. rect: { left, top, right, bottom } on screen. A box
+ * bigger than the window keeps its top-left corner at the margin. -> { dx, dy }
+ */
+export function clampShift(rect, w, h, margin = 8) {
+  const fit = (lo, hi, size) => (hi - lo > size - 2 * margin ? margin - lo : lo < margin ? margin - lo : hi > size - margin ? size - margin - hi : 0);
+  return { dx: fit(rect.left, rect.right, w), dy: fit(rect.top, rect.bottom, h) };
+}
+/** The open palette (if any) at the canvas's scale: its scale, then a shift back inside the window (in its own units: the HUD's scale undone). */
+function fitPalette() {
+  const pal = document.querySelector("#token-hud .twod12-statuspal");
+  if (!pal) return;
+  const z = Number(globalThis.canvas?.stage?.scale?.x) || 1, k = paletteScale(z);
+  pal.style.setProperty("--twod12-palk", String(k));
+  pal.style.setProperty("--twod12-paldx", "0px"); pal.style.setProperty("--twod12-paldy", "0px");
+  if (k === 1) return;   // at 100% or closer: as Foundry draws it
+  const r = pal.getBoundingClientRect();
+  if (!r.width || !r.height) return;   // closed
+  const { dx, dy } = clampShift(r, window.innerWidth, window.innerHeight);
+  if (dx) pal.style.setProperty("--twod12-paldx", `${dx / z}px`);
+  if (dy) pal.style.setProperty("--twod12-paldy", `${dy / z}px`);
+}
+let fitQueued = false;
+const queueFit = () => { if (fitQueued) return; fitQueued = true; requestAnimationFrame(() => { fitQueued = false; try { fitPalette(); } catch (e) { /* the HUD is closing */ } }); };
+
 export function registerStatusPalette() {
-  Hooks.on("renderTokenHUD", (app, html) => { try { groupPalette(app, html); } catch (e) { console.warn("twod12 | the status palette", e); } });
+  Hooks.on("renderTokenHUD", (app, html) => {
+    try { groupPalette(app, html); } catch (e) { console.warn("twod12 | the status palette", e); }
+    // v0.0.533: its size on screen, now and each time it opens (Foundry toggles its "active" class)
+    try {
+      const root = html instanceof HTMLElement ? html : (html?.[0] ?? app?.element), pal = root?.querySelector?.(".twod12-statuspal");
+      if (pal && !pal.dataset.twod12Fit) { pal.dataset.twod12Fit = "1"; new MutationObserver(queueFit).observe(pal, { attributes: true, attributeFilter: ["class"] }); }
+      queueFit();
+    } catch (e) { console.warn("twod12 | the status palette's size", e); }
+  });
+  Hooks.on("canvasPan", queueFit);
 }

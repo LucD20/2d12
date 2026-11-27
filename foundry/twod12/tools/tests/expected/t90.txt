@@ -24,7 +24,7 @@ before: false
 installed: ["actions.walk.getCostFunction","actions.fly.getCostFunction","actions.crawl.getCostFunction","TokenDocument#getMovementCostFunction"] | counts Difficult Terrain: true | the teleport action is left alone: true
 bright scene, empty square: 1
 the other shape, (cost, from, to, distance): bright 1 | an action with no cost function of its own: 1
-... in the dark: 2 | the crawl action: 2 | a base cost of 3 over a distance of 1 stays 3: 3 | distance 5, base 5: 10
+... in the dark: 2 | the crawl action: 2 | a base cost of 3 over a distance of 1 stays 3: 3 | distance 5, base 5 (a 5-foot grid: v0.0.533, 1 square more = 5): 10
 dark scene: 2 | 5-foot squares: 10 | given the document instead of the token: 2 | with Dark Sight: 1 | no creature: 1
 --- unwilling creatures (the ruler counts them too)
 a square with an enemy: 1 (as an action: 1) | with a friend (willing): 2 | a hidden token: 1 | an empty square next to it: 1

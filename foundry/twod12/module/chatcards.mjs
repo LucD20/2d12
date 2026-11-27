@@ -8,7 +8,7 @@ import { TWOD12 } from "./config.mjs";   // v0.0.457: the damage types' colors
 import { mergeDiceLine, mergeInstances } from "./dicemerge.mjs";
 /** v0.0.314 (pack AU): an AD / WD (or an Attribute's) badge in its color: the Vs. line's colors (util.mjs VS_COLORS). */
 const vsk = label => { const k = vsKind(label); return k ? ` vsk-${k}` : ""; };
-import { bbKey, BB_LIMIT, BB_NAMES } from "./calc.mjs";
+import { bbKey, bbResolve, BB_LIMIT, BB_NAMES } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ small pieces */
 /** The subtypes' names and the card's ink for them (brief section 3; the others keep the system's ink). */
@@ -138,30 +138,104 @@ export function resultChips(r, { save = false, hide = false } = {}) {
   if (r.tier > base) return `<span class="cc-pill word ${tierCls(r.tier, false)}">Tier ${base} → Tier ${r.tier} · Doubles</span>`;
   return `<span class="cc-pill word ${tierCls(r.tier, false)}">Tier ${r.tier}${r.forced ? " (forced)" : ""}</span>`;
 }
+/* ---- v0.0.533 (Lucas, 2026-11-27, foundry/mockups/roll-breakdown: design C, "the written sum"): the roll's breakdown as a sum written on paper.
+   Every line starts with its number in one column: the dice's sum (the dice beside it), each Modifier, then one line "Boons and Banes" with what
+   they add after cancelling and a few words on the cancelling; under it each Boon and Bane on its own line, number first, its name after it with
+   its kind in words ("(Field)"); one that does not count is struck through with its reason, its number 0; a rule, then the total against the
+   Defense (today's badge) and the Tier. Behind the ladder's click, as before (it replaces the labels' column of v0.0.283 / v0.0.301 / v0.0.347). */
+const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+/** A source's name on the card: its trailing "(Orc Warrior)" / "(Doomed)" left out, as the lines before it did. */
+const bbName = s => String(s ?? "").replace(/\s*\([^)]*\)\s*$/, "");
 /**
- * The breakdown panel: 2d12 (the dice as rolled, explosions grouped, the Doubles pair framed), Boon · Bane (one line per source), Modifiers, Total.
- * r: a check ({ d1, d2, dropped, doubles, crit, base, tier, total, dc, dcLabel, boonFaces, baneFaces, sources, mods: [{ v, label }] }).
+ * The written sum's model, from a roll row (ccRowOf; a Save's result row). Pure. Counted with the system's rule (calc.mjs bbCount, bbResolve):
+ * a name's limit of 2 a side, Favored / Doomed counting 5 once, cancelling, 5 or more left. A source { fav: true } / { doom: true } (v0.0.533,
+ * stored at roll time) is a Favored / Doomed source by name; a roll Favored or Doomed with none (a card posted before v0.0.533) gets one entry with
+ * no name. Boons or Banes the row counts beyond its named sources (by hand, before v0.0.292) are one entry with no name. The total is the roll's own:
+ * when the parts don't reach it the difference is that unnamed entry. { dice: [{ faces, dbl, off }], diceSum, note, mods, entries, B, N, net, add,
+ * state, cancel, total, tier, base, crit, critWhy, raised }.
  */
-export function breakdownHtml(r, { hide = false, save = false, id = "", open = false, applied = [] } = {}) {
-  const exploded = [r.d1, r.d2].some(f => (f ?? []).length > 1);
-  const dblCls = r.doubles ? (r.crit && (r.base ?? 3) === 3 ? "crit" : "up") : "";
-  const pair = `${dieGroup(r.d1)}${dieGroup(r.d2)}`;
-  const dice = `${r.doubles ? `<span class="cc-dbl ${dblCls}">${pair}</span>` : pair}${r.dropped ? `<span class="cc-dropped">${dieGroup(r.dropped)}</span>` : ""}`;
-  const chainTxt = exploded ? `<span class="cc-muted">${[r.d1, r.d2].map(f => f.map(x => (x === 12 ? 11 : x)).join(" + ")).join(" · ")}</span>` : "";
-  const dblTag = r.doubles ? `<span class="cc-tag ${dblCls}">Doubles · ${dblCls === "crit" ? "Critical" : "+1 Tier"}</span>` : "";
-  const rows = [`<span class="cc-bl">2d12</span><span class="cc-bv cc-dicerow">${dice}${chainTxt}${dblTag}</span>`];
-  const bb = boonBaneLines(r);
-  // v0.0.301 (PACK BB): +1 / -1 each (no dice); over a name's limit: +0; 5 or more left: the roll is Favored / Doomed instead
-  const five = r.five ? `<span class="cc-bbl five"><span class="cc-tag ${r.five === "favored" ? "up" : "down"}">5 or more ${r.five === "favored" ? "Boons" : "Banes"} left: ${r.five === "favored" ? "Favored" : "Doomed"} instead</span></span>` : "";
-  // v0.0.347 (Lucas, playtest 4: "+1 Marked Quarry / −1 Situational, smaller, on the right, no Boon / Bane words, no triangle")
-  if (bb.length) rows.push(`<span class="cc-bl">Boon · Bane</span><span class="cc-bv cc-bbv">${bb.map(x => `<span class="cc-bbl ${x.kind}${x.over ? " over" : ""}">${modTxt(x.val, "")} <span>${esc(x.name || (x.kind === "boon" ? "Boon" : "Bane"))}${x.count > 1 && x.val === 0 ? ` ×${x.count}` : ""}</span>${x.bb ? ` <small class="cc-bbn">${esc(x.bb)}</small>` : ""}${x.over ? ' <small class="cc-muted">over the limit</small>' : ""}</span>`).join("")}${five}</span>`);
-  const mods = (r.mods ?? []).filter(m => m && Number(m.v));
-  if (mods.length) rows.push(`<span class="cc-bl">Modifiers</span><span class="cc-bv">${mods.map(m => modTxt(Number(m.v), m.label)).join(" ")}</span>`);
-  // v0.0.347: "Applied": the effects this roll's damage takes something from (Killer's Focus), each a link that opens it
-  if ((applied ?? []).length) rows.push(`<span class="cc-bl">Applied</span><span class="cc-bv cc-applied">${applied.map(a => (a.uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(a.uuid)}" aria-label="Open ${esc(a.name)}"><i class="fa-solid fa-sparkles"></i>${esc(a.name)}</a>` : `<span>${esc(a.name)}</span>`)).join(" ")}</span>`);
-  const badge = `${esc(r.dcLabel ?? "DC")}${hide && !save ? "" : ` ${r.dc}`}`;
-  rows.push(`<span class="cc-btot"><b class="cc-total">${r.total}</b><small>vs</small><span class="cc-badge${vsk(r.dcLabel)}">${badge}</span><span class="cc-chips">${resultChips(r, { save, hide })}</span></span>`);
-  return `<div class="cc-break${open ? " open" : ""}" data-cc-panel="${esc(id)}">${rows.join("")}</div>`;
+export function rollSumModel(r, { save = false, hide = false } = {}) {
+  const groups = [r.d1 ?? [], r.d2 ?? []], dropped = Array.isArray(r.dropped) && r.dropped.length ? r.dropped : null;
+  const firsts = [...groups, ...(dropped ? [dropped] : [])].map(f => f[0]);
+  // Doubles: the two dice whose first faces match (Favored: any pair of the three, the dropped one too)
+  const dblAt = i => !!r.doubles && firsts.some((f, j) => j !== i && f === firsts[i]);
+  const dice = [...groups.map((faces, i) => ({ faces, dbl: dblAt(i), off: false })), ...(dropped ? [{ faces: dropped, dbl: dblAt(2), off: true }] : [])];
+  const diceSum = dieValue(groups[0]) + dieValue(groups[1]);
+  // the Modifiers: the roll's own (the first, even at 0: it names what was added), then any other that is not 0 (the dialog's Flat)
+  const modList = (r.mods ?? []).filter((x, i) => x && (Number(x.v) || (i === 0 && String(x.label ?? "").trim()))).map(x => ({ v: Number(x.v) || 0, label: String(x.label ?? "") || "Modifier" }));
+  const modSum = modList.reduce((s, m) => s + m.v, 0);
+  // the entries, in the order of the sources: a name's limit a side (calc.mjs BB_LIMIT), Favored / Doomed counting 5 once
+  const used = { boon: {}, bane: {} }, seen = { boon: false, bane: false }, entries = [];
+  for (const s of r.sources ?? []) {
+    const name = bbName(s.name), k = bbKey(s.bb);
+    if (s.fav || s.doom) { const side = s.fav ? "boon" : "bane"; entries.push({ side, name, n: 5, counted: seen[side] ? 0 : 5, kind: "", special: s.fav ? "Favored" : "Doomed", again: seen[side] }); seen[side] = true; continue; }
+    for (const [side, n] of [["boon", Math.max(0, Number(s.boons) || 0)], ["bane", Math.max(0, Number(s.banes) || 0)]]) {
+      if (!n) continue;
+      let counted = n;
+      if (k) { const before = used[side][k] ?? 0; counted = Math.max(0, Math.min(n, BB_LIMIT - before)); used[side][k] = before + n; }
+      entries.push({ side, name, n, counted, kind: k ? BB_NAMES[k] : "", special: "" });
+    }
+  }
+  // a roll Favored or Doomed with no source named for it (a card posted before v0.0.533, a Check's own switch): one entry, no name
+  if (r.state && !r.five && !seen[r.state === "favored" ? "boon" : "bane"]) { const side = r.state === "favored" ? "boon" : "bane"; entries.push({ side, name: "", n: 5, counted: 5, kind: "", special: r.state === "favored" ? "Favored" : "Doomed" }); seen[side] = true; }
+  const sum = side => entries.filter(e => e.side === side && !e.special).reduce((a, e) => a + e.counted, 0);
+  // Boons or Banes the roll counted beyond its named sources (no state: the row's faces are the counts): one entry with no name a side
+  if (!r.state) for (const [side, faces] of [["boon", r.boonFaces], ["bane", r.baneFaces]]) { const more = (faces ?? []).length - sum(side); if (more > 0) entries.push({ side, name: "", n: more, counted: more, kind: "", special: "" }); }
+  const count = side => entries.filter(e => e.side === side).reduce((a, e) => a + e.counted, 0);
+  let B = count("boon"), N = count("bane");
+  let res = bbResolve(B - (seen.boon ? 5 : 0), N - (seen.bane ? 5 : 0), seen.boon, seen.bane);
+  // the total is the roll's: what the parts don't explain is an entry with no name (never a number the roll didn't add)
+  const gap = Number(r.total) - diceSum - modSum - res.add;
+  if (!res.state && !r.state && Number.isFinite(gap) && gap !== 0) {
+    const side = gap > 0 ? "boon" : "bane", e = entries.find(x => x.side === side && !x.name && !x.special);
+    if (e) { e.n += Math.abs(gap); e.counted += Math.abs(gap); } else entries.push({ side, name: "", n: Math.abs(gap), counted: Math.abs(gap), kind: "", special: "" });
+    B = count("boon"); N = count("bane"); res = bbResolve(B - (seen.boon ? 5 : 0), N - (seen.bane ? 5 : 0), seen.boon, seen.bane);
+  }
+  const state = r.state || res.state, add = state ? 0 : res.add, net = state && !res.state ? (state === "favored" ? Math.max(5, res.net) : Math.min(-5, res.net)) : res.net;
+  const base = r.base ?? r.tier, tier = r.tier;
+  const crit = !save && !!r.crit;
+  const critWhy = !crit ? "" : r.triple ? "three of a kind" : r.doubles && base === 3 ? "Doubles" : hide ? "" : "20 over";
+  return { dice, diceSum, mods: modList, entries, B, N, net, add, state, cancel: !!seen.boon && !!seen.bane, total: r.total, tier, base, crit, critWhy, raised: !crit && tier > base, forced: !!r.forced,
+    note: dropped ? `3d12, the ${dropped[0]} is dropped` : "" };
+}
+/** The cancelling in a few words, for the line "Boons and Banes": "2 and 2 cancel", "4 Boons, 3 Banes", "Favored: 5 Boons left" ("" for one side alone). */
+export function rollSumCancel(m) {
+  if (m.state) return `<b>${m.state === "favored" ? "Favored" : "Doomed"}</b>: ${Math.abs(m.net)} ${m.net > 0 ? "Boons" : "Banes"} left`;
+  if (m.cancel) return `Favored and Doomed cancel${m.net ? `: ${plural(Math.abs(m.net), m.net > 0 ? "Boon" : "Bane")} left` : ""}`;
+  return m.B && m.N ? (m.net === 0 ? `${m.B} and ${m.N} cancel` : `${plural(m.B, "Boon")}, ${plural(m.N, "Bane")}`) : "";
+}
+/** One Boon or Bane's words after its number: its name, then its kind or why it does not count, in parentheses. */
+function rollSumName(e) {
+  const nm = esc(e.name || (e.special || (e.side === "boon" ? "Boon" : "Bane")));
+  const why = e.special ? (e.again ? `(${e.special}: counts once)` : `(${e.name ? `${e.special}: ` : ""}counts as 5 ${e.side === "boon" ? "Boons" : "Banes"})`)
+    : e.counted === 0 ? `(${e.kind}: ${BB_LIMIT} at most)` : e.counted < e.n ? `(${e.kind}: ${e.counted} of ${e.n} count)` : e.kind ? `(${e.kind})` : "";
+  return `${e.counted === 0 ? `<s>${nm}</s>` : nm}${why ? ` <span class="cc-rb-k">${why}</span>` : ""}`;
+}
+/** A d12 as rolled, for the written sum: an exploded 12 in the accent, then what it rolled again and "11 + 6"; a Doubles die outlined; the dropped die quiet. */
+const rbDieGroup = d => `<span class="cc-rb-dg${d.off ? " off" : ""}">${(d.faces ?? []).map((f, i) => `${polyDieHtml(12, f, { cls: `cc-die${d.dbl && i === 0 ? " dbl" : ""}`, boom: f === 12, chain: i > 0 })}`).join("")}${(d.faces ?? []).length > 1 ? `<span class="cc-rb-q">${d.faces.map(x => (x === 12 ? 11 : x)).join(" + ")}</span>` : ""}<span class="cc-sr">${d.off ? "dropped: " : ""}${(d.faces ?? []).join(", ")}</span></span>`;
+/**
+ * The breakdown panel (v0.0.533: design C, the written sum; rollSumModel). r: a roll row ({ d1, d2, dropped, doubles, crit, triple, base, tier,
+ * total, dc, dcLabel, state, five, boonFaces, baneFaces, sources, mods: [{ v, label }], name }). hide: the enemy Defense hidden by the GM (the badge
+ * keeps its word, not its number; a Critical by 20 over says no why). save: a Save (the target's roll: "Their Tier", no Critical); lead: a line
+ * above the sum ("Goblin Archer rolls"). applied: the effects the damage takes from, a line under the total (each a link).
+ */
+export function breakdownHtml(r, { hide = false, save = false, id = "", open = false, applied = [], lead = "" } = {}) {
+  const m = rollSumModel(r, { save, hide });
+  const num = (n, cls = "") => `<span class="cc-rb-n${cls ? ` ${cls}` : ""}">${n}</span>`;
+  const lines = [num(m.diceSum) + `<div class="cc-rb-t"><span class="cc-rb-dice">${m.dice.map(rbDieGroup).join("")}</span>${m.note ? ` <span class="cc-rb-q">${esc(m.note)}</span>` : ""}</div>`];
+  for (const x of m.mods) lines.push(num(sg(x.v)) + `<div class="cc-rb-t">${esc(x.label)}</div>`);
+  if (m.entries.length) {
+    const rows = m.entries.map(e => `<span class="cc-rb-e${e.counted === 0 ? " off" : ""}"><span class="cc-rb-en">${e.counted === 0 ? "0" : sg(e.side === "boon" ? e.counted : -e.counted)}</span><span class="cc-rb-nm">${rollSumName(e)}</span></span>`).join("");
+    const words = rollSumCancel(m);
+    lines.push(num(sg(m.add), m.add ? "" : "zero") + `<div class="cc-rb-t"><b>Boons and Banes</b>${words ? ` <span class="cc-rb-q cc-rb-g">${words}</span>` : ""}<div class="cc-rb-sub">${rows}</div></div>`);
+  }
+  const badge = `${esc(r.dcLabel ?? "DC")}${hide && !save ? "" : ` ${esc(r.dc)}`}`;
+  const why = m.crit ? `Tier 3${m.critWhy ? `, ${m.critWhy}` : ""}:` : m.raised ? `Tier ${m.base}, Doubles:` : "";
+  const tag = m.crit ? `<span class="cc-pill word crit">Critical</span>` : `<span class="cc-pill word t${m.tier}">${save ? "Their " : ""}Tier ${m.tier}${m.forced ? " (forced)" : ""}</span>`;
+  lines.push(`<span class="cc-rb-n cc-rb-tot"><b class="cc-total">${esc(m.total)}</b></span><div class="cc-rb-t cc-rb-tot"><span class="cc-rb-end"><span class="cc-rb-vs">against <span class="cc-badge${vsk(r.dcLabel)}">${badge}</span></span><span class="cc-rb-res">${why ? `<span class="cc-rb-why">${why}</span> ` : ""}${tag}</span></span></div>`);
+  // v0.0.347: "Applied": the effects this roll's damage takes something from (Killer's Focus), each a link that opens it (a line of its own under the total)
+  const app = (applied ?? []).length ? `<div class="cc-rb-app">Applied: ${applied.map(a => (a.uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(a.uuid)}" aria-label="Open ${esc(a.name)}"><i class="fa-solid fa-sparkles" aria-hidden="true"></i>${esc(a.name)}</a>` : `<span>${esc(a.name)}</span>`)).join(", ")}</div>` : "";
+  return `<div class="cc-break cc-rb${open ? " open" : ""}" data-cc-panel="${esc(id)}">${lead ? `<p class="cc-rb-lead">${esc(lead)}</p>` : ""}<div class="cc-rb-sum">${lines.join("")}</div>${app}</div>`;
 }
 
 /* ------------------------------------------------------------------ outcomes */
@@ -370,7 +444,7 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   let body;
   if (one && r) {
     // one creature rolled: the attack card's stamp, ladder and breakdown (the ladder opens it), then only the rolled Tier's words
-    body = `<div class="cc-body">${stampHtml(noCrit(r))}<div class="cc-main">${ladderHtml(noCrit(r), { id: "s0" })}${breakdownHtml(r, { save: true, id: "s0" })}<div class="cc-outcome">${out(r.tier)}</div></div></div>`;
+    body = `<div class="cc-body">${stampHtml(noCrit(r))}<div class="cc-main">${ladderHtml(noCrit(r), { id: "s0" })}${breakdownHtml(r, { save: true, id: "s0", lead: r.name ? `${r.name} rolls` : "" })}<div class="cc-outcome">${out(r.tier)}</div></div></div>`;
   } else if (!one) {
     // several creatures: a row each (v0.0.286: each rolls its own Save), then the Tiers rolled grouped as on the attack card
     const crows = cs.map((c, i) => `<div class="cc-crow">${c.result ? tierPill(c.result.tier) : '<span class="cc-pill">&ndash;</span>'}<span class="cc-cname">${esc(c.name)}</span><span class="cc-cdef">${c.result

@@ -1,6 +1,6 @@
 --- distances and movement
 distance 3 straight, 2 diagonal, 4 diagonal, a knight's move: 3 3 6 2
-step costs: straight 1 | 1st diagonal 1 | 2nd 2 | 3rd 1 | Difficult Terrain straight 2 | a 2nd diagonal into it 4
+step costs: straight 1 | 1st diagonal 1 | 2nd 2 | 3rd 1 | Difficult Terrain straight 2 | a 2nd diagonal into it 3
 --- Line of Effect and Cover
 nothing between: 0 | a wall square on the line:  4 | a wall beside the line (below it): 0
 a pillar that hides the lower corners of a target up and to the right: 2 | a long wall with the target right behind its end: 4

@@ -86,3 +86,5 @@ Shared by all three: the d12 marks are the system's (pentagons; an exploded 12 a
 5. Several targets: "I will let you choose". **Claude's choice: each target's row opens its own breakdown, as today** (it changes the least, and behind a click a reader opens the one target they are asking about).
 
 Still to settle at the build: inside the opened breakdown, C's own list of Boons and Banes is shown open (the click that opened the breakdown is the one click); the Defense keeps today's badge.
+
+**Built in Foundry v0.0.533** (design C, behind the ladder's click, closed at first; the list of Boons and Banes open inside it; today's Defense badge; each target's row its own): `foundry/twod12/module/chatcards.mjs rollSumModel` / `breakdownHtml`, the CSS block "v0.0.533" at the end of `system.css`; the changelog lists where the live data differed from this page's cases.

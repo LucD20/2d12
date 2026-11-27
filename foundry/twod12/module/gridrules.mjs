@@ -8,8 +8,9 @@ import { lineCost } from "./linearea.mjs";
 
 /** Squares between two squares: every second diagonal counts 2 (Ch. 3, Playing on the Grid). */
 export const gridDistance = (a, b) => lineCost(b.x - a.x, b.y - a.y);
-/** What one step of a movement costs (Ch. 3): 1, the second diagonal of the movement 2 (then 1, 2...); Difficult Terrain counts double. */
-export const stepCost = (diagonal, diagonalsBefore = 0, difficult = false) => (diagonal ? (diagonalsBefore % 2 ? 2 : 1) : 1) * (difficult ? 2 : 1);
+/** What one step of a movement costs (Ch. 3): 1, the second diagonal of the movement 2 (then 1, 2...); Difficult Terrain counts 1 more (v0.0.533,
+ *  Lucas, 2026-11-27: 2 for a square, 3 for a second diagonal; it was double). */
+export const stepCost = (diagonal, diagonalsBefore = 0, difficult = false) => (diagonal ? (diagonalsBefore % 2 ? 2 : 1) : 1) + (difficult ? 1 : 0);
 
 /** Does the segment (ax, ay)-(bx, by) pass through the inside of the square at (sx, sy)? A line that only touches its edge or its corner doesn't. */
 export function segmentHitsSquare(ax, ay, bx, by, sx, sy, inset = 0.02) {

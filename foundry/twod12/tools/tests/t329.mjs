@@ -4,7 +4,7 @@ import fs from "node:fs";
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 // v0.0.532 (Lucas, playtest 11): the bugs. 1. Charge asked for the weapon twice (t328: the stop's weapon is the Basic Attack's). 2. The Advance's
 // area: an ally's space is crossed, not stopped in; a Crawl's "ignores Difficult Terrain" ended with it. 3. The second diagonal carries over between
-// drags. 4. Judge's card named the first target. 5. "1[D] + [Mod]" in its pool's color. 6. The effect icons' minimum size on screen. 7. The
+// drags. 4. Judge's card named the first target. 5. "1[D] + [Mod]" in its pool's color. 6. (v0.0.533: the token's icons are as before v0.0.532; Lucas meant the Token HUD's status palette) the palette keeps its size on screen when zoomed out. 7. The
 // Encounter Log: a Collision's damage in Raw, the Save lines, Weak's extra in Raw, every enemy in the title.
 class F { constructor(o) { this.o = o; } }
 globalThis.Combat = class {}; globalThis.CONFIG = {}; globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
@@ -13,7 +13,7 @@ globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) 
 
 globalThis.Hooks = { on() {} };
 const mv = await import(ROOTURL + "module/move.mjs"), CF = await import(ROOTURL + "module/config.mjs"), A = await import(ROOTURL + "module/actions.mjs");
-const FS = await import(ROOTURL + "module/fxscale.mjs"), L = await import(ROOTURL + "module/enclog.mjs");
+const FS = await import(ROOTURL + "module/statuspal.mjs"), L = await import(ROOTURL + "module/enclog.mjs");
 console.log("--- 2. The Advance's area with an ally in the path");
 // a Medium creature at (0,0), Speed 3, an ally at (0,1): its square costs 2 to enter (Difficult Terrain) and can't be ended in
 const ally = new Set(["0,1"]), kindAt = c => (ally.has(`${c.i},${c.j}`) ? "dt" : "");
@@ -41,9 +41,11 @@ const as = src("module/actions.mjs");
 console.log("run again on the new targets when Roll is pressed:", as.includes("if (!rdData.restart && rollsAtOthers && !isAreaAction && !senseFree && targetsChanged(aimed, [...(game.user?.targets ?? [])])) return useAction("));
 console.log("--- 5. [D] in its pool's color");
 for (const x of ["[V] 1[W] + 1[D] + [Mod]", "[V] 1[D] + [Mod]", "[V] 1[W] + [Mod]", "2[D] Pi"]) console.log(`${x} -> ${CF.prettyDamage(x).replace(/<i class="[^"]*"><\/i>/g, "(pool)")}`);
-console.log("--- 6. The effect icons' minimum size on screen");
-for (const z of [1, 0.6, 0.4, 0.25, 0.1, 2]) console.log(`zoom ${z}: an icon of 20 px is ${(20 * z).toFixed(1)} px on screen; scale ${FS.fxIconScale(20, z).toFixed(2)}`);
-console.log("registered:", src("module/twod12.mjs").includes("registerFxScale();"));
+console.log("--- 6. (v0.0.533) The status palette's size on screen (statuspal.mjs paletteScale, clampShift); fxscale.mjs gone:", !fs.existsSync(ROOT + "module/fxscale.mjs") && !src("module/twod12.mjs").includes("fxscale"));
+for (const z of [1, 0.6, 0.4, 0.25, 0.1, 2, 0, NaN]) console.log(`zoom ${z}: the palette (430 px) is ${(430 * z * FS.paletteScale(z)).toFixed(0)} px on screen; scale ${FS.paletteScale(z).toFixed(2)}`);
+console.log("inside the window (1280 x 720):", JSON.stringify(FS.clampShift({ left: 900, top: 100, right: 1330, bottom: 500 }, 1280, 720)), JSON.stringify(FS.clampShift({ left: 100, top: -40, right: 530, bottom: 400 }, 1280, 720)), JSON.stringify(FS.clampShift({ left: 100, top: 100, right: 530, bottom: 900 }, 1280, 720)), "| taller than the window:", JSON.stringify(FS.clampShift({ left: 100, top: 50, right: 530, bottom: 900 }, 1280, 600)), "| inside: none:", JSON.stringify(FS.clampShift({ left: 100, top: 100, right: 530, bottom: 500 }, 1280, 720)));
+console.log("the CSS: scale and translate from its top-left corner:", src("styles/system.css").includes("#token-hud .status-effects.twod12-statuspal { scale: var(--twod12-palk, 1); translate: var(--twod12-paldx, 0px) var(--twod12-paldy, 0px); transform-origin: 0 0; }"), "| on canvasPan and when it opens:", src("module/statuspal.mjs").includes('Hooks.on("canvasPan", queueFit)') && src("module/statuspal.mjs").includes('attributeFilter: ["class"]'));
+console.log("the token's icons as before v0.0.532 (no registerFxScale):", !src("module/twod12.mjs").includes("registerFxScale"));
 console.log("--- 7. The Encounter Log");
 console.log("a card's line replaces the by-hand one:", L.sameAsManual({ n: 2, at: 1000 }, 2, 2500), L.sameAsManual({ n: 2, at: 1000 }, 3, 1500), L.sameAsManual({ n: 2, at: 1000 }, 2, 4000));
 console.log("the title:", L.foeTitle(["Ogre Chieftain", "Orc Warrior", "Grave Wisp", "Goblin Sneak 1", "Goblin Sneak 2"]));

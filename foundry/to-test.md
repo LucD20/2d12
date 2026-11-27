@@ -23,9 +23,9 @@ differ):
 
 ## The HUD
 
-### pt-fxzoom · v0.0.532 · The effect icons on a token stay readable when zoomed out
-Do: Give the Orc Warrior three conditions (Prone, Vulnerable 1, Taunted by Durgan). Zoom the map out step by step to the farthest zoom, then back in past 100%.
-Expect: Zoomed out, the icons on the orc's token stop shrinking at about 16 pixels on screen (they grow over the token, from its top-left corner); at 100% and closer they are Foundry's normal size, never bigger. If they jump or sit in the wrong place after a token refresh, say so (this could not be tried outside Foundry).
+### pal-zoom · v0.0.533 · The status palette keeps its size when the map is zoomed out
+Do: Zoom the map far out (the farthest zoom), right-click Kaela's token and open the effects palette (the Token HUD's effects button). Do the same at 100%, then zoomed in past 100%, and once with Kaela's token near the right or bottom edge of the screen while zoomed out.
+Expect: Zoomed out, the palette is the same readable size as at 100% (its names as easy to read), still beside its button and inside the window (near an edge it moves back inside); at 100% and zoomed in it is exactly as before. The icons on Kaela's token itself are as before v0.0.532 (they shrink with the map, as Foundry draws them). A click on a row still toggles its condition. If the palette jumps away from its button, say where (Foundry's own placement could not be tried here).
 
 ## Starting a combat
 
@@ -36,6 +36,22 @@ Expect: Zoomed out, the icons on the orc's token stop shrinking at about 16 pixe
 ### pt-dcolor · v0.0.532 · "1[D] + [Mod]" is in the damage color
 Do: Open Durgan's Basic Attack card (the sheet, the HUD's card, and a roll of it in the chat).
 Expect: Tier 3's "1[W] + 1[D] + [Mod]" is all in the Vigor damage color on every face, as Tier 2's "1[W] + [Mod]" is.
+
+### rb-sum · v0.0.533 · The roll's breakdown is a written sum
+Do: Sylwen makes her Basic Attack on a Goblin Sneak that has Low cover, with Shifting Aim on (the case of Lucas's picture), in a chat about 220 to 232 px wide. Click the card's ladder; click it again.
+Expect: The breakdown is closed at first and opens under the ladder, across the card's whole width. Each line starts with its number in one column: the dice's sum with the two dice beside it, "+N Weapon", "+0 Boons and Banes · 2 and 2 cancel" (or what the roll had), then each Boon and Bane on its own line, number first, the name, its kind in words ("(Field)"); a rule, then "16 against [AD 14]" with the Tier at the right. No number is torn from its name, a long name wraps under itself, nothing leaves the card. A Flat from the dialog is its own line ("+1 Situational"); with Killer's Focus, an "Applied: Killer's Focus" line under the total.
+
+### rb-states · v0.0.533 · Favored, Doomed, a name's limit, a Critical in the breakdown
+Do: Sylwen attacks a Goblin Sneak while Hidden (Favored); then while Engaged (Doomed); then with three Field Boons on one roll (Flanking with Durgan, the Goblin Prone, Shifting Aim); then roll until Doubles on a Tier 3 or 20 over (Forced Tier: Critical is fine). Open each breakdown.
+Expect: Favored / Doomed: the dice's line shows three dice, the dropped one dashed and struck, "3d12, the N is dropped"; the line "+0 Boons and Banes · Favored: 5 Boons left" (or Doomed, Banes) and the source as "+5 Hidden (Favored: counts as 5 Boons)". The third Field is struck through, "0", "(Field: 2 at most)". A Critical: "Tier 3, Doubles:" (or "20 over") then the gold Critical; Doubles that raise a Tier: "Tier 2, Doubles:" then Tier 3. A roll posted before v0.0.533 still opens (Favored then reads "+5 Favored (counts as 5 Boons)", no name).
+
+### rb-save · v0.0.533 · A Save's breakdown: the target rolls
+Do: Durgan uses Rebuke on a Goblin Sneak with a Bane on Durgan's side (so it turns into the goblin's Boon); the goblin rolls its Save; open its breakdown from the ladder.
+Expect: "Goblin Sneak rolls" above the sum; its Attribute as the Modifier line; "+1 Caster's Banes" among its Boons; the total "against [DC N]" and "Their Tier N"; never a Critical.
+
+### rb-many · v0.0.533 · Several targets: each row opens its own breakdown
+Do: Sylwen's Volley (or the Ogre Chieftain's Great Sweep) on three creatures, one with cover; click each creature's small ladder.
+Expect: Each opens that creature's own written sum under its row (the shared dice repeated in each, its own Boons, Banes, Defense and Tier). With "Hide enemy Defenses" on, a player sees the badge "AD" without its number and no "20 over".
 
 ## Conditions and their Tiers
 
@@ -57,13 +73,22 @@ Expect: Durgan stops adjacent and his Basic Attack opens on the Arming Sword wit
 Do: Kill the Orc Warrior (or mark it Dead) and knock a Goblin Sneak Prone. Durgan uses Shove (or any Push) on the other Goblin Sneak so that its line passes through the dead orc's square, then through the Prone goblin's square, to a free square beyond. Then aim a Push to end exactly on the Prone goblin's square.
 Expect: The Push passes through both and lands beyond them, with no "hits" plate, no damage to anyone, and the log's line has no "(hits ...)". Aimed on the Prone goblin's square, it stops on the square before it: the plate says "not in a lying creature's space", no Collision and no damage. A standing creature in the way is still a Collision as before.
 
-### pt-area · v0.0.532 · The Advance's area: an ally's space is crossed, not a stop
+### pt-area · v0.0.532 · Rev 2 · The Advance's area: an ally's space is crossed, not a stop
 Do: Put Kaela next to Aveline (Aveline between Kaela and an open space) and click Aveline's Advance in the HUD on Aveline's turn. Then, on another turn, give Kaela a Crawl (1 AP) first, then an Advance.
-Expect: Aveline's area goes past Kaela's square at double cost (it reaches 1 square less beyond Kaela than in open ground); Kaela's own square is hatched and not filled as a square Aveline can stop in. After Kaela's Crawl is used up, her Advance's area again counts Difficult Terrain and allies' squares as double (the Crawl's "ignores Difficult Terrain" ended with it).
+Expect: Aveline's area goes past Kaela's square at 1 more a step (v0.0.533: Difficult Terrain counts 1 more; it reaches 1 square less beyond Kaela than in open ground); Kaela's own square is hatched and not filled as a square Aveline can stop in. After Kaela's Crawl is used up, her Advance's area again counts Difficult Terrain and allies' squares as 1 more (the Crawl's "ignores Difficult Terrain" ended with it).
+Rev: 2
 
 ### pt-diag · v0.0.532 · The second diagonal counts across two drags
 Do: On Sylwen's turn, note her squares left, drag her token 1 square diagonally and drop it; then drag her 1 more square diagonally and drop it; read the squares left in the movement bar after each drop. Then end her turn and start Kaela's: drag Kaela 1 square diagonally.
 Expect: The first drop costs 1 square, the second 2 (the second diagonal costs 2, as in one drag of 2 diagonals); the area drawn after the first drop already shows the next diagonal costing 2. Kaela's first diagonal on her own turn costs 1 (the count starts again on a new turn).
+
+### mv-dt · v0.0.533 · Difficult Terrain counts 1 more (a second diagonal 3)
+Do: On Kaela's turn, Advance her diagonally twice into rubble (a Difficult Terrain region) or past Sylwen's square, reading the squares left after each drop; then one straight step into Difficult Terrain. Open her Advance's area from the HUD first.
+Expect: The first diagonal into Difficult Terrain costs 2, the second diagonal 3 (not 4), a straight step 2; the ruler's number, the squares charged and the area drawn before the drag agree. A square that is Difficult Terrain twice (Darkness and an ally's space) still costs 1 more, not 2. A Crawl's Advance still pays nothing more.
+
+### mv-deadpush · v0.0.533 · A creature the Action kills is still pushed, and its body collides
+Do: Durgan's Shove (or Aveline's Word of Radiance) kills a Goblin Sneak standing next to the Orc Warrior, the Push aimed so the body goes into the orc.
+Expect: The Push is offered on the dead goblin as on a living one (the bar or the drag tool), its body moves and stops against the orc: the line says it hits the Orc Warrior, and the orc takes the Collision's damage (1 a square unused); the goblin's body takes it too (it is dead: nothing changes for it). A dead creature in the way (not the moved one) is still passed through.
 
 ## Reactions and Judge
 

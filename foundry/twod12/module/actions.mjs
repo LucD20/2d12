@@ -199,11 +199,19 @@ const needsDamage = (attrFrom, tier, insts, fx) => { const from = attrFrom === t
 const CC_GENERAL = id => !id.includes("|") && (!id.startsWith("syn:") || ["syn:engaged", "syn:granted", "syn:nlswitch", "syn:hand", "syn:atwill", "syn:onehand"].includes(id) || id.startsWith("syn:hook:"));
 /** A distance on the card: a number of squares has "sq." (brief 4.1). */
 export const sqText = d => (/^\d+$/.test(String(d ?? "").trim()) ? `${String(d).trim()} sq.` : String(d ?? "").replace(/(\d+)\s*(?:squares?|sq\.?)?$/i, (m, n) => `${n} sq.`));
+/**
+ * v0.0.533: the sources that made a roll Favored or Doomed, as entries of its sources list ({ name, fav: true } / { doom: true }, no Boon or Bane:
+ * bbCount leaves them out); the chat card's written sum counts each as 5 (chatcards.mjs rollSumModel). The same name once (its "(…)" aside).
+ */
+export function stateSources(fav = [], doom = []) {
+  const one = list => { const seen = new Set(); return list.map(n => String(n ?? "").trim()).filter(n => { const k = n.replace(/\s*\([^)]*\)\s*$/, "").toLowerCase(); if (!n || seen.has(k)) return false; seen.add(k); return true; }); };
+  return [...one(fav).map(name => ({ name, boons: 0, banes: 0, bb: "", fav: true })), ...one(doom).map(name => ({ name, boons: 0, banes: 0, bb: "", doom: true }))];
+}
 /** One creature's row of the card from a check. */
 export function ccRowOf(c, name, uuid, chip = "") {
   return {
     name, uuid, total: c.total, dc: c.dc, dcLabel: c.dcLabel ?? "DC", tier: c.tier, base: c.base ?? c.tier, crit: !!c.crit, doubles: !!c.doubles, state: c.state ?? "", forced: !!c.forced, triple: !!c.triple, five: c.five ?? "",
-    d1: c.d1, d2: c.d2, dropped: c.dropped ?? null, boonFaces: c.boonFaces ?? [], baneFaces: c.baneFaces ?? [], sources: (c.sources ?? []).map(x => ({ name: x.name, boons: x.boons ?? 0, banes: x.banes ?? 0, bb: x.bb ?? "" })),
+    d1: c.d1, d2: c.d2, dropped: c.dropped ?? null, boonFaces: c.boonFaces ?? [], baneFaces: c.baneFaces ?? [], sources: (c.sources ?? []).map(x => ({ name: x.name, boons: x.boons ?? 0, banes: x.banes ?? 0, bb: x.bb ?? "", ...(x.fav ? { fav: true } : {}), ...(x.doom ? { doom: true } : {}) })),   // v0.0.533: a Favored / Doomed source by name
     boons: (c.boonFaces ?? []).length, banes: (c.baneFaces ?? []).length,
     mods: [{ v: Number(c.mod) || 0, label: String(chip ?? "").replace(/\s*Modifier$/i, "") || "Modifier" }, { v: Number(c.adj) || 0, label: c.adjLabel || "Situational" }]
   };
@@ -1188,6 +1196,10 @@ export async function useAction(actor, item, opts = {}) {
   const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0;
   // v0.0.292 (brief section 7): the Boons and Banes added by hand are named "Situational" on the chat card's breakdown
   const situational = (b, n) => (data.rd && (b || n) ? [{ name: "Situational", boons: b, banes: n }] : []);
+  // v0.0.533 (the roll card's written sum, foundry/mockups/roll-breakdown): the sources that made the roll Favored or Doomed, by name, stored with the
+  // roll: the roll dialog's names (its shared ones and the creature's own; "Situational" for one ticked by hand), else the effects' (fxm.favBy)
+  const stateSrc = (fx, own, on) => stateSources(on.fav ? [...(data.rd?.shared?.favored ?? []), ...(own?.favored ?? []), ...(data.rd ? [] : fx.favBy ?? [])] : [], on.doom ? [...(data.rd?.shared?.doomed ?? []), ...(own?.doomed ?? []), ...(data.rd ? [] : fx.doomBy ?? [])] : []);
+  const rdOwn = uuid => (data.rd?.creatures ?? []).find(c => c.uuid === uuid) ?? null;
   let multiRoll = null, mres = null;
   if (mod !== null && !version.noTiers && !saveAct && multi) {
     // One roll: the DC, boons, banes, Favored and Doomed are each target's own; the dice are shared.
@@ -1209,7 +1221,7 @@ export async function useAction(actor, item, opts = {}) {
         banes: fxm.banes + manN + ownN,
         favored: globalFavored || (pt ? !!pt.favored : p.favored) || fxm.favored,   // v0.0.301: a source that makes the roll Favored / Doomed (High cover)
         doomed: globalDoomed || (pt ? !!pt.doomed : p.doomed) || fxm.doomed,
-        sources: [...fxm.sources, ...situational(manB + ownB, manN + ownN)],
+        sources: [...fxm.sources, ...situational(manB + ownB, manN + ownN), ...stateSrc(fxm, rdOwn(p.actorUuid), { fav: globalFavored || (pt ? !!pt.favored : p.favored) || fxm.favored, doom: globalDoomed || (pt ? !!pt.doomed : p.doomed) || fxm.doomed })],
         manualBoons: manB + ownB,
         manualBanes: manN + ownN
       };
@@ -1218,7 +1230,7 @@ export async function useAction(actor, item, opts = {}) {
     mres = multiRoll.results.map((r, i) => ({
       ...perT[i],
       chk: r.chk,
-      chips: [...perT[i].note, ...r.chk.sources.map(x => ({ text: x.name.replace(/\s*\([^)]*\)\s*$/, ""), cls: x.boons ? "boon" : "bane" }))]
+      chips: [...perT[i].note, ...r.chk.sources.filter(x => !x.fav && !x.doom).map(x => ({ text: x.name.replace(/\s*\([^)]*\)\s*$/, ""), cls: x.boons ? "boon" : "bane" }))]
     }));
   } else if (mod !== null && !version.noTiers && !saveAct)
     chk = await performCheck({
@@ -1230,7 +1242,7 @@ export async function useAction(actor, item, opts = {}) {
       adjLabel: adjLabelOf(data),
       favored: data.favored === "on" || data.reloadshot === "on" || fxm.favored,
       doomed: data.doomed === "on" || fxm.doomed,   // v0.0.301 (PACK BB): High cover (an old-dialog chip; the roll dialog sends it as Doomed)
-      sources: [...fxm.sources, ...situational(manB, manN)],
+      sources: [...fxm.sources, ...situational(manB, manN), ...stateSrc(fxm, (data.rd?.creatures ?? [])[0] ?? null, { fav: data.favored === "on" || data.reloadshot === "on" || fxm.favored, doom: data.doomed === "on" || fxm.doomed })],
       manualBoons: manB,
       manualBanes: manN
     });
@@ -2132,7 +2144,7 @@ async function retargetCc(msg, toks) {
     const info = computeDC(item, t.actor, roll.attrKey, src), own = [];
     for (const m of modifierList(actor, traits, [t.actor])) { const id = String(m.id), owner = id.startsWith("syn:") ? (id.split("|")[1] ?? null) : (id.includes("|") ? id.split("|")[0] : null); if (m.match && owner === t.actor?.uuid) own.push(m); }
     if (traits.has("melee") && selfToken) { const fm = flankingMod(selfToken, t); if (fm) own.push(fm); }
-    const sources = [...(roll.general ?? []), ...own.map(m => ({ name: m.name, boons: m.boons ?? 0, banes: m.banes ?? 0, bb: m.bb ?? "" }))];
+    const sources = [...(roll.general ?? []), ...own.map(m => ({ name: m.name, boons: m.boons ?? 0, banes: m.banes ?? 0, bb: m.bb ?? "" })), ...stateSources(info.untrained ? ["Untrained armor"] : [], [])];   // v0.0.533: named for the written sum
     const n = bbCount(sources);   // v0.0.301 (PACK BB): the limit of 2 per name; the ones added by hand have no name
     return { name: t.name, uuid: t.document.uuid, dc: info.dc, dcLabel: label(info), boons: n.boons + (roll.manualBoons || 0), banes: n.banes + (roll.manualBanes || 0), sources, favored: !!info.untrained, doomed: false };
   });

@@ -4,7 +4,7 @@ The book is built from `rules-src/` with `build_rules.py` (assets in `rules-asse
 
 ## DIFFICULT TERRAIN COSTS 1 MORE (2026-11-27)
 
-- [ ] **Lucas:** "Should a second diagonal on a difficult terrain be 4 squares instead of 3? I think it should be three, so difficult terrain simply counts as 1 more movement." Chapter 3: "Each square of Difficult Terrain counts 1 more than it would normally count: 2 for a square, 3 for a second diagonal. A square is Difficult Terrain once, however many things make it so." (It said "counts double", which made a second diagonal 4.) The Glossary row follows. **Foundry (open; asked of the v0.0.533 pass):** `move.mjs hardStep` charges max(cost, 2), so a second diagonal into Difficult Terrain costs 2 today, not 3.
+- [x] **(Foundry v0.0.533: `move.mjs hardStepCost`, `gridrules.mjs stepCost`; t333, `mv-dt`)** **Lucas:** "Should a second diagonal on a difficult terrain be 4 squares instead of 3? I think it should be three, so difficult terrain simply counts as 1 more movement." Chapter 3: "Each square of Difficult Terrain counts 1 more than it would normally count: 2 for a square, 3 for a second diagonal. A square is Difficult Terrain once, however many things make it so." (It said "counts double", which made a second diagonal 4.) The Glossary row follows. **Foundry (built, v0.0.533):** `move.mjs hardStep` charged max(cost, 2 × step), so the drag charged a second diagonal into Difficult Terrain 4; now a step + 1 square (the area and the move hook's count already added 1).
 
 ## PLAYTEST 11: RULES LUCAS RAISED AND DECIDED (2026-11-27: "yes to all"; in the book and Foundry v0.0.532 but Snap Shot)
 

@@ -113,7 +113,7 @@ OLD Shoot Nari (the same world, the old dialog)  card | chips: syn:cover*(0b/1n)
 NEW Shoot Nari (the new dialog)                  card | chips: (none) | bane dice - | total 9
    chips: Low cover[Nari] You are Engaged (Doomed)[you] Engaged with Ally[Nari] Nonlethal[you, off] | creatures: Nari AD 11 | dice line: {"versions":"1 AP","roll":{"mod":2,"name":"Weapon"},"multi":false}
 NEW Shoot Nari: +1 Bane, +1, Engaged off         card | chips: (none) | bane dice - | total 13
-   breakdown: 2d12 6 7 Boon · Bane −1 Low cover Field −1 Engaged with Ally Field −1 Situational Modifiers +2 Weapon +1 Situational 13 vs AD 11 Tier 2 Vigor 2 Pi | flags rd banes: [{"name":"Situational","n":1,"scope":"shared","bb":""}] | flat: [{"name":"Situational","v":1}]
+   breakdown: 13 6 6 7 7 +2 Weapon +1 Situational −3 Boons and Banes −1 Low cover (Field) −1 Engaged with Ally (Field) −1 Situational | flags rd banes: [{"name":"Situational","n":1,"scope":"shared","bb":""}] | flat: [{"name":"Situational","v":1}]
 NEW Crawl: the dialog: true | no roll: 1 AP no roll, 2 AP no roll | card posted: true | no warning
 NEW Strike the Goblin: the Ally flanks it        card | chips: (none) | bane dice - | total 16
    chips: syn:flanking Flanking [Actor.Goblin] on | in the dialog: true | card total 

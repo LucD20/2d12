@@ -5895,3 +5895,54 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.chat.sysmsg.swapmsg .sm-lead { display: flex; }
 /* v0.0.530 (ox-pointout): the Hiding entry's Point Out row: "Pointed out" in the state button's place and width (a label, not a button), its remove */
 .twod12-hud .h3-sit .h3-hd .h3-hd-po, .twod12-hud .h3-sit .h3-hd .h3-hd-po:hover { cursor: default; background: none; border-color: var(--hud-hair); color: var(--hud-mute); font-size: .72rem; white-space: nowrap; }
+/* ==== v0.0.533 (Lucas, 2026-11-27: foundry/mockups/roll-breakdown, design C, "the written sum"): the roll's breakdown (chatcards.mjs breakdownHtml,
+   .cc-break.cc-rb) behind the ladder's click, as before. Every line starts with its number in one right-aligned column (the dice's sum, each
+   Modifier, Boons and Banes), each Boon and Bane its own line under it (number first, a long name wraps under itself), a rule, the total against
+   the Defense badge and the Tier. No labels' column, no right alignment, no kind tag: a kind is a word in parentheses. Flat on the card (no panel
+   box), a hairline above it. The old classes (.cc-bl, .cc-bv, .cc-bbl, .cc-btot) keep their rules: the damage breakdown and a Check posted
+   before this version use them. ==== */
+.twod12.chat.cc .cc-break.cc-rb { display: none; background: none; border-radius: 0; border-top: 1px solid var(--s-hair, var(--cc-gline, #cdb88a)); padding: 5px 0 2px; margin: 4px 0; font-size: 12.5px; line-height: 1.32; font-variant-numeric: tabular-nums; }
+.twod12.chat.cc .cc-break.cc-rb.open { display: block; }
+.twod12.chat.cc .cc-rb p.cc-rb-lead { margin: 0 0 2px; color: var(--s-mute, var(--cc-mute)); }
+.twod12.chat.cc .cc-rb-sum { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 9px; row-gap: 0; align-items: baseline; }
+.twod12.chat.cc .cc-rb-n { text-align: right; font-weight: 700; min-width: 20px; white-space: nowrap; }
+.twod12.chat.cc .cc-rb-n.zero { color: var(--s-mute, var(--cc-mute)); }
+.twod12.chat.cc .cc-rb-sum > .cc-rb-n:first-child { align-self: center; }
+.twod12.chat.cc .cc-rb-t { min-width: 0; overflow-wrap: break-word; }
+.twod12.chat.cc .cc-rb-q, .twod12.chat.cc .cc-rb-k, .twod12.chat.cc .cc-rb-why { color: var(--s-mute, var(--cc-mute)); }
+.twod12.chat.cc .cc-rb-q b { color: var(--s-ink, var(--cc-ink)); }
+.twod12.chat.cc .cc-rb-g { white-space: nowrap; }
+.twod12.chat.cc .cc-rb-dice, .twod12.chat.cc .cc-rb-dg { display: inline-flex; align-items: center; gap: 3px; vertical-align: middle; flex-wrap: wrap; }
+.twod12.chat.cc .cc-rb-dice { gap: 4px; }
+.twod12.chat.cc .cc-rb-dg.off { margin-left: 2px; }
+.twod12.chat.cc .cc-rb-dg .cc-rb-q { margin-left: 1px; }
+.twod12.chat.cc .cc-rb .cc-die { width: 22px; height: 22px; margin: 0; }
+.twod12-type .twod12.chat.cc .cc-rb .cc-die.dbl :is(polygon, rect), .twod12.chat.cc .cc-rb .cc-die.dbl :is(polygon, rect) { stroke: var(--s-gold, #b07a12); stroke-width: 2.4; }
+.twod12-type .twod12.chat.cc .cc-rb .cc-rb-dg.off .cc-die :is(polygon, rect), .twod12.chat.cc .cc-rb .cc-rb-dg.off .cc-die :is(polygon, rect) { fill: transparent; stroke: var(--s-hair, #cdb88a); stroke-dasharray: 2.5 2; }
+.twod12-type .twod12.chat.cc .cc-rb .cc-rb-dg.off .cc-die text, .twod12.chat.cc .cc-rb .cc-rb-dg.off .cc-die text { fill: var(--s-faint, #8f8774); text-decoration: line-through; }
+.twod12.chat.cc .cc-rb-sub { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 7px; margin: 1px 0 2px; }
+.twod12.chat.cc .cc-rb-e { display: contents; }
+.twod12.chat.cc .cc-rb-en { text-align: right; align-self: start; white-space: nowrap; }
+.twod12.chat.cc .cc-rb-nm { min-width: 0; overflow-wrap: break-word; }
+.twod12.chat.cc .cc-rb-e.off .cc-rb-en, .twod12.chat.cc .cc-rb-e.off s { color: var(--s-faint, #8f8774); }
+.twod12.chat.cc .cc-rb-e.off s { text-decoration-thickness: 1px; }
+.twod12.chat.cc .cc-rb-tot { border-top: 1px solid var(--s-rule, var(--cc-line)); padding-top: 3px; margin-top: 2px; align-self: stretch; display: flex; align-items: center; }
+.twod12.chat.cc .cc-rb-n.cc-rb-tot { justify-content: flex-end; }
+.twod12.chat.cc .cc-rb .cc-total { font-size: 16px; line-height: 1; }
+.twod12.chat.cc .cc-rb-end { flex: 1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1px 7px; min-height: 24px; }
+.twod12.chat.cc .cc-rb-vs, .twod12.chat.cc .cc-rb-res { white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
+.twod12.chat.cc .cc-rb-res { margin-left: auto; }
+.twod12.chat.cc .cc-rb .cc-pill.word { padding: 0 7px; line-height: 19px; height: auto; border-radius: 2px; }
+.twod12.chat.cc .cc-rb-app { margin-top: 3px; color: var(--s-mute, var(--cc-mute)); }
+.twod12.chat.cc .cc-rb-app a.content-link { font-size: 11.5px; }
+/* v0.0.533: a one-target card's opened breakdown spans the card (Lucas's chat is about 220 px: beside the 60 px stamp the sum had 150 px). While it
+   is open the main column's parts join the card's grid: the ladder stays beside the stamp, the breakdown and what follows it (the damage, the
+   outcome, the Critical, the Effect) take the card's full width under them. Closed, nothing moves. */
+.twod12.chat.cc .cc-body:has(> .cc-main > .cc-rb.open) > .cc-main { display: contents; }
+.twod12.chat.cc .cc-body:has(> .cc-main > .cc-rb.open) > .cc-main > .cc-ladder { grid-column: 2; align-self: start; }
+.twod12.chat.cc .cc-body:has(> .cc-main > .cc-rb.open) > .cc-main > :not(.cc-ladder) { grid-column: 1 / -1; min-width: 0; }
+.twod12.chat.cc .cc-body:has(> .cc-main > .cc-rb.open) { row-gap: 0; }
+/* v0.0.533 (Lucas: "the right click -> active effect window"): the status palette keeps its size on screen when the map is zoomed out (statuspal.mjs
+   fitPalette sets the factor: 1 at 100% or closer, else the canvas scale undone, at most 4) and is moved back inside the window. The `scale` and
+   `translate` properties compose with any transform Foundry gives the palette; from its top-left corner, so it stays on its button's side. */
+#token-hud .status-effects.twod12-statuspal { scale: var(--twod12-palk, 1); translate: var(--twod12-paldx, 0px) var(--twod12-paldy, 0px); transform-origin: 0 0; }

@@ -1,0 +1,9 @@
+the goblin is dead: true | as an obstacle it would be passed (collisionWay): none
+Pushed, the dead goblin moved: what it can meet: Orc Warrior block, Grave Wisp none, Aveline pass
+Pulled into the origin's square: the origin blocks: Durgan block, Orc Warrior block | an Alt-drag (no origin): Durgan block, Orc Warrior block
+the moved one is never asked collisionWay, dead or Down: true
+a pick:yes movement offers the dead and the Down (never its origin, never yourself): Goblin Sneak, Orc Warrior, Grave Wisp, Aveline | self:yes: Durgan, Goblin Sneak
+the body pushed into the orc (a dead Grave Wisp in the first square, passed): moved 1, hits Orc Warrior, 2 unused, damage to it 2 and to the orc 2
+into a wall: {"self":4,"other":0}
+the three ways in use (choosePush, choosePath, the Alt-drag): true | pushOne has no dead check, the Collision's damage goes to both: true
+the Tier's movement runs after a kill (ccdamage.mjs: no Down or dead check before runTierMove): true

@@ -15,5 +15,5 @@ each rolled total opens its roll: true | the Roll button on the third row: true 
 the Tiers rolled as the attack card's groups: Tier 3 Goblin Sneak: No effect. | Tier 1 Orc Warrior: ↳ Frightened of you (1 round).
 the quiet lines under them while one still has to roll: true | all rolled: only the Tiers rolled: true
 --- no new look
-the card's classes: 65 | not the attack card's or the Save card's before: none | without CSS and not the attack card's: none
+the card's classes: 74 | not the attack card's or the Save card's before: cc-rb-lead | without CSS and not the attack card's: none
 the old Tier band is gone from the Save card: true

@@ -254,6 +254,15 @@ export function analyzePath(path, N, { wallBetween, creatureAt, cornerAt = null,
  * through, never ended in); "block", any other (a Collision; a Reposition stops). The origin of a Pulled aimed at its own square is always "block".
  */
 export const collisionWay = t => (deadTok(t) ? "none" : (downTok(t) || !!t?.actor?.statuses?.has?.("prone")) ? "pass" : "block");
+/**
+ * v0.0.533 (Lucas, 2026-11-27; book, Chapter 3, Forced Movement: "A creature the Action just killed is still moved"): the creatures a Forced
+ * Movement can meet, with their way (collisionWay: "block", "pass" or "none"). The moved creature is never among them, whatever its state: a dead or
+ * Down creature being moved is the thing moved (it collides as anyone does), never an obstacle; only the others are asked collisionWay. The origin
+ * (a Pulled into its own square, a Reposition) always blocks; originIn: false leaves it out (a Pushed moves away from it). Pure.
+ */
+export function forcedWays(tokens, movedId, { originId = null, originIn = true } = {}) {
+  return (tokens ?? []).filter(t => t && t.id !== movedId && (originIn || t.id !== originId)).map(t => ({ t, way: originId && t.id === originId ? "block" : collisionWay(t) }));
+}
 
 /**
  * The path tool (Slid and Reposition, v0.0.174): can the next square (a shift) be added to the path? It must be next to the last square
@@ -401,9 +410,19 @@ const squareOf = o => ({ i: Math.round(o?.i ?? 0), j: Math.round(o?.j ?? 0) });
 const limitSquares = (cell, tok) => { const sq = squareOf(cell), p = canvas.grid.getTopLeftPoint({ i: sq.i, j: sq.j }); return measureSquares(p, { x: tok.document.x, y: tok.document.y }); };
 
 /**
- * A step into a square that is Difficult Terrain for the token (Darkness its Sight can't see in, or an unwilling creature's square) costs double.
- * Difficult Terrain does not stack: a square that already costs double stays at double.
+ * A step into a square that is Difficult Terrain for the token (Darkness its Sight can't see in, an ally's or a Down creature's square, a Zone's, a
+ * "closer to the source" Movement limit) costs 1 more than it would (v0.0.533, Lucas, 2026-11-27; book, Chapter 3: "Each square of Difficult Terrain
+ * counts 1 more than it would normally count: 2 for a square, 3 for a second diagonal"; it was double). Once a step, however many things make the
+ * square Difficult Terrain; a step Foundry's own terrain already priced higher keeps that price (no stacking). Pure: hardStepCost.
  */
+/** v0.0.533 (pure; book, Chapter 3): what a step costs. step: its normal cost (1 square, a second diagonal 2), in the grid's units; cost: what
+ *  Foundry priced it (its own terrain in it); hard: the square is Difficult Terrain for the mover; unit: one square in the grid's units (5 on a
+ *  5-foot grid). Difficult: 1 square more than the step, once (Foundry's higher price kept, never added to). */
+export function hardStepCost(step, cost, hard, unit = 1) {
+  if (!hard) return cost;
+  const u = Number(unit) > 0 ? Number(unit) : 1;
+  return Number.isFinite(step) && step > 0 ? Math.max(cost, step + u) : (Number(cost) || 0) + u;
+}
 const bigMode = new Map();   // v0.0.468: a token id -> how Foundry gives a big token's steps ("tl" or "center"), read from a drag's first step
 function hardStep(doc, to, step, cost, from = null) {
   try {
@@ -432,11 +451,10 @@ function hardStep(doc, to, step, cost, from = null) {
     }
     // (v0.0.171 made the diagonal between two creatures Difficult Terrain; batch 4 blocks it: the move hook refuses it)
     const f0 = from ? squareOf(from) : null, fromTl = f0 ? shift(f0) : null;
-    // v0.0.345 (book, Frightened): a step that brings it closer to the source of a "Difficult Terrain" Movement limit costs double
+    // v0.0.345 (book, Frightened): a step that brings it closer to the source of a "Difficult Terrain" Movement limit is Difficult Terrain
     if (!hard && from) hard = moveLimitsOf(doc).some(l => l.how === "difficult" && moveLimitBreaks(l.dir, limitSquares(fromTl, l.token), limitSquares(at, l.token)));
     if (!hard) hard = areaDifficult(doc, cells);   // v0.0.327 (PACK ZONE): a Zone's or an Aura's Difficult Terrain, for the creatures its row reaches only
-    if (!hard) return cost;
-    return Number.isFinite(step) && step > 0 ? Math.max(cost, 2 * step) : cost * 2;
+    return hardStepCost(step, cost, hard, globalThis.canvas?.grid?.distance || globalThis.canvas?.scene?.grid?.distance || 1);   // 1 square in the grid's units
   } catch (e) { return cost; }
 }
 
@@ -1074,10 +1092,10 @@ function choosePush(origin, target, N, mode = "push") {
     const oCells = tokenCells(origin);
     const map = repo ? repositionShifts(cells, oCells, N, origin.actor?.system?.reach ?? 1) : pull ? pullShifts(cells, oCells, N) : pushShifts(cells, oCells, N);
     // The origin is a creature in the way of a Pulled aimed at its own square (both take damage); a Pushed moves away from it.
-    const others = canvas.tokens.placeables.filter(t => t.id !== target.id && (repo || pull || t.id !== origin.id));
-    // v0.0.532 (Chapter 3, Collision): a dead creature is not in the way, a Prone or Unconscious one is passed through (passAt), not ended in
+    // v0.0.532 (Chapter 3, Collision): a dead creature is not in the way, a Prone or Unconscious one is passed through (passAt), not ended in;
+    // v0.0.533: the moved one (dead or Down too) is never among them (forcedWays)
     const wayOf = t => (t.id === origin.id ? "block" : collisionWay(t));
-    const occupiedAll = others.map(t => ({ t, way: wayOf(t), set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+    const occupiedAll = forcedWays(canvas.tokens.placeables, target.id, { originId: origin.id, originIn: repo || pull }).map(o => ({ ...o, set: new Set(tokenCells(o.t).map(c => `${c.i},${c.j}`)) }));
     const occupied = occupiedAll.filter(o => o.way === "block"), lying = occupiedAll.filter(o => o.way === "pass");
     const passAt = sh => lying.some(o => cells.some(c => o.set.has(`${c.i + sh.di},${c.j + sh.dj}`)));
     const pt = sh => {
@@ -1209,7 +1227,7 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     const w = Math.max(1, Math.round(target.document.width ?? 1)), h = Math.max(1, Math.round(target.document.height ?? 1));
     // v0.0.532 (Chapter 3, Collision): a dead creature is not in the way, a Prone or Unconscious one is passed through (passAt), not ended in
     const wayOf = t => (t.id === origin.id ? "block" : collisionWay(t));
-    const occupiedAll = canvas.tokens.placeables.filter(t => t.id !== target.id && t.actor && !t.document?.hidden).map(t => ({ t, way: wayOf(t), set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+    const occupiedAll = forcedWays(canvas.tokens.placeables.filter(t => t.actor && !t.document?.hidden), target.id, { originId: origin.id }).map(o => ({ ...o, set: new Set(tokenCells(o.t).map(c => `${c.i},${c.j}`)) }));   // v0.0.533
     const occupied = occupiedAll.filter(o => o.way === "block"), lying = occupiedAll.filter(o => o.way === "pass");
     const foot = sh => cells.map(c => ({ i: c.i + sh.di, j: c.j + sh.dj }));
     const creatureAt = sh => occupied.find(o => foot(sh).some(c => o.set.has(`${c.i},${c.j}`)))?.t ?? null;
@@ -1529,13 +1547,16 @@ function areaOrigin(ctx) {
  * can reach (area:N: those in an N Emanation around the card's target, the target left out; else the card's targets) and moves them one at a time:
  * click a name, place it, and the list comes back without it, until Done. from:target makes the card's target the origin (the Push goes away from it).
  */
+/** v0.0.533 (book, Chapter 3: a creature the Action just killed is still moved): the creatures a pick:yes movement offers: never its origin, never
+ *  yourself unless self; a dead or Down creature stays (it is moved like anyone). Pure. */
+export const pushCandidates = (list, originId, meId = null, self = false) => (list ?? []).filter(t => t && t.id !== originId && (self || t.id !== meId));
 async function pushPicker(cfg, ctx, mode, origin, N) {
   const label = MOVE_LABEL[mode];
   const cardTargets = targetTokens(ctx);
   const meTok = tokenOf(contextActor(ctx));
   let list = cfg.area > 0 ? tokensInEmanation(cardTargets, cfg.area) : cfg.near > 0 && meTok ? tokensInEmanation([meTok], cfg.near).filter(t => t.document.disposition === meTok.document.disposition) : cardTargets;   // v0.0.254: near:N: the allies within N of you
   const me = tokenOf(contextActor(ctx));
-  list = list.filter(t => t.id !== origin.id && (cfg.self || t.id !== me?.id));   // v0.0.248 (Lucas): never yourself, unless self:yes
+  list = pushCandidates(list, origin.id, me?.id, !!cfg.self);   // v0.0.248 (Lucas): never yourself, unless self:yes; v0.0.533: a dead or Down one stays
   if (!list.length) return warn(`${label} ${N}: no creature ${cfg.area > 0 ? `within ${cfg.area} of the target` : "among the targets"} to move.`);
   const moved = [], by = cfg.from === "target" || cfg.from === "area" ? tokenOf(contextActor(ctx)) : null;
   const { pickBar } = await import("./pickbar.mjs");   // v0.0.247 (Lucas): the list is a bar at the bottom, in the Line bar's look, not a Foundry window
@@ -1766,7 +1787,7 @@ function forcedDragPlan(doc, dest) {
   const a = cellAt({ x: homePos(doc).x + 2, y: homePos(doc).y + 2 }), b = cellAt({ x: dest.x + 2, y: dest.y + 2 });
   const cells = [a, ...lineSteps({ x: a.j, y: a.i }, { x: b.j, y: b.i }, "left").map(c => ({ i: c.y, j: c.x }))];
   const mid = c => { const t = canvas.grid.getTopLeftPoint({ i: c.i, j: c.j }); return { x: t.x + (w * size) / 2, y: t.y + (h * size) / 2 }; };
-  const all = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor).map(t => ({ t, way: collisionWay(t), set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+  const all = forcedWays((canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor), doc.id).map(o => ({ ...o, set: new Set(tokenCells(o.t).map(c => `${c.i},${c.j}`)) }));   // v0.0.533
   const others = all.filter(o => o.way === "block"), lying = all.filter(o => o.way === "pass");   // v0.0.532 (Chapter 3, Collision)
   const foot = c => { const out = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) out.push(`${c.i + di},${c.j + dj}`); return out; };
   const r = forcedDragPath(cells, { wallAt: (p, q) => wallBetween(mid(p), mid(q)) || spaceInWall(q, w, h), creatureAt: c => others.find(o => foot(c).some(k => o.set.has(k)))?.t ?? null, passAt: c => lying.some(o => foot(c).some(k => o.set.has(k))) });
@@ -2203,7 +2224,7 @@ export function registerMovement() {
       if (!passing && way.through.length) { warn(`${way.through.join(", ")}'s space blocks your movement (an unwilling creature's space). Tumble to pass through, or go around.`); try { logBlocked(doc, way.through.join(", "), blockMode()); } catch (e) { /* no log */ } return false; }
       if (!passing && way.cornerBlock) { warn(`You can't slip diagonally between ${way.cornerBy.join(" and ")}: two enemies corner to corner block it. Tumble to pass, or go around.`); try { logBlocked(doc, `the diagonal between ${way.cornerBy.join(" and ")}`, blockMode()); } catch (e) { /* no log */ } return false; }
       // Evade can't enter or pass through Difficult Terrain (the path costs more than its length, or crosses Darkness); batch 4: an ally's space is the one
-      // Difficult Terrain it can cross (at double cost)
+      // Difficult Terrain it can cross (v0.0.533: at 1 more a step, as any Difficult Terrain)
       const dist = num(movement?.pending?.distance), cost = num(movement?.pending?.cost);
       const evading = num(c.getFlag(F, "evadeMove")) > 0;
       if (evading && !ignoring && ((dist > 0 && cost - (way.allyExtra ?? 0) > dist + 1e-6) || way.dark)) {
@@ -2228,7 +2249,9 @@ export function registerMovement() {
         if (squares > left + 1e-6) { warn(`Evade has ${left} square${left === 1 ? "" : "s"} left${step.extra ? " (this diagonal is the second one: it costs 2)" : ""}. Choose a shorter path, or use End movement.`); return false; }
       }
       // An Advance through an unwilling creature's squares pays for Difficult Terrain (unless Foundry already counted it).
-      if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);   // v0.0.468: a Large token's too, through Foundry's cost (hardStep reads how its steps come)
+      if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);
+      // v0.0.533: an Evade through an ally's space pays its 1 more a step too when Foundry's measure didn't count it (it paid nothing then)
+      else if (!ch && evading && !ignoring) squares += extraCost({ extra: way.allyExtra ?? 0, cornerDT: 0 }, cost > dist + 1e-6);   // v0.0.468: a Large token's too, through Foundry's cost (hardStep reads how its steps come)
       // v0.0.418 (G6): off its turn a creature moves only the squares a Reaction gave it (no AP spent for more)
       if (game.combat?.combatant?.id !== c.id && squares > offTurnFree(c) + 1e-6) { warn(`${c.name} has ${offTurnFree(c)} free square${offTurnFree(c) === 1 ? "" : "s"} left (it isn't its turn). Choose a shorter path, or use End movement.`); return false; }
       mark(keyOf(doc, to.x, to.y));
@@ -2375,7 +2398,7 @@ export function showRange(c, squares, dest = null, par = 0) {
     const blocked = (a, b) => wallBetween(pt(a), pt(b)) || (!own.has(`${b.i},${b.j}`) && (cantCell(b) || (!passing && (whoAt(b) === "block" || betweenTwo(a, b)))));
     const area0 = reachableCells(cells, squares, blocked, par, enterCost);
     // v0.0.532 (Lucas, playtest 11: "The Advance area isn't clear anymore, I think its because it isnt taking into account allies being difficult
-    // terrain"): an ally's (or an Unconscious creature's) space is crossed at double cost but never ended in: it is left out of the area where the
+    // terrain"): an ally's (or an Unconscious creature's) space is crossed at 1 more a step (v0.0.533; it said double) but never ended in: it is left out of the area where the
     // creature can stop, and hatched as the Difficult Terrain it is (rangeStops)
     const { stops: area, through } = rangeStops(area0, whoAt, own);
     rangeGfx = new PIXI.Graphics();

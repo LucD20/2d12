@@ -98,7 +98,7 @@ const CC = await import(ROOTURL + "module/chatcards.mjs");
 const lines = CC.boonBaneLines({ boonFaces: [1], baneFaces: [1, 1], sources: [{ name: "Low cover (Orc)", banes: 1, bb: "field" }, { name: "Obscured (Orc)", banes: 1, bb: "field" }, { name: "Long weapon", banes: 1, bb: "field" }, { name: "Situational", boons: 1 }] });
 console.log(lines.map(x => `${x.kind} ${x.val} ${x.name}${x.bb ? ` [${x.bb}]` : ""}${x.over ? " over" : ""}`).join(" | "));
 const br = CC.breakdownHtml({ d1: [6], d2: [7], total: 9, dc: 13, tier: 1, base: 1, boonFaces: [], baneFaces: [], five: "doomed", sources: [{ name: "Engaged", banes: 2 }, { name: "Far", banes: 2 }, { name: "Frightened", banes: 1 }], mods: [] });
-console.log("five Banes on the card:", br.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").includes("5 or more Banes left: Doomed instead"));
+console.log("five Banes on the card (v0.0.533: the written sum's words):", br.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").includes("Doomed : 5 Banes left"));
 console.log("retarget: no Boon dice any more, a third d12 for a target that reaches 5:", JSON.stringify(CC.missingDice({ dice: { d: [d(3), d(4)], boonFaces: [], baneFaces: [] } }, [{ boons: 5, banes: 0 }])));
 
 console.log("--- the sources in the code");

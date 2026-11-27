@@ -37,7 +37,7 @@ the chip carries its name: true | an unnamed one doesn't: true
 the ladder's tip: Doubles raise one Tier; Doubles on a Tier 3 are a Critical. A Favored roll: any pair of the three dice is Doubles, three of a kind a Critical. A Doomed roll has no Doubles.
 --- the chat card's lines (chatcards.mjs)
 boon 1 Situational | bane -1 Low cover [Field] | bane -1 Obscured [Field] | bane 0 Long weapon [Field] over
-five Banes on the card: true
+five Banes on the card (v0.0.533: the written sum's words): true
 retarget: no Boon dice any more, a third d12 for a target that reaches 5: {"d12":1,"boon":0,"bane":0}
 --- the sources in the code
 High cover: Doomed, no Field Banes: true | several targets: true

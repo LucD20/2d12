@@ -1,0 +1,38 @@
+--- the count and the cancelling (Lucas's picture: 3 + 11 + 2, two Boons, two Banes)
+the picture: dice 14 | mods 2 Weapon | +1 Shifting Aim [Field] | +1 Vulnerable 1 | −1 Low cover [Field] | −1 Engaged with Aveline [Field] | B 2 N 2 adds 0 | words: 2 and 2 cancel | total 16
+its lines: 14 3 11 +2 Weapon +0 Boons and Banes 2 and 2 cancel +1 Shifting Aim (Field) +1 Vulnerable 1 −1 Low cover (Field) −1 Engaged with Aveline (Field) 16 against AD 14 Tier 2
+closed at first, opened by the ladder's id: true | open: true | no hover text: true | no button inside: true
+every line starts with its number: 14 +2 +0 16 | each entry too: +1 Shifting Aim, +1 Vulnerable 1, −1 Low cover, −1 Engaged with Aveline
+no Boon, no Bane: dice 19 | mods 3 Weapon | no Boon or Bane | B 0 N 0 adds 0 | words: - | total 22
+one side only: dice 12 | mods 2 Weapon | +1 Flanking with Durgan [Field] | B 1 N 0 adds 1 | words: - | total 15
+--- over a name's limit: struck through, its number 0, its reason
+five Boons, three Banes: dice 13 | mods 2 Weapon | +1 Flanking with Durgan [Field] | +1 Prone [Field] | 0 Shifting Aim [Field] | +1 War cry [Support] | +1 Vulnerable 1 | −1 Engaged with Ogre Chieftain [Field] | −1 Low cover [Field] | −1 Far range | B 4 N 3 adds 1 | words: 4 Boons, 3 Banes | total 16
+the third Field: <span class="cc-rb-e off"><span class="cc-rb-en">0</span><span class="cc-rb-nm"><s>Shifting Aim</s> <span class="cc-rb-k">(Field: 2 at most)</span></span>
+a Field source of 3 (2 of 3 count): dice 10 | mods 2 Weapon | +2 Wall of spears [Field] | B 2 N 0 adds 2 | words: - | total 14
+its words: +2 Wall of spears (Field: 2 of 3 count)
+--- Favored and Doomed (3d12, one dropped; a source counts 5 once; 5 or more left)
+Favored by a source: dice 19 (3d12, the 4 is dropped) | mods 2 Weapon | +5 Hidden <Favored> | +1 Flanking with Durgan [Field] | −1 Low cover [Field] | B 6 N 1 adds 0 favored | words: Favored : 5 Boons left | total 21
+its dice: 9, 10, 4 dropped | the Favored line: +5 Hidden (Favored: counts as 5 Boons)
+Doomed by a source: dice 11 (3d12, the 11 is dropped) | mods 2 Weapon | +1 Shifting Aim [Field] | −5 You are Engaged <Doomed> | −1 Far range | B 1 N 6 adds 0 doomed | words: Doomed : 5 Banes left | total 13
+five Banes left (no source): dice 13 (3d12, the 12 is dropped) | mods 2 Weapon | −2 Engaged | −2 Far | −1 Frightened | B 0 N 5 adds 0 doomed | words: Doomed : 5 Banes left | total 15
+Favored and Doomed cancel: dice 13 | mods 2 Weapon | +5 Hidden <Favored> | −5 High cover <Doomed> | B 5 N 5 adds 0 | words: Favored and Doomed cancel | total 15
+two Favored sources (5 once): dice 19 (3d12, the 4 is dropped) | mods 2 Weapon | +5 Hidden <Favored> | 0 Situational <Favored> | B 5 N 0 adds 0 favored | words: Favored : 5 Boons left | total 21
+Favored, posted before v0.0.533 (no source named): dice 19 (3d12, the 4 is dropped) | mods 2 Weapon | +5 (no name) <Favored> | B 5 N 0 adds 0 favored | words: Favored : 5 Boons left | total 21
+three of a kind, Favored: dice 14 (3d12, the 7 is dropped) | mods 2 Weapon | +5 Hidden <Favored> | B 5 N 0 adds 0 favored | words: Favored : 5 Boons left | total 16
+--- a Save: the target rolls; the user's Banes turned into the target's Boons (inline.mjs saveExtraMods: "Caster's Banes")
+Instinct Save: dice 12 | mods 1 Instinct | +2 Caster's Banes | +1 Low cover [Field] | −1 Vulnerable 1 | B 3 N 1 adds 2 | words: 3 Boons, 1 Bane | total 15
+its lines: Goblin Archer rolls 12 7 5 +1 Instinct +2 Boons and Banes 3 Boons, 1 Bane +2 Caster's Banes +1 Low cover (Field) −1 Vulnerable 1 15 against DC 14 Their Tier 2 | a Tier 3 with Doubles: no Critical: Their Tier 3
+the caster Doomed: 5 Boons on the Save: dice 12 (3d12, the 9 is dropped) | mods 1 Instinct | +5 Caster Doomed | B 5 N 0 adds 0 favored | words: Favored : 5 Boons left | total 17
+--- the total line: Doubles, a Critical, hidden Defenses, forced, the Applied line
+Doubles raise: 15 against AD 14 Tier 2, Doubles: Tier 3
+a Critical (Doubles on a Tier 3): 23 against AD 15 Tier 3, Doubles: Critical
+a Critical by 20 over: 36 against AD 13 Tier 3, 20 over: Critical | hidden: 36 against AD Tier 3: Critical
+hidden Defense: the badge keeps its word: <span class="cc-badge vsk-ad">AD</span> | a Save's DC is never hidden: <span class="cc-badge">DC 14</span>
+no target: DC 13: 11 against DC 13 Tier 1 | forced: 11 against DC 13 Tier 2 (forced)
+an exploded die: 12 6 11 + 6 4 | the Flat as its own line: +1 Situational
+Applied, under the total: Applied: Killer's Focus | a link: true | after the sum: true
+an unnamed Boon counted by hand before v0.0.292: +1 Flanking | +1 (no name)
+the parts reach the roll's total: true
+--- actions.mjs stateSources: the sources that made a roll Favored or Doomed, by name, stored with the roll
+[{"name":"Hidden (Favored)","boons":0,"banes":0,"bb":"","fav":true},{"name":"Situational","boons":0,"banes":0,"bb":"","fav":true},{"name":"High cover (Doomed)","boons":0,"banes":0,"bb":"","doom":true}]
+ccRowOf keeps them: [{"name":"Hidden","boons":0,"banes":0,"bb":"","fav":true}]

@@ -18,9 +18,9 @@ the dialog's DC doesn't override each target's Defense (useAction keeps each dcI
 --- the attack card
 Tier 2: stamp TIER 2 vs AD 11 | outcome: Vigor 1d8 Sl · Resolve 2d6 + 1d6 Ho | the effect (no label): true | no Critical row on a Tier 2: true
 Tier 1: a pool with 0 is left out: Resolve 1d6 Ho | no effect text, and no "No Effects" line: true
-Doubles raise: stamp TIER 3 Doubles ↑ | chip: Tier 2 → Tier 3 · Doubles | the Critical row muted:  | a rider: ↳ Pushed 2
-a Critical by total: stamp CRIT 3 Critical | the box: Critical the target is Prone. | explosion chain: 11 + 11 + 7 · 5 | total row: 36 vs AD 13 Tier 3 → Critical · 33+
-Boon / Bane lines: Boon · Bane +1 Flanking −1 Frightened −1 Dim light  | the modifiers colored: 1 1
+Doubles raise: stamp TIER 3 Doubles ↑ | chip: Tier 2, Doubles: Tier 3 | the Critical row muted:  | a rider: ↳ Pushed 2
+a Critical by total: stamp CRIT 3 Critical | the box: Critical the target is Prone. | explosion chain: 11 + 11 + 7 | total row: 36 against AD 13 Tier 3, 20 over: Critical
+Boon / Bane lines: +1 Flanking | −1 Frightened | −1 Dim light | +2 Boon | the modifiers, a line each: +2 Signature | −1 Situational
 every clickable thing is a button with aria-expanded where it toggles: true | the retarget has a label: true | decorative icons hidden: true
 --- settings: Designer mode, hidden Defenses (players), the GM always sees everything
 Designer mode off: no odds, Ruler or automation anywhere: true | on: Odds: T1 20% · T2 50% · T3 30% Automation: Mithril

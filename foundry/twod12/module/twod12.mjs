@@ -36,7 +36,6 @@ import { registerHudHp } from "./hudhp.mjs";   // v0.0.500: the Token HUD's Vigo
 import { registerStatusPalette } from "./statuspal.mjs";   // v0.0.500: the status palette in groups, with names
 import { registerCondLine } from "./condline.mjs";   // v0.0.504: Alt shows every token's conditions
 import { registerCondNumbers } from "./condnum.mjs";   // v0.0.501: the numbered condition icons (a condition's number on the token)
-import { registerFxScale } from "./fxscale.mjs";   // v0.0.532: the effect icons on a token keep a minimum size on screen
 import { registerLight } from "./light.mjs";
 import { registerLightOverlay } from "./lightoverlay.mjs";
 import { CharacterData, NpcData, SpeciesData, ClassData, FeatureData, ActionData, WeaponData, EffectData, TalentData, ArmorData, GearData } from "./data.mjs";
@@ -93,7 +92,6 @@ Hooks.once("init", () => {
   registerHudHp();
   registerStatusPalette();
   registerCondNumbers();
-  registerFxScale();   // v0.0.532 (playtest 11)
   registerCondLine();
   registerClock();
   registerEffectEditor();

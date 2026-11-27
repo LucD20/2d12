@@ -38,4 +38,4 @@ its Rally Point heal: true | refused: true | the book: true
 --- 6. the one-time migrations before v0.0.519 gone (F-033)
 files gone: migrater.mjs true, fxmigrate.mjs true, fixrules.mjs true
 settings left: none (of 20) | kept: the in-memory readers true | the new-world defaults: true
-the version: 0.0.532 | its changelog entry: true
+the version: 0.0.533 | its changelog entry: true
