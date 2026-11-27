@@ -181,3 +181,7 @@ Taunted by you (1 round) ........................ 1 to 2  [arithmetic: 1 Bane, 6
 - **Table feel:** "the Paladin halves it, and the ogre is Taunted": one word, said once the GM has rolled the damage.
 
 **For Lucas to choose:** the payload (D, half; B, a bigger flat number; C, 2d6 + Pow; or keep A) and the rider (Taunted; the loaded burst; none).
+
+**Lucas's question (2026-11-27):** "Is reducing damage like this really the way forward? Health is the center point of 2d12, wont Paladin feel the necessity to always reduce it? [...] Is dealing damage within the lines of reducing damage? Because anyone can deal damage, but who can actually 'heal'/prevent damage?"
+
+**Claude's answer, in short:** prevention and damage aren't the same coin. Damage is replaceable (anyone deals it). Prevention saves the day's resource: Steel Yourself already buys about 12 Health for 1 AP, but it spends a Rally Point, and Shield of Faith spends none. It also prevents Downs, and a hit's last points are worth more than its first. So the 1-for-1 pricing above undervalues it. That supports his worry: uncapped and Turn, D halves every big hit on every enemy turn, and the Paladin plays on other people's turns. The proposal changes to **D at the Round Frequency** (once a round, for the hit that matters), or D with a condition (the hit would leave the ally Bloodied or Down). Waiting for Lucas.
