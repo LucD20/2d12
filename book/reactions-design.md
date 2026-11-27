@@ -473,3 +473,11 @@ A swap with no AP ............................... 1 AP on her turn when she want
 - **Interact's swap** (Chapter 6: stow the one you hold and draw another; stowing and swapping need no free hand) is unchanged; only its AP is waived.
 
 **For Lucas to confirm:** Snap Shot's three Tier lines (or another weaker shot), and Slip Away's wording.
+
+**Lucas (2026-11-27): "make Snap shot round. Can remove the 'with no AP'. remember, doubling down a rule makes people thing this rule isnt true overall, linked actions rule already explains it."** (The rule is now `cards/README.md`, "Writing cards with Lucas", rule 35.) **Both Archer cards DECIDED, not built:**
+
+> **Snap Shot** · Archer Hallmark Reaction · 1R · **Round** · [Weapon, Ranged, Projectile, Strike] · *Interrupt:* the target would enter a square adjacent to you. · Distance: Weapon · Target: One enemy · *Effect:* You Evade 1, then make this attack. · *Attack:* Weapon vs. Armor Defense · *Tier 1:* [V] [Mod]. · *Tier 2:* [V] 1[W]. · *Tier 3:* [V] 1[W] + [Mod].
+
+> **Slip Away** · Archer Hallmark Reaction · 1R · Turn · *Trigger:* An enemy ends its turn adjacent to you. · Target: The triggering creature · *Effect:* You Evade 1. Then you can use [[Interact]] (1A) to swap the weapon you hold for another you carry.
+
+**The level 1 PCs' Reactions are done** (Shield of Faith, Rebuke, Snap Shot, Slip Away; Judge's 0R and Bear the Blow kept). Next: batch 3, the creatures (Backhand, Blood for Blood, Dying Flare, Shriek and Scatter).
