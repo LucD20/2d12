@@ -90,7 +90,7 @@ const CHANGES = {
   createCombat: () => true, deleteCombat: () => true, updateCombat: (d, ch) => "round" in (ch ?? {}),
   createCombatant: () => true, deleteCombatant: () => true, updateCombatant: (d, ch) => "defeated" in (ch ?? {}),
   createActiveEffect: e => hasPerception(e), updateActiveEffect: e => hasPerception(e), deleteActiveEffect: e => hasPerception(e),
-  updateActor: (d, ch) => !!ch?.system?.senses,
+  updateActor: (d, ch) => !!ch?.system?.senses || Object.keys(ch?.flags?.twod12 ?? {}).some(k => /^(-=)?(pointedOut|hide)$/.test(k)),   // v0.0.530: Point Out's ripple
   createWall: () => true, deleteWall: () => true, updateWall: (d, ch) => !!ch?.flags?.twod12 || "c" in (ch ?? {})   // v0.0.525: a thick wall blocks Hearing
 };
 const hasPerception = e => ["unsensed", "hidden", "obscured", "unconscious", "blinded"].some(s => e?.statuses?.has?.(s));

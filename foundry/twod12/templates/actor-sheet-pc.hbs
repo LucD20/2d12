@@ -133,6 +133,8 @@
         {{#if pc.npc}}<div class="ps2-links"><a data-action="generateAction" role="button"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Action</a><a data-action="browseCompendium" role="button"><i class="fa-solid fa-book-open"></i> Browse compendium</a><a data-action="newAction" role="button"><i class="fa-solid fa-plus"></i> New Action</a></div>{{/if}}
         <div class="ps-stack">
           {{#each pc.sections}}{{> sect list="actions"}}{{else}}<div class="ps-empty">No Actions yet. Drag Actions, Features, Talents or Weapons onto this sheet.</div>{{/each}}
+          {{!-- v0.0.530 (bst-cornered): an NPC's Features (it has no Build tab), each a Build row that opens its card --}}
+          {{#if pc.npcFeats.length}}<div class="ps-block ps2-sec npcfeat"><div class="ps2-band"><b>Features</b><span class="ps2-bsub">always on</span></div>{{#each pc.npcFeats}}{{> brow}}{{/each}}</div>{{/if}}
         </div>
         {{!-- v0.0.441: the Basic Actions' four columns kept, each Action one line (its Frequency's muted strip, a Strike's second strip; its cost; its
               reason when it can't be used); the legend is gone --}}

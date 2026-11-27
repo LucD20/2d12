@@ -793,7 +793,8 @@ export function wrapConditions(proto, deps = {}) {
     }
     const has = !!this.statuses?.has?.(statusId);
     const want = options?.active ?? !has;
-    if (!want || has) return inner.call(this, statusId, options);          // switching off, or already on: Foundry's own
+    // switching off, or already on: Foundry's own; v0.0.530 (hq-lingering): twod12Add applies the Effect again (a second Lingering)
+    if (!want || (has && !options?.twod12Add)) return inner.call(this, statusId, options);
     const item = await find(statusId);
     if (!item) return inner.call(this, statusId, options);                 // no Effect with that name: just the status
     if (item.system?.valued && options?.overlay) return false;             // a right-click on a condition it doesn't have: nothing to lower

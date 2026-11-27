@@ -74,7 +74,7 @@
     },
     {
      "label": "Tier 3",
-     "text": "[V] 2 + 1d10! Pi; [[Lingering]] 1d10 (Bo/In)."
+     "text": "[V] 2 + 1d10! Pi; [[Lingering]] 1d10 Pi (Bo/In)."
     },
     {
      "label": "Critical",
@@ -85,7 +85,7 @@
     "img": "icons/svg/thrust.svg",
     "npcWeapon": "Javelin",
     "automation": "gold",
-    "automationNote": "a Basic attack (the exploding die, its Critical row's 1d10!; it shares the At-will count with the axe); Lingering 1d10 (Bo/In) when a Tier 3 lands. The Setup's draw is text: an NPC's items are flavor."
+    "automationNote": "a Basic attack (the exploding die, its Critical row's 1d10!; it shares the At-will count with the axe); Lingering 1d10 Pi (Bo/In) when a Tier 3 lands. The Setup's draw is text: an NPC's items are flavor."
    }
   },
   {

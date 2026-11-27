@@ -70,7 +70,9 @@ const nameOfToken = id => canvas.tokens?.get?.(id)?.name ?? "a creature";
 /** Hide's results (actions.mjs): rows [{ uuid, name, tier }] against each targeted creature. */
 export async function applyHide(actor, rows) {
   const me = tokenOf(actor); if (!me) return;
-  if (me.document?.getFlag?.(F, "pointedOut")) await me.document.unsetFlag(F, "pointedOut").catch(() => {});   // v0.0.526: using Hide again ends what Point Out gave
+  // v0.0.526: using Hide again ends what Point Out gave. v0.0.530: on the actor, where pointOut keeps it and perceive reads it (it was looked for on
+  // the token document, so it was never cleared: Hide's own Unsensed hid it)
+  if (actor.getFlag?.(F, "pointedOut")) await actor.unsetFlag(F, "pointedOut").catch(() => {});
   const map = hideMap(actor), out = [];
   for (const r of rows) {
     let tok = null; try { const d = await fromUuid(r.uuid); tok = d?.object ?? null; } catch (e) { tok = null; }
@@ -178,9 +180,14 @@ export function registerHide() {
  * Add sets every targeted creature at once; a change posts a short chat line) */
 /** Pure: the HUD's Hiding entry. map: the hider's flag; names: id -> name; targets: [{ id, name }] (the hider's user's targets); hidThisTurn. null when
  *  nothing is shown. rows: [{ id, name, state }] (Unsensed first); add: { ids, label } for the targets not listed, or null (then hint). */
-export function hidingModel(map, { names = {}, targets = [], hidThisTurn = false, selfId = "" } = {}) {
+// v0.0.530 (Lucas on v0.0.529, ox-pointout: "needs a way to manually remove it, like Hiding area from the situational tab"): pointed = the creature's
+// twod12.pointedOut ({ <observer token id>: { x, y } }): each observer that perceives it as Hidden by an ally's Point Out is a row of its own
+// ("Pointed out", with its remove), after the Hide rows
+export function hidingModel(map, { names = {}, targets = [], hidThisTurn = false, selfId = "", pointed = {} } = {}) {
   const rows = Object.entries(map ?? {}).filter(([, s]) => s === "hidden" || s === "unsensed").map(([id, state]) => ({ id, name: names[id] ?? "a creature", state }))
     .sort((a, b) => (a.state === b.state ? a.name.localeCompare(b.name) : a.state === "unsensed" ? -1 : 1));
+  const po = Object.entries(pointed ?? {}).filter(([id, v]) => id && v).map(([id]) => ({ id, name: names[id] ?? "a creature", state: "pointed" })).sort((a, b) => a.name.localeCompare(b.name));
+  rows.push(...po);
   if (!rows.length && !hidThisTurn) return null;
   const listed = new Set(rows.map(r => r.id)), fresh = (targets ?? []).filter(t => t.id && t.id !== selfId && !listed.has(t.id));
   const add = fresh.length ? { ids: fresh.map(t => t.id), label: fresh.length === 1 ? fresh[0].name : `${fresh.length} creatures` } : null;
@@ -197,6 +204,16 @@ export async function setHideByHand(actor, ids = [], state = "") {
   await setHide(actor, map);
   const what = state ? `${WORDS[state]} to <b>${names.map(esc).join(", ")}</b>` : `no longer hiding from <b>${names.map(esc).join(", ")}</b>`;
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-user-secret", `<b>${esc(actor.name)}</b>: ${what} (set by hand).`, "fxm") });
+}
+/** v0.0.530 (ox-pointout): what an ally's Point Out gave these observers ends by hand (the Hiding entry's remove), with a chat line. */
+export async function removePointedOut(actor, ids = []) {
+  if (!actor?.isOwner || !ids.length) return;
+  const floors = foundry.utils.deepClone(actor.getFlag(F, "pointedOut") ?? {}), names = [];
+  for (const id of ids) { if (!(id in floors)) continue; delete floors[id]; names.push(nameOfToken(id)); }
+  if (!names.length) return;
+  await actor.unsetFlag(F, "pointedOut").catch(() => {});
+  if (Object.keys(floors).length) await actor.setFlag(F, "pointedOut", floors);
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-eye", `<b>${esc(actor.name)}</b>: <b>${names.map(esc).join(", ")}</b> no longer perceive${names.length === 1 ? "s" : ""} it by Point Out (set by hand).`, "fxm") });
 }
 /** The turn a creature used Hide or Sneak (the entry shows during it). */
 export const turnStamp = () => (game.combat?.started ? `${game.combat.id}:${game.combat.round}:${game.combat.turn}` : "");

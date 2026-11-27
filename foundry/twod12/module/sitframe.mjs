@@ -52,3 +52,13 @@ export function chargeButtons({ target = false, short = false, blocked = false }
   if (!target) return { goOff: true, goLabel: "Charge", goFill: false, giveFill: true };
   return { goOff: short, goLabel: blocked ? "Charge anyway" : "Charge", goFill: !blocked && !short, giveFill: blocked };
 }
+
+/**
+ * v0.0.530 (Lucas on v0.0.529, sf-area: "hovering over Cancel also lit up 'left' for some reason"): the map's pointermove also fires while the
+ * mouse is over the HUD or a window (PIXI listens on the whole document), so the Line was aimed at the map under the Cancel button, found a tie
+ * there and lit Left. A question's hover ignores a move whose element is not the map (pure: the event and the canvas element are passed in).
+ */
+export function offMap(ev, view) {
+  const t = (ev?.nativeEvent ?? ev?.data?.originalEvent ?? null)?.target ?? null;
+  return !!t && !!view && t !== view && t.id !== "board";
+}

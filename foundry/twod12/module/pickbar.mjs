@@ -2,7 +2,7 @@
 // window: an icon, a text, one button per option, and Done / Cancel. "Who gains the Guard?" and the Push picker use it; any map picker can.
 import { esc } from "./util.mjs";
 import * as MAPMARK from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
-import { askHtml, splitLead } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
+import { askHtml, splitLead, offMap } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
 
 /** v0.0.441 (the HUD mockup, R5): a question that already has a "no" answer (Judge's "Not now") shows no third button "Cancel" (Escape still cancels). */
 export const hasNo = o => (o.options ?? []).some(x => /^no$/i.test(String(x.id ?? "")) || /^(no|not now)$/i.test(String(x.label ?? "").trim()));
@@ -123,7 +123,7 @@ export async function pickBar(o) {
       try { M = MAPMARK; marks = new PIXI.Container(); marks.eventMode = "none"; MAPMARK.addOnTop(marks); } catch (e) { M = null; }
       prevInteractive = canvas.tokens.interactiveChildren; canvas.tokens.interactiveChildren = false;
       const at = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage), c = T.cellAt(p); return toks.find(x => cellsOf(x).some(k => k.i === c.i && k.j === c.j)) ?? null; };
-      move = ev => hover(at(ev));
+      move = ev => { if (!offMap(ev, canvas.app?.view)) hover(at(ev)); };   // v0.0.530: not while the mouse is on the HUD
       down = ev => { if (ev.button !== 0) return; const hit = at(ev); if (hit) { finish(hit.id); setTimeout(reselect, 0); setTimeout(reselect, 250); } };
       canvas.stage.on("pointermove", move);
       canvas.stage.on("pointerdown", down);

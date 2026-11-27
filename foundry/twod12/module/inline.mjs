@@ -820,7 +820,7 @@ async function handleEndEffect(cfg, ctx) {
  */
 async function handleShakeOff(cfg, ctx) {
   const origin = originActor(ctx);
-  const { bleedOf, bleedText } = await import("./condrules.mjs");
+  const { bleedOf, bleedText, shakeOffCardParts } = await import("./condrules.mjs");
   // v0.0.462 (Lucas, checklist v0.0.459: "When I use shake off, it doesnt roll against the target, it says I dont have Lingering"): the lookup took
   // the selected token (Kaela) before the targeted one (Durgan). The candidates now come in order: the card's targets, your targets, the selected
   // tokens, yourself; the first group with a Lingering is the one (none has one: the first group, to say so)
@@ -869,8 +869,7 @@ async function handleShakeOff(cfg, ctx) {
       }
       // v0.0.465 (Lucas, checklist v0.0.464, shake-off-other: "the save on the chat is using a very old style"): one card in the system's look: the Save
       // and its result as the lead, what happens to the Lingering under it (was the old roll card, then a line)
-      const tierWord = ["", "Tier 1", "Tier 2", "Tier 3"][chk.tier] ?? "";
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: chk.rolls, content: sysCard({ title: "Shake Off", lead: `<b>${esc(actor.name)}</b>: ${esc(TWOD12.attributes[key])} Save <b>${chk.total}</b> vs DC ${dcUsed}: <b>${tierWord}</b>`, text: `<b>${esc(actor.name)}</b>: ${esc(bleedText(b))} ${what === "ends" ? "ends." : what === "half" ? "takes half its damage at the end of the current turn, then it ends." : "goes on (no effect)."}`, cls: "shakeoff" }) });
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: chk.rolls, content: sysCard({ title: "Shake Off", ...shakeOffCardParts({ name: actor.name, attr: TWOD12.attributes[key], total: chk.total, dc: dcUsed, tier: chk.tier, lingering: bleedText(b), what }), cls: "shakeoff" }) });
     }
   }
 }

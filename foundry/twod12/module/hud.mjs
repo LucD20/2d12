@@ -283,7 +283,7 @@ async function barModel(actor, token = null) {
     const H = await import("./hide.mjs"), map = actor.getFlag?.(F, "hide") ?? {}, selfTok = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
     const names = Object.fromEntries((canvas.tokens?.placeables ?? []).map(t => [t.id, t.name]));
     const hidThisTurn = !!H.turnStamp() && actor.getFlag?.(F, "hidTurn") === H.turnStamp();
-    hiding = H.hidingModel(map, { names, targets: [...(game.user?.targets ?? [])].map(t => ({ id: t.id, name: t.name })), hidThisTurn, selfId: selfTok?.id ?? "" });
+    hiding = H.hidingModel(map, { names, targets: [...(game.user?.targets ?? [])].map(t => ({ id: t.id, name: t.name })), hidThisTurn, selfId: selfTok?.id ?? "", pointed: actor.getFlag?.(F, "pointedOut") ?? {} });   // v0.0.530: Point Out's rows
     if (hiding) { let folded = []; try { folded = JSON.parse(localStorage.getItem("twod12.hideFold") ?? "[]"); } catch (e) { folded = []; } hiding.folded = folded.includes(actor.uuid); }   // v0.0.518: folded by this viewer
   } catch (e) { hiding = null; }
   try {
@@ -653,6 +653,7 @@ async function onClick(ev) {
     try { localStorage.setItem("twod12.hideFold", JSON.stringify(folded.slice(-50))); } catch (e) { /* no storage */ }
     return renderHud();
   }
+  if (kind === "pointrm") { const H = await import("./hide.mjs"); await H.removePointedOut(actor, [b.dataset.obs]); return renderHud(); }   // v0.0.530 (ox-pointout)
   if (kind === "hideflip" || kind === "hiderm" || kind === "hideadd") {   // v0.0.517: the Hiding entry's buttons
     const H = await import("./hide.mjs");
     if (kind === "hideflip") await H.setHideByHand(actor, [b.dataset.obs], H.flipState(b.dataset.state));

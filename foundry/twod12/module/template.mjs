@@ -12,7 +12,7 @@ import { lineFromSpace, cutLine, inLineHeight } from "./linearea.mjs";
 import { solidTile } from "./corners.mjs";
 import { shapesForCells } from "./regionshape.mjs";
 import * as MK from "./mapmark.mjs";
-import { askHtml, tiesHtml, setTies, areaStat } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
+import { askHtml, tiesHtml, setTies, areaStat, offMap } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
 
 /** The center of a token's whole space. */
 const spaceCenter = tk => { const s = canvas.grid.size, d = tk.document, h = homePos(d); return { x: h.x + (d.width ?? 1) * s / 2, y: h.y + (d.height ?? 1) * s / 2 }; };
@@ -277,7 +277,8 @@ function place(shape, n, { within = 0, user = null } = {}) {
         }
       }
     };
-    const move = ev => { lastPos = localPos(ev); current = compute(shape, n, lastPos, { user, side }); draw(); };
+    const move = ev => { if (offMap(ev, canvas.app?.view)) return; lastPos = localPos(ev);   // v0.0.530: not while the mouse is on the HUD (sf-area)
+      current = compute(shape, n, lastPos, { user, side }); draw(); };
     const done = result => {
       bar.remove();
       try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ }

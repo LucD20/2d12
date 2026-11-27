@@ -6,6 +6,13 @@
 //     nothing and is gone. effectNumber stays for the tests.)
 // Pure helpers first (the tests load them).
 
+/**
+ * v0.0.530 (Lucas on v0.0.521, hq-lingering: "Lingering should be allowed to be applied from the token hud even when one is already on"; book,
+ * Chapter 8, Several Lingerings): a click on Lingering when the creature has one asks in the pick bar: add another, or end one of those it has
+ * (each by its text). Pure: the options. list: [{ id, text }] (the creature's Lingerings).
+ */
+export const lingeringChoices = list => [{ id: "__add", label: "Add another Lingering" }, ...(list ?? []).map(x => ({ id: x.id, label: `End ${x.text}` }))];
+
 export const STATUS_GROUPS = [
   { key: "health", label: "Health", ids: ["bloodied", "strained", "desperate", "dying", "shattered", "unconscious", "dead"] },
   { key: "movement", label: "Movement", ids: ["prone", "hindered", "immobilized", "grabbed", "slowed", "squeezing", "leaning"] },
@@ -75,6 +82,18 @@ export function groupPalette(app, html) {
     if (!row || !actor) return;
     ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation?.();
     const id = row.dataset.statusRow, on = !!actor.statuses?.has?.(id);
+    // v0.0.530 (hq-lingering): Lingering already on: another one (of another subtype, they run together), or end one, in the pick bar
+    if (id === "bleed" && on && !right) {
+      try {
+        const { bleedOf, bleedText } = await import("./condrules.mjs"), { pickBar } = await import("./pickbar.mjs"), { esc } = await import("./util.mjs");
+        const list = [...(actor.effects ?? [])].filter(e => !e.disabled && bleedOf(e)).map(e => ({ id: e.id, text: bleedText(bleedOf(e)) }));
+        const pick = await pickBar({ icon: "fa-droplet", text: `<b>Lingering</b>: ${esc(actor.name)} has ${list.length === 1 ? "one" : list.length}. Add another, or end one?`, options: lingeringChoices(list), cancel: "Cancel" }).catch(() => "");
+        if (pick === "__add") await actor.toggleStatusEffect(id, { active: true, twod12Add: true });
+        else if (pick) await actor.effects.get(pick)?.delete();
+      } catch (e) { console.warn("twod12 | Lingering from the HUD", e); }
+      try { globalThis.canvas?.hud?.token?.render?.(); } catch (e) { /* no HUD open */ }
+      return;
+    }
     try { await actor.toggleStatusEffect(id, right ? { overlay: true, active: on } : { active: !on }); }
     catch (e) { console.warn("twod12 | the status palette", e); }
     try { globalThis.canvas?.hud?.token?.render?.(); } catch (e) { /* no HUD open */ }

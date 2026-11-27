@@ -5875,3 +5875,23 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-linebar.twod12-areabar:not(.in-side) .lb-ties.off { display: none; }
 .twod12-linebar.twod12-chargebar:not(.in-side) .lb-ties.off { visibility: hidden; }
 .twod12-linebar.twod12-chargebar:not(.in-side) .lb-cands:has(.on), .twod12-linebar.twod12-chargebar:not(.in-side) .lb-go[disabled], .twod12-linebar.twod12-freebar:not(.in-side) .lb-undo[disabled] { display: none; }
+/* ==== v0.0.530 (Lucas on v0.0.529, sf-forced, his picture: in the HUD's middle the Forced Movement's title stood above the box, the keys' line
+   below it, and the buttons at the left): outside the tab (the HUD's middle, the floating bar) the frame keeps its bands inside its box: the rows
+   close together, the buttons one row with the way out at its right end, the keys' line last; in the HUD's middle (a fixed height) the Forced
+   Movement's small reminder of the rule is left to the Rules button, as in the tab, and anything taller than the box scrolls inside it. The
+   Charge wraps too (its one row of v0.0.219 left its text no room beside the title v0.0.529 split off). ==== */
+.twod12-linebar:not(.in-side) { row-gap: 4px; }
+.twod12-linebar:not(.in-side) > :is(.lb-text, .lb-stat) { flex: 1 1 0; min-width: 240px; }
+.twod12-linebar:not(.in-side) > .lb-acts { display: flex; flex: 1 1 100%; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.twod12-linebar:not(.in-side) > .lb-acts > .lb-sp { display: block; flex: 1 1 0; min-width: 0; }
+.twod12-linebar:not(.in-side) > .lb-keys { order: 9; flex: 1 1 100%; margin-top: 0; }
+.twod12-hud .hud-ask > .twod12-linebar.in-hud:not(.in-side) { max-height: 100%; box-sizing: border-box; overflow-y: auto; padding-top: 4px; padding-bottom: 4px; }
+.twod12-hud .hud-ask > .twod12-linebar.twod12-forcedbar.in-hud:not(.in-side) > .lb-text small { display: none; }
+.twod12-linebar.twod12-chargebar:not(.in-side) { flex-wrap: wrap; }
+/* v0.0.530 (Lucas on v0.0.529, ox-shakeoff, his picture: "the Shakeoff message is weirdly formated"): a system card's lead is one flowing line of
+   text; as a flex row (v0.0.204, for the swap card's pair of names) a bold name and the words after it were separate pieces, a long name took a
+   line of its own and the words came apart with gaps. Only the swap card keeps its row. */
+.twod12.chat.sysmsg .sm-lead { display: block; }
+.twod12.chat.sysmsg.swapmsg .sm-lead { display: flex; }
+/* v0.0.530 (ox-pointout): the Hiding entry's Point Out row: "Pointed out" in the state button's place and width (a label, not a button), its remove */
+.twod12-hud .h3-sit .h3-hd .h3-hd-po, .twod12-hud .h3-sit .h3-hd .h3-hd-po:hover { cursor: default; background: none; border-color: var(--hud-hair); color: var(--hud-mute); font-size: .72rem; white-space: nowrap; }

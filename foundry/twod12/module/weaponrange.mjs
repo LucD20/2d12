@@ -68,5 +68,11 @@ export function chargeAttacks({ weapons = [], npcAttacks = [], reach = 1 } = {})
   }
   return out.filter(x => x.normal > 0);
 }
+/**
+ * v0.0.530 (Lucas on v0.0.529, sf-charge: "it says it is always closer than 3 squares, even though its not"): an NPC's Basic attacks only. A PC's
+ * card can carry basicAttack too (the Paladin's Drawing Light, 5 sq.; the Archer's 10 sq. one), and v0.0.525 read them for every creature: the
+ * Charge of a Paladin stopped at Range 5, so every enemy nearer than 8 squares was "too close". A PC attacks with its weapons (pure).
+ */
+export const chargeNpcAttacks = actor => (actor?.type === "npc" ? [...(actor?.items ?? [])].filter(i => i?.system?.basicAttack) : []);
 /** v0.0.525 (B2-014): a choice is asked only when the ways differ in their normal Range (pure). */
 export const chargeNeedsPick = list => new Set((list ?? []).map(x => x.normal)).size > 1;

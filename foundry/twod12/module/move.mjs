@@ -27,7 +27,7 @@ import { allEffects } from "./passives.mjs";
 import { moveLimitBreaks } from "./fxrules.mjs";
 import { areaDifficult } from "./areafx.mjs";
 import { ignoredBy } from "./automation.mjs";
-import { askHtml, tiesHtml, setTies, chargeButtons, splitLead } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
+import { askHtml, tiesHtml, setTies, chargeButtons, splitLead, offMap } from "./sitframe.mjs";   // v0.0.529 (the sit-fixed mockup, rule A)
 /** The Movement limits of a creature that work now, each with its origin's token: [{ dir, name, token }] (Frightened: can't move closer to its source). */
 // v0.0.361 (PACK PERF, D34): a drag measures many steps in a row, each asking for the mover's limits (8 of its 8.4 µs a step went to allEffects):
 // they are read once and kept 200 ms. The source's token is kept, not its square, so a source that moves is still measured where it stands.
@@ -600,9 +600,9 @@ async function promptStowAfter(c) {
 async function chargeStopRange(actor) {
   const reach = Math.max(1, num(actor?.system?.reach) || 1);
   try {
-    const { chargeAttacks, chargeNeedsPick } = await import("./weaponrange.mjs"), { weaponsFor } = await import("./fists.mjs");
+    const { chargeAttacks, chargeNeedsPick, chargeNpcAttacks } = await import("./weaponrange.mjs"), { weaponsFor } = await import("./fists.mjs");
     const ba = { getFlag: (s, k) => (k === "basic" ? "basicWeaponAttack" : undefined), system: {} };
-    const list = chargeAttacks({ weapons: weaponsFor(actor, ba), npcAttacks: [...(actor?.items ?? [])].filter(i => i.system?.basicAttack), reach });
+    const list = chargeAttacks({ weapons: weaponsFor(actor, ba), npcAttacks: chargeNpcAttacks(actor), reach });   // v0.0.530: an NPC's Basic attacks only
     if (!list.length) return { normal: reach, label: "" };
     if (!chargeNeedsPick(list)) return list[0];
     const { pickBar } = await import("./pickbar.mjs");
@@ -970,8 +970,10 @@ function forcedBar(mode, target, origin, N, onEnd) {
   if (typeof document === "undefined") return { set() {}, close() {} };
   document.querySelector(".twod12-forcedbar")?.remove();
   const label = mode === "reposition" ? "Repositioned" : MOVE_LABEL[mode];
-  const how = { push: `away from <b>${esc(origin.name)}</b>: click the square where it ends`, pull: `toward <b>${esc(origin.name)}</b>: click the square where it ends (its own square: a Collision)`,
-    slid: "in any direction: click the squares of its path one by one, then the last one again (Enter)", reposition: "within the area: click its new square" }[mode] ?? "";
+  // v0.0.530 (Lucas on v0.0.529, sf-forced, his picture: the text began "in any direction: ..." under its title): the title says who moves and how
+  // far, the text is a sentence of its own (capitalized), never the rest of the title's sentence
+  const how = { push: `Away from <b>${esc(origin.name)}</b>: click the square where it ends`, pull: `Toward <b>${esc(origin.name)}</b>: click the square where it ends (its own square: a Collision)`,
+    slid: "In any direction: click the squares of its path one by one, then the last one again (Enter)", reposition: "Within the area: click its new square" }[mode] ?? "";
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-setupbar twod12-forcedbar";
   // v0.0.529 (the sit-fixed mockup, rule A): the title "X is Pushed up to N squares", the text the rest (the rule's small reminder is left out in the
@@ -1119,6 +1121,7 @@ function choosePush(origin, target, N, mode = "push") {
         : `${r.block.token.name}${r.block.corner ? " (between two creatures)" : ""}: ${r.unused} unused, ${d.self} Vigor to each (${steps})`;   // v0.0.461: Vigor (Body was the pool's old name)
     };
     const hover = ev => {
+      if (offMap(ev, canvas.app?.view)) return;   // v0.0.530: not while the mouse is on the HUD
       const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage);
       const o = canvas.grid.getOffset(p);
       const node = pushNodeForCell(map, cells, o) ?? (pull ? pullIntoOrigin(cells, oCells, { i: o.i, j: o.j }, N) : null);
@@ -1291,6 +1294,7 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     const posOf = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage); const o = canvas.grid.getOffset(p); return { di: o.i - tl.i, dj: o.j - tl.j }; };
     const showTip = (ev, msg) => { fbar?.set(msg); };   // v0.0.461 (choice 8A): no pointer tip: the HUD's readout says it
     const move = ev => {
+      if (offMap(ev, canvas.app?.view)) return;   // v0.0.530 (sf-forced): the result under the mouse stays while it is on the HUD's buttons
       hover = posOf(ev); const r = draw(); const last = path[path.length - 1], sameLast = hover.di === last.di && hover.dj === last.dj && path.length > 1, bad = sameLast ? "" : why(hover);
       try { canvas.app.view.style.cursor = bad ? "not-allowed" : "pointer"; } catch (e) { /* no view */ }
       showTip(ev, sameLast ? text(r) : (bad ? `Not here: ${bad}.` : text(analyze([...path, hover]))));

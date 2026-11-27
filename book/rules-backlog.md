@@ -2,6 +2,11 @@
 
 The book is built from `rules-src/` with `build_rules.py` (assets in `rules-assets/`). How the files are written is in `rules-src/README.md`; `rules-src/INDEX.md` (generated) is a map of every chapter; `python3 build_rules.py --where Term` lists every mention of a term. The full earlier version of this list was in `archive/old-notes/rules-backlog-history.md` (not in this bundle).
 
+## THE BARBED JAVELIN'S LINGERING IS PIERCING (Lucas, 2026-11-27; applied, Foundry v0.0.530)
+
+- [x] **(v0.0.530: `cards/stage0/bestiary.json`, Chapter 14's stat block, the card's automation note; Foundry's stored effect `@Condition[bleed|dmg:1d10|sub:Pi|attrs:bo/in]`)** **The Orc Warrior's Barbed Javelin: Tier 3's Lingering is written with its subtype, "Lingering 1d10 Pi (Bo/In)"** (Chapter 8: a subtype is written after the value). **Lucas** (his checklist on v0.0.529, hq-lingering): "Barbed Javelin doesnt ahve an actual subtype when it should have". Piercing is the javelin's own damage. So a second Piercing Lingering keeps the higher one, and a Lingering of another subtype runs beside it (Chapter 8, Several Lingerings).
+- [ ] **Not changed, listed for Lucas:** the only other card that gives a Lingering with no subtype is **Wounding Shot** (`cards/stage0/gear.json`, the Hunting Bow's Mastery: Tier 2 "Lingering 1 (Bo/In)", Tier 3 "Lingering 2 (Bo/In)"). Its arrow deals Piercing damage, so it would read "Lingering 1 Pi (Bo/In)"; left as it is until he says.
+
 ## DECIDED, NOT BUILT: THE ACTION ECONOMY AND THE REACTIONS (2026-11-27)
 
 **Lucas, 2026-11-27: "dont build anything yet until I say"; "Remember, not applying anything".** Nothing below is in the book, the cards or Foundry; no rule, card or code was changed for it. The research behind it: `research/action-economy.md`, `research/saves-or-attack-rolls.md` (Saves kept as they are for now: no decision taken), `research/combat-length.md`, `research/difficulty-levers.md`, `research/npc-items.md`.

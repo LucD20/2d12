@@ -159,13 +159,17 @@ const HIDE_MARK = { unsensed: '<svg class="hm" viewBox="0 0 16 16" aria-hidden="
 export function hidingHtml(h) {
   if (!h) return "";
   const word = s => (s === "hidden" ? "Hidden" : "Unsensed");
-  const rows = h.rows.map(r => `<div class="h3-hd-r">${HIDE_MARK[r.state]}<span class="nm">${esc(r.name)}</span><button type="button" class="hb-btn q h3-hd-st" data-hud="hideflip" data-obs="${esc(r.id)}" data-state="${esc(r.state)}" aria-label="${esc(`${word(r.state)} to ${r.name}: switch to ${word(r.state === "hidden" ? "unsensed" : "hidden")}`)}">${word(r.state)}</button><button type="button" class="h3-hd-x" data-hud="hiderm" data-obs="${esc(r.id)}" aria-label="${esc(`Remove ${r.name}`)}">\u2715</button></div>`).join("");
+  // v0.0.530 (ox-pointout): a creature that perceives it by an ally's Point Out: its row says so (no state to flip), and its remove ends it
+  const rowOf = r => (r.state === "pointed"
+    ? `<div class="h3-hd-r po">${HIDE_MARK.hidden}<span class="nm">${esc(r.name)}</span><span class="hb-btn q h3-hd-st h3-hd-po">Pointed out</span><button type="button" class="h3-hd-x" data-hud="pointrm" data-obs="${esc(r.id)}" aria-label="${esc(`End what Point Out gave ${r.name}`)}">\u2715</button></div>`
+    : null);
+  const rows = h.rows.map(r => rowOf(r) ?? `<div class="h3-hd-r">${HIDE_MARK[r.state]}<span class="nm">${esc(r.name)}</span><button type="button" class="hb-btn q h3-hd-st" data-hud="hideflip" data-obs="${esc(r.id)}" data-state="${esc(r.state)}" aria-label="${esc(`${word(r.state)} to ${r.name}: switch to ${word(r.state === "hidden" ? "unsensed" : "hidden")}`)}">${word(r.state)}</button><button type="button" class="h3-hd-x" data-hud="hiderm" data-obs="${esc(r.id)}" aria-label="${esc(`Remove ${r.name}`)}">\u2715</button></div>`).join("");
   // v0.0.529 (the sit-fixed mockup, rule A): the Add line is always two lines, above the list: its sentence (or the hint), then Unsensed and Hidden,
   // off while no creature that isn't listed is targeted (they came and went under the list)
   const add = `<div class="h3-hd-add"><div class="t">${h.add ? `Add against <b>${esc(h.add.label)}</b>:` : h.rows.length ? "To add a creature, target one that isn't listed." : "Not hiding from anyone. To add a creature, target it."}</div>`
     + `<div class="bs">${["unsensed", "hidden"].map(s => `<button type="button" class="hb-btn q" data-hud="hideadd"${h.add ? ` data-ids="${esc(h.add.ids.join(","))}"` : " disabled"} data-state="${s}">${HIDE_MARK[s]}${word(s)}</button>`).join("")}</div></div>`;
   // v0.0.518 (Lucas: "Allow the player to click on Hiding to condense it to just the title"): the title folds and unfolds it (per viewer)
-  const head = `<button type="button" class="h h3-hd-fold" data-hud="hidefold" aria-expanded="${h.folded ? "false" : "true"}"><b>Hiding</b><span class="tg">from Hide${h.rows.length ? ` \u00b7 ${h.rows.length}` : ""}</span><i class="fa-solid fa-chevron-${h.folded ? "right" : "down"}" aria-hidden="true"></i></button>`;
+  const head = `<button type="button" class="h h3-hd-fold" data-hud="hidefold" aria-expanded="${h.folded ? "false" : "true"}"><b>Hiding</b><span class="tg">${h.rows.some(r => r.state === "pointed") ? "Hide, Point Out" : "from Hide"}${h.rows.length ? ` \u00b7 ${h.rows.length}` : ""}</span><i class="fa-solid fa-chevron-${h.folded ? "right" : "down"}" aria-hidden="true"></i></button>`;
   return `<div class="h3-si h3-hd${h.folded ? " folded" : ""}">${head}${h.folded ? "" : `${add}${rows}`}</div>`;
 }
 /**

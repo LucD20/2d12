@@ -85,6 +85,9 @@ export function registerSenses() {
         // v0.0.514 (Lucas on v0.0.513: "Kaela unsensed vs the goblin still allow the goblin to see the ripples"): Unsensed to this viewer from Hide
         if (actor?.getFlag?.("twod12", "hide")?.[visionSource?.object?.document?.id ?? visionSource?.object?.id] === "unsensed") return false;
         if (actor?.statuses?.has?.("hidden")) return true;   // the GM's Hidden status
+        // v0.0.530 (Lucas on v0.0.529, ox-pointout: "Blinded in Foundry is not even showing the ripples so cant target tokens"): a creature an ally
+        // pointed out is Hidden to this viewer (perceive), out of Hearing's range or not, so it shows as the ripple and can be targeted
+        if (pointedOutHolds(actor?.getFlag?.("twod12", "pointedOut")?.[visionSource?.object?.document?.id ?? visionSource?.object?.id])) return true;
         return !!visionSource?.object && !!target && visionSource.object !== target && hears(visionSource.object, target);   // a creature in combat within range
       }
     }

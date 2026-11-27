@@ -1,0 +1,38 @@
+--- 1. sf-charge: the normal Range a Charge stops at
+Durgan (Arming Sword, Drawing Light on his sheet): its Basic attacks read 0; ways [["Arming Sword",1]]; a pick false
+Sylwen (Hunting Bow): its Basic attacks read 0; ways [["Hunting Bow",8]]; a pick false
+the Orc Warrior: its Basic attacks read 2; ways [["Hamstringing Axe",1],["Barbed Javelin",6]]; a pick true
+an enemy 5 squares from Durgan: stop Range 1, 4 squares to run: can Charge
+(v0.0.525's reading, every creature's basicAttack items: stop Range 5, 0 squares: too close)
+move.mjs reads chargeNpcAttacks: true
+--- 2. ox-pointout
+rows: [{"id":"k1","name":"Kaela","state":"unsensed"},{"id":"s1","name":"Sylwen","state":"pointed"}]
+only pointed out: [{"id":"s1","name":"Sylwen","state":"pointed"}] | nothing: null
+the Point Out row: true | the title: true | no hover text: true
+the HUD passes the flag and removes: true true
+Hide clears it on the actor: true | not on the token: true
+the Hearing ripple shows a pointed-out creature: true | vision refreshed on the flag: true
+--- 3. sf-area: the hover ignores the mouse off the map
+on the map: false | on #board: false | on the HUD's Cancel: true | no native event: false | PIXI's data.originalEvent: true
+module/template.mjs uses it: 1
+module/move.mjs uses it: 2
+module/pickbar.mjs uses it: 1
+--- 4. sf-forced: a sentence of its own; the bands in the box outside the tab
+the texts start with a capital: true true true true
+true .twod12-linebar:not(.in-side) > .lb-acts { display: flex;
+true .twod12-linebar:not(.in-side) > .lb-acts > .lb-sp { display: block;
+true .twod12-hud .hud-ask > .twod12-linebar.in-hud:not(.in-side) { max-height: 100%;
+true .twod12-hud .hud-ask > .twod12-linebar.twod12-forcedbar.in-hud:not(.in-side) > .lb-text small { display: none; }
+true .twod12-linebar.twod12-chargebar:not(.in-side) { flex-wrap: wrap; }
+--- 5. ox-shakeoff: the Save's result card
+{"lead":"Durgan: Body Save <b>7</b> vs. DC 13: <b>Tier 1</b>","text":"Lingering [V] 1 Ac (Bo/In) goes on (no effect)."}
+{"lead":"Durgan: Body Save <b>7</b> vs. DC 13: <b>Tier 2</b>","text":"Lingering [V] 1 Ac (Bo/In) takes half its damage at the end of the current turn, then it ends."}
+{"lead":"Durgan: Body Save <b>7</b> vs. DC 13: <b>Tier 3</b>","text":"Lingering [V] 1 Ac (Bo/In) ends."}
+inline.mjs posts it: true
+the lead flows (block), the swap card keeps its row: true true
+--- 6. bst-cornered: an NPC's Features on its Actions tab
+the model: true | the template: true
+--- 7. hq-lingering
+[{"id":"__add","label":"Add another Lingering"},{"id":"e1","label":"End Lingering [V] 1d10 Pi (Bo/In)"},{"id":"e2","label":"End Lingering [V] 1d6 Fi (Bo/In)"}]
+the HUD asks when one is on: true | the toggle adds another: true
+the Barbed Javelin's stored Lingering: [ '@Condition[bleed|dmg:1d10|sub:Pi|attrs:bo/in]' ]

@@ -536,6 +536,9 @@ export async function pcModel(sheet, ctx) {
     .map(([k, l, n]) => ({ k, l, n: n || 0 }));
   return {
     npc, builder: npc ? npcBuilderModel(a) : null, loot: npc ? lootRows(a) : null,
+    // v0.0.530 (Lucas on v0.0.519, bst-cornered: "I didnt see the Cornered features anywhere in the sheet"): an NPC has no Build tab, so its
+    // Features (Cornered) are listed on its Actions tab, under its Actions, each opening its card like a Build row
+    npcFeats: npc ? await Promise.all(a.itemTypes.feature.map(it => brow(it, "Feature"))) : [],
     // v0.0.455 (Lucas, group 4): the Inventory tab (was Items) and the NPC's Loot tab, one look (inventory.mjs); the open details are the sheet's
     inventoryHtml: npc ? "" : inventoryHtml(a, { weapons, open: sheet._invOpen ?? new Set() }), lootHtml: npc ? lootHtml(a, { open: sheet._invOpen ?? new Set() }) : "",
     head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained, guardSym: statSym("guard"),   /* v0.0.460 (Lucas, checklist v0.0.459: "Icons should be in the PCs sheet as well") */   // v0.0.454: D3

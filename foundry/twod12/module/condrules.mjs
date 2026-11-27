@@ -1,3 +1,4 @@
+import { firstName } from "./util.mjs";   // v0.0.530: Shake Off's result card
 // v0.0.314 (pack AU, the conditions as items; book, Chapter 8): the pure rules of the conditions the conditions pass added.
 //   Frightened: its Bane only while the creature sees its origin (the effect's "whileSeen" rule; conditions.mjs gives effectOff the sight check).
 //   Taunted: its Bane only on Actions against a creature other than its origin (a Boons and Banes setting's "vsOrigin").
@@ -83,4 +84,19 @@ export function originView(uuid) {
   const actor = doc?.documentName === "Actor" ? doc : doc?.actor ?? null;
   const tok = /Token\.([A-Za-z0-9]+)/.exec(u)?.[1] ?? actor?.getActiveTokens?.()[0]?.id ?? "";
   return { name: actor?.name ?? doc?.name ?? "(not found)", token: tok, uuid: u };
+}
+
+const escH = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+/**
+ * Pure (v0.0.530; Lucas on v0.0.529, ox-shakeoff, his picture: the message showed the full name twice, "Durgan (Dwarf Paladin, Lay On Hands,
+ * level 1)", each on a line of its own, the rest of the line after it): the Save's result card names the creature by its first name, once, in the
+ * lead ("Durgan: Body Save 7 vs. DC 13: Tier 1"); the text says what happens to the Lingering. The lead's flow is system.css's (v0.0.530 block).
+ */
+export function shakeOffCardParts({ name = "", attr = "", total = 0, dc = 13, tier = 1, lingering = "Lingering", what = "none" } = {}) {
+  const tierWord = ["", "Tier 1", "Tier 2", "Tier 3"][tier] ?? "";
+  const L = String(lingering ?? "Lingering"), lt = L ? L[0].toUpperCase() + L.slice(1) : "The Lingering";
+  return {
+    lead: `${escH(firstName(name))}: ${escH(attr)} Save <b>${total}</b> vs. DC ${dc}: <b>${tierWord}</b>`,
+    text: `${escH(lt)} ${what === "ends" ? "ends." : what === "half" ? "takes half its damage at the end of the current turn, then it ends." : "goes on (no effect)."}`
+  };
 }
