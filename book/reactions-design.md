@@ -286,3 +286,5 @@ Slowed 1 on the triggering enemy ............ 4 to 5 on a Standard, about 8 on a
 - **Table feel:** "the goblin's knife lands; the Paladin says 'Rebuke, it's Slowed'": said once the hit is applied, nothing undone.
 
 **For Lucas to choose:** the trigger (an enemy damages an ally; moves closer to an ally; moves away from you) and the payload (Slowed 1; Holy damage; Hindered; Vulnerable 1; Pressed 1).
+
+**Lucas, 2026-11-27: "The charters are starting to get on the way, lets set them aside for this session."** For the rest of this session's rebuild, `class-charter.md` doesn't bind the Reactions (its "two Hallmark Reactions share a trigger", the 35-point budget, the "half the rounds" target). The book's rules, the card Structure and Lucas's card-writing rules still apply. Rebuke's damage trigger now stands on its own reasons (broad, after the hit, leaves the turn whole), not on the charter's.
