@@ -26,7 +26,7 @@ for (const t of ['3d6[mind,holy], "@Move[pushed|distance:1]"', '"You are @Condit
 console.log("the dialog carries the cards' color tokens (dark theme):", src("styles/system.css").includes(".twod12.rolldlg .twod12, .twod12.ckwin, .twod12.ckwin .twod12 {"), "| in the theme:", src("styles/theme.css").includes("ckwin"));
 
 console.log("--- the Token HUD above the interface");
-console.log(src("module/hudhp.mjs").includes('layer.style.zIndex = "1000"'));
+console.log(src("module/hudhp.mjs").includes("layer.style.zIndex = String(HUD_LAYER_Z);"));   // v0.0.531: 70, not v0.0.501's 1000 (over every window; t327)
 
 console.log("--- a Large token in a wall");
 const mv = src("module/move.mjs");

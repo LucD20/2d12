@@ -1,17 +1,23 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.530**. Tests: `node tools/tests/run.mjs` (322 tests, see the README; the next new test is t327). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.531**. Tests: `node tools/tests/run.mjs` (323 tests, see the README; the next new test is t328). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
 
-## LUCAS'S CHECKLIST ON v0.0.529 (2026-11-27: 48 passed, 7 failed, 1 skipped): FIXED in v0.0.530 (NOT tested by Lucas)
+## LUCAS'S CHECKLIST ON v0.0.530 (2026-11-27: 6 passed, 1 failed, 1 skipped): FIXED in v0.0.531 (NOT tested by Lucas)
+
+Passed and deleted from `foundry/to-test.md`: `ox-pointout`, `sf-area`, `sf-forced`, `sf-charge`, `bst-cornered`, `ox-shakeoff` (the v0.0.530 fixes below). `ox-charge` skipped ("answered on v0.0.529"), kept unchanged.
+
+- [x] **(v0.0.531: `hudhp.mjs HUD_LAYER_Z` = 70; t327, t308; `hq-lingering` Rev 4)** **`hq-lingering`: Foundry's Token HUD "is showing above every window, including the sheet, the lingering etc".** Since v0.0.501 `hpHud` gave Foundry's `#hud` an inline z-index of 1000 (to lift it over the system's HUD bar, z 60), which also put it over every window (z 100 up); it is 70 now. The Lingering part of the test passed.
+
+## LUCAS'S CHECKLIST ON v0.0.529 (2026-11-27: 48 passed, 7 failed, 1 skipped): FIXED in v0.0.530 (tested by Lucas on v0.0.530: six passed; `hq-lingering`'s Lingering part passed, its Token HUD's stacking fixed in v0.0.531; `ox-charge` not yet retested)
 
 The 48 passed tests are deleted from `foundry/to-test.md`; the seven failed ones and `ox-charge` are rewritten there (Rev + 1). The v0.0.529 sit-fixed frame's `sf-pick`, `sf-move`, `sf-list`, `sf-stack` passed.
 
 - [x] **(v0.0.530: `weaponrange.mjs chargeNpcAttacks`, `move.mjs chargeStopRange`; t326, `sf-charge` Rev 2, `ox-charge` Rev 2)** **`sf-charge`: "it says it is always closer than 3 squares, even though its not".** A PC card marked `basicAttack` (Drawing Light, stored distance 5; Harrying Shot, 10) was read as an NPC's Basic attack, so a PC's Charge stopped at Range 5 or 10; only an NPC's are read now.
 - [x] **(v0.0.530: `senses.mjs` HearingMode, `sightgate.mjs`, `hide.mjs applyHide`, `hidingModel` / `removePointedOut`, `hudview.mjs hidingHtml`, `hud.mjs`; t326, `ox-pointout` Rev 3)** **`ox-pointout`: "Blinded in Foundry is not even showing the ripples so cant target tokens; and also needs a way to manually remove it".** A pointed-out creature shows as the ripple (Point Out was never read by the Hearing mode, and the test's goblin is beyond Hearing's 10 squares); Hide clears the flag on the actor (it looked on the token); the Hiding entry lists "Pointed out" rows with a remove.
-- [ ] **Open (not found in the code): a Blinded creature with a creature within 10 squares that makes noise.** The Hearing mode never reads Blinded (v0.0.316), so it should show the ripple; `ox-pointout`'s last line asks Lucas to check it (with the distance) if it does not.
+- [x] **(confirmed by Lucas on v0.0.530: `ox-pointout`, whose last line asks it, passed; no change) A Blinded creature with a creature within 10 squares that makes noise.** The Hearing mode never reads Blinded (v0.0.316), so it should show the ripple; `ox-pointout`'s last line asks Lucas to check it (with the distance) if it does not.
 - [x] **(v0.0.530: `sitframe.mjs offMap`, `template.mjs`, `move.mjs`, `pickbar.mjs`; t326, `sf-area` Rev 2)** **`sf-area`: "hovering over Cancel also lit up 'left'".** The map's pointer moves fire over the HUD too: the Line was aimed under the button; a question's hover ignores a move off the map.
 - [x] **(v0.0.530: `move.mjs forcedBar`'s texts, the v0.0.530 block of `system.css`; t326, `sf-forced` Rev 2)** **`sf-forced`: "Formating of one message that appears is broken" (his picture: the HUD's middle).** The title above the box, the text starting "in any direction", the buttons at the left, the keys' line below the box: the texts are sentences of their own, and outside the tab the bands stay in the box (the six bars rendered in the tab, the HUD's middle and the floating bar).
 - [x] **(v0.0.530: `condrules.mjs shakeOffCardParts`, `inline.mjs`, `system.css` `.sm-lead`; t326, `ox-shakeoff` Rev 2)** **`ox-shakeoff`: "the Shakeoff message is weirdly formated" (his picture: the Save's result).** A system card's lead was a flex row (the swap card's), so a long bold name and its words came apart; one flowing line, the first name once.

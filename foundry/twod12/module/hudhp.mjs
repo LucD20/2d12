@@ -52,6 +52,9 @@ export function hudHpHtml(sys = {}) {
   return `<div class="twod12-hphud">${box("body", "Vigor", "v", sys.vigorLeft ?? 0, sys.bdt ?? 0)}${box("mind", "Resolve", "r", sys.resolveLeft ?? 0, sys.mdt ?? 0)}</div>`;
 }
 
+/** v0.0.531: the z-index given to Foundry's #hud: above the system's HUD bar (`.twod12-hud.floating`, z 60), under every window (z 100 up). */
+export const HUD_LAYER_Z = 70;
+
 /** The Token HUD: Foundry's bottom bar input is replaced by the two boxes (a creature with a Vigor or Resolve threshold). */
 export function hpHud(app, html) {
   const root = typeof HTMLElement !== "undefined" && html instanceof HTMLElement ? html : (html?.[0] ?? html ?? app?.element);
@@ -62,8 +65,11 @@ export function hpHud(app, html) {
   // v0.0.501 (Lucas on v0.0.500: the Resolve box and the status palette "appear under the token hud (the one at the bottom, from this system),
   // it should likely appear above windows"): the map's HUD layer (Foundry's #hud) goes above the interface (the system's HUD bar is z 60 in it)
   // and the windows; it lets the mouse through where it has nothing (Foundry's own pointer-events)
+  // v0.0.531 (Lucas on v0.0.530: the Token HUD "is showing above every window, including the sheet, the lingering etc"): v0.0.501's z 1000
+  // also put it over every window (Foundry's windows start at z 100, in the same stacking context); HUD_LAYER_Z sits between the system's
+  // HUD bar (60) and the windows (100+)
   const layer = root.closest?.("#hud") ?? root.parentElement;
-  if (layer?.style) layer.style.zIndex = "1000";
+  if (layer?.style) layer.style.zIndex = String(HUD_LAYER_Z);
   root.querySelector(".twod12-hphud")?.remove();
   const bar1 = root.querySelector(".attribute.bar1");
   const wrap = document.createElement("div");

@@ -1,0 +1,5 @@
+--- the Token HUD's layer
+HUD_LAYER_Z: 70 | the system's HUD bar's z: 60, 60 | above the bar: true | under the windows (100): true
+#hud's inline z is HUD_LAYER_Z: true | no other z on it: true | the old 1000 gone: true
+CSS rules lifting #hud / #token-hud / #interface to 100+: none
+no module sets a z-index on #interface or #ui-middle: true
