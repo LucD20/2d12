@@ -540,7 +540,7 @@ Round · 1R · Distance 2 · *Requirement:* the orc is Bloodied. *Trigger:* the 
 > **Shriek and Scatter** · Reaction · 1R · Encounter · Distance: 6 sq.
 > *One of them drops, and the rest remember how much they hate you.*
 > **Trigger:** An ally with the Goblin Tag goes Down.
-> **Target:** The creature that put it Down
+> **Target:** The triggering creature (the one whose Action put it Down; card rule 22)
 > **Effect:** The goblin uses [[Jeer]] (1A) against the target.
 
 (The name keeps "Scatter" though it no longer moves: **for Lucas** to rename or keep.)
