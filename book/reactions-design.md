@@ -1,5 +1,7 @@
 # The Reactions' rebuild: the decisions, one at a time
 
+**BUILT (2026-11-27, Lucas: "build it now"): level 1 is in the book and Foundry v0.0.535** (`rules-backlog.md`, the top section, has what was written where and Claude's choices). Level 2 (Bulwark of Faith) waits.
+
 The running record of the rebuild (HANDOFF "Next", step a; MASTER-PLAN 1.1). One decision at a time: Claude proposes, **Lucas decides**, and the decision is written here. **Nothing here is in the book, the cards or Foundry until Lucas says to build it** (2026-11-27: "dont build anything yet until I say"). The economy it sits on is in `rules-backlog.md`, "DECIDED, NOT BUILT: THE ACTION ECONOMY AND THE REACTIONS". The research is `research/action-economy.md` (the price), `paladins-other-games.md`, `frontline-protection.md`, `tactical-combat.md` and `targeting.md`. The measured rates are in `ruler/reactions.md`.
 
 ## Lucas's brief (2026-11-27)

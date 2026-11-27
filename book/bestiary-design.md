@@ -654,7 +654,7 @@ Read after playtest 10's section 1 (`playtest-10.md`: the three fights cost 1.0 
 
 ## The creatures' Reactions rebuilt (2026-11-27; the record: `reactions-design.md`, batch 3)
 
-Decided with the action economy (a Reaction costs 1 AP of the creature's next turn; AP regained at the end of the turn; no Reaction Point), not built:
+Decided with the action economy (a Reaction costs 1 AP of the creature's next turn; AP regained at the end of the turn; no Reaction Point); **built in the book (Chapter 14) and Foundry v0.0.535**:
 - **Blood for Blood** (Orc Warrior): unchanged.
 - **Backhand** (Ogre Chieftain): *Trigger:* an enemy ends its turn adjacent to the ogre. *Effect:* [V] 1d6 Bl and Pushed 2. It no longer throws a PC in the middle of its move.
 - **Dying Flare** (Grave Wisp): 0R; *Trigger:* the wisp's damage reaches its Health Pool; the Special "then the wisp goes Down" goes.
