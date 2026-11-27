@@ -406,3 +406,27 @@ The Bane's worth: 6 to 8% of each Strike it makes this turn, about 1.5 to 2 on a
 - **Table feel:** "the orc swings; Kaela slips it: roll three, keep the two lowest."
 
 **For Lucas to choose:** A (the dodge), B (the escape after its turn), C (one square now), or keep D.
+
+**Lucas (2026-11-27):** "Snap Shot needs changes: Immobilized technically disrupts movement. It needs to be: Evade 1, a basic attack. Done. Or apply Hindered at most. Slip away: An enemy ends their turn adjacent to you; you Evade 1 (or 2)."
+
+**Snap Shot, his two forms, priced against her AP (about 6):**
+
+| Form | The card | Worth a use | Notes |
+|---|---|---|---|
+| **1 (his first)** | *Interrupt:* the target would enter a square adjacent to you. *Effect:* You Evade 1, then make a [[Basic Attack]] against the target. | the Basic Attack with her bow (about 6) + an Evade 1 (an AP on her turn): **about 2 AP for one** | her token moves one square mid-move (the move goes on, and it may follow her); the Evade can't enter Difficult Terrain; out of her turn, so no repeat Bane and no Shifting Aim Boon |
+| 2 (Hindered at most) | today's shot with Tier 3's Immobilized made Hindered: **Tier 2 and Tier 3:** [V] 1[W] + [Mod]; Hindered (EoT) | about 7 to 8: a little over an AP | nothing moves, nothing stops; Hindered halves what is left of its move |
+
+Both fire only when she is reached (about a third of her rounds), so form 1's two AP of value is the price of a rare moment. Which one is still Lucas's to say.
+
+**Slip Away, his form:**
+
+> **Slip Away** · Archer Hallmark Reaction · 1R · Turn
+> *Your foe's turn ends with it standing over you, and by the time it looks down you are gone.*
+> **Trigger:** An enemy ends its turn adjacent to you.
+> **Target:** The triggering creature
+> **Effect:** You Evade 2.
+
+- **Evade 1 or 2: Claude proposes 2.** Evade 1 is what 1 AP buys on her own turn, so as a Reaction it only moves that AP earlier (its one gain: she is gone before the other enemies' turns). Evade 2 is what the Evade Action's 2 AP Version buys (half her Speed: 3 for a Speed 6 Archer), so it is a real gain, and her own turn starts free of the enemy with her bow not Doomed. Evade 1 already breaks adjacency with a Reach 1 enemy; Evade 2 also gets her past a second one or out of a Reach 2 weapon.
+- **Disruption:** none. The enemy's turn is over: its token, its Actions and its rolls are done. Her token moves between two turns (the 13th Age pattern, `research/reactions.md` takeaway 7).
+- **The timing to write (Chapter 2, the least ambiguity):** "ends its turn" happens **after everything at the end of that turn** (its Lingering, its EoT effects ending, its AP regained), just before the next creature's turn starts. Several Reactions on it: the usual order (Chapter 2: the reacting creatures decide the order).
+- **With Snap Shot:** the enemy that comes for her can draw Snap Shot on the way in and Slip Away at the end of its turn: 2 AP of her next turn, a shot and a clean escape.
