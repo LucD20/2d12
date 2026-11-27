@@ -544,3 +544,14 @@ Round · 1R · Distance 2 · *Requirement:* the orc is Bloodied. *Trigger:* the 
 > **Effect:** The goblin uses [[Jeer]] (1A) against the target.
 
 (The name keeps "Scatter" though it no longer moves: **for Lucas** to rename or keep.)
+
+**Lucas's answers on batch 3 (2026-11-27):** "1. Good. 2. Good, but increase the damage to 1d6 Bl. 3. Good. For wording, jsut put 'The Wisp's Health reaches 0' or something. 4. Lets add a wording: A Tag creature/ally/enemy means a creature with that Tag, so a 'A Goblin ally' means an ally with the goblin tag. But the action is good. Change name to goblin shriek or something." **All four DECIDED, not built:**
+
+1. **Blood for Blood:** unchanged.
+2. **Backhand:** Turn · 1R · *Trigger:* An enemy ends its turn adjacent to the ogre. · Target: The triggering creature · *Effect:* The target takes [V] 1d6 Bl and is Pushed 2.
+3. **Dying Flare:** 0R · Encounter · a Trigger, no Special. **The wording:** 2d12 counts damage up to the Health Pool ("When your total damage equals or goes above your Health Pool, you are Down", Chapter 4), so there is no "Health reaches 0" to point at. **Claude's wording, in his sense:** *Trigger: The wisp's damage reaches its Health Pool.* It names the blow itself, so the card needs no exception for a creature that is Down. Then Chapter 4's NPCs Going Down applies as usual. The book's Darting Blade example changes with it.
+4. **Goblin Shriek** (renamed from Shriek and Scatter): 1R · Encounter · Distance 6 sq. · *Trigger:* A Goblin ally goes Down. · Target: The triggering creature · *Effect:* The goblin uses [[Jeer]] (1A) against the target.
+
+**The Tag rule (Lucas's, for the book at the build):** *A creature, ally or enemy named by a Tag is one with that Tag: "a Goblin ally" is an ally with the Goblin Tag; "an Undead enemy" is an enemy with the Undead Tag.* **Its home (Claude's proposal):** Chapter 14, a short "Tags" paragraph beside the stat blocks' "Tag:" line (the book has no Tags section yet; the Glossary says only "creatures have Tags"), and a Glossary row "Tag". Foundry's `momentTag` setting already reads the Tag.
+
+**The rebuild's three batches are done for level 1.** Left before the build: the rules the cards need (listed under "Next", HANDOFF), then the build itself.

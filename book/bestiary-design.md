@@ -649,3 +649,14 @@ Read after playtest 10's section 1 (`playtest-10.md`: the three fights cost 1.0 
 **Noted for later, not now (his words):** the class Actions' rebalance is his next pass with Claude (Quick Shots, Strafe, then Demoralize; Hit and Run's automation with it; Smite after seeing Feint's change); the small creatures' attacks (seven of ten Shivs missed) "to do after the new numbers are in"; the disarmed NPC and the loot sentence together, "after I am happy with the current playtest".
 
 **Next:** a playtest of the same fight on these numbers (the four pregens against the Ogre Chieftain, the Orc Warrior, the Grave Wisp and two Goblin Sneaks), then the class Actions' pass.
+
+---
+
+## The creatures' Reactions rebuilt (2026-11-27; the record: `reactions-design.md`, batch 3)
+
+Decided with the action economy (a Reaction costs 1 AP of the creature's next turn; AP regained at the end of the turn; no Reaction Point), not built:
+- **Blood for Blood** (Orc Warrior): unchanged.
+- **Backhand** (Ogre Chieftain): *Trigger:* an enemy ends its turn adjacent to the ogre. *Effect:* [V] 1d6 Bl and Pushed 2. It no longer throws a PC in the middle of its move.
+- **Dying Flare** (Grave Wisp): 0R; *Trigger:* the wisp's damage reaches its Health Pool; the Special "then the wisp goes Down" goes.
+- **Goblin Shriek** (Goblin Sneak; was Shriek and Scatter): *Trigger:* a Goblin ally goes Down; the goblin uses Jeer (1A) against the triggering creature; no Evade.
+- **A rule for Chapter 14:** a creature, ally or enemy named by a Tag is one with that Tag ("a Goblin ally").
