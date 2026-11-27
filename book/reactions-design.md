@@ -193,3 +193,5 @@ Taunted by you (1 round) ........................ 1 to 2  [arithmetic: 1 Bane, 6
 - **C. Half, Encounter:** once a fight, as 13th Age and 4e. It never feels mandatory, and it is rare for the class's Hallmark Reaction.
 - **D. Split the hit with the Paladin** (13th Age's Bastion): it limits itself through his Health, but the brief says he "can't take hits for you", and Bear the Blow is this.
 - **E. Half, chosen before the roll** (DC20's rule: "a Strike is made against an ally", Foundry's `strikeAgainst`): a gamble that sometimes lands on a miss.
+
+**Lucas's answer (2026-11-27): "B is good."** Shield of Faith answers only the creature the Paladin Judged: *Interrupt:* the creature you Judged would damage an ally within 5 squares of you with a [Strike] Action. *Effect:* the ally takes half of that damage, and the creature is Taunted by you (1 round). 1R · Turn · [Divine, Focus]. Two rule lines go with it at the build: halving's place in the damage order (after Resistance and Weakness, before reductions and Guard: Claude's proposal, not yet confirmed), and whether Rebuke keys to the Judged creature too (card 2). Not built.
