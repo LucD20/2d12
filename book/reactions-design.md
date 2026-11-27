@@ -322,3 +322,21 @@ The Bane's worth: 6 to 8% of each Strike it makes this turn, about 1.5 to 2 on a
 - **Table feel:** "the orc runs for Sylwen; the Paladin flashes it: 4 Holy, and its swing takes a Bane."
 
 **For Lucas to choose:** the die (1d4!, 1d6!, 1d8!) and Pressed's duration (EoT, or 1 round).
+
+**Lucas (2026-11-27): "Lets change the trigger: 3 squares, when creature moves. Easier to understand, easier to trigger, straighforward."** The trigger is now **an enemy within 3 squares of you moves**.
+
+> **Rebuke** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Focus]
+> *You raise a hand and a flash of holy light sears the foe that moves against you; its blows come slower through the glare.*
+> **Trigger:** An enemy within 3 squares of you moves.
+> **Target:** The triggering creature
+> **Effect:** [R] 1d6! Ho, and the target is Pressed 1 (EoT).
+
+**What "moves" has to mean (the least ambiguity; Claude's proposal for Chapter 2, beside Moving Closer and Moving Away):** *a creature **moves within N squares of you** when, with its own Move Action, it leaves a square that is within N squares of you.* So:
+- Walking up to him from 4 squares away fires it once it takes a step inside 3. Walking away fires on the first step. Stepping sideways inside 3 fires too.
+- Standing up from Prone doesn't fire, because no square is left. Neither do Break Free, Evade, Forced Movement or Reposition (Chapter 2 already says these "don't trigger Reactions from movement").
+- It fires once per Move Action, at the square he chooses along it (Chapter 2's single trigger for a Move Action).
+- Foundry already has this moment (`enemyMoves`, "an enemy within N moves"): its range test is the squares the enemy leaves, which is this rule. It also fires on standing up, which this rule leaves out, so one line of `moment.mjs` changes at the build.
+
+**What changes from the last draft:** it is easier to trigger (any step near him, not only toward an ally), and shorter to read. It no longer cares where the enemy goes, so it guards the Paladin's 3 squares, not the path to the back line: an enemy that walks around the 3 squares to reach the Archer pays nothing. It fires more often, but each use costs an AP, so he still chooses which enemy. The size is unchanged: about 5.5 to 6 a use, a little under his AP.
+
+**Still open:** the die (1d6! proposed; 1d4! or 1d8!) and Pressed's duration (EoT proposed; 1 round).
