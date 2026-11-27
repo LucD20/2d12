@@ -6,13 +6,13 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 27.3 | 321 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.0 | 361 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 48.6 | 514 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 48.7 | 514 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.7 | 225 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.2 | 106 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.9 | 64 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.0 | 99 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.6 | 122 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 34.2 | 237 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 34.3 | 237 |
 | 11-species.md | Species | species |  | 0.9 | 34 |
 | 12-paladin.md | Paladin | paladin |  | 3.6 | 94 |
 | 13-archer.md | Archer | archer |  | 4.0 | 97 |

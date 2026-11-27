@@ -36,7 +36,7 @@
 | [[Charge\|**Charge**]] | A Basic Action (2 AP, Round): Advance in a straight line at least 3 squares toward a creature, then make a Basic Attack against it with a Melee weapon. |
 | [[Checks\|**Check**]] | A roll of one Attribute Modifier against a DC (13 unless stated). |
 | [[Senses\|**Clear**]] | You perceive the creature well: no penalty either way. |
-| [[Collision\|**Collision**]] | Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt. A Prone, an Unconscious or a dead creature never causes one: the movement passes through its space. |
+| [[Collision\|**Collision**]] | Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt. Nothing collides with a Prone, an Unconscious or a dead creature: the movement passes through its space. Such a creature, when moved, still collides. |
 | [[Building an encounter\|**Combat Value (CV)**]] | What an NPC counts for in an encounter: Minion 30, Grunt 50, Standard 100, Elite 200. CV 100 a PC is a normal fight. |
 | [[Corners\|**Corners**]] | You can't cut a solid corner: anything solid, such as a wall, a pillar or an object that fills a square, that reaches the corner point where four squares meet. |
 | [[Cover\|**Cover**]] | How well a target is protected: count the blocked corners of its space (for a larger creature, its least-covered square). 1 Field Bane for one, 2 for two; three make the roll Doomed. Cover Banes apply to [Strike] and [Area] Actions. |
