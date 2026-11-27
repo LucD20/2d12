@@ -114,7 +114,7 @@ Read from Chapter 1 (Boons, Banes, Favored and Doomed), Chapter 2 (Buffs, Stacki
 
 **It changes nothing in the current turn, only what comes later:**
 
-- **On the enemy, for its next turn:** Slowed N (fewer AP regained; with the end-of-turn regain, to be reworded); Lingering (damage at the end of each of its turns); Sickened N (Banes on Body and Instinct Saves, no potions); Vulnerable N for 1 round (every ally's Actions against it gain N Boons: Demoralize's shape); Taunted or Daunted for 1 round, once the current turn is over.
+- **On the enemy, for its next turn:** Slowed N (fewer AP regained; with the end-of-turn regain, to be reworded); Lingering (damage at the end of each of its turns); Sickened N (Banes on Body and Instinct Saves, no potions); Vulnerable N for 1 round (every ally's Actions against it gain N Boons: Demoralize's shape); Taunted or Daunted for 1 round (it also bends the rest of the current turn, above, and lasts through its next one).
 - **On you or an ally:** a damage reduction (reductions add up; Guard takes what is left); Guard (keep the higher; it ends with the encounter); a Rally Point used or healing (Lay On Hands' kind); Quickened 1 on its next turn (Aid's shape); a Buff on its next roll or Action ("its next roll has 1 Boon", wasted if not made by the end of its next turn; Feint's shape); Favored on its next roll (counts as 5 Boons, cancels a Doomed); Empowered (1d6! on the first damage of each of its turns); +1 Defense (unnamed) or a named +1 Field / Support bonus (different names add up).
 - **On the board:** perception (Point Out's step: Unsensed to Hidden), a mark (Judge's kind), light.
 
