@@ -195,3 +195,30 @@ Taunted by you (1 round) ........................ 1 to 2  [arithmetic: 1 Bane, 6
 - **E. Half, chosen before the roll** (DC20's rule: "a Strike is made against an ally", Foundry's `strikeAgainst`): a gamble that sometimes lands on a miss.
 
 **Lucas's answer (2026-11-27): "B is good."** Shield of Faith answers only the creature the Paladin Judged: *Interrupt:* the creature you Judged would damage an ally within 5 squares of you with a [Strike] Action. *Effect:* the ally takes half of that damage, and the creature is Taunted by you (1 round). 1R · Turn · [Divine, Focus]. Two rule lines go with it at the build: halving's place in the damage order (after Resistance and Weakness, before reductions and Guard: Claude's proposal, not yet confirmed), and whether Rebuke keys to the Judged creature too (card 2). Not built.
+
+**Lucas, revising (2026-11-27): "Lets make it more broad, and less strong. Could be turn, not about reducing damage."** So B's narrow trigger goes: the card answers any enemy's [Strike] on an ally within 5, at the Turn Frequency, and its payload is no longer a cut to the damage.
+
+**What protects without touching the damage** (the toolbox): a Defense bonus or Banes on the Strike, both before the roll; Taunted; a Boon for the ally afterwards; Guard (a damage buffer, so out by his words); moving the ally (out: disruption).
+
+**The moment it needs:** before the roll. An Interrupt on "would damage" comes after the roll and "can't change that roll" (Chapter 2), so a Defense bonus needs the moment "an enemy makes a [Strike] Action against the target". Foundry already has it (`strikeAgainst`, "A Strike is made against an ally within N"). The book doesn't define it yet. **The rule to write (Claude's proposal):** an Interrupt on an Action made against a creature happens once the Action and its targets are declared, before its roll. That also makes it a choice under uncertainty (DC20's rule: "you must decide to use the Maneuver before the GM says the result"): some uses land on a Strike that would have missed. That is the brake his "less strong" asks for.
+
+**Its size, priced [arithmetic]:** on 2d12, each point of Defense moves about 7 to 8% of the rolls across each of the two Tier lines (the Tier gap is 7, DC to DC + 6). On a Strike whose Tiers are about 3 / 10 / 17, a point of Defense is worth about 1 damage. Taunted is about 1 to 2 (and more if the enemy turns on the Paladin). **What 1 AP is worth now has dropped:** with a repeated At-will [Strike] Doomed (decided), his last AP of a turn is a Doomed third attack (62 to 70% of 6 to 9: about 4 to 6) or a maneuver (1 to 2). So a Reaction of about 4 to 5 is an even trade for the AP it costs.
+
+| Option | Payload | Worth a use | Notes |
+|---|---|---:|---|
+| **A** | **+1 + your Power Modifier to the target's Defense against that Strike (+2 or +3), and Taunted by you (1 round)** | about 3 to 5 | Claude's: a number tied to the Paladin's build, as today's card; a Defense needs no re-setting at later Stages (2d12 grows horizontally) |
+| B | Taunted alone, applied before the roll (that Strike takes Taunted's 1 Bane) | about 2 to 3 | the shortest; under the AP |
+| C | 2 Pressure Banes on that Strike, and Taunted | about 3 to 4 | the same as +2 Defense, but Pressure Banes share a limit of 2 with other effects |
+| D | after the Strike, the ally gains 1 Boon on their next roll against the attacker | about 1 | support, too small |
+
+**Claude's proposal, A:**
+
+> **Shield of Faith** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Focus]
+> *You raise a hand, and a pane of light turns the blow aside and pulls your foe's eye to you.*
+> **Interrupt:** An enemy makes a [Strike] Action against the target.
+> **Distance:** 5 sq. · **Target:** One ally
+> **Effect:** The target gains +1 + your Power Modifier to its Defense against that Strike, and the triggering creature is Taunted by you (1 round).
+
+**Analysis.** Broad: any enemy, any ally within 5, once on each creature's turn. Less strong than the half: about the Paladin's last AP, not more. It isn't a reflex because he decides before the roll (a miss would have missed anyway) and because each use costs a blow of his next turn. It makes a Tier 3 into a Tier 2 or a Tier 2 into a miss about a sixth of the time each, so the table sees it as "that one missed because of the Paladin". The Taunt is the deterrent of the research (4e's mark, Draw Steel's Judgment). Judge no longer appears in it, so Rebuke's trigger is free again. Rules it touches: the new moment (above); "+N Defense" is Chapter 2's ("raises every Defense"), unnamed, so it doesn't add to another unnamed bonus. Complexity: one Version, about 25 words, no roll of its own.
+
+**For Lucas to choose:** A (and +1 + Pow, or a flat +2), B, C or D.
