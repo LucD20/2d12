@@ -119,3 +119,65 @@ Read from Chapter 1 (Boons, Banes, Favored and Doomed), Chapter 2 (Buffs, Stacki
 - **On the board:** perception (Point Out's step: Unsensed to Hidden), a mark (Judge's kind), light.
 
 **Limits that apply to every one of them:** the target needs Line of Effect and must be perceived (Hidden is enough); you react once to the same Action; Interrupts resolve before Triggers; Boons and Banes with the same name add up to 2; 5 or more after cancelling become Favored or Doomed; Guard and Defense bonuses don't stack with themselves; Forced Movement and Reposition trigger no movement Reactions.
+
+## Batch 1, the Paladin. Card 1: Shield of Faith (PROPOSED 2026-11-27, waiting for Lucas)
+
+**Today's card** (Decision 6 of `cards/paladin-redesign.md`, 2026-11-14): 1R · Turn · [Divine, Focus] · 5 squares · Target: one ally. *Interrupt:* an enemy's [Strike] Action would damage the target. *Effect:* that damage is reduced by 1 + your Power Modifier, and the triggering creature is Taunted by you (1 round). Lucas kept the size, the [Strike]-only trigger, the Taunt and the name.
+
+**What changed under it:** it now costs a real AP, and the hits grew. Playtest 11 had hits of 14 to 19 on a Tier 2 or 3, and the 3 it took off was "a rounding error". The Paladin's marginal AP on his own turn is his second or third Basic Attack: **Durgan 6.7 / 6.2, Aveline 8.8 / 8.0** (`research/action-economy.md` 4.1). The same research's verdict at today's size: "Shield of Faith leaves the table, unless it is repriced to about twice its size".
+
+**How it is priced here [arithmetic]:** damage prevented against damage he would deal with that AP, both in damage (the research's method). The charter's point anchors (1 Health 12, a 1R Reaction 10 to 15 a turn) priced the free Reaction Point before the retune, so they aren't used. The hits it answers: the ones he chooses, so the bigger ones, about 12 to 19 (16 used below) [playtest 11, judgment].
+
+**Every payload the rules offer** (the trigger kept: the damage is known when he chooses):
+
+| # | Payload | Prevented on a 16 | With the Taunt | Against the AP (6.2 to 8.8) | Notes |
+|---|---|---:|---:|---|---|
+| A | reduced by 1 + Pow (today) | 2 to 3 | about 4 | **loses** | the playtests' rounding error |
+| B | reduced by a bigger flat number (4 + Pow) | 5 to 6 | about 7 | about even | certain, but the number has to be re-set at every Stage |
+| C | reduced by 2d6 + Pow (the 2026-11-12 card) | about 8 to 9, swinging 3 to 14 | about 10 | wins a little | one more roll on the GM's turn; it was cut for being too strong at the old numbers (66 points) |
+| D | **the target takes half that damage** | 8 (9 to 10 on a 19, 4 on an 8) | about 9 | **wins a little, on the hits worth it** | no roll and no number to re-set: it grows with the enemies; the player sees the hit and decides |
+| E | Guard before the damage | as B or C | | | what is left lingers on the ally; that is Bulwark of Faith's payload, its sibling |
+| F | the Paladin takes the hit, or part of it | | | | rejected: the brief says he "can't take hits for you"; Bear the Blow (a Talent) does this |
+| G | the ally heals or uses a Rally Point after the hit | | | | rejected: Lay On Hands and Divine Intervention's place |
+| H | a Bane or +Defense against the attack | about 1 to 2 (2 Banes are 12 to 16% of a hit) | | **loses** | an Interrupt on "would damage" can't change the roll; it would need the earlier moment "a Strike is made against an ally" (Foundry has it: `strikeAgainst`) and it is still too small |
+
+**Every rider (at most one):**
+
+| Rider | What it does | Worth | Notes |
+|---|---|---|---|
+| **Taunted by you (1 round)** (today) | the attacker's Actions against anyone else take 1 Bane, for the rest of its turn and its next | about 1 to 2 (6 to 8% of each later attack on an ally), more if it turns on him (AD 14) | the brief's "they stay in front"; no token moves, nothing stops |
+| The Paladin loads his burst (Empowered, or a Smite die waiting) | protecting feeds the nova (Nimble's Radiant Judgment, `frontline-protection.md`) | about 3 to 5 later | a second thing to track; Smite already has its own extra die |
+| The attacker takes [R] Pow Holy | a punishment | about 2 | the brief's "not a consistent damage dealer"; it is Rebuke's job to punish |
+| The attacker becomes Judged by you | moves the mark for free | about 1 AP once | changes Judge's own price (re-marking costs 1 AP) |
+| Vulnerable 1 on the attacker (1 round) | allies gain 1 Boon against it | about 0.5 to 1 per attack | small |
+| The ally gains a Boon on their next roll | support | about 0.5 | small |
+| Daunted of you (1 round) | Banes on all its rolls, and Difficult Terrain toward him | about 1 to 2 | pushes it away from him: the wrong direction for "stay in front" |
+| Slide the ally 1, or Pull the attacker to you | a token moves on the enemy's turn | | rejected: what Lucas called disrupting; Bulwark's Slide is decided with Bulwark |
+| None | | 0 | the shortest card |
+
+**Claude's proposal: D with Taunted.**
+
+> **Shield of Faith** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Focus]
+> *You raise a hand, and a pane of light turns part of the blow aside and pulls your foe's eye to you.*
+> **Interrupt:** An enemy's [Strike] Action would damage the target.
+> **Distance:** 5 sq. · **Target:** One ally
+> **Effect:** The target takes half of that damage, and the triggering creature is Taunted by you (1 round).
+
+```
+Half of a 16 hit prevented ...................... 8       [arithmetic; 9 to 10 on a 19]
+Taunted by you (1 round) ........................ 1 to 2  [arithmetic: 1 Bane, 6 to 8% of its later attacks on others]
+--- About 9 to 10 a use, against his AP's 6.2 to 8.8: a little over, on the hits he picks.
+    On a small hit (8) it is about 5: under the AP, so he keeps the AP for his turn. That is the decision.
+```
+
+**Analysis.**
+- **The decision it gives:** every enemy [Strike] on an ally within 5 squares asks "is this one worth a blow on my next turn?" He sees the number before he answers. A Critical for 25 on the Bloodied Archer: yes. A goblin's 6: no. This is the "should I use this or that?" moment the economy research found missing.
+- **It grows by itself:** half of a level 1 hit, half of a level 10 hit. No Stage dice, no number to re-set.
+- **The enemy's answer:** Taunted, its next Actions against anyone but him take a Bane until its next turn ends. Hit the Paladin (AD 14), or hit his ally worse.
+- **The rules it touches, one new sentence:** where "takes half" sits among Resistance, reductions and Guard. **Claude's proposal for Chapter 4's Guard list:** halving comes after Resistance and Weakness and before damage reductions and Guard (Chapter 1's Halving rule already halves each subtype on its own and rounds the half taken up). The Collision rule for "would damage" Reactions applies as it does today (the Action's damage or its Collision, chosen then). A Lingering the Strike adds isn't halved: it is its own damage later.
+- **Siblings:** Bulwark of Faith (Guard of a Rally Point, once an encounter) is the big version. Bear the Blow (the Talent) splits the hit between the Paladin and the ally. Only one of them can answer one Action, as today. **Armor of Faith** (a playtest Talent: Guard each time he uses Shield of Faith) now comes with an AP's price, so it is re-checked in the Talents' pass.
+- **Rebuke is the other Hallmark Reaction:** a stop on movement, where this is protection. That is still a style choice between protecting and holding the line. Card 2 decides Rebuke.
+- **Complexity:** one Version, 19 words (as today), no roll, one condition.
+- **Table feel:** "the Paladin halves it, and the ogre is Taunted": one word, said once the GM has rolled the damage.
+
+**For Lucas to choose:** the payload (D, half; B, a bigger flat number; C, 2d6 + Pow; or keep A) and the rider (Taunted; the loaded burst; none).
