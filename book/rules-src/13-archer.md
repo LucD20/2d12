@@ -60,10 +60,10 @@ Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's
 
 ### Level 1: Hallmark Reaction
 
-**Choose one.** *Quick build: Snap Shot.* Both answer a foe that is about to reach you.
+**Choose one.** *Quick build: Snap Shot.* Both answer a foe that comes to you.
 
-- **Slip Away** (Turn, 1R): you are gone before the foe arrives.
-- **Snap Shot** (Turn, 1R): you shoot the foe as it comes; it is Hindered or Immobilized.
+- **Slip Away** (Turn, 1R): when a foe ends its turn next to you, you step away and change weapons.
+- **Snap Shot** (Round, 1R): as a foe comes to you, you step back and shoot it.
 
 @@CARD:Slip Away@@
 
@@ -82,12 +82,9 @@ You gain Thrill of the Kill: it raises your Escalation when an enemy you have da
 **Choose one.** *Quick build: Volley.*
 
 - **Volley** (2 AP): arrows down on every creature in a patch of ground.
-- **Hit and Run** (2 AP): a run with the knife out, and one arrow on the way.
 - **Covering Fire** (2 AP): a stretch of ground no enemy crosses without paying, for 2 rounds.
 
 @@CARD:Volley@@
-
-@@CARD:Hit and Run@@
 
 @@CARD:Covering Fire@@
 

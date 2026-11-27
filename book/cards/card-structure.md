@@ -36,7 +36,7 @@ Sources: the 19 cards of the Paladin redesign (`paladin-redesign.md`, "The whole
 | 21 | **Traits on a Mode** | "Glare [Power, Save]": traits only that Mode has | Glare, Kneel |
 | 22 | **A named value** | "Smite dice: ..." defined once, used on the Tiers | Smite |
 | 23 | **A line that changes the dice** | "Against a Profane creature, the damage dice are d8s." | Smite, Word of Radiance |
-| 24 | **An extra cost inside the card** | "you can spend your Reaction Point to roll 1 more Smite die" | Smite |
+| 24 | **An extra cost inside the card** | "you can spend 1 AP to roll 1 more Smite die" | Smite |
 | 25 | **A use outside the turn inside an Action** | Judge's 0 AP line: "or as a 0R when the creature you Judged goes Down" | Judge |
 | 26 | **A Passive's condition** | "While your Escalation is 2 or more, ..." in the sentence itself | 5 Passives |
 | 27 | **A card that changes another card** | Roving Judgment (Judge's cost), Hallowed Stance (gives a Setup) | 2 |
@@ -195,7 +195,7 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 > **Tier 1:** Your Smite dice.
 > **Tier 2:** [V] 1[W] + [Mod] + your Smite dice.
 > **Tier 3:** [V] 1[W] + [Mod] + your Smite dice + 1 more Smite die.
-> **Special:** When you use Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4.
+> **Special:** When you use Smite, you can spend 1 AP to roll 1 more Smite die. Neither extra die counts toward the 4.
 
 ### Level 1: a Hallmark Action (1 of 2)
 
@@ -324,7 +324,7 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 
 > **Tireless Vigil** · Escalation 4 · Passive
 > *The longer the fight lasts, the less escapes you: your guard is on two allies at once.*
-> **Passive:** You gain 1 more Reaction Point when you regain AP. It pays only for [Divine] Reactions.
+> **Passive:** When you regain AP, you also gain 1 AP that pays only for [Divine] Reactions. If you haven't spent it when your next turn starts, you lose it.
 
 ### Level 3: the Escalation 6 ability (1 of 2), and a second Art
 

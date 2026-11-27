@@ -108,9 +108,9 @@ Only a Rest restores Rally Points. Sleep does not. A new encounter does not.
 
 Some effects give you **Guard**, written with a value: **Guard 6**. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A [[Riders|rider]] on that damage still happens: a rider happens whatever damage is dealt.
 
-- Damage reduction (such as Shield of Faith) applies first; Guard takes what is left. Reductions from different effects add up, and each applies once to an Action's damage to that creature, after [[Resistance, Weakness and Immunity|Resistance]]. **Collision damage** from the same Action's Forced Movement is that Action's damage too, but a separate instance: a reduction applies to only one of the two, chosen when the Action's own damage would be dealt: reduce it now, or wait for the Collision, which may not come (the origin may not move the target). A Reaction that triggers when an Action "would damage" a creature can be used on either, the same way.
+- **The order:** [[Resistance, Weakness and Immunity|Resistance and Weakness]] first; then **halving** (such as Shield of Faith's "takes half"; the half taken is rounded up, see [[Rounding]]); then damage reductions; Guard takes what is left. Reductions from different effects add up, and each applies once to an Action's damage to that creature, after [[Resistance, Weakness and Immunity|Resistance]]. **Collision damage** from the same Action's Forced Movement is that Action's damage too, but a separate instance: a reduction applies to only one of the two, chosen when the Action's own damage would be dealt: reduce it now, or wait for the Collision, which may not come (the origin may not move the target). A Reaction that triggers when an Action "would damage" a creature can be used on either, the same way.
 - Guard isn't Health: it can't be healed, and Rally Points don't restore it.
-- It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]). The exception is the Guard your [[Unspent AP]] give you: it adds to your other Guard, damage takes it first, and it lasts until you regain AP again.
+- It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]).
 - It ends at the end of the encounter.
 
 > [!example]
@@ -153,14 +153,14 @@ When you complete a Rest, you remove all the damage you took and you regain all 
 
 You are Bloodied while your Vigor damage is equal to or more than your Vigor. While you are Bloodied, your body falters:
 
-- Your **Speed** is lowered by 2 (to a minimum of 1).
 - Your **[[Steadiness]]** is lowered by 1 (it can go below 0: a Forced Movement then moves you farther).
+- **Any creature can pass through your space**, an enemy's movement included: your space is [[Difficult Terrain]] for it, and it can't end its movement there.
 
 ### Strained
 
-You are Strained while your Resolve damage is equal to or more than your Resolve. While you are Strained, your mind frays: **at the start of your turn, you don't regain your [[Action Points|Reaction Point]]** (you keep one you still have; you can still pay a Reaction with AP you kept).
+You are Strained while your Resolve damage is equal to or more than your Resolve. While you are Strained, your mind frays: your **Speed** is lowered by 2 (to a minimum of 1).
 
-Bloodied and Strained end as soon as healing brings that damage below the threshold: your Speed and Steadiness come back at once, and you regain your Reaction Point again from your next turn. Actions and features use them too: a card's **Bloodied** and **Strained** lines (see [[Effect Timing]]), or "when an ally becomes Bloodied".
+Bloodied and Strained end as soon as healing brings that damage below the threshold: your Speed, your Steadiness and your space come back at once. Actions and features use them too: a card's **Bloodied** and **Strained** lines (see [[Effect Timing]]), or "when an ally becomes Bloodied".
 
 Every creature knows whether a creature it perceives is Bloodied or Strained: the GM says so when an NPC becomes either.
 

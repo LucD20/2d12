@@ -341,7 +341,7 @@
    }
   },
   {
-   "name": "Shriek and Scatter",
+   "name": "Goblin Shriek",
    "category": "Reaction",
    "npc": "Goblin Sneak",
    "book": false,
@@ -351,15 +351,15 @@
    "cost": "1R",
    "traits": [],
    "distance": "6 sq.",
-   "target": "One ally with the Goblin Tag",
+   "target": "The triggering creature",
    "body": [
     {
      "label": "Trigger",
-     "text": "The target goes Down."
+     "text": "A Goblin ally goes Down."
     },
     {
      "label": "Effect",
-     "text": "The goblin can Evade 1, then uses Jeer."
+     "text": "The goblin uses Jeer (1A) against the target."
     }
    ],
    "foundry": {
@@ -536,7 +536,7 @@
    "ruler": false,
    "flavor": "It goes out the way a lamp does when it is dropped.",
    "frequency": "Encounter",
-   "cost": "1R",
+   "cost": "0R",
    "traits": [
     "power",
     "save",
@@ -546,8 +546,8 @@
    "target": "All creatures in the Area",
    "body": [
     {
-     "label": "Interrupt",
-     "text": "The wisp would go Down."
+     "label": "Trigger",
+     "text": "The wisp's damage reaches its Health Pool."
     },
     {
      "label": "Save",
@@ -564,10 +564,6 @@
     {
      "label": "Tier 3",
      "text": "No effect."
-    },
-    {
-     "label": "Special",
-     "text": "Then the wisp goes Down."
     }
    ],
    "foundry": {
@@ -809,7 +805,7 @@
    "npc": "Ogre Chieftain",
    "book": false,
    "ruler": false,
-   "flavor": "You stepped inside its reach as if it weren't looking.",
+   "flavor": "You stood in its reach as if it weren't looking.",
    "frequency": "Turn",
    "cost": "1R",
    "traits": [],
@@ -817,11 +813,11 @@
    "body": [
     {
      "label": "Trigger",
-     "text": "An enemy enters a square adjacent to the ogre."
+     "text": "An enemy ends its turn adjacent to the ogre."
     },
     {
      "label": "Effect",
-     "text": "It takes [V] 2 Bl and is Pushed 2, with no roll. Its movement isn't disrupted: it goes on with the movement it has left."
+     "text": "The target takes [V] 1d6 Bl and is Pushed 2."
     }
    ],
    "foundry": {

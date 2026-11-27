@@ -118,7 +118,7 @@
   "name": "Backhand",
   "escalation": null,
   "frequency": "Turn",
-  "flavor": "You stepped inside its reach as if it weren't looking.",
+  "flavor": "You stood in its reach as if it weren't looking.",
   "distance": null,
   "area": null,
   "target": "The triggering creature",
@@ -127,11 +127,11 @@
   "body": [
    {
     "label": "Trigger",
-    "text": "An enemy enters a square adjacent to the ogre."
+    "text": "An enemy ends its turn adjacent to the ogre."
    },
    {
     "label": "Effect",
-    "text": "It takes [V] 2 Bl and is Pushed 2, with no roll. Its movement isn't disrupted: it goes on with the movement it has left."
+    "text": "The target takes [V] 1d6 Bl and is Pushed 2."
    }
   ],
   "blocks": [],
@@ -1437,11 +1437,11 @@
    "save",
    "area"
   ],
-  "cost": "1R",
+  "cost": "0R",
   "body": [
    {
-    "label": "Interrupt",
-    "text": "The wisp would go Down."
+    "label": "Trigger",
+    "text": "The wisp's damage reaches its Health Pool."
    },
    {
     "label": "Save",
@@ -1458,10 +1458,6 @@
    {
     "label": "Tier 3",
     "text": "No effect."
-   },
-   {
-    "label": "Special",
-    "text": "Then the wisp goes Down."
    }
   ],
   "blocks": [],
@@ -1753,6 +1749,30 @@
     }
    }
   ],
+  "after": [],
+  "passive": false
+ },
+ "Goblin Shriek": {
+  "name": "Goblin Shriek",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "One of them drops, and the rest remember how much they hate you.",
+  "distance": "6 sq.",
+  "area": null,
+  "target": "The triggering creature",
+  "traits": [],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Trigger",
+    "text": "A Goblin ally goes Down."
+   },
+   {
+    "label": "Effect",
+    "text": "The goblin uses Jeer (1A) against the target."
+   }
+  ],
+  "blocks": [],
   "after": [],
   "passive": false
  },
@@ -2122,56 +2142,6 @@
    {
     "label": "Tier 3",
     "text": "If the creature can't see you, you are Unsensed to it; otherwise you are Hidden to it. It takes 1 Bane on Seek and Point Out against you (1 round)."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Hit and Run": {
-  "name": "Hit and Run",
-  "escalation": null,
-  "frequency": "Encounter",
-  "flavor": "You run the length of the fight with the knife out, opening every foe you pass, and somewhere along the way an arrow leaves your bow.",
-  "distance": null,
-  "area": null,
-  "target": "Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range",
-  "traits": [
-   "weapon",
-   "projectile",
-   "move",
-   "strike",
-   "archer"
-  ],
-  "cost": "2 AP",
-  "body": [
-   {
-    "label": "Effect",
-    "text": "You Advance. Before the first square and after each square of this Advance, each enemy adjacent to you becomes a target of your [[Light (property)|Light]] weapon, once each. Once, at any point of the Advance, one creature within your bow's Range becomes a target of your bow; it can be a target of the Light weapon too. You draw and stow the two weapons freely during this Action."
-   },
-   {
-    "label": "Special",
-    "text": "The bow's hit is Doomed if you are Engaged when you make it."
-   },
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense. Roll 3d12 once, when the first creature is hit: every hit of this Action uses those dice, each worked out on its own as for [[Several Targets]] (the first two dice, unless that hit is Favored or Doomed)."
-   },
-   {
-    "label": "Tier 1",
-    "text": "[V] [Mod]."
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1[W] + [Mod]."
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1[W] + [Mod]; Vulnerable 1 (EoT)."
-   },
-   {
-    "label": "Special",
-    "text": "[W] is the weapon that hit."
    }
   ],
   "blocks": [],
@@ -3301,33 +3271,24 @@
   "name": "Rebuke",
   "escalation": null,
   "frequency": "Turn",
-  "flavor": "You call out in your god's name, and your foe's stride falters and stops.",
-  "distance": "3 sq.",
+  "flavor": "You raise a hand and a flash of holy light sears the foe that moves against you; its next blow comes slower through the glare.",
+  "distance": null,
   "area": null,
-  "target": "One enemy",
+  "target": "The triggering creature",
   "traits": [
-   "power",
-   "save",
    "divine",
+   "focus",
    "paladin"
   ],
   "cost": "1R",
   "body": [
    {
     "label": "Trigger",
-    "text": "The target moves away from you."
+    "text": "An enemy within 3 squares of you moves."
    },
    {
     "label": "Effect",
-    "text": "The target is Hindered (EoT)."
-   },
-   {
-    "label": "Save",
-    "text": "Appeal"
-   },
-   {
-    "label": "Tier 1 or 2",
-    "text": "Its Move Action is disrupted."
+    "text": "[R] 1d6! Ho, and the target is Pressed 1 until it makes a [Strike] Action (EoT)."
    }
   ],
   "blocks": [],
@@ -3975,7 +3936,7 @@
   "name": "Shield of Faith",
   "escalation": null,
   "frequency": "Turn",
-  "flavor": "You raise a hand, and a pane of light turns part of the blow aside and pulls your foe's eye to you.",
+  "flavor": "You raise a hand, and a pane of light takes half the blow your judged foe aims at a friend, and pulls its eye to you.",
   "distance": "5 sq.",
   "area": null,
   "target": "One ally",
@@ -3988,11 +3949,11 @@
   "body": [
    {
     "label": "Interrupt",
-    "text": "An enemy's [Strike] Action would damage the target."
+    "text": "The creature you Judged would damage the target with a [Strike] Action."
    },
    {
     "label": "Effect",
-    "text": "That damage is reduced by 1 + your Power Modifier, and the triggering creature is Taunted by you (1 round)."
+    "text": "The target takes half of that damage, and the triggering creature is Taunted by you (1 round)."
    }
   ],
   "blocks": [],
@@ -4125,50 +4086,26 @@
   "after": [],
   "passive": false
  },
- "Shriek and Scatter": {
-  "name": "Shriek and Scatter",
-  "escalation": null,
-  "frequency": "Encounter",
-  "flavor": "One of them drops, and the rest remember how much they hate you.",
-  "distance": "6 sq.",
-  "area": null,
-  "target": "One ally with the Goblin Tag",
-  "traits": [],
-  "cost": "1R",
-  "body": [
-   {
-    "label": "Trigger",
-    "text": "The target goes Down."
-   },
-   {
-    "label": "Effect",
-    "text": "The goblin can Evade 1, then uses Jeer."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
  "Slip Away": {
   "name": "Slip Away",
   "escalation": null,
   "frequency": "Turn",
-  "flavor": "The moment a foe commits to reaching you, you are already somewhere else.",
+  "flavor": "Your foe's turn ends with it standing over you, and by the time it looks down you are gone, a different weapon in your hand.",
   "distance": null,
   "area": null,
-  "target": "One enemy",
+  "target": "The triggering creature",
   "traits": [
    "archer"
   ],
   "cost": "1R",
   "body": [
    {
-    "label": "Interrupt",
-    "text": "The target would enter a square adjacent to you."
+    "label": "Trigger",
+    "text": "An enemy ends its turn adjacent to you."
    },
    {
     "label": "Effect",
-    "text": "You Evade 1, then Advance 2."
+    "text": "You Evade 1. Then you can use [[Interact]] (1A) to swap the weapon you hold for another you carry."
    }
   ],
   "blocks": [],
@@ -4255,7 +4192,7 @@
    },
    {
     "label": "Special",
-    "text": "Before you roll Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4."
+    "text": "Before you roll Smite, you can spend 1 AP to roll 1 more Smite die. Neither extra die counts toward the 4."
    }
   ],
   "blocks": [],
@@ -4265,8 +4202,8 @@
  "Snap Shot": {
   "name": "Snap Shot",
   "escalation": null,
-  "frequency": "Turn",
-  "flavor": "A foe lunges for you, and you put an arrow in it before it has finished the step.",
+  "frequency": "Round",
+  "flavor": "A foe lunges for you; you give it one step of ground and an arrow for the trouble.",
   "distance": "Weapon",
   "area": null,
   "target": "One enemy",
@@ -4284,6 +4221,10 @@
     "text": "The target would enter a square adjacent to you."
    },
    {
+    "label": "Effect",
+    "text": "You Evade 1, then make this attack."
+   },
+   {
     "label": "Attack",
     "text": "Weapon vs. Armor Defense"
    },
@@ -4293,11 +4234,11 @@
    },
    {
     "label": "Tier 2",
-    "text": "[V] 1[W] + [Mod]; Hindered (EoT)."
+    "text": "[V] 1[W]."
    },
    {
     "label": "Tier 3",
-    "text": "[V] 1[W] + [Mod]; Immobilized (EoT)."
+    "text": "[V] 1[W] + [Mod]."
    }
   ],
   "blocks": [],
@@ -4458,7 +4399,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** On a Tier 3, this Action deals 1[D] more. **Special:** Once an encounter, when this Action gets a Tier 2 or 3, you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target, as the weapon's damage (its pool and subtype)."
+    "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** On a Tier 3, this Action deals 1[D] more. **Special:** Once an encounter, when this Action gets a Tier 2 or 3, you can spend 1 AP to deal [[Escalation die|2dE]] more to the target, as the weapon's damage (its pool and subtype)."
    }
   ],
   "blocks": [],
@@ -4723,7 +4664,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "You gain 1 more Reaction Point when you regain AP. It pays only for [Divine] Reactions."
+    "text": "When you regain AP, you also gain 1 AP that pays only for [Divine] Reactions. If you haven't spent it when your next turn starts, you lose it."
    }
   ],
   "blocks": [],

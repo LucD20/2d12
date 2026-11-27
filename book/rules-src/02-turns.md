@@ -32,7 +32,7 @@ Some abilities happen **at the start of an encounter**, such as the Paladin's [[
 
 On your turn, if you haven't taken any Actions yet and aren't Down, you can spend **1 AP** to swap places in the turn order with an ally who hasn't had a turn this round. The ally takes the turn now, at your place in the order, and gains its AP as normal.
 
-You act at the ally's old place. Until then, the AP you had left are **frozen**: they pay for nothing, not even a Reaction (your Reaction Point still can). When your new turn arrives, you carry on with those AP instead of gaining new AP, and none of them becomes Guard. You can't swap again that round.
+You act at the ally's old place. Your turn doesn't end when you swap: it waits, so you don't regain AP until your new turn ends. Until then, the AP you had left are **frozen**: they pay for nothing, not even a Reaction. When your new turn arrives, you carry on with those AP, and you regain AP at its end as usual. You can't swap again that round.
 
 > [!example]
 > PC1 (first in the order) swaps with PC3 and keeps 3 AP. The order becomes PC3, NPC1, PC2, NPC2, PC1. When PC1's turn comes, PC1 has 3 AP.
@@ -45,31 +45,33 @@ A **turn-cycle** is the period from the start of a creature's turn to the start 
 
 ## Action Points
 
-At the start of your turn in combat, you **regain AP**: you lose any AP you didn't use and gain **4 Action Points (AP)** and **1 Reaction Point (RP)**. You spend AP to do things on your turn. The Reaction Point pays for [[Reactions]], on your turn or another creature's, and for the few cards that say you spend it (the Paladin's Smite, the Archer's Steady Draw).
+You spend **Action Points (AP)** to do things on your turn, and to pay for [[Reactions]] on any turn. Every creature starts an encounter with **4 AP** (a [[Minions|Minion]] with 3).
+
+At the **end of your turn**, after everything else that happens then, you **regain AP**: you lose any AP you didn't use and gain **4 AP**. Those AP are your next turn's, and until it starts they also pay for the Reactions you use: whatever you spend reacting, you don't have on your next turn.
 
 ### Unspent AP
 
-If you end your turn without spending all your AP, you keep the rest until your next turn starts: nothing else happens then, and those AP can still pay for [[Reactions]]. When you regain AP at the start of your next turn, each AP you still had unused gives you **[[Guard]]** until you regain AP at the start of your next turn: **2** per AP at Stages 0 and 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
-
-- This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends when you regain AP again. Damage takes it before your other Guard.
-- Your Reaction Point never becomes Guard.
-- An NPC gains no Guard from unspent AP (see [[NPC Reactions]]).
+AP you haven't spent when your turn ends are lost: you regain up to 4, never 4 more. Nothing else comes of them.
 
 > [!example]
-> Drak (Stage 0) has Guard 5 from a card and ends his turn with 1 AP left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 until he regains AP again, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.
+> Drak ends his turn with 1 AP left: he loses it and regains 4. During the goblins' turns he uses Shield of Faith (1R) on an ally, so his next turn starts with 3 AP. At its end he regains 4 again.
+
+### A Turn With 0 AP
+
+If you have 0 AP when your turn starts, the turn still starts and ends as usual (what happens at its start and at its end still happens, and you regain your AP at its end), but you can't take an Action in it.
 
 ### Losing and Gaining Action Points
 
 When something gives or takes Action Points, it says whether it happens **now** or **when you regain AP**.
 
-- **Now.** "The target loses 1 AP" means they lose 1 AP they have right now; if they have none, it has no effect. A card that wants the loss to carry over to the next turn writes [[Dazed]]. "The target gains 1 AP" means they gain 1 AP right now. Unless otherwise stated, you can't have more than 4 AP, and losing or gaining AP never changes your Reaction Point.
-- **When you regain AP.** Changes to the AP you regain at the start of your turn are the [[Slowed]] and [[Quickened]] conditions: Slowed 1 means you regain 1 AP less, Quickened 1 means you regain 1 AP more. Neither changes your Reaction Point.
+- **Now.** "The target loses 1 AP" means they lose 1 AP they have right now; if they have none, it has no effect. A card that wants the loss to carry over to the next turn writes [[Dazed]]. "The target gains 1 AP" means they gain 1 AP right now. Unless otherwise stated, you can't have more than 4 AP. Between your turns, the AP you have are the ones you regained at the end of your last turn: a loss then comes out of your next turn.
+- **When you regain AP.** A change to the AP you regain at the end of your turn is the [[Slowed]] condition: Slowed 1 means you regain 1 AP less. [[Quickened]] gives you AP at the start of your turn instead: Quickened 1 means you gain 1 AP more when that turn starts.
 
 ## Reactions
 
 A **Reaction** is an Action you use in response to something another creature does. Its card has an **Interrupt** or a **Trigger** line that says what it responds to, and which of the two it is decides when it happens. Its cost is written with an R, such as **1R**: it uses that many Action Points, but only as a response. A **0R** Reaction uses no AP; its Frequency still limits it.
 
-- **Paying:** A Reaction is paid with your **Reaction Point**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction Point and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction Point lasts until you regain AP at the start of your next turn.
+- **Paying:** A Reaction is paid with your **AP**: on your own turn with that turn's AP, on another creature's turn with the AP you regained at the end of your last turn (see [[Action Points]]). There is no other point to pay with, and no rule limits how many Reactions you use: each card's Frequency and its Interrupt or Trigger limit it.
 - **No Reaction by default:** No creature has a Reaction of its own: every Reaction comes from a class, an item or a creature's entry. Moving away from an enemy doesn't let it attack you, unless it has a Reaction that says so.
 - **Interrupt:** An Interrupt happens **before** the moment it names: "Interrupt: The target would enter a square adjacent to you" happens before the creature enters that square (see [[Entering a Square]]). An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it. An Interrupt on a creature that **would damage** someone happens once the triggering Action's roll is made and its damage is known, before that damage is dealt: the Reaction can't change that roll.
 - **Trigger:** A Trigger happens **after** the moment it names, which can be in the middle of an Action: "Trigger: The target moves away from you" happens after the first square that takes it farther, while it is still moving; "Trigger: A creature deals damage to you" happens after you take that damage.
@@ -81,7 +83,7 @@ A **Reaction** is an Action you use in response to something another creature do
 - You can't use an Action outside your turn unless it is a Reaction.
 
 > [!example]
-> Lonny, an Archer, stabs a wisp with Darting Blade, whose Effect line, written after its Tiers, says "You Evade 2". The damage would put the wisp Down, and the wisp has Dying Flare: "Interrupt: the wisp would go Down", a 1 Emanation around it. The Flare happens at that moment, before Lonny's Evade: he is still next to the wisp, so he is in the Area and makes the Save. Then the wisp goes Down, and only then does Lonny Evade 2.
+> Lonny, an Archer, stabs a wisp with Darting Blade, whose Effect line, written after its Tiers, says "You Evade 2". The damage puts the wisp Down, and the wisp has Dying Flare: "Trigger: The wisp's damage reaches its Health Pool", a 1 Emanation around it. The Flare happens at that moment, before Lonny's Evade: he is still next to the wisp, so he is in the Area and makes the Save. Only then does Lonny Evade 2.
 
 > [!tip]
 > You don't need to move one square at a time: make the full movement and let the reacting creature say where along it the Reaction happens. If the Reaction disrupts the movement, move the token back to that square.
@@ -103,10 +105,10 @@ A Reaction can also do something to the triggering creature when it isn't the ta
 A feature that says "when..." waits for a moment: you must perceive the creatures it names. What it then does to a creature needs Line of Effect like anything else.
 
 > [!example]
-> Zack, a Paladin, has Shield of Faith: "Target: One ally. Interrupt: An enemy's [Strike] Action would damage the target." An orc around a corner from Zack shoots Nari, who stands 3 squares from Zack in the open. Zack has Line of Effect to Nari and hears the orc: he uses Shield of Faith, and Nari's damage is reduced. He has no Line of Effect to the orc, so the orc isn't Taunted. Had Nari been the one behind the wall, Zack couldn't have used it at all.
+> Zack, a Paladin, has Shield of Faith: "Target: One ally. Interrupt: The creature you Judged would damage the target with a [Strike] Action." The orc Zack Judged, around a corner from him, shoots Nari, who stands 3 squares from Zack in the open. Zack has Line of Effect to Nari and hears the orc: he uses Shield of Faith, and Nari takes half of the damage. He has no Line of Effect to the orc, so the orc isn't Taunted. Had Nari been the one behind the wall, Zack couldn't have used it at all.
 
 > [!example]
-> Zack has Rebuke: "Target: One enemy. Trigger: The target moves away from you." A goblin 2 squares from him, on the other side of a wall, runs off. Zack hears it, but Rebuke targets the goblin and he has no Line of Effect to it: he can't use Rebuke.
+> Zack has Rebuke: "Trigger: An enemy within 3 squares of you moves. Target: The triggering creature." A goblin 2 squares from him, on the other side of a wall, runs off. Zack hears it, but Rebuke targets the goblin and he has no Line of Effect to it: he can't use Rebuke.
 
 > [!example]
 > Zack has Kindled Wrath: "when an ally becomes Bloodied or goes Down, your Escalation increases by 1". Nari becomes Bloodied behind a wall, 6 squares from Zack. Zack hears him (within 10 squares), and Kindled Wrath does nothing to Nari, so it needs no Line of Effect: his Escalation increases. At 12 squares behind that wall, out of sight and hearing, it wouldn't.
@@ -130,11 +132,11 @@ A creature **enters a square** when its own movement brings it into that square.
 - For a creature larger than one square, a square is adjacent to it when it is adjacent to any square of its space.
 
 > [!example]
-> An ogre has Backhand: "Trigger: an enemy enters a square adjacent to the ogre." Jared stands 3 squares from it. On its turn the ogre Advances and stops next to Jared: Jared entered no square, so the ogre can't use Backhand. On his own turn Jared Advances from one square beside the ogre to another square beside it: he entered a square adjacent to the ogre, and it can use Backhand.
+> Steven, an Archer, has Snap Shot: "Interrupt: The target would enter a square adjacent to you." Jared, an enemy, stands 3 squares from him. On his turn Steven Advances and stops next to Jared: Jared entered no square, so Steven can't use Snap Shot. On Jared's turn he Advances from one square beside Steven to another square beside him: he would enter a square adjacent to Steven, and Steven can use Snap Shot.
 
 ### Moving Closer
 
-A creature **moves closer to you** when it enters a square that is nearer to you than the square it came from, counted in squares (every second diagonal counts as 2, as always). An Interrupt checks this before the creature enters the square; a Trigger checks it if the creature entered any square nearer to you during the movement. A step to the side that leaves the distance the same is not closer. Evade, Forced Movement and Reposition don't trigger Reactions from movement, so they are never moving closer or moving away.
+A creature **moves closer to a creature** (to you, to an ally: whoever the card names) when it enters a square that is nearer to that creature than the square it came from, counted in squares (every second diagonal counts as 2, as always). An Interrupt checks this before the creature enters the square; a Trigger checks it if the creature entered any square nearer to you during the movement. A step to the side that leaves the distance the same is not closer. Evade, Forced Movement and Reposition don't trigger Reactions from movement, so they are never moving closer or moving away. The rest of this section, and [[Moving Away]], say "you" for that creature.
 
 ### Moving Away
 
@@ -148,6 +150,18 @@ A creature **moves away from you** when it enters a square that is farther from 
 - If the movement is disrupted, it ends in the square the creature was in when the Reaction was taken.
 
 @@DIAGRAM:movingaway@@
+
+### Moving Within N Squares
+
+A creature **moves within N squares of you** when, with its own Move Action, it leaves a square that is within N squares of you. So a step that starts inside the N squares counts, wherever it goes (closer, away or to the side), and a step from farther away into them doesn't: 4 squares to 3 doesn't count for "within 3", 3 to 2 does, 3 to 4 does.
+
+- Standing up from Prone leaves no square, so it isn't moving. Neither Break Free, Evade, Forced Movement nor Reposition counts (they don't trigger Reactions from movement).
+- It is a single trigger for each Move Action, as for any Move Action: the reacting creature chooses the square along it where the Reaction happens.
+- Count the squares as always; for a creature larger than one square, from its nearest square to your nearest square.
+
+### Ends Its Turn
+
+A moment that a creature **ends its turn** ("Trigger: An enemy ends its turn adjacent to you") happens **after everything at the end of that turn**: its [[Lingering]], its effects that end (EoT), and its AP regained. It comes just before the next creature's turn starts, so it is outside every creature's turn. Where the creature stands then is what counts. Several Reactions to it are resolved as for any trigger (see [[Reactions]]).
 
 ## Actions
 
@@ -188,14 +202,14 @@ An Action that another Action lets you use as part of it is a **Linked Action**.
 - It is part of the original Action, so it **costs no AP**.
 - It keeps its traits and requirements, unless the Action says otherwise: you must still be able to use it. If an Action lets you Evade (a Linked Action) while you are Immobilized, you can't.
 - It affects the target of the original Action, unless it says otherwise. If the original Action doesn't list a target, you can choose the target per Linked Action.
-- It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or At-will Banes, unless the Action says otherwise (a Charge's Basic Attack counts toward At-will Banes).
+- It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or the At-will count, unless the Action says otherwise (a Charge's Basic Attack counts toward the At-will count).
 - If it is required and you can't make it (no valid target, a requirement you don't meet), the Action stops there: that Linked Action and everything after it don't happen, what already happened stays, and the cost is still paid. An optional one you can't make is skipped, and the Action goes on. A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Basic Attack (1A) and Advance 5 again").
 - **A movement you can't make.** When an Action has you move ("You Evade 2") and you can't (you are Immobilized or Prone, or no square is open to you), you move 0 squares and the rest of the Action happens. If the Action says you **must** move ("you must Evade 2 first"), the movement is necessary: the whole Action is disrupted.
 
 By default, you can't change the target of a Linked Action. For example, if a player asks to change the target from a creature to an object so they can continue the Action, the GM should probably accept it only if it makes sense, such as attacking a door on the way, and not "attacking the ground".
 
 > [!example]
-> A card lets you make a Basic Attack (1A) as part of it. If you then use Basic Attack as its own Action in the same turn, that is your first use: no At-will Bane.
+> A card lets you make a Basic Attack (1A) as part of it. If you then use Basic Attack as its own Action in the same turn, that is your first use: it isn't Doomed.
 
 ### Targets of Effects
 
@@ -225,12 +239,11 @@ A **Buff** is an effect that modifies another Action, such as the 2 Boons that F
 
 Unless a card says otherwise, the same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2. Lingerings of different subtypes are different effects (see [[Lingering]]). A condition with a source, such as Daunted of a creature, comes from one source at a time (see [[Chapter 8: Conditions]]).
 
-Five things do add up:
+Four things do add up:
 
 - An effect that says it **increases** a value: "increase your Slowed value by 1" adds to the Slowed you have.
 - **Boons and Banes**, up to the limit of their name (see [[Named Boons and Banes]]).
 - **Named bonuses.** A bonus to a value such as a Defense or a Speed can have a name, as Boons and Banes do: Field, Pressure or Support. Bonuses with different names add up; with the same name, only the highest counts. An unnamed bonus never adds to another bonus: it counts only when it is higher than the named ones together.
-- The **Guard** your [[Unspent AP]] give you: it adds to the Guard you have.
 - **Damage reductions** from different effects (see [[Guard]]).
 
 For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus to Armor Defense: his Armor Defense rises by 2. A second +1 Support bonus changes nothing, and an unnamed +1 bonus doesn't add to them either: he keeps +2.
@@ -250,7 +263,7 @@ Some traits can change the Frequency or expand the Frequency rules, such as the 
 
 #### At-will
 
-An **At-will** Action can be used any number of times, but each use after the first in a turn adds **1 Bane** to the roll. For example, if you use Basic Attack three times in one turn, the first roll is normal, the second has 1 Bane, and the third has 2 Banes. This doesn't apply to Linked Actions.
+An **At-will** Action can be used any number of times, but each use after the first in a turn adds **1 Bane** to the roll. **An At-will [Strike] Action used again is Doomed instead** (see [[Strike]]): if you use Basic Attack three times in one turn, the first roll is normal, and the second and the third are Doomed. This doesn't apply to Linked Actions.
 
 Each At-will Action has its own count, except At-will [Strike] Actions, which share one (see [[Strike]]).
 

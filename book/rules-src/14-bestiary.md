@@ -29,10 +29,10 @@ An NPC has one of four ranks. Each has a **default**: the numbers to build it wi
 
 | Rank | CV | Staying power | AP | Basic attack (Tier 2 / Tier 3) | Its damage to Health a turn, at the table |
 |---|---|---|---|---|---|
-| **Minion** | 30 | 2 ticks | 3, no Reaction Point | [V] 1d10 / 2 + 1d12 | about 8 |
-| **Grunt** | 50 | Health 22 (11 / 11) | 3 and the Reaction Point | [V] 1d10 / 2 + 1d12 | about 9½ |
-| **Standard** | 100 | Health 45 (23 / 22) | 4 and the Reaction Point | [V] 2 + 1d10! / 8 + 1d12! | about 19 |
-| **Elite** | 200 | Health 90 (45 / 45) | 4 and the Reaction Point | [V] 2 + 1d10! / 8 + 1d12! | about 19, and its Encounter Action |
+| **Minion** | 30 | 2 ticks | 3 | [V] 1d10 / 2 + 1d12 | about 8 |
+| **Grunt** | 50 | Health 22 (11 / 11) | 3 | [V] 1d10 / 2 + 1d12 | about 9½ |
+| **Standard** | 100 | Health 45 (23 / 22) | 4 | [V] 2 + 1d10! / 8 + 1d12! | about 19 |
+| **Elite** | 200 | Health 90 (45 / 45) | 4 | [V] 2 + 1d10! / 8 + 1d12! | about 19, and its Encounter Action |
 
 - **Every rank:** Armor Defense 13, Ward Defense 13, Weapon Modifier +2, Power Modifier +2. **A rank never moves its Defenses or its Modifiers.**
 - **The damage a turn at the table is a playtest value:** an estimate for the table to check, after the PCs' Guard, Cover and movement.
@@ -78,7 +78,7 @@ Grunts are for mixing in with other enemies: a fight of Grunts alone runs longer
 
 - **Its Basic attack:** [V] 2 + 1d10! on a Tier 2, [V] 8 + 1d12! on a Tier 3.
 - **For reference:** a 2 AP Round Action of its own deals about 16½ / 26 to one creature, or 12 / 19 to each of up to two.
-- **The turn its damage a turn counts:** 1 AP to move, a 2 AP Round Action and a Basic attack; a turn that doesn't need to move adds a second Basic attack, with its At-will Bane.
+- **The turn its damage a turn counts:** 1 AP to move, a 2 AP Round Action and a Basic attack; a turn that doesn't need to move adds a second Basic attack, Doomed as a repeat.
 - **About 19 damage to Health a turn at the table** (a playtest value): about two fifths of a PC's Health, about one and a half Rally Points.
 
 ### Elites
@@ -136,7 +136,7 @@ Every NPC Action that attacks makes **three separate choices**:
 
 ### Basic attacks
 
-**Every NPC has two Basic attacks by default:** normally a melee one and a ranged one, or one against each Defense. Each is 1 AP and At-will, and **they share one At-will count**, as a PC's At-will [Strike] Actions do (see [[Strike]]): the second one of a turn takes 1 Bane, whichever it is.
+**Every NPC has two Basic attacks by default:** normally a melee one and a ranged one, or one against each Defense. Each is 1 AP and At-will, and **they share one At-will count**, as a PC's At-will [Strike] Actions do (see [[Strike]]): the second one of a turn is Doomed, whichever it is.
 
 - **When a rule calls for a Basic Attack** (the Basic Attack at the end of a [[Charge]], for example), an NPC uses one of its own Basic attacks: one that can reach the target, its choice when both can (for a Charge, one of its Melee Basic attacks).
 
@@ -153,10 +153,14 @@ One that loses its weapon (disarmed, the weapon broken) can't use its [Weapon] A
 
 ### NPC Reactions
 
-**No NPC has a Reaction by default:** a Reaction is designed for each creature, **written like any Action, with its Frequency** (At-will, Turn, Round or Encounter; see [[Reactions]]). An NPC pays for one as a PC does, with its Reaction Point or an AP it kept from its turn; a Minion, which has no Reaction Point, only with an AP it kept. **An NPC gains no Guard from unspent AP:** an AP it keeps only pays for a Reaction (see [[Unspent AP]]).
+**No NPC has a Reaction by default:** a Reaction is designed for each creature, **written like any Action, with its Frequency** (At-will, Turn, Round or Encounter; see [[Reactions]]). An NPC pays for one as a PC does, with the AP it regained at the end of its last turn (see [[Action Points]]): what it spends reacting, it doesn't have on its next turn.
 
 > [!tbd]
 > Pricing an NPC's Actions is not rebuilt yet: the old points engine, the price of riders, the price of a Frequency and the best-turn check are out. Until a simpler pricing is written (ready numbers for each rank and AP cost), an Action is checked against its rank's reference numbers and its damage a turn.
+
+### Tags in a card
+
+A creature's **Tags** are on its stat block's "Tag:" line (see [[Tags]]). **A creature, an ally or an enemy named by a Tag is one with that Tag:** "a Goblin ally" is an ally with the Goblin Tag; "an Undead enemy" is an enemy with the Undead Tag.
 
 ## The playtest creatures (Stage 0, level 1)
 
@@ -164,16 +168,16 @@ The four creatures of the next playtest, one for each rank. **Their numbers are 
 
 ### Goblin Sneak
 
-**Goblin Sneak** (Minion, CV 30, level 1). **2 ticks.** Armor Defense 13, Ward Defense 12. Weapon Modifier +2, Power Modifier +2. Instinct +2, Body 0, Mind 0, Appeal −1. Speed 6, Reach 1, Medium. 3 AP, no Reaction Point. It acts in squads of 2. Tag: Goblin. A short blade in its hand.
+**Goblin Sneak** (Minion, CV 30, level 1). **2 ticks.** Armor Defense 13, Ward Defense 12. Weapon Modifier +2, Power Modifier +2. Instinct +2, Body 0, Mind 0, Appeal −1. Speed 6, Reach 1, Medium. 3 AP. It acts in squads of 2. Tag: Goblin. A short blade in its hand.
 
 - **Shiv** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *A short, ugly blade, and it knows where the armor ends.* Tier 2: [V] 1d10 Pi. Tier 3: [V] 2 + 1d12 Pi. Critical: [V] 1d10! Pi.
 - **Jeer** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike]; 6 sq.; one creature; Power vs. Ward Defense). *It says something about your mother, in Goblin, and somehow you understand.* Tier 2: [R] 1d10 Ps. Tier 3: [R] 1d10 Ps; Taunted by the goblin (1 round). Critical: [R] 1d10! Ps.
 - **Knife in the Back** (Round, 2 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *You were looking at the other one.* Requirement: the goblin flanks the target. Tier 2: [V] 6 + 1d12 Pi. Tier 3: [V] 13 + 1d12 Pi.
-- **Shriek and Scatter** (Reaction; Encounter, 1R; 6 sq.; one ally with the Goblin Tag). *One of them drops, and the rest remember how much they hate you.* Trigger: the target goes Down. Effect: the goblin can Evade 1, then uses Jeer.
+- **Goblin Shriek** (Reaction; Encounter, 1R; 6 sq.; the triggering creature). *One of them drops, and the rest remember how much they hate you.* Trigger: a Goblin ally goes Down. Effect: the goblin uses Jeer (1A) against the target.
 
 ### Grave Wisp
 
-**Grave Wisp** (Grunt, CV 50, level 1). Health 22 (Vigor 8, Resolve 14). Armor Defense 12, Ward Defense 14. Weapon Modifier +2, Power Modifier +2. Mind +2, Instinct +1, Appeal 0, Body −1. Speed 6, Reach 1, Medium. 3 AP and the Reaction Point.
+**Grave Wisp** (Grunt, CV 50, level 1). Health 22 (Vigor 8, Resolve 14). Armor Defense 12, Ward Defense 14. Weapon Modifier +2, Power Modifier +2. Mind +2, Instinct +1, Appeal 0, Body −1. Speed 6, Reach 1, Medium. 3 AP.
 
 **Resistance** Psychic 3 · **Weakness** Holy 3 · **Immunity** Cold
 
@@ -181,11 +185,11 @@ The four creatures of the next playtest, one for each rank. **Their numbers are 
 - **Slipping Touch** (Basic attack; At-will, 1 AP; [Power, Melee, Strike]; Reach (1); one creature; Power vs. Ward Defense). *It reaches for you and is already somewhere else.* Tier 1: the wisp can Evade 1. Tier 2: [R] 1d10 Co. Tier 3: [R] 2 + 1d12 Co. Critical: [R] 1d10! Co.
 - **Guttering Glance** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike]; 6 sq.; one creature; Power vs. Ward Defense). *The light goes out behind your eyes.* Tier 2: [R] 1d10 Ps. Tier 3: [R] 1d10 Ps; Half-Blinded (EoT). Critical: [R] 1d10! Ps.
 - **Pass Through** (Round, 2 AP; [Power, Move, Strike]; up to two enemies; Power vs. Ward Defense). *It drifts straight through you, and the cold stays.* Setup: the wisp Advances in a straight line; the targets are enemies whose space it passed through. Tier 2: [R] 1d10 Co. Tier 3: [R] 4 + 1d12 Co.
-- **Dying Flare** (Reaction; Encounter, 1R; [Power, Save, Area]; Area: 1 Emanation; all creatures in the Area; Instinct Save against its Power DC, 13). *It goes out the way a lamp does when it is dropped.* Interrupt: the wisp would go Down. Tier 1: [R] 1d10 Co; Hindered (EoT). Tier 2: [R] 1d10 Co. Tier 3: no effect. Then the wisp goes Down.
+- **Dying Flare** (Reaction; Encounter, 0R; [Power, Save, Area]; Area: 1 Emanation; all creatures in the Area; Instinct Save against its Power DC, 13). *It goes out the way a lamp does when it is dropped.* Trigger: the wisp's damage reaches its Health Pool. Tier 1: [R] 1d10 Co; Hindered (EoT). Tier 2: [R] 1d10 Co. Tier 3: no effect.
 
 ### Orc Warrior
 
-**Orc Warrior** (Standard, CV 100, level 1). Health 45 (Vigor 28, Resolve 17). Armor Defense 13, Ward Defense 13. Weapon Modifier +2, Power Modifier +2. Body +2, Instinct +1, Appeal +1, Mind −1. Speed 5, Reach 1, Medium, Steadiness 0. 4 AP and the Reaction Point. A war axe in one hand, the other free, javelins on its back.
+**Orc Warrior** (Standard, CV 100, level 1). Health 45 (Vigor 28, Resolve 17). Armor Defense 13, Ward Defense 13. Weapon Modifier +2, Power Modifier +2. Body +2, Instinct +1, Appeal +1, Mind −1. Speed 5, Reach 1, Medium, Steadiness 0. 4 AP. A war axe in one hand, the other free, javelins on its back.
 
 - **Hamstringing Axe** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *The orc cuts low, at the leg that would carry you away.* Tier 2: [V] 2 + 1d10! Sl. Tier 3: [V] 8 + 1d12! Sl; Hindered (EoT). Critical: [V] 1d10! Sl.
 - **Barbed Javelin** (Basic attack; At-will, 1 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). *The orc throws a short spear that stays in the wound.* Setup: the orc draws a javelin. Tier 2: [V] 2 + 1d10! Pi. Tier 3: [V] 2 + 1d10! Pi; Lingering 1d10 Pi (Bo/In). Critical: [V] 1d10! Pi.
@@ -195,11 +199,11 @@ The four creatures of the next playtest, one for each rank. **Their numbers are 
 
 ### Ogre Chieftain
 
-**Ogre Chieftain** (Elite, CV 200, level 1). Health 90 (Vigor 55, Resolve 35). Armor Defense 14, Ward Defense 12. Weapon Modifier +2, Power Modifier +2. Body +3, Instinct +1, Appeal +1, Mind −1. Speed 5, Reach 2, Large (4), Steadiness 1. 4 AP and the Reaction Point. A club in one hand, the other free. Tag: Ogre.
+**Ogre Chieftain** (Elite, CV 200, level 1). Health 90 (Vigor 55, Resolve 35). Armor Defense 14, Ward Defense 12. Weapon Modifier +2, Power Modifier +2. Body +3, Instinct +1, Appeal +1, Mind −1. Speed 5, Reach 2, Large (4), Steadiness 1. 4 AP. A club in one hand, the other free. Tag: Ogre.
 
 - **Crushing Grip** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (2); one creature; Weapon vs. Armor Defense). *A hand closes round you like a door shutting.* Tier 2: [V] 2 + 1d10! Bl. Tier 3: [V] 8 + 1d12! Bl; Grabbed. Critical: [V] 1d10! Bl. The ogre holds one creature at a time: a new Grab lets the first go.
 - **Roar** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike, Fear]; 6 sq.; one creature; Power vs. Ward Defense). *It turns its whole face toward you and bellows.* Tier 2: [R] 2 + 1d10! Ps. Tier 3: [R] 2 + 1d10! Ps; Staggered (EoT). Critical: [R] 1d10! Ps.
 - **Great Sweep** (Round, 2 AP; [Weapon, Melee, Strike]; Reach (2); up to two creatures; Weapon vs. Armor Defense). *The club goes round at chest height.* Tier 2: [V] 6 + 1d12 Bl. Tier 3: [V] 13 + 1d12 Bl.
 - **Hurled Goblin** (Round, 2 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). *The goblin has time to look surprised.* Requirement: a willing Minion ally is within the ogre's Reach. Tier 2: [V] 2 + 1d10! Bl. Tier 3: [V] 5 + 1d12! Bl. Effect: the ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions.
 - **Crack the Ground** (its Encounter Action; Encounter, 2 AP; [Weapon, Save, Area]; Area: Line 3; all creatures in the Area; Instinct Save against its Weapon DC, 13). *It brings the club down two-handed, and the floor gives.* Tier 1: [V] 20 + 2d12 Bl. Tier 2: [V] 11 + 1d12 Bl. Tier 3: no effect. Effect: the squares of the Line are Difficult Terrain for every creature (EoE).
-- **Backhand** (Reaction; Turn, 1R; the triggering creature). *You stepped inside its reach as if it weren't looking.* Trigger: an enemy enters a square adjacent to the ogre. Effect: it takes [V] 2 Bl and is Pushed 2, with no roll. Its movement isn't disrupted: it goes on with the movement it has left.
+- **Backhand** (Reaction; Turn, 1R; the triggering creature). *You stood in its reach as if it weren't looking.* Trigger: an enemy ends its turn adjacent to the ogre. Effect: the target takes [V] 1d6 Bl and is Pushed 2.

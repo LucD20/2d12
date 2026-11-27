@@ -13,7 +13,7 @@ Daunted is always **of** a source: a creature or an object. While you perceive t
 
 ### Dazed
 
-Dazed always has a value, such as **Dazed 1**. When you become Dazed, you lose that many AP right away (never your Reaction Point). If you have fewer AP than the value, you lose the AP you have, and the rest is taken from the AP you regain at the start of your next turn; then Dazed ends. Dazed is the condition that takes AP now; [[Slowed]] takes them on your next turn.
+Dazed always has a value, such as **Dazed 1**. When you become Dazed, you lose that many AP right away: on your turn, from that turn's AP; on another creature's turn, from the AP you regained for your next turn. If you have fewer AP than the value, you lose the AP you have, and the rest is taken from the AP you regain at the end of your turn; then Dazed ends. Dazed is the condition that takes AP now; [[Slowed]] takes them the next time you regain AP.
 
 
 ### Empowered
@@ -96,7 +96,7 @@ Pressed always has a value, such as **Pressed 1**. Your [Strike] Actions take th
 
 ### Quickened
 
-Quickened always has a value, such as **Quickened 2**. You increase your maximum AP, and the AP you regain at the start of your turn, by the value: if you are Quickened 2, you regain 6 AP when your turn begins. You don't gain AP when you become Quickened, only when you regain AP at the start of your next turn. Quickened never changes your Reaction Point, and the extra AP you don't spend become Guard like any other ([[Unspent AP]]).
+Quickened always has a value, such as **Quickened 2**. **When your turn starts**, you gain that many AP, and your maximum AP is higher by the value while you are Quickened: if you start your turn with 4 AP and Quickened 2, you have 6. You don't gain AP when you become Quickened, only when your next turn starts. A card's Quickened with no other duration (Aid's "Quickened 1 on its next turn") lasts that one turn and ends at its end. The extra AP you don't spend are lost with the others when you regain AP ([[Unspent AP]]).
 
 ### Sickened
 
@@ -104,13 +104,13 @@ Sickened always has a value, such as **Sickened 1**. Your Body and Instinct Save
 
 ### Slowed
 
-Slowed always has a value, such as **Slowed 2**. You decrease the AP you regain at the start of your turn by the value: if you are Slowed 2, you regain only 2 AP when your turn begins. You also reduce your maximum AP by the value. You don't lose AP when you become Slowed, only when you regain AP at the start of your next turn. Slowed never changes your Reaction Point: a Slowed creature still has its Reaction.
+Slowed always has a value, such as **Slowed 2**. You decrease the AP you regain at the end of your turn by the value: if you are Slowed 2 then, you regain only 2 AP. You also reduce your maximum AP by the value while you are Slowed. You don't lose AP when you become Slowed, only the next time you regain AP. **A card's Slowed with no other duration ends once it has cost you those AP:** Slowed 1 costs exactly 1 AP, once. A Slowed that lasts while something is true (a Desperate creature's) costs its AP each time you regain AP while it lasts.
 
-**Slowed and Quickened** cancel each other out, but they don't reduce each other's value: if you are Quickened 2 and Slowed 2, you regain the normal 4 AP. If one of them ends before your turn comes around (you lose Slowed 2 but are still Quickened 2), you regain 6 AP.
+**Slowed and Quickened** happen at different moments and don't reduce each other's value: Quickened adds AP when your turn starts, Slowed takes them when you regain AP at its end. Your maximum AP counts both: Quickened 2 and Slowed 1 make it 5.
 
 ### Staggered
 
-You can't use [[Reactions]]. Your Reaction Point isn't lost: you can use it again when Staggered ends.
+You can't use [[Reactions]].
 
 ### Taunted
 

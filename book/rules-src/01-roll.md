@@ -224,7 +224,7 @@ You roll every die that any of the targets needs, and each target uses only the 
 
 Round up by default. When a rule divides or multiplies a number and the result isn't a whole number, round it up, unless the rule says otherwise.
 
-**Halving and splitting damage.** Halving damage halves each subtype on its own, and so does splitting it between creatures: 7 Slash and 3 Fire split between two creatures is 4 Slash and 2 Fire for the one the card names first, 3 Slash and 1 Fire for the other. A split never makes more damage than there was: the one named first takes the rounded-up half, the other the rest.
+**Halving and splitting damage.** Halving damage halves each subtype on its own, and so does splitting it between creatures: 7 Slash and 3 Fire split between two creatures is 4 Slash and 2 Fire for the one the card names first, 3 Slash and 1 Fire for the other. A split never makes more damage than there was: the one named first takes the rounded-up half, the other the rest. A creature that **takes half** of some damage takes the rounded-up half of each subtype (7 Slash and 3 Fire become 4 Slash and 2 Fire), after its Resistance and Weakness and before damage reductions and Guard (see [[Guard]]): halved, 1 damage is still 1.
 
 ## Reading an Action
 

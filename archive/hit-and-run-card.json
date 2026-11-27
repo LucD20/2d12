@@ -1,0 +1,52 @@
+{
+ "name": "Hit and Run",
+ "category": "Archer Encounter Action",
+ "level": 2,
+ "flavor": "You run the length of the fight with the knife out, opening every foe you pass, and somewhere along the way an arrow leaves your bow.",
+ "frequency": "Encounter",
+ "cost": "2 AP",
+ "body": [
+  {
+   "label": "Effect",
+   "text": "You Advance. Before the first square and after each square of this Advance, each enemy adjacent to you becomes a target of your [[Light (property)|Light]] weapon, once each. Once, at any point of the Advance, one creature within your bow's Range becomes a target of your bow; it can be a target of the Light weapon too. You draw and stow the two weapons freely during this Action."
+  },
+  {
+   "label": "Special",
+   "text": "The bow's hit is Doomed if you are Engaged when you make it."
+  },
+  {
+   "label": "Attack",
+   "text": "Weapon vs. Armor Defense. Roll 3d12 once, when the first creature is hit: every hit of this Action uses those dice, each worked out on its own as for [[Several Targets]] (the first two dice, unless that hit is Favored or Doomed)."
+  },
+  {
+   "label": "Tier 1",
+   "text": "[V] [Mod]."
+  },
+  {
+   "label": "Tier 2",
+   "text": "[V] 1[W] + [Mod]."
+  },
+  {
+   "label": "Tier 3",
+   "text": "[V] 1[W] + [Mod]; Vulnerable 1 (EoT)."
+  },
+  {
+   "label": "Special",
+   "text": "[W] is the weapon that hit."
+  }
+ ],
+ "traits": [
+  "weapon",
+  "projectile",
+  "move",
+  "strike",
+  "archer"
+ ],
+ "target": "Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range",
+ "foundry": {
+  "img": "icons/svg/sword.svg",
+  "folder": "Archer",
+  "automation": "bronze",
+  "automationNote": "the Advance (the button) and one roll (Use it against the first creature); each other hit worked out by hand from the same 3d12 (the first two dice, unless that hit is Favored or Doomed), as for Several Targets; the targets before the first square, the free draws and the bow shot by hand."
+ }
+}

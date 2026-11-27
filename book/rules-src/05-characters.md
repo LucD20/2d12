@@ -70,7 +70,6 @@ The levels are grouped in **Stages**: **Stage 0** is levels 1 to 3, **Stage 1** 
 |---|---|---|---|---|
 | **Modifiers** | your class's values (+2 and +1) | +1 to your Weapon or Power Modifier | | +1 to your Weapon and Power Modifiers |
 | **Health** | your class's values | + your class's Stage 1 steps | + your class's Stage 2 steps | + your class's Stage 3 steps |
-| **Guard per unspent AP** | 2 | 2 | 3 | 4 |
 | **Rally Points** | Rally + 1 | Rally + 2 | Rally + 3 | Rally + 4 |
 | **Stage Talent** | | at level 4 | at level 8 | at level 12 |
 

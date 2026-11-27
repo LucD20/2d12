@@ -11,7 +11,7 @@
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP and can be used only on your turn. |
 | [[Reactions\|**0R**]] | A Reaction that costs no AP. |
 | [[Action DC\|**Action DC**]] | 11 + the Modifier an Action used (13 with no Action behind the effect): what a Check rolls against to beat what that Action did, such as Break Free. |
-| [[Action Points\|**Action Points (AP)**]] | You regain 4 at the start of your turn, and 1 Reaction Point. The AP you don't spend stay for Reactions and give you Guard. |
+| [[Action Points\|**Action Points (AP)**]] | You start an encounter with 4 and regain 4 at the end of your turn (the AP left are lost). They pay for your next turn and, until it starts, for your Reactions. A turn begun with 0 AP still starts and ends, but takes no Action. |
 | [[Advance\|**Advance**]] | Normal movement, up to the given distance, in one piece: the movement left is lost; one Interact can fit inside the Advance Action. |
 | [[Rules Language\|**Ally**]] | A creature on your side. You are never your own ally. |
 | [[Escalation\|**Apex**]] | A class's big Encounter Action that needs Escalation 6; you choose one at level 4. |
@@ -19,7 +19,7 @@
 | [[Areas\|**Area**]] | Where an Action's effect goes, written on its own line (with a Distance line when the area can be placed away from you). Those Actions have the Area trait: they target everyone they affect, ignoring Senses. |
 | [[Defenses\|**Armor**]] | Armor Defense (AD) — 11 + Armor value + other items + bonuses − penalties. The Defense a Weapon Action usually attacks. |
 | [[Armor Training\|**Armor Training**]] | The heaviest armor a class can wear (it includes the lighter ones). Untrained: your Rolls are Doomed, Actions against your Armor or Ward are Favored. |
-| [[At-will\|**At-will**]] | A Frequency: any number of uses, 1 Bane for each use after the first in a turn (At-will [Strike] Actions share one count). |
+| [[At-will\|**At-will**]] | A Frequency: any number of uses, 1 Bane for each use after the first in a turn; an At-will [Strike] used again in a turn is Doomed instead (At-will [Strike] Actions share one count). |
 | [[Rolls\|**Attribute Action**]] | An Action that rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait (not a Weapon, Power or Signature roll). |
 | [[Attribute DCs\|**Attribute DC**]] | 11 + an Attribute, named by it: Body DC, Mind DC, Appeal DC, Instinct DC. What an Attribute Action rolls against, and the DC of a Save set by an Attribute. |
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
@@ -28,7 +28,7 @@
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
 | [[Basic attacks\|**Basic attack**]] | An NPC's own attack: 1 AP, At-will. Every NPC has two by default (a melee and a ranged one, or one against each Defense), sharing one At-will count; its Tier 1 deals nothing unless its card says so. |
 | [[Blinded\|**Blinded**]] | You can't see: heard creatures are Hidden to you (Doomed against them), sight Rolls are Doomed. |
-| [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). Bloodied: Speed −2 (minimum 1) and Steadiness −1. Strained: you don't regain your Reaction Point. Actions and features use them too. |
+| [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). Bloodied: Steadiness −1, and any creature can pass through your space (Difficult Terrain for it; it can't end there). Strained: Speed −2 (minimum 1). Actions and features use them too. |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
 | [[Buffs\|**Buff**]] | An effect that modifies another Action, such as the 2 Boons that Feint's Tier 3 gives your next [Strike] Action against its target. |
@@ -45,7 +45,7 @@
 | [[Daily\|**Daily**]] | Once per Sleep. |
 | [[Sight Senses\|**Dark Sight**]] | A Sight Sense: Dim light and Darkness count as Bright for you. |
 | [[Daunted\|**Daunted**]] | Of a source: 1 Bane on all your Rolls, and moving closer to it is Difficult Terrain, while you see it. |
-| [[Dazed\|**Dazed**]] | A condition with a value: you lose that many AP right away (never the Reaction Point); the rest, if any, from your next turn's AP. |
+| [[Dazed\|**Dazed**]] | A condition with a value: you lose that many AP right away; the rest, if any, from the AP you regain next. |
 | [[Escalation die\|**dE**]] | The Escalation die: twice your Escalation's sides, at least a d4 (d4, d4, d6, d8, d10, d12 at Escalation 1 to 6); it never explodes. |
 | [[Deadly Hazards\|**Deadly Hazard**]] | A hazard that kills Minor enemies at once and leaves anyone else Imperiled. |
 | [[Buffs\|**Debuff**]] | A Buff that harms the Action it modifies. |
@@ -68,6 +68,7 @@
 | [[Empowered\|**Empowered**]] | The first time you deal damage on each of your turns, add 1d6! to it. No value. |
 | [[Encounters\|**Encounter**]] | A fight or similar scene, from Initiative until the GM ends it. |
 | [[Encounter\|**Encounter**]] | A Frequency: once during a whole encounter. |
+| [[Ends Its Turn\|**Ends its turn**]] | A moment after everything at the end of that creature's turn (its Lingering, its EoT effects ending, its AP regained), before the next turn starts. |
 | [[Engaged\|**Engaged**]] | You are adjacent to an enemy and both of you can be Engaged, whatever you perceive. Other rules use it. |
 | [[End of Encounter\|**EoE**]] | Until the encounter ends. |
 | [[End of Turn\|**EoT**]] | Until the end of the turn of the affected creature. |
@@ -88,7 +89,7 @@
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized and Vulnerable 1, and only the holder can move you; it ends when the holder lets go or you Break Free (a Check against the Action DC of the Action that grabbed you). |
 | [[Grunts\|**Grunt**]] | An NPC rank with CV 50: half a Standard (Health 22), 3 AP a turn. |
-| [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts until you regain AP again. |
+| [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. |
 | [[Half-Blinded\|**Half-Blinded**]] | Your Sight perceives no creature better than Obscured. |
 | [[Hallmarks and Picks\|**Hallmark Action**]] | A choice of two of your class's Actions at level 1; you take one. |
 | [[Hallmarks and Picks\|**Hallmark Reaction**]] | A choice of two of your class's Reactions at level 1; you take one. |
@@ -121,13 +122,14 @@
 | [[Divine, Fear, Focus and Magical\|**Magical**]] | A trait: marks a magical Action or attack for other rules and features. |
 | [[Hands\|**Main hand, off hand**]] | Your two hands. [Strike, Weapon] Actions with a weapon in your off hand take 2 Banes (a Light weapon or your Fists: 1; a weapon held with both hands or a Strung weapon: none). |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 with one weapon when your side wins an encounter that was normal or harder. Never lower than half your best in its group. 10 unlocks its Weapon Technique; 20, 30, 45 and 60 its later unlocks. |
-| [[Minions\|**Minion**]] | An NPC rank with CV 30: 2 ticks instead of Health, 3 AP a turn and no Reaction Point (it pays a Reaction with an AP it kept); Minions act in squads of up to 2. |
+| [[Minions\|**Minion**]] | An NPC rank with CV 30: 2 ticks instead of Health, 3 AP a turn; Minions act in squads of up to 2. |
 | [[Minor enemies\|**Minor enemies**]] | The Minion and Grunt ranks: 3 AP a turn. A Forced Movement into a [[Deadly Hazards\|Deadly Hazard]] kills a Minor enemy. |
 | [[Reading an Action\|**Mode**]] | One of several things a card can do at the same cost; you choose one each time you use the card. |
 | [[Momentum\|**Momentum**]] | The party's number from 0 to 4: an encounter starts at Escalation 1 + Momentum. +1 for each encounter overcome; -1 when a PC goes Down and at each Sleep; lost on a retreat and at a Rest. |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |
 | [[Moving and Leaving Your Square\|**Moved**]] | You moved with an Action that moves you, Evade included. Forced Movement, Reposition and Stand don't count. |
-| [[Moving Closer\|**Moves closer**]] | It enters a square nearer to you than the square it came from. |
+| [[Moving Closer\|**Moves closer**]] | It enters a square nearer to a creature (you, an ally: whoever the card names) than the square it came from. |
+| [[Moving Within N Squares\|**Moves within N squares**]] | With its own Move Action, it leaves a square within N squares of you. Standing up doesn't count. |
 | [[Moving Away\|**Moving away**]] | It enters a square farther from you than the square it came from. |
 | [[Named Boons and Banes\|**Named Boons and Banes**]] | Field, Pressure and Support: up to 2 Boons and 2 Banes of each name. Unnamed ones always add up. |
 | [[Your Next Action\|**Next Action**]] | An effect on your next Action with no duration must be used before the end of your turn, or it is wasted. |
@@ -147,14 +149,13 @@
 | [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Light, Long, Projectile, Firearm, Strung, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
 | [[Pulled\|**Pulled**]] | Forced Movement toward the origin, up to its value, inside a 45° cone. |
 | [[Pushed\|**Pushed**]] | Forced Movement away from the origin, up to its value, inside a 45° cone. |
-| [[Quickened\|**Quickened**]] | A condition with a value: you regain (and can hold) that many more AP at the start of your turn; never more Reaction Points. |
+| [[Quickened\|**Quickened**]] | A condition with a value: you gain that many AP when your turn starts, and can hold that many more; a card's Quickened lasts that one turn. |
 | [[Rally Points\|**Rally Point**]] | Removes damage equal to a quarter of your Health Pool. Steel Yourself can't be used while Down or Unconscious. |
 | [[Weapon Range\|**Range**]] | How far a weapon reaches, melee weapons included: normal / far (1 Bane) / maximum (2 Banes). |
 | [[Ranged Combat While Engaged\|**Ranged Combat While Engaged**]] | Using a [Ranged] Action while Engaged: the roll is Doomed. Against a creature Engaged with someone else: 1 Field Bane. |
 | [[The ranks\|**Rank**]] | How much an NPC counts for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and default numbers; it never moves its Defenses or Modifiers. |
 | [[Reach\|**Reach**]] | How far your body reaches: 1 square for every Species. Weapons have a Range instead. |
-| [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R (0R costs no AP). No creature has one by default. |
-| [[Action Points\|**Reaction Point (RP)**]] | The 1 point you gain at the start of your turn that pays for Reactions (alone, or with AP you kept) and for the few cards that say you spend it. It never becomes Guard. While Strained you don't regain it. |
+| [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R, paid with your AP on any turn (0R costs no AP). No creature has one by default, and no rule caps how many you use. |
 | [[Recovery\|**Recovery**]] | The three ways to recover: a Breather, a Sleep and a Rest. |
 | [[Regrip\|**Regrip**]] | The Basic Action (1 AP) to hold a weapon with both hands again, move it to the other hand or swap the weapons in your hands. |
 | [[Release\|**Release**]] | 0 AP: drop an object you hold, in your square, or take one hand off an object you hold with both hands. |
@@ -184,7 +185,7 @@
 | [[Talents\|**Skill Talent**]] | A Talent slot for skills, out of combat; they come with the Skills rules. |
 | [[Sleep\|**Sleep**]] | 8 hours of non-strenuous activity, at most once every 16 hours; it renews Daily Actions. |
 | [[Slid\|**Slid**]] | Forced Movement along a path the origin chooses (it can curve); the origin needs Line of Effect. |
-| [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction Point doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
+| [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the end of your turn, and your maximum AP is that much lower; a card's Slowed ends once it has cost you those AP. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
 | [[Sneak\|**Sneak**]] | A Basic Action (Round, 1 AP, [Subtle]): an Advance of half your Speed that keeps Hide, as its card says. |
 | [[Reading an Action\|**Special**]] | A card's line that is a rule about the card itself. |
 | [[Rules Language\|**Specific beats general**]] | A card or feature that says something different from a general rule wins for that case. |
@@ -192,21 +193,21 @@
 | [[Squads\|**Squad**]] | Up to 2 Minions that share one place in the turn order (one Initiative roll); each takes its own whole turn. |
 | [[Squeezing\|**Squeezing**]] | Moving through a gap one square narrower than you: Difficult Terrain, and Doomed and Vulnerable if you stop there. |
 | [[Size\|**SR**]] | Size Rank: a creature's Size as a number from 1 (Tiny) to 7 (Titanic). Medium is SR 3. |
-| [[Stacking\|**Stacking**]] | Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", Boons and Banes (up to the limit of their name), named bonuses (Field, Pressure, Support: different names add, the same name keeps the highest), Slowed increases and the Guard of unspent AP do add up. |
-| [[Stages\|**Stage**]] | A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, Guard per unspent AP, Rally Points; never your Attributes). |
+| [[Stacking\|**Stacking**]] | Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", Boons and Banes (up to the limit of their name), named bonuses (Field, Pressure, Support: different names add, the same name keeps the highest), Slowed increases and damage reductions do add up. |
+| [[Stages\|**Stage**]] | A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, Rally Points; never your Attributes). |
 | [[Stages\|**Stage Talent**]] | The Talent of levels 4, 8 and 12, the first level of Stages 1, 2 and 3. |
-| [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction Point waits. |
+| [[Staggered\|**Staggered**]] | You can't use Reactions. |
 | [[Standards\|**Standard**]] | An NPC rank with CV 100, the unit: one for each PC in a normal fight; Health 45 by default. |
 | [[The Start of the Encounter\|**Start of the encounter**]] | After Initiative and before the first turn: abilities that happen then resolve one at a time, in turn order, which the GM can change. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Steel Yourself\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |
-| [[Strike\|**Strike**]] | An Action that tries to hit a creature. At most 3 per turn; At-will [Strike] Actions share one At-will count. |
+| [[Strike\|**Strike**]] | An Action that tries to hit a creature. At most 3 per turn; At-will [Strike] Actions share one At-will count, and the second and third of a turn are Doomed (a Reaction's counts only on your own turn). |
 | [[Strung\|**Strung**]] | A weapon property of bows: held in one hand and drawn with the other; 3 Banes on its Strikes while your other hand holds something. |
 | [[Subtle\|**Subtle**]] | A Keyword trait: the Action doesn't end Hide. |
 | [[Outcome Tiers\|**Success**]] | A Tier 2 or 3 result. |
 | [[Named Boons and Banes\|**Support**]] | A named Boon an effect gives several allies at once. Up to 2. |
 | [[Swapping Places\|**Swap squares**]] | Two creatures each enter the square the other left; a Reposition for each. |
-| [[Tags\|**Tag**]] | A word on a creature (not an Action) that other rules refer to, such as Profane. |
+| [[Tags\|**Tag**]] | A word on a creature (not an Action) that other rules refer to, such as Profane. A creature, ally or enemy named by a Tag is one with that Tag: "a Goblin ally" is an ally with the Goblin Tag (see [[Tags in a card]]). |
 | [[Talents\|**Talent**]] | A feature any character can take, apart from their class, in the Talent slots of the level list. None is written yet. |
 | [[Taunted\|**Taunted**]] | By a creature: 1 Bane on your Actions against anyone else; none on an Action whose targets include it. |
 | [[Senses\|**Thick wall**]] | A wall at least 1 square thick: it usually blocks Hearing and Tremorsense. |

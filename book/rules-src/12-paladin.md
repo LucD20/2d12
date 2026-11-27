@@ -59,8 +59,8 @@ Every Paladin has these four. **Judge** names the foe your god's attention is on
 
 **Choose one.** *Quick build: Shield of Faith.*
 
-- **Shield of Faith** (Turn, 1R): when a foe would damage an ally, you take some of it off and the foe is Taunted by you.
-- **Rebuke** (Turn, 1R): when a foe moves away from you, it is Hindered and may be stopped.
+- **Shield of Faith** (Turn, 1R): when the foe you Judged would hit an ally with a Strike, the ally takes half and the foe is Taunted by you.
+- **Rebuke** (Turn, 1R): when a foe near you moves, a flash of holy light burns it and weakens its next blow.
 
 @@CARD:Shield of Faith@@
 
