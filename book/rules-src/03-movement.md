@@ -49,7 +49,7 @@ An Action that lets you move gives a distance, written "Advance 5" or "Evade 2".
 
 **No movement ends in another creature's square:** an Advance, an Evade, a Forced Movement or a Reposition.
 
-**Creatures in your way.** Your own movement (an Advance, an Evade, a Charge, a Crawl) **can't enter or pass through an unwilling creature's space**: an enemy holds its ground. **An ally's space** (any willing creature's) is [[Difficult Terrain]]: you can pass through it, never end in it, and it is the one Difficult Terrain an Evade can cross (at its double cost). **An Unconscious creature** is Difficult Terrain too, whichever side it is on; a creature that is Down and still fighting holds its space like any other. **A dead creature** doesn't affect movement: you can pass through its space and end in it. Size doesn't change this. The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise. Forced Movement and Reposition keep their own rules: a Prone, an Unconscious or a dead creature is never in the moved creature's way (see [[Collision]]).
+**Creatures in your way.** Your own movement (an Advance, an Evade, a Charge, a Crawl) **can't enter or pass through an unwilling creature's space**: an enemy holds its ground. **An ally's space** (any willing creature's) is [[Difficult Terrain]]: you can pass through it, never end in it, and it is the one Difficult Terrain an Evade can cross (it still counts 1 more). **An Unconscious creature** is Difficult Terrain too, whichever side it is on; a creature that is Down and still fighting holds its space like any other. **A dead creature** doesn't affect movement: you can pass through its space and end in it. Size doesn't change this. The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise. Forced Movement and Reposition keep their own rules: a Prone, an Unconscious or a dead creature is never in the moved creature's way (see [[Collision]]).
 
 **Changes to your Speed.** Apply every other change first, then halve it: with Speed 6, a −2 to your Speed and Hindered, your Speed is (6 − 2) halved = 2. Halving rounds down.
 
@@ -229,7 +229,7 @@ Some creatures are harder to move than others. Every creature has a **Steadiness
 
 ## Difficult Terrain
 
-Each square of difficult terrain counts double the squares it would normally count. The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. Creatures' spaces: see [[Movement|Creatures in your way]].
+Each square of Difficult Terrain counts **1 more** than it would normally count: 2 for a square, 3 for a second diagonal. A square is Difficult Terrain once, however many things make it so. The GM decides where it is (rubble, deep snow...). Darkness is Difficult Terrain for creatures that can't see in it. Creatures' spaces: see [[Movement|Creatures in your way]].
 
 A movement that **ignores Difficult Terrain**, such as a [[Crawl]], counts each of those squares as a normal square. Nothing else about them changes: you still can't end your movement in an ally's space, and Hazardous Terrain still affects you.
 
