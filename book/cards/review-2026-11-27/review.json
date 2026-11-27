@@ -1,0 +1,812 @@
+{
+ "built": "2026-11-27",
+ "items": [
+  {
+   "id": "quick-shots",
+   "name": "Quick Shots",
+   "group": "Class and Basic Actions",
+   "who": "Archer",
+   "when": "before the playtest",
+   "notes": "6 uses in the three fights, 3.5 damage a use: five Tier 1s, where the card deals only your Weapon Modifier (2). The dice were unlucky (a Tier 1 is about 1 roll in 3 against Armor Defense 14), but at average dice the card still falls short: about 9.4 for 2 AP with a Hunting Bow, where two Basic Attacks with the same AP deal about 12.2. Lucas: \"Quick Shots and Strafe: Interesting, I thought it was good, but I think we can change those\".",
+   "why": "One more [W] on Tier 2 and on Tier 3 puts it at about 12.4 (Tier 2 about 15, Tier 3 about 23 with a Hunting Bow): the size of two Basic Attacks, with the Evade 2 and the Critical's AP on top, and the same shape (one roll, many arrows). Its Tier 1 stays 2; if the Tier 1 is what feels bad, the other way is a Tier 1 of [V] 1d4! + [Mod] (about 5.3) with a smaller Tier 3.",
+   "rows": [
+    {
+     "label": "Attack",
+     "current": "Weapon vs. Armor Defense",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 1",
+     "current": "[V] [Mod].",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 2",
+     "current": "[V] 2[W] + [Mod].",
+     "proposed": "[V] 3[W] + [Mod]."
+    },
+    {
+     "label": "Tier 3",
+     "current": "[V] 3[W] + [Mod].",
+     "proposed": "[V] 4[W] + [Mod]."
+    },
+    {
+     "label": "Critical",
+     "current": "You gain 1 AP.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Effect",
+     "current": "You Evade 2.",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "strafe",
+   "name": "Strafe",
+   "group": "Class and Basic Actions",
+   "who": "Archer",
+   "when": "before the playtest",
+   "notes": "5 uses, 2.4 damage a use, and its Push changed nothing. At average dice it deals about 5 a target (Recurve Bow, Armor Defense 14): 15 with three targets, 10 with two, 5 with one, plus its Advance. Kaela's 15 damage a fight is mostly this card and her Tier 1s (one Strafe rolled at 4 Banes net), in fights where one or two enemies were in reach. Lucas: \"Interesting, I thought it was good, but I think we can change those\".",
+   "why": "Vulnerable 1 (EoT) on each Tier 3 target gives the whole party 1 Boon against it until the end of its next turn (about 0.8 damage an attack), where Pushed 1 did nothing. Its damage stays: at two targets it stays about the size of the new Quick Shots (10 against 12.4, an Advance against an Evade 2). Unsure: Hit and Run's Tier 3 has the same rider, and a Strafe on one target stays weak (5 and an Advance), which is its shape: width, not depth.",
+   "rows": [
+    {
+     "label": "Setup",
+     "current": "You Advance.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Attack",
+     "current": "Weapon vs. Armor Defense",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 1",
+     "current": "[V] [Mod].",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 2",
+     "current": "[V] 1[W] + [Mod].",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 3",
+     "current": "[V] 1[W] + [Mod]; Pushed 1.",
+     "proposed": "[V] 1[W] + [Mod]; Vulnerable 1 (EoT)."
+    }
+   ]
+  },
+  {
+   "id": "demoralize",
+   "name": "Demoralize",
+   "group": "Class and Basic Actions",
+   "who": "Basic Action",
+   "when": "before the playtest",
+   "notes": "7 uses, 3 failed. Its Vulnerable 1 gives 1 Boon to every attack against the target until the end of the target's next turn, about 0.8 damage an attack: a few damage in all when the target dies a turn later, as it did. Lucas, playtest 8: \"Demoralize didnt have a chance of shining\"; after the three fights: \"we can fix this alongside the Archers two Actions\". The longer fight the new numbers aim for (3 to 4 rounds) gives it more attacks to work on by itself.",
+   "why": "Vulnerable 2 on a Tier 3 makes the good roll worth its AP at once (2 Boons on each attack, about 1.6 damage an attack: 8 to 10 over a round of the party's attacks on the target) and gives the Tier 3 something more than a longer duration. It stays once a creature an encounter. Unsure: on the Elite, 2 Boons on four PCs' attacks for a round is a big round; the other way is to leave the card and let the longer fight test it.",
+   "rows": [
+    {
+     "label": "Tier 1",
+     "current": "No effect.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 2",
+     "current": "Vulnerable 1 (EoT).",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 3",
+     "current": "Vulnerable 1 (1 round).",
+     "proposed": "Vulnerable 2 (1 round)."
+    },
+    {
+     "label": "Special",
+     "current": "After you use Demoralize on a creature, whatever the Tier, you can't use it on that creature again this encounter.",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "hit-and-run",
+   "name": "Hit and Run",
+   "group": "Class and Basic Actions",
+   "who": "Archer",
+   "when": "before the playtest",
+   "notes": "Lucas's own design, never seen in a playtest, and the one card Foundry still leaves wholly by hand (Bronze; the cleanup audit's B3-030 and B3-031: automating it is large). What makes it large is the timing: a hit after each square of the Advance, one 3d12 roll kept for hits made at different moments, and the bow's shot at any point of the Advance with its own Doomed check. Lucas: \"Run it with 8 and 11\" (Claude doesn't know which two items 8 and 11 name: say if this reading is wrong). The book audit's Q20 had flagged it for a redesign too: a bonus to its damage lands on every creature it hits.",
+   "why": "All hits after the Advance, from the square you stop in, make it an ordinary several-target Action: Foundry records the squares you passed, lists the enemies that were adjacent, and rolls once, so it can reach Silver. The cost: no hit lands in the middle of the run (a Reaction to your movement comes before the knife, and an enemy killed on the way no longer opens the path), and the bow shoots from where you stop.",
+   "rows": [
+    {
+     "label": "Target",
+     "current": "Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range",
+     "proposed": "No change"
+    },
+    {
+     "label": "Effect",
+     "current": "You Advance. Before the first square and after each square of this Advance, each enemy adjacent to you becomes a target of your [[Light (property)|Light]] weapon, once each. Once, at any point of the Advance, one creature within your bow's Range becomes a target of your bow; it can be a target of the Light weapon too. You draw and stow the two weapons freely during this Action.",
+     "proposed": "You Advance. Then each enemy that was adjacent to you at any point of this Advance, your first square included, becomes a target of your [[Light (property)|Light]] weapon, and one creature within your bow's Range becomes a target of your bow; it can be a target of the Light weapon too. You draw and stow the two weapons freely during this Action."
+    },
+    {
+     "label": "Special (the bow)",
+     "current": "The bow's hit is Doomed if you are Engaged when you make it.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Attack",
+     "current": "Weapon vs. Armor Defense. Roll 3d12 once, when the first creature is hit: every hit of this Action uses those dice, each worked out on its own as for [[Several Targets]] (the first two dice, unless that hit is Favored or Doomed).",
+     "proposed": "Weapon vs. Armor Defense, one roll for every hit (see [[Several Targets]])."
+    },
+    {
+     "label": "Tier 1",
+     "current": "[V] [Mod].",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 2",
+     "current": "[V] 1[W] + [Mod].",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 3",
+     "current": "[V] 1[W] + [Mod]; Vulnerable 1 (EoT).",
+     "proposed": "No change"
+    },
+    {
+     "label": "Special ([W])",
+     "current": "[W] is the weapon that hit.",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "smite",
+   "name": "Smite",
+   "group": "Class and Basic Actions",
+   "who": "Paladin",
+   "when": "before the playtest",
+   "notes": "6 uses, 22.7 damage a use, 30% of the party's damage, always after a Feint; it decided the ogre every time (59, 27 and 50 for 4 AP). Before a Smite, a Feint now adds about 1 damage on average (1 Boon on its Tier 2, 2 on its Tier 3), where it added about 2 to 3 when its Tier 3 made the Smite Favored; a Basic Attack with the same AP deals 7 to 9. Smite is Unfailing, so a Tier 1 never cost the use: the Feint only bought the step to Tier 2 (1[W] + [Mod]). The ogre's Health went from 72 to 90, so one Smite decides it less.",
+   "why": "Feint's change already does what this item was for: a Feint before a Smite is now a poor use of an AP, so the habit should stop by itself, and Smite being the fight's big blow is its job as an Encounter card. The next playtest shows whether players still Feint first.",
+   "rows": [
+    {
+     "label": "Smite dice",
+     "current": "[R] 1d6! Ho for each Escalation you have, up to 4 dice. Against a Profane creature they are 1d8!s.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Attack",
+     "current": "Signature vs. Armor Defense",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 1",
+     "current": "Your Smite dice.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 2",
+     "current": "[V] 1[W] + [Mod] + your Smite dice.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 3",
+     "current": "[V] 1[W] + [Mod] + your Smite dice + 1 more Smite die.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Special",
+     "current": "Before you roll Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4.",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "shield-of-faith",
+   "name": "Shield of Faith",
+   "group": "Class and Basic Actions",
+   "who": "Paladin",
+   "when": "before the playtest",
+   "notes": "It took 3 a use in the fights (1 + a Power Modifier of +2): about a whole Tier 2 hit of the old Standard (3.3). The hits are now 8.1 (a Standard's Tier 2), 15.1 (its Tier 3) and 12.5 to 19.5 (Great Sweep, to each target), so the same 3 takes a fifth to a third of one. Lucas: \"I think the problem is the attack of NPCs, the scaling might be wrong\" (now rescaled), and \"lets not scale guard or protective. I will rebalance the classes actions\".",
+   "why": "4 + your Power Modifier (6 at +2) takes about three quarters of a Standard's Tier 2 and two fifths of its Tier 3: near the share the card had before (twice the number, under the enemies' 2.36 times). The Taunt stays as it is.",
+   "rows": [
+    {
+     "label": "Interrupt",
+     "current": "An enemy's [Strike] Action would damage the target.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Effect",
+     "current": "That damage is reduced by 1 + your Power Modifier, and the triggering creature is Taunted by you (1 round).",
+     "proposed": "That damage is reduced by 4 + your Power Modifier, and the triggering creature is Taunted by you (1 round)."
+    }
+   ]
+  },
+  {
+   "id": "lay-on-hands",
+   "name": "Lay On Hands",
+   "group": "Class and Basic Actions",
+   "who": "Paladin",
+   "when": "before the playtest",
+   "notes": "Not used in the three fights. Its Guard (2 + Power Modifier: 4) was about a whole Tier 2 hit of the old Standard and is now half of one (8.1). Its Rally Point grew with Health by itself (13 for a Paladin, 11 for an Archer). What it does for an allied NPC is the item on Rally Points below.",
+   "why": "4 + your Power Modifier (6) gives the 1 AP use about three quarters of a Standard's Tier 2, a little more than a kept AP at the proposed 4 an AP, as it should: it costs a Round Action and moves you. Both Versions change the same number: one decision.",
+   "rows": [
+    {
+     "label": "Setup",
+     "current": "You Advance 5 squares in a straight line toward the target.",
+     "proposed": "No change"
+    },
+    {
+     "label": "1 AP",
+     "current": "The target gains Guard equal to 2 + your Power Modifier.",
+     "proposed": "The target gains Guard equal to 4 + your Power Modifier."
+    },
+    {
+     "label": "2 AP",
+     "current": "The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point.",
+     "proposed": "The target gains Guard equal to 4 + your Power Modifier and can use 1 Rally Point."
+    }
+   ]
+  },
+  {
+   "id": "consecrated-ground",
+   "name": "Consecrated Ground",
+   "group": "Class and Basic Actions",
+   "who": "Paladin",
+   "when": "before the playtest",
+   "notes": "Not used in the three fights. Its Guard (your Power Modifier: 2) at the start of each turn in the Area was a little under the old Minor enemy's hit (2.5); it is now a third of the new one (5.5) and a quarter of a Standard's Tier 2. Guard doesn't stack (the higher is kept), so it is a floor each turn, not a pile.",
+   "why": "2 + your Power Modifier (4) is what a kept AP gives at the proposed 4, for 3 rounds, to everyone on your side who starts a turn in the Area. Unsure what its Difficult Terrain is worth beside it: with the number left as it is, the card is mostly its terrain.",
+   "rows": [
+    {
+     "label": "Effect",
+     "current": "For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains Guard equal to your Power Modifier.",
+     "proposed": "For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains Guard equal to 2 + your Power Modifier."
+    }
+   ]
+  },
+  {
+   "id": "guard-unspent-ap",
+   "name": "Guard from unspent AP",
+   "group": "Class and Basic Actions",
+   "who": "Rule (Chapter 2)",
+   "when": "before the playtest",
+   "notes": "Nobody kept an AP for Guard in three fights: they were short and cheap. Guard 2 was 60% of the old Standard's Tier 2 hit (3.3); against the new 8.1 it is a quarter, while an AP spent on a Basic Attack deals about 7. Lucas: \"None yet, lets not scale guard or protective\": this is the one protective number that is a rule, not a class card, so whether the class pass takes it in is his call. Chapter 2's example (Drak's Guard 2 and 7) changes with it.",
+   "why": "4 an AP at Stages 0 and 1 (twice, under the enemies' 2.36 times) makes keeping an AP a real choice against a Standard's 8 without beating an attack. The later Stages double the same way (6 and 8), placeholders until those Stages have numbers.",
+   "rows": [
+    {
+     "label": "Rule",
+     "current": "2 per AP at Stages 0 and 1, 3 at Stage 2 and 4 at Stage 3",
+     "proposed": "4 per AP at Stages 0 and 1, 6 at Stage 2 and 8 at Stage 3"
+    }
+   ]
+  },
+  {
+   "id": "judge",
+   "name": "Judge",
+   "group": "Class and Basic Actions",
+   "who": "Paladin",
+   "when": "after it",
+   "notes": "Its flat damage reduction is gone (Lucas: \"not only strong but disruptive\"); what is left is that the Judged creature counts as Profane for you. Profane turns Smite's 1d6!s into 1d8!s (about +1 a die: +2 to +4 on a Smite) and Word of Radiance's d6s into d8s (+3 on its Tier 1); no other printed card reads it. So Judge is now worth about 3 damage an encounter, free at the start (0 AP), and its 1 AP use rarely pays for its AP. Lucas said \"Judge done\": this is only the look the pass asked for.",
+   "why": "No change proposed: Profane is the Tag later cards and Talents will key on, so a thin Judge now may fill out with them. What Lucas has to choose between is in the options.",
+   "options": [
+    "Keep it as it is: Judge is the switch for Profane (Smite's and Word of Radiance's d8s) and for what later cards read",
+    "Make its 1 AP use cost 0 AP once on your turn (what Roving Judgment did before it left the class)",
+    "Give Judged a new small effect (Lucas to say what; the old reduction was strong and disruptive)"
+   ],
+   "rows": [
+    {
+     "label": "Judged",
+     "current": "Judged is not a condition: it ends only when the creature goes Down, when you Judge another creature, or with the encounter. A creature Judged by you counts as Profane for you. Multiple Paladins can Judge the same creature: it is Judged by each of them.",
+     "proposed": "No change"
+    },
+    {
+     "label": "0 AP, Special",
+     "current": "You can use this only at the start of an encounter, or as a Reaction (0R; Trigger: the creature you Judged goes Down).",
+     "proposed": "No change"
+    },
+    {
+     "label": "0 AP, Effect",
+     "current": "The target is Judged by you (EoE).",
+     "proposed": "No change"
+    },
+    {
+     "label": "1 AP, Effect",
+     "current": "The target is Judged by you (EoE). If another creature was Judged by you, it no longer is.",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "binding-light",
+   "name": "Binding Light",
+   "group": "Class and Basic Actions",
+   "who": "Paladin",
+   "when": "after it",
+   "notes": "3 uses, 11.3 a use; its Immobilized mattered once. At average dice it deals about 11.4 for 2 AP with a Longsword (Armor Defense 14), where two Basic Attacks deal about 17 (8.9 against 13 with an Arming Sword). The gap isn't new (a Longsword's Basic Attack is big on Tiers 2 and 3), and a longer fight gives its Immobilized (1 round) more turns to matter. It is Quick Shots' question on the Paladin's side.",
+   "why": "No change proposed before the playtest: Quick Shots goes first, and if its new size holds, Binding Light follows it toward two Basic Attacks after the playtest.",
+   "options": [
+    "Wait for the playtest (its Immobilized matters more in a longer fight)",
+    "Tier 2 and Tier 3 deal 1[D] more (about +2.4 a use with a Longsword)",
+    "Leave it, and bring the Basic Attack down instead (the Basic Attack item)"
+   ],
+   "rows": [
+    {
+     "label": "Attack",
+     "current": "Signature vs. Armor Defense",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 1",
+     "current": "[R] 1d6 Ho.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 2",
+     "current": "[V] 1[W] + [Mod] + [R] 1d6 Ho; Immobilized (1 round).",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 3",
+     "current": "[V] 1[W] + [Mod] + [R] 1d8 Ho; Immobilized (1 round).",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "npc-rally-points",
+   "name": "An allied NPC and Rally Points",
+   "group": "Class and Basic Actions",
+   "who": "Rule (Chapter 4); Lay On Hands, Tend, Bulwark of Faith",
+   "when": "after it",
+   "notes": "NPCs have no Rally Points since v0.0.527 (Lucas: \"Lets remove this rule, this is very specific and for now, not necessary\"). Three cards can target an allied NPC and read its Rally Points: Lay On Hands' 2 AP use, Tend's three Tiers and Bulwark of Faith's Guard. On an allied NPC, Lay On Hands gives only its Guard, Tend does nothing, and Bulwark's Guard has no number. No playtest has had an allied NPC yet.",
+   "why": "One sentence in Chapter 4 keeps the three cards working without giving NPCs Rally Points back: the NPC heals what a Rally Point would heal it, a quarter of its Health Pool, as a PC's does.",
+   "options": [
+    "The sentence in Chapter 4 (the proposal)",
+    "Leave it: on an NPC these cards do nothing more (and Bulwark of Faith gives no Guard)",
+    "The three cards say they target a PC ally"
+   ],
+   "rows": [
+    {
+     "label": "Rule",
+     "current": "NPCs have no Rally Points.",
+     "proposed": "NPCs have no Rally Points. When a card lets an NPC use a Rally Point, it heals a quarter of its Health Pool (rounded up) instead, and a card that reads what one of its Rally Points heals reads that number."
+    },
+    {
+     "label": "Lay On Hands, 2 AP",
+     "current": "The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tend, Tier 1",
+     "current": "The target can use 1 Rally Point.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Bulwark of Faith, Effect",
+     "current": "The target gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "basic-attack",
+   "name": "Basic Attack, used again and again (only if PC damage is to come down)",
+   "group": "Class and Basic Actions",
+   "who": "Basic Action and the At-will rule (Chapter 2)",
+   "when": "after it",
+   "notes": "28 uses, 7.0 damage a use: the party's best button after Smite, at more than twice the damage an AP of the Round cards (playtest 8). The At-will Banes (1 on the second use of a turn, 2 on the third) were paid and didn't stop it. Lucas: \"It felt almost brainless, doing attack after attack most of the time\". The party deals 16 a turn, what the record estimated, and the enemies' Health went up a quarter for the longer fight: PC damage doesn't need to come down for the length.",
+   "why": "No change proposed: lifting the Round cards to the size of two Basic Attacks (Quick Shots now, Binding Light after) gives the choice he missed without lowering the party's damage. If PC damage is to come down, the At-will Bane is the simplest lever, but it hits the NPCs' second Basic attack too.",
+   "options": [
+    "Leave it; bring the Round cards up instead",
+    "At-will: 2 Banes for each use after the first (NPCs too)",
+    "The Basic Attack's Tier 3 loses its 1[D]"
+   ],
+   "rows": [
+    {
+     "label": "Rule",
+     "current": "An At-will Action can be used any number of times, but each use after the first in a turn adds 1 Bane to the roll.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 1",
+     "current": "[V] 1d4!",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 2",
+     "current": "[V] 1[W] + [Mod]",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 3",
+     "current": "[V] 1[W] + 1[D] + [Mod]",
+     "proposed": "No change"
+    },
+    {
+     "label": "Critical",
+     "current": "[V] 1d10!",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "trip",
+   "name": "Trip (a note)",
+   "group": "Class and Basic Actions",
+   "who": "Basic Action",
+   "when": "after it",
+   "notes": "Not used in the three fights. Lucas, playtest 8: \"With Feint and Demoralize, I feel trip might have lost its spark, it might be just me though. Keep as is, we need more playtests.\" Prone gives melee attacks against the target a Field Boon and stops its Evade; the new numbers make an enemy's turn hurt more and the fight longer, so putting one down has more to do. A note only.",
+   "why": "Kept as Lucas said; the next playtests show whether it gets used.",
+   "rows": [
+    {
+     "label": "1 AP, Tier 1",
+     "current": "No effect.",
+     "proposed": "No change"
+    },
+    {
+     "label": "1 AP, Tier 2",
+     "current": "Prone.",
+     "proposed": "No change"
+    },
+    {
+     "label": "1 AP, Tier 3",
+     "current": "[V] 1d6! Bl; Prone.",
+     "proposed": "No change"
+    },
+    {
+     "label": "2 AP, Tier 1",
+     "current": "Hindered (EoT).",
+     "proposed": "No change"
+    },
+    {
+     "label": "2 AP, Tier 2",
+     "current": "[V] 1d6! Bl; Prone.",
+     "proposed": "No change"
+    },
+    {
+     "label": "2 AP, Tier 3",
+     "current": "[V] 2d6! Bl; Prone.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Critical (both)",
+     "current": "[V] 1d6! Bl.",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "minor-tier2-die",
+   "name": "The Minor enemies' Tier 2 die",
+   "group": "Creature Actions",
+   "who": "Goblin Sneak (Minion) and Grave Wisp (Grunt)",
+   "when": "before the playtest",
+   "notes": "Lucas asked for a Minor enemy's Tier 2 to average 5.8 to 6 (\"Tier 2 avg at 5.8-6 is an interesting way forward\"); it was set to 1d10 (5.5) because no single die with a flat number lands there, and a Minor enemy's dice don't explode (1d10! would be 6.1). The die is on six cards; on Jeer, Guttering Glance and Dying Flare the line beside it uses the same die, so they move with it. Chapter 14's rank table writes it for the Minion and the Grunt (and its stat blocks repeat each card). It changes what the next playtest measures, so it is here before it.",
+   "why": "1 + 2d4 is the one candidate inside 5.8 to 6, and the Tier 3s beside it keep their old proportion with no other change (Shiv's 8.5 is 1.42 times it, was 1.40). Its cost: two dice to roll and add, on the creatures rolled most often; a Minion's turn goes from about 8 to about 8½.",
+   "options": [
+    "1 + 2d4 (6.0): in his range; the Tier 3s keep their proportion; two dice, spread 3 to 9",
+    "1 + 1d10 (6.5): one die, half a point over; Shiv's Tier 3 is then only 1.31 times it (it would want 3 + 1d12, 9.5)",
+    "1d10 (5.5), as now: one die, under his range",
+    "1d12 (6.5): one die, no flat number; the Tier 3s (2 + 1d12) are then only 2 above it"
+   ],
+   "rows": [
+    {
+     "label": "Rule (Chapter 14, Minion and Grunt)",
+     "current": "[V] 1d10 / 2 + 1d12",
+     "proposed": "[V] 1 + 2d4 / 2 + 1d12"
+    },
+    {
+     "label": "Shiv, Tier 2",
+     "current": "[V] 1d10 Pi.",
+     "proposed": "[V] 1 + 2d4 Pi."
+    },
+    {
+     "label": "Shiv, Tier 3",
+     "current": "[V] 2 + 1d12 Pi.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Jeer, Tier 2",
+     "current": "[R] 1d10 Ps.",
+     "proposed": "[R] 1 + 2d4 Ps."
+    },
+    {
+     "label": "Jeer, Tier 3",
+     "current": "[R] 1d10 Ps; Taunted by the goblin (1 round).",
+     "proposed": "[R] 1 + 2d4 Ps; Taunted by the goblin (1 round)."
+    },
+    {
+     "label": "Slipping Touch, Tier 2",
+     "current": "[R] 1d10 Co.",
+     "proposed": "[R] 1 + 2d4 Co."
+    },
+    {
+     "label": "Slipping Touch, Tier 3",
+     "current": "[R] 2 + 1d12 Co.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Guttering Glance, Tier 2",
+     "current": "[R] 1d10 Ps.",
+     "proposed": "[R] 1 + 2d4 Ps."
+    },
+    {
+     "label": "Guttering Glance, Tier 3",
+     "current": "[R] 1d10 Ps; Half-Blinded (EoT).",
+     "proposed": "[R] 1 + 2d4 Ps; Half-Blinded (EoT)."
+    },
+    {
+     "label": "Pass Through, Tier 2",
+     "current": "[R] 1d10 Co.",
+     "proposed": "[R] 1 + 2d4 Co."
+    },
+    {
+     "label": "Pass Through, Tier 3",
+     "current": "[R] 4 + 1d12 Co.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Dying Flare, Tier 1",
+     "current": "[R] 1d10 Co; Hindered (EoT).",
+     "proposed": "[R] 1 + 2d4 Co; Hindered (EoT)."
+    },
+    {
+     "label": "Dying Flare, Tier 2",
+     "current": "[R] 1d10 Co.",
+     "proposed": "[R] 1 + 2d4 Co."
+    }
+   ]
+  },
+  {
+   "id": "crack-the-ground",
+   "name": "Crack the Ground",
+   "group": "Creature Actions",
+   "who": "Ogre Chieftain (Elite)",
+   "when": "before the playtest",
+   "notes": "Its Tier 1 (a failed Instinct Save) averages 33 and can roll up to 44: an Archer has 41 Health, so one failed Save can take a full-Health Archer Down and leaves any PC near it. It was 14 (up to 21) against 29 before: about half an Archer, now four fifths. In playtest 8 it dealt 25 to two PCs at once (Crack the Ground: 25, 0 and 8 in the three fights); Claude's estimate puts the next fight at Hard, with a Down likely where it lands.",
+   "why": "16 + 2d12 keeps it the biggest blow of the fight (seven tenths of an Archer) but no longer able to take a full-Health PC Down with one Save; its Tier 2 stays 17.5. Unsure: Lucas may want an Elite's Encounter Action to be able to drop someone, and then it stays.",
+   "options": [
+    "16 + 2d12 (29, up to 40): just under an Archer's 41",
+    "20 + 2d12, as now (33, up to 44)",
+    "12 + 2d12 (25, up to 36): about the old share of an Archer's Health"
+   ],
+   "rows": [
+    {
+     "label": "Save",
+     "current": "Instinct",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 1",
+     "current": "[V] 20 + 2d12 Bl.",
+     "proposed": "[V] 16 + 2d12 Bl."
+    },
+    {
+     "label": "Tier 2",
+     "current": "[V] 11 + 1d12 Bl.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 3",
+     "current": "No effect.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Effect",
+     "current": "The squares of the Line are Difficult Terrain for every creature (EoE).",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "backhand",
+   "name": "Backhand",
+   "group": "Creature Actions",
+   "who": "Ogre Chieftain (Elite)",
+   "when": "after it",
+   "notes": "Lucas had it on watch. It dealt 1 each time it was used and deals 2 now (scaled from 1), with no roll. Its Push 2 is the main thing (it puts the creature out of the ogre's Reach 2); the 2 is a number to apply that changes nothing.",
+   "why": "With no roll, a Minor enemy's Tier 2 (1d10 here, or the die the item above picks) makes the slap count without beating the ogre's own attack (about 7 expected) and uses a Reaction Point the ogre rarely spends. The other honest way is to cut the damage: a Reaction does one main thing and at most one rider.",
+   "options": [
+    "[V] 1d10 Bl (5.5, a Minor enemy's hit)",
+    "[V] 2 Bl, as now",
+    "No damage: it is only Pushed 2"
+   ],
+   "rows": [
+    {
+     "label": "Trigger",
+     "current": "An enemy enters a square adjacent to the ogre.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Effect",
+     "current": "It takes [V] 2 Bl and is Pushed 2, with no roll. Its movement isn't disrupted: it goes on with the movement it has left.",
+     "proposed": "It takes [V] 1d10 Bl and is Pushed 2, with no roll. Its movement isn't disrupted: it goes on with the movement it has left."
+    }
+   ]
+  },
+  {
+   "id": "crushing-grip",
+   "name": "Crushing Grip",
+   "group": "Creature Actions",
+   "who": "Ogre Chieftain (Elite)",
+   "when": "after it",
+   "notes": "5 uses, 12 damage; its Grab never mattered. The Grab comes only on a Tier 3 (about 1 attack in 4), and it landed on Paladins, who wanted to stand next to the ogre anyway: Grabbed makes you Immobilized, which stops Advances and Evades, and nothing on the ogre reads it. Against an Archer it stops Evade, Slip Away and Darting Blade's step, and holds the Archer inside the ogre's Reach 2.",
+   "why": "No change proposed: the Grab is for the creature that wants to leave, and the three fights put the ogre on Paladins. If Lucas wants it to matter against anyone, the ogre needs a card that does something to the creature it holds: a design choice for the ogre, not a number.",
+   "rows": [
+    {
+     "label": "Attack",
+     "current": "Weapon vs. Armor Defense",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 2",
+     "current": "[V] 2 + 1d10! Bl.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 3",
+     "current": "[V] 8 + 1d12! Bl; Grabbed.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Critical",
+     "current": "[V] 1d10! Bl.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Special",
+     "current": "The ogre holds one creature at a time: a new Grab lets the first go.",
+     "proposed": "No change"
+    }
+   ]
+  },
+  {
+   "id": "shiv",
+   "name": "Shiv, and the goblins' misses",
+   "group": "Creature Actions",
+   "who": "Goblin Sneak (Minion)",
+   "when": "after it",
+   "notes": "Seven of ten Shivs missed in the three fights. A goblin (+2) against a Paladin's Armor Defense 14 gets a Tier 1 about 35% of the time, 42% on its second Shiv of a turn (1 Bane): seven misses or more in ten happen about 1 time in 25, so it was mostly the dice. A Shiv's Tier 1 does nothing. Lucas left the small creatures' attacks \"to do after the new numbers are in\". Its Tier 2 is decided in the Tier 2 die item.",
+   "why": "A Tier 1 that lets the goblin Evade 1 (the Grave Wisp's Slipping Touch has the same line) makes a miss still a sneak's move, toward a flank for Knife in the Back, without adding damage. Unsure whether he wants misses to do something or to be rarer: a higher Weapon Modifier for Minions is the other lever, and that is a rank number.",
+   "rows": [
+    {
+     "label": "Attack",
+     "current": "Weapon vs. Armor Defense",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 1",
+     "current": "(none)",
+     "proposed": "The goblin can Evade 1."
+    },
+    {
+     "label": "Tier 2",
+     "current": "[V] 1d10 Pi.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Tier 3",
+     "current": "[V] 2 + 1d12 Pi.",
+     "proposed": "No change"
+    },
+    {
+     "label": "Critical",
+     "current": "[V] 1d10! Pi.",
+     "proposed": "No change"
+    }
+   ]
+  }
+ ],
+ "looked": [
+  {
+   "name": "Sworn Blade",
+   "who": "Paladin",
+   "why": "a Slide on a Strained hit; no number the new values touch."
+  },
+  {
+   "name": "Drawing Light",
+   "who": "Paladin",
+   "why": "PC damage (about 5.8 an AP), sized against the Basic Attack, which didn't change."
+  },
+  {
+   "name": "Rebuke",
+   "who": "Paladin",
+   "why": "no number: Hindered and a disrupted move, which matter more in a longer fight."
+  },
+  {
+   "name": "Kindled Wrath",
+   "who": "Paladin",
+   "why": "an Escalation hook; a harder fight makes it fire more."
+  },
+  {
+   "name": "Bulwark of Faith",
+   "who": "Paladin",
+   "why": "its Guard is a Rally Point's heal, which grew with Health (13 for a Paladin, 11 for an Archer); the allied NPC case is in its item."
+  },
+  {
+   "name": "Word of Radiance",
+   "who": "Paladin",
+   "why": "PC damage; the enemies' Health went up a quarter on purpose, for the longer fight."
+  },
+  {
+   "name": "Shifting Aim",
+   "who": "Archer",
+   "why": "a Field Boon; nothing to rescale."
+  },
+  {
+   "name": "Darting Blade",
+   "who": "Archer",
+   "why": "2 AP for about 6, the free draw and an Evade 2: the Evade is worth more now that being reached hurts more."
+  },
+  {
+   "name": "Steady Draw",
+   "who": "Archer",
+   "why": "PC damage riders on the Basic Attack."
+  },
+  {
+   "name": "Harrying Shot",
+   "who": "Archer",
+   "why": "PC damage (6.2 a use in the fights), sized against the Basic Attack."
+  },
+  {
+   "name": "Slip Away",
+   "who": "Archer",
+   "why": "movement; it gains from the new hits by itself."
+  },
+  {
+   "name": "Snap Shot",
+   "who": "Archer",
+   "why": "7.5 a use and its Hindered or Immobilized: the best of the Archer's cards in the fights."
+  },
+  {
+   "name": "Thrill of the Kill",
+   "who": "Archer",
+   "why": "an Escalation hook."
+  },
+  {
+   "name": "Volley",
+   "who": "Archer",
+   "why": "PC damage in an area (about 9 a target with its Hindered); fine beside the new Quick Shots."
+  },
+  {
+   "name": "Covering Fire",
+   "who": "Archer",
+   "why": "its 4 a crossing is PC damage against enemy Health, which went up a quarter on purpose; never used yet."
+  },
+  {
+   "name": "Steel Yourself and Tend",
+   "who": "Basic Actions",
+   "why": "a Rally Point heals a quarter of the Health Pool, so they grew with Health; an allied NPC is in its item."
+  },
+  {
+   "name": "Feint",
+   "who": "Basic Action",
+   "why": "done (1 Boon on a Tier 2, 2 on a Tier 3)."
+  },
+  {
+   "name": "Aid, Fists, Shove, Charge, Haul, Relocate",
+   "who": "Basic Actions",
+   "why": "no number the new values touch."
+  },
+  {
+   "name": "Hamstringing Axe, Barbed Javelin, Roar",
+   "who": "Orc Warrior, Ogre Chieftain",
+   "why": "the Standard's dice, scaled with their Tier 3s in proportion."
+  },
+  {
+   "name": "War Howl, Great Sweep, Hurled Goblin",
+   "who": "Orc Warrior, Ogre Chieftain",
+   "why": "2 AP Actions, scaled in proportion; Hurled Goblin not seen yet."
+  },
+  {
+   "name": "Knife in the Back",
+   "who": "Goblin Sneak",
+   "why": "a Minion's flank attack now deals 13 + 1d12 on a Tier 3 (19.5), what Great Sweep deals to each of two; it was already equal before the scaling, so nothing new, but worth knowing."
+  },
+  {
+   "name": "Blood for Blood, Cornered, Shriek and Scatter, Drifting",
+   "who": "Orc Warrior, Goblin Sneak, Grave Wisp",
+   "why": "no damage number of their own."
+  }
+ ]
+}
