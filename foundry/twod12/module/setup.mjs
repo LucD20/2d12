@@ -57,7 +57,7 @@ export async function setupBar(o) {
     // Setup's text, the squares left on a line of their own, the keys, then Continue at the left and Cancel the Action at the right end
     bar.innerHTML = askHtml({ icon: "fa-person-running", head: esc(o.title ?? "Setup"), text: `${txt ? `${esc(txt)} ` : ""}Move your token, then Continue.`, lines: 2,
       stat: sq ? leftHtml() : null, statCls: "cnt", keys: "<kbd>Enter</kbd> Continue \u00b7 <kbd>Esc</kbd> Cancel the Action",
-      left: '<button type="button" class="lb-go fill"><i class="fa-solid fa-dice"></i> Continue: the roll</button>', give: '<button type="button" class="lb-give">Cancel the Action</button>' });
+      left: `<button type="button" class="lb-go fill"><i class="fa-solid ${o.noRoll ? "fa-forward" : "fa-dice"}"></i> ${o.noRoll ? "Continue" : "Continue: the roll"}</button>`, give: '<button type="button" class="lb-give">Cancel the Action</button>' });
     // v0.0.441 (pack SHEETS-HUD, D7: "Strafe's Advance in the HUD's place, not the old floating bar"): in the HUD's Situational section when a
     // creature's bar is on screen, as the pick bar asks; at the bottom of the screen with no HUD
     const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");
@@ -110,7 +110,7 @@ export async function runSetup(actor, item, token, deps = {}) {
       let squares = null;
       try { const { combatantOf } = await import("./combat.mjs"), c = game.combat?.started ? combatantOf(actor, game.combat) : null, key = cfg.kind === "evade" ? "evadeMove" : "freeMove", total = Number(c?.getFlag?.("twod12", key)) || 0; if (c && total > 0) squares = { cid: c.id, key, total }; } catch (e) { squares = null; }
       pick = await ask({
-        title: item.name, text: plainSetup(text), squares,
+        title: item.name, text: plainSetup(text), squares, noRoll: (item?.system?.versions ?? []).every(v => v?.noTiers),   // v0.0.538 (Lucas, checklist v0.0.536, rv-cards): Lay On Hands has no roll
         window: { title: `${item.name}: Setup` },
         content: `<p>${esc(plainSetup(text))}</p><p>Move your token, then press <b>Continue</b> to make the roll.</p>`,
         buttons: [{ action: "go", label: "Continue", icon: "fa-solid fa-dice", default: true }, { action: "cancel", label: "Cancel the Action", icon: "fa-solid fa-xmark" }],

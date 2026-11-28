@@ -34,9 +34,10 @@ Rev: 2
 
 ## Chat cards
 
-### rv-cards · v0.0.536 · Quick Shots, Lay On Hands, Consecrated Ground (the review)
-Do: Sylwen uses Quick Shots on the Orc Warrior (force a Tier 1 and a Critical with the dialog's Flat if needed); Aveline uses Lay On Hands (1 AP) on Kaela; Durgan (level 2) places Consecrated Ground and Kaela starts her turn in it.
-Expect: Quick Shots' Tier 1 deals [V] 1d6! + Mod, there is no Evade after it, and on a Critical a "Basic Attack" button makes one free Basic Attack (no AP spent). Lay On Hands gives Guard 4 + Aveline's Power Modifier. Consecrated Ground gives Kaela Guard 2 + Durgan's Power Modifier.
+### rv-cards · v0.0.538 · Rev 2 · Quick Shots, Lay On Hands, Consecrated Ground (the review)
+Do: Sylwen uses Quick Shots on the Orc Warrior (force a Tier 1 and a Critical with the dialog's Flat if needed); Aveline uses Lay On Hands (1 AP) on Kaela; Durgan (level 2) places Consecrated Ground and Kaela starts her turn in it. If a button in the HUD's Situational tab does nothing or is cut off, write its card and its words in the Fail note.
+Expect: Quick Shots' Tier 1 deals [V] 1d6! + Mod, there is no Evade after it, and on a Critical a "Basic Attack" button makes one free Basic Attack (no AP spent). Lay On Hands gives Guard 4 + Aveline's Power Modifier. Consecrated Ground gives Kaela Guard 2 + Durgan's Power Modifier. Lay On Hands' Setup frame in the Situational tab says "Continue" (no roll), and Continue goes on with the Action.
+Rev: 2
 
 ## Conditions and their Tiers
 
