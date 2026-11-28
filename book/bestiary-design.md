@@ -680,3 +680,16 @@ Decided with the action economy (a Reaction costs 1 AP of the creature's next tu
 | E | Keep the numbers, change the aim to 2.5 to 3 rounds | 2.5 | 1.8 | no work; the aim moves to what the fights show |
 
 **Claude's proposal: B,** and if Lucas takes it, the next decisions one at a time: L2 the staying power's factor and how it lands on each rank (a Minion's ticks: 2 or 3), L3 the damage's factor (×0.7 keeps the cost; ×0.8 puts it near the edge of Normal), L4 the creatures' lines one by one, as in the last section's tables.
+
+**Lucas (2026-11-28): "B at 0.8 preferably". DECIDED L1, not built:** enemy staying power about ×1.4 and enemy damage ×0.8. Claude's arithmetic: the cost lands about 1.8 × 1.4 × 0.8 ≈ **2.0**, the edge of Normal (Hard is above 2): the next playtest says on which side.
+
+**Decision L2: the staying power on each rank (PROPOSED, for Lucas).** ×1.4 on the four creatures of the playtest fight is about 161 → 225.
+
+| | How | Grunt | Standard | Elite | Minion | The fight's total |
+|---|---|---|---|---|---|---|
+| **A** | **×1.4 on Health; a Minion keeps 2 ticks** | 22 → **31** | 45 → **63** | 90 → **126** | 2 ticks | about 224 |
+| B | ×1.5, rounder | 33 | 68 | 135 | 2 ticks | about 240 (about 3.7 rounds) |
+| C | ×1.4, and a Minion 3 ticks | 31 | 63 | 126 | 3 ticks (a Tier 2 no longer kills it) | about 226 |
+| D | the Elite takes most of it (it is 56% of the fight's Health already) | 25 | 54 | 140 | 2 ticks | about 225 |
+
+**Claude's proposal: A.** It keeps the ranks' ratios (a Grunt half a Standard, an Elite two), and leaves the Minion as the creature that falls to one good hit (two goblins are 4 of the fight's 161; 3 ticks would change how they play, not the length). The splits, as decided before (Vigor takes the odd point; each creature's own split kept; the floor of a third rounded up): the ranks Grunt 31 (16 / 15), Standard 63 (32 / 31), Elite 126 (63 / 63); the creatures **Grave Wisp 31 (Vigor 11, Resolve 20)**, **Orc Warrior 63 (39 / 24)**, **Ogre Chieftain 126 (77 / 49)**. The CV doesn't change (the normal fight's budget is the same creatures). Next: L3, the damage's ×0.8 line by line.
