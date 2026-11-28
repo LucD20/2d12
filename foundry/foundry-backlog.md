@@ -6,6 +6,17 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
 
 
+## PLAYTEST 12: LUCAS'S NOTES (2026-11-28; not built: "Dont apply any changes except about the playtest notes"; the review: `book/playtest-12.md`, section 3)
+
+- [ ] **Rebuke's damage lands on the selected token** (Aveline), not the triggering creature: `inline.mjs doDamage` takes the selected tokens first and ignores the chain's targets. Fix: use `ctx.targets` when given.
+- [ ] **Dying Flare didn't fire when the wisp died** (killed by Rebuke's damage). First check the world's wisp was imported again after v0.0.535 (its card: "Trigger: The wisp's damage reaches its Health Pool", 0R); then whether a damage card with no origin reaches `landedMoment`'s `selfDowned`.
+- [ ] **The first creature of round 1 had no AP:** a likely race between `combatStart`'s `encounterAP` and the first `startTurn` (which reads the AP and writes them back). Give the AP before the round starts (`startCombat`) or in `startTurn` when the creature has none.
+- [ ] **The Ogre Chieftain had no AP in round 2** (it was last in round 1): not explained by the code; to reproduce (its Turn Log's "AP regained" at the end of round 1; the strip's number).
+- [ ] **The Advance's counter and the drag's ruler disagree on Difficult Terrain** (screenshots `book/playtest-12/1-advance-ruler.webp`, `2-advance-left.webp`: the ruler 11 (+6), the counter charged 5 of 6) on a path through an ally's square and Darkness.
+- [ ] **The extra die's chips with no AP left** (Smite's "1 AP: 1 more Smite die", Steady Draw's "1 AP: 2dE more"): shown off, with the reason, when the AP left after the Action's cost is 0.
+- [ ] **A path search for the Advance** (`book/playtest-12/3-path-behind-aveline.webp`: a square behind Aveline reachable around her, refused by the straight drag). Lucas's module `lucd20-automations` has one. Lucas: Foundry's complete redesign after Stage 0.
+- [ ] **Push: Tab to change the path** (`book/playtest-12/4-push-direction.png`), as the Line's ties: straight back, then diagonally. With the redesign after Stage 0, unless Lucas says sooner.
+
 ## THE ACTION ECONOMY AND THE REBUILT REACTIONS (v0.0.535, 2026-11-27)
 
 - [x] **(v0.0.535)** The AP regained at the end of the turn, 4 AP at the encounter's start, no Reaction Point (Tireless Vigil's Divine-only AP kept), no Guard from unspent AP, the HUD's Reaction mark only for that AP; the Doomed repeat; Strained Speed −2, Bloodied's space; the moments ("moves within N" without standing up, "ends its turn", the Judged creature's Strike, "reaches its Health Pool"); the rebuilt level 1 Reactions; Hit and Run removed (the changelog has the detail).

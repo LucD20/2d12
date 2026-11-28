@@ -2,6 +2,12 @@
 
 The book is built from `rules-src/` with `build_rules.py` (assets in `rules-assets/`). How the files are written is in `rules-src/README.md`; `rules-src/INDEX.md` (generated) is a map of every chapter; `python3 build_rules.py --where Term` lists every mention of a term. The full earlier version of this list was in `archive/old-notes/rules-backlog-history.md` (not in this bundle).
 
+## PLAYTEST 12: THE CARD QUESTIONS (2026-11-28; open, for Lucas; the review: `playtest-12.md`, section 3)
+
+- [ ] **Charge and the repeat:** a Charge's Basic Attack counts toward the At-will count (Chapter 2, Linked Actions; the Charge card), so an At-will [Strike] after a Charge is Doomed (Durgan's Drawing Light; Lucas turned it off by hand: "Intended?"). Keep, or remove "that Basic Attack counts" from the Charge? (The card's "At-will Banes" wording is stale either way.)
+- [ ] **Hurled Goblin** (Lucas: "needs to have the weapon trait removed [...] I made it instinct"): which roll (Power vs. Armor Defense, or an Instinct roll, which an NPC's attack has no rule for), and whether it stays [Ranged] (its Doomed in round 1 came from [Ranged] while the ogre was Engaged, not from [Weapon]).
+- [ ] **Snap Shot's Evade as a Setup** (Lucas: "Snap Shot effect should be a Setup"): "Setup: You Evade 1." in the place of the Effect line. A wording he asked for; to write at the next card change.
+
 ## THE ACTION ECONOMY AND THE REACTIONS: BUILT (decided 2026-11-27; built 2026-11-27, Lucas: "build it now"; the book and Foundry v0.0.535)
 
 **Built in the book (Chapters 1, 2, 3, 4, 5, 7, 8, 9, 12, 13, 14; the cards in `cards/stage0/`) and Foundry v0.0.535.** What was written where:
