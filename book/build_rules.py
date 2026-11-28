@@ -20,8 +20,8 @@ RATIO = {1: 0.898, 2: 1.078, 3: 1.203, 4: 1.469, 5: 1.594}
 # ---------------------------------------------------------------- traits and highlighting
 # Trait groups (Lucas, 2026-10-23): Roll, Requires, Kind, Damage, Keywords. A card's traits are listed by group, in this order, alphabetical inside a group.
 # Weapon properties (Barehanded, Long, Reload, Two-handed...) are not traits and have no color.
-GROUPS = [("roll", "Roll", ["appeal", "body", "instinct", "mind", "power", "save", "signature", "split", "weapon"]),
-          ("requires", "Requires", ["gun", "handle", "melee", "ranged", "shot"]),   # the keys Foundry still has (test t146 compares the two lists); the book prints gun as Firearm and shot as Projectile (cards.py RENAMED) until the Foundry pass renames the keys
+GROUPS = [("roll", "Roll", ["appeal", "arms", "body", "instinct", "mind", "power", "save", "signature", "split"]),   # 2026-11-28 (Lucas): Arms is the roll; Weapon only needs a weapon
+          ("requires", "Requires", ["gun", "handle", "melee", "ranged", "shot", "weapon"]),   # the keys Foundry still has (test t146 compares the two lists); the book prints gun as Firearm and shot as Projectile (cards.py RENAMED) until the Foundry pass renames the keys
           ("kind", "Kind", ["area", "move", "self", "strike"]),
           ("damage", "Damage", ["nonlethal"]),
           ("keywords", "Keywords", ["archer", "divine", "focus", "fear", "magical", "paladin", "subtle", "unfailing"])]   # archer, paladin: the class traits (Lucas, 2026-11-26)
@@ -29,9 +29,9 @@ def group_of(k):
     if k.startswith('ht:'): return 'kind'
     k = {'projectile': 'shot', 'firearm': 'gun'}.get(k, k)
     return next((g for g, _, ks in GROUPS if k in ks), 'keywords')
-RULES = {"strike", "weapon", "power", "signature", "split"}
+RULES = {"strike", "weapon", "arms", "power", "signature", "split"}
 LABEL = {"twohanded": "Two-handed"}
-TRAIT_WORDS = {"Strike": "strike", "Nonlethal": "nonlethal", "Divine": "divine", "Focus": "focus", "Handle": "handle", "Magical": "magical", "Subtle": "subtle", "Power": "power", "Signature": "signature", "Split": "split", "Melee": "melee", "Ranged": "ranged", "Self": "self", "Weapon": "weapon", "Save": "save"}
+TRAIT_WORDS = {"Strike": "strike", "Nonlethal": "nonlethal", "Divine": "divine", "Focus": "focus", "Handle": "handle", "Magical": "magical", "Subtle": "subtle", "Power": "power", "Arms": "arms", "Signature": "signature", "Split": "split", "Melee": "melee", "Ranged": "ranged", "Self": "self", "Weapon": "weapon", "Save": "save"}
 
 ASSETS = 'rules-assets'
 ICONS = json.load(open(os.path.join(ASSETS, 'dtype-icons.json')))   # Font Awesome Free (CC BY 4.0), see rules-assets/FONTAWESOME-LICENSE.txt

@@ -202,7 +202,7 @@ An Action that another Action lets you use as part of it is a **Linked Action**.
 - It is part of the original Action, so it **costs no AP**.
 - It keeps its traits and requirements, unless the Action says otherwise: you must still be able to use it. If an Action lets you Evade (a Linked Action) while you are Immobilized, you can't.
 - It affects the target of the original Action, unless it says otherwise. If the original Action doesn't list a target, you can choose the target per Linked Action.
-- It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or the At-will count, unless the Action says otherwise (a Charge's Basic Attack counts toward the At-will count).
+- It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or the At-will count, unless the Action says otherwise.
 - If it is required and you can't make it (no valid target, a requirement you don't meet), the Action stops there: that Linked Action and everything after it don't happen, what already happened stays, and the cost is still paid. An optional one you can't make is skipped, and the Action goes on. A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Basic Attack (1A) and Advance 5 again").
 - **A movement you can't make.** When an Action has you move ("You Evade 2") and you can't (you are Immobilized or Prone, or no square is open to you), you move 0 squares and the rest of the Action happens. If the Action says you **must** move ("you must Evade 2 first"), the movement is necessary: the whole Action is disrupted.
 
@@ -287,7 +287,7 @@ A **Daily** Action can be used once, and again only after you complete a [[Sleep
 
 ## Versus
 
-An Action that rolls uses a **Modifier** and, if it targets a creature, rolls against a **Defense** or DC. The Modifier is your Weapon, Power, Signature or Attribute Modifier (see [[Weapon, Power and Signature Modifiers|Chapter 5]]). Every Action that rolls says so on its **Attack** line, which names the Modifier and the Defense: "Attack: Weapon vs. Armor Defense". The Defense is Armor Defense (AD), Ward Defense (WD), an Attribute DC of the target ("vs. Body DC") or a specific DC.
+An Action that rolls uses a **Modifier** and, if it targets a creature, rolls against a **Defense** or DC. The Modifier is your Arms, Power, Signature or Attribute Modifier (see [[Arms, Power and Signature Modifiers|Chapter 5]]). Every Action that rolls says so on its **Attack** line, which names the Modifier and the Defense: "Attack: Arms vs. Armor Defense". The Defense is Armor Defense (AD), Ward Defense (WD), an Attribute DC of the target ("vs. Body DC") or a specific DC.
 
 ### Defenses
 
@@ -301,7 +301,7 @@ An Action against a creature rolls against one of its three **Defenses**; some A
 | **Vs. DC** | A set DC, such as "Vs. DC 13": some Actions have a set DC, and others target something that has no Defenses, such as a stationary object. |
 
 - **Armor value** is the value provided by the [[Armor|armor]] a creature wears. **Armor Defense** is 11 + Armor value + other items + bonuses − penalties.
-- **Ward value** is the value provided by the ward a creature carries or is, such as a holy symbol, a charm, a ring or a feature. **Ward Defense** is 11 + your [[Weapon, Power and Signature Modifiers|Power Modifier]] + Ward value + other items + bonuses − penalties. A creature without a ward normally has Ward value 0; items and features can increase this value.
+- **Ward value** is the value provided by the ward a creature carries or is, such as a holy symbol, a charm, a ring or a feature. **Ward Defense** is 11 + your [[Arms, Power and Signature Modifiers|Power Modifier]] + Ward value + other items + bonuses − penalties. A creature without a ward normally has Ward value 0; items and features can increase this value.
 
 
 ## Rounds and Durations

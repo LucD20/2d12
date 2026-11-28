@@ -34,7 +34,7 @@ An NPC has one of four ranks. Each has a **default**: the numbers to build it wi
 | **Standard** | 100 | Health 45 (23 / 22) | 4 | [V] 2 + 1d10! / 8 + 1d12! | about 19 |
 | **Elite** | 200 | Health 90 (45 / 45) | 4 | [V] 2 + 1d10! / 8 + 1d12! | about 19, and its Encounter Action |
 
-- **Every rank:** Armor Defense 13, Ward Defense 13, Weapon Modifier +2, Power Modifier +2. **A rank never moves its Defenses or its Modifiers.**
+- **Every rank:** Armor Defense 13, Ward Defense 13, Arms Modifier +2, Power Modifier +2. **A rank never moves its Defenses or its Modifiers.**
 - **The damage a turn at the table is a playtest value:** an estimate for the table to check, after the PCs' Guard, Cover and movement.
 
 ### Minions
@@ -125,10 +125,10 @@ What differs for an NPC's Health: see [[Rally Points]] and [[NPCs Going Down]].
 Every NPC Action that attacks makes **three separate choices**:
 
 1. **The Defense it attacks:** Armor Defense or Ward Defense.
-2. **The Modifier it rolls:** the Weapon Modifier (a [Weapon] Action) or the Power Modifier (a [Power] Action).
+2. **The Modifier it rolls:** the Arms Modifier (an [Arms] Action: a blow, a bite, a throw, with a weapon or without) or the Power Modifier (a [Power] Action).
 3. **The pool it damages:** [V] (Vigor) or [R] (Resolve).
 
-**A Weapon Action against Armor Defense that deals [V]**, and **a Power Action against Ward Defense that deals [R]**, are the usual sets, not a limit.
+**An Arms Action against Armor Defense that deals [V]**, and **a Power Action against Ward Defense that deals [R]**, are the usual sets, not a limit.
 
 - **Distance.** An NPC's melee Action has Distance Reach (X), X its Reach: written "Reach (1)". A ranged one has its squares (see [[Weapon Range]]). A melee Action has the Melee trait, a ranged one the Ranged trait.
 - **Its [Weapon] Actions need the weapon its entry describes**, in hand: the weapon gives them their nature, not their numbers. A [Power] Action needs no weapon.
@@ -145,7 +145,7 @@ Every NPC Action that attacks makes **three separate choices**:
 > [!tbd]
 > Disarming and breaking weapons are not written yet.
 
-One that loses its weapon (disarmed, the weapon broken) can't use its [Weapon] Actions and makes Fists Strikes instead, with its Weapon Modifier as their [Mod]. If it takes up another weapon of the same kind, nothing changes; another kind of weapon, and the GM adjusts its Actions in the middle of the fight (usually the damage type, or the damage dice a step).
+One that loses its weapon (disarmed, the weapon broken) can't use its [Weapon] Actions and makes Fists Strikes instead, with its Arms Modifier as their [Mod]. If it takes up another weapon of the same kind, nothing changes; another kind of weapon, and the GM adjusts its Actions in the middle of the fight (usually the damage type, or the damage dice a step).
 
 ### Its other Actions
 
@@ -168,16 +168,16 @@ The four creatures of the next playtest, one for each rank. **Their numbers are 
 
 ### Goblin Sneak
 
-**Goblin Sneak** (Minion, CV 30, level 1). **2 ticks.** Armor Defense 13, Ward Defense 12. Weapon Modifier +2, Power Modifier +2. Instinct +2, Body 0, Mind 0, Appeal −1. Speed 6, Reach 1, Medium. 3 AP. It acts in squads of 2. Tag: Goblin. A short blade in its hand.
+**Goblin Sneak** (Minion, CV 30, level 1). **2 ticks.** Armor Defense 13, Ward Defense 12. Arms Modifier +2, Power Modifier +2. Instinct +2, Body 0, Mind 0, Appeal −1. Speed 6, Reach 1, Medium. 3 AP. It acts in squads of 2. Tag: Goblin. A short blade in its hand.
 
-- **Shiv** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *A short, ugly blade, and it knows where the armor ends.* Tier 2: [V] 1d10 Pi. Tier 3: [V] 2 + 1d12 Pi. Critical: [V] 1d10! Pi.
+- **Shiv** (Basic attack; At-will, 1 AP; [Arms, Weapon, Melee, Strike]; Reach (1); one creature; Arms vs. Armor Defense). *A short, ugly blade, and it knows where the armor ends.* Tier 2: [V] 1d10 Pi. Tier 3: [V] 2 + 1d12 Pi. Critical: [V] 1d10! Pi.
 - **Jeer** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike]; 6 sq.; one creature; Power vs. Ward Defense). *It says something about your mother, in Goblin, and somehow you understand.* Tier 2: [R] 1d10 Ps. Tier 3: [R] 1d10 Ps; Taunted by the goblin (1 round). Critical: [R] 1d10! Ps.
-- **Knife in the Back** (Round, 2 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *You were looking at the other one.* Requirement: the goblin flanks the target. Tier 2: [V] 6 + 1d12 Pi. Tier 3: [V] 13 + 1d12 Pi.
+- **Knife in the Back** (Round, 2 AP; [Arms, Weapon, Melee, Strike]; Reach (1); one creature; Arms vs. Armor Defense). *You were looking at the other one.* Requirement: the goblin flanks the target. Tier 2: [V] 6 + 1d12 Pi. Tier 3: [V] 13 + 1d12 Pi.
 - **Goblin Shriek** (Reaction; Encounter, 1R; 6 sq.; the triggering creature). *One of them drops, and the rest remember how much they hate you.* Trigger: a Goblin ally goes Down. Effect: the goblin uses Jeer (1A) against the target.
 
 ### Grave Wisp
 
-**Grave Wisp** (Grunt, CV 50, level 1). Health 22 (Vigor 8, Resolve 14). Armor Defense 12, Ward Defense 14. Weapon Modifier +2, Power Modifier +2. Mind +2, Instinct +1, Appeal 0, Body −1. Speed 6, Reach 1, Medium. 3 AP.
+**Grave Wisp** (Grunt, CV 50, level 1). Health 22 (Vigor 8, Resolve 14). Armor Defense 12, Ward Defense 14. Arms Modifier +2, Power Modifier +2. Mind +2, Instinct +1, Appeal 0, Body −1. Speed 6, Reach 1, Medium. 3 AP.
 
 **Resistance** Psychic 3 · **Weakness** Holy 3 · **Immunity** Cold
 
@@ -189,21 +189,21 @@ The four creatures of the next playtest, one for each rank. **Their numbers are 
 
 ### Orc Warrior
 
-**Orc Warrior** (Standard, CV 100, level 1). Health 45 (Vigor 28, Resolve 17). Armor Defense 13, Ward Defense 13. Weapon Modifier +2, Power Modifier +2. Body +2, Instinct +1, Appeal +1, Mind −1. Speed 5, Reach 1, Medium, Steadiness 0. 4 AP. A war axe in one hand, the other free, javelins on its back.
+**Orc Warrior** (Standard, CV 100, level 1). Health 45 (Vigor 28, Resolve 17). Armor Defense 13, Ward Defense 13. Arms Modifier +2, Power Modifier +2. Body +2, Instinct +1, Appeal +1, Mind −1. Speed 5, Reach 1, Medium, Steadiness 0. 4 AP. A war axe in one hand, the other free, javelins on its back.
 
-- **Hamstringing Axe** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (1); one creature; Weapon vs. Armor Defense). *The orc cuts low, at the leg that would carry you away.* Tier 2: [V] 2 + 1d10! Sl. Tier 3: [V] 8 + 1d12! Sl; Hindered (EoT). Critical: [V] 1d10! Sl.
-- **Barbed Javelin** (Basic attack; At-will, 1 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). *The orc throws a short spear that stays in the wound.* Setup: the orc draws a javelin. Tier 2: [V] 2 + 1d10! Pi. Tier 3: [V] 2 + 1d10! Pi; Lingering 1d10 Pi (Bo/In). Critical: [V] 1d10! Pi.
+- **Hamstringing Axe** (Basic attack; At-will, 1 AP; [Arms, Weapon, Melee, Strike]; Reach (1); one creature; Arms vs. Armor Defense). *The orc cuts low, at the leg that would carry you away.* Tier 2: [V] 2 + 1d10! Sl. Tier 3: [V] 8 + 1d12! Sl; Hindered (EoT). Critical: [V] 1d10! Sl.
+- **Barbed Javelin** (Basic attack; At-will, 1 AP; [Arms, Weapon, Ranged, Strike]; 6 sq.; one creature; Arms vs. Armor Defense). *The orc throws a short spear that stays in the wound.* Setup: the orc draws a javelin. Tier 2: [V] 2 + 1d10! Pi. Tier 3: [V] 2 + 1d10! Pi; Lingering 1d10 Pi (Bo/In). Critical: [V] 1d10! Pi.
 - **War Howl** (Round, 2 AP; [Power, Save, Area, Fear]; Area: 2 Emanation; all enemies in the Area; Mind Save against its Power DC, 13). *The orc throws its head back and howls, and the sound gets into your bones.* Tier 1: [R] 5 + 1d12! Ps; Vulnerable 1 (EoT). Tier 2: [R] 4 + 1d10! Ps. Tier 3: no effect.
 - **Blood for Blood** (Reaction; Round, 1R; 2 sq.; the triggering creature). *The wound only makes it angrier.* Requirement: the orc is Bloodied. Trigger: the target deals Vigor damage to the orc (the blow that makes it Bloodied counts). Effect: the orc Advances up to 2 toward the target, then makes a Basic attack against it with 1 Bane.
 - **Cornered** (Feature). *Hurt, it stops fencing and starts throwing its weight around.* While the orc is Bloodied, its [[Shove]] gains 1 Boon.
 
 ### Ogre Chieftain
 
-**Ogre Chieftain** (Elite, CV 200, level 1). Health 90 (Vigor 55, Resolve 35). Armor Defense 14, Ward Defense 12. Weapon Modifier +2, Power Modifier +2. Body +3, Instinct +1, Appeal +1, Mind −1. Speed 5, Reach 2, Large (4), Steadiness 1. 4 AP. A club in one hand, the other free. Tag: Ogre.
+**Ogre Chieftain** (Elite, CV 200, level 1). Health 90 (Vigor 55, Resolve 35). Armor Defense 14, Ward Defense 12. Arms Modifier +2, Power Modifier +2. Body +3, Instinct +1, Appeal +1, Mind −1. Speed 5, Reach 2, Large (4), Steadiness 1. 4 AP. A club in one hand, the other free. Tag: Ogre.
 
-- **Crushing Grip** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (2); one creature; Weapon vs. Armor Defense). *A hand closes round you like a door shutting.* Tier 2: [V] 2 + 1d10! Bl. Tier 3: [V] 8 + 1d12! Bl; Grabbed. Critical: [V] 1d10! Bl. The ogre holds one creature at a time: a new Grab lets the first go.
+- **Crushing Grip** (Basic attack; At-will, 1 AP; [Arms, Melee, Strike]; Reach (2); one creature; Arms vs. Armor Defense). *A hand closes round you like a door shutting.* Tier 2: [V] 2 + 1d10! Bl. Tier 3: [V] 8 + 1d12! Bl; Grabbed. Critical: [V] 1d10! Bl. The ogre holds one creature at a time: a new Grab lets the first go.
 - **Roar** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike, Fear]; 6 sq.; one creature; Power vs. Ward Defense). *It turns its whole face toward you and bellows.* Tier 2: [R] 2 + 1d10! Ps. Tier 3: [R] 2 + 1d10! Ps; Staggered (EoT). Critical: [R] 1d10! Ps.
-- **Great Sweep** (Round, 2 AP; [Weapon, Melee, Strike]; Reach (2); up to two creatures; Weapon vs. Armor Defense). *The club goes round at chest height.* Tier 2: [V] 6 + 1d12 Bl. Tier 3: [V] 13 + 1d12 Bl.
-- **Hurled Goblin** (Round, 2 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). *The goblin has time to look surprised.* Requirement: a willing Minion ally is within the ogre's Reach. Tier 2: [V] 2 + 1d10! Bl. Tier 3: [V] 5 + 1d12! Bl. Effect: the ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions.
-- **Crack the Ground** (its Encounter Action; Encounter, 2 AP; [Weapon, Save, Area]; Area: Line 3; all creatures in the Area; Instinct Save against its Weapon DC, 13). *It brings the club down two-handed, and the floor gives.* Tier 1: [V] 20 + 2d12 Bl. Tier 2: [V] 11 + 1d12 Bl. Tier 3: no effect. Effect: the squares of the Line are Difficult Terrain for every creature (EoE).
+- **Great Sweep** (Round, 2 AP; [Arms, Weapon, Melee, Strike]; Reach (2); up to two creatures; Arms vs. Armor Defense). *The club goes round at chest height.* Tier 2: [V] 6 + 1d12 Bl. Tier 3: [V] 13 + 1d12 Bl.
+- **Hurled Goblin** (Round, 2 AP; [Arms, Ranged, Strike]; 6 sq.; one creature; Arms vs. Armor Defense). *The goblin has time to look surprised.* Requirement: a willing Minion ally is within the ogre's Reach. Tier 2: [V] 2 + 1d10! Bl. Tier 3: [V] 5 + 1d12! Bl. Effect: the ogre places the Minion in an empty square adjacent to the target (hit or miss); it takes no damage and triggers no Reactions.
+- **Crack the Ground** (its Encounter Action; Encounter, 2 AP; [Arms, Weapon, Save, Area]; Area: Line 3; all creatures in the Area; Instinct Save against its Arms DC, 13). *It brings the club down two-handed, and the floor gives.* Tier 1: [V] 20 + 2d12 Bl. Tier 2: [V] 11 + 1d12 Bl. Tier 3: no effect. Effect: the squares of the Line are Difficult Terrain for every creature (EoE).
 - **Backhand** (Reaction; Turn, 1R; the triggering creature). *You stood in its reach as if it weren't looking.* Trigger: an enemy ends its turn adjacent to the ogre. Effect: the target takes [V] 1d6 Bl and is Pushed 2.

@@ -56,7 +56,7 @@
     },
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 1",
@@ -76,6 +76,7 @@
     }
    ],
    "traits": [
+    "arms",
     "weapon",
     "melee",
     "strike",
@@ -187,7 +188,7 @@
    "body": [
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 1",
@@ -207,6 +208,7 @@
     }
    ],
    "traits": [
+    "arms",
     "weapon",
     "ranged",
     "projectile",
@@ -239,7 +241,7 @@
     },
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 1",
@@ -255,6 +257,7 @@
     }
    ],
    "traits": [
+    "arms",
     "weapon",
     "ranged",
     "projectile",
@@ -321,12 +324,12 @@
      "text": "The target would enter a square adjacent to you."
     },
     {
-     "label": "Effect",
-     "text": "You Evade 1, then make this attack."
+     "label": "Setup",
+     "text": "You Evade 1."
     },
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 1",
@@ -342,6 +345,7 @@
     }
    ],
    "traits": [
+    "arms",
     "weapon",
     "ranged",
     "projectile",
@@ -356,7 +360,7 @@
     "moment": "enemyAdjacent",
     "momentRange": 0,
     "momentTarget": "subject",
-    "automationNote": "offered by itself in the Reactions message when an enemy would enter a square adjacent to you (Move back: it stops before that square), once a round; Use: the Evade 1 by its button on the card, then the shot (Tier 1 [V] [Mod], Tier 2 [V] 1[W], Tier 3 [V] 1[W] + [Mod]).",
+    "automationNote": "offered by itself in the Reactions message when an enemy would enter a square adjacent to you (Move back: it stops before that square), once a round; Use: the Setup's Evade 1 (the bottom bar, optional), then the shot (Tier 1 [V] [Mod], Tier 2 [V] 1[W], Tier 3 [V] 1[W] + [Mod]).",
     "automation": "silver"
    }
   },
@@ -436,10 +440,11 @@
    "body": [
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     }
    ],
    "traits": [
+    "arms",
     "weapon",
     "ranged",
     "projectile",
@@ -640,7 +645,7 @@
    "body": [
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 1",
@@ -664,6 +669,7 @@
     }
    ],
    "traits": [
+    "arms",
     "weapon",
     "ranged",
     "projectile",
@@ -697,10 +703,11 @@
    "body": [
     {
      "label": "Effect",
-     "text": "For 2 rounds, the Area is Difficult Terrain and [[Hazardous Terrain]] for enemies [HT: Entering, Turn, Movement]: [V] damage equal to 2 + your Weapon Modifier, of your weapon's subtype."
+     "text": "For 2 rounds, the Area is Difficult Terrain and [[Hazardous Terrain]] for enemies [HT: Entering, Turn, Movement]: [V] damage equal to 2 + your Arms Modifier, of your weapon's subtype."
     }
    ],
    "traits": [
+    "arms",
     "weapon",
     "ranged",
     "projectile",
@@ -717,7 +724,7 @@
      "keep": true,
      "rounds": 2
     },
-    "automationNote": "the Zone (2 rounds): Difficult Terrain and Hazardous Terrain for enemies (Entering, Turn, Movement): [V] 2 + your Weapon Modifier, Pierce (another subtype by hand).",
+    "automationNote": "the Zone (2 rounds): Difficult Terrain and Hazardous Terrain for enemies (Entering, Turn, Movement): [V] 2 + your Arms Modifier, Pierce (another subtype by hand).",
     "version": {
      "fx": {
       "all": [

@@ -10,7 +10,7 @@
 <div class="sbr"><span class="lbl">Health</span><span>high 30, low 15 (the Stage steps come with the later levels)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>6</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+0</span></div>
-<div class="sbr"><span class="lbl">Modifiers</span><span>+2 and +1: you choose which is your Weapon Modifier and which your Power Modifier</span></div>
+<div class="sbr"><span class="lbl">Modifiers</span><span>+2 and +1: you choose which is your Arms Modifier and which your Power Modifier</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Heavy</span></div>
 <div class="sbr"><span class="lbl">Escalation hook</span><span>An ally becomes Bloodied or goes Down (Kindled Wrath, level 2)</span></div>
 </div>

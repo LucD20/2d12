@@ -11,6 +11,10 @@ These are class traits. An Action with the Paladin trait is a **Paladin Action**
 
 These Actions have an Area: they affect every creature in it and ignore Senses (see [[Areas]] and [[Senses]]).
 
+### Arms
+
+These Actions roll your **Arms Modifier** (see [[Arms, Power and Signature Modifiers]]): a blow, a shot, a throw, a grip, whatever the creature uses to do it. Arms says which Modifier the Action rolls; whether it needs a weapon is the [[Weapon]] trait's.
+
 ### Body, Mind, Appeal and Instinct
 
 An Action with one of these traits rolls that Attribute Modifier. A Body Action rolls Body, and so on. Some effects care about them, for example "your Body Actions gain 1 Boon".
@@ -67,7 +71,7 @@ An Action with the Self trait always targets you, the origin of the Action. An [
 
 ### Signature
 
-These Actions roll your **Signature Modifier**: the higher of your Weapon Modifier and your Power Modifier, even when they also have the Weapon or Power trait. They keep their other traits: a [Signature, Weapon] Action still needs a weapon and gets every effect on [Weapon] Actions (see [[Rolls]]). Signature is used for a class's own Actions, such as the Paladin's Smite.
+These Actions roll your **Signature Modifier**: the higher of your Arms Modifier and your Power Modifier, even when they also have the Arms or Power trait. They keep their other traits: a [Signature, Weapon] Action still needs a weapon and gets every effect on [Weapon] Actions (see [[Rolls]]). Signature is used for a class's own Actions, such as the Paladin's Smite.
 
 ### Strike
 
@@ -83,9 +87,9 @@ When the roll of an Unfailing Action gets a Tier 1, that use doesn't count towar
 
 ### Weapon
 
-This uses a weapon you are wielding. Actions with this trait require a weapon, and their Distance is the weapon's Range unless they say otherwise.
+This uses a weapon you are wielding. Actions with this trait require a weapon, and their Distance is the weapon's Range unless they say otherwise. They deal its damage ([W]) and use its properties, its Mastery and its Techniques.
 
-These Actions roll your **Weapon Modifier**.
+The Weapon trait doesn't say which Modifier the Action rolls: its roll trait does ([[Arms]], [[Power]] or [[Signature]]). Most Weapon Actions are [Arms, Weapon].
 
 A Weapon Action with the Melee or Ranged trait needs a weapon with that property. A Weapon Action without them gets the one that matches the weapon you use.
 

@@ -3,7 +3,7 @@
 
 | Term | Meaning |
 |---|---|
-| [[Modifier Damage\|**[Mod]**]] | Damage equal to the Modifier used on the roll: your Weapon Modifier on a Weapon roll, your Power Modifier on a Power roll, your Signature Modifier on a Signature roll, or your Attribute Modifier on an Attribute Action. |
+| [[Modifier Damage\|**[Mod]**]] | Damage equal to the Modifier used on the roll: your Arms Modifier on an Arms roll, your Power Modifier on a Power roll, your Signature Modifier on a Signature roll, or your Attribute Modifier on an Attribute Action. |
 | [[Weapon Damage\|**[W]**]] | The damage of your weapon, with the weapon's pool and subtype. |
 | [[Weapon Damage\|**[D]**]] | Your weapon's die on that Tier, rolled once more ("1[W] + 1[D]"). |
 | [[Damage Types\|**[V], [R]**]] | Vigor damage or Resolve damage. |
@@ -17,8 +17,11 @@
 | [[Escalation\|**Apex**]] | A class's big Encounter Action that needs Escalation 6; you choose one at level 4. |
 | [[Archer and Paladin\|**Archer Action**]] | An Action with the Archer trait: one the Archer class gives you. The trait has no rules of its own: other rules and features refer to it. |
 | [[Areas\|**Area**]] | Where an Action's effect goes, written on its own line (with a Distance line when the area can be placed away from you). Those Actions have the Area trait: they target everyone they affect, ignoring Senses. |
-| [[Defenses\|**Armor**]] | Armor Defense (AD) — 11 + Armor value + other items + bonuses − penalties. The Defense a Weapon Action usually attacks. |
+| [[Defenses\|**Armor**]] | Armor Defense (AD) — 11 + Armor value + other items + bonuses − penalties. The Defense an Arms Action usually attacks. |
 | [[Armor Training\|**Armor Training**]] | The heaviest armor a class can wear (it includes the lighter ones). Untrained: your Rolls are Doomed, Actions against your Armor or Ward are Favored. |
+| [[Save Actions\|**Arms DC, Power DC**]] | The DC of your [Save] Action: 11 + the Modifier its other traits name (Arms, Power or Signature). |
+| [[Arms, Power and Signature Modifiers\|**Arms Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Arms Actions roll it. |
+| [[Rolls\|**Arms roll**]] | An Action with the Arms trait. |
 | [[At-will\|**At-will**]] | A Frequency: any number of uses, 1 Bane for each use after the first in a turn; an At-will [Strike] used again in a turn is Doomed instead (At-will [Strike] Actions share one count). |
 | [[Rolls\|**Attribute Action**]] | An Action that rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait (not a Weapon, Power or Signature roll). |
 | [[Attribute DCs\|**Attribute DC**]] | 11 + an Attribute, named by it: Body DC, Mind DC, Appeal DC, Instinct DC. What an Attribute Action rolls against, and the DC of a Save set by an Attribute. |
@@ -140,7 +143,7 @@
 | [[Hallmarks and Picks\|**Pick**]] | One choice from the other Actions a class offers; the level list says how many you take and of which kind. |
 | [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
 | [[Point Out\|**Point Out**]] | A Basic Action (At-will, 1 AP): an ally (Tier 2) or every ally within 10 squares (Tier 3) perceives a creature you perceive 1 step better. |
-| [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Power Actions roll it; Ward Defense adds it. |
+| [[Arms, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Power Actions roll it; Ward Defense adds it. |
 | [[Rolls\|**Power roll**]] | An Action with the Power trait. |
 | [[Pressed\|**Pressed**]] | A condition with a value: your [Strike] Actions take that many Pressure Banes (at most 2 count). |
 | [[Named Boons and Banes\|**Pressure**]] | A named Bane an effect of another creature puts on you. Up to 2. |
@@ -179,7 +182,7 @@
 | [[Shake Off\|**Shake Off**]] | The Basic Action (1 AP, Handle) that ends Lingering: on yourself or a Lingering creature within your Reach, it makes a Save. |
 | [[Shattered\|**Shattered**]] | Down with Resolve as your Dominant Damage: Slowed 1, or your Slowed value + 1 (at most 3); the first time in an encounter, roll on the Shattered Table, then give up or keep fighting. |
 | [[Sickened\|**Sickened**]] | A condition with a value: that many Banes on your Body and Instinct Saves, and you can't swallow anything. |
-| [[Weapon, Power and Signature Modifiers\|**Signature Modifier**]] | The higher of your Weapon Modifier and Power Modifier. Signature Actions roll it. |
+| [[Arms, Power and Signature Modifiers\|**Signature Modifier**]] | The higher of your Arms Modifier and Power Modifier. Signature Actions roll it. |
 | [[Rolls\|**Signature roll**]] | An Action with the Signature trait. |
 | [[Size\|**Size**]] | A creature's rank from 1 to 7, and how many squares it occupies. |
 | [[Talents\|**Skill Talent**]] | A Talent slot for skills, out of combat; they come with the Skills rules. |
@@ -228,10 +231,7 @@
 | [[Vulnerable\|**Vulnerable**]] | A condition with a value: Actions against you gain that many Boons. |
 | [[Defenses\|**Ward**]] | Ward Defense (WD) — 11 + Power Modifier + Ward value + other items + bonuses − penalties. The Defense a Power Action usually attacks. |
 | [[Resistance, Weakness and Immunity\|**Weakness**]] | Weakness (subtype) N: each Action's damage of that subtype, both pools together, is increased by N once. |
-| [[Save Actions\|**Weapon DC, Power DC**]] | The DC of your [Save] Action: 11 + the Modifier its other traits name (Weapon, Power or Signature). |
 | [[Weapon Groups\|**Weapon Group**]] | Swords, Daggers, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is never lower than half your best in its group. |
-| [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Weapon Actions roll it. |
-| [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait. |
 | [[Weapons\|**Weapon Technique**]] | A weapon's own Action, unlocked with Mastery; used only with that weapon, while you wield it. |
 | [[Willing and Unwilling\|**Willing, Unwilling**]] | Willing: a creature that accepts the effect (an Unconscious creature counts as willing). Unwilling: one that doesn't. |
 | [[Wounds and the Tables\|**Wound**]] | A result of the Dying or Shattered Table (Body or Mind). |

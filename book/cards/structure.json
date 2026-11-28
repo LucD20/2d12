@@ -147,6 +147,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "ranged",
    "strike"
@@ -159,7 +160,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 2",
@@ -187,6 +188,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "strike",
    "weapon"
   ],
@@ -479,7 +481,7 @@
    },
    {
     "label": "Effect",
-    "text": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within the melee Range of the Melee weapon you attack with (a [[Thrown]] weapon used in hand). You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target, with that weapon. That Basic Attack counts toward At-will Banes."
+    "text": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within the melee Range of the Melee weapon you attack with (a [[Thrown]] weapon used in hand). You can't Charge through Difficult Terrain (an ally's space is Difficult Terrain) or an enemy's space, even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target, with that weapon."
    }
   ],
   "blocks": [],
@@ -532,6 +534,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "ranged",
    "projectile",
@@ -545,7 +548,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 2",
@@ -796,6 +799,7 @@
   "area": "3 Burst",
   "target": null,
   "traits": [
+   "arms",
    "weapon",
    "ranged",
    "projectile",
@@ -806,7 +810,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "For 2 rounds, the Area is Difficult Terrain and [[Hazardous Terrain]] for enemies [HT: Entering, Turn, Movement]: [V] damage equal to 2 + your Weapon Modifier, of your weapon's subtype."
+    "text": "For 2 rounds, the Area is Difficult Terrain and [[Hazardous Terrain]] for enemies [HT: Entering, Turn, Movement]: [V] damage equal to 2 + your Arms Modifier, of your weapon's subtype."
    }
   ],
   "blocks": [],
@@ -851,6 +855,7 @@
   "area": "Line 3",
   "target": "All creatures in the Area",
   "traits": [
+   "arms",
    "weapon",
    "save",
    "area"
@@ -937,7 +942,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
-   "weapon",
+   "arms",
    "melee",
    "strike"
   ],
@@ -945,7 +950,7 @@
   "body": [
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 2",
@@ -1013,6 +1018,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "melee",
    "strike",
@@ -1030,7 +1036,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 1",
@@ -1612,6 +1618,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "strike",
    "weapon"
   ],
@@ -1785,6 +1792,7 @@
   "area": null,
   "target": "Up to two creatures",
   "traits": [
+   "arms",
    "weapon",
    "melee",
    "strike"
@@ -1793,7 +1801,7 @@
   "body": [
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 2",
@@ -1933,6 +1941,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "melee",
    "strike"
@@ -1941,7 +1950,7 @@
   "body": [
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 2",
@@ -2313,7 +2322,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
-   "weapon",
+   "arms",
    "ranged",
    "strike"
   ],
@@ -2325,7 +2334,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 2",
@@ -2501,6 +2510,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "melee",
    "strike"
@@ -2513,7 +2523,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 2",
@@ -3152,6 +3162,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "ranged",
    "projectile",
@@ -3162,7 +3173,7 @@
   "body": [
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 1",
@@ -3501,6 +3512,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "projectile",
    "ranged",
    "strike",
@@ -3518,7 +3530,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 1",
@@ -3565,7 +3577,7 @@
     "body": [
      {
       "label": "Attack",
-      "text": "Weapon vs. Armor Defense"
+      "text": "Arms vs. Armor Defense"
      },
      {
       "label": "Tier 1",
@@ -3823,6 +3835,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "melee",
    "strike"
@@ -3835,7 +3848,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 1",
@@ -3985,6 +3998,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "melee",
    "strike"
@@ -3993,7 +4007,7 @@
   "body": [
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 2",
@@ -4204,6 +4218,7 @@
   "area": null,
   "target": "One enemy",
   "traits": [
+   "arms",
    "weapon",
    "ranged",
    "projectile",
@@ -4217,12 +4232,12 @@
     "text": "The target would enter a square adjacent to you."
    },
    {
-    "label": "Effect",
-    "text": "You Evade 1, then make this attack."
+    "label": "Setup",
+    "text": "You Evade 1."
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 1",
@@ -4452,6 +4467,7 @@
   "area": null,
   "target": "Up to three creatures",
   "traits": [
+   "arms",
    "weapon",
    "ranged",
    "projectile",
@@ -4466,7 +4482,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 1",
@@ -4616,6 +4632,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "melee",
    "strike"
@@ -4624,7 +4641,7 @@
   "body": [
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 1",
@@ -4676,6 +4693,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "ranged",
    "projectile",
@@ -4685,7 +4703,7 @@
   "body": [
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    }
   ],
   "blocks": [
@@ -4896,6 +4914,7 @@
   "area": "3 Burst",
   "target": "All creatures in the Area",
   "traits": [
+   "arms",
    "weapon",
    "ranged",
    "projectile",
@@ -4907,7 +4926,7 @@
   "body": [
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 1",
@@ -5043,6 +5062,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "arms",
    "weapon",
    "ranged",
    "projectile",
@@ -5056,7 +5076,7 @@
    },
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Arms vs. Armor Defense"
    },
    {
     "label": "Tier 1",

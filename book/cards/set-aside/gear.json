@@ -7,6 +7,7 @@
    "weapon": "Dagger",
    "flavor": "In, a quick cut, and out before they can answer.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -36,6 +37,7 @@
    "weapon": "Longsword",
    "flavor": "The blade strikes and comes straight back to guard.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -65,6 +67,7 @@
    "weapon": "Greatsword",
    "flavor": "A wide, heavy arc for anyone standing too close.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -94,6 +97,7 @@
    "weapon": "Handaxe",
    "flavor": "The beard of the axe catches, and you pull.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -123,6 +127,7 @@
    "weapon": "Greataxe",
    "flavor": "A blow that splits armor and leaves the flesh open.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -152,6 +157,7 @@
    "weapon": "Mace",
    "flavor": "A crack on the helm, and their next swing goes wide.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -181,6 +187,7 @@
    "weapon": "Maul",
    "flavor": "All the weight of the head, low and through.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -210,6 +217,7 @@
    "weapon": "Spear",
    "flavor": "A full extension that reaches farther than they thought.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -239,6 +247,7 @@
    "weapon": "Pike",
    "flavor": "The point stays between you and them, and it pushes.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -268,6 +277,7 @@
    "weapon": "Knuckle Dagger",
    "flavor": "A fist with a blade in it, right under the ribs.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -297,6 +307,7 @@
    "weapon": "Shortbow",
    "flavor": "Loose, and be gone before the arrow lands.",
    "traits": [
+    "arms",
     "ranged",
     "shot",
     "strike",
@@ -332,6 +343,7 @@
    "weapon": "Longbow",
    "flavor": "A full draw, aimed where the armor gives.",
    "traits": [
+    "arms",
     "ranged",
     "shot",
     "strike",
@@ -366,6 +378,7 @@
    "weapon": "Hand Crossbow",
    "flavor": "A small bolt in the leg: small, and enough.",
    "traits": [
+    "arms",
     "ranged",
     "shot",
     "strike",
@@ -396,6 +409,7 @@
    "weapon": "Crossbow",
    "flavor": "A bolt to the knee, and they go nowhere.",
    "traits": [
+    "arms",
     "ranged",
     "shot",
     "strike",
@@ -431,6 +445,7 @@
    "weapon": "Pistol",
    "flavor": "Too close for a bow. Not too close for this.",
    "traits": [
+    "arms",
     "gun",
     "ranged",
     "strike",
@@ -462,6 +477,7 @@
    "weapon": "Musket",
    "flavor": "The shot and the smoke, and they are on the ground.",
    "traits": [
+    "arms",
     "gun",
     "ranged",
     "strike",

@@ -102,21 +102,22 @@ A **Roll** is anything you roll. There are six kinds, and every roll is exactly 
 |---|---|
 | **Check** | One Attribute Modifier against a DC: a "Body Check". A card can call for one inside an Action (Break Free, Tumble, Aid): that roll is a Check, not an Attribute Action. |
 | **Save** | A roll to resist something: an "Appeal Save" (see [[Saves]]). |
-| **Weapon roll** | An Action with the Weapon trait, and not the Signature or Save trait. It rolls your [[Weapon, Power and Signature Modifiers\|Weapon Modifier]]. |
+| **Arms roll** | An Action with the Arms trait, and not the Signature or Save trait. It rolls your [[Arms, Power and Signature Modifiers\|Arms Modifier]]. |
 | **Power roll** | An Action with the Power trait, and not the Signature or Save trait. It rolls your Power Modifier. |
 | **Signature roll** | An Action with the Signature trait. It rolls your Signature Modifier. |
 | **Attribute Action** | Any other Action that rolls: it rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait. |
 
 A [Save] Action doesn't roll: its targets roll Saves (see [[Save Actions]]). Damage dice and the [[Dying]] and [[Shattered]] Tables are **not Rolls**: nothing that changes a Roll (a Boon, Doomed, Unconscious) changes them.
 
-An effect on Actions names their **trait**: "1 Boon on [Weapon] Actions" helps every Action with the Weapon trait, whatever Modifier it rolls (a [Signature, Weapon] Action too). An effect that names a Check or a Save applies only to that kind. An effect that names an Attribute and "Rolls" applies to every kind that rolls that Attribute: its Checks, its Saves and its Attribute Actions. Weapon, Power and Signature rolls use no Attribute. "Your Rolls" means all of them.
+An effect on Actions names their **trait**: "1 Boon on [Weapon] Actions" helps every Action with the Weapon trait, whatever Modifier it rolls (a [Signature, Weapon] Action too, and an [Arms] Action only if it uses a weapon). An effect that names a Check or a Save applies only to that kind. An effect that names an Attribute and "Rolls" applies to every kind that rolls that Attribute: its Checks, its Saves and its Attribute Actions. Arms, Power and Signature rolls use no Attribute. "Your Rolls" means all of them.
 
-| The effect says | Attribute\* Check | Attribute\* Save | Attribute\* Action | Weapon roll | Power roll | Signature roll |
+| The effect says | Attribute\* Check | Attribute\* Save | Attribute\* Action | Arms roll | Power roll | Signature roll |
 |---|---|---|---|---|---|---|
 | 1 Boon on Attribute\* Checks | ✔ | — | — | — | — | — |
 | 1 Boon on Attribute\* Saves | — | ✔ | — | — | — | — |
 | 1 Boon on Attribute\* Rolls | ✔ | ✔ | ✔ | — | — | — |
-| 1 Boon on [Weapon] Actions | — | — | — | ✔ | — | ✔ if it has the Weapon trait |
+| 1 Boon on [Weapon] Actions | — | — | — | ✔ if it has the Weapon trait | ✔ if it has the Weapon trait | ✔ if it has the Weapon trait |
+| 1 Boon on [Arms] Actions | — | — | — | ✔ | — | ✔ if it has the Arms trait |
 | 1 Boon on [Power] Actions | — | — | — | — | ✔ | ✔ if it has the Power trait |
 
 \*Body, Mind, Appeal or Instinct (the same one in each row and column).
@@ -127,7 +128,7 @@ A **Check** is a roll of one Attribute Modifier against a DC, written "Body Chec
 
 ### Action DC
 
-When a rule asks you to beat what an Action did to you (to [[Break Free]] of it, or to move a creature it Immobilized), the DC is that Action's **Action DC**: **11 + the Modifier the Action used** (the Weapon Modifier for a Weapon Action, the Power Modifier for a Power Action, the Attribute Modifier for an Attribute Action, and so on). With no Action behind the effect, it is 13; with several, the highest. A Save Action's own DC is written under [[Save Actions]].
+When a rule asks you to beat what an Action did to you (to [[Break Free]] of it, or to move a creature it Immobilized), the DC is that Action's **Action DC**: **11 + the Modifier the Action used** (the Arms Modifier for an Arms Action, the Power Modifier for a Power Action, the Attribute Modifier for an Attribute Action, and so on). With no Action behind the effect, it is 13; with several, the highest. A Save Action's own DC is written under [[Save Actions]].
 
 ### Attribute DCs
 
@@ -143,7 +144,7 @@ The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1
 
 ### Save Actions
 
-An Action with the **Save** trait doesn't roll: each target rolls the Save the card names (its roll line says, for example, **Save: Instinct**). The DC comes from the Action's other traits: **11 + your Weapon Modifier** for a [Save, Weapon] Action, **11 + your Power Modifier** for a [Power, Save] Action, **11 + your Signature Modifier** for a [Save, Signature] Action, and for a Save Action that rolls an Attribute (such as [Body, Save]), **11 + that Attribute**. These are your **Power DC**, your **Weapon DC**, your **Signature DC** and the DC of an Attribute (your **Body DC**): a rule or a card can name one ("an Appeal Save against your Power DC").
+An Action with the **Save** trait doesn't roll: each target rolls the Save the card names (its roll line says, for example, **Save: Instinct**). The DC comes from the Action's other traits: **11 + your Arms Modifier** for an [Arms, Save] Action, **11 + your Power Modifier** for a [Power, Save] Action, **11 + your Signature Modifier** for a [Save, Signature] Action, and for a Save Action that rolls an Attribute (such as [Body, Save]), **11 + that Attribute**. These are your **Power DC**, your **Arms DC**, your **Signature DC** and the DC of an Attribute (your **Body DC**): a rule or a card can name one ("an Appeal Save against your Power DC").
 
 The tiers are the target's result: **Tier 1 is the worst for them**. A line for two Tiers is written **Tier 1 or 2**.
 
@@ -234,7 +235,7 @@ Actions are written as cards. Every card has the same structure, from top to bot
 4. **The traits**, on a line of their own.
 5. **Distance and Area:** how far the Action reaches, and the area it affects.
 6. **Target:** whom it affects.
-7. **The roll**, as the first line of what the Action does: **Attack: Weapon vs. Armor Defense** (you roll that Modifier against that [[Defenses|Defense]]) or **Save: Appeal** (each target rolls that [[Saves|Save]]).
+7. **The roll**, as the first line of what the Action does: **Attack: Arms vs. Armor Defense** (you roll that Modifier against that [[Defenses|Defense]]) or **Save: Appeal** (each target rolls that [[Saves|Save]]).
 8. **The Tiers:** what happens on each result of the roll. A line can stand for two Tiers ("Tier 1 or 2"); a Tier that isn't written does nothing.
 9. **The other lines.** Every line of a card has a label that says what it is:
 
@@ -268,7 +269,7 @@ Target counts are spelled out in words; distances, areas and other mechanical va
 | [[Weapon Damage\|**[W]**]] | The damage of your weapon. |
 | [[Weapon Damage\|**[D]**]] | Your weapon's die on that Tier, rolled once more. |
 | [[Rules Language\|**[Trait]**]] | An Action with that trait: "a [Strike] Action", "[Melee] Actions". Several traits in one pair of brackets mean an Action with all of them: "[Ranged, Weapon] Actions". |
-| [[Modifier Damage\|**[Mod]**]] | Damage equal to the Modifier used on the roll: your Weapon Modifier on a Weapon roll, your Power Modifier on a Power roll, your Signature Modifier on a Signature roll, or your Attribute Modifier on an Attribute Action. |
+| [[Modifier Damage\|**[Mod]**]] | Damage equal to the Modifier used on the roll: your Arms Modifier on an Arms roll, your Power Modifier on a Power roll, your Signature Modifier on a Signature roll, or your Attribute Modifier on an Attribute Action. |
 | [[Hazardous Terrain\|**[HT: …]**]] | Hazardous Terrain: written in the text of an effect that creates an area, with its patterns (Entering, Turn, Movement). |
 | [[Damage Subtypes\|{{dc:Bl}}, {{dc:Co}}, {{dc:Ho}}, {{dc:Pi}}, {{dc:Ps}}, {{dc:Sl}}...]] | Damage subtypes, always two letters: Blunt, Cold, Holy, Pierce, Psychic, Slash... |
 | [[Areas\|**Area: 1 Emanation**]] | The area an Action affects, on its own line. A **Distance** line says how far away it can be placed. |

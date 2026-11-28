@@ -6,7 +6,7 @@
 Each weapon belongs to a [[Weapon Groups|Weapon Group]] and has its own **Weapon Technique**, which you unlock with [[Mastery]]. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its Weapon Actions use that weapon, never another one.
 
 > [!example]
-> A Paladin with a Weapon Modifier of +1 deals [V] 6 + 1d4! + 1 Sl on a Tier 2 with a Longsword Basic Attack: 8 to 10, and more when the die explodes.
+> A Paladin with a Arms Modifier of +1 deals [V] 6 + 1d4! + 1 Sl on a Tier 2 with a Longsword Basic Attack: 8 to 10, and more when the die explodes.
 
 ### Weapon Damage [W]
 

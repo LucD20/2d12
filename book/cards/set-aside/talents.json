@@ -62,6 +62,7 @@
    "level": 1,
    "flavor": "You spin, and everything within reach feels the blade.",
    "traits": [
+    "arms",
     "area",
     "melee",
     "self",
@@ -163,6 +164,7 @@
    "category": "Brawler",
    "flavor": "A flurry of blows until something gives.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -221,6 +223,7 @@
    "category": "Kickboxer",
    "flavor": "A low kick takes their legs out from under them.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"
@@ -255,6 +258,7 @@
    "level": 1,
    "flavor": "Patience turns a good shot into a sure one.",
    "traits": [
+    "arms",
     "ranged",
     "strike",
     "weapon"
@@ -388,6 +392,7 @@
    "level": 1,
    "flavor": "You drive through the line without stopping, and strike as you pass.",
    "traits": [
+    "arms",
     "melee",
     "strike",
     "weapon"

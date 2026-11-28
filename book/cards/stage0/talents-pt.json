@@ -57,7 +57,7 @@
      "heading": "Weapon mode",
      "distance": "Weapon",
      "body": [
-      { "label": "Attack", "text": "Weapon vs. Armor Defense" },
+      { "label": "Attack", "text": "Arms vs. Armor Defense" },
       { "label": "Tier 1", "text": "0." },
       { "label": "Tier 2", "text": "[V] 1[W] + [Mod] Co; an Ice Pillar." },
       { "label": "Tier 3", "text": "[V] 1[W] + [Mod] Co; an Ice Pillar." }
@@ -152,13 +152,13 @@
    "flavor": "You dart wide for the angle, and the arrow skips off one shield into the throat behind it.",
    "frequency": "Round",
    "cost": "1 AP",
-   "traits": ["projectile", "ranged", "strike", "weapon"],
+   "traits": ["arms", "projectile", "ranged", "strike", "weapon"],
    "distance": "Weapon",
    "target": "One creature",
    "body": [
     { "label": "Setup", "text": "You must Advance 2. This Advance doesn't count as leaving your square for other cards." },
     { "label": "Ricochet", "text": "The arrow can bounce to a second creature within 2 squares of the target that the target has Line of Effect to (you don't need Line of Effect to it). It takes half of the damage dealt to the target, before the target's Resistance, Weakness, Immunity and Guard (Chapter 1, Halving and splitting damage), then applies its own; none of the riders. No roll is made against it, and it isn't hit on a Tier: another card's Tier effects (Opening Shot, One More Arrow) don't apply to it." },
-    { "label": "Attack", "text": "Weapon vs. Armor Defense" },
+    { "label": "Attack", "text": "Arms vs. Armor Defense" },
     { "label": "Tier 1", "text": "0." },
     { "label": "Tier 2", "text": "[V] 1[W] + [Mod]; a ricochet." },
     { "label": "Tier 3", "text": "[V] 1[W] + [Mod]; a ricochet." }

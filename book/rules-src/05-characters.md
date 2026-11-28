@@ -5,8 +5,8 @@
 
 1. **Attributes.** All four Attributes (Body, Mind, Appeal, Instinct) start at **0**.
 2. **Species.** Apply your species' Attribute changes (the species are in the [[Species]] document). It also gives you a **Vigor** and a **Resolve** bonus, a **Speed**, your **Reach** (1), your **Steadiness** and your **Size** (all current species are Medium (3)).
-3. **Class.** Apply your class' Attribute increases. It also gives you a **high** and a **low Health value** (and the steps they grow by at each Stage), a **Rally** value, a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**. Your Speed is your species' Speed plus your class' Speed Modifier.
-4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). Choose which of your class's two Modifier values is your Weapon Modifier and which your Power Modifier (see [[Weapon, Power and Signature Modifiers]]). Choose which hand is your main hand (see [[Hands]]).
+3. **Class.** Apply your class' Attribute increases. It also gives you a **high** and a **low Health value** (and the steps they grow by at each Stage), a **Rally** value, a **Speed Modifier**, a **Arms Modifier** and a **Power Modifier**. Your Speed is your species' Speed plus your class' Speed Modifier.
+4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). Choose which of your class's two Modifier values is your Arms Modifier and which your Power Modifier (see [[Arms, Power and Signature Modifiers]]). Choose which hand is your main hand (see [[Hands]]).
 5. **[[Health Pool]].** Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.
 6. **[[Rally Points]]** = your class' Rally value + 1 (it grows with your [[Stages|Stage]]).
 7. **Level 1.** Take what your class's level list gives at level 1: its Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each) (see [[Leveling Up]]). Weapons and armor are in the [[Gear]] document.
@@ -16,7 +16,7 @@
 
 ## Classes
 
-Your class gives you Attribute increases, a **high** and a **low Health value** with their Stage steps (used for your Health Pool), a **Rally** value (used for Rally Points), a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**, and an **[[Armor Training]]**.
+Your class gives you Attribute increases, a **high** and a **low Health value** with their Stage steps (used for your Health Pool), a **Rally** value (used for Rally Points), a **Speed Modifier**, a **Arms Modifier** and a **Power Modifier**, and an **[[Armor Training]]**.
 
 When you pick your class, you choose its Attribute increases when they say "or", and the order of its Modifiers. The Attribute choices can't be changed later; the rest can, for a while (see [[Swapping on a Rest]]).
 
@@ -68,7 +68,7 @@ The levels are grouped in **Stages**: **Stage 0** is levels 1 to 3, **Stage 1** 
 
 | | Stage 0 (levels 1-3) | Stage 1 (levels 4-7) | Stage 2 (levels 8-11) | Stage 3 (levels 12-15) |
 |---|---|---|---|---|
-| **Modifiers** | your class's values (+2 and +1) | +1 to your Weapon or Power Modifier | | +1 to your Weapon and Power Modifiers |
+| **Modifiers** | your class's values (+2 and +1) | +1 to your Weapon or Power Modifier | | +1 to your Arms and Power Modifiers |
 | **Health** | your class's values | + your class's Stage 1 steps | + your class's Stage 2 steps | + your class's Stage 3 steps |
 | **Rally Points** | Rally + 1 | Rally + 2 | Rally + 3 | Rally + 4 |
 | **Stage Talent** | | at level 4 | at level 8 | at level 12 |
@@ -82,18 +82,18 @@ The levels are grouped in **Stages**: **Stage 0** is levels 1 to 3, **Stage 1** 
 
 Each of your class's Attribute increases goes to a different Attribute. A species' increase and a class's increase can go to the same Attribute.
 
-### Weapon, Power and Signature Modifiers
+### Arms, Power and Signature Modifiers
 
-Your class gives you two **Modifier values**: **+2 and +1** at level 1. One is your **Weapon Modifier**, which [[Weapon]] Actions roll; the other is your **Power Modifier**, which [[Power]] Actions roll and which sets your [[Defenses|Ward Defense]]. You choose which is which. They don't come from your Attributes, and your Attributes don't change them.
+Your class gives you two **Modifier values**: **+2 and +1** at level 1. One is your **Arms Modifier**, which [[Arms]] Actions roll (a blow, a shot, a throw); the other is your **Power Modifier**, which [[Power]] Actions roll and which sets your [[Defenses|Ward Defense]]. You choose which is which. They don't come from your Attributes, and your Attributes don't change them.
 
 They grow with your [[Stages|Stage]]: at **Stage 1** (level 4) add +1 to the one you choose, at **Stage 3** (level 12) +1 to both. A Modifier is never above +4.
 
-Your **Signature Modifier** is the higher of your Weapon Modifier and your Power Modifier. Actions with the [[Signature]] trait roll it.
+Your **Signature Modifier** is the higher of your Arms Modifier and your Power Modifier. Actions with the [[Signature]] trait roll it.
 
 Your **Attributes** set your Checks (Initiative is one), your Saves, your Defenses against an Attribute, your rolls on the Dying and Shattered Tables and the Attribute Actions, such as Shove and Trip (see [[Rolls]]).
 
 > [!example]
-> Lonny's Paladin has Weapon Modifier +1 and Power Modifier +2 (Ward Defense 13; his Signature Modifier is +2, from his Power Modifier). At level 4 he adds +1 to his Weapon Modifier: +2 / +2. At level 12 both rise: +3 / +3.
+> Lonny's Paladin has Arms Modifier +1 and Power Modifier +2 (Ward Defense 13; his Signature Modifier is +2, from his Power Modifier). At level 4 he adds +1 to his Arms Modifier: +2 / +2. At level 12 both rise: +3 / +3.
 
 ### Escalation Abilities
 

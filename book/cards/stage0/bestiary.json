@@ -12,6 +12,7 @@
    "frequency": "At-will",
    "cost": "1 AP",
    "traits": [
+    "arms",
     "weapon",
     "melee",
     "strike"
@@ -21,7 +22,7 @@
    "body": [
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 2",
@@ -53,6 +54,7 @@
    "frequency": "At-will",
    "cost": "1 AP",
    "traits": [
+    "arms",
     "weapon",
     "ranged",
     "strike"
@@ -66,7 +68,7 @@
     },
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 2",
@@ -219,6 +221,7 @@
    "frequency": "At-will",
    "cost": "1 AP",
    "traits": [
+    "arms",
     "weapon",
     "melee",
     "strike"
@@ -228,7 +231,7 @@
    "body": [
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 2",
@@ -308,6 +311,7 @@
    "frequency": "Round",
    "cost": "2 AP",
    "traits": [
+    "arms",
     "weapon",
     "melee",
     "strike"
@@ -321,7 +325,7 @@
     },
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 2",
@@ -588,7 +592,7 @@
    "frequency": "At-will",
    "cost": "1 AP",
    "traits": [
-    "weapon",
+    "arms",
     "melee",
     "strike"
    ],
@@ -597,7 +601,7 @@
    "body": [
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 2",
@@ -674,6 +678,7 @@
    "frequency": "Round",
    "cost": "2 AP",
    "traits": [
+    "arms",
     "weapon",
     "melee",
     "strike"
@@ -683,7 +688,7 @@
    "body": [
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 2",
@@ -711,7 +716,7 @@
    "frequency": "Round",
    "cost": "2 AP",
    "traits": [
-    "weapon",
+    "arms",
     "ranged",
     "strike"
    ],
@@ -724,7 +729,7 @@
     },
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Arms vs. Armor Defense"
     },
     {
      "label": "Tier 2",
@@ -755,6 +760,7 @@
    "frequency": "Encounter",
    "cost": "2 AP",
    "traits": [
+    "arms",
     "weapon",
     "save",
     "area"
@@ -790,7 +796,7 @@
      "keep": true
     },
     "automation": "gold",
-    "automationNote": "the Line 3 from the ogre's space, each creature's Instinct Save against its Weapon DC and its damage; the Line stays on the map as a Zone that is Difficult Terrain for every creature, the ogre too, until the encounter ends.",
+    "automationNote": "the Line 3 from the ogre's space, each creature's Instinct Save against its Arms DC and its damage; the Line stays on the map as a Zone that is Difficult Terrain for every creature, the ogre too, until the encounter ends.",
     "version": {
      "fx": {
       "all": [

@@ -10,7 +10,7 @@
 <div class="sbr"><span class="lbl">Health</span><span>high 24, low 12 (the Stage steps come with the later levels)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>5</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+1</span></div>
-<div class="sbr"><span class="lbl">Modifiers</span><span>+2 and +1: you choose which is your Weapon Modifier and which your Power Modifier</span></div>
+<div class="sbr"><span class="lbl">Modifiers</span><span>+2 and +1: you choose which is your Arms Modifier and which your Power Modifier</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Light</span></div>
 <div class="sbr"><span class="lbl">Starting Mastery</span><span>5 with one Projectile weapon of your choice (see [[Mastery]])</span></div>
 <div class="sbr"><span class="lbl">Escalation hook</span><span>An enemy you have damaged goes Down (Thrill of the Kill, level 2)</span></div>
@@ -35,7 +35,7 @@ Level 4 brings the Apex and the numbers of Stage 1 (see [[Stages]]); it is not w
 
 Every Archer has these four. **Shifting Aim** pays you for never shooting twice from the same square. **Darting Blade** is the knife for when a foe is next to you, where a bow is [[Ranged Combat While Engaged|Doomed]]: a quick stab, and you are out of reach again.
 
-Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's damage twice, and "3[W]" three times (see [[Weapon Damage]]). Even on a Tier 1 they deal your Weapon Modifier: an arrow of yours always finds something.
+Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's damage twice, and "3[W]" three times (see [[Weapon Damage]]). Even on a Tier 1 they deal your Arms Modifier: an arrow of yours always finds something.
 
 @@CARD:Shifting Aim@@
 
