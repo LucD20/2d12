@@ -25,19 +25,9 @@ differ):
 
 ## Starting a combat
 
-### ae-start · v0.0.539 · Rev 3 · The Strike slashes on every plate of the combat strip
-Do: Put Aveline, Kaela, an Orc Warrior and a Goblin Sneak in a combat and start it. During the orc's turn, look at the combat strip at the top; have Kaela make a Strike as a Reaction (Snap Shot) if she can.
-Expect: Every plate of the combat strip shows its AP squares and its 3 Strike slashes, the acting one's and the waiting ones' (theirs a little smaller); a Strike Kaela makes in the orc's turn fills one of hers. Everyone started with its AP (the goblin 3); no Reaction Point diamond.
-Rev: 3
-
 ## The roll dialog
 
 ## Chat cards
-
-### rv-cards · v0.0.539 · Rev 3 · Quick Shots' Critical, Lay On Hands, Consecrated Ground
-Do: Sylwen uses Quick Shots on the Orc Warrior and gets a Critical (the dialog's Tier buttons or its Flat); then Aveline uses Lay On Hands (1 AP) on Kaela; then Durgan (level 2) places Consecrated Ground and Kaela starts her turn in it.
-Expect: The Critical's question in the HUD's Situational tab reads "Apply its Critical row? You make a [Projectile, Ranged] Basic Attack (1A)" with a short Apply button and Don't apply; Apply opens a free Basic Attack (no AP) a moment after Quick Shots' own card. Quick Shots' Tier 1 is [V] 1d6! + Mod and no Evade follows. Lay On Hands' Setup frame says Continue and gives Guard 4 + Aveline's Power Modifier; Consecrated Ground gives Kaela Guard 2 + Durgan's Power Modifier.
-Rev: 3
 
 ## Conditions and their Tiers
 
@@ -45,10 +35,10 @@ Rev: 3
 
 ## Reactions and Judge
 
-### rx-slipaway · v0.0.539 · Rev 3 · Slip Away's Interact waits in the Situational tab
-Do: Kaela has Slip Away and a Dagger as well as her bow, and her HUD is on the Hands tab. The Orc Warrior ends its turn adjacent to her; use Slip Away. Then do it again on another round and press Cancel on the granted use.
-Expect: Slip Away is offered once the orc's turn has ended; Use starts her Evade 1 by itself. The HUD does not switch tabs for the granted Interact: the Situational tab shows its count, and clicking the tab shows "Interact" (0 AP, from Slip Away); using it costs no AP. Cancel skips it.
-Rev: 3
+### rx-slipaway · v0.0.540 · Rev 4 · Slip Away's Interact waits in the Situational tab
+Do: Kaela has Slip Away and a Dagger as well as her bow. The Orc Warrior ends its turn adjacent to her; use Slip Away. Then click the Situational tab and the granted Interact. On another round, use Slip Away again and press Cancel on the granted use.
+Expect: Use makes only her Evade 1: no Interact window opens. The Situational tab counts the granted Interact (0 AP, from Slip Away), and the Interact window opens only when she clicks it there; it costs no AP. Cancel skips it.
+Rev: 4
 
 ## Areas, light and Cover
 

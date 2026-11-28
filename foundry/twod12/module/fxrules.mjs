@@ -252,7 +252,7 @@ export function migrate(sys, host = "effect") {
         const on1 = x.grantOn || x.halfOn || (x.halfT3 ? "t3" : "");
         if (on1) riders.push({ tiers: onTiers(on1), crit: on1 === "crit", does: (x.grantDo || "half") === "half" ? "half" : "text", text: x.grantText || "" });
         if (x.grantOn2) riders.push({ tiers: onTiers(x.grantOn2), crit: x.grantOn2 === "crit", does: x.grantDo2 === "half" ? "half" : "text", text: x.grantText2 || "" });
-        add("grant", { ...base, item: "", itemName: x.grantAction || "", itemType: "action", when: "lasts", amode: "uses", uses: x.grantCount || 1, ap: x.grantAp || 0, bbn: x.boons || x.banes || 0, bbk: x.banes && !x.boons ? "banes" : "boons", distinct: !!x.grantDistinct, riders });
+        add("grant", { ...base, item: "", itemName: x.grantAction || "", itemType: "action", when: "lasts", amode: "uses", uses: x.grantCount || 1, ap: x.grantAp || 0, bbn: x.boons || x.banes || 0, bbk: x.banes && !x.boons ? "banes" : "boons", distinct: !!x.grantDistinct, wait: !!x.grantWait, riders });
         break;
       }
       case "ondamage": add("grant", { ...base, item: x.fxUuid || "", itemType: "effect", when: "damage", sub: x.trigSub || "", tag: x.trigTag || "" }); break;
@@ -286,7 +286,7 @@ export function migrate(sys, host = "effect") {
 /* ------------------------------------------------------------------ compile: rules -> the old settings and fields */
 export const blankSetting = type => ({ type, attrs: [], title: "", text: "", bright: 0, dim: 0, color: "", lightAlpha: 0.5, lightAnim: "", lightSpeed: 5, lightIntensity: 5, boons: 0, banes: 0, bbName: "",
   empowered: 0, enfeebled: 0, byValue: false, predicate: "", all: [], any: [], none: [], from: [], dmg: "", dmgPool: "B", dmgSub: "", tiers: ["t1", "t2", "t3"], fxUuid: "", against: false,
-  speedMode: "add", speedFormula: "", grantAction: "", grantCount: 1, grantAp: 0, grantDistinct: false, halfT3: false, grantOn: "", grantDo: "half", grantText: "", halfOn: "", grantOn2: "", grantDo2: "text", grantText2: "",
+  speedMode: "add", speedFormula: "", grantAction: "", grantCount: 1, grantAp: 0, grantDistinct: false, grantWait: false, halfT3: false, grantOn: "", grantDo: "half", grantText: "", halfOn: "", grantOn2: "", grantDo2: "text", grantText2: "",
   coverLevels: [], zoneWho: "allies", zoneHeal: "", inlineAction: "", defKind: "all", defValue: 1, minEscalation: 0, auraSize: 1, auraWho: "allies", auraSelf: false, auraOutline: "", auraFill: "",
   valFormula: "", trigSub: "", trigTag: "", oncePerRound: false, vsMarked: false, ignoreRule: "rangeBane", rallyBonus: "", rallyRange: 0, msgWhen: "encounter", msgTo: "owners", msgAction: "", msgAp: 0,
   moveHow: "cant", wpWhich: "fists", wpProp: "nonthreatening", mstTrait: "projectile", mstValue: 3, hookWhen: "allyState", hookRange: 5, vsOrigin: "", bleedDc: 13, rwKind: "resist", rwValue: 1, fmWhich: "round",
@@ -348,7 +348,7 @@ export function compile(rulesIn, endsIn, host = "effect") {
           if (r.when === "lasts" && r.amode === "has") S(r, "inline", { inlineAction: ref || name });
           else if (r.when === "lasts") {
             const [a, b] = r.riders;
-            S(r, "grant", { grantAction: spec, grantCount: r.uses, grantAp: r.ap, boons: r.bbk === "boons" ? r.bbn : 0, banes: r.bbk === "banes" ? r.bbn : 0, grantDistinct: r.distinct,
+            S(r, "grant", { grantAction: spec, grantCount: r.uses, grantAp: r.ap, boons: r.bbk === "boons" ? r.bbn : 0, banes: r.bbk === "banes" ? r.bbn : 0, grantDistinct: r.distinct, grantWait: !!r.wait,
               grantOn: a ? RIDER_ON(a) : "", grantDo: a?.does ?? "half", grantText: a?.text ?? "", grantOn2: b ? RIDER_ON(b) : "", grantDo2: b?.does ?? "text", grantText2: b?.text ?? "" });
           } else S(r, "message", { msgWhen: r.when === "turn" ? "turn" : r.when === "markDown" ? "markDown" : "encounter", msgTo: r.msg.to, text: r.msg.on ? r.msg.text : "", msgAction: spec, msgAp: r.ap, ...(r.asR ? { msgReaction: true } : {}) });
         }

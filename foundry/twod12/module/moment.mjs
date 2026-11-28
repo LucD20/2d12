@@ -745,7 +745,10 @@ export async function runHere(data) {
     if (ok) {
       const card = game.messages.contents.slice(-8).reverse().find(m => !before.has(m.id) && m.getFlag?.(F, "grantCard")?.actorUuid === actor.uuid);   // the card this use just posted
       const g = card?.getFlag(F, "grantCard")?.effects?.[0];
-      if (g) {
+      // v0.0.540 (Lucas, checklist v0.0.539, rx-slipaway: "The Interact Action Roll Dialog opens as soon as you click to use the reaction"): a grant
+      // set to wait (grantWait) stays on the HUD's Situational tab until clicked
+      const waits = !!(g && (actor.effects.get(g.id)?.getFlag?.(F, "grants") ?? [])[g.index ?? 0]?.wait);
+      if (g && !waits) {
         if (tok) tok.setTarget(true, { user: game.user, releaseOthers: true, groupSelection: false });
         await (await import("./freeuse.mjs")).useGrant(card, g.id, g.index);
       }

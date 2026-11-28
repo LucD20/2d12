@@ -82,7 +82,8 @@ export function sourceFromFlags(fx) {
       grantAp: Math.max(0, Number(g.ap) || 0),
       boons: Number(g.boons) || 0,
       banes: Number(g.banes) || 0,
-      grantDistinct: !!g.distinct
+      grantDistinct: !!g.distinct,
+      grantWait: !!g.wait   // v0.0.540
     })),
     ...(f.speedMods ?? []).map(m => ({
       ...blankSetting("speed"),

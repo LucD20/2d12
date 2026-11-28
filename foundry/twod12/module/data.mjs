@@ -678,7 +678,7 @@ const settingsField = () => new ArrayField(new SchemaField({
         // Speed: "override" replaces it with the formula, "add" adds the formula to it.
         speedMode: choice({ override: "Override", add: "Add" }, "add"), speedFormula: str(),
         // Grant: lets the creature use an Action (a name, "category:Weapon Technique" or "trait:strike") a number of times, for this AP cost.
-        grantAction: str(), grantCount: int(1, 1), grantAp: int(0, 0), grantDistinct: bool(), halfT3: bool(),   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage is halved (the Half button lit); v0.0.263: halfOn says on which result (halfT3 is read as "t3")
+        grantAction: str(), grantCount: int(1, 1), grantAp: int(0, 0), grantDistinct: bool(), grantWait: bool(), halfT3: bool(),   // v0.0.540 grantWait: a Reaction's granted use waits on the HUD (Slip Away's Interact), never used at once   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage is halved (the Half button lit); v0.0.263: halfOn says on which result (halfT3 is read as "t3")
         // v0.0.264 (Lucas): "On [grantOn], [grantDo]": the target's next damage halved (Covering Shot), or a line (grantText) on the granted use's card for those results. halfOn: v0.0.263's field, read as grantOn.
         grantOn: choice(TWOD12.grantOnChoices, ""), grantDo: choice(TWOD12.grantDoChoices, "half"), grantText: str(), halfOn: choice(TWOD12.grantOnChoices, ""),
         grantOn2: choice(TWOD12.grantOnChoices, ""), grantDo2: choice(TWOD12.grantDoChoices, "text"), grantText2: str(),   // v0.0.266 (Lucas, Overwatch): a second "and on [a result], ..." line
