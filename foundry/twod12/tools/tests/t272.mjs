@@ -10,7 +10,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const all = [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name)), ...C.pcs.flatMap(a => a.items ?? [])];
 const card = n => all.find(x => x.name === n && x.type === "action");
 const v0 = n => card(n).system.versions[0];
-console.log("Effect above the roll:", ["Snap Shot", "Reckoning"].map(n => `${n} ${!!v0(n).effectFirst}`).join(", "));
+console.log("Effect above the roll:", ["Reckoning"].map(n => `${n} ${!!v0(n).effectFirst}`).join(", "));
 console.log("Tiers written:", `Circling Shot ${v0("Circling Shot").tiersWritten}`, `| Knock Back ${card("Trick Shots").system.versions.find(v => v.mode === "Knock Back")?.tiersWritten}`, `| Basic Attack ${v0("Basic Attack").tiersWritten ?? "(all)"}`);
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
 console.log("Basic Actions' Specials:", `Basic Attack ${JSON.stringify(BASIC_ACTIONS.basicWeaponAttack.lines?.map(l => l.label))}`, `| Steel Yourself special ${!!BASIC_ACTIONS.rally.special}`);

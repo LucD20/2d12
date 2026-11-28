@@ -131,10 +131,10 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       cls: t === "class" ? await this._classContext(s) : null,
       defenseKindChoices: TWOD12.defenseKinds,
       armorTrainingChoices: TWOD12.armorTrainings,
-      modPriorityChoices: { weapon: "the Weapon Modifier keeps it", power: "the Power Modifier keeps it" },
-      modOrderChoices: { either: "Either way (the player chooses)", weapon: "Weapon Modifier is the high one", power: "Power Modifier is the high one" },   // v0.0.305 (pack MOD)
-      modLeadChoices: { weapon: "Weapon Modifier", power: "Power Modifier" },
-      modStage2Choices: { "": "the higher one (default)", weapon: "Weapon Modifier", power: "Power Modifier" },
+      modPriorityChoices: { weapon: "the Arms Modifier keeps it", power: "the Power Modifier keeps it" },
+      modOrderChoices: { either: "Either way (the player chooses)", weapon: "Arms Modifier is the high one", power: "Power Modifier is the high one" },   // v0.0.305 (pack MOD)
+      modLeadChoices: { weapon: "Arms Modifier", power: "Power Modifier" },
+      modStage2Choices: { "": "the higher one (default)", weapon: "Arms Modifier", power: "Power Modifier" },
       isFeature: t === "feature",
       isEffect: t === "effect",
       styled: t !== "species",   // v0.0.168: the sheet's look (parchment, dark text); v0.0.185: Class too, Species keeps the old one until it is redone
@@ -207,9 +207,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const opts = (cur, list) => list.map(([k, l]) => ({ k, l, on: String(cur ?? "") === k }));
     const seg = {
       armor: opts(s.armorTraining, Object.entries(TWOD12.armorTrainings)), armorField: "system.armorTraining",
-      order: opts(s.modOrder, [["either", "the player's choice"], ["weapon", "Weapon"], ["power", "Power"]]), orderField: "system.modOrder",
-      lead: opts(s.modPriority, [["weapon", "Weapon"], ["power", "Power"]]), leadField: "system.modPriority",
-      stage2: opts(s.modStage2, [["", "the higher"], ["weapon", "Weapon"], ["power", "Power"]]), stage2Field: "system.modStage2"
+      order: opts(s.modOrder, [["either", "the player's choice"], ["weapon", "Arms"], ["power", "Power"]]), orderField: "system.modOrder",
+      lead: opts(s.modPriority, [["weapon", "Arms"], ["power", "Power"]]), leadField: "system.modPriority",
+      stage2: opts(s.modStage2, [["", "the higher"], ["weapon", "Arms"], ["power", "Power"]]), stage2Field: "system.modStage2"
     };
     // v0.0.407 (Stage 0 in Foundry): Stages 0 to 3, a step at Stages 1, 2 and 3
     const hp = { high1: n(s.healthHigh) + n(s.stepHigh1), high2: n(s.healthHigh) + n(s.stepHigh1) + n(s.stepHigh2), high3: n(s.healthHigh) + n(s.stepHigh1) + n(s.stepHigh2) + n(s.stepHigh3),

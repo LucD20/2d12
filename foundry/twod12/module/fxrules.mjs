@@ -88,7 +88,7 @@ export function filterText(f) {
 export const filterMatches = (f, traits) => { const { all, any, not } = normFilter(f), has = k => traits?.has?.(k) ?? false; return all.every(has) && (!any.length || any.some(has)) && !not.some(has); };
 
 /* ------------------------------------------------------------------ formulas */
-const REF_NAMES = { pow: "Power Modifier", wpn: "Weapon Modifier", sig: "Signature Modifier", body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct", stage: "Stage" };
+const REF_NAMES = { pow: "Power Modifier", wpn: "Arms Modifier", sig: "Signature Modifier", body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct", stage: "Stage" };
 /** "@origin.pow + 2" -> "the origin's Power Modifier + 2" (sentences). */
 export const formulaWords = t => String(t ?? "").replace(/@(origin|target)\.(\w+)/g, (m, w, k) => `the ${w}'s ${REF_NAMES[k] ?? k}`).replace(/\*/g, "×").replace(/\//g, "÷");
 /** The old formula names (power, weapon...: the creature's own) -> the new syntax. */

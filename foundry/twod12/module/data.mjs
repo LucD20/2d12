@@ -284,7 +284,7 @@ export class NpcData extends CharacterData {
       ...super.defineSchema(),
       attributes: new SchemaField({ body: sint(), mind: sint(), appeal: sint(), instinct: sint() }),
       speed: int(5), weaponAttribute: choice(TWOD12.attributes, "body"), powerAttribute: choice(TWOD12.attributes, "mind"),   // before pack MOD: only read when modLead is ""
-      modLead: choice({ "": "Default", weapon: "Weapon Modifier", power: "Power Modifier" }, ""),   // v0.0.307: only read for a rating left at its default   // v0.0.305 (pack MOD): which of the role's Modifiers is the higher one
+      modLead: choice({ "": "Default", weapon: "Arms Modifier", power: "Power Modifier" }, ""),   // v0.0.307: only read for a rating left at its default   // v0.0.305 (pack MOD): which of the role's Modifiers is the higher one
       // The Bestiary (v0.0.163): its role and a rating for each number ("custom": the typed number below is used).
       // v0.0.407 (the Bestiary, Lucas 2026-11-12): "role" is the rank (Minion, Grunt, Standard, Elite; the key kept); npcRole is the new optional role,
       // a preset of ratings (Striker...: npcbudget.mjs ROLE_PRESETS), no rules of its own
@@ -396,12 +396,12 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       weaponAttrs: attrSet(), magicAttrs: attrSet(),
       features: new ArrayField(new SchemaField({ uuid: str(), level: int(1, 0) })),
       chosenA: str(), chosenB: str(), chosenWeapon: str(), chosenMagic: str(),   // chosenWeapon / chosenMagic: only for classes from before v0.0.117
-      modPriority: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, "weapon"),   // pack MOD: which Modifier leads (an "either" class) and takes a Signature tie; before: which kept an Attribute both would use
+      modPriority: choice({ weapon: "Arms Modifier", power: "Power Modifier" }, "weapon"),   // pack MOD: which Modifier leads (an "either" class) and takes a Signature tie; before: which kept an Attribute both would use
       // v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values (Paladin +2 / +1 either way; Archer Weapon +2, Power +1). 0 / 0: a class
       // from before keeps the Attribute formula until it is updated from the compendium. modStage2: the Modifier the player raises at Stage 1 ("" = the lead one;
       // the key kept from pack MOD, when it was the Stage 2 pick: v0.0.407 moved it to Stage 1, level 4).
-      modHigh: sint(0), modLow: sint(0), modOrder: choice({ either: "Either way (the player chooses)", weapon: "Weapon Modifier first", power: "Power Modifier first" }, "either"),
-      modStage2: choice({ "": "The higher one", weapon: "Weapon Modifier", power: "Power Modifier" }, ""),
+      modHigh: sint(0), modLow: sint(0), modOrder: choice({ either: "Either way (the player chooses)", weapon: "Arms Modifier first", power: "Power Modifier first" }, "either"),
+      modStage2: choice({ "": "The higher one", weapon: "Arms Modifier", power: "Power Modifier" }, ""),
       armorTraining: choice(TWOD12.armorTrainings, "light"),
       // v0.0.185 (pack C2): the class sheet's new fields, the Repertoire and Escalation lists, and the levels as sections (classlevels.mjs).
       category: new StringField({ required: true, blank: true, initial: "Class" }), flavor: str(),

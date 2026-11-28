@@ -588,13 +588,17 @@ async function doCheck(kind, cfg, ctx = {}) {
   }
 }
 
-async function doDamage(cfg) {
+async function doDamage(cfg, ctx = {}) {
   const { comps, rolls } = await rollParts(cfg.parts.damage, cfg.nonlethal);
   if (!comps.length && !cfg.parts.texts.length && !cfg.parts.uuids.length) return;
+  // v0.0.541 (Lucas, playtest 12: "Rebuke targeted Aveline instead of the triggering creature"): a chip run in a chain (a Reaction's Use, an Action's
+  // "after") deals its damage to the chain's targets, and names its user as the damage's origin; a button clicked by hand: the selected tokens first
+  const chainT = (ctx?.targets ?? []).filter(t => t?.uuid);
+  const actor = ctx?.actor?.documentName === "Actor" ? ctx.actor : null;
   await postDamageCard({
-    title: "Damage", comps, rolls, texts: await Promise.all(cfg.parts.texts.map(t => enrich(t))),
-    fx: cfg.parts.uuids.map(u => ({ uuid: u, mode: "auto" })),
-    targets: handTargetTokens({}).map(t => ({ uuid: t.document.uuid, name: t.name }))   // v0.0.252: the selected tokens first
+    actor, title: ctx?.source || "Damage", comps, rolls, texts: await Promise.all(cfg.parts.texts.map(t => enrich(t))),
+    fx: cfg.parts.uuids.map(u => ({ uuid: u, mode: "auto" })), originUuid: actor?.uuid ?? "",
+    targets: chainT.length ? chainT.map(t => ({ uuid: t.uuid, name: t.name ?? "" })) : handTargetTokens({}).map(t => ({ uuid: t.document.uuid, name: t.name }))   // v0.0.252: the selected tokens first
   });
 }
 
@@ -939,7 +943,7 @@ export async function handleInline(kind, cfg0, ctx = {}) {
   if (kind === "Release") return handleRelease(ctx);
   if (kind === "Regrip") return handleRegrip(ctx);
   if (kind === "Check" || kind === "Save") return doCheck(kind, cfg, ctx);
-  if (kind === "Damage") return doDamage(cfg);
+  if (kind === "Damage") return doDamage(cfg, ctx);
   if (kind === "SaveCard") return postSaveCard(cfg, ctx);
   if (kind === "Template") return startTemplate(cfg, ctx);
   if (kind === "Boon") return boonFlow(cfg, ctx);

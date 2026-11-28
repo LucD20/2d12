@@ -157,7 +157,7 @@ export function tierAvg(insts, tier, { weapon = null, attrVal = 0, isWeapon = fa
     if (i.dice) total += avgFormula(i.dice) ?? 0;
     if (i.useAt) total += attrVal;
   }
-  // [Mod] added to the damage: the Weapon Modifier on Tiers 2 and 3; nothing for Power, Signature and Attribute Actions (rollsource.mjs).
+  // [Mod] added to the damage: the Arms Modifier on Tiers 2 and 3; nothing for Power, Signature and Attribute Actions (rollsource.mjs).
   const from = attrMode === "all" ? 1 : attrMode === "t2" ? 2 : attrMode === "none" ? Infinity : (isWeapon ? 2 : Infinity);
   if (tier >= from && dmg.length && !dmg.some(i => i.useAt)) total += attrVal;
   return total;

@@ -252,12 +252,12 @@ export async function pcModel(sheet, ctx) {
   const fromTip = k => (vals ? `from ${whence}` : `from ${L[k] ?? "—"}`);
   const has = k => vals || !!k;
   const mods = npc ? [
-    { label: "Weapon", attr: from(s.weaponAttribute), value: sg(s.weaponMod), dc: `DC ${dcs.weapon}`, tip: `Weapon Modifier, ${fromTip(s.weaponAttribute)}. Save DC 11 + it (@weapon.dc)` },
+    { label: "Arms", attr: from(s.weaponAttribute), value: sg(s.weaponMod), dc: `DC ${dcs.weapon}`, tip: `Arms Modifier, ${fromTip(s.weaponAttribute)}. Save DC 11 + it (@weapon.dc)` },
     ...(usesPower ? [{ label: "Power", attr: from(s.powerAttribute), value: sg(s.powerMod), dc: `DC ${dcs.power}`, tip: `Power Modifier, ${fromTip(s.powerAttribute)}. Save DC 11 + it (@power.dc)` }] : [])
   ] : [
-    { label: "Weapon", attr: from(s.weaponAttribute), value: has(s.weaponAttribute) ? sg(s.weaponMod) : "—", dc: `DC ${dcs.weapon}`, tip: `Weapon Modifier, ${fromTip(s.weaponAttribute)}. Save DC 11 + it (@weapon.dc)` },
+    { label: "Arms", attr: from(s.weaponAttribute), value: has(s.weaponAttribute) ? sg(s.weaponMod) : "—", dc: `DC ${dcs.weapon}`, tip: `Arms Modifier, ${fromTip(s.weaponAttribute)}. Save DC 11 + it (@weapon.dc)` },
     { label: "Power", attr: from(s.powerAttribute), value: has(s.powerAttribute) ? sg(s.powerMod) : "—", dc: `DC ${dcs.power}`, tip: `Power Modifier, ${fromTip(s.powerAttribute)}; Ward Defense adds it. Save DC 11 + it (@power.dc)` },
-    { label: "Signature", attr: s.signatureFrom === "power" ? "Power" : "Weapon", value: has(s.signatureAttribute) ? sg(s.signatureMod) : "—", dc: `DC ${dcs.signature}`, tip: `Signature Modifier: the higher of your Weapon and Power Modifiers (${s.signatureFrom === "power" ? "Power" : "Weapon"}). Save DC 11 + it (@signature.dc)` }
+    { label: "Signature", attr: s.signatureFrom === "power" ? "Power" : "Arms", value: has(s.signatureAttribute) ? sg(s.signatureMod) : "—", dc: `DC ${dcs.signature}`, tip: `Signature Modifier: the higher of your Weapon and Power Modifiers (${s.signatureFrom === "power" ? "Power" : "Weapon"}). Save DC 11 + it (@signature.dc)` }
   ];
 
   for (const m of mods) m.tile = m.label;   // v0.0.443 (group 1): an NPC's tiles named as a PC's ("Weapon"), in the PC's grid   // v0.0.441: the tile's label (a PC's three Modifiers have no room for "Mod.")
@@ -598,7 +598,7 @@ export async function applyHandPick(actor, weapons, key, { spendAP, applyRegrip,
 }
 
 /* ---------------------------------------------------------------- v0.0.291 (PACK NPC-SHEET): the Builder tab (Lucas's layout F2) and the Loot tab */
-/** The book's feature colors (book/rules.css, light page): Body, Mind, Appeal, Instinct; Vigor and Resolve as Body and Mind; AD the Weapon Modifier's, WD the Power Modifier's. */
+/** The book's feature colors (book/rules.css, light page): Body, Mind, Appeal, Instinct; Vigor and Resolve as Body and Mind; AD the Arms Modifier's, WD the Power Modifier's. */
 export const FEATURE_COLORS = { body: "#7a1626", mind: "#17327a", appeal: "#6b4e00", instinct: "#14532d", ad: "#9a4a00", wd: "#5b3a9e", move: "#1b2433" };
 export const RATING_COLORS = { terrible: "#6b665a", low: "#8a7a5a", medium: "#1b2433", high: "#8a5a12", extreme: "#a8322d" };
 const fmtN = n => String(Math.round(n * 100) / 100);
@@ -628,7 +628,7 @@ export function npcBuilderModel(a) {
     return { key, name, color, act: "setRating", ratingName: R[cur]?.label ?? "", value: sg2(value),
       steps: keys.map((k, i) => ({ r: k, on: at >= 0 && i <= at, sel: i === at, v: mv(k), tip: `${R[k].label}: ${mv(k)}` })) };
   };
-  const wmod = modRow("wmod", "Weapon Modifier", FEATURE_COLORS.ad, mr.weapon, Number(s.weaponMod) || 0);
+  const wmod = modRow("wmod", "Arms Modifier", FEATURE_COLORS.ad, mr.weapon, Number(s.weaponMod) || 0);
   const pmod = modRow("pmod", "Power Modifier", FEATURE_COLORS.wd, mr.power, Number(s.powerMod) || 0);
   const SPD = ["Slow", "Slow", "Default", "Fast", "Fast"], spNow = Number(s.speed) || 5, stNow = Math.max(0, Number(s.steadiness) || 0);
   const speed = { key: "speed", name: "Speed", color: FEATURE_COLORS.move, act: "setRating", ratingName: SPD[[3, 4, 5, 6, 7].indexOf(spNow)] ?? "Custom", value: spNow,
@@ -673,10 +673,10 @@ export function npcBuilderModel(a) {
     cols: [[{ title: "Attributes", rows: attrs, grow: 4 }, { title: "Movement", rows: [speed, steady], grow: 2 }, { title: "Weapon Mod", rows: [wmod], grow: 1 }],
       [{ title: "Health", rows: health, grow: 3 }, { title: "Defenses", rows: defs, grow: 3 }, { title: "Power Mod", rows: [pmod], grow: 1 }, ...(s0 ? [{ title: "Damage (turn budget)", rows: [damage], grow: 1 }] : [])]],   // v0.0.307 (Lucas): Weapon under Movement, Power under Defenses
     heads: keys.map(k => ({ label: R[k].label, color: RATING_COLORS[k], med: k === "medium" })),
-    // v0.0.308 (Lucas: "more intuitive"): each cell gives the average and the dice to write with this creature's Weapon Modifier ([Mod] taken out),
+    // v0.0.308 (Lucas: "more intuitive"): each cell gives the average and the dice to write with this creature's Arms Modifier ([Mod] taken out),
     // the tooltip the Power Modifier's for a Vs. WD attack
-    frame, rw, roleLabel: role.label, modLabel: vsWd ? `Power Modifier (${sg2(Number(s.powerMod) || 0)}), to [R] Resolve` : `Weapon Modifier (${sg2(Number(s.weaponMod) || 0)})`, powerMod: sg2(Number(s.powerMod) || 0),
-    // v0.0.314 (pack AU, Vs. WD): the table for a Vs. AD attack (the Weapon Modifier, [V]) or a Vs. WD one (the Power Modifier, [R] by default: the Grave Wisp's)
+    frame, rw, roleLabel: role.label, modLabel: vsWd ? `Power Modifier (${sg2(Number(s.powerMod) || 0)}), to [R] Resolve` : `Arms Modifier (${sg2(Number(s.weaponMod) || 0)})`, powerMod: sg2(Number(s.powerMod) || 0),
+    // v0.0.314 (pack AU, Vs. WD): the table for a Vs. AD attack (the Arms Modifier, [V]) or a Vs. WD one (the Power Modifier, [R] by default: the Grave Wisp's)
     vsWd, vsToggle: [{ key: "ad", label: "Vs. AD", sub: "Weapon Mod · [V]", on: !vsWd }, { key: "wd", label: "Vs. WD", sub: "Power Mod · [R]", on: vsWd }],
     s0,
     // v0.0.407 (the Bestiary, the turn budget): at Stage 0 each cell is the Action's points and its written damage (riders not taken off yet)
@@ -687,7 +687,7 @@ export function npcBuilderModel(a) {
       const avg = specialAvg(npcRow(role, R, k, stage).basic, x), wm = Number(s.weaponMod) || 0, pm = Number(s.powerMod) || 0;
       const dice = m => avg.map(v => { const d = diceFor(v - m); return !d ? `${m}` : /^\d+$/.test(d) ? `${Number(d) + m}` : `${d}+${m}`; }).join(" / ");
       const mine = vsWd ? `[R] ${dice(pm)}` : dice(wm);
-      return { v: avg.join(" / "), dice: mine, med: k === "medium", color: RATING_COLORS[k], tip: `${R[k].label} ${label}: average ${avg.join(" / ")} (Tier 2 / Tier 3). Vs. AD, with the Weapon Modifier: [V] ${dice(wm)}. Vs. WD, with the Power Modifier: [R] ${dice(pm)}.` };
+      return { v: avg.join(" / "), dice: mine, med: k === "medium", color: RATING_COLORS[k], tip: `${R[k].label} ${label}: average ${avg.join(" / ")} (Tier 2 / Tier 3). Vs. AD, with the Arms Modifier: [V] ${dice(wm)}. Vs. WD, with the Power Modifier: [R] ${dice(pm)}.` };
     }) }))
   };
 }

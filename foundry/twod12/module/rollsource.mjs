@@ -1,5 +1,5 @@
 // What an Action rolls and what its damage adds (the rules' Modifier Damage [Mod]):
-//   Weapon (or a check of "weapon"): the Weapon Modifier, which is also added to the weapon's damage on Tiers 2 and 3.
+//   Weapon (or a check of "weapon"): the Arms Modifier, which is also added to the weapon's damage on Tiers 2 and 3.
 //   Signature: the Signature Modifier, nothing added (only a [Mod] written on the card).
 //   Power (trait key "magic"): the Power Modifier, nothing added.
 //   Otherwise, an Attribute Action: the Attribute Modifier of its Body, Mind, Appeal or Instinct trait (or its check), nothing added.
@@ -22,7 +22,9 @@ function rollSourceOf(s, it, pref = "") {
   const pAttr = s?.powerAttribute ?? s?.magicAttribute ?? "";
   const pick = (key, mod) => vals ? { attrKey: "", mod: Number(mod) || 0, tail: "" } : { attrKey: key ?? "", mod: key ? mod : 0, tail: ` • ${L(key)}` };
   if (has("signature")) { const x = pick(s.signatureAttribute, s.signatureMod); return { kind: "signature", attrKey: x.attrKey, mod: x.mod, label: `Signature Modifier${x.tail}`, chip: "Signature Modifier", attrMode: "none", from: s.signatureFrom === "power" ? "power" : "weapon" }; }
-  if (has("weapon")) { const x = pick(s.weaponAttribute, s.weaponMod); return { kind: "weapon", attrKey: x.attrKey, mod: x.mod, label: `Weapon Modifier${x.tail}`, chip: "Weapon Modifier", attrMode: "t2" }; }
+  // v0.0.541 (Lucas, 2026-11-28; book, Chapter 7, Arms): the Arms trait rolls the Arms Modifier (the data keeps its key weaponMod); Weapon only needs a weapon
+  // an Action written [Weapon] alone (an item made by hand, before the split) still rolls Arms: every card of the book writes [Arms, Weapon]
+  if (has("arms") || (has("weapon") && !has("magic"))) { const x = pick(s.weaponAttribute, s.weaponMod); return { kind: "weapon", attrKey: x.attrKey, mod: x.mod, label: `Arms Modifier${x.tail}`, chip: "Arms Modifier", attrMode: "t2" }; }
   if (has("magic")) { const x = pick(pAttr, s.powerMod ?? s.magicMod); return { kind: "power", attrKey: x.attrKey, mod: x.mod, label: `Power Modifier${x.tail}`, chip: "Power Modifier", attrMode: "none" }; }
   // v0.0.520 (the cleanup audit, B2-010; book, Chapter 1, Check): an Action whose roll is a Check (Break Free's "Check" line, vs. the Action DC) is a
   // Check for every effect that names Checks, not an Attribute Action

@@ -8,7 +8,7 @@ a class from before (one Attribute each):           Weapon body 2 | Power appeal
 both lists only Appeal (must share):                Weapon appeal 3 | Power appeal 3 | Signature appeal 3 (weapon)
 no class:                                           Weapon - 1 | Power - 1 | Signature - 1 (weapon)
 --- what an Action rolls (rollsource.mjs)
-Smite                | weapon body 2 | Weapon Modifier • Body | Attribute on the damage from Tier 2 | effects see: __action, body
+Smite                | weapon body 2 | Arms Modifier • Body | Attribute on the damage from Tier 2 | effects see: __action, body
 Judgment             | power appeal 3 | Power Modifier • Appeal | Attribute on the damage from Tier Infinity | effects see: __action, appeal
 a Signature Action   | signature appeal 3 | Signature Modifier • Appeal | Attribute on the damage from Tier Infinity | effects see: __action, appeal
 Trip                 | attribute body 2 | Body Check | Attribute on the damage from Tier Infinity | effects see: __action, __attr

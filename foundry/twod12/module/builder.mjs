@@ -42,7 +42,7 @@ export function buildCommand(d) {
   const num = (k, def = 0) => Number(d[k]) || def;
   const common = () => {
     const p = [];
-    // v0.0.356 (D45): the DC as a choice: the card's (nothing written), 13 written, the user's Power / Weapon DC, a number. Without dcMode: as before.
+    // v0.0.356 (D45): the DC as a choice: the card's (nothing written), 13 written, the user's Power / Arms DC, a number. Without dcMode: as before.
     if (d.dcMode === "13") p.push("dc:13");
     else if (d.dcMode === "power" || d.dcMode === "weapon" || d.dcMode === "signature") p.push(`dc:@${d.dcMode}`);
     else if (d.dcMode === "set") p.push(`dc:${num("dc", 13)}`);
@@ -178,7 +178,7 @@ function traitsRow(traits) {
 }
 function fieldsHtml(s) {
   const roll = [["", seg("attr", s.attr, ATTR(), "w")],
-    ["DC", `${seg("dcMode", s.dcMode, [["card", "The card's"], ["13", "13"], ["power", "The user's Power DC"], ["weapon", "Weapon DC"], ["set", "A number"]], "w")}${s.dcMode === "set" ? step("dc", s.dc, 5, 30) : ""}`],
+    ["DC", `${seg("dcMode", s.dcMode, [["card", "The card's"], ["13", "13"], ["power", "The user's Power DC"], ["weapon", "Arms DC"], ["set", "A number"]], "w")}${s.dcMode === "set" ? step("dc", s.dc, 5, 30) : ""}`],
     ["Modifier", `${step("adj", s.adj, -9, 9)} <span class="fr-m">Boons</span> ${step("boon", s.boon, 0, 5, "boon")} <span class="fr-m">Banes</span> ${step("bane", s.bane, 0, 5, "bane")}`],
     ["Matches", traitsRow(s.traits)]];
   if (s.type === "check") return grid(roll) + help("DC \"The card's\": the DC of the Action the button sits on (13 anywhere else).");

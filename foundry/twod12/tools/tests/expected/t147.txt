@@ -1,5 +1,5 @@
 --- the chat card's tight chips
-Smite (4 groups):     Weapon | Melee | Strike | Divine
+Smite (4 groups):     Arms | MeleeWeapon | Strike | Divine
 Relocate (4 traits):  BodyInstinct | Handle | Strike
 5 groups:             Power | Ranged | Area | Nonlethal | Focus
 one group:            Body | no traits: ""

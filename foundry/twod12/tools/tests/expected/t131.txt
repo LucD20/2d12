@@ -6,7 +6,7 @@ old cards' folder: true | current cards in it: none
   Rolling Shot: round | ranged,shot,strike,weapon | -
   Marksman's Shot: encounter | ranged,shot,strike,weapon | AD
   Pinning Shot: encounter | ranged,shot,strike,weapon | -
-  Lock & Loose: round | ranged,shot,strike,weapon | AD
+  Lock & Loose: round | arms,ranged,shot,strike,weapon | AD
   Double Shot -> 2AP: You make two [Ranged, Shot] Weapon Attacks (1A), each against a different creature. [1 effect] || 3AP: @Move[evade|distance:1], then as 2 AP. [1 effect]
   Rolling Shot -> 1AP: @Move[evade|distance:1], then make a [Ranged, Shot] Weapon Attack (1A). [1 effect] || 2AP: @Move[evade|distance:2], then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 1d6 Pi. [1 effect] || 3AP: @Move[evade|distance:3], then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 2d6 Pi. [1 effect]
   Marksman's Shot -> 2AP: 1[W]+1d8 Pi / 1[W]+2d6 Pi / 1[W]+3d6 Pi "@Condition[vulnerable|value:2|eot]"

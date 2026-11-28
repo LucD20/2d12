@@ -189,13 +189,13 @@ export function foldRow(chips, st, scope, row) {
   const list = chips.filter(c => c.row === row), offOpen = !!st.fold?.[`${scope}|${row}|off`], naOpen = !!st.fold?.[`${scope}|${row}|na`];
   const shown = [], off = [], na = [];
   for (const c of list) {
-    if (c.start === "na") (naOpen ? shown : na).push(c);
+    if (c.start === "na") (naOpen || c.pinned ? shown : na).push(c);   // v0.0.541: a pinned choice that can't be paid (no AP) stays in sight, off, with its reason
     // v0.0.440 (Lucas, checklist: the Reload shot's and Smite's Reaction Point chips were "hidden"): a choice the player makes (pinned) shows even when off
     else if (chipOn(c, st) || c.id in (st.toggled ?? {}) || c.start === "on" || c.pinned) shown.push(c);
     else (offOpen ? shown : off).push(c);
   }
   if (offOpen) off.push(...list.filter(c => c.start === "off" && !c.pinned && !(c.id in (st.toggled ?? {}))));
-  if (naOpen) na.push(...list.filter(c => c.start === "na"));
+  if (naOpen) na.push(...list.filter(c => c.start === "na" && !c.pinned));
   return { shown, off, na, offOpen, naOpen };
 }
 

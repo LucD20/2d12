@@ -2248,8 +2248,20 @@ export function registerMovement() {
         const left = num(c.getFlag(F, "evadeMove"));
         if (squares > left + 1e-6) { warn(`Evade has ${left} square${left === 1 ? "" : "s"} left${step.extra ? " (this diagonal is the second one: it costs 2)" : ""}. Choose a shorter path, or use End movement.`); return false; }
       }
+      // v0.0.541 (Lucas, playtest 12: "Advance calculation isnt taking into account difficult terrain": the ruler said 11 (+6), the Advance charged 5):
+      // when Foundry's pending cost holds no terrain (cost not above the distance), the path is priced here with the same step cost as the ruler
+      // (hardStep: Darkness it can't see in, an ally's or a Bloodied creature's square, a Zone's, a Movement limit), once, before the Advance pays
+      let ownCounted = false;
+      if (!ch && !ignoring && !(cost > dist + 1e-6)) {
+        try {
+          const pts = [origin, ...(movement?.pending?.waypoints ?? []), to].map(p => ({ x: p.x, y: p.y }));
+          const r = canvas.grid.measurePath(pts, { cost: (from, to2, distance) => hardStep(doc, to2, distance, distance, from) });
+          const own = num(r?.cost) / gridUnit(), base = num(r?.distance) / gridUnit();
+          if (own > base + 1e-6) { squares += own - base; ownCounted = true; }
+        } catch (e) { /* Foundry's measure without a cost: as before */ }
+      }
       // An Advance through an unwilling creature's squares pays for Difficult Terrain (unless Foundry already counted it).
-      if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);
+      if (!ch && !evading && !ignoring) squares += extraCost(way, ownCounted || cost > dist + 1e-6);
       // v0.0.533: an Evade through an ally's space pays its 1 more a step too when Foundry's measure didn't count it (it paid nothing then)
       else if (!ch && evading && !ignoring) squares += extraCost({ extra: way.allyExtra ?? 0, cornerDT: 0 }, cost > dist + 1e-6);   // v0.0.468: a Large token's too, through Foundry's cost (hardStep reads how its steps come)
       // v0.0.418 (G6): off its turn a creature moves only the squares a Reaction gave it (no AP spent for more)

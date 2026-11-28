@@ -429,7 +429,7 @@ export async function collectReactions(ev) {
       const trig = def.move || !ev.source?.actor ? hit.sj?.actor : ev.source.actor;
       const feintBy = trig?.uuid && reactionsOffVs(actor, trig.uuid) ? trig : null;
       // v0.0.410 (book, A Reaction's Target): Line of Effect to the target, and the target and the triggering creature perceived (Hidden is enough)
-      const why = (feintBy ? `Feinted: no Reactions vs. ${cleanName(feintBy.name)}` : "") || (await reactionSight(tk, target.token ?? null, ev.source?.token ?? null)) || await blockedWhy(actor, item, { downOk: !!def.downOk });
+      const why = (feintBy ? `Feinted: no Reactions vs. ${cleanName(feintBy.name)}` : "") || (await reactionSight(tk, target.token ?? null, def.downOk ? null : (ev.source?.token ?? null))) || await blockedWhy(actor, item, { downOk: !!def.downOk });
       if (why) blocked.push({ ...row, why }); else rows.push(row);
     }
   }

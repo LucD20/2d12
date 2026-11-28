@@ -1,5 +1,5 @@
 --- the short card's model: what it leaves out
-Snap Shot: full [Interrupt, Effect, Attack, Tier 1, Tier 2, Tier 3] distance "Weapon" | short [Interrupt, Effect, Tier 1, Tier 2, Tier 3] distance "" flavor ""
+Snap Shot: full [Interrupt, Setup, Attack, Tier 1, Tier 2, Tier 3] distance "Weapon" | short [Interrupt, Setup, Tier 1, Tier 2, Tier 3] distance "" flavor ""
 Smite: full [Smite dice, Attack, Tier 1, Tier 2, Tier 3, Special] distance "Weapon" | short [Smite dice, Tier 1, Tier 2, Tier 3, Special] distance "" flavor ""
 Avenge Kin: full [Trigger, Attack, Tier 1, Tier 2, Tier 3, Tier 2 or 3] distance "Weapon" | short [Trigger, Tier 1, Tier 2, Tier 3, Tier 2 or 3] distance "" flavor ""
 Ground Slam: full [Save, Tier 1, Tier 2, Tier 3] distance "" | short [Tier 1, Tier 2, Tier 3] distance "" flavor ""
@@ -7,7 +7,7 @@ Rebuke: full [Trigger, Effect] distance "" | short [Trigger, Effect] distance ""
 --- the short card drawn
 Snap Shot: no Flavor true (full has one: true) | no rank word true | no Distance true | no Use true | no Ruler true | marked true
 Smite: no Flavor true (full has one: true) | no rank word true | no Distance true | no Use true | no Ruler true | marked true
-Weapon &middot; Projectile &middot; Ranged &middot; Strike &middot; Archer Target: One enemy Interrupt The target would enter a square adjacent to you. Effect You @Move[evade|distance:1], then make this attack. Tier 1 [Mod] Tier 2 1[W] Tier 3 1[W] + [Mod]
+Arms &middot; Projectile &middot; Ranged &middot; Weapon &middot; Strike &middot; Archer Target: One enemy Interrupt The target would enter a square adjacent to you. Setup You @Move[evade|distance:1]. Tier 1 [Mod] Tier 2 1[W] Tier 3 1[W] + [Mod]
 --- the bar
 {"stamps":[{"ap":1,"label":"1 AP","off":false,"why":""},{"ap":2,"label":"2 AP","off":false,"why":""},{"ap":3,"label":"3 AP","off":true,"why":"Not enough AP: 2 left"}],"dist":"8/16","vs":"AD","fq":"encounter","fqWord":"Encounter"}
 {"stamps":[{"ap":1,"label":"1R","off":true,"why":"Not enough AP: 0 left and 0 Reaction Point"}],"dist":"","vs":"","fq":"turn","fqWord":"Turn"}

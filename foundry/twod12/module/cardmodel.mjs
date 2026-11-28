@@ -14,7 +14,7 @@ import { tierOfLabel } from "./util.mjs";
 import { activeHooks } from "./hooks.mjs";
 
 export const MODE_NAME = { weapon: "Weapon mode", power: "Power mode" };
-const ROLL_WORDS = ["signature", "weapon", "magic", "body", "mind", "appeal", "instinct"];
+const ROLL_WORDS = ["signature", "arms", "magic", "body", "mind", "appeal", "instinct"];   // v0.0.541: Arms is the roll (Weapon only needs a weapon)
 const DEF = { AD: "Armor Defense", WD: "Ward Defense" };
 
 /** Pure: the roll line's label and text ("Attack" "Weapon vs. Armor Defense", "Save" "Appeal"), or null when the Action makes no roll. */
@@ -23,7 +23,8 @@ export function rollLine(it, vs) {
   const t = it.traits ?? new Set(), has = k => t.has?.(k) ?? false;
   if (has("save")) return { label: "Save", text: String(vs || "").replace(/\s*Save$/, "") || "the target's choice" };
   // a [Signature] Action rolls the Signature Modifier, whatever else it is (the book: "Signature vs. Armor Defense")
-  const words = (has("signature") ? ["signature"] : ROLL_WORDS.filter(has)).map(k => (k === "magic" ? "Power" : TWOD12.traits[k] ?? TWOD12.attributes[k] ?? k));
+  // an Action written [Weapon] alone (a hand-made item) still reads "Arms vs.", as it rolls (rollsource.mjs)
+  const words = (has("signature") ? ["signature"] : ROLL_WORDS.filter(k => has(k) || (k === "arms" && has("weapon") && !has("magic")))).map(k => (k === "magic" ? "Power" : TWOD12.traits[k] ?? TWOD12.attributes[k] ?? k));
   // the core rework A7 (book, Chapter 1, Attribute DCs): an Attribute is rolled against the target's DC of that Attribute ("Body vs. Body DC");
   // "Body or Instinct" (the one used to roll) against "the same Attribute's DC"; Break Free's Check against the Action DC
   const ATTR = /^(Body|Mind|Appeal|Instinct)$/;
@@ -72,7 +73,7 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
   // pack TALENTS-PT (Rime Strike): a [Split] Action writes its roll in each mode's block ("Attack: Weapon vs. Armor Defense" / "Power vs. Ward Defense")
   const split = !!it.traits?.has?.("split") && versions.some(v => v.mode === "weapon" || v.mode === "power");
   const modes = split || versions.some(v => v.modeVs || v.modeTraits?.length);
-  const splitRoll = v => (v.mode === "weapon" ? L("Attack", "Weapon vs. Armor Defense", "esc") : v.mode === "power" ? L("Attack", "Power vs. Ward Defense", "esc") : null);
+  const splitRoll = v => (v.mode === "weapon" ? L("Attack", "Arms vs. Armor Defense", "esc") : v.mode === "power" ? L("Attack", "Power vs. Ward Defense", "esc") : null);
   const top = [];
   if (it.requirements) top.push(L("Requirement", it.requirements, "hl"));
   if (it.prerequisites) top.push(L("Prerequisite", it.prerequisites, "esc"));

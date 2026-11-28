@@ -48,7 +48,7 @@ function cardSec(m) {
     ["Escalation", `${step("system.escalation", s.escalation ?? 0, 0, max)} <span class="fr-m">${Number(s.escalation) > 0 ? `an Apex: it needs Escalation ${s.escalation} (nothing is spent)` : `0: none. 1 to ${max}: an Apex, used only at that Escalation`}</span>`],
     ["Targets", named("system.targets", s.targets, "One creature", "wide")],
     ["Distance", named("system.distance", s.distance, "reach, self, weapon, 5 sq., 10/20/40")],
-    ["Vs.", `${sel('name="system.vs"', s.vs ?? "", Object.entries(TWOD12.vsChoices ?? {}), "Vs.")}${weapon ? ' <span class="fr-m">a [Weapon] Action rolls the Weapon Modifier against AD</span>' : ""}`],
+    ["Vs.", `${sel('name="system.vs"', s.vs ?? "", Object.entries(TWOD12.vsChoices ?? {}), "Vs.")}${weapon ? ' <span class="fr-m">an [Arms] Action rolls the Arms Modifier against AD</span>' : ""}`],
     s.requirements || m.show.requirements ? ["Requirements", named("system.requirements", s.requirements, "You have at least Speed 3", "wide")] : (more.push(["requirements", "+ Requirements"]), null),
     s.setup || m.show.setup ? ["Setup", named("system.setup", s.setup, "What happens before the dice are rolled (buttons allowed)", "wide")] : (more.push(["setup", "+ Setup"]), null),
     s.prerequisites ? ["Prerequisites", `${named("system.prerequisites", s.prerequisites, "", "wide")}<span class="fr-m">an old Talent field: move it to Requirements</span>`] : null

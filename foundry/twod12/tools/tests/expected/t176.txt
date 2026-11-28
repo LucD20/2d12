@@ -1,7 +1,7 @@
 a Charge's Weapon Attack (Club, the Basic attack) counts toward At-will: the next Club has 1 Bane | Strikes made: 0
 after 3 Strikes: not greyed, its own marker: {"faded":false,"strikeCap":true,"why":"Three Strikes this turn"} | strikes: 3
 a row with Darkness on column 2, 3 squares: Advance reaches -3,-2,-1,0,1,2 | Evade reaches -3,-2,-1,0,1 | nothing in the way -3,-2,-1,0,1,2,3
-Charge: a Strike that targets true | its Weapon Attack counts toward At-will true | the picker goes toward the target true | no End movement line true
+Charge: a Strike that targets true | v0.0.541: its Basic Attack no longer counts toward At-will (Lucas, 2026-11-28) true | the picker goes toward the target true | no End movement line true
 Relocate At-will true | Break Free (1 AP, Move, only while Immobilized) true
 the mark ends with the combat true | shows the marker's portrait true
 Remove on every Action's right-click true | the Setup in the bottom bar true | Strike pips (v0.0.390: the HUD's marks, Strikes as slashes) true | the log window by its id true

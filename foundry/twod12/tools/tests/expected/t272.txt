@@ -1,4 +1,4 @@
-Effect above the roll: Snap Shot true, Reckoning true
+Effect above the roll: Reckoning true
 Tiers written: Circling Shot 23 | Knock Back 23 | Basic Attack (all)
 Basic Actions' Specials: Basic Attack undefined | Steel Yourself special true
 the model places them: true

@@ -20,7 +20,7 @@ const M = await import(ROOTURL + "module/moment.mjs");
 console.log("clear:", JSON.stringify(M.reactionSightWhy({})), "| no Line of Effect:", M.reactionSightWhy({ loeTarget: false, targetName: "Nari" }), "| Hidden target is enough:", JSON.stringify(M.reactionSightWhy({ seeTarget: "hidden" })),
   "| Unsensed target:", M.reactionSightWhy({ seeTarget: "unsensed", targetName: "the goblin" }), "| Unsensed attacker:", M.reactionSightWhy({ seeSource: "unsensed", sourceName: "the orc" }));
 const mo = src("module/moment.mjs"), inl = src("module/inline.mjs");
-console.log("collectReactions checks it:", mo.includes("(await reactionSight(tk, target.token ?? null, ev.source?.token ?? null)) || await blockedWhy(actor, item, { downOk: !!def.downOk })"), "| Taunting the attacker needs Line of Effect to it:", inl.includes("No Line of Effect to <b>${esc(tt.name)}</b>: it isn't ${esc(cfg.cond)}."));
+console.log("collectReactions checks it:", mo.includes("(await reactionSight(tk, target.token ?? null, def.downOk ? null : (ev.source?.token ?? null))) || await blockedWhy(actor, item, { downOk: !!def.downOk })"), "| Taunting the attacker needs Line of Effect to it:", inl.includes("No Line of Effect to <b>${esc(tt.name)}</b>: it isn't ${esc(cfg.cond)}."));
 
 console.log("--- Setup and Swapping Places");
 console.log("the Distance after the Setup (a note, not a block):", ac.includes("const withSetup = ") && ac.includes('text: `Out of range now: the Setup first`'), "| two Setups: you choose:", ac.includes("<i>Or, instead:</i>"));

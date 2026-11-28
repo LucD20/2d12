@@ -27,7 +27,7 @@ leaving the square ends it (hooks.mjs), not a still movement: true
 traits: divine,melee,split,strike | modes: weapon weapon T2 [["W","Co"],["Mod","Co"]] | power reach T2 [["2d6!","Co"]]
 the chain: @Place[Compendium.twod12.npcs.Actor.hjLV2tR1thpOOASR|adjacent:yes|one:yes|eoe:yes|defense:action]{Ice Pillar}
 [W] with a type: tokens 1WBCo,ModBCo | read back: [[true,"Co"]] | plain [W] keeps none: true
-the card's lines: Ice Pillar | # Weapon mode | Attack | Tier 1 | Tier 2 | Tier 3 | # Power mode | Attack | Tier 1 | Tier 2 | Tier 3 | rolls: Weapon vs. Armor Defense / Power vs. Ward Defense
+the card's lines: Ice Pillar | # Weapon mode | Attack | Tier 1 | Tier 2 | Tier 3 | # Power mode | Attack | Tier 1 | Tier 2 | Tier 3 | rolls: Arms vs. Armor Defense / Power vs. Ward Defense
 the Ice Pillar actor: {"solid":true,"breakAt":5,"saveTier":1} | token neutral: true
 its chip: {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"uuid":"Compendium.twod12.npcs.Actor.x","adjacent":true,"one":true,"eoe":true,"defense":"action"}
 the squares around a token: 8 | around a Large one: 12 | its walls: [[100,200,200,200],[200,200,200,300],[200,300,100,300],[100,300,100,200]]

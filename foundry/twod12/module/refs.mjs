@@ -9,9 +9,9 @@ export const REFERENCES = {
   appeal: { label: "Appeal", get: a => a.system.attributes?.appeal },
   instinct: { label: "Instinct", get: a => a.system.attributes?.instinct },
   level: { label: "Level", get: a => a.system.level },
-  weapon: { label: "Weapon Modifier", get: a => a.system.weaponMod },
+  weapon: { label: "Arms Modifier", get: a => a.system.weaponMod },
   // v0.0.358: the names the Effect sheet's formulas use, so a chip's number options read them too (near:pow+2, value:stage)
-  wpn: { label: "Weapon Modifier", get: a => a.system.weaponMod },
+  wpn: { label: "Arms Modifier", get: a => a.system.weaponMod },
   power: { label: "Power Modifier", get: a => a.system.powerMod ?? a.system.magicMod },
   pow: { label: "Power Modifier", get: a => a.system.powerMod ?? a.system.magicMod },
   sig: { label: "Signature Modifier", get: a => a.system.signatureMod },

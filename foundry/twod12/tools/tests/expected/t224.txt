@@ -61,7 +61,7 @@ Ends from the old fields: {"time":{"on":true,"mode":"rounds","rounds":2},"down":
 [Body, Save]                         Body Check: no | Body Save: yes | Body Action (Shove): no | Weapon Strike (no Attribute: pack MOD): no | Mind Save: no
 one of [Body] or [Mind], not [Strike] Body Check: yes | Body Save: yes | Body Action (Shove): no | Weapon Strike (no Attribute: pack MOD): no | Mind Save: yes
 [Attack]                             Body Check: no | Body Save: no | Body Action (Shove): yes | Weapon Strike (no Attribute: pack MOD): yes | Mind Save: no
-the picker's Roll group: Appeal, Attack, Attribute Action, Body, Check, Instinct, Mind, Power, Save, Signature, Split, Weapon
+the picker's Roll group: Appeal, Arms, Attack, Attribute Action, Body, Check, Instinct, Mind, Power, Save, Signature, Split
 --- formulas
 "@origin.pow + 2"              {"ok":true,"value":5,"error":""}
 "floor(@target.body / 2)"      {"ok":true,"value":2,"error":""}

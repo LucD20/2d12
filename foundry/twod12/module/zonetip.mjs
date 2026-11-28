@@ -18,7 +18,7 @@ export function shortWords(name, summary = "") {
 // v0.0.471 (Lucas, checklist v0.0.470: the damage showed as a formula, "2 + @origin.wpn Pi", and Pi uncolored): a formula worked out with the
 // area's origin (origin: refValues, when known), a plain sum added up; the damage type written in full (the highlight colors it)
 const sumOf = t => (/^[\d\s+\-]+$/.test(t) ? String(t.replace(/\s+/g, "").split(/(?=[+-])/).reduce((a, x) => a + Number(x), 0)) : t);
-export const worked = (formula, origin) => { const f = String(formula ?? "").trim(); if (!origin || !/@/.test(f)) return f.replace(/@origin\.(pow|wpn|sig)/gi, (m, k) => ({ pow: "your Power Modifier", wpn: "your Weapon Modifier", sig: "your Signature Modifier" })[k.toLowerCase()]); const r = evalFormula(f, { origin }, { dice: true }); return r.ok ? sumOf(String(r.value)) : f; };
+export const worked = (formula, origin) => { const f = String(formula ?? "").trim(); if (!origin || !/@/.test(f)) return f.replace(/@origin\.(pow|wpn|sig)/gi, (m, k) => ({ pow: "your Power Modifier", wpn: "your Arms Modifier", sig: "your Signature Modifier" })[k.toLowerCase()]); const r = evalFormula(f, { origin }, { dice: true }); return r.ok ? sumOf(String(r.value)) : f; };
 export function zoneTipLines(z, nameOf = () => null, origin = null) {
   const lines = [];
   for (const r of z?.rules ?? []) {

@@ -551,9 +551,9 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           { key: "attrs", title: "Attributes", cols: 2, tiles: Object.entries(TWOD12.attributes).map(([k, label]) => ({ label, roll: k, value: sgnTxt(s.attributes?.[k] ?? 0),
             input: "", tip: `Roll a ${label} Check. Save DC ${s.saveDC?.[k] ?? "\u2014"} (@${k}.dc)` })) },
           { key: "mods", title: "Modifiers", cols: npc ? 2 : 3, tiles: [
-            modTile("Weapon", s.weaponAttribute, s.weaponMod, `Weapon Modifier, from ${from(s.weaponAttribute)}. Save DC ${s.saveDC?.weapon ?? "\u2014"} (@weapon.dc)`),
+            modTile("Arms", s.weaponAttribute, s.weaponMod, `Arms Modifier, from ${from(s.weaponAttribute)}. Save DC ${s.saveDC?.weapon ?? "\u2014"} (@weapon.dc)`),
             modTile("Power", pw, s.powerMod ?? s.magicMod, `Power Modifier, from ${from(pw)}. Save DC ${s.saveDC?.power ?? "\u2014"} (@power.dc)`),
-            ...(npc ? [] : [modTile("Signature", s.signatureAttribute, s.signatureMod, `Signature Modifier: the ${s.signatureFrom === "power" ? "Power" : "Weapon"} Modifier (${vals ? sgnTxt(s.signatureMod) : TWOD12.attributes[s.signatureAttribute]}). Save DC ${s.saveDC?.signature ?? "\u2014"} (@signature.dc)`)])
+            ...(npc ? [] : [modTile("Signature", s.signatureAttribute, s.signatureMod, `Signature Modifier: the ${s.signatureFrom === "power" ? "Power" : "Arms"} Modifier (${vals ? sgnTxt(s.signatureMod) : TWOD12.attributes[s.signatureAttribute]}). Save DC ${s.saveDC?.signature ?? "\u2014"} (@signature.dc)`)])
           ] },
           { key: "move", title: "Movement", cols: 4, tiles: [
             tile("Speed", speedNow, speedRef, { base: s.speed ?? 0, tip: npc ? "From the Builder tab" : "From your species and class" }),
@@ -660,8 +660,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       name: cls.name, features: rows, pickSections,
       picks: (() => {
         const as = this.actor.system, cv = as.modSource === "class", mv = n => `${n >= 0 ? "+" : "-"}${Math.abs(n)}`;   // pack MOD: class values
-        const both = `${as.modConflict ? ` | Both Modifiers wanted the same Attribute: the ${s.modPriority === "power" ? "Power" : "Weapon"} Modifier kept it (change it on the class)` : ""}`;
-        return `+1 ${L[s.chosenA] ?? "-"}, +1 ${L[s.chosenB] ?? "-"} | Weapon Modifier: ${cv ? mv(as.weaponMod) : (L[as.weaponAttribute] ?? "-")} | Power Modifier: ${cv ? mv(as.powerMod) : (L[as.powerAttribute] ?? "-")}${both}`;
+        const both = `${as.modConflict ? ` | Both Modifiers wanted the same Attribute: the ${s.modPriority === "power" ? "Power" : "Arms"} Modifier kept it (change it on the class)` : ""}`;
+        return `+1 ${L[s.chosenA] ?? "-"}, +1 ${L[s.chosenB] ?? "-"} | Arms Modifier: ${cv ? mv(as.weaponMod) : (L[as.weaponAttribute] ?? "-")} | Power Modifier: ${cv ? mv(as.powerMod) : (L[as.powerAttribute] ?? "-")}${both}`;
       })()
     };
   }
@@ -1593,7 +1593,7 @@ export class NpcSheet extends CharacterSheet {
     const ctx = await super._prepareContext(options);
     return Object.assign(ctx, {
       weaponAttrChoices: TWOD12.attributes,
-      modLeadChoices: { weapon: "Weapon Modifier", power: "Power Modifier" },   // v0.0.305 (pack MOD): an NPC's lead Modifier
+      modLeadChoices: { weapon: "Arms Modifier", power: "Power Modifier" },   // v0.0.305 (pack MOD): an NPC's lead Modifier
       // The stat block's Tags as chips (× removes), and the ones that can still be added (v0.0.136).
       npcTags: (() => { const all = tagChoices(), have = new Set(this.actor.system.tags ?? []); return { have: [...have].map(k => ({ key: k, label: all[k] ?? k })), add: Object.entries(all).filter(([k]) => !have.has(k)).map(([key, label]) => ({ key, label })) }; })()
     });

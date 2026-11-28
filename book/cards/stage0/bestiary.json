@@ -622,7 +622,6 @@
    ],
    "foundry": {
     "img": "icons/svg/hand.svg",
-    "npcWeapon": "Club",
     "automation": "silver",
     "automationNote": "a Basic attack (the exploding die, its Critical row's 1d10!); Grabbed when a Tier 3 lands. By hand: one creature held at a time (the GM ends the first Grab when a second one lands)."
    }

@@ -36,11 +36,11 @@ Orc Warrior: role standard, leads with weapon
 Grave Wisp: role grunt, leads with power
 Ogre Chieftain: role elite, leads with weapon
 --- rolls: a class value has no Attribute behind it
-[weapon, strike]: weapon +2 "Weapon Modifier" attrKey "" | sees "body" (Body Rolls): false
+[weapon, strike]: weapon +2 "Arms Modifier" attrKey "" | sees "body" (Body Rolls): false
 [magic]: power +1 "Power Modifier" attrKey "" | sees "body" (Body Rolls): false
 [signature, weapon]: signature +2 "Signature Modifier" attrKey "" | sees "body" (Body Rolls): false
 [body, strike]: attribute +2 "Body Check" attrKey "body" | sees "body" (Body Rolls): true
-a class copy from before still reads its Attribute: Weapon Modifier • Body | Body Rolls: true
+a class copy from before still reads its Attribute: Arms Modifier • Body | Body Rolls: true
 --- wiring: the class window's picks true | under the Attribute increases (v0.0.306) true | refresh keeps modStage2 true | the Builder's Weapon Mod / Power Mod rows true | the Archer's fixed row true | 12 + Attribute in defense.mjs true
 --- v0.0.308: the Builder tab (Lucas)
 chips: [{"kind":"resist","sub":"Fi","label":"Resistance Fire 5"},{"kind":"weak","sub":"Ho","label":"Weakness Holy 2"}]

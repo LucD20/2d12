@@ -129,22 +129,22 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     // v0.0.244 (Lucas): the Health line's choice as a selection like the Attributes: the high value on Vigor or Resolve (book, Chapter 4; chosen once).
     const healthRow = level === 1 && Number(cls.healthHigh) > 0 ? `<div class="cw-attr"><span>High Health value (${Number(cls.healthHigh)}) on</span><div class="cw-seg">${[["vigor", "Vigor"], ["resolve", "Resolve"]].map(([k, l]) => `<button type="button" data-key="hhigh:${k}" data-hhigh="${k}" aria-pressed="${this.healthHigh === k}">${this.healthHigh === k ? `${CHECK} ` : ""}${l}</button>`).join("")}</div><span class="cw-hnote">the low value (${Number(cls.healthLow)}) on the other</span></div>` : "";
     let healthPlaced = !healthRow;
-    // v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values. Level 1: which is the Weapon Modifier (a class that lets you choose);
+    // v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values. Level 1: which is the Arms Modifier (a class that lets you choose);
     // level 4 (Stage 1 since v0.0.407; it was level 5, Stage 2): which Modifier takes the +1 (default: the higher one). Chosen once.
     const mh = Number(cls.modHigh) || 0, ml = Number(cls.modLow) || 0, hasVals = mh > 0 || ml > 0, sgv = n => `${n >= 0 ? "+" : "−"}${Math.abs(n)}`;
     const segBtn = (data, k, on, l) => `<button type="button" data-key="${data}:${k}" data-${data}="${k}" aria-pressed="${on}">${on ? `${CHECK} ` : ""}${esc(l)}</button>`;
     const orderRow = level === 1 && hasVals && (cls.modOrder || "either") === "either"
-      ? `<div class="cw-attr"><span>Your Modifiers</span><div class="cw-seg">${[["weapon", `Weapon ${sgv(mh)}, Power ${sgv(ml)}`], ["power", `Power ${sgv(mh)}, Weapon ${sgv(ml)}`]].map(([k, l]) => segBtn("prio", k, this.priority === k, l)).join("")}</div></div>` : "";
+      ? `<div class="cw-attr"><span>Your Modifiers</span><div class="cw-seg">${[["weapon", `Arms ${sgv(mh)}, Power ${sgv(ml)}`], ["power", `Power ${sgv(mh)}, Arms ${sgv(ml)}`]].map(([k, l]) => segBtn("prio", k, this.priority === k, l)).join("")}</div></div>` : "";
     // v0.0.307 (Lucas): a class that fixes the order (the Archer) still shows its Modifiers at level 1, as a decided choice.
     const fixedFirst = cls.modOrder === "power" ? "power" : "weapon";
     const fixedRow = level === 1 && hasVals && (cls.modOrder || "either") !== "either"
-      ? `<div class="cw-attr"><span>Your Modifiers</span><div class="cw-seg"><button type="button" aria-pressed="true" disabled data-tooltip="Set by the class">${CHECK} ${esc(fixedFirst === "power" ? `Power ${sgv(mh)}, Weapon ${sgv(ml)}` : `Weapon ${sgv(mh)}, Power ${sgv(ml)}`)}</button></div></div>` : "";
+      ? `<div class="cw-attr"><span>Your Modifiers</span><div class="cw-seg"><button type="button" aria-pressed="true" disabled data-tooltip="Set by the class">${CHECK} ${esc(fixedFirst === "power" ? `Power ${sgv(mh)}, Arms ${sgv(ml)}` : `Arms ${sgv(mh)}, Power ${sgv(ml)}`)}</button></div></div>` : "";
     const t1 = hasVals ? classTrack({ high: mh, low: ml, order: cls.modOrder, lead: this.priority, stage: 0 }) : null;
     const s2now = this.stage2 || (t1?.weaponFirst ? "weapon" : "power");
     const s2Row = level === STAGE1_LEVEL && hasVals
-      ? `<div class="cw-attr"><span>Stage 1: +1 to</span><div class="cw-seg">${[["weapon", `Weapon Modifier (Weapon ${sgv(t1.weapon + 1)}, Power ${sgv(t1.power)})`], ["power", `Power Modifier (Weapon ${sgv(t1.weapon)}, Power ${sgv(t1.power + 1)})`]].map(([k, l]) => segBtn("s2", k, s2now === k, l)).join("")}</div></div>` : "";
-    const modSub = orderRow ? "Your class gives two Modifier values: choose which is your Weapon Modifier (Weapon Actions) and which your Power Modifier (Power Actions and Ward Defense). It can't be changed later."
-      : fixedRow ? "Your class sets your Weapon Modifier (Weapon Actions) and your Power Modifier (Power Actions and Ward Defense). Stage 1 adds +1 to the one you choose, Stage 3 +1 to both."
+      ? `<div class="cw-attr"><span>Stage 1: +1 to</span><div class="cw-seg">${[["weapon", `Arms Modifier (Arms ${sgv(t1.weapon + 1)}, Power ${sgv(t1.power)})`], ["power", `Power Modifier (Arms ${sgv(t1.weapon)}, Power ${sgv(t1.power + 1)})`]].map(([k, l]) => segBtn("s2", k, s2now === k, l)).join("")}</div></div>` : "";
+    const modSub = orderRow ? "Your class gives two Modifier values: choose which is your Arms Modifier (Arms Actions) and which your Power Modifier (Power Actions and Ward Defense). It can't be changed later."
+      : fixedRow ? "Your class sets your Arms Modifier (Arms Actions) and your Power Modifier (Power Actions and Ward Defense). Stage 1 adds +1 to the one you choose, Stage 3 +1 to both."
       : "Stage 1 adds +1 to one of your Modifiers (never above +4). It can't be changed later.";
     const modSec = orderRow || fixedRow || s2Row ? `<section class="cw-sec"><h2>Modifiers <span class="cw-pill done">${orderRow || s2Row ? "Chosen" : "Set by the class"}</span></h2><p class="cw-sub">${modSub}</p>${orderRow}${fixedRow}${s2Row}</section>` : "";
     let modPlaced = !modSec;   // v0.0.306 (Lucas): the Modifiers section right under the Attribute increases, above the Features
@@ -154,7 +154,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
       if (x.kind === "attr") {
         body = x.pairs.map(p => `<div class="cw-attr"><span>${p.opts.map(k => AN[k]).join(" or ")} +1</span><div class="cw-seg">${p.opts.map(k => `<button type="button" data-key="attr:${x.s.id}:${p.i}:${k}" data-attr="${x.s.id}" data-pair="${p.i}" data-k="${k}" aria-pressed="${p.chosen === k}"${p.free.includes(k) ? "" : ' disabled data-tooltip="Chosen at an earlier level"'}><span class="${ATTR_CLS[k] ?? ""}">${AN[k]}</span> +1</button>`).join("")}</div></div>`).join("");
         if (!healthPlaced) { body += healthRow; healthPlaced = true; }
-        if (shared.length) body += `<div class="cw-attr"><span>If ${shared.map(k => AN[k]).join(" or ")} is the higher for both Modifiers</span><div class="cw-seg">${[["weapon", "Weapon Modifier keeps it"], ["power", "Power Modifier keeps it"]].map(([k, l]) => `<button type="button" data-key="prio:${k}" data-prio="${k}" aria-pressed="${this.priority === k}">${l}</button>`).join("")}</div></div>`;
+        if (shared.length) body += `<div class="cw-attr"><span>If ${shared.map(k => AN[k]).join(" or ")} is the higher for both Modifiers</span><div class="cw-seg">${[["weapon", "Arms Modifier keeps it"], ["power", "Power Modifier keeps it"]].map(([k, l]) => `<button type="button" data-key="prio:${k}" data-prio="${k}" aria-pressed="${this.priority === k}">${l}</button>`).join("")}</div></div>`;
       } else {
         const bar = x.s.kind === "talent" ? this._filterBar(x.s.id) : "";
         body = `${x.empty ? '<div class="cw-empty">Everything here is already yours.</div>' : ""}${bar}<div class="cw-tiles${x.s.kind === "talent" && this.tf.compact ? " compact" : ""}" data-sec="${x.s.id}">${x.list.map(u => tile(x, u)).join("")}</div>${x.s.kind === "talent" ? '<p class="cw-none" hidden>No Talent matches the filter.</p>' : ""}`;

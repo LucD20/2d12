@@ -31,7 +31,7 @@
           "foundry": {
             "sub": [
               ["Advance in a", "@Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge] in a"],
-              ["Basic Attack (1A) with 1 Boon", "@Use[Basic Attack|boons:1|empowered:has(Battering Charge)|atwill:yes|label:Basic Attack (1A, 1 Boon)]"]
+              ["Basic Attack (1A) with 1 Boon", "@Use[Basic Attack|boons:1|empowered:has(Battering Charge)|label:Basic Attack (1A, 1 Boon)]"]
             ]
           }
         }

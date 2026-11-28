@@ -231,7 +231,7 @@ async function barModel(actor, token = null) {
     { key: "ad", word: "AD", label: "AD", value: nn(s.armorDC ?? 11), tip: "Armor Defense" }, { key: "wd", word: "WD", label: "WD", value: nn(s.wardDC ?? 11), tip: "Ward Defense" },
     { key: "speed", word: "Speed", label: "Spd", value: speed, tip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "Speed", chg: speed !== base },
     // v0.0.418 (Lucas, playtest 5, D2): both Modifiers ("Weapon +2 · Power +1"; it showed only the Weapon one)
-    { key: "weapon", word: "Weapon", label: npc ? "Atk" : "Wpn", value: sg(s.weaponMod ?? 0), tip: "Weapon Modifier" }, { key: "power", word: "Power", label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }, { gap: true },
+    { key: "weapon", word: "Arms", label: npc ? "Atk" : "Arm", value: sg(s.weaponMod ?? 0), tip: "Arms Modifier" }, { key: "power", word: "Power", label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }, { gap: true },
     ...HUD_SAVES.map(([key, label, short]) => ({ word: label, label: short, value: sg(s.attributes?.[key] ?? 0), tip: `${label}: click a Check, Shift-click a Save`, hud: "attr", data: { key } }))
   ];
   const hands = actor.itemTypes.weapon?.length ? await handsOf(actor) : null;

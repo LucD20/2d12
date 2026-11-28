@@ -5,6 +5,7 @@ const actionTraits = sortObj({
   archer: "Archer",   // v0.0.522 (Lucas, 2026-11-26; the book, Chapter 7, Archer and Paladin): a class trait, on every Archer Action; no rule of its own
   area: "Area",
   appeal: "Appeal",
+  arms: "Arms",   // v0.0.541 (Lucas, 2026-11-28; book, Chapter 7, Arms): the roll that uses the Arms Modifier (was the Weapon trait's job)
   body: "Body",
   divine: "Divine",
   fear: "Fear",
@@ -156,7 +157,8 @@ export const TWOD12 = {
     unfailing: "When its roll gets a Tier 1, that use doesn't count toward its Frequency: you can use it again. You still spend its AP, and its Tier 1 still happens.",
     focus: "Requires concentration. This is not a mechanic by itself, but some features affect your ability to concentrate.",
     weapon:
-      "Requires a weapon. Rolls your Weapon Modifier. On a Tier 2 or 3, your Weapon Attribute is added to the weapon's damage.",
+      "Requires a weapon you wield: the Action deals its damage ([W]) and uses its properties, Mastery and Techniques. It doesn't decide the roll: Arms, Power or Signature does.",   // v0.0.541
+    arms: "Rolls your Arms Modifier: a blow, a shot, a throw, a grip, with a weapon or without (the Weapon trait says when it needs one).",
     handle: "You must be able to use your hands and have a hand free. Releasing an object costs no AP (Release).",
     melee: "These Actions target creatures in close combat. Normally uses your Reach as the Distance.",   // pack TALENTS-PT (book, Chapter 7, 2026-11-19): [Melee] no longer asks for a weapon (the [Weapon] trait does)
     ranged: "Requires a Ranged weapon. The weapon defines the Distance.",
@@ -236,8 +238,8 @@ export const TWOD12 = {
   // Trait groups (v0.0.179, the book's GROUPS in book/build_rules.py): listed in this order, a trait with no group of its own is a Keyword.
   // Their colors are CSS variables (--g-roll...), light on parchment and dark on the dark sheets (system.css). Weapon properties have no group and no color.
   traitGroups: [
-    { key: "roll", label: "Roll", traits: ["appeal", "body", "instinct", "magic", "mind", "save", "signature", "split", "weapon"] },
-    { key: "requires", label: "Requires", traits: ["gun", "handle", "melee", "ranged", "shot"] },
+    { key: "roll", label: "Roll", traits: ["appeal", "arms", "body", "instinct", "magic", "mind", "save", "signature", "split"] },
+    { key: "requires", label: "Requires", traits: ["gun", "handle", "melee", "ranged", "shot", "weapon"] },   // v0.0.541: Weapon only needs a weapon
     { key: "kind", label: "Kind", traits: ["area", "move", "self", "strike"] },
     { key: "damage", label: "Damage", traits: ["nonlethal"] },
     { key: "keywords", label: "Keywords", traits: ["archer", "divine", "focus", "fear", "magical", "paladin", "subtle", "unfailing"] }   // v0.0.522: archer, paladin (the class traits)
@@ -728,12 +730,12 @@ export function vsText(d, { src = null, fists = false, rolls = null } = {}) {
   if (has("signature") && (has("power") || has("magic"))) return "WD";
   if (src?.kind === "signature") return src.from === "power" ? "WD" : "AD";
   if (has("signature")) return "AD or WD";
-  if (has("weapon") || fists || src?.kind === "weapon") return "AD";
+  if (has("arms") || has("weapon") || fists || src?.kind === "weapon") return "AD";   // v0.0.541: an Arms Action (with a weapon or not)
   if (has("magic") || src?.kind === "power") return "WD";
   return "DC 13";
 }
 
-/** "Body Check", "Weapon Modifier", "Power Modifier" (+ " vs. Body" when there is a Defense). */
+/** "Body Check", "Arms Modifier", "Power Modifier" (+ " vs. Body" when there is a Defense). */
 
 /** Where an Action reaches: Reach, Self, the weapon's range, or any text such as "10/20/40". */
 /**

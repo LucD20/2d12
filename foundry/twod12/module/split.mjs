@@ -15,7 +15,7 @@ const over = (target, extra) => new Proxy(target, {
 /** The Action as it is in one mode: the same item (id, flags, name) with the mode's trait added and only the mode's versions. */
 export function splitView(item, mode) {
   const sys = item.system;
-  const traits = new Set([...sys.traits, SPLIT_TRAIT[mode]]);
+  const traits = new Set([...sys.traits, SPLIT_TRAIT[mode], ...(mode === "weapon" ? ["arms"] : [])]);   // v0.0.541: the Weapon mode rolls Arms and needs a weapon
   const versions = [...(sys.versions ?? [])].filter(v => !v.mode || v.mode === mode);
   const distance = mode === "power" && /^\s*weapon\s*$/i.test(sys.distance ?? "") ? "reach" : sys.distance;
   return over(item, { system: over(sys, { traits, versions, distance }), splitMode: mode });

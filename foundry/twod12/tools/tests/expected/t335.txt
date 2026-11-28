@@ -1,0 +1,19 @@
+--- (1) Arms and Weapon
+the trait: Arms | groups: Roll true | Requires has Weapon true
+[Arms, Melee, Strike] (Crushing Grip): weapon 2 "Arms Modifier" | [Weapon] alone (a hand-made item): weapon 2 "Arms Modifier" | [Weapon, Handle] Reload-like, no roll trait: weapon 2 "Arms Modifier"
+Vs.: an Arms Action AD | a Power one WD
+Basic Attack: arms,strike,weapon
+Hurled Goblin: arms,ranged,strike
+Crushing Grip: arms,melee,strike
+Great Sweep: arms,melee,strike,weapon
+Smite: divine,paladin,signature,strike,unfailing,weapon
+Quick Shots: archer,arms,ranged,shot,strike,weapon
+--- (2) the Charge and Snap Shot
+the Charge's Basic Attack counts toward the At-will count: false
+Snap Shot's Setup: You @Move[evade|distance:1]. | its Effect line gone: true
+--- (3) playtest 12's bugs (the code)
+Rebuke: a chain's @Damage goes to the chain's targets: true
+the encounter's AP before the round starts: true | the late regain at a turn's start: true
+Dying Flare: a Down creature's own moment needs no sight of the attacker: true
+the drag priced with the ruler's step cost when Foundry didn't: true
+the extra die's chip off without AP: true | a pinned n/a chip stays in sight: true

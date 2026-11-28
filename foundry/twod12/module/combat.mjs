@@ -278,6 +278,9 @@ export class TwoD12Combat extends Combat {
   }
   async startCombat() {
     try { await this._squadPick(0); } catch (e) { console.warn("twod12 | the squad's order", e); }
+    // v0.0.541 (Lucas, playtest 12: "First persons turn, on the first round, didnt get their APs"): every creature's AP are written before Foundry
+    // starts the round, so the first turn's start never reads them before they exist (it raced with the combatStart hook)
+    try { await encounterAP(this); } catch (e) { console.warn("twod12 | the encounter's AP", e); }
     return super.startCombat();
   }
   async nextTurn() {
@@ -383,7 +386,12 @@ async function startTurn(combat) {
     // v0.0.535 (the action economy, Lucas 2026-11-27; book, Chapter 2): nothing is regained here: the AP were regained at the end of the last turn
     // (regainAtTurnEnd), and what the creature spent on Reactions since is already gone. Quickened gives its AP now; the AP only for [Divine]
     // Reactions (Tireless Vigil) not spent are lost.
-    const q = quickenedOf(c.actor), have = getAP(c);
+    // v0.0.541 (Lucas, playtest 12: "At round 2, for some reason the ogre chieftain didnt have actions"): a safety net: if the end of this creature's
+    // last turn never regained its AP (its apRegained doesn't name that turn), it regains them now, once, before its new turn starts
+    if (hadTurn && c.getFlag(F, "apRegained") !== c.getFlag(F, "apTurn")) {
+      try { if (await regainAtTurnEnd(combat, c)) console.warn(`twod12 | ${c.name}: the AP of the end of its last turn were regained late (at its turn's start)`); } catch (e) { console.warn("twod12 | the late regain", e); }
+    }
+    const q = quickenedOf(c.actor), have = c.getFlag(F, "ap") === undefined ? baseAP(c.actor) : getAP(c);   // v0.0.541: a creature with no AP yet has its encounter's 4
     await setAP(c, have + q, "start of turn", { rap: { b: getRAP(c), a: 0 }, patch: { ...fresh, [`flags.${F}.rap`]: 0 } });
     if ((Number(c.actor?.system?.apGuard) || 0) > 0) await setUnusedApGuard(c, hadTurn, apLeft);   // an old Guard from unspent AP is cleared
     await climbUp(c);
@@ -545,7 +553,7 @@ export function registerCombatHooks() {
     const combat = game.combats.get(data.combatId);
     if (combat) await performSwap(combat, data.aId, data.bId, data.userId);
   });
-  Hooks.on("combatStart", async combat => { await encounterAP(combat); await startTurn(combat); });
+  Hooks.on("combatStart", async combat => { await startTurn(combat); });   // v0.0.541: the AP are given in startCombat, before this
   Hooks.on("combatTurnChange", async (combat, prior) => {
     // v0.0.535 (the action economy, Lucas 2026-11-27): the turn that ended regains its AP (its end), then the next one starts
     const ended = combat.combatants.get(prior?.combatantId);

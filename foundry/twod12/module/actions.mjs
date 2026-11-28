@@ -554,7 +554,7 @@ export async function useAction(actor, item, opts = {}) {
       if (modes.length > 1 && !modes.includes(opts.mode)) {
         const { pickTwo } = await import("./pickwindow.mjs");   // v0.0.415 (pack CL): was a DialogV2
         const pick = await pickTwo({ title: `${item.name}: choose a mode`, name: item.name, sub: "a Split Action", icon: "fa-code-branch",
-          text: "Choose how you use it this time. Weapon mode needs a weapon and rolls your Weapon Modifier; Power mode needs no weapon and rolls your Power Modifier.",
+          text: "Choose how you use it this time. Arms mode needs a weapon and rolls your Arms Modifier; Power mode needs no weapon and rolls your Power Modifier.",
           yes: "Weapon mode", no: "Power mode" });
         if (pick !== true && pick !== false) return;
         mode = pick ? "weapon" : "power";
@@ -1991,7 +1991,7 @@ export async function rollDamage(message, { again = false } = {}) {
     for (const r of resolved) for (const c of r.comps) comps.push({ pool: r.inst.pool || "B", sub: c.sub, kind: c.kind, formula: c.formula, total: c.total, dice: c.dice, emp: c.emp ?? 0, ...(c.label ? { label: c.label } : {}), ...(c.src ? { src: c.src } : {}), ...(r.inst.source ? { src: r.inst.source, srcUuid: r.inst.srcUuid, label: r.inst.source } : {}) });   // v0.0.189: bonus damage names its source
     let chip = "";
     const dmgRes = resolved;
-    // [Mod]: the Weapon Modifier on Tiers 2 and 3 (to the weapon's damage), the Signature Modifier for a [Signature, Weapon] Action (v0.0.181); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".
+    // [Mod]: the Arms Modifier on Tiers 2 and 3 (to the weapon's damage), the Signature Modifier for a [Signature, Weapon] Action (v0.0.181); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".
     // v0.0.407 (the Bestiary, Attributes and Modifiers): an NPC's damage is written whole: its Modifier is for its rolls only (nothing added; a [Mod] written in a Tier still counts)
     const attrFrom = actor.type === "npc" && item.getFlag?.("twod12", "basic") !== "fists" ? Infinity : f.attrMode === "all" ? 1 : f.attrMode === "t2" ? 2 : f.attrMode === "none" ? Infinity : (f.isWeapon ? 2 : Infinity);
     if (tier >= attrFrom && !insts.some(i => i.useAt) && dmgRes.length) {

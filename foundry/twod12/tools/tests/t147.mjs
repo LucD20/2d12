@@ -12,13 +12,13 @@ const row = traits => {   // the compact row in words: chips (group) and | for a
   return h.replace(/<span class="tsep"[^>]*><\/span>/g, " | ").replace(/<span class="tchip tc tg-(\w+)" style="[^"]*" data-tooltip="([^"]*)">([^<]+)<\/span>/g, (m, g, tip, l) => `${l}(${g}: "${tip.split(" · ")[0]}")`).replace(/<\/?span[^>]*>/g, "").replace(/\)(?=\w)/g, ") ");
 };
 console.log("--- the chat card's tight chips");
-console.log("Smite (4 groups):    ", row(["weapon", "strike", "divine", "melee"]));
+console.log("Smite (4 groups):    ", row(["arms", "weapon", "strike", "divine", "melee"]));   // v0.0.541: Arms is the roll, Weapon a requirement
 console.log("Relocate (4 traits): ", row(["strike", "handle", "body", "instinct"]));
 console.log("5 groups:            ", row(["nonlethal", "focus", "area", "ranged", "magic"]));
 console.log("one group:           ", row(["body"]), "| no traits:", JSON.stringify(cf.traitChevrons(new Set(), { compact: true })));
 const smite = cf.traitChevrons(new Set(["weapon", "strike", "divine"]), { compact: true });
 console.log("no group labels:", !smite.includes('class="tgl"'), "| no hover on a trait (v0.0.420, the tooltip review):", !smite.includes("data-tooltip"));
-console.log("the sheets keep the labeled groups:", cf.traitChevrons(new Set(["weapon", "strike"])).includes('<span class="tgl">Roll</span>'), "| weapon properties stay neutral:", cf.traitChevrons(new Set(["melee"]), { properties: true }).includes("tchip prop"));
+console.log("the sheets keep the labeled groups:", cf.traitChevrons(new Set(["arms", "weapon", "strike"])).includes('<span class="tgl">Roll</span>'), "| weapon properties stay neutral:", cf.traitChevrons(new Set(["melee"]), { properties: true }).includes("tchip prop"));
 console.log("--- who uses which");
 const act = src("module/actions.mjs"), inl = src("module/inline.mjs");
 console.log("the Action chat card:", act.includes("const traitsHtml = t => traitChevrons(t, { compact: true });"), "| the Save card:", inl.includes("traitChevrons(cfg.traits, { compact: true })"),

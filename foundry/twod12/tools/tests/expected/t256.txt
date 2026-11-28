@@ -8,7 +8,7 @@ collectReactions checks it: true | Taunting the attacker needs Line of Effect to
 the Distance after the Setup (a note, not a block): true | two Setups: you choose: true
 Trade Places' button: You and the target @Swap[]{swap squares}. Each of you is moved by a Reposition. | the chip: true
 --- the card's pieces (actioncard.mjs)
-roll lines: {"label":"Attack","text":"Signature vs. Armor Defense"} {"label":"Save","text":"Appeal"} {"label":"Attack","text":"Weapon vs. Ward Defense"} null
+roll lines: {"label":"Attack","text":"Signature vs. Armor Defense"} {"label":"Save","text":"Appeal"} {"label":"Attack","text":"Arms vs. Ward Defense"} null
 Tier lines: ["Tier 1 or 2"] ["Tier 2 or 3"] ["Tier 1","Tier 2","Tier 3"] ["Tiers 1–3"]
 trait words: |Signature|&middot;|Weapon|&middot;|Strike|&middot;|Divine|
 the look in both themes (the shared colors): true | no Tier colors on the card: true | the Flavor in the serif italic: true
