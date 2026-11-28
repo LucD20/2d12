@@ -1563,7 +1563,7 @@ export async function useAction(actor, item, opts = {}) {
       // the core rework A4 (Lucas, 2026-11-21; book, Chapter 1, Save Actions): the user's own Boons don't apply, its Banes do, turned around: after
       // cancelling the user's Boons and Banes, each Bane left gives every target 1 Boon on its Save (Doomed: 5, their Saves Favored)
       // v0.0.536 (book, Chapter 1, Save Actions): the user's Banes left (at most 4) give that many Boons; the user's Doomed makes their Saves Favored
-      { const own = bbResolve(fxm.boons + manB, fxm.banes + manN, !!fxm.favored, !!fxm.doomed), ub = Math.max(0, -own.add);
+      { const own = bbResolve(fxm.boons + manB, fxm.banes + manN, !!fxm.favored || data.favored === "on", !!fxm.doomed || data.doomed === "on"), ub = Math.max(0, -own.add);   // v0.0.537: the dialog's Favored / Doomed (your own Doomed status is its chip) count
         if (ub) { cfg.boon = (Number(cfg.boon) || 0) + ub; cfg.userBanes = ub; }
         if (own.state === "doomed") cfg.userDoomed = true; }
       const point = areaOutcome?.point ?? null;

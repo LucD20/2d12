@@ -141,7 +141,8 @@ async function partyCard(actor, token = null) {
     sub: actor.type === "npc" ? rankLabel(actor) : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     ad: nn(s.armorDC ?? 11), wd: nn(s.wardDC ?? 11), speed, speedTip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "",
     rally: actor.type === "npc" ? "—" : `${nn(s.rallyLeft)}/${nn(s.rallyMax)}`, guard: h.guard, tag: h.tag?.cls === "hurt" ? null : h.tag, bars: h.bars,   // v0.0.418 (Lucas, playtest 5, F2): Bloodied / Strained off the strip (Down stays)
-    marks: cb ? marksHtml({ ...cb, showStrikes: false }) : "", esc: e && cb ? escHtml(e.n, e.max) : "",
+    marks: cb ? marksHtml(cb) : "",   // v0.0.537 (Lucas, checklist v0.0.535, ae-start: "the strike ticks should be on the combat strip always, even out of your turn"): the party strip shows them too
+    esc: e && cb ? escHtml(e.n, e.max) : "",
     cond: condsOf(actor, durationText).map(c => `${c.name}${c.dur ? ` (${c.dur})` : ""}`).join(" · ")
   };
 }

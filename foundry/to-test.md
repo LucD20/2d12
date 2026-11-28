@@ -25,31 +25,12 @@ differ):
 
 ## Starting a combat
 
-### ae-start · v0.0.535 · Every creature starts the encounter with its AP
-Do: Put Aveline, Kaela, an Orc Warrior and a Goblin Sneak in a combat, roll Initiative and start it. Before Aveline's first turn, look at her HUD and the tracker.
-Expect: Everyone has AP before their first turn: Aveline, Kaela and the orc 4, the goblin 3 (a Minion). No diamond (Reaction Point) shows on the HUD, the tracker or the sheet: there is no Reaction Point any more.
-
-### ae-regain · v0.0.535 · The AP are regained at the end of the turn
-Do: On Aveline's turn, spend 1 AP (a Basic Attack on the Orc Warrior) and end the turn. Watch her AP in the Turn Log and the HUD, then during the orc's turn.
-Expect: When her turn ends, the Turn Log shows "AP regained +N" and she is back to 4 (the AP left are lost, never more than 4). Her next turn starts with those 4 AP: the start gives nothing more. No Guard from unspent AP appears anywhere (the Turn Breakdown has no "unused AP" row).
-
-### ae-zero · v0.0.535 · A turn that starts with 0 AP still starts and ends
-Do: With Aveline, set her AP to 0 in the tracker during the orc's turn (as if she had spent them reacting), then let her turn come and end it.
-Expect: Her turn starts (its start effects happen) with 0 AP, and at its end she regains 4.
+### ae-start · v0.0.537 · Rev 2 · Every creature starts the encounter with its AP
+Do: Put Aveline, Kaela, an Orc Warrior and a Goblin Sneak in a combat and start it. During the orc's turn, look at Aveline's and Kaela's portraits in the HUD's party strip and at the combat strip at the top.
+Expect: Everyone starts with its AP (4; the goblin 3), no Reaction Point diamond anywhere. The Strike slashes (3) show for every creature on both strips, its turn or not; a Strike Kaela makes as a Reaction in the orc's turn takes one.
+Rev: 2
 
 ## The roll dialog
-
-### fd-boons · v0.0.536 · Favored and Doomed don't count as Boons or Banes; at most 4 count
-Do: Kaela, standing next to the Orc Warrior (Engaged: her bow is Doomed), shoots it with a Basic Attack while the orc is Vulnerable 1 (from the Token HUD). Then Aveline attacks the Grave Wisp with 6 Banes added by hand in the roll dialog.
-Expect: Kaela's roll is 3d12, the two lowest, + 1 (Vulnerable's Boon still counts); the written sum shows "You are Engaged (Doomed: 3d12, the two lowest)" with no number and the Boon as +1. Aveline's roll stays 2d12 and subtracts 4; the dialog's note reads "6 Banes left: 4 count", and the roll is not Doomed.
-
-### ae-doomed · v0.0.535 · A repeated At-will Strike is Doomed
-Do: On Kaela's turn, make a Basic Attack against the Orc Warrior, then a second one, then open a third and look at the roll dialog. On the Ogre Chieftain's turn, use Crushing Grip then Roar.
-Expect: The second and third show the chip "2x At-will Strike (Doomed)" / "3x ..." and roll 3d12, keeping the two lowest; no 1 or 2 Banes any more. The ogre's second Basic attack (Roar after Crushing Grip) is Doomed too (they share one count). The sheet's hint reads "Basic attack: next Doomed".
-
-### ae-smite · v0.0.535 · Smite's extra die and Steady Draw's Special cost 1 AP
-Do: Aveline uses Smite with the chip "1 AP: 1 more Smite die" on; Sylwen gets a Tier 2 with a Basic Attack with the chip "1 AP: 2dE more on a Tier 2 or 3" on.
-Expect: Each spends 1 AP of the turn (the Turn Log shows it) and adds its die or dice; with no AP left, a warning says so and nothing is added.
 
 ## Chat cards
 
@@ -59,41 +40,18 @@ Expect: Quick Shots' Tier 1 deals [V] 1d6! + Mod, there is no Evade after it, an
 
 ## Conditions and their Tiers
 
-### fd-save · v0.0.536 · A Doomed caster gives Favored Saves
-Do: The Orc Warrior uses War Howl while Taunted by Durgan with Durgan outside the area (1 Bane), then again with Doomed turned on in its roll dialog, with Aveline and Sylwen in the area.
-Expect: The first time, each target's Save has "Caster's Banes" +1. The second, each target's Save is Favored ("Caster Doomed"), not 5 Boons.
+### fd-save · v0.0.537 · Rev 2 · A Doomed caster gives Favored Saves
+Do: The Orc Warrior uses War Howl with Aveline and Sylwen in the area: open its roll dialog and add 2 Banes and 1 Boon with the buttons, then use it. Then use War Howl again with Doomed on.
+Expect: The Save Action's dialog has Boon, Bane, Favored, Doomed and Empowered buttons and Boons and Banes rows. The first time, each target's Save has "Caster's Banes" +1 (2 Banes and 1 Boon leave 1). The second, each target's Save is Favored ("Caster Doomed").
+Rev: 2
 
 ## Movement
 
 ## Reactions and Judge
 
-### rx-shield · v0.0.535 · Shield of Faith: the Judged creature's Strike on an ally, half of it
-Do: Aveline Judges the Orc Warrior. On the orc's turn, it hits Kaela (within 5 squares of Aveline) with its Hamstringing Axe. Then, on the Goblin Sneak's turn, the goblin hits Kaela with Shiv.
-Expect: The orc's Strike on Kaela offers Shield of Faith in the Reactions message (the damage waits). Use: Kaela takes half of it, rounded up (a line says "takes half ... turned away"), the orc is Taunted by Aveline (1 round), and Aveline pays 1 AP of her next turn. A Strike from a creature Aveline did not Judge (the goblin) doesn't offer it.
-
-### rx-rebuke · v0.0.535 · Rebuke: an enemy within 3 squares moves
-Do: Durgan has Rebuke (or give it to Aveline). The Orc Warrior starts 5 squares from him and Advances: first 1 square (to 4), then on another Advance from 3 to 2. Then, on another turn, the orc stands up from Prone 2 squares from him.
-Expect: 5 to 4 offers nothing; a step that leaves a square within 3 offers Rebuke once for that Move Action. Use: [R] 1d6! Holy damage on the orc and 1 Pressure Bane on its next Strike this turn (the effect ends with that Strike or at the end of its turn); the orc's movement goes on. Standing up offers nothing.
-
-### rx-snapshot · v0.0.535 · Snap Shot: Evade 1, then the weaker shot, once a round
-Do: Sylwen has Snap Shot. The Orc Warrior Advances to a square adjacent to her. Then, in the same round, the Goblin Sneak does the same.
-Expect: The orc's step offers Snap Shot (an Interrupt: Move back stops it before the square). Its card shows "Effect: You Evade 1, then make this attack" above the roll, with the Tiers [V] [Mod] / [V] 1[W] / [V] 1[W] + [Mod] (no Hindered, no Immobilized). The goblin's step in the same round doesn't offer it (Round: used).
-
-### rx-slipaway · v0.0.535 · Slip Away and Backhand: an enemy ends its turn adjacent
-Do: Kaela has Slip Away. The Orc Warrior ends its turn adjacent to her. Later, Durgan ends his turn adjacent to the Ogre Chieftain.
-Expect: Once the orc's turn has ended (its AP regained, its Lingering done), the Reactions message offers Kaela's Slip Away: Use starts her Evade 1 by itself; the weapon swap (Interact) is by hand. When Durgan's turn ends next to the ogre, Backhand is offered: its buttons deal [V] 1d6 Blunt and Push him 2. Neither is offered while the creature is still moving in its turn.
-
-### rx-creatures · v0.0.535 · Dying Flare and Goblin Shriek
-Do: Kill a Grave Wisp with Aveline's Basic Attack while Kaela stands next to it. Then Kaela kills a Goblin Sneak while the other Goblin Sneak is within 6 squares of it.
-Expect: The wisp's Dying Flare is offered once its damage reaches its Health Pool (a Trigger, 0R: it costs no AP); its 1 Emanation Save hits Kaela. Goblin Shriek (renamed) is offered to the other goblin, used on Kaela (the creature that put its ally Down): its button rolls Jeer against her.
-
-### rx-strained · v0.0.535 · Strained is Speed −2; a Bloodied enemy's space can be crossed
-Do: Make Durgan Strained (Resolve damage at least his Resolve) and look at his Speed; then make the Orc Warrior Bloodied and have Kaela Advance through its square, and try to Evade through it.
-Expect: Durgan's Speed is 2 lower while Strained (and no longer while Bloodied). Kaela's Advance can pass through the Bloodied orc's square as Difficult Terrain (never ending there). Known gap: Foundry may also let an Evade pass it (the book allows only an ally's space for an Evade).
-
-### pt-marks · v0.0.534 · Rev 2 · "Marked by" on the marked creature, and "Marks · by you" on the one who placed them
-Do: Aveline Judges the Orc Warrior and Durgan Taunts it (his Taunt, or Taunted by Durgan from the Token HUD). Select the Orc Warrior and open the HUD's Situational tab; click the ✕ on one row (Judged or Taunted). Then put both back, select Aveline (or Durgan) and click the ✕ on the orc's row in "Marks · by you"; then select the Orc Warrior again. Last, click "Apply effect" on Judge's card with the orc targeted, then with nothing targeted.
-Expect: The Orc Warrior's Situational tab shows "Marked by" (others · 2): "Aveline · Judged" and "Durgan · Taunted", each with a ✕ at the row's right end; it folds on its title like Hiding, on its own, and its buttons never move. Its ✕ removes that one and posts the same short system line as the "by you" side ("Orc Warrior is no longer Judged by Aveline (removed by hand)" / "... no longer Taunted (from Durgan; removed by hand)"); the mark also leaves Aveline's (or Durgan's) "Marks · by you" entry, and the Judged ring goes. The other way round: a ✕ in Aveline's (or Durgan's) "by you" entry removes the row from the orc's "Marked by". A creature that both placed and carries marks shows both entries, "Marks · by you" first. A player who doesn't own the creature that placed the mark can still remove it from the creature they own (the GM's client does it). Apply effect marks the targeted orc again; with nothing targeted it marks the card's own target.
+### rx-slipaway · v0.0.537 · Rev 2 · Slip Away and Backhand: an enemy ends its turn adjacent
+Do: Kaela has Slip Away and a Dagger as well as her bow. The Orc Warrior ends its turn adjacent to her; use Slip Away. Then do it again on another round and press Cancel on the granted use.
+Expect: Once the orc's turn has ended, Slip Away is offered; Use starts her Evade 1 by itself, and her HUD shows a granted "Interact" (0 AP, from Slip Away) to swap weapons; using it costs no AP. Cancel skips it and removes it. Backhand (Durgan ending his turn next to the Ogre Chieftain) still works as before.
 Rev: 2
 
 ## Areas, light and Cover

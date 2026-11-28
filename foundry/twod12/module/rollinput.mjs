@@ -90,7 +90,7 @@ export async function rollDialogInput(c) {
   }
   // Favored and Doomed the roll already knows: your own (armor beyond your training, Unconscious) and the target's (Hidden, Hidden to it, untrained armor)
   const doom = doomStatus(actor) || (actor?.system?.armorUntrained ? "Untrained armor" : "");
-  if (doom && !c.saveAct) chips.push({ id: "syn:doom", scope: "shared", row: "banes", kind: "doom", n: 1, label: doom, start: "on", tip: `${doom}: all your Rolls are Doomed` });
+  if (doom) chips.push({ id: "syn:doom", scope: "shared", row: "banes", kind: "doom", n: 1, label: doom, start: "on", tip: `${doom}: all your Rolls are Doomed` });
   if (!c.multi && single && c.rollsAtOthers && !c.saveAct) {
     const hidden = c.seen === "hidden" || c.seen === "unsensed";
     if (hidden) chips.push({ id: "syn:tdoom", scope: single, row: "banes", kind: "doom", n: 1, label: c.seen === "hidden" ? "Hidden" : "Unsensed", start: "on", tip: c.seen === "hidden" ? `Hidden: you only perceive the target by ${c.seenWhy}` : "Unsensed: you don't perceive the target" });

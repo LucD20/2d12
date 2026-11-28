@@ -3,4 +3,4 @@ Thrill of the Kill: automation gold | settings [{"type":"eschook","hookWhen":"da
 the species: Human V+3 R+2 (choice), Dwarf V+4 R+1, Elf V+1 R+4
 Slowed: Slowed always has a value. You regain that many fewer AP at the end of your turn (Slowed 2: you regain 2), and your most...
 the schema has the new fields: true | the setting type in the editor: true
-the version: 0.0.536 | changelog entry: true | the copy matches: true
+the version: 0.0.537 | changelog entry: true | the copy matches: true

@@ -1,5 +1,5 @@
-documents: 117
-references: 50 | broken: none
+documents: 118
+references: 51 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): false | its id is the old one: undefined
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Judge, Smite, Sworn Blade, Drawing Light | Hallmark Action (items, choice, pick 1): Binding Light, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Skill Talent (talent, pick 1)
 Level 2: Escalation Hook (items, granted): Kindled Wrath | Encounter Pick (items, choice, pick 1): Bulwark of Faith, Consecrated Ground, Word of Radiance | Talent (talent, pick 1)

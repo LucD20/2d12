@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.536**. Tests: `node tools/tests/run.mjs` (330 tests, see the README; the next new test is t335). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.537**. Tests: `node tools/tests/run.mjs` (330 tests, see the README; the next new test is t335). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
@@ -12,7 +12,9 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 - [x] **(v0.0.536)** Favored and Doomed are not Boons or Banes (option A), at most 4 Boons or Banes count; Quick Shots, Lay On Hands and Consecrated Ground from the review (the changelog has the detail).
 - [ ] **An old chat card's written sum** (posted before v0.0.536, Favored or Doomed with Boons or Banes) is re-counted with the new rule: its total stays the old one, so an unnamed entry can appear to reach it. Nothing to fix unless it confuses.
 - [ ] **An Evade through a Bloodied enemy's space:** Foundry lets it (the space is "dt" for every movement: `roundrules.mjs creatureWay`); the book allows an Evade only through an ally's space. The same gap stood already for an Unconscious enemy. To fix: an Evade treats an unwilling creature's "dt" space as blocking.
-- [ ] **Slip Away's weapon swap** (Interact (1A)) is by hand after the Evade; Snap Shot's Evade 1 is its button on the card before the shot (both Silver).
+- [x] **(v0.0.537: a granted use on the HUD, Cancel skips it; Lucas's checklist)** **Slip Away's weapon swap** (Interact (1A)) is by hand after the Evade; Snap Shot's Evade 1 is its button on the card before the shot (both Silver).
+- [x] **(v0.0.537)** Lucas's checklist on v0.0.536: the party strip's Strike slashes; a Save Action's roll dialog with the user's Boons, Banes, Favored and Doomed.
+- [ ] **`rv-cards` (Lucas, checklist v0.0.536):** "the situational button doesnt do anything and is cutting off since its very long": which button is asked (the report); to fix once he says.
 - [ ] **"Ends its turn" Reactions** are offered without holding the next turn's start (a Trigger: nothing waits); if the table finds the next creature starting before the answer confusing, hold `startTurn` for them.
 
 ## LUCAS'S CHECKLIST ON v0.0.533 (2026-11-27: 17 passed, 1 failed): "MARKED BY" BUILT IN v0.0.534 (NOT tested by Lucas: `pt-marks` Rev 2)

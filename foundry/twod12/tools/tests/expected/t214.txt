@@ -82,7 +82,7 @@ Word of Radiance, under each Tier: avg 7 | avg 11 | avg 13.5
 Favored chip: d12 F: true | Doomed: d12 D: true | Boon keeps the triangle: true | quick buttons too: true
 hand-added chips carry data-manual (right-click): 3 | an auto chip doesn't: true
 --- v0.0.293: a Save Action (Rebuke) and a Version with no roll (Opportunity Attack) in the new dialog
-Rebuke: their roll line: Their roll Appeal Save vs DC 13 · each target rolls; the Tiers are their result | quick buttons: emp | creature badge: true | no ladder: true | button: Use | averages: avg 8.5 | avg 7.5
+Rebuke: their roll line: Their roll Appeal Save vs DC 13 · each target rolls; the Tiers are their result | quick buttons: boon,bane,fav,doom,emp | creature badge: true | no ladder: true | button: Use | averages: avg 8.5 | avg 7.5
 Opportunity Attack: Effects row: true | no roll panel: true | target line: → Bandit Thug | button: Use | can use: "" | no target needed: ""
 contrast #7a6f5f on #f4ede0: 4.23 | #6b6152 (used): 5.22 | #5d5446 on #e8dec8: 5.57 | #625a4e n/a on #e8dec8: 5.08 | #7a5400 on #f4ede0: 5.83 | #8a1c13 on #f4ede0: 7.99
 --- v0.0.295: the Vs. value in its color, "Vs." bold

@@ -1,4 +1,4 @@
-setting fields used by the compendium: 30 | missing from the data model: none
+setting fields used by the compendium: 34 | missing from the data model: none
 moveHow's choices: true | dmgSub takes W: true
 new tokens: true | the compendium's actors: true
 the Reactions card's look: true | a grip, the Action, the Card: true | no message text on the card: true

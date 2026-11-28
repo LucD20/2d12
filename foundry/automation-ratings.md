@@ -82,7 +82,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Darting Blade | Silver | drawing and stowing the Light weapon |
 | Quick Shots | Silver | a Critical's Basic Attack (1A): its button on the card (v0.0.536; it was the 1 AP back) |
 | Strafe | Gold | |
-| Slip Away | Silver | the weapon swap (Interact (1A)): by hand (v0.0.535: the moment enemyEndsTurn; the Evade 1 starts by itself) |
+| Slip Away | Gold | (v0.0.537: the moment enemyEndsTurn; the Evade 1 starts by itself; the Interact (1A) a granted use on the HUD, Cancel skips it) |
 | Snap Shot | Silver | the Evade 1 before the shot: its button on the card (v0.0.535) |
 | Footwork | Silver | Hands Busy's Interact or Reload; Weave through unwilling creatures |
 | Trick Shots | Gold | |
@@ -115,9 +115,9 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Basic Actions (20) | 14 | 4 | 2 |
 | Weapon Techniques (4) | 1 | 3 | 0 |
 | Paladin (19) | 12 | 6 | 1 |
-| Archer (18; v0.0.535: Hit and Run removed, Snap Shot and Slip Away Silver) | 10 | 7 | 1 |
+| Archer (18; v0.0.535: Hit and Run removed, Snap Shot Silver; v0.0.537: Slip Away Gold) | 11 | 6 | 1 |
 | Playtest Talents (7) | 6 | 1 | 0 |
-| **All (68)** | **43** | **21** | **4** |
+| **All (68)** | **44** | **20** | **4** |
 
 **The Bronze ones, the first to raise:** Opening Shot (the ally's 1R Weapon Attack as a
 button on the line), Weight of Judgment (a Speed −2 effect on the Judged creature), Interact (the draw / stow / swap as its choices), Hide (waits

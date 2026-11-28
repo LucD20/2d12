@@ -295,10 +295,17 @@
     "img": "icons/svg/wing.svg",
     "folder": "Archer",
     "moment": "enemyEndsTurn",
-    "automationNote": "offered by itself in the Reactions message when an enemy ends its turn adjacent to you (after everything at the end of its turn); Use: the Evade 1 starts by itself; the weapon swap (Interact) by hand on the sheet or the HUD.",
-    "automation": "silver",
+    "automationNote": "offered by itself in the Reactions message when an enemy ends its turn adjacent to you (after everything at the end of its turn); Use: the Evade 1 starts by itself, and the Interact (1A) to swap weapons waits on your HUD as a granted use (free; Cancel skips it).",
+    "automation": "gold",
     "momentRange": 1,
-    "momentTarget": "source"
+    "momentTarget": "source",
+    "version": {
+     "fx": {
+      "all": [
+       "{{fx:Slip Away (Interact)}}"
+      ]
+     }
+    }
    }
   },
   {
