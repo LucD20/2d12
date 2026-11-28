@@ -12,7 +12,7 @@ the odds follow it: Doomed + 2 Banes = Doomed: false | Doomed + 1 Boon = a norma
 --- the Critical (critical.mjs)
 Basic attacks' rows: [V] 1d10! | [V] 1d10! Bl. | open: true false
 the types it can choose: [V] 1d10! Pi | [R] 1d10! Ho
-the open row's options: [V] 1d10! Pi | [R] 1d10! Ho | a typed row: Apply: [V] 1d10! Bl. | no damage dealt: Apply: [V] 1d10!
+the open row's options: [V] 1d10! Pi | [R] 1d10! Ho | a typed row: Apply | no damage dealt: Apply
 the open die takes the kind: {"pool":"M","formula":"1d10!","sub":"Ho"} | a typed one keeps its own: {"pool":"M","formula":"1d10!","sub":"Ps"}
 a Critical row's dice: [{"pool":"B","formula":"1d6!","sub":"Bl"}] | none: []
 Trip's Critical: [V] 1d6! Bl. | [V] 1d6! Bl. || Shove's: @Condition[prone] | @Condition[prone]

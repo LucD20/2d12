@@ -141,7 +141,7 @@ async function partyCard(actor, token = null) {
     sub: actor.type === "npc" ? rankLabel(actor) : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     ad: nn(s.armorDC ?? 11), wd: nn(s.wardDC ?? 11), speed, speedTip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "",
     rally: actor.type === "npc" ? "—" : `${nn(s.rallyLeft)}/${nn(s.rallyMax)}`, guard: h.guard, tag: h.tag?.cls === "hurt" ? null : h.tag, bars: h.bars,   // v0.0.418 (Lucas, playtest 5, F2): Bloodied / Strained off the strip (Down stays)
-    marks: cb ? marksHtml(cb) : "",   // v0.0.537 (Lucas, checklist v0.0.535, ae-start: "the strike ticks should be on the combat strip always, even out of your turn"): the party strip shows them too
+    marks: cb ? marksHtml({ ...cb, showStrikes: false }) : "",   // v0.0.539: back as it was (Lucas meant the combat strip at the top, v0.0.539)
     esc: e && cb ? escHtml(e.n, e.max) : "",
     cond: condsOf(actor, durationText).map(c => `${c.name}${c.dur ? ` (${c.dur})` : ""}`).join(" · ")
   };
@@ -773,9 +773,12 @@ function syncSide() {
   if (sit) { sit.classList.toggle("on", has); sit.classList.toggle("urg", urg); }
   const cnt = side.querySelector(".h3-rcnt");
   if (cnt) cnt.textContent = total ? String(total) : "";
-  if ((has && !st.sitWas) || (urg && urgKey !== st.sitKey)) st.view = "sit";
+  // v0.0.539 (Lucas, checklist v0.0.537, rx-slipaway: the Interact "is opening automatically, only needs to open if player clicks on the situational
+  // tab"): a granted use alone (Slip Away's Interact) counts on the tab and waits there; it never switches the tab by itself
+  const pull = urg || availEls.some(el => !el.classList.contains("hb-gr"));
+  if ((pull && !st.sitWas) || (urg && urgKey !== st.sitKey)) st.view = "sit";
   if (!has && st.view === "sit") st.view = st.rview;
-  st.sitWas = has;
+  st.sitWas = pull;
   st.sitKey = urgKey;
   const v = has && st.view === "sit" ? "sit" : "main";   // v0.0.449: Situational, or the Hands with the macro bar
   side.dataset.rtab = v;

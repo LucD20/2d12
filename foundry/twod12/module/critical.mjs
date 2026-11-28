@@ -48,7 +48,20 @@ export function critOptions(rowText, plain, comps = []) {
     const rest = String(plain ?? "").replace(/\[(?:V|R|B|M)\]\s*\d+d\d+!?(?:\s+[A-Z][a-z])?\.?/g, "").replace(/^[\s;,.]+|[\s;,]+$/g, "");
     return kinds.map((k, i) => ({ id: `k${i}`, label: `${kindText(k, open.formula)}${rest ? `; ${rest}` : ""}` }));
   }
-  return plain ? [{ id: "row", label: `Apply: ${plain}` }] : [];
+  // v0.0.539 (Lucas, checklist v0.0.536, rv-cards: the button was the whole row, cut off): the button says Apply; the row is in the question
+  return plain ? [{ id: "row", label: "Apply" }] : [];
+}
+
+/** Pure (v0.0.539): the row's @Use chips (Quick Shots' Critical: a Basic Attack (1A)), each made to name the creature that uses it. */
+export const critRowUses = (text, actorUuid = "") => [...String(text ?? "").matchAll(/@Use\[([^\]]*)\](?:\{[^}]*\})?/g)].map(m => `@Use[${m[1]}${actorUuid && !/\|actor:/.test(m[1]) ? `|actor:${actorUuid}` : ""}]`);
+/**
+ * v0.0.539 (rv-cards: "Apply: You make a [...] Basic Attack (1A)" did nothing): an applied row's Linked Action is used once the Action that rolled
+ * the Critical has finished (a moment later, so its own card and damage come first): the free use opens as any granted use does.
+ */
+export function runCritUses(text, actor) {
+  const chips = critRowUses(text, actor?.uuid ?? "");
+  if (!chips.length) return;
+  setTimeout(async () => { try { const { runAfter } = await import("./inline.mjs"); await runAfter(chips.join(" "), { actor, targets: [] }); } catch (e) { console.warn("twod12 | the Critical's Linked Action", e); } }, 800);
 }
 
 /**
@@ -65,7 +78,7 @@ export async function askCritical({ actor, item, comps = [], rowText = "" }) {
   let id = options[0].id;
   try {
     const { pickBar } = await import("./pickbar.mjs");
-    id = await pickBar({ icon: "fa-star", text: `<b>${esc(item?.name ?? "Critical")}</b>: a Critical! ${typed ? `Its ${esc(die)}: choose the damage type, or don't apply it.` : "Apply its Critical row?"} (${esc(actor?.name ?? "")})`, options, cancel: "" });
+    id = await pickBar({ icon: "fa-star", text: `<b>${esc(item?.name ?? "Critical")}</b>: a Critical! ${typed ? `Its ${esc(die)}: choose the damage type, or don't apply it.` : `Apply its Critical row? <i>${esc(plain)}</i>`} (${esc(actor?.name ?? "")})`, options, cancel: "" });
   } catch (e) { console.warn("twod12 | the Critical's question", e); }
   if (!id || id === "no") return { apply: false };
   if (id === "row") return { apply: true, row: true };

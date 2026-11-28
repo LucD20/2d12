@@ -1678,6 +1678,7 @@ export async function useAction(actor, item, opts = {}) {
           const ans = await C.askCritical({ actor, item, rowText });
           if (ans.apply) {
             chips.push(...tierConditionChips(rowText));
+            C.runCritUses(rowText, actor);   // v0.0.539
             const gainAp = C.critRowAp(rowText);
             if (gainAp > 0 && game.combat?.started) {
               try {
@@ -2013,6 +2014,7 @@ export async function rollDamage(message, { again = false } = {}) {
         if (ans.apply && ans.row) {
           for (const d of C.critRowDice(rowText)) comps.push(await C.critComponent(C.critDieFor(d, ans.kind), rolls));
           critConds = (await import("./inline.mjs")).tierConditionChips(rowText);
+          C.runCritUses(rowText, actor);   // v0.0.539: a Linked Action in the row (Quick Shots' Basic Attack (1A))
           const gainAp = C.critRowAp(rowText);
           if (gainAp > 0 && game.combat?.started) {
             try {

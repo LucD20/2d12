@@ -13,7 +13,7 @@ Roar (Ogre Chieftain): basicAttack true | Critical [R] 1d10! Ps. | its dice: [{"
 a Basic attack in the packs with no Critical row: none
 the Basic Attack with a Longsword: the options [V] 1d10! Sl | the die {"pool":"B","formula":"1d10!","sub":"Sl"}
 with Smite's [R] Ho too: the options [V] 1d10! Sl | [R] 1d10! Ho
-Shiv's typed row is asked as it is: Apply: [V] 1d10! Pi.
+Shiv's typed row is asked as it is: Apply
 no general Basic-attack path left: true true | the row's dice take the kind: true
 v0.0.523: no default row when a Basic attack is ticked: true true true | not registered: true
 --- 2. a Human's choices lock once level 1 is confirmed (a player; the GM still can)

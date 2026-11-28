@@ -2234,8 +2234,9 @@
 .twod12-type.twod12-type #twod12-carousel .tp-marks .hm-sk i { width: 4px !important; height: 12px !important; }
 .twod12-type.twod12-type #twod12-carousel .tp-marks .hm-sep { height: 13px !important; }
 
-/* the Strikes only on the acting creature's plate (they count this turn; a waiting plate had no room for the bigger marks) */
-.twod12-type.twod12-type #twod12-carousel .tp:not(.act) .tp-marks .hm-sk, .twod12-type.twod12-type #twod12-carousel .tp:not(.act) .tp-marks b.hm-sep:nth-of-type(2) { display: none !important; }
+/* v0.0.539 (Lucas, checklist v0.0.537, ae-start: "the Strike pips on the combat strip [...] it needs to show always"): every plate shows its Strikes
+   (a creature can Strike in another's turn); with no Reaction Point's diamond a waiting plate has the room, its slashes a little smaller */
+.twod12-type.twod12-type #twod12-carousel .tp:not(.act) .tp-marks .hm-sk i { width: 3px !important; height: 10px !important; }
 .twod12-hud .hm-ap i { width: 11px; height: 11px; }
 .twod12-hud .hm-r i { width: 10px; height: 10px; margin: 0 1px; }
 .twod12-hud .hm-sk i { width: 5px; height: 13px; }

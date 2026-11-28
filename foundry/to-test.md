@@ -25,35 +25,30 @@ differ):
 
 ## Starting a combat
 
-### ae-start · v0.0.537 · Rev 2 · Every creature starts the encounter with its AP
-Do: Put Aveline, Kaela, an Orc Warrior and a Goblin Sneak in a combat and start it. During the orc's turn, look at Aveline's and Kaela's portraits in the HUD's party strip and at the combat strip at the top.
-Expect: Everyone starts with its AP (4; the goblin 3), no Reaction Point diamond anywhere. The Strike slashes (3) show for every creature on both strips, its turn or not; a Strike Kaela makes as a Reaction in the orc's turn takes one.
-Rev: 2
+### ae-start · v0.0.539 · Rev 3 · The Strike slashes on every plate of the combat strip
+Do: Put Aveline, Kaela, an Orc Warrior and a Goblin Sneak in a combat and start it. During the orc's turn, look at the combat strip at the top; have Kaela make a Strike as a Reaction (Snap Shot) if she can.
+Expect: Every plate of the combat strip shows its AP squares and its 3 Strike slashes, the acting one's and the waiting ones' (theirs a little smaller); a Strike Kaela makes in the orc's turn fills one of hers. Everyone started with its AP (the goblin 3); no Reaction Point diamond.
+Rev: 3
 
 ## The roll dialog
 
 ## Chat cards
 
-### rv-cards · v0.0.538 · Rev 2 · Quick Shots, Lay On Hands, Consecrated Ground (the review)
-Do: Sylwen uses Quick Shots on the Orc Warrior (force a Tier 1 and a Critical with the dialog's Flat if needed); Aveline uses Lay On Hands (1 AP) on Kaela; Durgan (level 2) places Consecrated Ground and Kaela starts her turn in it. If a button in the HUD's Situational tab does nothing or is cut off, write its card and its words in the Fail note.
-Expect: Quick Shots' Tier 1 deals [V] 1d6! + Mod, there is no Evade after it, and on a Critical a "Basic Attack" button makes one free Basic Attack (no AP spent). Lay On Hands gives Guard 4 + Aveline's Power Modifier. Consecrated Ground gives Kaela Guard 2 + Durgan's Power Modifier. Lay On Hands' Setup frame in the Situational tab says "Continue" (no roll), and Continue goes on with the Action.
-Rev: 2
+### rv-cards · v0.0.539 · Rev 3 · Quick Shots' Critical, Lay On Hands, Consecrated Ground
+Do: Sylwen uses Quick Shots on the Orc Warrior and gets a Critical (the dialog's Tier buttons or its Flat); then Aveline uses Lay On Hands (1 AP) on Kaela; then Durgan (level 2) places Consecrated Ground and Kaela starts her turn in it.
+Expect: The Critical's question in the HUD's Situational tab reads "Apply its Critical row? You make a [Projectile, Ranged] Basic Attack (1A)" with a short Apply button and Don't apply; Apply opens a free Basic Attack (no AP) a moment after Quick Shots' own card. Quick Shots' Tier 1 is [V] 1d6! + Mod and no Evade follows. Lay On Hands' Setup frame says Continue and gives Guard 4 + Aveline's Power Modifier; Consecrated Ground gives Kaela Guard 2 + Durgan's Power Modifier.
+Rev: 3
 
 ## Conditions and their Tiers
-
-### fd-save · v0.0.537 · Rev 2 · A Doomed caster gives Favored Saves
-Do: The Orc Warrior uses War Howl with Aveline and Sylwen in the area: open its roll dialog and add 2 Banes and 1 Boon with the buttons, then use it. Then use War Howl again with Doomed on.
-Expect: The Save Action's dialog has Boon, Bane, Favored, Doomed and Empowered buttons and Boons and Banes rows. The first time, each target's Save has "Caster's Banes" +1 (2 Banes and 1 Boon leave 1). The second, each target's Save is Favored ("Caster Doomed").
-Rev: 2
 
 ## Movement
 
 ## Reactions and Judge
 
-### rx-slipaway · v0.0.537 · Rev 2 · Slip Away and Backhand: an enemy ends its turn adjacent
-Do: Kaela has Slip Away and a Dagger as well as her bow. The Orc Warrior ends its turn adjacent to her; use Slip Away. Then do it again on another round and press Cancel on the granted use.
-Expect: Once the orc's turn has ended, Slip Away is offered; Use starts her Evade 1 by itself, and her HUD shows a granted "Interact" (0 AP, from Slip Away) to swap weapons; using it costs no AP. Cancel skips it and removes it. Backhand (Durgan ending his turn next to the Ogre Chieftain) still works as before.
-Rev: 2
+### rx-slipaway · v0.0.539 · Rev 3 · Slip Away's Interact waits in the Situational tab
+Do: Kaela has Slip Away and a Dagger as well as her bow, and her HUD is on the Hands tab. The Orc Warrior ends its turn adjacent to her; use Slip Away. Then do it again on another round and press Cancel on the granted use.
+Expect: Slip Away is offered once the orc's turn has ended; Use starts her Evade 1 by itself. The HUD does not switch tabs for the granted Interact: the Situational tab shows its count, and clicking the tab shows "Interact" (0 AP, from Slip Away); using it costs no AP. Cancel skips it.
+Rev: 3
 
 ## Areas, light and Cover
 
