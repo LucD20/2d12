@@ -660,3 +660,23 @@ Decided with the action economy (a Reaction costs 1 AP of the creature's next tu
 - **Dying Flare** (Grave Wisp): 0R; *Trigger:* the wisp's damage reaches its Health Pool; the Special "then the wisp goes Down" goes.
 - **Goblin Shriek** (Goblin Sneak; was Shriek and Scatter): *Trigger:* a Goblin ally goes Down; the goblin uses Jeer (1A) against the triggering creature; no Evade.
 - **A rule for Chapter 14:** a creature, ally or enemy named by a Tag is one with that Tag ("a Goblin ally").
+
+---
+
+## The fight's length after playtest 12 (2026-11-28; Lucas: "4 can start now"; one decision at a time, nothing applied)
+
+**Where it stands (playtests 11 and 12, `playtest-11.md`, `playtest-12.md`):** the aim is 3 to 4 rounds (3.5, decision 1 of the last section); the fight ends at **2.5 rounds** both times. The party deals **about 16 a PC turn** for the fifth fight in a row; the enemies' staying power is about **161** (the wisp 22, the orc 45, the ogre 90, two goblins of 2 ticks). The cost is **1.8 Rally Points a PC** (Normal; Hard is above 2). The damage lands on one PC (Aveline 122% raw in playtest 11, Durgan 94% in playtest 12).
+
+**The arithmetic [Claude's, not a decision]:** a fight's length is about the enemies' staying power over the party's damage, so 3.5 rounds asks for **×1.4** (about 225). Its cost is about the enemies' damage a turn times their turns, and their turns grow with the length: ×1.4 rounds is ×1.4 cost (about 2.5: Hard) unless their damage a turn comes down. To stay at 1.8 with ×1.4 rounds, the enemies' damage a turn comes down to about **×0.7**; to stay under 2 (Normal), about ×0.8.
+
+**Decision L1: which lever (PROPOSED, for Lucas):**
+
+| | The lever | Rounds | Cost | What it does to the table |
+|---|---|---|---|---|
+| A | Enemy staying power ×1.4 alone | 3.5 | about 2.5 (Hard) | every fight one step harder; the swing on the front-liner grows (more enemy turns at the same hit size) |
+| **B** | **Enemy staying power ×1.4 and enemy damage ×0.7 to ×0.8** | 3.5 | 1.8 to 2.0 (Normal) | **Claude's proposal:** the fight lasts, the cost stays; smaller hits make one bad round less decisive (the swing playtests 11 and 12 showed), and Shield of Faith's half and Rally Points still matter |
+| C | PC damage ×0.7 | 3.5 | about 2.5 unless the enemies' damage also comes down | touches every class card, which is Lucas's own class pass; the PCs feel weaker |
+| D | More enemies (a bigger CV for the normal fight) | longer | higher | changes the encounter budget, not the creatures; more GM turns to run |
+| E | Keep the numbers, change the aim to 2.5 to 3 rounds | 2.5 | 1.8 | no work; the aim moves to what the fights show |
+
+**Claude's proposal: B,** and if Lucas takes it, the next decisions one at a time: L2 the staying power's factor and how it lands on each rank (a Minion's ticks: 2 or 3), L3 the damage's factor (×0.7 keeps the cost; ×0.8 puts it near the edge of Normal), L4 the creatures' lines one by one, as in the last section's tables.
